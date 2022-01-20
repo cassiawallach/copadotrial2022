@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>copado__Base_Page__c</field>
-        <value xsi:type="xsd:string">GitCommitMain</value>
+        <value xsi:type="xsd:string">GitCommitChanges</value>
     </values>
     <values>
         <field>copado__Help_Text_Url__c</field>

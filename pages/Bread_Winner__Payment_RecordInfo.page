@@ -1,0 +1,41 @@
+<apex:page standardController="Bread_Winner__Payment__c" extensions="Bread_Winner.RecordInfoExtension" showHeader="false">
+    <meta charset="utf-8" />
+    <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/jquery-1.11.3.js')}"></script>
+    <apex:slds />
+    <style>
+        .slds-scope img {
+            max-width: initial;
+            height: initial;
+        }    
+        .image img{
+            margin: 35px 10px;
+        }  
+    </style>
+    <apex:form >
+        <div class="slds-scope" >
+            <div class="slds-box">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="image">
+                            <apex:image url="{!URLFOR($Resource.Bread_Winner__Breadwinner_Xero, 'Breadwinner_Xero/Images/BreadwinnerLogo.png')}" />
+                        </td>
+                        <td class="content">
+                            <apex:outputPanel rendered="{!daysOverdue>0}">
+                                <apex:outputPanel layout="block" style="color:white; border-radius: 5px; font-weight:500; line-height:1.4; word-spacing:1px; justify-content:left;" styleClass="slds-notify slds-notify_alert slds-theme_inverse-text slds-text-align_left slds-text-heading_small slds-m-bottom_small" rendered="{!OR(isBreadwinnerAdministrator, daysOverdue > 7)}">
+                                    <p>{!summaryMessage}</p>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <ul class="slds-list_dotted slds-m-top_small">
+                                <apex:outputPanel rendered="{!isUnderTrial}">
+                                    <li class="slds-text-heading_small">These records only sync with Xero if you have a Breadwinner subscription of Professional or more. You are able to see these records now because your free trial defaults to the Professional Edition of Breadwinner. If you subscribe to Breadwinner at the Basic level, you will not be able to see these records anymore. This applies to Payments and Line Items.</li>
+                                </apex:outputPanel>
+                                
+                                <li class="slds-text-heading_small">Do not add custom fields to this object, or lookups from or to this object, or Triggers or Workflows, as Breadwinner may need to delete/destroy this and any other Payment record during a regular sync with Xero.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </apex:form>
+</apex:page>

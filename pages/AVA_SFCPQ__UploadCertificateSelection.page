@@ -1,0 +1,31 @@
+<apex:page standardController="SBQQ__TaxExemptionCertificate__c" sideBar="false" lightningStylesheets="true" >
+    <apex:includeLightning />
+    <div id="uploadSelectionResult"></div>
+    
+    <script>
+    
+        $Lightning.use("AVA_SFCPQ:UploadSelectionApp", function() { 
+            $Lightning.createComponent("AVA_SFCPQ:UploadSelection",
+                                       {
+                                           "recordId" : "{!$CurrentPage.parameters.id}"
+                                       },
+                                       "uploadSelectionResult",
+                                       function(component) {
+                                           $A.eventService.addHandler({
+                                               event: 'force:navigateToSObject',
+                                               handler: function(event) {
+                                                   debugger;
+                                                   if (typeof sforce != 'undefined' && typeof sforce.one != 'undefined') {
+                                                       // VF page in S1 or Lightning Exp
+                                                       sforce.one.navigateToSObject("{!$CurrentPage.parameters.id}", 'related');
+                                                   } else {
+                                                       // VF page in Classic
+                                                       window.location = '{!URLFOR($Action.SBQQ__TaxExemptionCertificate__c.View, SBQQ__TaxExemptionCertificate__c.Id)}';
+                                                   }
+                                               }
+                                           });
+                                       });
+        });
+    </script>
+    
+</apex:page>

@@ -1,0 +1,8 @@
+<apex:page standardController="fcio1__Scheduler__c" recordSetVar="records" extensions="fcio1.FullcastSchedulerController">
+    <apex:form >
+        <apex:pageMessage summary="When you abort the Scheduler, NO jobs will be executed.                                              To turn on or off a specific job - please use the 'enabled' field on the Job. " severity="Info" strength="2"/>        
+        <apex:pageMessage summary=" Are you sure you want to stop the scheduler and stop ALL jobs from running? " severity="Info" strength="2"/>  
+        <apex:commandButton value="Confirm" action="{!jobAbort}" />
+        <apex:commandButton value="Back" action="{!cancel}"/>
+    </apex:form>
+</apex:page>

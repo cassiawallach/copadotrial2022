@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Total amount entered into the Transaction - usually during renewals. --></help>
+        <label><!-- ASV --></label>
+        <name>JBCXM__ASVTotal__c</name>
+    </fields>
+    <fields>
+        <help><!-- Annual Subscription Value calculated based on the Booking and Term. --></help>
+        <label><!-- ASV Delta --></label>
+        <name>JBCXM__ASV__c</name>
+    </fields>
+    <fields>
+        <help><!-- Reference to CustomerInfo Record --></help>
+        <label><!-- Account --></label>
+        <name>JBCXM__Account__c</name>
+        <relationshipLabel><!-- Transaction Header --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Associate Object Display Value --></help>
+        <label><!-- Associated Object Display Value --></label>
+        <name>JBCXM__AssociatedObjectDisplayValue__c</name>
+    </fields>
+    <fields>
+        <help><!-- Associated Object record ID --></help>
+        <label><!-- Associated Object Record ID --></label>
+        <name>JBCXM__AssociatedObjectRecordID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Associated Object Value --></help>
+        <label><!-- Associated Object Record Value --></label>
+        <name>JBCXM__AssociatedObjectRecordValue__c</name>
+    </fields>
+    <fields>
+        <help><!-- Optional Reference number from external systems. --></help>
+        <label><!-- Booking Number --></label>
+        <name>JBCXM__BookingNumber__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select Churn Reason (applicable for Churn Transactions only). --></help>
+        <label><!-- Churn Reason --></label>
+        <name>JBCXM__ChurnReason__c</name>
+        <relationshipLabel><!-- Transaction Header (Churn Reason) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Enter optional commentary on the Transaction --></help>
+        <label><!-- Comment --></label>
+        <name>JBCXM__Comment__c</name>
+    </fields>
+    <fields>
+        <help><!-- Customer Name (auto populated) --></help>
+        <label><!-- Customer Name --></label>
+        <name>JBCXM__CustomerName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Transaction Date --></help>
+        <label><!-- Booking Date --></label>
+        <name>JBCXM__Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Forecast ASV. --></help>
+        <label><!-- Fcst ASV --></label>
+        <name>JBCXM__FcstASV__c</name>
+    </fields>
+    <fields>
+        <help><!-- Forecast Booking Date --></help>
+        <label><!-- Fcst Booking Date --></label>
+        <name>JBCXM__FcstBookingDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Forecast MRR --></help>
+        <label><!-- Fcst MRR --></label>
+        <name>JBCXM__FcstMRR__c</name>
+    </fields>
+    <fields>
+        <help><!-- Forecast user --></help>
+        <label><!-- Fcst User --></label>
+        <name>JBCXM__FcstUser__c</name>
+    </fields>
+    <fields>
+        <help><!-- Total amount entered into the Transaction - usually during renewals. --></help>
+        <label><!-- MRR --></label>
+        <name>JBCXM__MRRTotal__c</name>
+    </fields>
+    <fields>
+        <help><!-- Monthly Recurring Revenue calculated based on Booking Amount and Term --></help>
+        <label><!-- MRR Delta --></label>
+        <name>JBCXM__MRR__c</name>
+    </fields>
+    <fields>
+        <help><!-- There should be only main transaction at one time. Usually the New Business or the most Resent Renewal transaction available for a Customer. --></help>
+        <label><!-- Main --></label>
+        <name>JBCXM__Main__c</name>
+    </fields>
+    <fields>
+        <help><!-- Transaction Name - Defaulted to Opportunity Name if the connector is used or the Booking Type if the Opportunity is not mapped. --></help>
+        <label><!-- Name --></label>
+        <name>JBCXM__Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Next Renewal Date --></help>
+        <label><!-- RenewalDate --></label>
+        <name>JBCXM__NextRenewalDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- One-time revenue --></help>
+        <label><!-- OneTime --></label>
+        <name>JBCXM__OneTimeRevenue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Opportunity --></label>
+        <name>JBCXM__Opportunity__c</name>
+        <relationshipLabel><!-- Transaction Header --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- New Business: First business transaction&lt;br&gt;&lt;br&gt;Renewal: Renewal date auto populated &lt;br&gt;&lt;br&gt;Upsell / Downsell: Subsequent Upsell or Downsell transactions&lt;br&gt;&lt;br&gt;Debook: Any corrections to the previously booked amounts&lt;br&gt;&lt;br&gt;Churn: Churn transaction --></help>
+        <label><!-- Booking Type --></label>
+        <name>JBCXM__OrderType__c</name>
+        <relationshipLabel><!-- Transaction Header (Order Type) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Contract Number is an optional reference used in the external systems. --></help>
+        <label><!-- Original Contract --></label>
+        <name>JBCXM__OriginalContract__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent Transaction --></label>
+        <name>JBCXM__ParentTransaction__c</name>
+        <relationshipLabel><!-- Transaction Header (Parent Transaction) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- All transactions that have recurring component are renewable. Transaction that have only a fixed revenue component are not renewable --></help>
+        <label><!-- Renewable --></label>
+        <name>JBCXM__Renewable__c</name>
+    </fields>
+    <fields>
+        <label><!-- Renewal Opportunity --></label>
+        <name>JBCXM__RenewalOpportunity__c</name>
+        <relationshipLabel><!-- Transaction Header (Renewal Opportunity) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field defines the renewal status of the current transaction. For transactions that are renewable, there are four status Open, Closed - Renewed, Closed -Lost, Closed - Will not renew --></help>
+        <label><!-- Renewal Status --></label>
+        <name>JBCXM__RenewalStatus__c</name>
+        <picklistValues>
+            <masterLabel>Closed - Co-Termed</masterLabel>
+            <translation><!-- Closed - Co-Termed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Closed - Renewed</masterLabel>
+            <translation><!-- Closed - Renewed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Closed - Will not renew</masterLabel>
+            <translation><!-- Closed - Will not renew --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not renewable</masterLabel>
+            <translation><!-- Not renewable --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Open</masterLabel>
+            <translation><!-- Open --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- If this transaction is Renewable and Renewed (Even Renewal with upsell/Downsell), The Renewal transaction look. This is a self relation object --></help>
+        <label><!-- Renewal Transaction --></label>
+        <name>JBCXM__RenewalTransaction__c</name>
+        <relationshipLabel><!-- Transaction Header (Renewed Transaction) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Deferred Revenue Recognition End Date --></help>
+        <label><!-- Subscription End Date --></label>
+        <name>JBCXM__RevRecEndDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Deferred Revenue Recognition Start Date --></help>
+        <label><!-- Subscription Start Date --></label>
+        <name>JBCXM__RevRecStartDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sales Representative (optional field) --></help>
+        <label><!-- SalesRep --></label>
+        <name>JBCXM__SalesRep__c</name>
+        <relationshipLabel><!-- Transaction Header (Sales Rep) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Term in months and accepts fractional months --></help>
+        <label><!-- Term --></label>
+        <name>JBCXM__Term_Fractional__c</name>
+    </fields>
+    <fields>
+        <help><!-- Booking Term in whole Months --></help>
+        <label><!-- Term (Depricated) --></label>
+        <name>JBCXM__Term__c</name>
+    </fields>
+    <fields>
+        <help><!-- Total amount entered into the Transaction - usually during renewals. --></help>
+        <label><!-- Users --></label>
+        <name>JBCXM__UsersTotal__c</name>
+    </fields>
+    <fields>
+        <help><!-- User licenses/count --></help>
+        <label><!-- Users Delta --></label>
+        <name>JBCXM__Users__c</name>
+    </fields>
+</CustomObjectTranslation>

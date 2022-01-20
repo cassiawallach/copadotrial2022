@@ -1,0 +1,20 @@
+<aura:component controller="cps_PlaygroundWizardInstallController" implements="force:hasRecordId">
+    <aura:attribute name="playground" type="Object" required="true" />
+    <aura:attribute name="stage" type="String" required="true" />
+    <aura:attribute name="eventMessagesToIgnore" type="String[]" />
+    <aura:attribute name="jobs" type="Object[]" />
+    <aura:attribute name="installationEnded" type="Boolean" default="false" />
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+    <aura:handler event="c:cps_c1p_notifier" action="{! c.handleC1PEvents }" />
+    
+    <c:cps_wizard_body>
+        <c:cps_wizard_heading id="installTitle">{! $Label.c.CPS_Install_Title }</c:cps_wizard_heading>
+        <c:cps_wizard_columnsLayout tasks="{! v.jobs }" stage="{!v.stage}">
+            <c:cps_wizard_text id="InstallDescription">{! $Label.c.CPS_Install_Description }</c:cps_wizard_text>
+            <img src="{! $Resource.cps_assets + '/Assets/chair.png' }" />
+            <h6>{! $Label.c.CPS_Install_Footnote }</h6>
+        </c:cps_wizard_columnsLayout>
+        
+        <c:cps_Button id="btnContinue" onclick="{! c.changeStep }" disabled="{! !v.installationEnded }">{! $Label.c.CPS_Continue_Button }</c:cps_Button>
+    </c:cps_wizard_body>
+</aura:component>

@@ -21,6 +21,30 @@
         <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <rules>
+        <fullName>Copado Deployment Time</fullName>
+        <active>true</active>
+        <criteriaItems>
+            <field>copado__Deployment__c.copado__Status__c</field>
+            <operation>equals</operation>
+            <value>Scheduled</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>copado__Deployment__c.copado__Schedule__c</field>
+            <operation>equals</operation>
+            <value>Deploy later</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>copado__Send_deployment_command</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <offsetFromField>copado__Deployment__c.copado__Date__c</offsetFromField>
+            <timeLength>0</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
         <fullName>copado__Deployment Completed</fullName>
         <actions>
             <name>copado__Deployment_Completed_email_alert</name>

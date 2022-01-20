@@ -1,0 +1,61 @@
+<apex:page standardController="amc__Project__c" sidebar="false" title="Project Overview">
+<apex:includeLightning />
+    <style>
+        html, body{
+            margin:0;
+            padding:0;
+        }
+        html body.sfdcBody {
+        	padding:0px 10px 0px 10px !important;
+        }
+        table#bodyTable {
+            table-layout: fixed;
+        }
+        .restore-pad{
+          top: 70px !important;
+          right: 0px !important;
+        }
+        #overview {
+          margin-left:-4px;
+        }
+        
+        #overview .uiInputDate .datePicker-openIcon {
+            position: absolute;
+            left: 90%;
+            top: 55%;
+        }
+    </style>
+    <div id="overview" style="width:100%; height:100%;">
+    </div>
+    <script>
+        /*var heightOffset = 0;
+        if('{!$User.UITheme}'==='Theme3'){
+            heightOffset = 65;
+        }
+        $Lightning.use("amc:WhiteboardApp", function() {
+          $Lightning.createComponent("amc:Whiteboard",
+          {'heightOffset':heightOffset},"whiteboard",
+          function(cmp) {
+          });
+        });*/
+        var heightOffset = 0;
+        if('{!$User.UITheme}'==='Theme3'){
+            heightOffset = 65;
+        }
+        var projectId = '{!amc__Project__c.Id}';
+        var tab = '{!JSENCODE($CurrentPage.parameters.tab)}';
+        $Lightning.use("amc:ProjectOverviewApp", function() {
+          $Lightning.createComponent("amc:ProjectOverview",
+          {
+            'recordId':projectId,
+            'heightOffset':heightOffset,
+            'isLightning':false,
+            'tab':tab
+          },
+          "overview",
+          function(cmp) {
+
+          });
+        });
+    </script>
+</apex:page>

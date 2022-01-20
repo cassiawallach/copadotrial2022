@@ -5,6 +5,46 @@
         <name>copado__Copado_Header_Fields</name>
     </fieldSets>
     <fields>
+        <label><!-- Blocking reason --></label>
+        <name>Blocking_reason__c</name>
+    </fields>
+    <fields>
+        <help><!-- This day, the release will be closed for development and no more User Stories will be allowed to be added. --></help>
+        <label><!-- Close Date --></label>
+        <name>Close_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Documentation Release Notes --></label>
+        <name>Documentation_Release_Notes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Installation Link in Production --></label>
+        <name>Installation_Link_in_Production__c</name>
+    </fields>
+    <fields>
+        <label><!-- Installation Link in Sandbox --></label>
+        <name>Installation_Link_in_Sandbox__c</name>
+    </fields>
+    <fields>
+        <help><!-- e.g. Backend v45.0.0 will be the parent for Jobs v45.0.0 and API v45.0.0 --></help>
+        <label><!-- Parent Release --></label>
+        <name>Parent_Release__c</name>
+        <relationshipLabel><!-- Releases --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Planned Date for Customers&apos; Sandboxes --></help>
+        <label><!-- Sandboxes Planned Date --></label>
+        <name>Sandboxes_Planned_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Technical Release Notes --></label>
+        <name>Technical_Release_Notes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Visible in Community --></label>
+        <name>Visible_in_Community__c</name>
+    </fields>
+    <fields>
         <help><!-- All user story feature branches are created out of the main branch of the Deployment Flow. If a Release base branch is specified, all feature branches of user stories linked to the Release will be created out of the base branch. --></help>
         <label><!-- Base Branch --></label>
         <name>copado__Base_Branch__c</name>
@@ -14,7 +54,8 @@
         <name>copado__Description__c</name>
     </fields>
     <fields>
-        <label><!-- Planned Date --></label>
+        <help><!-- Planned date for Production environments --></help>
+        <label>Production Planned Date</label>
         <name>copado__Planned_Date__c</name>
     </fields>
     <fields>
@@ -25,6 +66,18 @@
     <fields>
         <label><!-- Status --></label>
         <name>copado__Status__c</name>
+        <picklistValues>
+            <masterLabel>Approved by QA</masterLabel>
+            <translation><!-- Approved by QA --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Beta</masterLabel>
+            <translation><!-- Beta --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Blocked</masterLabel>
+            <translation><!-- Blocked --></translation>
+        </picklistValues>
         <picklistValues>
             <masterLabel>Cancelled</masterLabel>
             <translation><!-- Cancelled --></translation>
@@ -38,6 +91,18 @@
             <translation><!-- Planned --></translation>
         </picklistValues>
         <picklistValues>
+            <masterLabel>Ready for Release</masterLabel>
+            <translation><!-- Ready for Release --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Ready for Testing</masterLabel>
+            <translation><!-- Ready for Testing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected by QA</masterLabel>
+            <translation><!-- Rejected by QA --></translation>
+        </picklistValues>
+        <picklistValues>
             <masterLabel>Released</masterLabel>
             <translation><!-- Released --></translation>
         </picklistValues>
@@ -47,14 +112,37 @@
         <label><!-- Version --></label>
         <name>copado__Version__c</name>
     </fields>
-    <fields>
-        <label><!-- External Id --></label>
-        <name>copadoccmint__External_Id__c</name>
-    </fields>
+    <layouts>
+        <layout>Release Layout</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Send to Slack --></label>
+        <name>Send_to_Slack</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Slack Alerts --></label>
+        <name>Slack_Alerts</name>
+    </quickActions>
+    <validationRules>
+        <errorMessage><!-- You must provide a blocking reason. --></errorMessage>
+        <name>Provide_a_blocking_reason</name>
+    </validationRules>
     <validationRules>
         <errorMessage><!-- please dont include spaces in version field --></errorMessage>
         <name>copado__Validate_spaces_in_version</name>
     </validationRules>
+    <webLinks>
+        <label><!-- Mass_Add_To_Release2 --></label>
+        <name>Mass_Add_To_Release2</name>
+    </webLinks>
     <webLinks>
         <label><!-- Mass_add_to_Release --></label>
         <name>copado__Mass_add_to_Release</name>

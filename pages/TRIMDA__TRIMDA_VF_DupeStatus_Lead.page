@@ -1,0 +1,137 @@
+<apex:page standardController="Lead" extensions="TRIMDA.TRIMDA_Con_DupeStatus" >
+<!--<apex:includeScript value="{!URLFOR($Resource.DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>-->
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<!--<apex:stylesheet value="{!URLFOR($Resource.DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/>-->
+ <style>
+    html body.sfdcBody { 
+        margin: 0px;
+        padding: 0px; 
+        background-color:white;
+    } 
+</style>
+    
+<apex:pageMessages />
+<apex:slds />
+ <apex:form id="DupeStatus" style="background-color:white;"> 
+     
+	<!-- LIGTHNING VIEW -->
+	<div id="ltngView" >
+    	<div  style="{!IF(ISNULL(matchedPairs),'display:none','')}">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--1-of-2 slds-medium-size--1-of-3">
+                    <div class="" style="text-align:left;margin-top: -0.2rem">
+                        <span class="itemLabel truncate" style="color:red;font-size:0.75rem;font-weight:bold;" >Dupe Status [{!NoOfDupes}]&nbsp; </span>
+                        <span class=""><apex:image title="{!BestMatchClass}" value="{!BestMatchClassImg}" width="80px" height="10px"  /></span>
+                    </div>
+                    <div class="" style="text-align:left;" >
+                        <span class="osOutputLabel" style="font-size:0.8125rem;height:14px;" >
+                            <!--<a href="javascript:sforce.one.navigateToSObject('{!BestId}')" title="{!BestMatchType}" target="_top">{!BestName}</a>-->
+                            <a href="javascript:void(0);" onclick="ns.doNav()" title="{!BestMatchType}">{!BestName}</a>
+                                <span style="display:none">
+                                  <a id="sObjectNav" href="">navigateToSObject</a>
+                                </span>
+                                <script>
+                                      (function(ns, undefined) {
+                                
+                                          ns.location = '/{!BestId}';
+                                
+                                          ns.doNav = function() {
+                                             var anchorEl = document.getElementById('sObjectNav');
+                                             anchorEl.href = ns.location;
+                                             anchorEl.click();
+                                          }
+                                      })(window.ns = window.ns || {});
+                                </script>
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-col slds-size--1-of-2 slds-medium-size--2-of-3" style="">
+                    <div class="" style="text-align:right;padding-right:0.1rem;margin-top: 0.1rem;">
+                        <a href="javascript:sforce.one.navigateToURL('/apex/TRIMDA__TRIMDA_MergeWizard_List?retUrL={!Id}%26Id={!Id}');" style="padding-left:0.5rem;padding-right:0.5rem;line-height:1.3rem;{!IF(BestAction != '','','display:none;')}" class="slds-button slds-button--neutral" title="Open Review Wizard">{!IF(BestAction = 'Merge', 'Merge','Convert')}</a>
+                        <a href="javascript:sforce.one.navigateToURL('/apex/TRIMDA__TRIMDA_MergeWizard_List?retUrL={!Id}%26Id={!Id}%26review=1');" style="padding-left:0.5rem;padding-right:0.5rem;line-height:1.3rem;" class="slds-button slds-button--neutral" title="Open Review Wizard">Review</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mainBody" style="{!IF(ISNULL(matchedPairs),'', 'display:none')}">
+            <div id='h32'>
+                <div class="labelcol" style="font-size:0.75rem;" >
+                    Dupe Status
+                </div>
+                <div class="itemBody" style="font-size:0.8125rem;" >
+                    <div class="dataCol" style="margin-top: -0.2rem;">
+                        <apex:image value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts,'/NoDupes.png')}" style="height: 14px;margin-top: -0.2rem;" />&nbsp; No Duplicates Found!
+                    </div>
+                </div>
+            </div>
+            <div id='h16'>
+                <div class="labelcol" style="font-size:0.75rem;" >
+                    Dupe Status : No Duplicates Found!
+                </div>
+            </div>
+        </div>
+     </div>
+     
+     
+    <!-- CLASSIC VIEW -->
+    <div id="classicView"> 
+        <apex:panelGrid columns="6" id="myGrid1" columnClasses="labelred,image,data2, action, sep, action" style="detail" width="100%" rendered="{!(NOT ISNULL(matchedPairs))}"> 
+            <apex:outputText title="DupeStatus" style="font-size:0.7rem;" value="DupeStatus [{!NoOfDupes}]" />
+            <apex:image title="{!BestMatchClass}" value="{!BestMatchClassImg}" width="80px" height="14px"/>
+            <apex:outputLink value="/{!BestId}" title="{!BestMatchType}" style="font-size:0.75rem;" target="_top">{!BestName}</apex:outputLink>
+            <!-- Deprecated Feb 2011 <apex:outputLink value="/{!BestMatchRecordId}" title="View Match Details" target="_top">View</apex:outputLink> -->
+            <!-- Deprecated Feb 2011 <apex:outputText title="|" value="|" rendered="{!(BestAction) != ''}" /> -->
+            <!-- Deprecated Feb 2011 <apex:commandLink action="{!invokeMergeWizard}"  title="Open Merge Wizard" value="Merge" id="lnkMergeWizard" target="_top" rendered="{!(BestAction) == 'Merge'}"><apex:param name="Wizard" value="Lead" /><apex:param name="Id2" value="{!BestId}" /></apex:commandLink> -->
+            <!-- Deprecated Feb 2011 <apex:outputLink value="/lead/leadconvert.jsp?id={!Lead2Convert}" title="Open Convert Wizard" target="_top" rendered="{!(BestAction) == 'Convert'}">Convert</apex:outputLink> -->
+            <!-- New Feb 2011 -->
+            <apex:outputLink style="height:14px;font-size:0.75rem" value="/apex/TRIMDA__TRIMDA_MergeWizard_List?retUrL={!Id}&Id={!Id}" title="Open Review Wizard" target="_top" rendered="{!(BestAction) != ''}" >{!IF(BestAction = 'Merge', 'Merge','Convert')}</apex:outputLink> 
+            <apex:outputText title="|" value="|" rendered="{!(BestAction) != ''}" />
+            <!-- Deprecated March 2016 <apex:outputLink value="/{!BestMatchRecordId}" title="View Match Details" target="_top" >Details</apex:outputLink> -->
+            <apex:outputLink value="/apex/TRIMDA__TRIMDA_MergeWizard_List?retUrL={!Id}&Id={!Id}&review=1" style="font-size:0.75rem;" title="View Match Details" target="_top" >Details</apex:outputLink> 
+            
+        </apex:panelGrid>
+        <apex:panelGrid columns="2" id="myGrid2" columnClasses="label, data" style="detail" width="100%" rendered="{!(ISNULL(matchedPairs))}">
+            <apex:outputText title="DupeStatus" style="font-size:0.7rem;" value="Dupe Status" />
+            <apex:outputText title="Result" style="font-size:0.75rem;" value="No Duplicates Found!" />
+        </apex:panelGrid>
+     </div>
+     
+     <script type="text/javascript">
+			{
+			    var h = window.innerHeight;
+                //alert(h);
+                if (h <= 31) {
+                    document.getElementById("h32").style.display = "none"; 
+                    document.getElementById("h16").style.display = "initial"; 
+                } else {
+                    document.getElementById("h32").style.display = "initial"; 
+                    document.getElementById("h16").style.display = "none"; 
+                }
+			}
+		</script>
+        
+        
+        <script type="text/javascript">
+			function isLightningExperienceOrSalesforce1() {
+			    return((typeof sforce != 'undefined') && sforce && (!!sforce.one));
+			}
+		</script>
+		
+		<script type="text/javascript">
+				if(isLightningExperienceOrSalesforce1() ) {
+				    // Do something for Lightning Experience
+				    //document.getElementById("ltngView").innerHTML = "Lightning";
+				    document.getElementById("ltngView").style.display = "initial";
+				    document.getElementById("classicView").style.display = "none"; 
+				}
+				else {
+				    // Use classic Visualforce
+				    //document.getElementById("sfdcmodeclassic").innerHTML = "Classic";
+				    document.getElementById("classicView").style.display = "initial";
+				    document.getElementById("ltngView").style.display = "none"; 
+				}
+		</script>
+     
+</apex:form>
+
+</apex:page>

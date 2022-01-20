@@ -1,0 +1,50 @@
+<apex:page title="6sense Predictive Intelligence - Invalid Account" showHeader="true" sidebar="true" standardController="sixsense__X6sense_New_Company__c" extensions="sixsense.SixSenseAccountConversionVFC">
+    <apex:stylesheet value="{!URLFOR($Resource.sixsense__SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:sectionHeader title="New Company: Invalid" subtitle="{!sixsense__X6sense_New_Company__c.Name}" />
+    <apex:pageMessages />
+    <apex:outputPanel rendered="{! AND(!accountConverted, X6sense_New_Company__c.Id != null) }">
+        <div class="bPageTitle" style="padding-top: 0;">
+            <div class="ptBreadcrumb">&nbsp;«&nbsp;<apex:outputLink value="/{!sixsense__X6sense_New_Company__c.Id}">Back to Detail View: <apex:outputText value="{!sixsense__X6sense_New_Company__c.Name}" /></apex:outputLink></div>
+        </div>
+    </apex:outputPanel>
+
+    <apex:form >
+        <apex:outputPanel rendered="{!sixsense__X6sense_New_Company__c.Id == null}">
+            <div class="bPageTitle" style="padding-top: 0;">
+                <div class="ptBreadcrumb">&nbsp;«&nbsp;
+                    <apex:commandLink action="{!list}" value="Go to list view" />
+                </div>
+            </div>
+        </apex:outputPanel>
+    
+        <apex:outputPanel rendered="{!AND(!accountConverted, sixsense__X6sense_New_Company__c.Id != null)}">
+            <div class="slds">
+                <div class="slds-box slds-theme--shade">
+                    <p class="slds-m-top--small">Are you sure you would like to mark <b><apex:outputText value="{!sixsense__X6sense_New_Company__c.Name}" /></b> invalid?</p>
+                    <div class="slds-form-element slds-m-top--medium">
+                        
+                        <div class="slds-form-element__control">
+                            <div class="slds-select_container" style="max-width: 25rem;">
+                                <apex:selectList id="InvalidReason" size="1" styleClass="slds-select" value="{!InvalidReason}">
+                                    <apex:selectOptions value="{!invalidReasons}" />
+                                </apex:selectList>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-m-top--medium slds-text-body--regular slds-text-align--left">
+                        <apex:commandLink styleClass="slds-button slds-button--brand" value="Confirm" action="{!markInvalid}" />
+                        <apex:outputLink value="/{!sixsense__X6sense_New_Company__c.Id}" styleclass="slds-button slds-button--neutral">Cancel</apex:outputLink>
+                    </div>
+                </div>
+            </div>
+        </apex:outputPanel>
+    </apex:form>
+
+    <apex:outputPanel rendered="{!AND(accountConverted, sixsense__X6sense_New_Company__c.Id != null)}">
+        <div class="slds">
+            <div class="slds-box slds-theme--shade">
+                <apex:outputLink styleclass="slds-button slds-button--brand" value="/{!sixsense__X6sense_New_Company__c.Id}">Back to Record</apex:outputLink>
+            </div>
+        </div>
+    </apex:outputPanel>
+</apex:page>

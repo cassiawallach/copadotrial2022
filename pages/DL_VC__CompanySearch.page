@@ -1,0 +1,49 @@
+<apex:page standardController="Account" extensions="DL_VC.CompanySearchController" id="csp">
+
+    <script type="text/javascript"> 
+    function openLookup(baseURL, width, modified, searchParam){
+        var newWidth = width + 200;
+        
+        var splitArr    = searchParam.split("=");
+        var searchTerm  = splitArr[1];
+        
+        if ( searchTerm === "" ) {
+            search = document.getElementById('{!$Component.csp.csf.cspb.cspbs.hiddenAccountName}').value;
+        } else {
+            search = searchTerm;
+        }
+    
+        var account_id = document.getElementById('{!$Component.csp.csf.cspb.cspbs.hiddenAccountId}').value;
+        baseURL = "/apex/DL_VC__CompanySearchPopup?first_pass=true&search_term=" + search + '&account_id=' + account_id;
+    
+        openPopup(baseURL, "lookup", 350, 480, "width="+newWidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+
+    }
+    
+    function setReadOnly() {
+        document.getElementById('{!$Component.csp.csf.cspb.cspbs.VCValidated}').readOnly = true;
+    };
+    
+    var enableField = function() {
+        this.removeAttribute( "readonly" );
+    };
+    
+    var disableField = function() {
+        this.setAttribute( "readonly", "true" );
+    };
+    
+    window.onload = setReadOnly;
+    </script>
+
+    <apex:form id="csf">  
+        <apex:PageBlock id="cspb" mode="maindetail">
+            <apex:pageBlockSection id="cspbs" columns="1" showHeader="false">
+                <!--<apex:outputField value="{!Account.VC_Validated__c}"/>-->
+                <apex:inputField id="VCValidated" value="{! account.VC_Validated_Lookup__c }" label="Value Cloud Search"
+                                onclick="enableField.apply(this)" onblur="disableField.apply(this)"  />
+                <apex:inputHidden id="hiddenAccountId" value="{! account.Id }"/>
+                <apex:inputHidden id="hiddenAccountName" value="{! account.Name }"/>
+            </apex:pageBlockSection>
+        </apex:PageBlock>
+    </apex:form>
+</apex:page>

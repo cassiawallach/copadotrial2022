@@ -1,0 +1,616 @@
+<apex:page tabStyle="kugo2p__SalesQuote__c" standardcontroller="kugo2p__SalesQuote__c" extensions="kugo2p.SelectQuote" id="selectProductPageId" sidebar="true">
+
+<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"/>
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+<style>
+    .selectButtons {
+        text-align:center; 
+        margin-bottom: 1em;
+    }
+    .inputTitle {
+        font-weight:bold;
+    }   
+    .searchFilterFields .keywordElement {
+        border-right:3px solid #EEEEEE;
+        white-space:normal;
+    }   
+    .searchFilterFields .searchFilterSelectionElement, .searchFilterFields .productButtons {
+        text-align:left;
+    }   
+    .searchFilterFields .productButtons {
+        margin-top:-11px;
+        padding-bottom:5px;
+    }   
+    body .bRelatedList .bPageBlock .pbTitle{
+        padding: 0 5px;
+    }   
+    #statusBox {
+        // for Modzilla
+        -moz-background-clip:border;
+        -moz-background-inline-policy:continuous;
+        -moz-background-origin:padding;
+        -moz-border-radius-bottomleft:5px;
+        -moz-border-radius-bottomright:5px;
+        -moz-border-radius-topleft:5px;
+        -moz-border-radius-topright:5px;
+        -moz-box-shadow:1px 6px 5px #888888;
+        
+        -webkit-border-bottom-left-radius:5px;
+        -webkit-border-bottom-right-radius:5px;
+        -webkit-border-top-left-radius:5px;
+        -webkit-border-top-right-radius:5px;
+        -webkit-box-shadow:1px 6px 5px #888888;
+        
+        box-shadow: 1px 6px 5px #888888;
+        
+        background:#FFFFFF none repeat scroll 0 0;
+        height:42px;
+        width:150px;
+        left:45%;//570px;
+        top: 265px;
+        padding-left:15px;
+        padding-top:11px;
+        position:absolute;
+        vertical-align:middle;
+    }
+    #textBox {
+        margin-left:40px;
+        margin-top:-20px;
+    }
+
+    .listItemPadCustom {
+        color: #015ba7 !important;
+        font-weight: normal;
+        font-size: 91%;
+        text-align: right;
+        text-decoration:none;
+        padding: 0 1px;
+        zoom: 1;
+        //border-right: 1px solid #cfcece;
+        //display: inline-block;
+    }
+
+    .listItemSelectedCustom {
+        color: #000;
+        background-color: #c6e1ff;
+        font-weight:bold;
+        font-size: 91%;
+        text-align: right;
+        text-decoration:none;
+        //border-right: 1px solid #666;
+        padding: 0 1px;
+        zoom: 1;
+        cursor: auto;
+        //border-right: 1px solid #cfcece;
+        //display: inline-block;
+    }
+
+    .headerSearchContainerNew {
+        //margin-left: 21px;
+        margin-left: 5px;
+        font-family: Arial;
+        height: 24px;
+        border: 0;
+        position: relative;
+        width: 270px;
+    }
+
+    .headerSearchLeftRoundedCornerNew {
+        padding-left: 11px;
+        background: transparent url('/img/alohaSkin/unified_search_sprite.png') no-repeat scroll left -216px;
+        width: 0;
+        height: 24px;
+        border: 0;
+    }
+
+    .searchBoxClearContainerNew {
+        background: transparent url('/img/alohaSkin/unified_search_background_sprite.png') repeat-x left -168px;
+        position: absolute;
+        width: 192px;
+        height: 24px;
+        border: 0;
+    }
+
+    .headerSearchLeftRoundedCornerNew #phSearchInputNew {
+        background-color: #fff;
+        height: 16px;
+        border: 0;
+        margin: 0;
+        padding: 0;
+        width: 172px;
+        font-size: 100%;
+        font-family: Arial;
+        color: #222;
+        position: relative;
+        top: -5px;
+        
+        //-webkit-appearance: textfield;
+        //-webkit-rtl-ordering: logical;
+        //-webkit-user-select: text;
+        //cursor: auto;
+        
+        //font: -webkit-small-control;
+        //letter-spacing: normal;
+        //word-spacing: normal;
+        //text-transform: none;
+        //text-indent: 0px;
+        //text-shadow: none;
+        //display: inline-block;
+        //text-align: start;        
+
+        //-webkit-writing-mode: horizontal-tb;
+        //white-space: nowrap;      
+    }
+    
+    #phSearchClearButtonNew {
+        background-color: #fff;
+        background-image: url('/img/alohaSkin/search_clear_sprite.png');
+        background-repeat: no-repeat;
+        cursor: pointer;
+        display: inline-block;
+        height: 16px;
+        margin-top: 5px;
+        margin-left: 1px;
+        margin-right: 3px;
+        overflow: hidden;
+        position: relative;
+        width: 16px;
+        
+        //background-position: 0 0;
+        //color: #333435;
+    }
+    
+    .headerSearchClearButtonNew {
+        background-position:0 0;
+    }
+
+    .headerSearchClearButtonHoverNew {
+        background-position:0 -16px;
+    }
+
+    .headerSearchClearButtonPressNew {
+        background-position:0 -32px;
+    }
+    
+    .headerSearchRightRoundedCornerNew {
+        background: transparent url('/img/alohaSkin/unified_search_sprite.png') no-repeat scroll right -168px;
+        border-left: 1px solid #ddd;
+        padding-right: 10px;
+        padding-left: 0;
+        position: absolute;
+        left: 202px;
+        cursor: pointer;
+        height: 24px;
+        border: 0;
+    }
+    
+    .headerSearchRightRoundedCornerNew #phSearchButtonNew {
+        background: transparent url('/img/alohaSkin/unified_search_background_sprite.png') repeat-x scroll left -120px;
+        border: 0 none;
+        height: 24px;
+        margin: 0;
+        padding-left: 8px;
+        padding-right: 0;
+        font-weight: bold;
+        font-size: 90%;
+        font-family: Arial;     
+        color: #015ba7;
+        //color: #1797c0;
+        cursor: pointer;
+        width: auto;
+        overflow: visible;
+        border-radius: 0;
+    }
+</style>
+
+<script>
+
+    var j$ = jQuery.noConflict();
+    j$(document).ready(function() {
+
+        //j$('#phSearchInputNew').attr("placeholder", "Search...");
+
+        j$('#phSearchClearButtonNew').click(function() {
+            //debugger;
+            j$('#phSearchInputNew').val('');
+            document.getElementById("phSearchClearButtonNew").style.visibility = 'hidden';
+            return false;
+        });
+
+        j$("#phSearchClearButtonNew").hover(
+          function() {
+            j$(this).addClass("headerSearchClearButtonHoverNew");
+          },
+          function() {
+            j$(this).removeClass("headerSearchClearButtonHoverNew");
+          }
+        );
+
+        j$('#phSearchButtonNew').click(function() {
+            //debugger;
+            afSearch(j$('#phSearchInputNew').val());
+        });
+        
+        j$('#phSearchInputNew, .searchTextNew').keypress(function(e) {
+            //debugger;
+            var key;
+            if(window.event)
+                 key = window.event.keyCode; //IE
+            else
+                 key = e.which; //firefox
+
+            if(key == 13) {
+                j$('#phSearchButtonNew').click();
+            }
+
+            //console.log(' qty ' + qty);
+            return (key != 13);         
+        });
+
+    });
+
+    function keywordEnterKey(ele, eve) {
+        //debugger;
+        var key;
+        if(window.event) {
+             key = window.event.keyCode; //IE
+        } else {
+             key = eve.which; //firefox
+        }
+
+        if (key != 13) {
+            if (ele.value == '') {
+                document.getElementById("phSearchClearButtonNew").style.visibility = 'hidden';
+            } else {
+                document.getElementById("phSearchClearButtonNew").style.visibility = '';
+            }
+        }
+
+        return (key != 13);
+    }
+
+</script> 
+
+    <!-- <apex:sectionHeader title="Quote" subtitle="Quote Creation" /> -->
+    <c:PageHeader title="Quote" subtitle="Quote Creation" pathname="custom" icon="custom84" description="Please choose an Account to create a Quote." />
+
+    <apex:form id="selectionProductFormId" >
+
+        <!-- 
+        <div class="bOverviewSearch">
+            <div class="view">
+            Please choose an Account to create a Quote. 
+            </div>
+            <div class="messages">  </div>
+        </div>
+        -->
+
+        <script>
+            var intGlobalPageCounter = 0; 
+            var intMoreFiletersExpanded = 0;
+            var intSelectedItemsCount = 0;
+        </script>   
+    
+     <apex:outputPanel id="pageMessages2">        
+        <apex:pageMessages id="msg" />
+     </apex:outputPanel>
+    <apex:actionStatus id="counterStatus" onstart="document.body.style.cursor = 'wait'; " onstop="document.body.style.cursor = 'default'; setHeaderCheckBox(); " />
+            
+    <apex:actionStatus id="sortStatus">
+        <apex:facet name="start">
+            <div class="kugamon">
+                <div class="slds-spinner_container">
+                    <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                        <span class="slds-assistive-text">Processing...</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionStatus>    
+
+    <apex:actionStatus startText=""  id="busyStatus" 
+              onStart="document.body.style.cursor = 'wait';return true;" 
+               onStop="document.body.style.cursor = 'default';setHeaderCheckBox();return true;" >
+    </apex:actionStatus>
+
+    <apex:actionFunction name="afSearch" action="{!sortResults}" immediate="true" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid" status="sortStatus">
+        <apex:param name="searchText" assignTo="{!searchText}" value="" />
+    </apex:actionFunction>
+
+    <div class="selectButtons kugamon">
+        <apex:commandButton value="Cancel" action="{!cancel}" styleClass="slds-button slds-button--neutral" /> <!-- rendered="{!IF(quoteCount!=0, true, false)}" -->
+    </div>
+    
+    <apex:outputPanel id="Header" layout="block" >
+    <div id="PricebookEntry" class="bRelatedList">        
+    <div class="listRelatedObject pricebookentryBlock">        
+    <apex:pageBlock rendered="true" id="thePageBlock">  <!-- <div class="bPageBlock secondaryPalette" id="pgBlock"> -->
+        <div class="pbHeader" id="pnlsearch">
+            <table >
+                <tbody>
+                
+                    <tr>
+                        <td class="pbTitle">
+                            <img height="1" width="1" title="" class="minWidth" alt="" src="/s.gif"/>
+                            <img title="" class="relatedListIcon" alt="" src="/s.gif"/>
+                            <h3>
+                                &nbsp;<span >Find Accounts [<apex:outputpanel id="itemGrid">{!quoteCount}<apex:outputText value="+" rendered="{!quoteCount==10000}" /></apex:outputpanel>]</span>
+                            </h3>
+                        </td>
+
+                        <td class="pbButton">&nbsp;</td>
+                        
+                        <td class="pbHelp">
+                           
+                           <span >
+                           <div>        
+                               <b>Records Per Page</b> &nbsp;
+                               <apex:selectList id="chooseSize" value="{!pageSize}" size="1" style="font-size:8pt">
+                                    <apex:actionSupport action="{!newChangePageSize}" event="onchange" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid" status="sortStatus" >
+                                        <apex:param value="{!filterLetter}" name="letter" ></apex:param>
+                                    </apex:actionSupport>
+                                    <apex:selectOptions value="{!listSize}" />
+                               </apex:selectList>                          
+                           </div>                                              
+                           </span>
+                        </td>
+                    </tr>
+
+                    <!-- 
+                    <tr>
+                        <td width="50%">
+                            <div class="headerSearchContainerNew" id="phSearchContainerNew">
+                                <div class="headerSearchLeftRoundedCornerNew">
+                                    <div class="searchBoxClearContainerNew">
+                                        <input autocomplete="on" id="phSearchInputNew" maxlength="25" name="str" placeholder="Account Name..." size="20" title="Search..." type="text" value="" onKeyUp="return keywordEnterKey(this, event)"/><a class="headerSearchClearButtonNew" href="javascript: void(0);" id="phSearchClearButtonNew" name="phSearchClearButtonNew" style="visibility: hidden;" title="Clear search text"></a>
+                                    </div>
+                                    <div class="headerSearchRightRoundedCornerNew" id="searchButtonContainerNew">
+                                        <input value="Search" id="phSearchButtonNew" type="button"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=A&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='A', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;A&nbsp;</apex:outputLink>|   <!-- style="{!if(filterLetter=='A', 'font-weight:bold;background-color:#C6E1FF;', '')}text-decoration:none" -- >
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=B&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='B', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;B&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=C&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='C', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;C&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=D&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='D', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;D&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=E&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='E', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;E&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=F&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='F', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;F&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=G&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='G', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;G&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=H&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='H', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;H&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=I&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='I', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;I&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=J&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='J', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;J&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=K&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='K', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;K&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=L&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='L', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;L&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=M&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='M', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;M&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=N&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='N', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;N&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=O&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='O', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;O&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=P&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='P', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;P&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=Q&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Q', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Q&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=R&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='R', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;R&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=S&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='S', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;S&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=T&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='T', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;T&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=U&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='U', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;U&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=V&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='V', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;V&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=W&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='W', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;W&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=X&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='X', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;X&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=Y&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Y', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Y&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=Z&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Z', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Z&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?letter=Other&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Other', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Other&nbsp;</apex:outputLink>|
+                            <apex:outputLink value="/apex/SelectNewQuote?retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;All&nbsp;</apex:outputLink>
+                        </td>                        
+                    </tr>
+                    -->
+                    
+                    <tr>
+                        <td colspan="3">
+                            <div class="searchFilterFieldsHolder searchFilterFieldsHolderFirst">
+                                <table class="searchFilterFields" id="idsearchFilterFields">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">
+                                            <div class="headerSearchContainerNew" id="phSearchContainerNew">
+                                                <div class="headerSearchLeftRoundedCornerNew">
+                                                    <div class="searchBoxClearContainerNew">
+                                                        <input autocomplete="on" id="phSearchInputNew" maxlength="25" name="str" placeholder="Account Name..." size="20" title="Search..." type="text" value="" onKeyUp="return keywordEnterKey(this, event)"/><a class="headerSearchClearButtonNew" href="javascript: void(0);" id="phSearchClearButtonNew" name="phSearchClearButtonNew" style="visibility: hidden;" title="Clear search text"></a>
+                                                    </div>
+                                                    <div class="headerSearchRightRoundedCornerNew" id="searchButtonContainerNew">
+                                                        <input value="Search" id="phSearchButtonNew" type="button"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td width="10%">&nbsp;</td>
+                                        <td>
+                                            <div style="margin-right: 5px;">
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=A&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='A', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;A&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=B&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='B', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;B&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=C&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='C', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;C&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=D&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='D', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;D&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=E&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='E', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;E&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=F&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='F', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;F&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=G&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='G', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;G&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=H&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='H', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;H&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=I&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='I', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;I&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=J&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='J', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;J&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=K&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='K', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;K&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=L&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='L', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;L&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=M&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='M', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;M&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=N&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='N', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;N&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=O&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='O', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;O&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=P&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='P', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;P&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=Q&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Q', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Q&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=R&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='R', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;R&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=S&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='S', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;S&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=T&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='T', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;T&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=U&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='U', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;U&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=V&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='V', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;V&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=W&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='W', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;W&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=X&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='X', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;X&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=Y&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Y', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Y&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=Z&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Z', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Z&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?letter=Other&retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='Other', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;Other&nbsp;</apex:outputLink>|
+                                                <apex:outputLink value="/apex/SelectNewQuote?retURL={!$CurrentPage.Parameters.retURL}" styleClass="{!if(filterLetter=='', 'listItemSelectedCustom', 'listItemPadCustom')}">&nbsp;All&nbsp;</apex:outputLink>
+                                            </div>
+                                        </td>                               
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>    
+        
+                
+            <div class="relatedListsearchHeader">   
+                <div class="pSearchShowMore">
+                  <apex:outputPanel id="opPrevNextup">                  
+                      <table width="100%" id="tablePrevNextup" >
+                          <tr >
+                             <td width="50%" align="center" >
+                                  
+                                 <font >   
+                                  <apex:image url="/img/search_prevarrow.gif" styleClass="prevArrow" rendered="{!If(PreviousButtonEnabled,false,true)}" alt="Previous Page" title="Previous Page" />
+                                  <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!If(PreviousButtonEnabled,true,false)}" alt="No Previous Page" title="No Previous Page" />
+                                            <apex:commandLink action="{!getThePreviousPage}" value="Previous Page" rendered="{!Not(PreviousButtonEnabled)}" title="Previous Page" style="color:{!If(PreviousButtonEnabled,'#999999','#000000')}" status="sortStatus" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid"/>
+                                                        &nbsp;&nbsp;({!PageStartIndex}-{!PageStopIndex})&nbsp;&nbsp;
+                                            <apex:commandLink action="{!getTheNextPage}" value="Next Page" rendered="{!NOT(NextButtonDisabled)}" title="Next Page" style="color:{!If(NextButtonDisabled,'#999999','#000000')}" status="sortStatus" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid"/>
+                                  <apex:image url="/img/search_nextarrow_disabled.gif" styleClass="nextArrow" rendered="{!If(NextButtonDisabled,true,false)}" alt="No Next Page" title="No Next Page"/>
+                                  <apex:image url="/img/search_nextarrow.gif" styleClass="nextArrow" rendered="{!If(NextButtonDisabled,false,true)}" alt="Next Page" title="Next Page"/>
+                                  </font>  
+                              </td> 
+                          </tr>
+                      </table>                        
+                  </apex:outputpanel>
+                 </div>         
+            </div> 
+            
+            <!-- <apex:dataTable width="100%" value="{!setAdditionalAccounts}" var="accnt" id="resultsDataTable" cellspacing="0" cellpadding="0" border="0" styleClass="list" rowClasses="dataRow even, dataRow odd" headerClass="headerRow" style="border:0px "
+                onrowmouseout="if (window.hiOff){hiOff(this);}" 
+                onrowmouseover="if (window.hiOn){hiOn(this);}"> -->
+
+            <apex:pageBlockTable value="{!setAdditionalAccounts}" var="accnt" id="resultsDataTable">
+                <apex:column headerValue="Action" styleclass="actionColumn" width="5%">
+                    <apex:facet name="header"></apex:facet>
+                    <apex:outputPanel styleClass="kugamon">
+                        <apex:outputLink value="/apex/kugo2p__kontroller?action=createSalesQuote&acctId={!accnt.kugo2p__Account__c}" styleclass="slds-button" style="text-decoration:none;">Create</apex:outputLink>
+                    </apex:outputPanel> 
+                </apex:column>
+                
+            <!--   <apex:column width="20%">
+                    <apex:facet name="header">
+                    </apex:facet>
+                    <apex:commandLink action="{!createAndAddLines}" value="Create Quote and Add Lines" styleclass="btn" style="text-decoration:none;" rerender="ThePageBlock" status="sortStatus">
+                        <apex:param value="{!accnt.Account__c}" assignTo="{!accountId}" ></apex:param>
+                    </apex:commandLink>
+                </apex:column> -->
+                
+                <apex:column >
+                    <apex:facet name="header"> 
+                        <apex:commandLink action="{!sortResults}" value="Account Name" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid" status="sortStatus" >
+                            <apex:image url="/img/sort_desc_arrow.gif" rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='Name',true,false))}" width="21" height="12" title="Sorted Descending" alt="Sorted Descending"/>
+                            <apex:image url="/img/sort_asc_arrow.gif"  rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='Name',true,false))}" width="21" height="12" title="Sorted Ascending" alt="Sorted Ascending"/>
+                            <apex:image url="/s.gif" rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='Name',true,false))}" styleClass="sortDesc" title="Sorted Descending" alt="Sorted Descending" />
+                            <apex:image url="/s.gif"  rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='Name',true,false))}" styleClass="sortAsc" title="Sorted Ascending" alt="Sorted Ascending" />                            
+                          <apex:param value="Name" name="column" assignTo="{!sortExpression}" ></apex:param>
+                          </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink id="AccountName" value="/{!accnt.kugo2p__Account__c}"> {!accnt.Account__r.Name} </apex:outputLink>
+                </apex:column>
+                <apex:column value="{!accnt.Account__r.BillingCity}">
+                    <apex:facet name="header">
+                        <apex:commandLink action="{!sortResults}" value="Billing City" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid" status="sortStatus" >
+                            <apex:image url="/img/sort_desc_arrow.gif" rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='Account__r.BillingCity',true,false))}" width="21" height="12" title="Sorted Descending" alt="Sorted Descending"/>
+                            <apex:image url="/img/sort_asc_arrow.gif"  rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='Account__r.BillingCity',true,false))}" width="21" height="12" title="Sorted Ascending" alt="Sorted Ascending"/>
+                            <apex:image url="/s.gif" rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='Account__r.BillingCity',true,false))}" styleClass="sortDesc" title="Sorted Descending" alt="Sorted Descending" />
+                            <apex:image url="/s.gif"  rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='Account__r.BillingCity',true,false))}" styleClass="sortAsc" title="Sorted Ascending" alt="Sorted Ascending" />                            
+                          <apex:param value="Account__r.BillingCity" name="column" assignTo="{!sortExpression}" ></apex:param>
+                          </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!accnt.kugo2p__ContactBilling__c}">
+                    <apex:facet name="header">
+                        <apex:commandLink action="{!sortResults}" value="Billing Contact" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid" status="sortStatus" >
+                            <apex:image url="/img/sort_desc_arrow.gif" rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='ContactBilling__r.Name',true,false))}" width="21" height="12" title="Sorted Descending" alt="Sorted Descending"/>
+                            <apex:image url="/img/sort_asc_arrow.gif"  rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='ContactBilling__r.Name',true,false))}" width="21" height="12" title="Sorted Ascending" alt="Sorted Ascending"/>
+                            <apex:image url="/s.gif" rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='ContactBilling__r.Name',true,false))}" styleClass="sortDesc" title="Sorted Descending" alt="Sorted Descending" />
+                            <apex:image url="/s.gif"  rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='ContactBilling__r.Name',true,false))}" styleClass="sortAsc" title="Sorted Ascending" alt="Sorted Ascending" />                            
+                          <apex:param value="ContactBilling__r.Name" name="column" assignTo="{!sortExpression}" ></apex:param>
+                          </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!accnt.kugo2p__PriceBookName__c}">
+                    <apex:facet name="header">
+                        <apex:commandLink action="{!sortResults}" value="Pricebook" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid" status="sortStatus" >
+                            <apex:image url="/img/sort_desc_arrow.gif" rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='PricebookName__c',true,false))}" width="21" height="12" title="Sorted Descending" alt="Sorted Descending"/>
+                            <apex:image url="/img/sort_asc_arrow.gif"  rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='PricebookName__c',true,false))}" width="21" height="12" title="Sorted Ascending" alt="Sorted Ascending"/>
+                            <apex:image url="/s.gif" rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='PricebookName__c',true,false))}" styleClass="sortDesc" title="Sorted Descending" alt="Sorted Descending" />
+                            <apex:image url="/s.gif"  rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='PricebookName__c',true,false))}" styleClass="sortAsc" title="Sorted Ascending" alt="Sorted Ascending" />                            
+                          <apex:param value="PricebookName__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+                          </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!accnt.kugo2p__AccountBalance__c}" styleClass="CurrencyElement">
+                    <apex:facet name="header">
+                        <apex:outputPanel id="acctBalance" style="float:right;">
+                        <apex:commandLink action="{!sortResults}" value="Account Balance" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid" status="sortStatus" >
+                            <apex:image url="/img/sort_desc_arrow.gif" rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='AccountBalance__c',true,false))}" width="21" height="12" title="Sorted Descending" alt="Sorted Descending"/>
+                            <apex:image url="/img/sort_asc_arrow.gif"  rendered="{!AND(IF($User.UIThemeDisplayed != 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='AccountBalance__c',true,false))}" width="21" height="12" title="Sorted Ascending" alt="Sorted Ascending"/>
+                            <apex:image url="/s.gif" rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection=='desc',true,false),IF(sortExpression=='AccountBalance__c',true,false))}" styleClass="sortDesc" title="Sorted Descending" alt="Sorted Descending" />
+                            <apex:image url="/s.gif"  rendered="{!AND(IF($User.UIThemeDisplayed == 'Theme3',true,false),IF(sortDirection!='desc',true,false),IF(sortExpression=='AccountBalance__c',true,false))}" styleClass="sortAsc" title="Sorted Ascending" alt="Sorted Ascending" />                            
+                          <apex:param value="AccountBalance__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+                          </apex:commandLink>
+                        </apex:outputPanel>  
+                    </apex:facet>
+                </apex:column>
+            </apex:pageBlockTable>
+            <!-- </apex:dataTable> -->
+    
+    <div class="pbInnerFooter">                 
+        <div class="relatedListsearchFooter"> 
+            <div class="pSearchShowMore">
+                <apex:outputPanel id="opPrevNext">
+                                    
+                    <table width="100%" id="tablePrevNext" style="font-family:Arial;vertical-align:middle;text-align:left;font-size:8pt;" >
+                        <tr >
+                           <td width="50%" align="center" >                                                                
+                                  <font >   
+                                  <apex:image url="/img/search_prevarrow.gif" styleClass="prevArrow" rendered="{!If(PreviousButtonEnabled,false,true)}" alt="Previous Page" title="Previous Page" />
+                                  <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!If(PreviousButtonEnabled,true,false)}" alt="No Previous Page" title="No Previous Page" />
+                                            <apex:commandLink action="{!getThePreviousPage}" value="Previous Page" rendered="{!Not(PreviousButtonEnabled)}" title="Previous Page" style="color:{!If(PreviousButtonEnabled,'#999999','#000000')}" status="sortStatus" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid"/>
+                                                        &nbsp;&nbsp;({!PageStartIndex}-{!PageStopIndex})&nbsp;&nbsp;
+                                            <apex:commandLink action="{!getTheNextPage}" value="Next Page" rendered="{!NOT(NextButtonDisabled)}" title="Next Page" style="color:{!If(NextButtonDisabled,'#999999','#000000')}" status="sortStatus" rerender="resultsDataTable,opPrevNextup,opPrevNext,tablePrevNextup,tablePrevNext,itemGrid"/>
+                                  <apex:image url="/img/search_nextarrow_disabled.gif" styleClass="nextArrow" rendered="{!If(NextButtonDisabled,true,false)}" alt="No Next Page" title="No Next Page"/>
+                                  <apex:image url="/img/search_nextarrow.gif" styleClass="nextArrow" rendered="{!If(NextButtonDisabled,false,true)}" alt="Next Page" title="Next Page"/>
+                                  </font>                               
+                            </td> 
+                        </tr>
+                    </table>
+                </apex:outputpanel>
+           </div>     
+        </div> 
+    </div> 
+    </apex:pageBlock>
+    <!-- </div> -->
+
+    </div>
+    </div>
+    </apex:outputPanel>
+
+    <div class="selectButtons kugamon">
+        <apex:commandButton value="Cancel" action="{!cancel}" styleClass="slds-button slds-button--neutral" /> <!-- rendered="{!IF(quoteCount!=0, true, false)}" -->
+    </div>
+</apex:form>    
+</apex:page>

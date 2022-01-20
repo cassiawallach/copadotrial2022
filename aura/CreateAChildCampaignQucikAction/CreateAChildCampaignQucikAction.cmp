@@ -1,0 +1,10 @@
+<aura:component  implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="loaded" type="Boolean" default="true" />
+    <div class="exampleHolder">
+        <aura:if isTrue="{! v.loaded }">
+            <lightning:spinner alternativeText="Loading" size="large" />
+        </aura:if>
+    </div>
+</aura:component>

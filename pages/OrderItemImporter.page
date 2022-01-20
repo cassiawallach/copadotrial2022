@@ -1,0 +1,11 @@
+<apex:page id="thePage" standardController="Order" extensions="OrderItemImporterExtension" action="{!doImport}">
+    <apex:sectionHeader id="theHeader" title="Copado Solutions" subtitle="Order Item Importer" />
+    <apex:pageMessages id="theMessages" />
+    
+    <apex:form id="theForm">
+        <br />
+        <a href="/{!theOrder.Id}" class="btn" style="text-decoration:none;" >Return to Order</a>
+        
+        <apex:outputField value="{!theOrder.OpportunityId}" rendered="false" />
+    </apex:form>
+</apex:page>

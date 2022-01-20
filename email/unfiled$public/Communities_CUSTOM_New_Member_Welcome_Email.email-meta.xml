@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notification that user has been added to a community.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Communities: CUSTOM New Member Welcome Email</name>
+    <style>none</style>
+    <subject>Welcome to {!Community_Name}</subject>
+    <textOnly>Copado Success
+
+Hi {!Receiving_User.FirstName},
+
+Welcome to the Copado Success Community!
+
+The Success Community offers you the possibility to learn, test and connect with Copado, all from one place.
+
+To get started, go to {!Community_Url}.
+
+Your username is {!Receiving_User.Username}.
+
+Take a look at our new Success Community!
+
+
+Best Regards,
+{!Organization.Name}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

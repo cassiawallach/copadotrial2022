@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>ForecastingItem.ForecastAmount.CONVERT:SUM/ForecastingQuota.QuotaAmount.CONVERT:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Pipeline Coverage</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota$QuotaAmount.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastAmount.CONVERT</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Scorecards</description>
+    <filter>
+        <criteriaItems>
+            <column>ForecastingQuota$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Matt Hill,Anish Patel,Kevin Robinson,Sabine Gillert,Edward Elliott</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Best Case,Commit</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota$Owner</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <field>ForecastingQuota$StartDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>For Pipeline Coverage Calculations v2</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>orecasting_Quotas_w_wo_Forecasting_Items__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>ForecastingQuota$StartDate</dateColumn>
+        <interval>INTERVAL_CURNEXT1</interval>
+    </timeFrameFilter>
+</Report>

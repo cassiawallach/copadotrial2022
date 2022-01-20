@@ -1,0 +1,62 @@
+<apex:page controller="acpoll.VotingManagerCtrl" action="{!init}">
+<apex:form >
+	<apex:pageBlock title="{!PageTitle}" id="allPageBlock" >
+
+		<apex:pageBlockButtons location="top">
+			<apex:commandButton action="{!doNewPoll}" value="New Question" rendered="{!isListMode}" reRender="allPageBlock"/>
+			<apex:commandButton action="{!doSavePoll}" value="Save" rendered="{!NOT(isListMode)}" reRender="allPageBlock"/>
+			<apex:commandButton action="{!doBackList}" value="Back" immediate="true" rendered="{!NOT(isListMode)}" reRender="allPageBlock"/>
+		</apex:pageBlockButtons>
+
+		<apex:pageBlockTable title="Polls" value="{!polls}" var="poll" rendered="{!isListMode}">
+			<apex:column headerValue="Actions" width="90">
+				<apex:commandButton reRender="allPageBlock" action="{!doSelectPollForEdit}" value="Edit" id="editButton">
+					<apex:param name="pollId" value="{!poll.Id}"/>
+				</apex:commandButton>
+				<apex:commandButton reRender="allPageBlock" action="{!doDeletePoll}" value="Delete" id="deleteButton">
+					<apex:param name="pollId" value="{!poll.Id}"/>
+				</apex:commandButton>
+			</apex:column>
+			<apex:column headerValue="Question" value="{!poll.acpoll__Name__c}"/>
+			<apex:column headerValue="Poll Id" value="{!poll.Id}"/>
+		</apex:pageBlockTable>
+
+		<apex:pageBlockSection collapsible="false" columns="1" rendered="{!NOT(isListMode)}">
+			<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Poll Question:" for="PollQuestion" />
+					<apex:inputField required="true" id="PollQuestion" value="{!selectedPoll.acpoll__Name__c}"/>
+			</apex:pageBlockSectionItem>
+
+			<apex:pageBlockSectionItem >
+				<apex:outputPanel layout="block">
+					<apex:pageBlockTable title="Answers" value="{!pollAnswers}" var="answer">
+						<apex:column width="90" headerValue="Actions" >
+							<apex:commandLink title="Move up" reRender="allPageBlock" action="{!doMoveUp}">
+								<apex:image height="16px" width="16px" style="margin-left: 5px; margin-right: 3px;border: 1px solid rgba(0, 128, 0, 0.13);" value="{!URLFOR($Resource.acpoll__Icons, 'up.png')}"/>
+								<apex:param name="orderId" value="{!answer.acpoll__Order__c}"/>
+							</apex:commandLink>
+							<apex:commandLink title="Move Down" reRender="allPageBlock" action="{!doMoveDown}">
+								<apex:image height="16px" width="16px" style="margin-right: 3px;border: 1px solid rgba(0, 128, 0, 0.13);" value="{!URLFOR($Resource.acpoll__Icons, 'down.png')}"/>
+								<apex:param name="orderId" value="{!answer.acpoll__Order__c}"/>
+							</apex:commandLink>
+							<apex:commandLink title="Remove Answer" reRender="allPageBlock" action="{!doDeleteAnswer}">
+								<apex:image height="16px" width="16px" style="margin-right: 3px;border: 1px solid rgba(0, 128, 0, 0.13);" value="{!URLFOR($Resource.acpoll__Icons, 'delete.png')}"/>
+								<apex:param name="orderId" value="{!answer.acpoll__Order__c}"/>
+							</apex:commandLink>
+							<apex:commandLink title="Add an answer to down" reRender="allPageBlock" action="{!doAddAnswerToDown}">
+								<apex:image height="16px" width="16px" style="border: 1px solid rgba(0, 128, 0, 0.13);" value="{!URLFOR($Resource.acpoll__Icons, 'plus.png')}"/>
+								<apex:param name="orderId" value="{!answer.acpoll__Order__c}"/>
+							</apex:commandLink>
+						</apex:column>
+						<apex:column headerValue="Answer">
+							<apex:inputField value="{!answer.acpoll__Answer__c}"/>
+						</apex:column>
+					</apex:pageBlockTable>
+				</apex:outputPanel>
+			</apex:pageBlockSectionItem>
+
+		</apex:pageBlockSection>
+
+	</apex:pageBlock>
+</apex:form>
+</apex:page>

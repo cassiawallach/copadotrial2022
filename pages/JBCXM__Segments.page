@@ -1,0 +1,52 @@
+<apex:page sidebar="false" title="Segments" controller="JBCXM.GSCommonBroker" extensions="JBCXM.NSRemoting" tabStyle="Administration__tab">
+
+         <div id="gs-app-container">
+           <div class="gs-module-container">
+              <div class="gainsight-app">
+                <gs-root></gs-root>
+               </div>
+             </div>
+         </div>
+
+        <script>
+            var hc= eval({!(headerConfig)});
+            var apiEndPoint = hc.gatewayURL;
+            var authorization= "";
+
+            var appSessionId = hc.appSessionId;
+            var appUserId = hc.appUserId;
+            var appOrgId = hc.appOrgId;
+            var GS = GS || {};
+            GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.gainsightTabs = eval({!(GainsightTabs)});
+
+            GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.remotingCommonBulkEndPoint  ='{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+            var host = "SALESFORCE";
+            GS.appName = "segments";
+
+
+        </script>
+    <apex:outputpanel rendered="{!If($CurrentPage.parameters.env == null , true, false)}">
+        <c:Features360 moduleName="segments" />
+        <script>
+                installResources({
+                                  scripts: [
+                                      "runtime",
+                                      "polyfills",
+                                      "main"
+                                  ],
+                                  styles: ["styles"]
+                              });
+        </script>
+    </apex:outputpanel>
+        <apex:outputpanel rendered="{!If($CurrentPage.parameters.env == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF($CurrentPage.parameters.apppath!=null,$CurrentPage.parameters.apppath,'https://localhost:4200')}/styles.css" />
+        <script>
+            GS.cdnUrl ="https://localhost:4200/";
+        </script>
+        <script type="application/javascript" src="{!IF($CurrentPage.parameters.apppath!=null,$CurrentPage.parameters.apppath,'https://localhost:4200')}/runtime.js"></script>
+        <script type="application/javascript" src="{!IF($CurrentPage.parameters.apppath!=null,$CurrentPage.parameters.apppath,'https://localhost:4200')}/polyfills.js"></script>
+        <script type="application/javascript" src="{!IF($CurrentPage.parameters.apppath!=null,$CurrentPage.parameters.apppath,'https://localhost:4200')}/main.js"></script>
+    </apex:outputpanel>
+</apex:page>

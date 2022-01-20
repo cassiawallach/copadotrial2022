@@ -1,0 +1,28 @@
+<apex:page standardController="Contact" extensions="AVA.avaCampaignMemberFieldsController" id="thePage" showHeader="false">
+    <style type="text/css">
+        .pbTitle {
+            white-space: nowrap
+        }
+        .bPageBlock {
+            border-color: #0088BB !important;
+        }
+        .pbSubheader {
+            background-color: #01a1dd !important;
+        }
+
+    </style>
+    <apex:outputPanel layout="block" style="overflow:auto;width:100%;height:200px" id="conversica-campaigns">
+        <apex:dataTable value="{!campaignMembers}" var="campaignMember" id="theTable">
+            <apex:column >
+                <apex:pageBlock title="Campaign: {!campaignMember.Campaign.Name}">
+                    <apex:pageBlockSection title="Conversica Info">
+                        <apex:pageBlockSectionItem ><b>Added:</b> {!campaignMember.AVA__AVAAI_date_added__c}</apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem ><b>First Message:</b> {!campaignMember.AVA__AVAAI_first_message_date__c}</apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem ><b>Last Message:</b> {!campaignMember.AVA__AVAAI_last_message_date__c}</apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem ><b>Last Response:</b> {!campaignMember.AVA__AVAAI_last_response_date__c}</apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </apex:column>
+        </apex:dataTable>
+    </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,40 @@
+<apex:page standardController="TRIMDA__TRIMDA_DupeAlerts__c" extensions="TRIMDA.TRIMDA_DupeAlert_Extension" >
+
+  <apex:form > 
+     
+     <apex:actionFunction name="CheckAlert" oncomplete="actionComplete('{!CheckSuccess}')" action="{!Check}" reRender="CheckResult" status="ProgressStatus" />    
+          <script language="JavaScript">
+              function actionComplete(msg)
+              {
+                  //alert(msg);
+              }
+              var previousOnload = window.onload;        
+              window.onload = function() {
+                  if (previousOnload) {
+                      previousOnload();
+                      CheckAlert();
+                  }
+              }
+          </script> 
+        <apex:actionStatus id="ProgressStatus">
+            <apex:facet name="start">
+                <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Checking..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+            
+        </apex:actionStatus>
+
+        <apex:pageBlock Id="CheckResult" title="Checking Alert" > <!--  rendered="{!CheckVisible}">-->
+            <apex:pageBlockSection title="Checking Alert Failed" rendered="{!Not CheckSuccess}" columns="1">
+                <apex:pageMessages /> 
+             </apex:pageBlockSection>
+            <apex:pageBlockSection title="Checking Alert Success" rendered="{!CheckSuccess}" columns="1">
+                <apex:pageMessages /> 
+            </apex:pageBlockSection>
+            <apex:commandButton action="{!CheckHide}" value="Hide"/>
+        </apex:pageBlock>
+
+  </apex:form> 
+ 
+  <apex:detail subject="{!TRIMDA__TRIMDA_DupeAlerts__c}" />
+
+ </apex:page>

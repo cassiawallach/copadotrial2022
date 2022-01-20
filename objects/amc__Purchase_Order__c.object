@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>amc__MC_Purchase_Order_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>amc__Project__c</fields>
+        <fields>amc__Account__c</fields>
+        <fields>amc__Type__c</fields>
+        <fields>amc__Amount__c</fields>
+        <label>MC Purchase Order Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>The Purchase Order Custom Object lets you keep a track of the POs that have been issued to suppliers relating to your Projects</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>amc__Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the Account this Purchase Order relates to</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the Account this Purchase Order relates to</inlineHelpText>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Purchase Orders</relationshipLabel>
+        <relationshipName>Purchase_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Amount_Outstanding__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the amount still outstanding on this Purchase Order. Formula: Amount - Amount Paid</description>
+        <externalId>false</externalId>
+        <formula>amc__Amount__c -  amc__Amount_Paid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies the amount still outstanding on this Purchase Order. Formula: Amount - Amount Paid</inlineHelpText>
+        <label>Amount Outstanding</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Amount_Paid__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the &apos;Amount Claimed&apos; value of all related Expenses</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the &apos;Amount Claimed&apos; value of all related Expenses</inlineHelpText>
+        <label>Amount Paid</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the sum amount of all related Purchase Order Items</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the sum amount of all related Purchase Order Items</inlineHelpText>
+        <label>Amount</label>
+        <summarizedField>amc__Purchase_Order_Item__c.amc__Amount__c</summarizedField>
+        <summaryForeignKey>amc__Purchase_Order_Item__c.amc__Purchase_Order__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>amc__Attention__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies who invoices/expenses relating to this Purchase Order should be addressed to</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies who invoices/expenses relating to this Purchase Order should be addressed to</inlineHelpText>
+        <label>Attention</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the Contact this Purchase Order relates to</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the Contact this Purchase Order relates to</inlineHelpText>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Purchase Orders</relationshipLabel>
+        <relationshipName>Purchase_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Delivery_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the expected Delivery Date for the Purchase Order</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the expected Delivery Date for the Purchase Order</inlineHelpText>
+        <label>Delivery Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>amc__Delivery_Instructions__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies any delivery instructions relating to this Purchase order</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies any delivery instructions relating to this Purchase order</inlineHelpText>
+        <label>Delivery Instructions</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Issued_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the Issued Date of the Purchase Order</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Issued Date of the Purchase Order</inlineHelpText>
+        <label>Issued Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the Project this Purchase Order relates to</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the Project this Purchase Order relates to</inlineHelpText>
+        <label>Project</label>
+        <referenceTo>amc__Project__c</referenceTo>
+        <relationshipLabel>Purchase Orders</relationshipLabel>
+        <relationshipName>Purchase_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the status of the Purchase Order</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the status of the Purchase Order</inlineHelpText>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>false</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>Issued</fullName>
+                    <default>false</default>
+                    <label>Issued</label>
+                </value>
+                <value>
+                    <fullName>Paid - Partial</fullName>
+                    <default>false</default>
+                    <label>Paid - Partial</label>
+                </value>
+                <value>
+                    <fullName>Paid - In Full</fullName>
+                    <default>false</default>
+                    <label>Paid - In Full</label>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                    <label>Cancelled</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>amc__Summary__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies a summary of what is included in this Purchase Order</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies a summary of what is included in this Purchase Order</inlineHelpText>
+        <label>Summary</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the Type of Purchase Order</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Type of Purchase Order</inlineHelpText>
+        <label>Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>TBC</fullName>
+                    <default>false</default>
+                    <label>TBC</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Purchase Order</label>
+    <listViews>
+        <fullName>amc__All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>PO:{000000}</displayFormat>
+        <label>Purchase Order Number</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Purchase Orders</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>amc__Summary__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Account__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Amount__c</lookupDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>amc__Summary__c</searchFilterFields>
+        <searchFilterFields>amc__Account__c</searchFilterFields>
+        <searchFilterFields>amc__Amount__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

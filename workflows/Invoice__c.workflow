@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Invoice_Due</fullName>
+        <description>Invoice Due</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>agiven@copa.do</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>jdjuric@copado.com</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>rruiz@copa.do</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>rwong@copa.do</recipient>
+            <type>user</type>
+        </recipients>
+        <senderAddress>billing@copa.do</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>System_Emails/Overdue_Invoice</template>
+    </alerts>
+    <alerts>
+        <fullName>new_invoice_alert</fullName>
+        <description>new invoice alert</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>Financial_Operations_Manager</recipient>
+            <type>role</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>System_Emails/New_invoice_alert</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>Invoice_Status_Overdue</fullName>
+        <field>Status__c</field>
+        <literalValue>Overdue</literalValue>
+        <name>Invoice Status Overdue</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Invoice Due</fullName>
+        <actions>
+            <name>Invoice_Due</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Invoice__c.Days_Overdue__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Invoice Overdue</fullName>
+        <active>true</active>
+        <criteriaItems>
+            <field>Invoice__c.Status__c</field>
+            <operation>notEqual</operation>
+            <value>Paid,Cancelled</value>
+        </criteriaItems>
+        <triggerType>onCreateOnly</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Invoice_Status_Overdue</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <offsetFromField>Invoice__c.Due_Date__c</offsetFromField>
+            <timeLength>1</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
+        <fullName>New invoice</fullName>
+        <active>false</active>
+        <formula>true</formula>
+        <triggerType>onCreateOnly</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>new_invoice_alert</name>
+                <type>Alert</type>
+            </actions>
+            <timeLength>0</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+</Workflow>

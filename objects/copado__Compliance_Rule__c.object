@@ -279,7 +279,6 @@
         <fullName>copado__Action__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Action to be performed automatically by Copado</inlineHelpText>
         <label>Action</label>
         <required>false</required>
         <trackHistory>true</trackHistory>
@@ -329,7 +328,6 @@
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Automatically updated by copado when saving managing criteria</inlineHelpText>
         <label>Is Valid</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -477,7 +475,6 @@
         <fullName>copado__Severity__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Field to report on the Lightning Platform, Copado Doesn&apos;t action over this field</inlineHelpText>
         <label>Severity</label>
         <required>false</required>
         <trackHistory>true</trackHistory>
@@ -676,7 +673,7 @@
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>copado__Required_Criteria_Fields</fullName>
-        <active>false</active>
+        <active>true</active>
         <errorConditionFormula>OR(
 ISPICKVAL(copado__Matching_Criteria__c ,&quot;&quot;),
 ISPICKVAL(copado__Record_Count_Criteria__c,&quot;&quot;),

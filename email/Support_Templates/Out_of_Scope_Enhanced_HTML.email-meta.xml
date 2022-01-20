@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Enhanced template for out of scope Cases.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Out of Scope</name>
+    <style>none</style>
+    <subject>Case #{!Case.CaseNumber} out of scope for support</subject>
+    <textOnly>Copado Support
+
+Dear {!Contact.Name}, 
+
+We have evaluated your case request and determined that the issue raised is not related to Copado. Deployment support is not offered by our team and we would encourage you to contact Salesforce.com Premier Support for such queries. 
+
+We will be closing this case, however, if you have any other issues relating to Copado we would be more than happy to help you.  
+
+Whilst we are unable to help you with this support request, we hope that the below sources of information will be useful to you. 
+http://salesforce.stackexchange.com 
+https://help.salesforce.com/home 
+https://developer.salesforce.com/en/
+
+Case Number: {!Case.CaseNumber}
+Case Subject: {!Case.Subject}
+
+
+Kind regards, {!User.Name}
+
+Case tracking Id: {!Case.Thread_Id}   Copado Solutions S.L.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

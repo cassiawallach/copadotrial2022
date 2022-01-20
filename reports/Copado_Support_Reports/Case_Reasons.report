@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_60525792</developerName>
+        <masterLabel>Case Reason</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>REASON</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Existing problem</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New problem</sourceValue>
+            </sourceValues>
+            <value>Copado Problem</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Instructions not clear</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Complex functionality</sourceValue>
+            </sourceValues>
+            <value>User Problem</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Out of scope - Not Copado related</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Out of scope - Deployment Support</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>General Question</sourceValue>
+            </sourceValues>
+            <value>Out of Scope</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CASE_NUMBER</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>REASON</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Sales</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>STATUS</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_60525792</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Case Reasons</name>
+    <params>
+        <name>units</name>
+        <value>h</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CaseList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATEONLY</dateColumn>
+        <interval>INTERVAL_LAST30</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,40 @@
+<apex:page standardController="redwing__ILT_Roster__c" recordSetVar="rosters" extensions="ltui.ILTRosterCmpCtrl"
+           readOnly="true"
+           contentType="application/vnd.ms-excel#ILTRostersReport_{!TODAY()}.xls"
+           applyHtmlTag="false"
+           applyBodyTag="false"
+           language="en-US"
+           showChat="false"
+           showHeader="false"
+           showQuickActionVfHeader="false"
+           sidebar="false"
+           standardStylesheets="false"
+           cache="false">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>PARTICIPANT NAME</th>
+                    <th>USER</th>
+                    <th>ATTENDED</th>
+                </tr>
+            </thead>
+            <tbody>
+                <apex:repeat value="{!participants}" var="item">
+                    <tr>
+                        <td valign="top"><apex:outputText value="{!item.redwing__User__r.Name}" /></td>
+                        <td valign="top"><apex:outputText value="{!item.redwing__User__r.Username}" /></td>
+                        <td valign="top"><apex:outputText value="{!item.redwing__Attended__c}" /></td>
+                    </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+    </body>
+</html>
+
+</apex:page>

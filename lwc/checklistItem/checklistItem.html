@@ -1,0 +1,44 @@
+<!--/*****************************************************************************************************************************************
+*   Name:          checklistItem
+*    
+*   Description:   This component specifies the content used in c:generateOrderChecklist and c:releaseOrderChecklist.
+*
+*   History:       Created by Kiran Kurella May 21st, 2021
+*
+*   Copyright 2021 Kugamon.  All rights reserved.    
+***************************************************************************************************************************************** -->
+
+<template>
+
+    <div class="slds-m-horizontal_xx-small">
+        <div class={computedWrapperClassNames}>
+            <div class="slds-grid slds-gutters slds-grid_vertical-align-center slds-grid_align-center grid-height">
+                <div class={gridColumn1ClassNames}>  <!--"slds-col slds-size_3-of-4"-->   <!--slds-align-middle-->
+                    <span class="slds-form-element__label" style="font-size: inherit;"> <!-- style="vertical-align: middle;" -->                        
+                        {itemName}
+                    </span>
+                </div>
+
+                <div class={gridColumn2ClassNames}> <!-- "slds-col slds-size_1-of-4" -->
+                    <div class="slds-m-right_xx-small slds-float_right slds-text-align_right">
+                        <template if:true={isSuccess}>
+                            <lightning-icon icon-name="utility:check" variant="success" size="x-small" alternative-text="Checked" title="Checked"></lightning-icon>
+                        </template>
+                        <template if:true={isText}>
+                            {itemDescription}
+                        </template>
+                        <template if:true={isDate}>
+                            <lightning-formatted-date-time value={itemDescription} class={itemStyleClass}></lightning-formatted-date-time>
+                        </template>
+                        <template if:true={isURL}>
+                                <a href={recordLink} target="_blank" title={itemDescription}>
+                                    {itemDescription}
+                                </a>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>

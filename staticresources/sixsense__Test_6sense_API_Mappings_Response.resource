@@ -1,0 +1,11 @@
+[
+   {
+      "id":4,
+      "organization_id":51,
+      "src_object":"account_products",
+      "src_field":"buying_stage",
+      "src_product":"app_cloud",
+      "dest_field":"app_cloud_buying_stage__c",
+      "dest_object":"account"
+   }
+]

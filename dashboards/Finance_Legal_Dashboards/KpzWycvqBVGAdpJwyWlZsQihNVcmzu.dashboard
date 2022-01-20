@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dashboard xmlns="http://soap.sforce.com/2006/04/metadata">
+    <backgroundEndColor>#FFFFFF</backgroundEndColor>
+    <backgroundFadeDirection>Diagonal</backgroundFadeDirection>
+    <backgroundStartColor>#FFFFFF</backgroundStartColor>
+    <chartTheme>light</chartTheme>
+    <colorPalette>dusk</colorPalette>
+    <dashboardChartTheme>light</dashboardChartTheme>
+    <dashboardColorPalette>dusk</dashboardColorPalette>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>greaterOrEqual</operator>
+            <values>1,0</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>lessThan</operator>
+            <values>1,0</values>
+        </dashboardFilterOptions>
+        <name>Account Name: Salesforce AOV</name>
+    </dashboardFilters>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>contains</operator>
+            <values>Government / Public Sector (PS)</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Health &amp; Life Sciences (HLS)</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Finance / Insurance (FINS)</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>High Tech (HT)</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Core</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Non-AOV</values>
+        </dashboardFilterOptions>
+        <name>Account Name: Vertical</name>
+    </dashboardFilters>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>contains</operator>
+            <values>Anish Patel</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>contains</operator>
+            <values>Kevin Robinson</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>contains</operator>
+            <values>Matt Hill</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Zachary Bayer</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Russell Lott</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Phil Barow</values>
+        </dashboardFilterOptions>
+        <name>Opportunity Owner: Manager: Full Name</name>
+    </dashboardFilters>
+    <dashboardGridLayout>
+        <dashboardGridComponents>
+            <colSpan>6</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <chartSummary>
+                    <axisBinding>y</axisBinding>
+                    <column>FORMULA1</column>
+                </chartSummary>
+                <componentType>BarGrouped</componentType>
+                <dashboardFilterColumns>
+                    <column>Opportunity$Account.Salesforce_AOV__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Opportunity$Account.Vertical__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Opportunity$Owner.Manager</column>
+                </dashboardFilterColumns>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingColumn>BucketField_70328568</groupingColumn>
+                <groupingColumn>BucketField_40991710</groupingColumn>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>d</sortOrder>
+                    </groupingSorts>
+                    <groupingSorts>
+                        <groupingLevel>g2</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Historical Strike Zones</header>
+                <legendPosition>Right</legendPosition>
+                <report>FP_A_Reports/Strike_Zones_For_Price_Sensitivity_An</report>
+                <showPercentage>false</showPercentage>
+                <showValues>true</showValues>
+                <sortBy>RowLabelAscending</sortBy>
+                <useReportChart>false</useReportChart>
+            </dashboardComponent>
+            <rowIndex>0</rowIndex>
+            <rowSpan>16</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>6</colSpan>
+            <columnIndex>6</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <chartSummary>
+                    <aggregate>Average</aggregate>
+                    <axisBinding>x</axisBinding>
+                    <column>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__TotalDiscountRate__c</column>
+                </chartSummary>
+                <chartSummary>
+                    <aggregate>Average</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ListTotal__c.CONVERT</column>
+                </chartSummary>
+                <componentType>Scatter</componentType>
+                <dashboardFilterColumns>
+                    <column>Opportunity$Account.Salesforce_AOV__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Opportunity$Account.Vertical__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Opportunity$Owner.Manager</column>
+                </dashboardFilterColumns>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingColumn>Opportunity$Name</groupingColumn>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>CFY - Open Opps</header>
+                <legendPosition>Bottom</legendPosition>
+                <report>FP_A_Reports/Open_NC_Opps_for_Strike_Zone_Analysis</report>
+                <showPercentage>false</showPercentage>
+                <showValues>false</showValues>
+                <sortBy>RowLabelAscending</sortBy>
+                <useReportChart>false</useReportChart>
+            </dashboardComponent>
+            <rowIndex>0</rowIndex>
+            <rowSpan>16</rowSpan>
+        </dashboardGridComponents>
+        <numberOfColumns>12</numberOfColumns>
+        <rowHeight>36</rowHeight>
+    </dashboardGridLayout>
+    <dashboardType>SpecifiedUser</dashboardType>
+    <description>How little can you discount in each vertical and still win?</description>
+    <isGridLayout>true</isGridLayout>
+    <runningUser>thinojosa@copado.com.prod</runningUser>
+    <textColor>#000000</textColor>
+    <title>Strike Zones</title>
+    <titleColor>#000000</titleColor>
+    <titleSize>12</titleSize>
+</Dashboard>

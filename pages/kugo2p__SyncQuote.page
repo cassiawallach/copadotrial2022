@@ -1,0 +1,15 @@
+<apex:page standardController="kugo2p__SalesQuote__c" extensions="kugo2p.SyncQuoteExt" recordSetVar="syncsQuotes" title="Sync Quotes" tabStyle="kugo2p__SalesQuote__c">
+
+    <apex:pageMessages escape="false"/>
+
+    <apex:form >
+        <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" >
+            <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+            <br></br>
+
+            <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+            <apex:commandButton value="Sync Quotes" action="{!syncQuotes}" rendered="{!showSyncButton}" styleClass="slds-button slds-button--brand" />
+        </apex:outputPanel>
+        
+    </apex:form>
+</apex:page>

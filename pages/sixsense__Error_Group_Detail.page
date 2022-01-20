@@ -1,0 +1,84 @@
+<!--
+ - Created by eva on 6/16/17.
+ -->
+
+<apex:page id="Error_Group_Detail" sidebar="false" controller="sixsense.Error_GroupsVFC" readOnly="true">
+    <apex:slds />
+    <style>
+        .inline-container{
+            display:inline-block;
+        }
+    </style>
+    <div class = "slds-box slds-theme_shade">
+    <apex:outputPanel styleClass="slds-grid slds-wrap">
+        <div class = "slds-size_1-of-6 slds-p-bottom_xx-small lds-text-body_regular slds-text-color_weak">Impacted Object:</div>
+        <apex:outputText styleClass="slds-size_5-of-6 slds-p-bottom_xx-small slds-text-body_regular slds-text-color_weak" value=" {!fullMessage.Batch_Log__r.sixsense__Batch_Name__c}" />
+        <div class = "slds-size_1-of-6 slds-p-bottom_xx-small lds-text-body_regular slds-text-color_weak">Error Message: </div>
+        <apex:outputText styleClass="slds-size_5-of-6 slds-p-bottom_xx-small lds-text-body_regular slds-text-color_weak" value="{!fullMessage.sixsense__Error_Message__c}" />
+        <div class = "slds-size_1-of-6 slds-p-bottom_medium lds-text-body_regular slds-text-color_weak">Status Code:</div>
+        <apex:outputText styleClass="slds-size_5-of-6 slds-p-bottom_medium lds-text-body_regular slds-text-color_weak" value=" {!fullMessage.sixsense__Status_Code__c}" />
+    </apex:outputPanel>
+    <apex:outputPanel id="table">
+        <table class="slds-table slds-table--bordered">
+            <thead>
+            <tr>
+                <th class="slds-text-heading--label slds-size--1-of-4" scope="col">Record Id</th>
+                <th class="slds-text-heading--label slds-size--1-of-4" scope="col">Batch Error Log Number</th>
+                <th class="slds-text-heading--label slds-size--1-of-4" scope="col">Batch Log Number</th>
+                <th class="slds-text-heading--label slds-size--1-of-4" scope="col">Last Modified Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <apex:repeat value="{!errorLogs}" var="record" >
+                <tr class="slds-hint-parent">
+                    <td class="slds-size--1-of-4 slds-truncate" data-label="RedordId"><apex:outputLink value="{!'/'+record.sixsense__Impact_Record_Id__c}"><apex:outputText value="{!record.sixsense__Impact_Record_Id__c}" /></apex:outputLink></td>
+                    <td class="slds-size--1-of-4 slds-truncate" data-label="BatchErrorLogNumber"><apex:outputLink value="{!URLFOR($Action.sixsense__Batch_Log_Error__c.View, record.Id)}"><apex:outputText value="{!record.Name}" /></apex:outputLink></td>
+                    <td class="slds-size--1-of-4 slds-truncate" data-label="BatchLogNumber"><apex:outputLink value="{!URLFOR($Action.sixsense__Batch_Log__c.View, record.sixsense__Batch_Log__c)}"><apex:outputText value="{!record.Batch_Log__r.Name}" /></apex:outputLink></td>
+                    <td class="slds-size--1-of-4 slds-truncate" data-label="LastModifiedDate"><apex:outputText value="{0,date,MM/dd/yyyy hh:mm a}"><apex:param value="{!record.LastModifiedDate}" /></apex:outputText></td>
+                </tr>
+            </apex:repeat>
+            </tbody>
+
+            <tfoot>
+
+
+            </tfoot>
+        </table>
+    </apex:outputPanel>
+
+        <apex:form >
+        <apex:outputPanel id="setPage" styleClass="slds-card__footer slds-grid slds-wrap slds-grid--pull-padded">
+            <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+                <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                    <div class="slds-col slds-small-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                        <div class="slds-button-group" role="group">
+                            <apex:commandButton styleClass="slds-button slds-button--neutral" value="|<" action="{!setCon.first}"  reRender="table, setPage" />
+                            <apex:commandButton styleClass="slds-button slds-button--neutral" value="<" action="{!setCon.previous}" rendered="{!setCon.HasPrevious}" reRender="table, setPage" />
+                            <apex:commandButton styleClass="slds-button slds-button--neutral" value=">" action="{!setCon.next}" rendered="{!setCon.HasNext}" reRender = "table, setPage" />
+                            <apex:commandButton styleClass="slds-button slds-button--neutral" value=">|" action="{!setCon.last}"  reRender = "table, setPage" />
+                        </div>
+                    </div>
+                    <div class="slds-col slds-small-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--2-of-3">
+                        <div class="slds-form-element__control inline-container" >
+                            <div class="slds-select_container">
+                                <apex:selectList id="pageSize" value="{!setCon.PageSize}" size="1" styleClass="slds-select">
+                                    <apex:selectOption itemValue="20" itemLabel="20 Records"></apex:selectOption>
+                                    <apex:selectOption itemValue="50" itemLabel="50 Records"></apex:selectOption>
+                                    <apex:selectOption itemValue="100" itemLabel="100 Records"></apex:selectOption>
+                                </apex:selectList>
+                            </div>
+                        </div>
+                        <div class="slds-form-element__control slds-m-left--xxx-small inline-container" >
+                            <apex:commandButton styleClass="slds-button slds-button--neutral" action="{!NULL}" value="Update Page Size" reRender="table, setPage"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+
+            </div>
+        </apex:outputPanel>
+        </apex:form>
+    </div>
+
+</apex:page>

@@ -155,20 +155,6 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
-        <fullName>CUSB_Source_Deployment_Task__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <deprecated>false</deprecated>
-        <description>Source Deployment tasks from current Deployment Task was cloned.</description>
-        <externalId>false</externalId>
-        <label>CUSB Source Deployment Task</label>
-        <referenceTo>copado__Deployment_Task__c</referenceTo>
-        <relationshipLabel>Deployment Tasks</relationshipLabel>
-        <relationshipName>CUSB_Source_Deployment_Tasks</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>copado__Apply_to__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -242,7 +228,7 @@
                 <sorted>false</sorted>
                 <value>
                     <fullName>Before Deployment</fullName>
-                    <default>true</default>
+                    <default>false</default>
                     <label>Before Deployment</label>
                 </value>
                 <value>
@@ -338,11 +324,6 @@
                     <label>Bulk Data</label>
                 </value>
                 <value>
-                    <fullName>Data Template</fullName>
-                    <default>false</default>
-                    <label>Data Template</label>
-                </value>
-                <value>
                     <fullName>Delete MetaData</fullName>
                     <default>false</default>
                     <label>Delete MetaData</label>
@@ -361,6 +342,11 @@
                     <fullName>URL Callout</fullName>
                     <default>false</default>
                     <label>URL Callout</label>
+                </value>
+                <value>
+                    <fullName>Data Template</fullName>
+                    <default>false</default>
+                    <label>Data Template</label>
                 </value>
                 <value>
                     <fullName>Salesforce Flow</fullName>

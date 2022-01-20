@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>WON:SUM / CLOSED:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA3</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Win Rate % (COUNT)</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_81035294</developerName>
+        <masterLabel>Conversion</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>STAGE_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <value>Won</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <value>Lost</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_13151782</developerName>
+        <masterLabel>Deal Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>TYPE</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>New</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <value>Renewal</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_23370199</developerName>
+        <masterLabel>Lead Source Dept</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>LEAD_SOURCE</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>AppExchange</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Watch Demo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Drift</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trade Show</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Web</sourceValue>
+            </sourceValues>
+            <value>Marketing</value>
+        </values>
+        <values>
+            <value>Partnerships</value>
+        </values>
+        <values>
+            <value>Direct</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_43688496</developerName>
+        <masterLabel>Region</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>FULL_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <value>EMEA</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_5521936</developerName>
+        <masterLabel>Sales Team</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>FULL_NAME</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Martin Ryder</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matthew Maiuri</sourceValue>
+            </sourceValues>
+            <value>Summit</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <value>Select</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <value>EUR</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA3</column>
+        </chartSummaries>
+        <chartSummaries>
+            <axisBinding>y2</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>VerticalColumnGroupedLine</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_43688496</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>FISCAL_QUARTER</secondaryGroupingColumn>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Quarterly Win Rate with Record Count</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <colorRanges>
+        <aggregate>Average</aggregate>
+        <columnName>AGE</columnName>
+        <highBreakpoint>100.0</highBreakpoint>
+        <highColor>#FFFFFF</highColor>
+        <lowBreakpoint>1.0</lowBreakpoint>
+        <lowColor>#FFFFFF</lowColor>
+        <midColor>#95FFAF</midColor>
+    </colorRanges>
+    <columns>
+        <field>BucketField_23370199</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>LEAD_SOURCE</field>
+    </columns>
+    <columns>
+        <field>FORECAST_CATEGORY</field>
+    </columns>
+    <columns>
+        <field>Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Account.ebsta1__Ebsta_Score__c</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>WON</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>(AGE / (261-12-23))*100</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Age / 226 as %</label>
+        <scale>0</scale>
+    </customDetailFormulas>
+    <description>Manager Level DB | What are the conditions for action?</description>
+    <filter>
+        <criteriaItems>
+            <column>FULL_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Steve Harris,Juan Pablo Heitz,Marcel Assaraf,Matt Hill,Jeff Shemano,Matthew Maiuri,Patrick Boyle,Todd Shelton,Zachary Bayer,Paul Litterer,Gabriel Deupree,Russell Lott,Andrew Kline,Dan McDevitt,Brad Benz,Harrison Genson,Matt Sterner,Caitlin Ursini,Kris Jacobs,Maci Hansen,LeRoy Brown</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer,Add-on,New Business Add-on</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <formattingRules>
+        <aggregate>Average</aggregate>
+        <columnName>AGE</columnName>
+        <values>
+            <rangeUpperBound>1.0</rangeUpperBound>
+        </values>
+        <values>
+            <backgroundColor>#95FFAF</backgroundColor>
+            <rangeUpperBound>100.0</rangeUpperBound>
+        </values>
+    </formattingRules>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>FISCAL_QUARTER</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_81035294</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_43688496</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FULL_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CFY: Conversions AMER + EMEA v2</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closed</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

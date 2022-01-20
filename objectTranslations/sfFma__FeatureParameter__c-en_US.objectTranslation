@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Data Flow Direction --></label>
+        <name>sfFma__DataFlowDirection__c</name>
+        <picklistValues>
+            <masterLabel>LMO to Subscriber</masterLabel>
+            <translation><!-- LMO to Subscriber --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Provisioned</masterLabel>
+            <translation><!-- Provisioned --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Subscriber to LMO</masterLabel>
+            <translation><!-- Subscriber to LMO --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Data Type --></label>
+        <name>sfFma__DataType__c</name>
+        <picklistValues>
+            <masterLabel>Boolean</masterLabel>
+            <translation><!-- Boolean --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Date</masterLabel>
+            <translation><!-- Date --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Integer</masterLabel>
+            <translation><!-- Integer --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Full Name --></label>
+        <name>sfFma__FullName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Introduced in Package Version --></label>
+        <name>sfFma__IntroducedInPackageVersion__c</name>
+    </fields>
+    <fields>
+        <label><!-- Namespace Prefix --></label>
+        <name>sfFma__Namespace_Prefix__c</name>
+    </fields>
+    <fields>
+        <label><!-- Package --></label>
+        <name>sfFma__Package__c</name>
+        <relationshipLabel><!-- Feature Parameters --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Feature Parameter Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- This value is set by the installed package and cannot be changed. Click undo or cancel to continue. --></errorMessage>
+        <name>sfFma__DataFlowDirectionUpdatePrevention</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This value is set by the installed package and cannot be changed. Click undo or cancel to continue. --></errorMessage>
+        <name>sfFma__DataTypeUpdatePrevention</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This value is set by the installed package and cannot be changed. Click undo or cancel to continue. --></errorMessage>
+        <name>sfFma__FullNameUpdatePrevention</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Full Name must be in the format of &lt;namespace&gt;__&lt;developer name&gt; --></errorMessage>
+        <name>sfFma__XSS_Prevention_FullName</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Namespace prefix must only contain alpha numeric characters and/or underscores. --></errorMessage>
+        <name>sfFma__XSS_Prevention_Namespace</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Version number strings must be in the format of &lt;major version&gt;.&lt;minor version&gt; --></errorMessage>
+        <name>sfFma__XSS_Prevention_Version</name>
+    </validationRules>
+</CustomObjectTranslation>

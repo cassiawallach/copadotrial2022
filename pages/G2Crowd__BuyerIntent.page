@@ -1,0 +1,31 @@
+<apex:page sidebar="false" showHeader="true" standardStylesheets="false">
+  <apex:includeLightning />
+
+  <div id="reviewAttribution"></div>
+
+  <c:Segment seg_pageName="Buyer Intent"></c:Segment>
+
+  <div class="slds-scope">
+    <apex:form >
+      <div id="spinner" class="slds-spinner_container slds-is-fixed">
+        <div role="status" class="slds-spinner slds-spinner--large slds-spinner--brand">
+          <div class="slds-spinner__dot-a"></div>
+          <div class="slds-spinner__dot-b"></div>
+        </div>
+      </div>
+    </apex:form>
+  </div>
+
+  <script>
+    $Lightning.use("G2Crowd:BuyerIntentApp", function () {
+      $Lightning.createComponent("G2Crowd:buyerIntent",
+        { seg_analytics: window.analytics, seg_companyName: '{!$Organization.Name}' },
+        "reviewAttribution",
+        function (cmp) {
+          setTimeout(function () {
+            document.getElementById('spinner').className += ' slds-hide'
+          }, 3000);
+        });
+    });
+  </script>
+</apex:page>

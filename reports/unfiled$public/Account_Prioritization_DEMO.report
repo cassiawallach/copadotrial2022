@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_93654495</developerName>
+        <masterLabel>Ebsta Band</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Account.ebsta1__Ebsta_Score__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>0</to>
+            </sourceValues>
+            <value>0</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>0</from>
+                <to>20</to>
+            </sourceValues>
+            <value>1-20</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>20</from>
+                <to>50</to>
+            </sourceValues>
+            <value>21-50</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>50</from>
+                <to>70</to>
+            </sourceValues>
+            <value>51-70</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>70</from>
+            </sourceValues>
+            <value>71+</value>
+        </values>
+    </buckets>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Salesforce_AOV__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Copado_AOV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.ebsta1__Ebsta_Score__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.All_Opportunities_are_Lost__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Active_Opportunity__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Within_AOV_Band__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>USERS.NAME</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(
+    TEXT(Account.Status__c)=&quot;Customer&quot;,3,1)
+
++
+
+IF(
+    Account.Salesforce_AOV__c&gt;=5000000,3,1)
+
++
+
+IF(
+    Account.ebsta1__Ebsta_Score__c&gt;=20,3,1)
++
+
+IF(
+(IF(Account.Salesforce_AOV__c&lt;1,Account.Copado_AOV__c.CONVERT/(75000),Account.Copado_AOV__c.CONVERT/(Account.Salesforce_AOV__c*(6/100))))&gt;(15/100),3,1)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Account Ranking</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Cannot use Boolean Checkboxes in Criteria</description>
+    <filter>
+        <criteriaItems>
+            <column>USERS.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Russel</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>TYPE</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <aggregateType>Sum</aggregateType>
+        <dateGranularity>Day</dateGranularity>
+        <field>ACCOUNT.NAME</field>
+        <sortByName>CDF1</sortByName>
+        <sortOrder>Desc</sortOrder>
+        <sortType>Aggregate</sortType>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_93654495</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Account Prioritization DEMO</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>AccountList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn>CDF1</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

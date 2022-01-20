@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>AccountTrends</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>AccountTrends</fullName>
+        <fields>CustomAccountTrendCopadoApoAccount__c</fields>
+        <fields>CustomAccountTrendDate__c</fields>
+        <fields>CustomAccountTrendSalesforceMidpoint__c</fields>
+        <fields>CustomAccountTrendEbstaScore__c</fields>
+        <fields>Name</fields>
+        <label>Account Trends</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Custom Object for mass inserting or creating account trend data</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>CustomAccountTrendCopadoApoAccount__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Links the trend record to a Copado APO Account. Filters out ClickDeploy Accounts.
+Read only at the Field Level, but not the page layout. Access granted by permission set.</description>
+        <externalId>false</externalId>
+        <label>Copado APO Account</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Account.Type</field>
+                <operation>notContain</operation>
+                <value>Click</value>
+            </filterItems>
+            <infoMessage>For Salesforce Midpoint trends, don&apos;t use ClickDeploy Accounts.</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Custom_Account_Trends</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CustomAccountTrendDate__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <description>Date the value occurred. 
+Read only at the Field Level, but not the page layout. Access granted by permission set.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the value occurred. Default value is TODAY.</inlineHelpText>
+        <label>Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>CustomAccountTrendEbstaScore__c</fullName>
+        <description>The account ebsta score at a certain point in time. Read only at the Field Level, but not the page layout. Access granted by permission set.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Snapshot of the Account Ebsta Score.</inlineHelpText>
+        <label>Account Ebsta Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CustomAccountTrendMatchedAccount__c</fullName>
+        <description>Salesforce AOV Account matched to the related Copado APO Account. Some may be fuzzy duplicates with a Salesforce Midpoint that is &lt;= to the related Account&apos;s Salesforce Midpoint.
+Read only at the Field Level, but not the page layout. Access granted by permission set.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Salesforce AOV Account matched to the related Copado APO Account.</inlineHelpText>
+        <label>Matched Salesforce AOV Account</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>CustomAccountTrendSalesforceMidpoint__c</fullName>
+        <description>The midpoint of the Salesforce AOV Band for a particular date.
+Read only at the Field Level, but not the page layout. Access granted by permission set.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The midpoint of the Salesforce AOV Band for a particular date.</inlineHelpText>
+        <label>Salesforce Midpoint</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <description>Description of the trend, if needed.
+Read only at the Field Level, but not the page layout. Access granted by permission set.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Description of the trend, if needed.</inlineHelpText>
+        <label>Description</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Salesforce_AE__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Salesforce AE</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Account Trends</relationshipLabel>
+        <relationshipName>Account_Trends</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Salesforce_CSM__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Salesforce CSM</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Account Trends (Salesforce CSM)</relationshipLabel>
+        <relationshipName>Account_Trends2</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Salesforce_RVP__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Salesforce RVP</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Account Trends (Salesforce RVP)</relationshipLabel>
+        <relationshipName>Account_Trends1</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Account Trend</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>Account Trend -{000}</displayFormat>
+        <label>Account Trend Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Account Trends</pluralLabel>
+    <searchLayouts>
+        <searchResultsAdditionalFields>CustomAccountTrendCopadoApoAccount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CustomAccountTrendDate__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CustomAccountTrendSalesforceMidpoint__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CustomAccountTrendEbstaScore__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,31 @@
+<aura:component
+  controller="cps_PlaygroundWizardController"
+  implements="forceCommunity:availableForAllPageTypes"
+>
+  <aura:attribute name="playground" type="Object" access="public" />
+  <aura:attribute name="currentStage" type="String" default="Start" />
+  <aura:registerEvent name="stepChange" type="c:cps_wizard_stepChange" />
+  <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+  <aura:handler event="c:cps_wizard_stepChange" action="{! c.handleStepChange }" />
+
+  <div class="cCps_wizard">
+    <c:cps_wizard_stepIndicator currentStage="{! v.currentStage }" />
+
+    <aura:if isTrue="{! v.currentStage == 'CreateTrialOrg' }">
+      <c:cps_wizard_createOrg playground="{! v.playground }" />
+    </aura:if>
+    <aura:if isTrue="{! v.currentStage == 'Connect' }">
+      <c:cps_wizard_connect playground="{! v.playground }" />
+    </aura:if>
+    <aura:if isTrue="{! v.currentStage == 'PostInstallScript' }">
+      <c:cps_wizard_install playground="{! v.playground }" stage="{!v.currentStage}"/>
+    </aura:if>
+    <aura:if isTrue="{! v.currentStage == 'Setup' }">
+      <c:cps_wizard_setup playground="{! v.playground }"  stage="{!v.currentStage}"/>
+    </aura:if>
+    <aura:if isTrue="{! v.currentStage == 'Review' }">
+      <c:cps_wizard_finish playground="{! v.playground }" />
+    </aura:if>
+    <c:cps_c1p_NotificationComponent />
+  </div>
+</aura:component>

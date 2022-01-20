@@ -1,0 +1,5 @@
+<messaging:emailTemplate subject="Mission Control: New Action Notification" recipientType="User" relatedToType="amc__Role__c">
+    <messaging:htmlEmailBody >
+        <c:NewActionNotification roleKey="{!relatedTo.Id}"/>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

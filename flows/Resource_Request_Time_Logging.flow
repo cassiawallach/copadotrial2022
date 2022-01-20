@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Case Relationship Exists/Minutes are provided</label>
+        </rules>
+    </decisions>
+    <description>This process will populate the duration of each request from the Meeting Records</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF(
+[Demo__c].Case__r.Hours_Actual__c=0,
+([Demo__c].Minutes__c/60),
+[Demo__c].Case__r.Hours_Actual__c)
++
+IF
+(AND([Demo__c].Minutes__c=PRIORVALUE([Demo__c].Minutes__c),[Demo__c].Case__r.Hours_Actual__c!=0),([Demo__c].Minutes__c/60),
+(([Demo__c].Minutes__c-PRIORVALUE([Demo__c].Minutes__c))/60))
+
+
+</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_2_myRule_1_A1_2649827935</name>
+        <dataType>Number</dataType>
+        <expression>IF(
+{!myVariable_current.Case__r.Hours_Actual__c}=0,
+({!myVariable_current.Minutes__c}/60),
+{!myVariable_current.Case__r.Hours_Actual__c})
++
+IF
+(AND({!myVariable_current.Minutes__c}=PRIORVALUE({!myVariable_current.Minutes__c}),{!myVariable_current.Case__r.Hours_Actual__c}!=0),({!myVariable_current.Minutes__c}/60),
+(({!myVariable_current.Minutes__c}-PRIORVALUE({!myVariable_current.Minutes__c}))/60))</expression>
+        <scale>18</scale>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>OR(
+AND(
+ISNEW(),
+NOT(ISNULL([Demo__c].Minutes__c)),
+NOT(ISNULL([Demo__c].Case__c)) ,
+ISPICKVAL([Demo__c].Type__c ,&quot;Time Logging&quot;)),
+AND(
+ISCHANGED([Demo__c].Minutes__c ),
+NOT(ISNULL([Demo__c].Case__c)) ,
+ISPICKVAL([Demo__c].Type__c ,&quot;Time Logging&quot;)
+) 
+)
+</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>OR(
+AND(
+ISNEW(),
+NOT(ISNULL({!myVariable_current.Minutes__c})),
+NOT(ISNULL({!myVariable_current.Case__c})) ,
+ISPICKVAL({!myVariable_current.Type__c} ,&quot;Time Logging&quot;)),
+AND(
+ISCHANGED({!myVariable_current.Minutes__c} ),
+NOT(ISNULL({!myVariable_current.Case__c})) ,
+ISPICKVAL({!myVariable_current.Type__c} ,&quot;Time Logging&quot;)
+) 
+)</expression>
+    </formulas>
+    <interviewLabel>Resource_Request_Time_Logging-25_InterviewLabel</interviewLabel>
+    <label>Resource Request Time Logging (Meeting)</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Demo__c</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Demo__c].Case</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Update related Case</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Case__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Number</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Hours Actual</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Hours_Actual__c</field>
+            <value>
+                <elementReference>formula_2_myRule_1_A1_2649827935</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Demo__c</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Demo__c</objectType>
+    </variables>
+</Flow>

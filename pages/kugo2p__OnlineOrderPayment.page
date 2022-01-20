@@ -1,0 +1,294 @@
+<apex:page standardController="kugo2p__PaymentX__c" extensions="kugo2p.OnlineOrderPaymentExt" action="{!initController}" showHeader="false" sidebar="false" standardStylesheets="false" cache="false">
+<apex:stylesheet value="{!$Resource.kugo2p__PdfCss}" />
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<style>
+    #body{
+        padding-bottom:30px;
+    }
+    #amount{
+        font-size:16px;
+        font-weight: bold;
+    }
+    #title{
+        padding-top: 20px;
+        padding-bottom: 25px;
+        font-weight: bold;
+        font-size: large;
+    }
+    #subtitle{
+        font-weight:bold;
+        font-size:larger;
+        padding-top: 20px;
+        padding-bottom: 25px;
+    }
+    .pageMessage {
+        width:80%;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    .boldText {
+        font-weight: bold;
+    }
+    #miniBox {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+        -moz-background-origin:padding;
+        -moz-border-radius-bottomleft:5px;
+        -moz-border-radius-bottomright:5px;
+        -moz-border-radius-topleft:5px;
+        -moz-border-radius-topright:5px;
+        
+        
+        -webkit-border-bottom-left-radius:5px;
+        -webkit-border-bottom-right-radius:5px;
+        -webkit-border-top-left-radius:5px;
+        -webkit-border-top-right-radius:5px;
+    background: #EBF2FB;
+    width:670px;
+    position:relative;
+    padding-left:10px;
+    padding-right: 0px;
+    padding-top:10px;
+    padding-bottom:20px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+</style>
+
+<c:Alert title="This Payment Link is Invalid. Please Request a New Payment Link." theme="error" icon="ban" striped="true" styleClass="icon-text-email slds-m-right--x-small" rendered="{!recordStatus == 'Cancelled'}" />
+
+<apex:outputPanel rendered="{!recordStatus != 'Cancelled'}" >
+<apex:composition template="{!$Site.Template}" >
+
+<apex:define name="body">
+
+<div class="pageMessage">
+<apex:outputPanel id="pageMessage" >        
+<apex:pageMessages id="msg" />
+<script>
+    //debugger;
+    if ('{!hasError}' == 'true') {
+        paymentSubmitted = false;
+    }
+</script>
+</apex:outputPanel>
+</div>
+<apex:outputPanel layout="block"> <!--rendered="{!NOT(hasError)}"-->
+    <div id="body">
+         <div id="title">
+             <h0>Checkout</h0> <br/><br/>
+        </div>
+       <div id="amount">
+             <font color="#000080">Payment Amount: &nbsp;
+             <!-- 
+             <apex:outputText value="{0, number, $###,##0.00}" >
+                <apex:param value="{!paymentAmount}" />
+             </apex:outputText>
+             -->
+            <apex:outputField value="{!payment.kugo2p__Amount__c}" rendered="{!(!isMultiCurrencyEnabled)}"/>
+            <apex:outputText value="{!ISOCurrencyCode}{0, number, ###,##0.00}" rendered="{!(isMultiCurrencyEnabled)}">
+                <apex:param value="{!payment.kugo2p__Amount__c}" />
+            </apex:outputText>
+             </font>
+        </div>
+        <br/>
+        <div class="hr"><hr /></div>        
+
+        <hr/>
+
+        <!--<br/><br/>
+        <div id="approvedBy"> Order Approved by: <br/>
+           ..., on {!MONTH(TODAY())}/{!DAY(TODAY())}/{!YEAR(TODAY())}
+        </div> -->
+        <div id="subtitle">Billing Information</div>
+        
+        <script type='text/javascript'>
+            var paymentSubmitted = false;
+        </script>
+       
+        <apex:form >
+            <apex:actionFunction name="afSubmitPayment" action="{!submitPayment}" rerender="buttons,form,pageMessage" status="status" />
+            <apex:actionFunction name="afBack" action="{!back}" rerender="buttons,form" status="status" />
+            <apex:actionFunction name="afCancel" action="{!cancel}" rerender="buttons,form" status="status" />
+
+            <apex:outputPanel id="form">
+            <table border="0">
+                <tr>
+                    <td width="270px"><apex:outputLabel for="firstname" value="First Name" /></td>
+                    <td>
+                        <apex:inputText id="firstname" value="{!firstname}" rendered="{!(paymentStage=='prepare')}" />
+                        <apex:outputText value="{!firstname}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="lastname" value="Last Name" /></td>
+                    <td>
+                        <apex:inputText id="lastname" value="{!lastname}" rendered="{!(paymentStage=='prepare')}" />
+                        <apex:outputText value="{!lastname}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="address" value="Address" /></td>
+                    <td>
+                    <apex:inputText id="address" value="{!billingStreet}" rendered="{!(paymentStage=='prepare')}" />
+                    <apex:outputText value="{!billingStreet}" rendered="{!(paymentStage=='submit')}" />
+                </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="city" value="City" /></td>
+                    <td>
+                        <apex:inputText id="city" value="{!billingCity}" rendered="{!(paymentStage=='prepare')}" />
+                        <apex:outputText value="{!billingCity}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="state" value="State/Province" /></td>
+                    <td>
+                        <apex:inputText id="state" value="{!billingState}" rendered="{!(paymentStage=='prepare')}" />
+                        <apex:outputText value="{!billingState}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="postalcode" value="Zip/Postal Code" /></td>
+                    <td>
+                        <apex:inputText id="postalcode" value="{!billingPostalCode}" rendered="{!(paymentStage=='prepare')}" />
+                        <apex:outputText value="{!billingPostalCode}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="country" value="Country" /></td>
+                    <td>
+                        <apex:inputText id="Country" value="{!billingCountry}" rendered="{!(paymentStage=='prepare')}" />
+                        <apex:outputText value="{!billingCountry}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr> <td> &nbsp; </td> </tr>
+            </table>
+            
+            <div id="miniBox">
+            <table border="0">
+                <tr><td colspan="2"></td></tr>
+                <tr>
+                    <td width="260px"><apex:outputLabel for="cardType" value="Card Type" styleClass="boldText"/></td>
+                    <td>
+                        <apex:selectList id="cardType" value="{!cardType}" size="1" rendered="{!(paymentStage=='prepare')}">
+                            <apex:selectOptions value="{!cardTypes}" />
+                        </apex:selectList>
+                        <apex:outputText value="{!cardType}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="cardNumber" value="Credit Card Number" styleClass="boldText"/></td>
+                    <td>
+                        <apex:inputText id="cardNumber" value="{!cardNumber}" maxlength="16" rendered="{!(paymentStage=='prepare')}" onkeypress="return numberOnly(event);"/>
+                        <apex:outputText value="{!cardNumber}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="cardCvv" value="Security Code" styleClass="boldText"/></td>
+                    <td>
+                        <apex:inputText id="cardCvv" value="{!cardCvv}" maxlength="4" size="4" rendered="{!(paymentStage=='prepare')}" onkeypress="return numberOnly(event);"/>
+                        <apex:variable var="cvvHelpText" value="Card Verification Value is an additional security value printed on the physical credit card.<br/><br/> 
+                                                                Visa, MasterCard, Discover: a 3-digit number shown on the back of the card.<br/><br/>
+                                                                American Express: a 4-digit number printed on the front fo the card." /> 
+                        <c:Tooltip uniqueId="cardCvv" helpText="{!cvvHelpText}" qTipStyleClass="qtip-dark qtip-rounded qtip-shadow" loadJQuery="true" rendered="{!(paymentStage=='prepare')}" />
+
+                        <apex:outputText value="{!cardCvv}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputLabel for="cardExpMonth" value="Card Expiration" styleClass="boldText"/></td>
+                    <td>
+                        <apex:selectList id="cardExpMonth" value="{!cardExpMonth}" size="1" rendered="{!(paymentStage=='prepare')}">
+                            <apex:selectOptions value="{!expMonths}" />
+                        </apex:selectList>
+                        <apex:selectList id="cardExpYear" value="{!cardExpYear}" size="1" rendered="{!(paymentStage=='prepare')}">
+                            <apex:selectOptions value="{!expYears}" />
+                        </apex:selectList>
+                        <apex:outputText value="{!cardExpMonth}" rendered="{!(paymentStage=='submit')}" /><apex:outputText value="/" rendered="{!(paymentStage=='submit')}" /><apex:outputText value="{!cardExpYear}" rendered="{!(paymentStage=='submit')}" />
+                    </td>
+                </tr>
+            </table>
+            </div>
+
+            <apex:outputPanel rendered="{!NOT(ISBLANK(settings.kugo2p__CheckoutTermsConditions__c))}">  <!-- terminalSettings.kugo2p__SavePaymentMethodfromCheckout__c && -->
+                <br/>
+                <apex:outputField value="{!settings.kugo2p__CheckoutTermsConditions__c}" />
+            </apex:outputPanel>
+
+            <table>
+                <tr> <td> &nbsp; </td> <td> &nbsp; </td></tr>
+                <tr>
+                    <td >   <!-- colspan="2" -->
+                        <!-- <br/> -->
+                        <apex:outputPanel id="buttons" >
+                        <apex:commandLink value="Review Transaction" action="{!preparePayment}" rerender="buttons,form,pageMessage" rendered="{!(paymentStage=='prepare')}" status="status" style="text-decoration:none;" styleClass="stdAction" />&nbsp;
+                        <apex:outputPanel rendered="{!(paymentStage=='submit')}" >
+                            <apex:commandLink value="Back" onclick="if (paymentSubmitted == false) {back(this);} return false;" rendered="{!(paymentStage=='submit')}" status="status" rerender="buttons,form" style="text-decoration:none;" styleClass="cancel" />&nbsp;
+                            <apex:commandLink value="Submit Payment" onclick="if (paymentSubmitted == false) {submitPayment(this);} return false;" rendered="{!(paymentStage=='submit')}" status="status" style="text-decoration:none;" styleClass="pay" />&nbsp;&nbsp;
+                        </apex:outputPanel>
+                        <apex:commandLink value="Cancel" onclick="if (paymentSubmitted == false) {cancel(this);} return false;" style="text-decoration:none;" styleClass="cancel" />&nbsp;
+
+                        <apex:actionStatus id="status">
+                            <apex:facet name="start"><apex:image value="{!$Resource.kugo2p__spinner}" width="16" height="16" alt="waiting" /></apex:facet>
+                        </apex:actionStatus>
+                     </apex:outputPanel>
+                    </td>
+
+                    <td align="right">
+                        <apex:outputLink value="http://link.kugamon.com/o2p-appex" target="_blank" >
+                            <!-- <apex:image value="https://kugamon.secure.force.com/resource/1377552111000/KugamonSecurePayments" height="40px" style="float:right;"/> 
+                            <apex:image value="https://kugamon.secure.force.com/resource/1532628643000/KugamonSecurePayments" height="40px" style="float:right;"/>-->
+                            <apex:image url="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/kugamonSecurePayments.png')}" width="100px" style="float:right;" />
+                        </apex:outputLink>
+                    </td>
+                </tr>
+            </table>
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+</apex:outputPanel>
+</apex:define>
+</apex:composition>
+</apex:outputPanel>
+
+<script type='text/javascript'>
+
+    function submitPayment(ele) {
+        //debugger;
+        if (paymentSubmitted == false) {
+            paymentSubmitted = true;
+            ele.disabled = true;
+            afSubmitPayment();
+        }
+    }
+
+    function back(ele) {
+        //debugger;
+        if (paymentSubmitted == false) {
+            ele.disabled = true;
+            afBack();
+        }
+    }
+
+    function cancel(ele) {
+        //debugger;
+        if (paymentSubmitted == false) {
+            paymentSubmitted = true;
+            ele.disabled = true;
+            afCancel();
+        }
+    }
+
+    function numberOnly(event) {
+        var key = event ? event.which : window.event.keyCode;
+        console.log('key: ' + key);
+        //if (String.fromCharCode(key).match(/[^0-9]/g)) return false;
+
+        // 0 = left/right keys, 8 = delete/back key, 118 = paste key, 120 = cut key, 122 = undo key, 90 = redo key to over an issue in FireFox
+        if (key != 0 && key != 8 && key != 118 && key != 120 && key != 122 && key != 90 && (key < 47 || key > 57)) return false;
+    }
+</script>
+</apex:page>

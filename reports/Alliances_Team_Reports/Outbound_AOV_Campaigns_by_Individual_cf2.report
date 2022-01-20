@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_91812110</developerName>
+        <masterLabel>Member Status Response</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>MEMBER_STATUS</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>No Contact</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>0-Added</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>1-Added</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Added</sourceValue>
+            </sourceValues>
+            <value>1) No Contact</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>1st Touch</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>2nd Touch</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>3rd Touch</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>5th Touch</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>4th Touch</sourceValue>
+            </sourceValues>
+            <value>2) Contacting</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Non Responsive</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>No Response</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Not interested</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>No Show</sourceValue>
+            </sourceValues>
+            <value>3) No Response</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Responded</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>1st Touch - LinkedIn Connect</sourceValue>
+            </sourceValues>
+            <value>4) Responded</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Meeting Set - Advance to Contact Record</sourceValue>
+            </sourceValues>
+            <value>5) Meeting Set</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>3-Sent Pizza</sourceValue>
+            </sourceValues>
+            <value>6) Pizza Sent</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>HorizontalBar</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_91812110</groupingColumn>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>COMPANY</field>
+    </columns>
+    <columns>
+        <field>FIRST_NAME</field>
+    </columns>
+    <columns>
+        <field>LAST_NAME</field>
+    </columns>
+    <columns>
+        <field>TITLE</field>
+    </columns>
+    <columns>
+        <field>MEMBER_STATUS</field>
+    </columns>
+    <columns>
+        <field>PHONE</field>
+    </columns>
+    <columns>
+        <field>MEMBER_TYPE</field>
+    </columns>
+    <columns>
+        <field>MEMBER_ID</field>
+    </columns>
+    <columns>
+        <field>MEMBER_CREATED_DATE</field>
+    </columns>
+    <columns>
+        <field>MEMBER_LAST_UPDATE</field>
+    </columns>
+    <columns>
+        <field>MEMBER_FIRST_RESPONDED_DATE</field>
+    </columns>
+    <columns>
+        <field>HAS_RESPONDED</field>
+    </columns>
+    <columns>
+        <field>SALUTATION</field>
+    </columns>
+    <columns>
+        <field>EMAIL</field>
+    </columns>
+    <columns>
+        <field>STREET</field>
+    </columns>
+    <columns>
+        <field>OWNER</field>
+    </columns>
+    <columns>
+        <field>STREET_LINE1</field>
+    </columns>
+    <columns>
+        <field>STREET_LINE2</field>
+    </columns>
+    <columns>
+        <field>STREET_LINE3</field>
+    </columns>
+    <columns>
+        <field>CITY</field>
+    </columns>
+    <columns>
+        <field>STATE</field>
+    </columns>
+    <columns>
+        <field>ZIP</field>
+    </columns>
+    <columns>
+        <field>COUNTRY</field>
+    </columns>
+    <currency>USD</currency>
+    <description>List all Outbound AOV campaigns and campaign members.</description>
+    <filter>
+        <criteriaItems>
+            <column>CAMPAIGN_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Outbound AOV</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>LC_OWNER</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_91812110</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Outbound AOV Campaigns by Individual</name>
+    <params>
+        <name>scopeid</name>
+        <value></value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CampaignWithCampaignMembers</reportType>
+    <scope>orgActive</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+</Report>

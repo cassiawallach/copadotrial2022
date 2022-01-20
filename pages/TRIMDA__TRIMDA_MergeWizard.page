@@ -1,0 +1,459 @@
+<apex:page id="DataTrimMergeWizard" standardController="TRIMDA__TRIMDA_MatchingResult__c" extensions="TRIMDA.TRIMDA_MergeWizard_Controller"  sidebar="false"  docType="html-5.0">
+<!--TRIMDA_MergeWizard-->
+    
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+
+<title>DataTrim Merge Wizard</title>
+<style>.bRelatedList{overflow-x:auto;}</style>
+<style>
+    .dt_pbs{
+        border-radius: 0.25rem 0.25rem 0 0;
+	}
+    .mergecontainer{
+        background-color: rgba(155, 177, 217, 0.33);
+    }
+    .mitem_empty{
+    	color:grey;
+    }
+    .ies_changed{
+    	font-style:italic;
+    }
+    .mitem_selected{
+    	<!--background-color:#c5c5c54a;-->
+    	background-color:#5555554a;
+    }
+    .samevalue{
+    //display:none;
+    }
+    .trimdmr_header{
+        width:100%;
+        border-radius: 0.25rem 0.25rem 0 0;
+        background-color:#9bb1d9;
+        background: linear-gradient(#9bb1d9,#ddecf9);  
+        padding:0.5rem;
+    }
+    .slds-scope .slds-brand-band:before{
+        z-index:0;
+     }
+    
+</style>
+
+<script>
+    function navigateBack(Theme, inline, isSuccess){
+        //alert(Theme);
+        //alert(inline);
+        //alert(isSuccess);
+        //var isSuccess = '{!success}';
+        if (inline == '0' && isSuccess == 'true'){
+            if (Theme == 'Theme4d'){
+                sforce.one.back(true);
+        	}else{
+                window.history.back();
+            }
+        }
+  }  
+
+   
+    function toggleSurvivor(inputId) { 
+        //find checkbox of dupe and set to the invese value
+        //var myId = inputId;
+        var ElemId = inputId.replace("SelSurv", "SelDupe");
+        var x = document.getElementById(ElemId);
+        x.checked = !x.checked;
+    } 
+    function toggleDupe(inputId) { 
+        //find checkbox of dupe and set to the invese value
+        //var myId = inputId;
+        var ElemId = inputId.replace("SelDupe", "SelSurv");
+        var x = document.getElementById(ElemId);
+        x.checked = !x.checked;  
+    } 
+    function SelectSurvivorasMaster(){
+        //alert('SelectSurvivorasMaster');
+        var x = document.getElementById('DataTrimMergeWizard:All:Header:Details:SelDupeasMaster');
+        x.checked = false;
+        rerenderMergeLines();
+    }
+    function SelectDupeasMaster(){
+        //alert('SelectDupeasMaster');
+        var x = document.getElementById('DataTrimMergeWizard:All:Header:Details:SelSurvasMaster');
+        x.checked = false;
+        rerenderMergeLines();
+    }
+    function SelectAllSurvivor(){
+        //alert('SelectAllSurvivor');
+        var x = document.getElementById('DataTrimMergeWizard:All:Header:Details:SelDupeasMaster');
+        x.checked = false;
+        var inputElem = document.getElementsByTagName("input");
+        for(var i=0; i<inputElem.length; i++)        {
+        	if(inputElem[i].id.indexOf("SelSurv")!=-1){inputElem[i].checked = true;}
+            if(inputElem[i].id.indexOf("SelDupe")!=-1){inputElem[i].checked = false;}
+        }
+        rerenderMergeLines();
+    }
+    function SelectAllDupe(){
+        //alert('SelectAllSDupe');
+        var x = document.getElementById('DataTrimMergeWizard:All:Header:Details:SelSurvasMaster');
+        x.checked = false;
+        var inputElem = document.getElementsByTagName("input");
+        for(var i=0; i<inputElem.length; i++)        {
+        	if(inputElem[i].id.indexOf("SelDupe")!=-1){inputElem[i].checked = true;}
+            if(inputElem[i].id.indexOf("SelSurv")!=-1){inputElem[i].checked = false;}
+        }
+        rerenderMergeLines();
+    }
+    function refreshMergeLines(){
+        //alert("rerenderMergeLines");
+        rerenderMergeLines();
+    }
+    function navigateBack(Theme, inline, isSuccess){
+        //alert(Theme);
+        //alert(inline);
+        //alert(isSuccess);
+        //var isSuccess = '{!success}';
+        //if (inline == '0' && isSuccess == 'true'){
+            if (Theme == 'Theme4d'){
+                sforce.one.back(true);
+        	}else{
+                window.history.back();
+            }
+        //}
+ 	 }  
+     function AfterSaveDupe(){
+        //alert('AfterSaveDupe');
+        var element = document.getElementById('DataTrimMergeWizard:All:Header:Details:saveDupe');
+    	element.style.display='none';
+        element = document.getElementById('DataTrimMergeWizard:All:Header:Details:cancelDupe');
+    	element.style.display='none';
+    }
+    function AfterSaveSurv(){
+        //alert('AfterSaveSurv');
+        var element = document.getElementById('DataTrimMergeWizard:All:Header:Details:saveSurv');
+    	element.style.display='none';
+        element = document.getElementById('DataTrimMergeWizard:All:Header:Details:cancelSurv');
+    	element.style.display='none';
+    }
+   
+    
+	function hideEmpty(element){
+        //alert('hideEmpty: ' + element.id);
+        var emptyElem = document.getElementById(element.id);
+        emptyElem.style.display='none';
+    }
+    </script>    
+<apex:slds /> 
+<apex:variable value="{!OR($User.UIThemeDisplayed == 'Theme4d',CONTAINS($CurrentPage.URL, 'Theme4d'))}" var="isLightningMode"/>   
+<apex:variable value="{!CONTAINS($CurrentPage.URL, 'debug=1')}" var="debugmode"/>    
+<div class="slds-scope" style="{!IF(isLightningMode,'background-color:#b2c5e0;','')}">    
+<div class="{!IF(isLightningMode,'slds-brand-band slds-brand-band_large','')}" >
+    <div  style="{!IF(isLightningMode,'z-index:1;','')}">
+   
+<apex:form id="All" >
+<apex:actionFunction name="rerenderMergeLines" rerender="MergeLines" />   
+    
+<!--HEADER - NOT INLINE -->
+    <apex:outputPanel rendered="{!inlineMW == '0'}" >
+        <div class="slds-col slds-size--1-of-1 trimdmr_header" >
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'MatchedRecords48x40_NL.png')}" style="height:2.5rem;" title="DataTrim Matched Records" />
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-heading--label" style="color:black;">DataTrim</p>
+                        <div class="slds-grid">
+                            <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Merge Wizard"><strong>Merge Wizard</strong></h1>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </apex:outputPanel>
+    
+    <div class="slds-grid slds-wrap"> 
+        <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;">
+              <apex:pageblock id="Header" >
+                <apex:facet name="header" >
+ <!-- HEADER INLINE -->     
+                   <apex:panelGroup rendered="{!inlineMW != '0'}">
+                        <div class="slds-grid pbSubheader first tertiaryPalette dt_pbs" style="border:1px;padding:0.5rem;padding-left:0.8rem;font-size:1.3rem;text-align:left;">
+                                 &nbsp;Merge Wizard&nbsp;
+                        </div>
+                      </apex:panelGroup>
+                </apex:facet>  
+<!--REVIEW ONLY-->   
+               <apex:panelGroup id="ReviewOnlySection" rendered="{!reviewMW='1'}">
+                   <apex:panelGroup >
+                     <div class="slds-grid slds-wrap" style="margin-top:-0.5rem;">
+                        <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;">
+                            <apex:panelGroup >                  
+                                <div class=" mergecontainer"  style="margin-top:-0.25rem;">
+                                    <div class="slds-grid slds-wrap" style="padding:0.5rem;"> 
+                                        <div class="slds-col slds-size--2-of-12 " style="font-size:1.1rem;text-align:center;vertical-align:middle;">
+                                             Provide Feedback&nbsp;
+                                         </div>
+                                        <div class="slds-col slds-size--2-of-12 " style="font-size:0.8rem;text-align:left;">
+                                            <div  style="font-size:0.75rem;text-align:left;line-height:0.75rem;" >Review Outcome:</div>
+                                            <apex:inputField value="{!MyMR.TRIMDA__Review_Outcome__c}" styleclass="slds-select"  />
+                                         </div>
+                                        <div class="slds-col slds-size--4-of-12 " style="font-size:0.8rem;text-align:center;">
+                                            <apex:inputField value="{!MyMR.TRIMDA__Review_Note__c}" styleclass="slds-textarea" html-placeholder="Review Notes" />
+                                         </div>
+                                        <div class="slds-col slds-size--1-of-12 " style="font-size:0.8rem;text-align:left;padding-top:0.5rem;">
+                                             <apex:commandButton action="{!SaveMe}"  styleclass="slds-button slds-button--brand slds-button--small" value="Submit" status="FeedbackStatus" reRender="All" />
+                                         </div>
+                                    </div>
+                                </div>
+                            </apex:panelGroup>
+                            </div>
+                        </div>
+                   </apex:panelGroup> 
+
+                   <apex:panelGroup id="thankyou" rendered="{!FeedbackSubmitted == true}">
+                    <div class="slds">
+                        <div class="mergecontainer"  style="margin-top:0.5rem;">
+                            <div class="slds-grid slds-wrap" style="padding:0.5rem;"> 
+                                <div class="slds-col slds-size--1-of-1 " >
+                                    <apex:pageMessages />
+                                </div>
+                                <div class="slds-col slds-size--1-of-1 " style="font-size:1.1rem;text-align:center;vertical-align:middle;">
+                                    Feedback Submitted: ({!MyMR.TRIMDA__Review_Outcome__c})
+                                </div>
+                                <div class="slds-col slds-size--1-of-1 " style="font-size:1rem;text-align:center;vertical-align:middle;">
+                                    Thank you for help keeping our data clean! &nbsp;<apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'thankyou.png')}" style="height:1.5rem;" title="Thank you!" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </apex:panelGroup>
+               </apex:panelGroup>
+ <!--TOP ACTION--> 
+                  <apex:outputPanel id="ActionSection" rendered="{!reviewMW='0'}" >                        
+                      <div style="">
+                          <div class="slds-grid slds-wrap"> 
+                              <div class="slds-col slds-size--2-of-12 " style="font-size:1.2rem;text-align:left;">
+                                 <span style="{!IF(ObjectType=='Con','display:normal','display:none')}">Merge {!$ObjectType.contact.labelPlural}</span>
+                                 <span style="{!IF(ObjectType=='Lead','display:normal','display:none')}">Merge {!$ObjectType.lead.labelPlural}</span>
+                               	 <span style="{!IF(ObjectType=='Acc','display:normal','display:none')}">Merge {!$ObjectType.account.labelPlural}</span>
+                                 <br />&nbsp;
+                              </div>
+
+                              <div class="slds-col slds-size--8-of-12 " style="font-size:0.8rem;text-align:center;">
+                                  <!--<a href="#" class="slds-button slds-button--brand slds-button--smal">Merge Keep Survivor</a>-->
+                                  <apex:commandButton action="{!DoMerge}" value="Merge"  disabled="{!NOT OK2Merge}" rerender="MWMessages, All"  status="ProgressStatus" title="Merge (test)" styleclass="slds-button slds-button--brand slds-button--small" />
+                                  <!--<apex:commandButton action="{!DoMerge}" value="Merge"  disabled="{!NOT OK2Merge}"  oncomplete="navigateBack('{!$User.UIThemeDisplayed}','{!inlineMW}', '{!success}');" rerender="MWMessages, All"  status="ProgressStatus" title="Merge" styleclass="slds-button slds-button--brand slds-button--small" />-->
+                                  <apex:commandButton action="{!FalseDupe}" value="False Dupe" disabled="{!NOT OK2Merge}" rerender="MWMessages, All" status="ProgressStatus" title="Flag the Matched Pair as False Dupes" styleclass="slds-button slds-button--brand slds-button--small" />
+                                  <!--<apex:commandlink action="{!DoNothing}" rerender="All" value="Refresh"  status="ProgressStatus" title="Refresh MergeLines" styleclass="slds-button slds-button--brand slds-button--small" />-->
+                              </div>
+                              <div class="slds-col slds-size--2-of-12 " style="font-size:0.8rem;text-align:center;">&nbsp;
+                                  <!--<a href="#" class="slds-button slds-button--brand slds-button--small" rendered="{!displaymode != 'inline'}">Cancel</a>-->
+                                  <!--<apex:commandButton action="{!retURL}" styleclass="slds-button slds-button--brand slds-button--small" value="Cancel" rendered="{!AND(inlineMW = '0',$User.UIThemeDisplayed !='Theme4d')}"/>-->
+                                  <a class="slds-button slds-button--brand slds-button--small"  href="{!retURL}" style="{!If(AND(inlineMW = '0',!isLightningMode),'','display:none')}" >Cancel</a>
+                                  <button class="slds-button slds-button_neutral"  onclick="javascript:sforce.one.back(true);" style="{!If(AND(inlineMW = '0',!isLightningMode),'','display:none')}">Back</button>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </apex:outputPanel>
+                  
+<!-- MESSAGES-->                   
+                   <div  class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;{!If(or(success == false,inlineMW == '1'),'','display:none')}">
+                    <apex:pageMessages id="MWMessages"/>
+                  </div>
+                  <div  class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;{!If(and(success == true,inlineMW == '0'),'','display:none')}">
+                  <!--<div  class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;">-->
+                         <div style="height: 24rem;">
+                          <section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
+                            <div class="slds-modal__container" style="height:320px" >
+                              <header class="slds-modal__header slds-theme_success slds-theme_alert-texture">
+                                 
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick="javascript:sforce.one.back(true);" title="Close">
+                                  <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close" />
+                                  </svg>
+                                  <span class="slds-assistive-text">Close</span>
+                                </button>
+                                
+                                <h2 class="slds-text-heading_medium" id="prompt-heading-id">
+                                    Merge Wizard
+                                  </h2>
+                              </header>
+                              <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+                                 <apex:pageMessages escape="false" id="messagesPrompt" />
+                                  <!--OK: {!retURL}-->
+                              </div>
+                              <footer class="slds-modal__footer slds-theme_default">
+                                <button class="slds-button slds-button_neutral"  onclick="javascript:sforce.one.back(true);" style="{!If(!isLightningMode,'display:none','')}">Back</button>
+                                <a class="slds-button slds-button--brand slds-button--small"  href="{!retURL}" style="{!If(AND(inlineMW = '0',!isLightningMode),'','display:none')}" >OK</a>  
+                              </footer>
+                            </div>
+                          </section>
+                          <div class="slds-backdrop slds-backdrop_open"></div>
+                        </div>
+                    
+                  </div>
+<!-- INSTRUCTIONS-->                  
+                  <div  class="slds-col slds-size--1-of-1 slds-item_detail slds-truncate" style="font-size:0.8rem;text-align:center;{!If(and(OK2Merge == true,reviewMW = '0'),'','display:none')}">
+                      <span class="">When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record.</span>
+                  </div>
+
+<!-- DETAILS-->  
+              <apex:panelGroup id="MergeLines" rendered="{!OK2Merge == true}" >   
+                  <!-- 
+                  <apex:commandButton action="{!BuildDataSet}" value="BuildDataSet" rerender="MergeLines, MWMessages"  status="ProgressStatus" title="" styleclass="slds-button slds-button--brand slds-button--small" />
+                  -->
+				<apex:pageBlock id="Details">
+<!--DETIALS HEADER-->
+                    <table id="MergeTable">
+                        <tr class="slds-border_bottom">
+                            <td style="width:33%;font-size:95%;" class="slds-item_label slds-text-color_weak slds-truncate">
+                                <span id="showingallfields" style="{!If(!Showall,'display:none;','')}">
+                                    <apex:commandLink id="btnTglfilter" action="{!toggleShowall}" value="Show fields with differnet values only." reRender="Details" />
+									&nbsp;Showing All ({!Fieldcount})
+                                </span>
+                                <span id="notshowingallfields" style="{!If(Showall,'display:none;','')}">
+                                    Showing fields with differnet values only.&nbsp;
+                                    <apex:commandLink id="btnTglfilteroff" action="{!toggleShowall}" value="Show All"  reRender="Details" />
+                                    &nbsp;({!Fieldcount})
+                                </span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td style="width:33%;font-size:120%;" class="slds-item_detail slds-truncate">
+                                <a href="javascript:sforce.one.navigateToSObject('{!SurvivorId}', 'detail')" style="{!If(isLightningMode,'','display:none')}">{!SurvivorName} (Survivor)</a>
+                                <a href="/{!SurvivorId}" style="{!If(!isLightningMode,'','display:none')}" title="Survivor">{!SurvivorName}</a>
+                                &nbsp;<apex:commandButton action="{!SetSurvivorAsParent}" value="Set as Parent" disabled="{!NOT OK2Merge}" rerender="QMMessages, All"  rendered="{!ObjectType == 'Acc'}" status="ProgressStatus" title="Set the Account on the Left as parent of the Account on the Right"  styleclass="slds-button slds-button--neutral slds-button--small"  />
+                                <apex:commandButton id="saveSurv" action="{!saveSurv}" oncomplete="AfterSaveSurv();" style="display:none;" reRender="MWMessages, Details" value="Save" title="Save" styleclass="slds-button slds-button_destructive slds-button--small" />
+                                <apex:commandButton id="cancelSurv" action="{!BuildDataSet}"  oncomplete="AfterSaveSurv();" style="display:none;" reRender="MWMessages, Details" value="Cancel" title="Cancel" styleclass="slds-button slds-button_neutral slds-button--small" />
+                                <br /><a onClick="SelectAllSurvivor();return false;" style="font-size:80%;{!If(reviewMW == '0','','display:none')}">Select All</a>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td style="width:33%;font-size:120%;" class="slds-item_detail slds-truncate">
+                                <a href="javascript:sforce.one.navigateToSObject('{!DupeId}', 'detail')" style="{!If(isLightningMode,'','display:none')}">{!DupeName} (Dupe)</a>
+                                <a href="/{!DupeId}" style="{!If(!isLightningMode,'','display:none')}" title="Dupe">{!DupeName}</a>
+                                &nbsp;<apex:commandButton action="{!SetDupeAsParent}" value="Set as Parent" disabled="{!NOT OK2Merge}" rerender="QMMessages, All"   rendered="{!ObjectType  == 'Acc'}" status="ProgressStatus" title="Set the Account on the Right as parent of the Account on the Left" styleclass="slds-button slds-button--neutral slds-button--small" />
+                               <apex:commandButton id="saveDupe" action="{!saveDupe}" oncomplete="AfterSaveDupe();" style="display:none;" reRender="MWMessages, Details" value="Save" title="Save" styleclass="slds-button slds-button_destructive slds-button--small" />
+                               <apex:commandButton id="cancelDupe" action="{!BuildDataSet}"  oncomplete="AfterSaveDupe();" style="display:none;" reRender="MWMessages, Details" value="Cancel" title="Cancel" styleclass="slds-button slds-button_neutral " />
+                                <br /><a onClick="SelectAllDupe();return false;" style="font-size:80%;{!If(reviewMW == '0','','display:none')}">Select All</a>
+                            </td>
+                        </tr>
+<!-- MASTER RECORD SELECTION -->
+                        <tr class="slds-border_bottom" style="padding:0.2rem;{!If(reviewMW == '0','','display:none')}">
+                            <td class="slds-item_detail slds-truncate" style="padding:0.2rem;">Master Record&nbsp;</td>
+                            <td class=""  style="padding:0.2rem;">&nbsp;&nbsp;</td>
+                            <td style="padding-left:0.5rem;padding-right:0.5rem;"><apex:inputCheckbox id="SelSurvasMaster" value="{!SurvivorIsMaster}" onClick="SelectSurvivorasMaster();"/></td>
+                            <td style="width:33%;" class="slds-item_detail slds-truncate" >&nbsp;Use as Master
+                                	<span style="color:red;font-weight:bold;{!if(Survivor_IsPortalUser,'','display:none')}">&nbsp;({!$ObjectType.contact.label} is portal user!)</span>
+                                	<span style="color:red;font-weight:bold;{!if(Survivor_IsCustomerPortal,'','display:none')}">&nbsp;({!$ObjectType.account.label} is customer portal user!)</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td style="padding-left:0.5rem;padding-right:0.5rem;"><apex:inputCheckbox id="SelDupeasMaster" value="{!DupeIsMaster}"  onClick="SelectDupeasMaster();" /></td>
+                            <td style="width:33%" class="slds-item_detail slds-truncate" >&nbsp;Use as Master
+                                	<span style="color:red;font-weight:bold;{!if(Dupe_IsPortalUser,'','display:none')}">&nbsp;({!$ObjectType.contact.label} is portal user!)</span>
+                            		<span style="color:red;font-weight:bold;{!if(Dupe_IsCustomerPortal,'','display:none')}">&nbsp;({!$ObjectType.account.label} is customer portal user!)</span>
+                            </td>
+                        </tr>
+                        
+<!--MERGELINES-->
+
+                        <apex:repeat id="fieldList" value="{!MergeLines}" var="ml">
+							<tr id="MergeRow_{!ml.FieldName}" class="{!IF(ml.SameValue,'samevalue','')} slds-border_bottom" style="padding:0.2rem;{!IF(or(ShowAll,!ml.SameValue),'','display:none;')}" >                                
+                                    <td class="slds-item_detail slds-truncate" style="padding:0.2rem" title="{!ml.FieldName}">{!ml.FieldLabel} <span style="{!IF(debugmode,'','display:none;')}">&nbsp;{!ml.f.Type}&nbsp;(RO:{!ml.ReadOnly})</span>
+                                        &nbsp;<img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'lockgrey12.png')}" style="height:0.75rem;{!if(ml.ReadOnly,'display:inline;','display:none')}" title="Read-Only" />
+                                	</td>
+                                    <td class="{!IF(!ml.SameValue,'requiredInput','')}" >
+                                        &nbsp;<apex:outputPanel title="{!IF(ml.ReadOnly,'Read-Only','Values are different!')}" layout="block" styleClass="requiredBlock" style="background-color:orange;"/>
+                                	</td>
+                                    
+                                    <td class="{!IF(and(ml.SelectSurv,!ml.SameValue,!ml.ReadOnly),'mitem_selected','')}" style="padding-left:0.5rem;padding-right:0.5rem;">
+                                        <!--<apex:inputCheckbox id="SelSurv" value="{!ml.SelectSurv}" rendered="{!AND(!ml.SameValue,!ml.ReadOnly,reviewMW == '0')}"  onclick="toggleSurvivor(this.id);refreshMergeLines();false;"/>-->
+                                         <apex:inputCheckbox id="SelSurv" value="{!ml.SelectSurv}" rendered="{!AND(!ml.SameValue,!ml.ReadOnly,reviewMW == '0')}"  onclick="toggleSurvivor(this.id);refreshMergeLines();false;"/>
+                                    </td>
+                                    <td class="{!IF(and(ml.SelectSurv,!ml.SameValue,!ml.ReadOnly),'mitem_selected','')} slds-item_detail" style="width:33%;padding:0.2rem;" >
+                                        <div style="max-height:120px;overflow-y:auto;"> 
+											<apex:outputField id="SurvOutPut" value="{!Survivor[ml.FieldName]}" title="{!if(ml.ReadOnly,'Read-Only','dbl-click to Edit')}" >
+                                            <apex:outputPanel id="SurvEmpty" styleclass="mitem_empty" rendered="{!Survivor[ml.FieldName] = null}"  ondblclick="hideEmpty(this);" title="{!if(ml.ReadOnly,'Read-Only','dbl-click to Edit')}">&nbsp;[Empty]</apex:outputPanel>
+                                            <apex:inlineEditSupport id="SurvIES" showOnEdit="saveSurv, cancelSurv" hideOnEdit="" event="ondblclick" changedStyleClass="ies_changed" resetFunction="" />
+                                        </apex:outputField>
+                                        </div>
+
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td class="{!IF(and(ml.SelectDupe,!ml.SameValue,!ml.ReadOnly),'mitem_selected','')}" style="padding-left:0.5rem;padding-right:0.5rem;" >
+                                         <!--<apex:inputCheckbox id="SelDupe" value="{!ml.SelectDupe}" rendered="{!AND(!ml.SameValue,!ml.ReadOnly,reviewMW == '0')}" onclick="selectDupe(this.id);refreshMergeLines();false;" />-->
+                                        <apex:inputCheckbox id="SelDupe" value="{!ml.SelectDupe}" rendered="{!AND(!ml.SameValue,!ml.ReadOnly,reviewMW == '0')}" onclick="toggleDupe(this.id);refreshMergeLines();false;" />
+                                    </td>
+                                    <td class="{!IF(and(ml.SelectDupe,!ml.SameValue,!ml.ReadOnly),'mitem_selected','')} slds-item_detail" style="width:33%;padding:0.2rem;">
+                                        <div style="max-height:120px;overflow-y:auto;"> 
+                                        <apex:outputField id="DupeOutPut" value="{!Dupe[ml.FieldName]}"  title="{!if(ml.ReadOnly,'Read-Only','dbl-click to Edit')}"  >
+                                            <apex:outputPanel id="DupeEmpty" styleclass="mitem_empty" rendered="{!Dupe[ml.FieldName] = null}"  ondblclick="hideEmpty(this);" title="{!if(ml.ReadOnly,'Read-Only','dbl-click to Edit')}">&nbsp;[Empty]</apex:outputPanel>
+                                            <apex:inlineEditSupport id="DupeIES" showOnEdit="saveDupe, cancelDupe" hideOnEdit="" event="ondblclick" changedStyleClass="ies_changed" resetFunction="" />
+                                       </apex:outputField>
+                                       </div>                                     
+                                    </td>
+                                
+                                    <td style="padding:0.2rem;{!IF(debugmode,'','display:none;')}" >
+                                        <apex:outputField value="{!Survivor[ml.FieldName]}" rendered="{!and(ml.ReadOnly==false,ml.SelectSurv == true)}"/>&nbsp;
+                                        <apex:outputField value="{!Dupe[ml.FieldName]}" rendered="{!and(ml.ReadOnly==false,ml.SelectDupe == true)}"/>&nbsp;
+                                    </td>
+                                	<td style="padding:0.2rem;{!IF(debugmode,'','display:none;')}">
+                                        <apex:outputField value="{!Master[ml.FieldName]}" rendered="{!and(ml.ReadOnly==false,success == true)}"/>&nbsp;
+                                    </td>
+								
+							</tr>
+                        </apex:repeat>
+                        
+                        
+                    </table>
+                    
+                </apex:pageBlock>
+
+
+            </apex:panelGroup>
+            </apex:pageblock>
+        </div>
+
+    </div>
+
+	<!--
+    <apex:panelGroup rendered="{!inlineMW != '0'}">
+        Debug: 
+        DupeId: {!DupeId}<br />
+        SurvivorId: {!SurvivorId}<br />
+        Dupe_IsPortalUser: {!Dupe_IsPortalUser}<br />
+		Survivor_IsPortalUser: {!Survivor_IsPortalUser}<br />
+		Dupe_IsCustomerPortal: {!Dupe_IsCustomerPortal}<br />
+		Survivor_IsCustomerPortal: {!Survivor_IsCustomerPortal}<br />
+    </apex:panelGroup>
+    -->
+<!--COPYRIGHT-->
+<apex:panelGroup rendered="{!inlineMW == '0'}">   
+<div class="slds" id="copyright">
+   <div class="slds-grid slds-wrap">	
+       <div class="slds-col slds-size--1-of-1" >
+           <div style="text-align:center;font-size:xx-small;font-family:Arial;margin-top:2rem;">Copyright © 2007-<span id="year">201X</span> DataTrim Dupe Alerts by d2b International ApS, All rights reserved.
+           </div>
+       </div>
+    </div>
+    <script>
+    	var elem = document.getElementById('year');
+    	//alert(new Date().getFullYear());
+    	elem.innerText = new Date().getFullYear();
+    </script>
+</div>
+</apex:panelGroup>
+        
+        
+    <apex:actionStatus id="ProgressStatus">
+        <apex:facet name="start">
+            <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Updating..." messageStyle="color:#5090ea;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+    
+</apex:form>
+ 
+    </div>
+ </div>    
+</div>
+</apex:page>

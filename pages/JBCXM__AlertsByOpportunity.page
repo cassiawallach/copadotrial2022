@@ -1,0 +1,83 @@
+<!-- Copyright (c) 2014 Gainsight Software, Inc.  
+---- Purpose                    : None.
+----                              None.
+---- Other comments (optional)  : None. 
+--> 
+
+<apex:page sidebar="false" title="Administration" showHeader="false" docType="html-5.0" showChat="false" extensions="JBCXM.GSCommonBroker,JBCXM.NSRemoting" controller="JBCXM.ConfigBroker">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jsforce.min.js"></script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <!-- <link href = "https://localhost:8080/UI/GSAppCSS/css/summaryadmin/Summaryconfig.css" rel = "stylesheet" />
+        <link href = "https://localhost:8080/UI/GSAppCSS/css/summaryadmin/sponsortrackeradmin.css" rel = "stylesheet" />
+    -->
+    
+   <script>
+
+        var GS = GS || {};
+            GS.remotingEndPoint     = '{!$RemoteAction.ConfigBroker.configRequestBroker}';
+            GS.commonRemotingEndPoint  = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.packageNS            = "{!(pkgNS)}";
+            GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+            GS.remoting             = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+            GS.sessionId            = "{!NSSessionId}";
+            
+            function urlParams (){
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for(var i = 0; i < hashes.length; i++)
+                {
+                  hash = hashes[i].split('=');
+                  vars.push(hash[0]);
+                  vars[hash[0]] = hash[1];
+                }
+                return vars;
+          }
+    
+       var urlParamsMap = urlParams();
+       GS.callbackfnAfterSave = ""+urlParamsMap["callback"];
+       GS.callbackfnAfterCancel = ""+urlParamsMap["callbackCancel"];
+       GS.editingName  = ""+urlParamsMap["name"];
+       GS.sectionId = urlParamsMap["secId"];
+       GS.sectionType = urlParamsMap["type"];
+       GS.isUsage   = urlParamsMap["isUsage"];
+       GS.isNSEnabled   = urlParamsMap["isNSEnabled"];
+       GS.layoutId   = urlParamsMap["layoutId"];
+       GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+       GS.hasToolingAPIPermission = "{!(hasToolingAPIPermission)}";
+
+        
+
+        
+   </script>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["alertsbyopportunity/scripts/alertsbyopportunity.bundle.js"], styles:["alertsbyopportunity/styles/alertsbyopportunity.css"]});
+        </script>
+    </apex:outputpanel>
+   <div class = "parentContainer">
+   
+   </div>
+   <style>
+   .ad-summaru-configsec .sectionLabel #showLabel {
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        height: 24px;
+        width: 159px !important;
+        padding-left: 5px;
+    }
+    .customTreeContainer .customTree_js .jstree-container-ul {
+      overflow-y: auto;
+    }
+    .gs-rb-choose-lists .treeColumnChooser {
+      max-width : 310px !important;
+    }
+    .gs-rb-mapping-list {
+        top : 0px;
+        margin-top:0px;
+    }
+    .noDataFound {
+       width : 95% !important; 
+    }
+   </style>
+</apex:page>

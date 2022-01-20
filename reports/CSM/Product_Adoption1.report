@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_46067844</developerName>
+        <masterLabel>Product Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>sfLma__License__c.sfLma__Package__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Value Stream Mapping</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado DevOps Analytics</sourceValue>
+            </sourceValues>
+            <value>Non-Core</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>sfLma__License__c.sfLma__Package_Version__c</field>
+    </columns>
+    <columns>
+        <field>sfLma__License__c.sfLma__Package_Version_Number__c</field>
+    </columns>
+    <columns>
+        <field>sfLma__License__c.sfLma__Version_Number__c</field>
+    </columns>
+    <columns>
+        <field>sfLma__License__c.sfLma__Licensed_Seats__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>sfLma__License__c.sfLma__Used_Licenses__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>sfLma__License__c.License_Overage__c</field>
+    </columns>
+    <columns>
+        <field>sfLma__License__c.sfLma__Package__c</field>
+    </columns>
+    <columns>
+        <field>sfLma__License__c.sfLma__Status__c</field>
+    </columns>
+    <columns>
+        <field>FK_$Salesforce_Org__c.Account_Status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <aggregateTypes>Maximum</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>BucketField_46067844</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>CASE(sfLma__License__c.sfLma__Package__c,
+
+&quot;Copado Value Stream Mapping&quot;,5,
+
+&quot;Copado DevOps Analytics&quot;,5,
+
+1)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Product Type Rank</label>
+        <scale>0</scale>
+    </customDetailFormulas>
+    <description>Product Adoption - Product Type</description>
+    <filter>
+        <criteriaItems>
+            <column>FK_$Salesforce_Org__c.Org_Type__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Production</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$Salesforce_Org__c.Account_Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Active</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FK_$Salesforce_Org__c.Parent_Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Product Adoption  - Product Type</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$sfLma__License__c@sfLma__License__c.Salesforce_Org__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>sfLma__License__c.sfLma__Expiration__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

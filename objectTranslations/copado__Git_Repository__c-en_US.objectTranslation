@@ -23,16 +23,11 @@
         <name>copado__Commit_Base_URL__c</name>
     </fields>
     <fields>
-        <help><!-- Copado generates specific links to the Git Repository, its branches and commits based on the selected Git Provider. --></help>
         <label><!-- Git Provider --></label>
         <name>copado__Git_Provider__c</name>
         <picklistValues>
             <masterLabel>Bitbucket</masterLabel>
             <translation><!-- Bitbucket --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Copado Version Control</masterLabel>
-            <translation><!-- Copado Version Control --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>GitLab</masterLabel>
@@ -52,6 +47,10 @@
         </picklistValues>
     </fields>
     <fields>
+        <label><!-- Password --></label>
+        <name>copado__Password__c</name>
+    </fields>
+    <fields>
         <help><!-- Base URL of your Repository, e.g.: https://github.com/[COMPANY]/[REPOSITORY]/ https://bitbucket.org/[COMPANY]/[REPOSITORY]/ https://gitlab.org/[COMPANY]/[REPOSITORY]/ --></help>
         <label><!-- Pull Request Base URL --></label>
         <name>copado__Pull_Request_Base_URL__c</name>
@@ -60,6 +59,10 @@
         <help><!-- Choose between standard Metadata API folder and file structure or DX source structure that uses a different set of files and file extensions. Default is Metadata. --></help>
         <label><!-- Source Format --></label>
         <name>copado__Source_Format__c</name>
+        <picklistValues>
+            <masterLabel>DX</masterLabel>
+            <translation><!-- DX --></translation>
+        </picklistValues>
         <picklistValues>
             <masterLabel>Metadata</masterLabel>
             <translation><!-- Metadata --></translation>
@@ -71,8 +74,25 @@
         <name>copado__Tag_Base_URL__c</name>
     </fields>
     <fields>
-        <help><!-- HTTPS or SSH URL to connect to the Git Repository. --></help>
         <label><!-- URI --></label>
         <name>copado__URI__c</name>
     </fields>
+    <fields>
+        <label><!-- Username --></label>
+        <name>copado__Username__c</name>
+    </fields>
+    <layouts>
+        <layout>Git Repository Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Git Server Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
 </CustomObjectTranslation>

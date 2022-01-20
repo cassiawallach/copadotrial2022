@@ -1,0 +1,42 @@
+<apex:page sidebar="false" showHeader="true" showChat="false">
+<style type="text/css">  
+        body #AppBodyHeader {  
+            display: none;  
+        }  
+</style>  
+<script type="text/javascript" language="javascript">
+    function gridAdvanceSearchCallBackAfterSearch(strConditions)
+    {
+        window.parent.{!JSINHTMLENCODE($CurrentPage.parameters.callbackAfterSearch)}(strConditions);
+    }
+    
+    function gridAdvanceSearchCallBackAfterReset()
+    {
+        window.parent.{!JSINHTMLENCODE($CurrentPage.parameters.callbackAfterReset)}();
+    }
+    
+    function gridAdvanceSearchCallBackAfterClose()
+    {
+        window.parent.{!JSINHTMLENCODE($CurrentPage.parameters.callbackAfterClose)}();
+    }
+   
+   	function changeContainerFrameStyles(param)
+    {
+        window.parent.changeAdvanceSearchFrameStyles(param);
+    }
+   
+    
+ </script>
+  
+  <c:AdvanceSearch tabName="{!JSINHTMLENCODE($CurrentPage.parameters.SearchtabName)}"
+                  externalObjectName="{!JSINHTMLENCODE($CurrentPage.parameters.externalObjectName)}"
+                  externalObjectLookupFieldName="{!JSINHTMLENCODE($CurrentPage.parameters.externalObjectLookupFieldName)}"
+                  searchCallBackFunctionName="gridAdvanceSearchCallBackAfterSearch"
+                  resetCallBackFunctionName="gridAdvanceSearchCallBackAfterReset"
+                  closeCallBackFunctionName="gridAdvanceSearchCallBackAfterClose"
+                  passedUIViewId="{!JSINHTMLENCODE($CurrentPage.parameters.selUIViewId)}"
+                  flagToLoadOnDefault="{!JSINHTMLENCODE($CurrentPage.parameters.flagToLoadOndefault)}"
+                  sendRelationshipFields="{!JSINHTMLENCODE($CurrentPage.parameters.sendRelationshipFields)}">
+ </c:AdvanceSearch>
+
+</apex:page>

@@ -1,0 +1,143 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c"  extensions="TRIMDA.TRIMDA_MatchedRecordDetail_Controller" tabStyle="TRIMDA__TRIMDA_MatchingResult__c" ShowHeader="false" sidebar="false">
+<apex:includeScript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/> 
+
+    
+<style>
+    .dt_pbs{
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+    
+    .mergecontainer{
+        background-color: rgba(155, 177, 217, 0.33);
+    }
+    .convertcontainer{
+        background-color: rgba(242, 207, 91, 0.33);
+    }
+</style>
+    
+<apex:outputPanel id="reviewPanel">  
+<div class="slds">
+    <apex:sectionHeader title="DataTrim Dupe Alerts" subtitle="Matching Details" rendered="{!inline = '0'}" />
+
+    <apex:form id="All">
+    <div class="slds-grid slds-wrap"> 
+        <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;">
+              <apex:pageBlock id="MatchingDetail" tabstyle="TRIMDA_MatchingResult__c" title="Matching Detail" >
+                <apex:facet name="header" >
+                    <apex:panelGroup >
+                        <apex:outputPanel rendered="{!inline = '1'}">
+                            <div class="slds-grid pbSubheader first tertiaryPalette dt_pbs" style="border:1px;padding:0.5rem;padding-left:0.8rem;font-size:1.3rem;text-align:left;">
+                                     &nbsp;Matching Details&nbsp;
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!AND(review='1', AND(MyMR.TRIMDA__ObjectName__c != 'Lead-Contact', MyMR.TRIMDA__ObjectName__c !='Lead-Account'))}">
+                            <div class="slds-container--large mergecontainer"  style="margin-bottom:-0.5rem;margin-top:-0.25rem;">
+                                <div class="slds-grid slds-wrap" style="padding:0.5rem;"> 
+                                    <div class="slds-col slds-size--2-of-12 " style="font-size:1.1rem;text-align:center;vertical-align:middle;">
+                                         Provide Feedback&nbsp;
+                                     </div>
+                                    <div class="slds-col slds-size--2-of-12 " style="font-size:0.8rem;text-align:left;">
+                                         <!--<a href="#" class="slds-button slds-button--brand slds-button--smal">Merge Keep Survivor</a>-->
+                                        <div  style="font-size:0.75rem;text-align:left;line-height:0.75rem;" >Review Outcome:</div>
+                                        <apex:inputField value="{!MyMR.TRIMDA__Review_Outcome__c}" styleclass="slds-select"  />
+                                     </div>
+                                    <div class="slds-col slds-size--4-of-12 " style="font-size:0.8rem;text-align:center;">
+                                        <apex:inputField value="{!MyMR.TRIMDA__Review_Note__c}" styleclass="slds-textarea" html-placeholder="Review Notes" />
+                                     </div>
+                                    <div class="slds-col slds-size--1-of-12 " style="font-size:0.8rem;text-align:left;padding-top:0.5rem;">
+                                         <apex:commandButton action="{!SaveMe}" styleclass="slds-button slds-button--brand slds-button--small" value="Submit" status="ProgressStatus" reRender="detail,thankyou" />
+                                     </div>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!AND(review='1', OR(MyMR.TRIMDA__ObjectName__c = 'Lead-Contact', MyMR.TRIMDA__ObjectName__c='Lead-Account'))}">
+                            <div class="slds-container--large convertcontainer"  style="margin-bottom:-0.5rem;margin-top:-0.25rem;">
+                                <div class="slds-grid slds-wrap" style="padding:0.5rem;"> 
+                                    <div class="slds-col slds-size--2-of-12 " style="font-size:1.1rem;text-align:center;vertical-align:middle;">
+                                         OK to Convert?&nbsp;
+                                     </div>
+                                    <div class="slds-col slds-size--2-of-12 " style="font-size:0.8rem;text-align:left;padding-top:0.5rem;">
+                                         <div class="slds-button-group" role="group">
+                                             <apex:commandButton action="{!ConvertYes}" styleclass="slds-button slds-button--brand slds-button--small" value="Yes" status="ProgressStatus" reRender="detail,thankyou"/>
+                                             <apex:commandButton action="{!FalseDupe}" styleclass="slds-button slds-button--brand slds-button--small" value="False Dupe" status="ProgressStatus" reRender="detail,thankyou"/>
+                                             <apex:commandButton action="{!ConvertNo}" styleclass="slds-button slds-button--brand slds-button--small slds-button--last" value="No" status="ProgressStatus" reRender="detail,thankyou"/>
+                                         </div>
+                                     </div>
+                                    <div class="slds-col slds-size--4-of-12 " style="font-size:0.8rem;text-align:center;">
+                                        <apex:inputField value="{!MyMR.TRIMDA__Review_Note__c}" styleclass="slds-textarea" html-placeholder="Review Notes" label="Review Notes" />
+                                     </div>
+                                    <div class="slds-col slds-size--2-of-12 " style="font-size:0.8rem;text-align:left;padding-top:0.5rem;">
+                                         <div class="slds-button-group" role="group">
+                                             <apex:commandButton action="{!SaveMe}" styleclass="slds-button slds-button--brand slds-button--small" value="Submit Review Notes" status="ProgressStatus" reRender="All,detail,thankyou"/>
+                                            </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:panelGroup>
+                </apex:facet>
+            </apex:pageBlock>
+        </div>
+        </div>
+        
+        </apex:form>
+    </div>
+  </apex:outputPanel>
+
+    <apex:form id="thankyou">
+        <apex:panelGroup rendered="{!FeedbackSubmitted == true}">
+        <div class="slds">
+            <div class="slds-container--large {!IF(OR(MyMR.ObjectName__c = 'Lead-Contact', MyMR.ObjectName__c='Lead-Account'),'convertcontainer','mergecontainer')}"  style="margin-bottom:-0.5rem;margin-top:-0.5rem;">
+                <div class="slds-grid slds-wrap" style="padding:0.5rem;"> 
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <apex:pageMessages />
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " style="font-size:1.1rem;text-align:center;vertical-align:middle;">
+                        Feedback Submitted: ({!MyMR.TRIMDA__Review_Outcome__c})
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " style="font-size:1rem;text-align:center;vertical-align:middle;">
+                        Thank you for help keeping our data clean! &nbsp;<apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'thankyou.png')}" style="height:1.5rem;" title="Tutorials" />
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;text-align:center;">
+                        <apex:panelGroup rendered="{!inline = '0'}">
+                            <button class="slds-button slds-button--brand slds-button--small"><a href="{!retURL}" style="color:white;">Back</a></button>
+                        </apex:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </apex:panelGroup>
+    </apex:form>    
+   
+   <apex:form id="detail" >     
+  <apex:panelGroup rendered="{!FeedbackSubmitted == false}">
+    
+       <!--<h1>TRIMDA_MergeWizard_List_Detail</h1>-->
+      <div class="slds-grid slds-wrap" style="padding-left:1rem;padding-right:1rem;"> 
+          <div class="slds-col slds-size--1-of-1 " style="font-size:95%;" >
+              <apex:detail id="theDetail" subject="{!MRId}" relatedList="true" inlineEdit="false" title="false"  />
+          </div>
+      </div>                
+      
+      <script style="text/javascript">
+      jQuery(document).ready(function(){
+          jQuery("#topButtonRow").css("visibility", "hidden");
+          jQuery("#bottomButtonRow").css("visibility", "hidden");
+          jQuery(".bDetailBlock .pbHeader").css("visibility", "hidden");
+          jQuery(".bDetailBlock .pbHeader").css("height", "0rem");
+      });
+      </script>
+  </apex:panelGroup>
+ </apex:form>    
+    <apex:pageMessages />
+         
+    <apex:actionStatus id="ProgressStatus">
+        <apex:facet name="start">
+            <c:TRIMDA_ProgressBar Message="Saving Feedback..." BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"   messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+    
+    
+</apex:page>

@@ -1,0 +1,55 @@
+<apex:page Controller="TRIMDA.TRIMDA_Setup_Controller"  tabStyle="TRIMDA__TRIMDA_Parameters__c">
+<apex:form >
+<apex:pageBlock title="DataTrim Dupe Alert Setup" id="Main" mode="edit" > 
+<apex:PageMessages />
+        <apex:pageBlockButtons location="both">
+            <apex:commandButton action="{!save}" value="Save" title="Save parameters"/>
+            <apex:commandButton action="/{!ReturnURL}" value="Cancel" title="" />
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection title="License Information" columns="2">
+            <apex:inputField value="{!param.TRIMDA__LicenseNo__c}" />
+            <apex:pageBlockSectionItem ><apex:outputText value="{!param.TRIMDA__License_Type__c}"/></apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Email Notifications when Dupe Alert Run is completed" columns="2" >
+            <apex:inputField value="{!param.TRIMDA__Send_Notification_on_Complete__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Notification_Email_Address__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="DataTrim Merge Parameters" columns="2">
+            <apex:inputField value="{!param.TRIMDA__DeleteMRAfterMerge__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__MergeCreateActivity__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Owner_of_Activity__c}"/>
+            <apex:inputField value="{!param.TRIMDA__MergeAddNote__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Owner_of_Note__c}"/>
+            <apex:inputField value="{!param.TRIMDA__MergeAppend2Field__c}"/>
+            <apex:inputField value="{!param.TRIMDA__MergeAppendField__c}"/>
+            <apex:inputField value="{!param.TRIMDA__MergeMultiPickLists__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__Merge_Type__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__Enable_Batch__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="DataTrim Convert Parameters" columns="2">
+            <apex:inputField value="{!param.TRIMDA__DeleteMRAfterConvert__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__ConvStatus__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__donotCreateOppty__c}"  id="donotCreateOppty" />
+            <apex:inputField value="{!param.TRIMDA__OpptyName__c}"  />
+            <apex:inputField value="{!param.TRIMDA__overwriteLeadSource__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__sendNoti__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Dupe Status Controls" columns="2">
+            <apex:inputField value="{!param.TRIMDA__Account_Show_ActionLink__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Account_DS_Match_Level__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Enhanced_Display_DupeStatusAccount__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Contact_Show_ActionLink__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Enhanced_Display_DupeStatusContact__c}"/>
+            <apex:inputField value="{!param.TRIMDA__Lead_Show_ActionLink__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Limits derived by salesforce Governor Rules" columns="2">
+            <apex:inputField value="{!param.TRIMDA__Merge_Batch_Size_Max__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__Convert_Batch_Size_Max__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:inputField value="{!param.TRIMDA__SOQL_Count_Query__c}"/><apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <!--<apex:inputField value="{!param.ServerURL__c}"/>-->
+            id: {!param.Id}
+        </apex:pageBlockSection>
+
+</apex:pageBlock>
+</apex:form>
+</apex:page>

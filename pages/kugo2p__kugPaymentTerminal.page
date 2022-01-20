@@ -1,0 +1,638 @@
+<apex:page standardController="kugo2p__PaymentX__c" extensions="kugo2p.PaymentTerminalController,kugo2p.KugamonPaymentTerminalControllerExt,kugo2p.PaymentTerminalManualController" id="terminalPage">
+<style>
+    table.PTtable {
+        width: 700px;
+    }
+
+    table.PTtable td {
+        width: 200px;
+    }
+
+    table.PTtable td.labelColumn {
+        text-align: right;
+        width: 150px;
+    }   
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<!-- <apex:sectionHeader title="Payment Terminal" subtitle="Enter Transaction Details" /> -->
+<c:PageHeader title="Payment Terminal" subtitle="Enter Transaction Details" pathname="custom" icon="custom5" description="" rendered="{!!disableForm}" />
+
+<apex:pageMessage summary="Payment processing is currently in gateway simulation mode. In this mode, transactions will result in a simulated responses from your payment processor and by-pass actual credit card charges, refunds, etc. To run live transactions, have your Salesforce administrator turn gateway simulation mode off." severity="Info" strength="2" rendered="{!simulationMode}"/>
+<apex:pageMessages id="pageMessages" escape="false" />
+
+    <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!disableForm}" >
+        <br></br>
+        <apex:form >
+            <apex:commandButton value="Back" action="{!deletePaymentAndCancelFromTerminal}" styleClass="slds-button slds-button--neutral"/>
+        </apex:form>
+    </apex:outputPanel>
+
+    <apex:form id="terminalForm" rendered="{!!disableForm}">
+        <apex:outputField id="processorConnectionId" value="{!kugo2p__PaymentX__c.kugo2p__Processor_Connection__c}" rendered="false" />
+        <apex:outputField id="testMode" value="{!kugo2p__PaymentX__c.kugo2p__Is_Test_Transaction__c}" rendered="false" />
+        <apex:outputField id="paymentStatus" value="{!kugo2p__PaymentX__c.kugo2p__Status__c}" rendered="false" />
+        <apex:outputField id="last4" value="{!kugo2p__PaymentX__c.kugo2p__Last_4_Digits__c}" rendered="false" />
+        <apex:outputPanel rendered="false"><apex:inputText id="amount" value="{!preTaxAmount}" /><apex:inputField value="{!kugo2p__PaymentX__c.kugo2p__Date__c}" /></apex:outputPanel>
+        <apex:outputField id="Reference_Number" value="{!kugo2p__PaymentX__c.kugo2p__Invoice_Number__c}" rendered="false" />
+        <apex:outputField id="Log" value="{!kugo2p__PaymentX__c.kugo2p__Log__c}" rendered="false" />
+
+        <apex:outputPanel id="TerminalBlockOP">
+        <apex:pageBlock title="Payment Terminal" id="TerminalBlock" mode="edit">
+
+        <div style="width: 100%; text-align: center; height: 24px;">
+            <apex:actionStatus id="formActionStatus">
+                <apex:facet name="start">
+                    <apex:outputPanel >
+                        <apex:image value="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/icon-spinner.gif')}" style="vertical-align:middle;" alt="busy..." />
+                        &nbsp;Updating Page</apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" />
+                </apex:facet>
+            </apex:actionStatus>
+        </div>
+
+        <apex:pageBlockSection title="Transaction Information" collapsible="false" columns="2" id="TIpbs">
+        
+            <apex:pageBlockSectionItem id="TIpbsi" >
+                <apex:outputLabel for="paymentType" >Payment Type</apex:outputLabel>
+                
+                <apex:outputPanel >             
+                <apex:selectRadio id="paymentType" value="{!paymentType}" rendered="{!paymentTypeOptions.size > 1}">
+                    <apex:selectOptions value="{!paymentTypeOptions}" />
+
+                    <apex:actionSupport event="onchange"
+                        id="selectPaymentType"
+                        action="{!paymentTypeSelection}"
+                        rerender="TerminalBlock, paymentTypeSections, addresses"
+                        status="formActionStatus"
+                        oncomplete="paymentTypeChangedJS();" >
+                    </apex:actionSupport>
+                </apex:selectRadio>
+                
+                <apex:outputText value="Manual Payment" rendered="{!paymentTypeOptions.size == 1}" />
+                </apex:outputPanel>
+
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!forSalesOrder}">
+                <apex:outputLabel >Order Number</apex:outputLabel>
+                <apex:outputField value="{!kugo2p__PaymentX__c.kugo2p__SalesOrder__c}" />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!forInvoice}" >
+                <apex:outputLabel >Invoice Number</apex:outputLabel>
+                <apex:outputField value="{!kugo2p__PaymentX__c.kugo2p__Invoice__c}" id="invoice" />
+            </apex:pageBlockSectionItem>
+
+            
+            <apex:inputField value="{!kugo2p__PaymentX__c.name}" id="paymentname" style="width:230px"/>
+            <apex:outputField id="account" value="{!kugo2p__PaymentX__c.kugo2p__Account__c}" />
+
+            <apex:inputField id="totalAmount" value="{!kugo2p__PaymentX__c.kugo2p__Amount__c}" onChange="checkTotalAmount(this);"/>
+            <!-- <apex:outputField id="contact" value="{!kugo2p__PaymentX__c.kugo2p__Contact__c}" />-->
+            
+            <apex:pageBlockSectionItem rendered="{!(paymentType!='manual' && processorConnectionOptions.size > 1)}">
+                <apex:outputLabel for="processorConnectionList">Processor Connection</apex:outputLabel>
+                <apex:selectList size="1" value="{!processorConnectionId}" disabled="false" id="processorConnectionList">
+                    <!-- kicking off paymentTypeSelection to reset SelectedPaymentMethodType -->
+                    <apex:actionSupport event="onchange" action="{!paymentTypeSelection}" rerender="TerminalBlockOP,TerminalBlock,cardTypeSelectList,paymentType,paymentTypeSections" status="formActionStatus" />
+                    <apex:selectOptions id="processorOptions" value="{!processorConnectionOptions}" />
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem labelStyle="{!HTMLENCODE(displayStyle)}" dataStyle="{!HTMLENCODE(displayStyle)}">
+                <apex:outputText ></apex:outputText>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem labelStyle="{!HTMLENCODE(displayStyle)}" dataStyle="{!HTMLENCODE(displayStyle)}" >
+                <apex:outputText value="Payment Date" rendered="{!(paymentType=='manual')}"/>
+                <apex:inputField id="Date"  value="{!kugo2p__PaymentX__c.kugo2p__Date__c}" rendered="{!(paymentType=='manual')}"/>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+
+        <apex:outputPanel id="paymentTypeSections">
+            <apex:pageBlockSection title="Payment Information" columns="1" collapsible="false" rendered="{!((paymentType == 'creditcard'))}" id="pbsCCI">
+
+                <apex:pageBlockSectionItem rendered="{!ContactHasSavedPayments}">
+                    <apex:outputLabel for="creditCardTypeSelectList"></apex:outputLabel>
+                    <apex:selectRadio value="{!selectedPaymentMethodType}">
+                        <apex:selectOption itemValue="storedPayment" itemLabel="Saved Payment Method" />
+                        <apex:selectOption itemValue="new" itemLabel="New" />
+                        <apex:actionSupport event="onchange" status="formActionStatus" action="{!paymentMethodTypeSelectionChanged}" rerender="TerminalBlock,paymentTypeSections" />
+                    </apex:selectRadio>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Transaction Type</apex:outputLabel>
+                    <apex:selectList id="transTypeSelectList" value="{!selectedTransType}" size="1" multiselect="false" >
+                        <apex:selectOptions value="{!transactionTypeOptions}"/> 
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputLabel for="cardProfileSelectList">Payment Method</apex:outputLabel>
+                    <apex:outputPanel >
+                    <apex:selectList size="1" id="cardProfileSelectList"
+                            multiselect="false" value="{!selectedPaymentMethodId}"> 
+                            <apex:selectOptions value="{!StoredPaymentOptions}" />
+                            <apex:actionSupport event="onchange" id="selectStoredCreditCard"
+                                action="{!storedPaymentSelectionChanged}" status="cardProfileSelectionStatus" rerender="TerminalBlock, paymentTypeSections, addresses"/>    <!--, pageMessages -->
+                    </apex:selectList>
+                    &nbsp;
+                    <apex:actionStatus id="cardProfileSelectionStatus" >
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >&nbsp; 
+                                <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                            </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                        </apex:facet>
+                    </apex:actionStatus>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!paymentMethodRecord.kugo2p__Profile_Id__c <> null && selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputText value="Profile ID"/>
+                    <apex:outputText value="{!paymentMethodRecord.kugo2p__Profile_Id__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!cardType <> null && selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputText value="Card Type"/>
+                    <apex:outputText value="{!cardType}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!paymentMethodRecord.kugo2p__Last_4_Digits__c <> null && selectedPaymentMethodType=='storedPayment'}">    <!-- paymentMethodRecord.Card_Number__c <> null -->
+                    <apex:outputText value="Card Number"/>
+                    <apex:outputText value="************{!paymentMethodRecord.kugo2p__Last_4_Digits__c}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!expirationYear <> null && selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputText value="Card Expiration"/>
+                    <apex:outputText value="{!expirationMonth} / {!expirationYear}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="pbsiCT" rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="cardTypeSelectList">Card Type</apex:outputLabel>
+                    <apex:selectList size="1" id="cardTypeSelectList" multiselect="false" value="{!cardType}">
+                        <apex:selectOptions value="{!cardTypeOptions}" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="pbsiCCN" rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="ccNumber">Card Number</apex:outputLabel>
+                    <apex:inputText id="ccNumber" value="{!creditCardNumber}" onkeypress="return numberOnly(event);"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="pbsiCCE" rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="cardExp">Card Expiration</apex:outputLabel>
+                    <apex:outputPanel >
+                        <apex:selectList id="expMonth" value="{!expirationMonth}" size="1"> 
+                            <apex:selectOptions value="{!expMonthOptions}" />
+                        </apex:selectList> &nbsp;
+                        <apex:selectList id="expYear" value="{!expirationYear}" size="1"> 
+                            <apex:selectOptions value="{!expYearOptions}" />
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="pbsiSC" rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="cvvNumber">Security Code</apex:outputLabel>
+
+                    <apex:outputPanel >
+                        <apex:inputText id="cvvNumber" value="{!cvv}" style="width:35px;" onkeypress="return numberOnly(event);" />
+                        <apex:variable var="cvvHelpText" value="Card Verification Value is an additional security value printed on the physical credit card.<br/><br/> 
+                                                    Visa, MasterCard, Discover: a 3-digit number shown on the back of the card.<br/><br/>
+                                                    American Express: a 4-digit number printed on the front fo the card." /> 
+                        <c:Tooltip uniqueId="cardCvv" helpText="{!cvvHelpText}" qTipStyleClass="qtip-dark qtip-rounded qtip-shadow" loadJQuery="true" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Payment Information" columns="1" collapsible="false" rendered="{!((paymentType == 'echeck'))}" >
+                <apex:pageBlockSectionItem rendered="{!ContactHasSavedPayments}">
+                    <apex:outputLabel for="creditCardTypeSelectList"></apex:outputLabel>
+                    <apex:selectRadio value="{!selectedPaymentMethodType}">                                             
+                        <apex:selectOption itemValue="storedPayment" itemLabel="Saved Payment Method" />
+                        <apex:selectOption itemValue="new" itemLabel="New" />
+                        <apex:actionSupport event="onchange" status="formActionStatus" action="{!paymentMethodTypeSelectionChanged}" rerender="TerminalBlock,paymentTypeSections" />
+                    </apex:selectRadio>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputLabel for="cardProfileSelectList">Payment Method</apex:outputLabel>
+                    <apex:outputPanel >
+                    <apex:selectList size="1" id="cardProfileSelectList"
+                            multiselect="false" value="{!selectedPaymentMethodId}"> 
+                            <apex:selectOptions value="{!StoredPaymentOptions}" />
+                            <apex:actionSupport event="onchange" id="selectStoredCreditCard"
+                                action="{!storedPaymentSelectionChanged}" status="cardProfileSelectionStatus" rerender="TerminalBlock, paymentTypeSections, addresses"/>    <!--, pageMessages -->
+                    </apex:selectList>
+                    &nbsp;
+                    <apex:actionStatus id="cardProfileSelectionStatus" >
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >&nbsp; 
+                                <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                            </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                        </apex:facet>
+                    </apex:actionStatus>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!paymentMethodRecord.kugo2p__Profile_Id__c <> null && selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputText value="Profile ID"/>
+                    <apex:outputText value="{!paymentMethodRecord.kugo2p__Profile_Id__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!cardType <> null && selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputText value="Card Type"/>
+                    <apex:outputText value="{!cardType}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!paymentMethodRecord.kugo2p__Last_4_Digits__c <> null && selectedPaymentMethodType=='storedPayment'}">    <!-- paymentMethodRecord.Card_Number__c <> null -->
+                    <apex:outputText value="Card Number"/>
+                    <apex:outputText value="************{!paymentMethodRecord.kugo2p__Last_4_Digits__c}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!expirationYear <> null && selectedPaymentMethodType=='storedPayment'}">
+                    <apex:outputText value="Card Expiration"/>
+                    <apex:outputText value="{!expirationMonth} / {!expirationYear}"/>
+                </apex:pageBlockSectionItem>                
+
+                <apex:pageBlockSectionItem rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="bankName">Bank Name</apex:outputLabel>
+                    <apex:inputText id="bankName" value="{!bankName}" />
+                </apex:pageBlockSectionItem>
+    
+                <apex:pageBlockSectionItem rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="bankAccountName">Name on Account</apex:outputLabel>
+                    <apex:inputText id="bankAccountName" value="{!bankAccountName}" />
+                </apex:pageBlockSectionItem>
+    
+                <apex:pageBlockSectionItem rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="bankAccountNumber">Bank Account Number</apex:outputLabel>
+                    <apex:inputText id="bankAccountNumber" value="{!bankAccountNumber}" onkeypress="return numberOnly(event);" />
+                </apex:pageBlockSectionItem>
+    
+                <apex:pageBlockSectionItem rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="bankRoutingNumber">Routing Number</apex:outputLabel>
+                    <apex:inputText id="bankRoutingNumber" value="{!bankRoutingNumber}" onkeypress="return numberOnly(event);" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!selectedPaymentMethodType=='new'}">
+                    <apex:outputLabel for="accountTypeSelectList">Account Type</apex:outputLabel>
+                    <apex:selectList size="1" id="accountTypeSelectList" multiselect="false" value="{!selectedBankAccountType}">
+                        <apex:selectOption itemValue="checking" itemLabel="Checking" />                     
+                        <apex:selectOption itemValue="savings" itemLabel="Savings" />
+                        <apex:selectOption itemValue="businessChecking" itemLabel="Business Checking" />
+                        <apex:actionSupport event="onchange" id="AccountTypeChange" rerender="TerminalBlock" status="formActionStatus"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!(selectedBankAccountType!='businessChecking' && selectedPaymentMethodType=='new')}">
+                    <apex:outputLabel for="echeckTypeSelectList">eCheck Type</apex:outputLabel>
+                    <apex:selectList size="1" id="echeckTypeSelectList" multiselect="false" value="{!selectedECheckType}">
+                        <apex:selectOption itemValue="TEL" itemLabel="TEL (Telephone Authorization)"/>
+                        <apex:selectOption itemValue="WEB" itemLabel="WEB (Internet Authorization)"/>
+                        <apex:selectOption itemValue="PPD" itemLabel="PPD (Written Authorization)" />
+                        <apex:selectOption itemValue="ARC" itemLabel="ARC (Account Recievable Convert Check to ACH)" />
+                        <apex:selectOption itemValue="BOC" itemLabel="BOC (Back Office Convert Check to ACH)" />
+                        <apex:actionSupport event="onchange" id="echeckTypeChange" rerender="TerminalBlock" status="formActionStatus"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!(selectedBankAccountType=='businessChecking' && selectedPaymentMethodType=='new')}">
+                    <apex:outputLabel for="echeckTypeSelectList">eCheck Type</apex:outputLabel>
+                    <apex:selectList size="1" id="echeckTypeSelectList" multiselect="false" value="{!selectedECheckType}">
+                        <apex:selectOption itemValue="CCD" itemLabel="CCD (Corporate Customer)" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+    
+                <apex:pageBlockSectionItem rendered="{!((selectedECheckType=='ARC' || selectedECheckType=='BOC') && selectedPaymentMethodType=='new')}">
+                    <apex:outputLabel for="checkNumber">Check Number</apex:outputLabel>
+                    <apex:inputText id="checkNumber" value="{!kugo2p__PaymentX__c.kugo2p__Check_Number__c}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <!--  ================================================================================================= -->
+            <apex:pageBlockSection id="storedPaymentInfo" title="Payment Information" collapsible="false" columns="1" rendered="{!IF(paymentType == 'storedPayment',true,false)}">
+            
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Transaction Type</apex:outputLabel>
+                    <apex:selectList id="transTypeSelectList_sc" value="{!selectedTransType}" size="1" multiselect="false" >
+                        <apex:selectOptions value="{!transactionTypeOptions}"/> 
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="cardProfileSelectList">Payment Method</apex:outputLabel>
+                    <apex:outputPanel >
+                    <apex:selectList size="1" id="cardProfileSelectList"
+                            multiselect="false" value="{!selectedPaymentMethodId}"> 
+                            <apex:selectOptions value="{!StoredPaymentOptions}" />
+                            <apex:actionSupport event="onchange" id="selectStoredCreditCard"
+                                action="{!storedPaymentSelectionChanged}" status="cardProfileSelectionStatus" rerender="TerminalBlock, paymentTypeSections, addresses"/>    <!--, pageMessages -->
+                    </apex:selectList>
+                    &nbsp;
+                    <apex:actionStatus id="cardProfileSelectionStatus" >
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >&nbsp; 
+                                <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                            </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                        </apex:facet>
+                    </apex:actionStatus>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!cardType <> null}">
+                    <apex:outputText value="Card Type"/>
+                    <apex:outputText value="{!cardType}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!paymentMethodRecord.kugo2p__Card_Number__c <> null}">
+                    <apex:outputText value="Card Number"/>
+                    <apex:outputText value="************{!paymentMethodRecord.kugo2p__Last_4_Digits__c}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!paymentMethodRecord.kugo2p__Profile_Id__c <> null}">
+                    <apex:outputText value="Profile ID"/>
+                    <apex:outputText value="{!paymentMethodRecord.kugo2p__Profile_Id__c}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!expirationYear <> null}">
+                    <apex:outputText value="Card Expiration"/>
+                    <apex:outputText value="{!expirationMonth} / {!expirationYear}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+
+            <!--  ================================================================================================= -->
+
+            <!-- <apex:outputPanel id="paymentTypeSection_MP"> -->
+            <apex:pageBlockSection title="Payment Information" columns="2" collapsible="false" rendered="{!(paymentType == 'manual')}" id="PIpbs">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Payment Method"></apex:outputLabel>
+                    <apex:selectList id="paymentMethod" value="{!paymentMethod}" size="1">
+                        <apex:selectOptions value="{!paymentMethodOptions}" />
+                        <apex:actionSupport event="onchange" 
+                            id="selectPaymentMethod" 
+                            action="{!nullAction}" 
+                            reRender="TerminalBlock,paymentTypeSections"
+                            status="formActionStatus"
+                            oncomplete="document.getElementById('{!$Component.paymentMethod}').focus();" /> 
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Check Number" rendered="{!(paymentMethod=='checkOrMoney')}"/>
+                    <apex:inputField value="{!kugo2p__PaymentX__c.kugo2p__Check_Number__c}" rendered="{!(paymentMethod=='checkOrMoney')}"></apex:inputField>
+                </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockSectionItem id="PIpbsi">
+                    <apex:outputLabel value="Memo"/>
+                     <!-- <apex:inputTextArea value="{!kugo2p__PaymentX__c.kugo2p__Memo__c}" style="width=200px; height=100px;"/> -->
+                     <apex:inputTextArea value="{!kugo2p__PaymentX__c.kugo2p__Memo__c}" style="width=200px; height=100px;" id="memo" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Transaction Fee" rendered="{!(paymentMethod=='creditcard' || paymentMethod=='electronicFundTransfer')}"/>
+                    <apex:inputField value="{!kugo2p__PaymentX__c.kugo2p__Transaction_Fee__c}" rendered="{!(paymentMethod=='creditcard' || paymentMethod=='electronicFundTransfer')}"></apex:inputField>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >    <!-- labelStyle="{!IF(paymentMethod=='creditcard','','display:none;')}" dataStyle="{!IF(paymentMethod=='creditcard','','display:none;')}" -->
+                    <apex:outputLabel value="Last 4 Digits" rendered="{!(paymentMethod=='creditcard')}"/>
+                    <apex:inputField value="{!kugo2p__PaymentX__c.kugo2p__Last_4_Digits__c}" rendered="{!(paymentMethod=='creditcard')}"></apex:inputField>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Transaction ID" rendered="{!(paymentMethod=='creditcard')}"/>
+                    <apex:inputField value="{!kugo2p__PaymentX__c.kugo2p__Transaction_Id__c}" rendered="{!(paymentMethod=='creditcard')}"></apex:inputField>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+
+        </apex:outputPanel> 
+
+        <apex:pageBlockSection title="Contact Billing Information" columns="2" collapsible="false" id="addresses">
+        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="contact">Contact Billing</apex:outputLabel>
+                <apex:inputField id="contact" value="{!kugo2p__PaymentX__c.kugo2p__Contact__c}" onKeyPress="return convertEnterKeyToBlur(event, this);">
+                    <apex:actionSupport event="onchange" action="{!loadContact}" rerender="TerminalBlockOP,TerminalBlock,paymentTypeSections,addresses,pageMessages" status="formActionStatus"/>
+                </apex:inputField>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="billingname">Billing Name</apex:outputLabel>
+                <apex:inputText id="billingname" value="{!billingname}" disabled="{!usePmtMethodBilling}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem id="blsiSaveBillingContact" >
+                <apex:inputCheckbox value="{!saveBillingContact}" id="saveBillingContact" style="font-weight: bold;" rendered="{!saveBillingContact}" />    <!-- style="{!IF(addressChanged,'','display:none;')}; font-weight:bold;" && NOT(usePmtMethodBilling)-->
+                <apex:outputPanel >
+                    <apex:outputLabel id="saveBillingContactLabel_Order" for="saveBillingContact" value="Contact Billing changes will be saved to Order details" style="font-weight:bold;font-size:91%;" rendered="{!(saveBillingContact && forSalesOrder)}"/>
+                    <apex:outputLabel id="saveBillingContactLabel_Invoice" for="saveBillingContact" value="Contact Billing changes will be saved to Invoice details" style="font-weight:bold;font-size:91%;" rendered="{!(saveBillingContact && forInvoice)}"/>
+                </apex:outputPanel> 
+            </apex:pageBlockSectionItem>
+
+            <!-- 
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+
+            
+            <apex:pageBlockSectionItem rendered="{!usePmtMethodBilling}">
+                <apex:outputLabel value="Address Source:"  />
+                <apex:outputText value="Stored Payment Method" />
+            </apex:pageBlockSectionItem>
+            
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+            -->
+
+            <apex:pageBlockSectionItem rendered="{!NOT(usePmtMethodBilling)}" id="pbsiLoadAddress">
+                <apex:outputLabel for="loadBillingFrom">Load Address From</apex:outputLabel>
+                <apex:outputPanel >
+                    <apex:selectList id="selectBillingFrom" value="{!loadBillingFrom}" size="1">
+                        <apex:selectOptions value="{!billingAddressFromOptions}" />
+                        <apex:actionSupport event="onchange"
+                            action="{!loadBillingAddressFields}"
+                            rerender="addresses, billingstreet, billingcity, billingstate, billingpostalcode, billingcountry, saveButton, pageMessages "
+                            status="addressSelectionStatus"
+                            />
+                    </apex:selectList>
+                    &nbsp;
+                    <apex:actionStatus id="addressSelectionStatus" >
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >
+                                &nbsp;<apex:image value="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/icon-spinner.gif')}" style="vertical-align:middle;" alt="busy..." />
+                                <!-- &nbsp;loading Address -->
+                             </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                            </apex:facet>
+                    </apex:actionStatus>  
+                </apex:outputPanel>             
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!usePmtMethodBilling}" >
+                <apex:outputLabel for="loadBillingFrom">Load Address From</apex:outputLabel>
+                <apex:selectList id="selectBillingFrom" size="1" disabled="true" style="color:rgb(84, 84, 84);">
+                    <apex:selectOption itemValue="Stored Payment Method" itemLabel="Stored Payment Method"/>
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="billingstreet">Billing Street</apex:outputLabel>
+                <apex:inputText id="billingstreet" value="{!billingstreet}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="billingcity">City</apex:outputLabel>
+                <apex:inputText id="billingcity" value="{!billingcity}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="billingstate">State/Province</apex:outputLabel>
+                <apex:inputText id="billingstate" value="{!billingstate}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="billingpostalcode">Zip/Postal Code</apex:outputLabel>
+                <apex:inputText id="billingpostalcode" value="{!billingpostalcode}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="billingcountry">Country</apex:outputLabel>
+                <apex:inputText id="billingcountry" value="{!billingcountry}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem id="blsiSaveAddress" >
+                <apex:inputCheckbox value="{!saveAddress}" id="saveAddress" style="font-weight: bold;display:none;" />
+                <apex:outputLabel id="saveAddressLabel" for="saveAddress" value="Address changes will be saved to {!loadBillingFrom} details" style="font-weight:bold;font-size:91%;display:none;" />
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+
+        <apex:pageBlockButtons id="terminalBlockButtons" styleClass="kugamon">
+            <apex:commandButton id="continue" value="Review Transaction" action="{!preparePayment}" styleClass="slds-button slds-button--brand" disabled="{!(disableForm||ext_disableForm)}" rendered="{!(paymentType!='manual')}"/>
+            <apex:commandButton id="submit" value="Record Transaction" action="{!continueForManual}" styleClass="slds-button slds-button--brand" disabled="{!(disableForm||ext_disableForm)}" rendered="{!(paymentType=='manual')}"/>
+            <apex:commandButton id="cancel" value="Cancel" action="{!deletePaymentAndCancelFromTerminal}" styleClass="slds-button slds-button--neutral" immediate="true"/>
+        </apex:pageBlockButtons>            
+    </apex:pageBlock>
+    </apex:outputPanel>
+
+</apex:form>
+
+<script>
+
+    function numberOnly(event) {
+        var key = event ? event.which : window.event.keyCode;
+        console.log('key: ' + key);
+        //if (String.fromCharCode(key).match(/[^0-9]/g)) return false;
+
+        // 0 = left/right keys, 8 = delete/back key, 118 = paste key, 120 = cut key, 122 = undo key, 90 = redo key to over an issue in FireFox
+        if (key != 0 && key != 8 && key != 118 && key != 120 && key != 122 && key != 90 && (key < 47 || key > 57)) return false;
+    }
+
+    function paymentTypeChangedJS() {
+        //debugger;
+        document.getElementById('terminalPage:terminalForm:TerminalBlock:TIpbs:TIpbsi:paymentType').focus();
+
+        // added the following section to overcome SF inputTextArea bug in IE 11.
+        var elemMemo = document.getElementById('terminalPage:terminalForm:TerminalBlock:PIpbs:PIpbsi:memo');
+        if (elemMemo != null) {
+            var memo = elemMemo.value;
+            if (memo.indexOf('</td><th class=', 0) == 0) {
+                elemMemo.value = ' ';
+            }
+        }
+    }
+
+    function checkTotalAmount(elem){
+        var amount = parseFloat("{!balanceDueAmount}");
+        if (parseFloat(elem.value.replace(/,/g,'')) > amount) {
+            alert("Please enter an amount lower than or equal to the Balance Due Amount of the Order: "+ amount);
+            elem.value = amount;
+        }
+    }
+    
+    function addressChanged() {
+        //debugger;
+        
+        // display the page block section item
+        //document.getElementById('{!$Component.terminalForm.TerminalBlock.addresses.blsiSaveAddress}').style.display = '';
+        
+        //var eleAddressNote = document.getElementById('{!$Component.terminalForm.TerminalBlock.addresses.addressNote}');
+        var eleSaveAddress = document.getElementById('{!$Component.terminalForm.TerminalBlock.addresses.blsiSaveAddress:saveAddress}');
+        if (eleSaveAddress != null) {
+            eleSaveAddress.style.display = '';
+            eleSaveAddress.checked = true;
+        }
+        var eleSaveAddressLabel = document.getElementById('{!$Component.terminalForm.TerminalBlock.addresses.blsiSaveAddress:saveAddressLabel}');
+        if (eleSaveAddressLabel != null) {
+            var eleLoadAddressFrom = document.getElementById('{!$Component.terminalForm.TerminalBlock.addresses.pbsiLoadAddress.selectBillingFrom}');
+            //var loadAddressFrom = eleLoadAddressFrom.selectedOptions[0].text; //eleLoadAddressFrom.selectedIndex
+            eleSaveAddressLabel.innerHTML = 'Address changes will be saved to ' + eleLoadAddressFrom.selectedOptions[0].text + ' details';
+            eleSaveAddressLabel.style.display = '';
+        }
+    }
+
+    function convertEnterKeyToBlur(ev, obj) {
+        var returnValue = disableEnterKey(ev);
+        if (returnValue == false) obj.blur();
+        return returnValue;
+    }
+
+    function disableEnterKey(ev) {
+         var key;
+         if(window.event)
+              key = window.event.keyCode; //IE
+         else
+              key = ev.which; //firefox      
+         
+         if(key==13) return false;
+         
+         return (key != 13);
+    }
+</script>
+</apex:page>

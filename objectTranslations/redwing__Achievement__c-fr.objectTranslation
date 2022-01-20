@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Accomplissement</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Accomplissements</value>
+    </caseValues>
+    <fields>
+        <label><!-- Certification Program --></label>
+        <name>Certification_Program__c</name>
+        <relationshipLabel><!-- Achievements --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Reputation Points --></label>
+        <name>ReputationPoints__c</name>
+    </fields>
+    <fields>
+        <label><!-- Achievement Category --></label>
+        <name>redwing__Achievement_Category__c</name>
+        <relationshipLabel><!-- Achievements --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Acquired Image --></label>
+        <name>redwing__Acquired_Image__c</name>
+    </fields>
+    <fields>
+        <label><!-- Eligible Image --></label>
+        <name>redwing__Eligible_Image__c</name>
+    </fields>
+    <fields>
+        <help>Lancer l&apos;URL d&apos;impression des accomplissements lors du clic sur l&apos;accomplissement acquis</help>
+        <label><!-- Enable Printing --></label>
+        <name>redwing__Enable_Printing__c</name>
+    </fields>
+    <fields>
+        <help>Les accomplissements expirés ne seront pas affichés sur la page de profil des utilisateurs</help>
+        <label><!-- Expiration Date --></label>
+        <name>redwing__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Expiration Term Basis --></label>
+        <name>redwing__Expiration_Term_Basis__c</name>
+        <picklistValues>
+            <masterLabel>Days</masterLabel>
+            <translation>Jours</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Months</masterLabel>
+            <translation>Mois</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Weeks</masterLabel>
+            <translation>Semaines</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Years</masterLabel>
+            <translation>Années</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Expiration Term --></label>
+        <name>redwing__Expiration_Term__c</name>
+    </fields>
+    <fields>
+        <help>Si cette option est cochée, l&apos;accomplissement ne sera pas affiché sur la page de profil de l&apos;utilisateur</help>
+        <label><!-- Hidden --></label>
+        <name>redwing__Hidden__c</name>
+    </fields>
+    <fields>
+        <help>Si cette option est cochée, l&apos;accomplissement ne sera pas affiché aux utilisateurs externes</help>
+        <label><!-- Is Internal --></label>
+        <name>redwing__Is_Internal__c</name>
+    </fields>
+    <fields>
+        <help>Substituer l&apos;état Terminé fera que les attributions d&apos;accomplissement prendront l&apos;&quot;état substitué&quot; défini au lieu d&apos;&quot;Acquis&quot;. Vous devrez passer à l&apos;état &quot;Acquis&quot; une fois la fonctionnalité utilisée.</help>
+        <label><!-- Override Completed Status --></label>
+        <name>redwing__Override_Completed_Status__c</name>
+        <picklistValues>
+            <masterLabel>In Review</masterLabel>
+            <translation>En cours d&apos;évaluation</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Spécifiez une valeur si vous désirez que les utilisateurs aillent sur cette URL lorsqu&apos;ils cliquent sur l&apos;image d&apos;accompl. Permet de rediriger sur une page personnalisée sur laquelle vous gérez des étapes suppl. avant de changer l&apos;état en &quot;Acquis&quot;.</help>
+        <label><!-- Override URL --></label>
+        <name>redwing__Override_URL__c</name>
+    </fields>
+    <fields>
+        <help>Sélectionnez cette option pour afficher l&apos;accomplissement dans le profil même lorsqu&apos;il a expiré</help>
+        <label><!-- Show If Expired --></label>
+        <name>redwing__Show_If_Expired__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>redwing__Type__c</name>
+        <picklistValues>
+            <masterLabel>Achievements</masterLabel>
+            <translation>Accomplissements</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Certifications</masterLabel>
+            <translation><!-- Certifications --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Giver --></label>
+        <name>redwing__Work_Badge_Giver__c</name>
+        <relationshipLabel><!-- Achievements --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Id --></label>
+        <name>redwing__Work_Badge_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Image URL --></label>
+        <name>redwing__Work_Badge_Image_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Message --></label>
+        <name>redwing__Work_Badge_Message__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Achievement Layout</layout>
+        <sections>
+            <label>Badge personnalisé</label>
+            <section>Custom Badge</section>
+        </sections>
+        <sections>
+            <label>Liens personnalisés</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Informations facultatives sur l&apos;attribution</label>
+            <section>Optional Assignment Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Nom d&apos;accomplissement</nameFieldLabel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <errorMessage><!-- All External Badges must have Reputation Points. If this is an Internal Badge, flag the &quot;Is Internal&quot; checkbox. --></errorMessage>
+        <name>Reputation_Points_in_External_Badges</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Add_Work_com_Badge --></label>
+        <name>redwing__Add_Work_com_Badge</name>
+    </webLinks>
+</CustomObjectTranslation>

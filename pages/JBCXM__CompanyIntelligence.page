@@ -1,0 +1,62 @@
+<apex:page sidebar="false" title="Company Intelligence" controller="JBCXM.GSCommonBroker">
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gainsight-app" style="width:100%">
+                <gs-root></gs-root>
+            </div>
+        </div>
+    </div>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var hc = fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+        var GS  = GS || {};
+        var apiEndPoint = hc.gatewayURL;
+        var app = 'company-intelligence';
+        var host = "SALESFORCE";
+        var appSessionId = hc.appSessionId;
+        var appUserId = hc.appUserId;
+        var appOrgId = hc.appOrgId;
+        GS.appName = "ci-admin";
+
+        GS.appSessionId = hc.appSessionId;
+        GS.appUserId = hc.appUserId;
+        GS.appOrgId = hc.appOrgId;
+        GS.isLightningEnabled = hc.isLightningEnabled;
+        GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.gainsightTabs = fakeEval('{!JSINHTMLENCODE(GainsightTabs)}');
+        GS.remotingCommonBulkEndPoint  ='{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+    </script>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:Features360 moduleName="ci-admin"/>
+        <script>
+            installResources({
+            scripts: ["runtime-es2015.js", "runtime-es5.js", "polyfills-es2015.js", "polyfills-es5.js", "vendor-es2015.js", "vendor-es5.js", "main-es2015.js", "main-es5.js"],
+            styles: ["styles"]
+            });
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <script>
+            GS.cdnUrl ="https://localhost:4200/";
+        </script>
+        <script type="text/javascript" src="https://localhost:4200/runtime.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/polyfills.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/styles.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/vendor.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/main.js"></script>
+    </apex:outputpanel>
+    <script>
+        var GSGA = {
+        orgId: "{!$Organization.Id}",
+        orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+        userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+</apex:page>

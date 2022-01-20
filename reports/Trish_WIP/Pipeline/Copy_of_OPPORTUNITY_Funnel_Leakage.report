@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <acrossGroupingContext>FISCAL_YEAR</acrossGroupingContext>
+        <calculatedFormula>RowCount / PARENTGROUPVAL(RowCount,ROW_GRAND_SUMMARY,FISCAL_YEAR)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Share of total opps lost for each stage.</description>
+        <developerName>FORMULA1</developerName>
+        <downGroupingContext>FROM_OPPORTUNITY_STAGE_NAME</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Stage Leak as % of Grand Total</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_27292810</developerName>
+        <masterLabel>Stage</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>FROM_OPPORTUNITY_STAGE_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Pipeline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Prospecting</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <value>Early</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Trial</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Proposition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Demo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <value>Middle</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Negotiation/Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Procurement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Suspend</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <value>Late</value>
+        </values>
+    </buckets>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>STAGE_DURATION</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY.NAME</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Only includes New Business and Add-on Opportunity Types |
+Fiscal Year of Close Dates</description>
+    <filter>
+        <criteriaItems>
+            <column>STAGE_CHANGE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FROM_OPPORTUNITY_STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Marketing Qualification,Discovery,Solution Alignment,Solution Validation,Formal Proposal,Negotiation,Signed Contract Received,Closed Won,Closed Lost,Fully Paid</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer,Add-on,New Business Add-on</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed Lost</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>FISCAL_YEAR</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_27292810</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FROM_OPPORTUNITY_STAGE_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Copy of OPPORTUNITY: Funnel Leakage</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>include</name>
+        <value>closed</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>OpportunityHistory</reportType>
+    <scope>all</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>OPP_CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_PREVCUR2FY</interval>
+    </timeFrameFilter>
+</Report>

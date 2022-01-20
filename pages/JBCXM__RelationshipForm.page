@@ -1,0 +1,83 @@
+<apex:page docType="html-5.0" controller="JBCXM.RelationshipBroker"  extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker" sidebar="false" title="Relationship Config" tabStyle="CustomerSuccess360__tab">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var nsParams               = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        var GS                      = GS || {};
+        GS.sessionId                = "{!$Api.Session_ID}";
+        GS.nsURL                    = nsParams.url;
+        GS.isNSEnabled              = (nsParams.nsenabled == "true" || nsParams.nsenabled == true);
+        GS.remotingEndPoint         = '{!$RemoteAction.RelationshipBroker.relationshipConfigBroker}';
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.restClientConfig         = {sessionId: GS.sessionId , remoting : "{!$RemoteAction.NSRemoting.apinsinvoke}"};
+        GS.remotingBulkEndPoint     = '{!$RemoteAction.RelationshipBroker.relationshipBulkRequestBroker}';
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.userConfig = {
+            userLocale          : {!(dateTimeFormatByLocale)},
+            userName            : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId              : "{!$User.Id}",
+            emailId             : "{!$User.Email}",
+            profilePhoto        : "{!(profilePhoto)}",
+            userDisplayName     : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs       : fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled  : {!(isLightningEnabled)}
+        };
+        GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+
+        var mode                = '{!JSINHTMLENCODE($CurrentPage.parameters.mode)}';
+        GS.frameworkPath        = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSApp/js/Gainsight";
+        GS.vendorPath           = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor";
+        GS.textVendorPath       = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/text";
+
+        GS.customJSPath         = "{!JSENCODE(URLFOR($Resource.CustomJS, ''))}";
+        GS.nsPath               = "{!JSENCODE(URLFOR($Resource.NS, ''))}";
+        GS.highcharts           = "{!JSENCODE(URLFOR($Resource.HighchartsJS, ''))}";
+        GS.jqGrid               = "{!JSENCODE(URLFOR($Resource.jqGrid,''))}";
+        GS.jQuery               = "{!JSENCODE(URLFOR($Resource.JQuery,''))}"
+        GS.maxAjaxTimeout       = 120000; //Used for timeout in case of ajax remoting request
+        GS.relationshipId       = "{!(JSINHTMLENCODE($CurrentPage.parameters.rId))}";
+        GS.accountId            = "{!(JSINHTMLENCODE($CurrentPage.parameters.accId))}";
+        GS.permissions          = {!(Permissions)};
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+      <c:AlertForm />
+      <script>
+         installResources({scripts: ["relationshipform/scripts/relationshipform.bundle.js"], styles:["relationshipform/styles/relationshipform.css"]});
+      </script>
+   </apex:outputpanel>
+
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <script src = "https://localhost:9091/UI/relationshipform/scripts/relationshipform.bundle.js" />
+        <link rel="stylesheet" type="text/css" href="https://localhost:9091/UI/relationshipform/styles/relationshipform.css" />
+    </apex:outputpanel>
+
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/components/emailbuilder/emailbuilder.css"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/module/relationship-360/relationship-forms.css" />
+    <apex:form ></apex:form>
+
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gs-relationship-form-cnt"></div>
+        </div>
+    </div>
+
+
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('Relationship Form');
+    </script>
+
+</apex:page>

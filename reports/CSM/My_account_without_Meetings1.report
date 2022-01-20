@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Demos__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Demos__r$Date__c</field>
+    </columns>
+    <crossFilters>
+        <operation>without</operation>
+        <primaryTableColumn>Account$Id</primaryTableColumn>
+        <relatedTable>Demo__c</relatedTable>
+        <relatedTableJoinColumn>Account__c</relatedTableJoinColumn>
+    </crossFilters>
+    <currency>EUR</currency>
+    <format>Tabular</format>
+    <name>My account without Meetings</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_and_without_meetings__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$Contract_Expiration_Date__c</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_$Account.Customer_Success_Manager__c</field>
+    </columns>
+    <columns>
+        <field>Implementation_Survey_Response__c.Git_Provider__c</field>
+    </columns>
+    <columns>
+        <field>Implementation_Survey_Response__c.Multiple_ALM_or_Git_Instances__c</field>
+    </columns>
+    <columns>
+        <field>Implementation_Survey_Response__c.Git_Behind_Firewall__c</field>
+    </columns>
+    <columns>
+        <field>Implementation_Survey_Response__c.ALM__c</field>
+    </columns>
+    <columns>
+        <field>Implementation_Survey_Response__c.ALM_on_Premise__c</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Tabular</format>
+    <name>ALL customer impl surveys</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Implementation_Survey_Response__c@Implementation_Survey_Response__c.Account__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Implementation_Survey_Response__c.Next_Release_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

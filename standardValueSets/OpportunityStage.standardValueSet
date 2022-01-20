@@ -2,39 +2,117 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Qualification</fullName>
+        <fullName>Marketing Qualification</fullName>
         <default>false</default>
-        <description>You&apos;ve contacted the prospect and they&apos;re interested.</description>
-        <label>Qualification</label>
+        <label>Marketing Qualification</label>
+        <closed>false</closed>
+        <forecastCategory>Omitted</forecastCategory>
+        <probability>10</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Pipeline</fullName>
+        <default>false</default>
+        <label>Pipeline</label>
         <closed>false</closed>
         <forecastCategory>Pipeline</forecastCategory>
         <probability>10</probability>
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Needs Analysis</fullName>
+        <fullName>Discovery</fullName>
         <default>false</default>
-        <description>You&apos;re defining the prospect&apos;s needs.</description>
-        <label>Needs Analysis</label>
+        <label>Discovery</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>20</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Prospecting</fullName>
+        <default>false</default>
+        <label>Prospecting</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>10</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Solution Alignment</fullName>
+        <default>false</default>
+        <label>Solution Alignment</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>25</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Trial</fullName>
+        <default>false</default>
+        <label>Trial</label>
         <closed>false</closed>
         <forecastCategory>Pipeline</forecastCategory>
         <probability>35</probability>
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Proposal</fullName>
+        <fullName>Solution Validation</fullName>
         <default>false</default>
-        <description>You&apos;re developing a sales proposal for the prospect.</description>
-        <label>Proposal</label>
+        <label>Solution Validation</label>
+        <closed>false</closed>
+        <forecastCategory>BestCase</forecastCategory>
+        <probability>50</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Value Proposition</fullName>
+        <default>false</default>
+        <label>Value Proposition</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>50</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Demo</fullName>
+        <default>false</default>
+        <label>Demo</label>
+        <closed>false</closed>
+        <forecastCategory>BestCase</forecastCategory>
+        <probability>50</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Formal Proposal</fullName>
+        <default>false</default>
+        <label>Formal Proposal</label>
+        <closed>false</closed>
+        <forecastCategory>BestCase</forecastCategory>
+        <probability>65</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Negotiation/Review</fullName>
+        <default>false</default>
+        <label>Negotiation/Review</label>
         <closed>false</closed>
         <forecastCategory>BestCase</forecastCategory>
         <probability>75</probability>
         <won>false</won>
     </standardValue>
     <standardValue>
+        <fullName>Procurement</fullName>
+        <default>false</default>
+        <description>Verbally accepted and final stages of close (procurement/vendor setup)</description>
+        <label>Procurement</label>
+        <closed>false</closed>
+        <forecastCategory>Forecast</forecastCategory>
+        <probability>90</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
         <fullName>Negotiation</fullName>
         <default>false</default>
-        <description>You&apos;re working with the prospect on the proposal you delivered.</description>
         <label>Negotiation</label>
         <closed>false</closed>
         <forecastCategory>Forecast</forecastCategory>
@@ -42,9 +120,17 @@
         <won>false</won>
     </standardValue>
     <standardValue>
+        <fullName>Signed Contract Received</fullName>
+        <default>false</default>
+        <label>Signed Contract Received</label>
+        <closed>false</closed>
+        <forecastCategory>Forecast</forecastCategory>
+        <probability>95</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
         <fullName>Closed Won</fullName>
         <default>false</default>
-        <description>Sold!</description>
         <label>Closed Won</label>
         <closed>true</closed>
         <forecastCategory>Closed</forecastCategory>
@@ -52,13 +138,95 @@
         <won>true</won>
     </standardValue>
     <standardValue>
+        <fullName>Closed Suspend</fullName>
+        <default>false</default>
+        <label>Closed Suspend</label>
+        <closed>true</closed>
+        <forecastCategory>Omitted</forecastCategory>
+        <probability>0</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
         <fullName>Closed Lost</fullName>
         <default>false</default>
-        <description>No sale.</description>
         <label>Closed Lost</label>
         <closed>true</closed>
         <forecastCategory>Omitted</forecastCategory>
         <probability>0</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Closed Duplicate</fullName>
+        <default>false</default>
+        <label>Closed Duplicate</label>
+        <closed>true</closed>
+        <forecastCategory>Omitted</forecastCategory>
+        <probability>0</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Partially Paid</fullName>
+        <default>false</default>
+        <description>For when multi year customers on annual billing frequency or on quarterly billing of an annual contract are only partially paid.</description>
+        <label>Partially Paid</label>
+        <closed>true</closed>
+        <forecastCategory>Closed</forecastCategory>
+        <probability>100</probability>
+        <won>true</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Fully Paid</fullName>
+        <default>false</default>
+        <label>Fully Paid</label>
+        <closed>true</closed>
+        <forecastCategory>Closed</forecastCategory>
+        <probability>100</probability>
+        <won>true</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Best Case</fullName>
+        <default>false</default>
+        <label>Best Case</label>
+        <closed>false</closed>
+        <forecastCategory>BestCase</forecastCategory>
+        <probability>20</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Negotiation CS</fullName>
+        <default>false</default>
+        <label>Negotiation CS</label>
+        <closed>false</closed>
+        <forecastCategory>BestCase</forecastCategory>
+        <probability>70</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Commit</fullName>
+        <default>false</default>
+        <label>Commit</label>
+        <closed>false</closed>
+        <forecastCategory>Forecast</forecastCategory>
+        <probability>90</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Work at Risk</fullName>
+        <default>false</default>
+        <description>Work has begun without a fully executed contract.</description>
+        <label>Work at Risk</label>
+        <closed>false</closed>
+        <forecastCategory>Forecast</forecastCategory>
+        <probability>100</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Scope Validation</fullName>
+        <default>false</default>
+        <label>Scope Validation</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>20</probability>
         <won>false</won>
     </standardValue>
 </StandardValueSet>

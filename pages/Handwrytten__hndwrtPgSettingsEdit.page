@@ -1,0 +1,211 @@
+<!-- 
+Author: Phase One First, LLC
+Email: info@phaseonefirst.com [SFDC licensed username]
+Handwrytten Settings Edit page
+-->
+<!--
+Author: Utkarsh Maurya
+Modified Date: Feb 2020
+Description: Created Dialog box for Account, Contact, Opportunity using jQuery
+Created custom Select Option List for Account/Contact/Opportunity
+-->
+
+<apex:page id="thePage" controller="Handwrytten.hndwrtClsSettingsEdit" title="Handwrytten Settings Edit" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:includeLightning />
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theForm" >
+        <div class="slds" id="LcDisplayId">
+            
+            <style>
+                input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700;  
+                }
+            </style> 
+            
+            <!--jQuery packages to create dialog box-->
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <link rel="stylesheet" href="/resources/demos/style.css"/>
+            <!--end of jQuery packages to create dialog box-->
+            
+            <script type="text/javascript">
+            
+            //to hide account related data
+            $( document ).ready(function() {
+                $("#dialogAccount").hide();
+            });//end of to hide account related data
+            
+            //to hide contact related data
+            $( document ).ready(function() {
+                $("#dialogContact").hide();
+            });//end of to hide contact related data
+            
+            //to hide opportunity related data
+            $( document ).ready(function() {
+                $("#dialogOpportunity").hide();
+            });//end of to hide opportunity related data
+            
+            //account dialog box close
+            function accountDialogBoxClose(page,param){
+                ShowDivAccount = true;
+                var accountPicklistValue = document.getElementById('{!$Component.block_id.block_id_section.selectedMergeFldAccountId}').value; 
+                $("#dialogAccount").dialog("close");
+                window.open(page+'?param1='+'Account'+ '&param2='+accountPicklistValue,'_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=100, left=100, width=1100, height=550');
+            }//end ofaccount dialog box close
+            
+            //contact dialog box close
+            function contactDialogBoxClose(page,param){
+                ShowDivContact = true;
+                var contactPicklistValue = document.getElementById('{!$Component.block_id.block_id_section.selectedMergeFldContactId}').value; 
+                $("#dialogContact").dialog("close");
+                window.open(page+'?param1='+'Contact'+ '&param2='+contactPicklistValue,'_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=100, left=100, width=1100, height=550');
+            }//end of contact dialog box close
+            
+            //opportunity dialog box close
+            function opportunityDialogBoxClose(page,param){
+                ShowDivOpportunity =true;
+                var opportunityPicklistValue = document.getElementById('{!$Component.block_id.block_id_section.selectedMergeFldOpportunityId}').value; 
+                $("#dialogOpportunity").dialog("close");
+                window.open(page+'?param1='+'Opportunity'+ '&param2='+opportunityPicklistValue,'_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=100, left=100, width=1100, height=550');
+            }//end of opportunity dialog box close
+            
+            //account dialog box
+            function fillValAccount() {
+                var accountPicklistValue = document.getElementById('{!$Component.block_id.block_id_section.acc}').value;
+                if(accountPicklistValue == 'Select Account Related Custom Object'){
+                    $("#dialogAccount").dialog({
+                        modal:true,
+                        closeable:false,
+                        height: 200,
+                        width: 357,
+                        resizable:false,
+                        draggable:true,
+                        overlay:{background:"white"}
+                    });
+                }else if(accountPicklistValue == 'Select Account Standard Fields'){
+                    ShowDivAccount = true;
+                    window.open('{!$Page.AddressInfoRecipientFieldMappingVf}'+'?param1='+'Account'+ '&param2='+'Account','_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=100, left=100, width=1100, height=550');
+                }
+            }//end of account dialog box
+            
+            //contact dialog box
+            function fillValContact() {
+                var contactPicklistValue = document.getElementById('{!$Component.block_id.block_id_section.con}').value; 
+                ShowDivContact = false;
+                if(contactPicklistValue == 'Select Contact Related Custom Object'){
+                    $("#dialogContact").dialog({
+                        modal:true,
+                        closeable:false,
+                        height: 200,
+                        width: 357,
+                        resizable:false,
+                        draggable:true,
+                        overlay:{background:"white"}
+                    });
+                }else if(contactPicklistValue == 'Select Contact Standard Fields'){
+                    ShowDivContact = true;
+                    window.open('{!$Page.AddressInfoRecipientFieldMappingVf}'+'?param1='+'Contact'+ '&param2='+'Contact','_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=100, left=100, width=1100, height=550');
+                }
+            }//end of contact dialog box
+            
+            //opportunity dialog box
+            function fillValOpportunity() {
+                var opportunityPicklistValue = document.getElementById('{!$Component.block_id.block_id_section.opp}').value; 
+                ShowDivOpportunity = false;
+                if(opportunityPicklistValue == 'Select Opportunity Related Custom Object'){
+                    $("#dialogOpportunity").dialog({
+                        modal:true,
+                        closeable:false,
+                        height: 200,
+                        width: 357,
+                        resizable:false,
+                        draggable:true,
+                        overlay:{background:"white"}
+                    });
+                }else if(opportunityPicklistValue == 'Select Opportunity Standard Fields'){
+                    ShowDivContact = true;
+                    window.open('{!$Page.AddressInfoRecipientFieldMappingVf}'+'?param1='+'Opportunity'+ '&param2='+'Opportunity','_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=100, left=100, width=1100, height=550');
+                }
+            }//end of opportunity dialog box
+            </script>
+            
+            <apex:sectionHeader title="Handwrytten" subtitle="Edit Address Settings" help="/apex/hndwrtPgHelp" />
+            
+            <apex:pageBlock title="Handwrytten Settings Edit" mode="Edit" id="block_id">
+                <apex:pageMessages />
+                
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="Save" action="{!save}"/>
+                    <apex:commandButton value="Cancel" action="{!cancel}"/>
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockSection title="Handwrytten Address Settings" columns="2" id="block_id_section">
+                    <apex:selectList value="{!selectedAccountPicklistValue}" label="Default Account Address Type" size="1" onchange="fillValAccount();" required="true" id="acc">
+                        <apex:selectOptions value="{!accountPicklistValuesSelectOptionList}"/>
+                    </apex:selectList>
+                    <!--<apex:inputField value="{!hndwrtSettings.Default_Account_Address_Type__c}" onchange="fillValAccount();" required="true" id="acc"/>-->
+                    
+                    
+                    <apex:selectList value="{!selectedContactPicklistValue}" label="Default Contact Address Type" size="1" onchange="fillValContact();" required="true" id="con">
+                        <apex:selectOptions value="{!contactPicklistValuesSelectOptionList}"/>
+                    </apex:selectList>
+                    <!--<apex:inputField value="{!hndwrtSettings.Default_Contact_Address_Type__c}" onchange="fillValContact();" required="true" id="con"/>-->
+                    
+                    
+                    <apex:selectList value="{!selectedOpportunityPicklistValue}" label="Default Opportunity Address Type" size="1" onchange="fillValOpportunity();" required="true" id="opp">
+                        <apex:selectOptions value="{!opportunityPicklistValuesSelectOptionList}"/>
+                    </apex:selectList>
+                    <!--<apex:inputField value="{!hndwrtSettings.Default_Opportunity_Address_Type__c}" onchange="fillValOpportunity();" required="true" id="opp"/>-->
+                   
+                    
+                    <apex:inputField value="{!hndwrtSettings.Handwrytten__Default_Business_Name__c}"/>
+                    
+                    
+                    <!--account related custom object picklist-->
+                    <apex:outputPanel rendered="{!ShowDivAccount}" layout="block"><!--used to hide below content during page load-->
+                        <div id="dialogAccount" title="Select Custom Related Object (Account)"><br/>
+                            <label>&nbsp;&nbsp;&nbsp;&nbsp;sObject:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <apex:selectList value="{!selectedMergeFldAccount}" size="1" id="selectedMergeFldAccountId">
+                                <apex:selectOptions value="{!accountRelatedCustomObjectsSelectOptionList}"/>
+                            </apex:selectList><br/>
+                            <apex:commandButton value="Save" onclick="accountDialogBoxClose('{!$Page.Handwrytten__AddressInfoRecipientFieldMappingVf}','null'); return false;" style="float: right;font-size: 11px;margin-top:88px;" rendered="{!AccountRelatedCustomObjectExist}" />
+                        </div>
+                    </apex:outputPanel>   
+                    <!--end of account related custom object picklist-->
+                    
+                    
+                    <!--contact related custom object picklist-->
+                    <apex:outputPanel rendered="{!ShowDivContact}" layout="block"><!--used to hide below content during page load-->
+                        <div id="dialogContact" title="Select Custom Related Object (Contact)"><br/>
+                            <label>&nbsp;&nbsp;&nbsp;&nbsp;sObject:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <apex:selectList value="{!selectedMergeFldContact}" size="1" id="selectedMergeFldContactId">
+                                <apex:selectOptions value="{!contactRelatedCustomObjectsSelectOptionList}"/>
+                            </apex:selectList><br/>
+                            <apex:commandButton value="Save" onclick="contactDialogBoxClose('{!$Page.Handwrytten__AddressInfoRecipientFieldMappingVf}','null'); return false;" style="float: right;font-size: 11px;margin-top:88px;" rendered="{!ContactRelatedCustomObjectExist}" />
+                        </div>
+                    </apex:outputPanel>
+                    <!--end of contact related custom object picklist-->
+                    
+                    
+                    <!--opportunity related custom object picklist-->
+                    <apex:outputPanel rendered="{!ShowDivOpportunity}" layout="block"><!--used to hide below content during page load-->
+                        <div id="dialogOpportunity" title="Select Custom Related Object (Opportunity)"><br/>
+                            <label>&nbsp;&nbsp;&nbsp;&nbsp;sObject:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <apex:selectList value="{!selectedMergeFldOpportunity}" size="1" id="selectedMergeFldOpportunityId">
+                                <apex:selectOptions value="{!opportunityRelatedCustomObjectsSelectOptionList}"/>
+                            </apex:selectList><br/>
+                            <apex:commandButton value="Save" onclick="opportunityDialogBoxClose('{!$Page.Handwrytten__AddressInfoRecipientFieldMappingVf}','null'); return false;" style="float: right;font-size: 11px;margin-top:88px;" rendered="{!OpportunityRelatedCustomObjectExist}" />
+                        </div>
+                    </apex:outputPanel>
+                    <!--opportunity related custom object picklist-->
+                    
+                    
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </div>
+    </apex:form>
+</apex:page>

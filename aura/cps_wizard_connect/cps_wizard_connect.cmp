@@ -1,0 +1,58 @@
+<aura:component controller="cps_PlaygroundWizardConnectController">
+    <aura:attribute name="playground" type="Object" required="true" />
+    <aura:attribute name="eventMessagesToIgnore" type="String[]" />
+    <aura:attribute name="jobs" type="Object[]" />
+    <aura:attribute name="loading" type="Boolean" default="true" />
+    <aura:attribute name="view" type="Integer" default="0" />
+    <aura:attribute name="sfAccountConnected" type="Boolean" default="false" />
+    <aura:attribute name="gitAccountConnected" type="Boolean" default="false" />
+    <aura:attribute name="copadoAuthLink" type="String" />
+    <aura:attribute name="githubRedirectURI" type="String" />
+    <aura:registerEvent name="stepChange" type="c:cps_wizard_stepChange" />
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+    <aura:handler event="c:cps_c1p_notifier" action="{! c.handleC1PEvents }" />
+
+    <c:cps_wizard_body>
+        <c:cps_wizard_heading id="connectTitle">{! $Label.c.CPS_Connect_Title }</c:cps_wizard_heading>
+
+        <aura:if isTrue="{! v.loading }">
+            <c:cps_wizard_text id="GettingReady">We are getting things ready. Please sit tight.</c:cps_wizard_text>
+            <c:cps_loading />
+        </aura:if>
+        
+        <aura:if isTrue="{! !v.loading }">
+      
+            <aura:if isTrue="{! v.view == 0 }">
+                <c:cps_wizard_text id="ConnectSalesforceTitle">{! $Label.c.CPS_Connect_Subtitle }</c:cps_wizard_text>
+                <c:cps_salesforce_login_button link="{! v.copadoAuthLink }" ready="{! v.sfAccountConnected }" />
+                <c:cps_Button id="btnContinueFromSFAuth" disabled="{! !v.sfAccountConnected }" onclick="{! c.handleContinueClick }">{! $Label.c.CPS_Continue_Button }</c:cps_Button>
+            </aura:if>
+
+            <aura:if isTrue="{! v.view == 1 }">
+                <c:cps_wizard_text id="ConnectGitTitle">{! $Label.c.CPS_Connect_Github}</c:cps_wizard_text>
+                <div class="git-buttons">
+                    <a id="github-link" href="{! v.githubRedirectURI }" class="git">
+                        <img class="icon" src="{! $Resource.cps_assets + '/Assets/github_logo.png' }" />
+                        
+                        <aura:if isTrue="{! v.jobs[2].status == 'Pending' }">
+                            <p>{! $Label.c.CPS_Connect_Github_Link }</p>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{! and(v.jobs[2].status!='Pending', v.jobs[2].status!='Failed')}">
+                            <c:cps_wizard_listActionItem
+                                text="{! v.jobs[2].status != 'Completed' ? 'Working...' : 'Connected' }"
+                                loading="{! v.jobs[2].status == 'In progress' }"
+                                checked="{! v.jobs[2].status == 'Completed' }"/>
+                        </aura:if>
+                    </a>
+                </div>
+                <aura:if isTrue="{! v.jobs[2].status == 'Failed' }">
+                    <c:cps_Button id="btnRetry" onclick="{! c.retryGitAuthentication }">Retry</c:cps_Button>
+                </aura:if>
+                <aura:if isTrue="{! v.jobs[2].status != 'Failed'}">
+                    <c:cps_Button id="btnContinueFromGitAuth" disabled="{! !v.gitAccountConnected }" onclick="{! c.handleContinueClick }">{! $Label.c.CPS_Continue_Button }</c:cps_Button>
+                </aura:if>
+            </aura:if>
+      	</aura:if>
+	</c:cps_wizard_body>
+</aura:component>

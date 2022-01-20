@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CaseSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAssignNotificationTemplate>Support_Templates/New_case_notification_internal_users</caseAssignNotificationTemplate>
     <caseAutoProcUser>false</caseAutoProcUser>
+    <caseCloseNotificationTemplate>Support_Templates/Case_Closure_Email</caseCloseNotificationTemplate>
+    <caseCreateNotificationTemplate>Support_Templates/Case_update_notification_customers</caseCreateNotificationTemplate>
     <caseFeedItemSettings>
         <characterLimit>400</characterLimit>
         <displayFormat>Default</displayFormat>
         <feedItemType>EmailMessageEvent</feedItemType>
     </caseFeedItemSettings>
     <caseFeedReadUnreadLtng>false</caseFeedReadUnreadLtng>
-    <caseMergeInLightning>false</caseMergeInLightning>
-    <closeCaseThroughStatusChange>true</closeCaseThroughStatusChange>
+    <caseMergeInLightning>true</caseMergeInLightning>
+    <closeCaseThroughStatusChange>false</closeCaseThroughStatusChange>
     <defaultCaseFeedLayoutOn>false</defaultCaseFeedLayoutOn>
-    <defaultCaseOwner>service.hwa3bzcqct5p.hrei0kxreoxd@example.com</defaultCaseOwner>
+    <defaultCaseOwner>ar@copa.do</defaultCaseOwner>
     <defaultCaseOwnerType>User</defaultCaseOwnerType>
     <emailToCase>
         <enableE2CAttachmentAsFile>false</enableE2CAttachmentAsFile>
@@ -23,19 +26,64 @@
         <notifyOwnerOnNewCaseEmail>true</notifyOwnerOnNewCaseEmail>
         <overEmailLimitAction>Bounce</overEmailLimitAction>
         <preQuoteSignature>false</preQuoteSignature>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Sales Email</caseOrigin>
+            <casePriority>High</casePriority>
+            <createTask>true</createTask>
+            <emailAddress>sales@copa.do</emailAddress>
+            <isVerified>true</isVerified>
+            <routingName>Sales Support</routingName>
+            <saveEmailHeaders>false</saveEmailHeaders>
+            <taskStatus>Open</taskStatus>
+        </routingAddresses>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
+            <caseOwner>Sales_Cases</caseOwner>
+            <caseOwnerType>Queue</caseOwnerType>
+            <casePriority>Medium</casePriority>
+            <createTask>true</createTask>
+            <emailAddress>sales@copado.com</emailAddress>
+            <isVerified>true</isVerified>
+            <routingName>Sales Support (copado.com)</routingName>
+            <saveEmailHeaders>false</saveEmailHeaders>
+            <taskStatus>Completed</taskStatus>
+        </routingAddresses>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
+            <casePriority>Medium</casePriority>
+            <createTask>false</createTask>
+            <emailAddress>support@copa.do</emailAddress>
+            <isVerified>true</isVerified>
+            <routingName>Support</routingName>
+            <saveEmailHeaders>true</saveEmailHeaders>
+        </routingAddresses>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
+            <casePriority>Medium</casePriority>
+            <createTask>false</createTask>
+            <emailAddress>support@copado.com</emailAddress>
+            <isVerified>false</isVerified>
+            <routingName>Support copado.com</routingName>
+            <saveEmailHeaders>true</saveEmailHeaders>
+        </routingAddresses>
         <unauthorizedSenderAction>Discard</unauthorizedSenderAction>
     </emailToCase>
     <enableCaseFeed>true</enableCaseFeed>
-    <enableCollapseEmailThread>true</enableCollapseEmailThread>
-    <enableDraftEmails>true</enableDraftEmails>
+    <enableCollapseEmailThread>false</enableCollapseEmailThread>
+    <enableDraftEmails>false</enableDraftEmails>
     <enableEarlyEscalationRuleTriggers>false</enableEarlyEscalationRuleTriggers>
     <enableEmailActionDefaultsHandler>false</enableEmailActionDefaultsHandler>
     <enableEscalateQfiToCaseInternal>false</enableEscalateQfiToCaseInternal>
     <enableEscalateQfiToCaseNetworks>false</enableEscalateQfiToCaseNetworks>
+    <enableExtNetworksCaseFeedEnabled>false</enableExtNetworksCaseFeedEnabled>
     <enableMultiLangSolnSrchCSS>false</enableMultiLangSolnSrchCSS>
     <enableMultiLangSolnSrchPKB>false</enableMultiLangSolnSrchPKB>
     <enableMultiLangSolution>false</enableMultiLangSolution>
-    <enableSolutionCategory>false</enableSolutionCategory>
+    <enableSolutionCategory>true</enableSolutionCategory>
     <enableSolutionInlineCategory>true</enableSolutionInlineCategory>
     <enableSolutionShortSummary>true</enableSolutionShortSummary>
     <enableSuggestedArticlesApplication>false</enableSuggestedArticlesApplication>
@@ -43,17 +91,20 @@
     <enableSuggestedArticlesPartnerPortal>false</enableSuggestedArticlesPartnerPortal>
     <enableSuggestedSolutions>true</enableSuggestedSolutions>
     <escalateCaseBefore>false</escalateCaseBefore>
+    <keepCaseMergeRecords>true</keepCaseMergeRecords>
+    <keepRecordTypeOnAssignmentRule>true</keepRecordTypeOnAssignmentRule>
     <notifyContactOnCaseComment>false</notifyContactOnCaseComment>
-    <notifyDefaultCaseOwner>false</notifyDefaultCaseOwner>
-    <notifyOwnerOnCaseComment>false</notifyOwnerOnCaseComment>
-    <notifyOwnerOnCaseOwnerChange>false</notifyOwnerOnCaseOwnerChange>
+    <notifyDefaultCaseOwner>true</notifyDefaultCaseOwner>
+    <notifyOwnerOnCaseComment>true</notifyOwnerOnCaseComment>
+    <notifyOwnerOnCaseOwnerChange>true</notifyOwnerOnCaseOwnerChange>
     <showEmailAttachmentsInCaseAttachmentsRL>true</showEmailAttachmentsInCaseAttachmentsRL>
-    <showFewerCloseActions>false</showFewerCloseActions>
-    <systemUserEmail>noreply@00d8c00000173rzeai</systemUserEmail>
+    <systemUserEmail>hlamba@copado.com</systemUserEmail>
     <useSystemEmailAddress>true</useSystemEmailAddress>
     <useSystemUserAsDefaultCaseUser>true</useSystemUserAsDefaultCaseUser>
     <visibleInCssCheckbox>false</visibleInCssCheckbox>
     <webToCase>
-        <enableWebToCase>false</enableWebToCase>
+        <caseOrigin>Web</caseOrigin>
+        <defaultResponseTemplate>Support_Templates/New_case_notification_customers</defaultResponseTemplate>
+        <enableWebToCase>true</enableWebToCase>
     </webToCase>
 </CaseSettings>

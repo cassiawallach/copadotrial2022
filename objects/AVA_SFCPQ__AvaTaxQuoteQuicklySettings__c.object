@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings that control functionality of AvaTax for QuoteQuickly.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>AVA_SFCPQ__A_AccountNumber__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Account Number used to connect to AvaTax API.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Account Number used to connect to AvaTax API.</inlineHelpText>
+        <label>Account Number</label>
+        <length>10</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__B_LicenseKey__c</fullName>
+        <deprecated>false</deprecated>
+        <description>License key used to connect to AvaTax API.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>License key used to connect to AvaTax API.</inlineHelpText>
+        <label>License Key</label>
+        <length>16</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__C_Sandbox__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The default account type is Production. This selection changes the account type from Production to Sandbox.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The default account type is Production. This selection changes the account type from Production to Sandbox.</inlineHelpText>
+        <label>Sandbox</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__D_CompanyCode__c</fullName>
+        <deprecated>false</deprecated>
+        <description>All transactions will be posted to this company in AvaTax</description>
+        <externalId>false</externalId>
+        <inlineHelpText>All transactions will be posted to this company in AvaTax</inlineHelpText>
+        <label>Company Code</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Disable_AvaTax_Triggers__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select checkbox to temporarily disable all triggers for  processes that you do not want to execute all AvaTax For Salesforce CPQ triggers. Remember to re-enable triggers after this process so that the application can perform as expected.</inlineHelpText>
+        <label>Disable AvaTax Triggers</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__E_Street__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Street portion of corporate address.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Street portion of corporate address.</inlineHelpText>
+        <label>Street</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Enable_AvaTax_Exemptions__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Enable AvaTax Exemptions</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__F_City__c</fullName>
+        <deprecated>false</deprecated>
+        <description>City portion of corporate address.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>City portion of corporate address.</inlineHelpText>
+        <label>City</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__G_State__c</fullName>
+        <deprecated>false</deprecated>
+        <description>State portion of corporate address.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>State portion of corporate address.</inlineHelpText>
+        <label>State</label>
+        <length>3</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__H_PostalCode__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Postal Code portion of corporate address.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Postal Code portion of corporate address.</inlineHelpText>
+        <label>Postal Code</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__I_Country__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Country portion of corporate address.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Country portion of corporate address.</inlineHelpText>
+        <label>Country</label>
+        <length>2</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__JA_SaveTransactionsToAvaTax__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked, Order transactions will be posted to AvaTax admin console (AvaTax Update).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, Order transactions will be posted to AvaTax Update</inlineHelpText>
+        <label>Save transactions to AvaTax</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__J_EnableTaxCalculation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>To enable/disable Avalara Tax Calculation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>To enable the AvaTax tax service</inlineHelpText>
+        <label>Enable Tax Calculation</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__K_EnableAddressValidation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Enable AvaTax Address Validation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>To enable the AvaTax Address Validation Service. Address Validation service is available for US and Canada only</inlineHelpText>
+        <label>Validate Addresses</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__L_Note__c</fullName>
+        <defaultValue>$Label.ava_sfcpq__avalara_note</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Provide details to visit AvaTax tab to test the connection</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please visit AvaTax tab to test connection</inlineHelpText>
+        <label>Note</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Street_2__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Street 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Street_3__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Street 3</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>AvaTax Salesforce Integration Setting</label>
+    <visibility>Public</visibility>
+</CustomObject>

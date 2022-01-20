@@ -1,0 +1,15 @@
+<aura:component controller="CommunityUserCounterController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="userCount" type="Integer"/>
+    <aura:attribute name="isLoaded" type="Boolean" default="false"/>
+    <aura:handler name='init' value='{!this}' action='{!c.init}' />
+    
+    <div>
+        <div class="slds-text-heading_large slds-align_absolute-center slds-text-align_center user-count_header">Welcome to the Copado Community</div>
+        <aura:if isTrue="{!v.isLoaded}">
+            <div class="slds-text-heading_medium slds-align_absolute-center slds-m-top_medium user-count_container slds-p-horizontal_medium slds-p-vertical_small">
+                <lightning:icon class="slds-m-right_small" iconName="utility:groups" alternativeText="Community Members" title="Community Members" />
+                <p>Powered by <lightning:formattedNumber value="{!v.userCount}"/> DevOps Professionals</p>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

@@ -175,7 +175,6 @@
         <fullName>copado__Attachment_Options__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Insert, update or remove attachments of the records that will get deployed.</inlineHelpText>
         <label>Attachment Actions</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -187,7 +186,7 @@
                 <value>
                     <fullName>No Attachments</fullName>
                     <default>true</default>
-                    <label>No Actions</label>
+                    <label>No Attachments</label>
                 </value>
                 <value>
                     <fullName>Insert Attachments</fullName>
@@ -290,7 +289,6 @@
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>When not matching owners, the owner of the deployed records in the target Credential will be automatically assigned to the user executing the deployment.</inlineHelpText>
         <label>Match Owners</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -300,7 +298,6 @@
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>When matching record types, the records in the target Credential are assigned to the same record type as in the source Credential, if found. Otherwise they are assigned to the default record type in the deploying user&apos;s profile.</inlineHelpText>
         <label>Match Record Type</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -322,7 +319,6 @@
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>The main objects, fields and related objects will be listed based on the Salesforce Org data model of the selected credential. The Salesforce user linked to the credential must have access to all the fields and objects necessary for your deployments.</inlineHelpText>
         <label>Template Schema Credential</label>
         <referenceTo>copado__Org__c</referenceTo>
         <relationshipLabel>Data Templates</relationshipLabel>
@@ -333,6 +329,34 @@
     </fields>
     <label>Data Template</label>
     <listViews>
+        <fullName>CPQ_Templates</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>SBQQ</value>
+        </filters>
+        <label>CPQ Templates</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Conga_Composer_Templates</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Main_Object__c</field>
+            <operation>contains</operation>
+            <value>APXTConga4</value>
+        </filters>
+        <label>Conga Composer Templates</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
         <columns>copado__Active__c</columns>
@@ -341,8 +365,10 @@
         <columns>copado__Max_Record_Limit__c</columns>
         <columns>copado__Batch_Size__c</columns>
         <columns>CREATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Data Template Name</label>

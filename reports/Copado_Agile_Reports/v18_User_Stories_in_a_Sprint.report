@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_284612</developerName>
+        <masterLabel>Main Theme</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Theme__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Feature - Customer Commitment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Enhancement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - GA MVP</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Internal findings</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Meet Competition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Usability (UX)</sourceValue>
+            </sourceValues>
+            <value>Feature</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Clean Code</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>DX Package Artifacts</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Technical Debt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Technical Debt - Internal Findings</sourceValue>
+            </sourceValues>
+            <value>Technical Debt</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Theme__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_Other__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_$copado__Sprint__c.copado__Release__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>v19</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CUST_RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>copado__User_Story__c.copado__Bug,copado__User_Story__c.copado__Investigation,copado__User_Story__c.copado__User_Story</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Cancelled,Rejected</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Theme__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>development,governance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$copado__Sprint__c.copado__Start_Date__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessOrEqual</operator>
+            <value>TODAY</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Theme__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>bau,feature,tech,bugs,qa,quality,release</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_284612</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.Module_Name__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>v19 User Stories in a Sprint</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Sprint__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

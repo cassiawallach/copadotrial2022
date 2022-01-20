@@ -1,3 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata"/>
-
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>All_Internal_User_Access</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>All Internal User Access</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+        <criteriaItems>
+            <field>IsActive</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Externals_can_see_Internal_Users</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Externals can see Internal Users</label>
+        <sharedTo>
+            <role>Z_External</role>
+        </sharedTo>
+        <sharedFrom>
+            <group>Custom_Internal_Users</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Internals_can_see_External_Users</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Internal Users can see External Users for Chatter</description>
+        <label>Internals can see External Users</label>
+        <sharedTo>
+            <group>Custom_Internal_Users</group>
+        </sharedTo>
+        <sharedFrom>
+            <role>Z_External</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Read_Only_for_Internal_Users</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Read-Only for Internal Users</label>
+        <sharedTo>
+            <group>Custom_Internal_Users</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Custom_Internal_Users</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

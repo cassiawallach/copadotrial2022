@@ -1,0 +1,95 @@
+<apex:page standardController="kugo2p__KugamonInvoice__c" extensions="kugo2p.InvoiceHelper" recordSetVar="StatusUpdateInvoices" title="Update Invoice Status" tabStyle="kugo2p__KugamonInvoice__c">
+    <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+    <style>
+        .centeralign {
+            text-align:center;
+        }
+    </style>
+
+    <!--<script>function setFocusOnLoad(){ /*NOOP*/ }</script>
+    // override setFocus method instead of setFocusOnLoad, as SF relies upon setFocusOnLoad to set up elements on the page.-->
+    <script type="text/javascript">function setFocus() { }</script>
+    <c:PageHeader title="Invoice" subtitle="Update Invoice Status" pathname="custom" icon="custom16" description="Update the status for the selected invoices and click 'Save'." rendered="{!!showCancel}" />
+
+    <apex:form >
+    <apex:pagemessages id="msgId"/>
+
+    <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!showCancel}" >
+        <br></br>
+        <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+    </apex:outputPanel>
+
+    <apex:pageBlock mode="edit" id="pbId" rendered="{!!showCancel}">    <!-- title="Update Invoice Status" -->
+ 
+        <apex:pageBlockSection columns="1">
+            <!-- <p>Update the status for the selected invoices and click 'Save'.</p> -->
+            <apex:pageBlockTable value="{!StatusUpdateInvoices}" var="invoice">
+
+                <apex:column value="{!invoice.Name}" />
+
+                <apex:column value="{!invoice.kugo2p__Account__c}" />
+
+                <apex:column value="{!invoice.kugo2p__NetAmount__c}" />
+
+                <apex:column headervalue="Status">
+                    <apex:facet name="header">
+                        <apex:outputPanel >
+                            Status<br/>
+                            <apex:selectList id="headerStatusId" value="{!headerInvoice.kugo2p__RecordStatus__c}" size="1">
+                                <apex:selectOptions value="{!HeaderInvoiceStatusList}"/>
+                                <apex:actionSupport event="onchange" action="{!updateheaderStatus}" reRender="pbId" status="processStatus" focus="headerStatusId" />
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:facet>
+
+                    <apex:selectList value="{!invoice.kugo2p__RecordStatus__c}" size="1">
+                       <apex:selectOptions value="{!InvoiceStatusList}"/>
+                    </apex:selectList>
+                </apex:column>
+
+                <apex:column headervalue="Posted" headerClass="centeralign" styleClass="centeralign" >
+                    <apex:facet name="header">
+                        <apex:outputPanel >
+                            Posted<br/>
+                            <apex:inputField id="headerPostedId" value="{!headerInvoice.kugo2p__IsPosted__c}" >
+                                <apex:actionSupport event="onchange" action="{!updateheaderPosted}" reRender="pbId" status="processStatus" focus="headerPostedId" />
+                            </apex:inputField>
+                        </apex:outputPanel>
+                    </apex:facet>
+
+                    <apex:inputField value="{!invoice.kugo2p__IsPosted__c}" />
+                </apex:column>
+                
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:outputPanel >
+                            Invoice Date<br/>
+                            <apex:inputField id="headerDateId" value="{!headerInvoice.kugo2p__CustomerPODate__c}" required="false" >
+                                <apex:actionSupport event="onchange" action="{!updateheaderDate}" reRender="pbId" status="processStatus" focus="headerStatusId" />
+                            </apex:inputField>
+                        </apex:outputPanel>
+                    </apex:facet>
+
+                    <apex:inputField value="{!invoice.kugo2p__InvoiceDate__c}" />
+                </apex:column>
+
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockButtons styleClass="kugamon">
+            <apex:commandButton value="Save" action="{!saveInvoiceStatus}" styleClass="slds-button slds-button--brand" status="processStatus" rerender="msgId,pbId" />
+            <apex:commandButton action="{!cancelInvoiceStatus}" value="Cancel" styleClass="slds-button slds-button--neutral" />
+            &nbsp;
+            <apex:outputPanel >
+                <apex:actionstatus id="processStatus" stopText="">
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            <!-- <apex:image value="/img/loading.gif"/>&nbsp;Processing... -->
+                            <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />&nbsp;Processing...
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionstatus>
+            </apex:outputPanel>
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

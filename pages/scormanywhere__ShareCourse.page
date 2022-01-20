@@ -1,0 +1,128 @@
+<apex:page showHeader="false" sidebar="false" cache="false" Controller="scormanywhere.ShareCourseController" id="elPage">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.scormanywhere__SCORM_Library, 'common/css/slds.css')}"/>
+
+    </head>
+
+    <apex:slds />
+
+    <apex:form >
+        <apex:actionFunction name="cancelForLE" action="{!cancel}" status="loadStatus"/>
+    </apex:form>
+    <apex:includeLightning />
+    <div id="container">
+        <div id="spinner" class="demo-only demo-only demo-only_viewport" style="height:6rem">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div>
+    <apex:includeScript value="{!URLFOR($Resource.scormanywhere__SCORM_Library, 'common/js/shareCourse_ui.js')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.scormanywhere__SCORM_Library, 'common/css/upload-lightbox.css')}"/>
+    <style>
+        .slds-modal__header{
+            background: #12345a;
+            color: #fff;
+            border-bottom: 2px solid #12345a;
+        }
+        html{
+            background-color: transparent;
+        }
+        .spiner{
+            position: absolute;
+            background-color: grey;
+            opacity: 0.3;
+            width: 100%;
+            height: 100%;
+            display: none;
+            top: 0;
+        }
+        #linkOverlay {
+            position:absolute;
+            width: 100%;
+            height: 100%;
+            left: 0px;
+            top: 0px;
+            background-color: rgba(0,0,0,0.4);
+            display: none;
+            cursor: wait;
+        }
+        .slds-modal__footer .cancelButtonLE {
+            padding: 0;
+            border: 1px solid transparent;
+            background: 0 0;
+            font-weight: bold;
+            color: #0070d2;
+            font-size: .75rem;
+        }
+        /* .iconCloseWrapper {
+          position: relative;
+        } */
+        .modal__header-icon{
+            position: absolute;
+            top: 0;
+            right: 5px;
+            max-width: 25px;
+        }
+        .sfdcBody .modal__header-icon{
+            top: 0;
+            right: 0;
+            transform: translateY(-35px);
+        }
+        .slds-scope .slds-spinner_medium.slds-spinner:before, .slds-scope .slds-spinner_medium .slds-spinner__dot-a:before, .slds-scope .slds-spinner_medium .slds-spinner__dot-b:before, .slds-scope .slds-spinner_medium.slds-spinner:before, .slds-scope .slds-spinner_medium .slds-spinner__dot-a:before, .slds-scope .slds-spinner_medium .slds-spinner__dot-b:before {
+            background: white; !important;
+        }
+        .slds-scope .slds-spinner_medium.slds-spinner:after, .slds-scope .slds-spinner_medium .slds-spinner__dot-a:after, .slds-scope .slds-spinner_medium .slds-spinner__dot-b:after, .slds-scope .slds-spinner_medium.slds-spinner:after, .slds-scope .slds-spinner_medium .slds-spinner__dot-a:after, .slds-scope .slds-spinner_medium .slds-spinner__dot-b:after {
+            background: white; !important;
+        }
+            #container{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                max-width: 925px;
+                margin: 0 auto;
+                min-height: 100vh;
+            }
+        body.sfdcBody{
+            height: 100vh!important;
+            background:rgba(0,0,0,.3)!important;
+        }
+        body.slds-scope{
+            height: 100%;
+            background:rgba(0,0,0,0.3);
+        }
+    </style>
+    <script>
+        var CommonOutApp = '{!orgPrefix}' + ':CommonOutApp';
+        var shareMediaLwcName = '{!orgPrefix}' + ':shareMediaLwc';
+        $Lightning.use(CommonOutApp, function()
+        {
+            $Lightning.createComponent(
+                    shareMediaLwcName,
+                    {},
+                    "container",
+                    function (cmp) {
+                        cmp.getElement().addEventListener("loadedComponent", function (event) {
+                            document.getElementById('spinner').className += ' slds-hide'
+                        });
+                        cmp.getElement().addEventListener("closeQuickAction", function (event) {
+                            if("{! isLE}" == 'true' || !window.location.href.includes('visualforce.com') || window.location.href.includes('ltn_app_id=')){
+                                cancelForLE();
+                            } else{
+                                window.parent.el_hideLightBoxClone();
+                            }
+                        });
+                    });
+        });
+    </script>
+</html>
+</apex:page>

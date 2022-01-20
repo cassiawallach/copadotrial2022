@@ -1,0 +1,293 @@
+<apex:page Controller="JBCXM.CustomLabelsController" extensions="JBCXM.GSCommonBroker" sidebar="false" title="Custom Labels"  tabStyle="Administration__tab">
+  <!-- Static Resource Includes: Jquery,Jqgrid,Character limit plugin and css files -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/backbone-min.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/appStyles/main.css"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/core/gsAppContainer.css" />
+    <style>
+     
+     .customLabelHeaderstyle {
+         width:50%;
+         text-align:right;     
+     }
+     body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock{
+           background-color: #FFF;
+           border-radius: 3px;
+           border: 0;
+           padding-bottom:7px;
+     }
+     .bPageBlock .detailList tr td, .bPageBlock .detailList tr th,
+     .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+         border-bottom:none;
+     }
+     .tdlabel{
+         min-width:380px;
+         max-width:380px;
+     }
+     .tdDescription{
+         min-width:300px;
+         max-width:300px;
+         position:fixed;
+     }
+     .apexp .bPageBlock .detailList {
+         width: 100%;
+     }
+     .apexp .bPageBlock .detailList td{
+         height:10px;
+     }
+     #gs-app-container .gs-module-container form{
+         background-color: #f0f3f6;
+     }
+     #gs-app-container .gs-module-container .gs-api-settingsList{
+         padding: 5px 0 10px;
+     }
+     #gs-app-container .gs-module-container .detailList td.tdDescription + td.dataCol.first{
+         min-width:135px;
+     }
+     .ui-tabs .ui-tabs-panel{
+         padding-left:3em;
+         background-color: #f0f3f6;
+     }
+     .listViewport .subNav .linkBar {
+         background-color: #ffffff;
+         border-top: none;
+     }
+     .bPageBlock.brandSecondaryBrd{
+            border:0 !important;
+            background: #fff;
+      }
+     .pbHeader{
+          background: #f0f3f6 !important;
+          border:none !important;
+      }
+      .pbHeader table{
+          border: none !important;    
+      }
+      .pbBody{
+          margin: 0 !Important;
+          padding: 20px !important;
+      }
+      .pbBody table{
+          border: none !important;
+      }
+      .pbBody table th{
+          height: 40px;
+          background-color: #fff !important;
+          border:0 !Important;
+          border-bottom: 2px solid #d3d6d9 !important;
+          font-size: 15px !important;
+          padding: 0 10px !important;
+      }
+      .pbBody table tbody tr{
+          height: 30px;
+      }
+      .btn, .btnDisabled {
+          display: inline-block; 
+          line-height: 18px; 
+          cursor: pointer;
+          background: #00b4e5 !important;
+          padding: 6px 15px !important;
+          color: #fff !important;
+          font-weight: normal !important;
+          text-transform: uppercase !important;
+          border: 0 !important;
+          height: 30px !important;
+          font: 15px "Proxima Nova Rg",sans-serif !important;
+      }    
+      .dummyAllAdminNewBtn.btnDisabled{
+          background-color:#d9e0e9 !important;
+          pointer-events: none;
+          opacity:0.7 !important;
+      }
+      .btn:hover{
+          opacity: 0.7;
+          border-radius: 3px;
+      }
+      .btn.btnCancelClick{
+          background-color: #fff !important;
+          border: 1px solid #d3d6d9 !important;
+          color: #374353 !important;
+       }
+      .pbBody table th.labelCol.vfLabelColTextWrap{
+          border-bottom: 0 !important;
+          font-size: 14px !important;
+          font-weight:normal !important;
+          font-family: "Proxima Nova Semibold";
+      }
+      input{
+         height: 25px !important;
+         border: 0;
+         border-bottom: 1px solid #d3d6d9;
+         margin-left: 5px;    
+      }
+      .pbBottomButtons table tr td:first-child{
+         display: none;
+      }
+    </style>
+    <script type="text/javascript">
+        var j$ = $.noConflict();
+        window.jLatest = j$;
+        var GS = GS || {};
+        
+        GS.userConfig = {
+            userLocale  : {!(dateTimeFormatByLocale)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        }; 
+        GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingEndPoint           = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+     
+        
+      
+        function cancelClick(){
+            window.top.location.href='/apex/Administration#Administration-UIViews';
+        }
+        function saveLabelsClick(){
+            if(validateLabelInputs()){
+                var toSaveCustomLabelItems = new Array();
+                var customLabelItem;
+                j$(".customLabelContainer").each(function(){
+                    customLabelItem = new customLabelClass();
+                    customLabelItem.labelKey=j$.trim(j$(this).find(".uiCustomLabelKey").val());
+                    customLabelItem.labelValue=j$.trim(j$(this).find(".uiCustomLabelValue").val());
+                    toSaveCustomLabelItems.push(customLabelItem);
+                });
+                if(toSaveCustomLabelItems.length>0){
+                    j$(".hdnCustomLabelJson").val(JSON.stringify(toSaveCustomLabelItems));
+                    actionSaveLabels();
+                }
+            }
+        }
+        
+        function showOverLayForm(){
+            var overLayHeight = j$(document).height();
+            var overLayWidth = j$(window).width()
+            j$(".jbaraDummyOverLayForm").css({
+                   'z-index':'700009',
+                   'left':'0px',
+                   'top':'0px',
+                   'width':overLayWidth,
+                   'height':overLayHeight
+
+            }).show();
+        }
+        
+        function validateLabelInputs(){
+                var validEntries =true;
+                var errorList= new Array();
+                j$("#jBaraCustomLabelValidationsContainer").hide();
+            
+                //Question type validation
+                j$(".uiCustomLabelValue").each(function(){
+                    if(j$.trim(j$(this).val())==''){
+                        errorItem = new JBaraErrorClass();
+                        errorItem.header =j$(this).next().val() +":";
+                        errorItem.msg    =  'Required';
+                        errorList.push(errorItem);
+                        validEntries = false;
+                    }
+                });
+                
+                if(!validEntries){
+                    showJBaraValidationErrors('jBaraCustomLabelValidationsContainer',errorList);
+                    var $target = j$('html,body'); 
+                    $target.animate({scrollTop: 0}, 1000);
+                    hideOverLayForm();
+                }
+            
+            return validEntries;
+        }
+        
+        function hideOverLayForm(){
+             j$(".jbaraDummyOverLayForm").hide();
+        }
+        function afterCustomLabelsSaveClick(){
+            if({!(validFlag)}){
+                window.top.location.href='/apex/Administration?sfdc.tabName={!JSENCODE($CurrentPage.parameters.tabId)}#Administration-UIViews';
+            }
+            else {
+                hideOverLayForm();
+            }
+        }
+        
+      // selectedField class structure
+       var customLabelClass = function(){
+            this.labelKey =null;
+            this.labelValue =null;
+       }
+ 
+     </script> 
+     <div id="gs-app-container">
+     <div class="gs-module-container">
+     <apex:form >
+        <apex:actionFunction name="actionSaveLabels" action="{!saveLabels}" reRender="jbaraCustomLabelErrorMessages" oncomplete="return afterCustomLabelsSaveClick()">
+        </apex:actionFunction>
+     <apex:pageBlock title="Custom Labels" mode="edit">
+         <apex:pageMessages id="jbaraCustomLabelErrorMessages" />
+          <span Id="jBaraCustomLabelValidationsContainer"></span>
+        
+        <div style="text-align:right;">
+            <span class="pbSubExtra">
+                <span class="requiredLegend">
+                    <span class="requiredExampleOuter">
+                        <span class="requiredExample">&nbsp;</span>
+                    </span>
+                    <span class="requiredMark">*</span>
+                    <span class="requiredText"> = Required Information</span>
+                </span>
+            </span> 
+        </div>  
+        <div align="center">
+        <apex:pageBlockTable value="{!UICustomLabels}" var="LabelItem" style="width:60%;">
+             <apex:column headerValue="Gainsight Label" headerClass="customLabelHeaderstyle" Style="text-align:right;">
+                <span style="font-weight:bold;" >{!LabelItem}</span>
+            </apex:column>
+             <apex:column headerValue="Custom Label" style="width:50%" >
+                 <apex:outputPanel styleClass="requiredInput" layout="block">
+                        <apex:outputPanel styleClass="requiredBlock" layout="block" />
+                            <span class="customLabelContainer">
+                                <input type="text" value="{!UICustomLabels[LabelItem]}" class="uiCustomLabelValue" maxlength="25" size="35"/>
+                                <input type="hidden" value="{!LabelItem}" class="uiCustomLabelKey"/>
+                            </span>
+                 </apex:outputPanel>                
+             </apex:column> 
+       </apex:pageBlockTable>
+      </div>
+        
+        
+        
+         <apex:pageBlockButtons location="bottom" style="text-align:center;">
+                <input type="button" value="Save" class="btn btnSaveClick" onClick="showOverLayForm();saveLabelsClick();"/>&nbsp;
+                <input type="button" value="Cancel" class="btn btnCancelClick" onClick="showOverLayForm();cancelClick();"/>&nbsp;
+          </apex:pageBlockButtons>
+     </apex:pageBlock>
+      <apex:inputText value="{!jsonUICustomLabel}" styleClass="hdnCustomLabelJson" Style="display:none;" /> 
+ </apex:form>
+ </div>
+  </div>
+<div class="overlayBackground jbaraDummyOverLayForm" style="position: absolute; display: none;"></div>
+  <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+    <c:AlertForm />
+    <script>
+        installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+    </script>
+</apex:outputpanel>
+
+
+<apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+</apex:outputpanel>
+</apex:page>

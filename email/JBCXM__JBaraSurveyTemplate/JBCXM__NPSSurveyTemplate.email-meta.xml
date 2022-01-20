@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Gainsight NPS Survey Template</name>
+    <style>none</style>
+    <subject>Please participate in our NPS survey.</subject>
+    <textOnly>Hello {!JBCXM__SurveyParticipant__c.JBCXM__DisplayName__c},
+
+Your Opinion is Very Important to Us!
+
+You are a valued COMPANY customer, so we would greatly appreciate your candid feedback on how we&apos;re doing.  Our survey will take less than 5 minutes to complete, and your input will be instrumental in helping us improve COMPANY and your overall customer experience.
+
+Take the Survey Now
+{!JBCXM__SurveyParticipant__c.JBCXM__SurveyURL__c}?surveyId={!JBCXM__SurveyParticipant__c.JBCXM__SurveyId__c}∂icipantId={!JBCXM__SurveyParticipant__c.JBCXM__Token__c}
+
+Thank you very much for your time!
+Your COMPANY Customer Success Team
+&lt;Add your company footer&gt;</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

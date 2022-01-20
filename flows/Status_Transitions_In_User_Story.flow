@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <decisions>
+        <name>Check_User_Story_Task_Status</name>
+        <label>Check User Story Task Status</label>
+        <locationX>1029</locationX>
+        <locationY>288</locationY>
+        <defaultConnector>
+            <targetReference>Update_User_Story_Task</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Status For Update</defaultConnectorLabel>
+        <rules>
+            <name>Is_Completed_or_Cancelled</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Change_User_Story_Tasks_Statuses.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Change_User_Story_Tasks_Statuses.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Change_User_Story_Tasks_Statuses</targetReference>
+            </connector>
+            <label>Is Completed or Cancelled</label>
+        </rules>
+    </decisions>
+    <description>For US-0022963. Automate status transitions for User Story Task to &quot;Cancelled&quot;, when User Story status change to &quot;Cancelled&quot;.</description>
+    <interviewLabel>Status Transitions In User Story {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Status Transitions In User Story</label>
+    <loops>
+        <description>Change Status of all related User Story Tasks records to &quot;Cancelled&quot;</description>
+        <name>Change_User_Story_Tasks_Statuses</name>
+        <label>Change User Story Tasks Statuses</label>
+        <locationX>750</locationX>
+        <locationY>115</locationY>
+        <collectionReference>Get_User_Story_Task_records</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_User_Story_Task_Status</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get all related User Story Task records.</description>
+        <name>Get_User_Story_Task_records</name>
+        <label>Get User Story Task records</label>
+        <locationX>504</locationX>
+        <locationY>128</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Change_User_Story_Tasks_Statuses</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>copado__User_Story__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>copado__User_Story_Task__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update User Story Task Status to &quot;Cancelled&quot;</description>
+        <name>Update_User_Story_Task</name>
+        <label>Update User Story Task</label>
+        <locationX>749</locationX>
+        <locationY>434</locationY>
+        <connector>
+            <targetReference>Change_User_Story_Tasks_Statuses</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Change_User_Story_Tasks_Statuses.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>copado__Status__c</field>
+            <value>
+                <stringValue>Cancelled</stringValue>
+            </value>
+        </inputAssignments>
+        <object>copado__User_Story_Task__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_User_Story_Task_records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>0120N0000001XJZQA2</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>copado__Status__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>copado__Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Cancelled</stringValue>
+            </value>
+        </filters>
+        <object>copado__User_Story__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

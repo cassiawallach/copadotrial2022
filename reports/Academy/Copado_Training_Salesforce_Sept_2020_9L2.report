@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$redwing__ILT_Session__c</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$redwing__User__c.Contact.Corporate_Email__c</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$redwing__User__c.Contact.Email</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>redwing__ILT_Class__c$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Certification Workshops | Invitation-Only Event</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>redwing__ILT_Class__c.redwing__ILT_Rosters__r$redwing__User__c.CompanyName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notContain</operator>
+            <value>Copado</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$CreatedDate</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$redwing__User__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Copado Training - Salesforce Sept 2020</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ILT_class_and_ILT_roster_with_Accounts_and_Contact__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>redwing__ILT_Class__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

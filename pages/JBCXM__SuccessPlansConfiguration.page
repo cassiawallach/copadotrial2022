@@ -1,0 +1,67 @@
+<apex:page tabStyle="Administration__tab" docType="html-5.0" controller="JBCXM.AdminBroker" sidebar="false" title="SuccessPlans Configuration" extensions="JBCXM.GSCommonBroker,JBCXM.NSRemoting">
+
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jsforce.min.js"></script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script src="/soap/ajax/31.0/connection.js" type="text/javascript"></script>
+    <script src="/soap/ajax/31.0/apex.js" type="text/javascript"></script>
+
+
+
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="successplans-config"></div>
+
+        </div>
+    </div>
+
+    <script>
+        var GS = GS || {};
+
+            GS.remotingEndPoint     = '{!JSINHTMLENCODE($RemoteAction.AdminBroker.adminRequestBroker)}';
+            GS.remotingBulkEndPoint     = '{!JSINHTMLENCODE($RemoteAction.AdminBroker.adminBulkRequestBroker)}';
+
+            GS.commonRemotingEndPoint     = '{!JSINHTMLENCODE($RemoteAction.GSCommonBroker.gsCommonRequestBroker)}';
+            GS.commonRemotingBulkEndPoint     = '{!JSINHTMLENCODE($RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker)}';
+
+            GS.packageNS            = "{!JSINHTMLENCODE(pkgNS)}";
+            GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+            GS.sessionId      = "{!JSINHTMLENCODE(sessionId)}"
+            GS.customLabels         = fakeEval('{!JSINHTMLENCODE(customLabelsMap)}');
+            GS.remoting = "{!JSINHTMLENCODE($RemoteAction.NSRemoting.apinsinvoke)}";
+
+            GS.userConfig = {
+                userLocale  : "{!(JSINHTMLENCODE(dateTimeFormatByLocale))}",
+                userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+                userId      : "{!JSINHTMLENCODE($User.Id)}",
+                emailId     : "{!JSINHTMLENCODE($User.Email)}",
+                photo       : "{!JSINHTMLENCODE(profilePhoto)}",
+                gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+                isLightningEnabled: {!(isLightningEnabled)}
+            };
+
+            GS.emailId =  GS.userConfig.emailId || "";
+            GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+            GS.userBlankPhoto = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/images/workflow/No-User.jpg";
+
+</script>
+    <style>
+.slick-header{z-index: 1;}
+.noSidebarCell{padding:0px;}
+</style>
+
+
+<apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+    <c:AlertForm />
+    <script>
+        installResources({scripts: ["successplansadmin/scripts/successplansadmin.bundle.js"], styles:["successplansadmin/styles/successplansadmin.css"]});
+    </script>
+</apex:outputpanel>
+
+<apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+    <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "http://127.0.0.1:8080")}/successplansadmin/scripts/successplansadmin.bundle.js"></script>
+    <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "http://127.0.0.1:8080")}/successplansadmin/styles/successplansadmin.css" />
+</apex:outputpanel>
+
+<apex:form ></apex:form>
+
+</apex:page>

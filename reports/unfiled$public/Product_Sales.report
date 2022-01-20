@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <acrossGroupingContext>Opportunity$CloseDate</acrossGroupingContext>
+        <calculatedFormula>RowCount / PARENTGROUPVAL(RowCount,ROW_GRAND_SUMMARY,Opportunity.CloseDate)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <downGroupingContext>Opportunity$Owner</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Percent Of Quarter</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_55905447</developerName>
+        <masterLabel>Discount Range</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__TotalDiscountRate__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>-1</to>
+            </sourceValues>
+            <value>markup</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>-1</from>
+                <to>0</to>
+            </sourceValues>
+            <value>0%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>0</from>
+                <to>15</to>
+            </sourceValues>
+            <value>1-15%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>15</from>
+                <to>30</to>
+            </sourceValues>
+            <value>16-30%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>30</from>
+                <to>40</to>
+            </sourceValues>
+            <value>31-40%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>40</from>
+                <to>50</to>
+            </sourceValues>
+            <value>41-50%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>50</from>
+            </sourceValues>
+            <value>50+%</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_93998873</developerName>
+        <masterLabel>Licensing Model</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ProductName__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Branch Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Branch Management (DUP)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Biannually</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Yearly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Change Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Agile Delivery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Change Manager</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Advanced Data Deployer</sourceValue>
+            </sourceValues>
+            <value>Legacy</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Standard Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Professional Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Admin</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado User</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>DevOps360</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado User (DNU)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Standard Edition (DUP)</sourceValue>
+            </sourceValues>
+            <value>Current</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_70328568</developerName>
+        <masterLabel>Macro-Industry</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r$Account_Industry__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Banking and Finance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Insurance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Financial Services</sourceValue>
+            </sourceValues>
+            <value>FINS</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Computers</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Computer Software</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Computer &amp; Network Security</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Electronics</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>High Tech</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Software &amp; Programming</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Technology</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Internet</sourceValue>
+            </sourceValues>
+            <value>HT</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Aerospace and Defense</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Automotive and Transportation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Biotechnology, Pharmaceuticals and Medicine</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Education</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Healthcare</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Health Care</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Government</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Public Sector</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Public Sector and Government</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Utilities and Energy</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Energy &amp; Utilities</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Healthcare &amp; Life Sciences</sourceValue>
+            </sourceValues>
+            <value>HLS + PG</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_37791422</developerName>
+        <masterLabel>Region</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity$Owner</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Maci Hansen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Simon Bishop</sourceValue>
+            </sourceValues>
+            <value>Select</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Phil Lelliott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <value>EMEA</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>LeRoy Brown</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matthew Maiuri</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <value>Summit</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA1</column>
+        </chartSummaries>
+        <chartType>LineGrouped</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>Opportunity$CloseDate</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>Opportunity$Owner</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Bumps Chart</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__NetTotal__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__TotalDiscountAmount__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__TotalDiscountRate__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ProductCode__c</field>
+    </columns>
+    <columns>
+        <field>BucketField_37791422</field>
+    </columns>
+    <currency>USD</currency>
+    <description>For all Closed Won Opportunities, show me ADD &amp; DevOps 360 sales</description>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity.SBQQ__Quotes2__r$SBQQ__Primary__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$IsWon</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ProductName__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Advanced</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Gabriel Deupree,Jeff Shemano,LeRoy Brown,Matthew Maiuri,Patrick Boyle,Paul Litterer,Richard Fronek,Russell Lott,Stephen Oliver,Todd Shelton,Zachary Bayer</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>Opportunity$CloseDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity$Owner</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ProductName__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Product Sales: ADD</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Quotes_with_Quote_Lines_and_Opportunity__c</reportType>
+    <roleHierarchyFilter>Sales_Operations</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,10 @@
+<aura:component controller="ReputationPointController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="isShow" type="Boolean" default="false" />
+    <aura:attribute name="ReputationPoint" type="String" default="" />
+    <aura:handler  name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:if isTrue="{!v.isShow}">
+       <div class="ReputationPoint-area">
+        <p class="ReputationPoint-text"><span class="ReputationPoint">+{!v.ReputationPoint}</span> REPUTATION POINTS</p>
+        </div>
+    </aura:if>
+</aura:component>

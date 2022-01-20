@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Field to link the log to the consumption in order to enable updates. should be filled by a trigger. --></help>
+        <label><!-- Professional Service Consumption --></label>
+        <name>ProfessionalServiceConsumption__c</name>
+        <relationshipLabel><!-- Time Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: References the Action Name from the Action this Time Log relates to --></help>
+        <label><!-- Action Name --></label>
+        <name>amc__Action_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select the Action this Time Log relates to --></help>
+        <label><!-- Action --></label>
+        <name>amc__Action__c</name>
+        <relationshipLabel><!-- Time Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Approval Date Stamp --></label>
+        <name>amc__Approval_Date_Stamp__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date the Time Log record was approved. --></help>
+        <label><!-- Approval Date --></label>
+        <name>amc__Approval_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Approval Status of this Time Log based on the Role Manager Approval Status and Project Owner Approval Status values --></help>
+        <label><!-- Approval Status --></label>
+        <name>amc__Approval_Status__c</name>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending</masterLabel>
+            <translation><!-- Pending --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected</masterLabel>
+            <translation><!-- Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Submitted</masterLabel>
+            <translation><!-- Submitted --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Billable Hours Completed --></label>
+        <name>amc__Billable_Hours_Completed__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Billing Event Item record this Time Log was invoiced on --></help>
+        <label><!-- Billing Event Item --></label>
+        <name>amc__Billing_Event_Item__c</name>
+        <relationshipLabel><!-- Time Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Links to the Case this Time Log relates to --></help>
+        <label><!-- Case --></label>
+        <name>amc__Case__c</name>
+        <relationshipLabel><!-- Time Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Links to the Checklist Item this Time Log relates to --></help>
+        <label><!-- Checklist Item --></label>
+        <name>amc__Checklist_Item__c</name>
+        <relationshipLabel><!-- Time Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is used to track any monetary expenses relating to the action. (Previously Labelled Cost) --></help>
+        <label><!-- Material Cost (Billable) --></label>
+        <name>amc__Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- date the work was completed --></help>
+        <label><!-- Date --></label>
+        <name>amc__Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies if this Time Log should be excluded from Billable Capacity --></help>
+        <label><!-- Exclude from Billable Capacity Indicator --></label>
+        <name>amc__Exclude_from_Billable_Capacity_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Time Log should be excluded from Billable Capacity --></help>
+        <label><!-- Exclude from Billable Capacity --></label>
+        <name>amc__Exclude_from_Billable_Capacity__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies if this Time Log should be excluded from the Client Overview Page --></help>
+        <label><!-- Exclude from Client Page Indicator --></label>
+        <name>amc__Exclude_from_Client_Page_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Time Log should be excluded from the Client Overview Page --></help>
+        <label><!-- Exclude from Client Page --></label>
+        <name>amc__Exclude_from_Client_Page__c</name>
+    </fields>
+    <fields>
+        <help><!-- Summarises the Hours Completed Value of the Time Log based on the Billable Hourly Rate --></help>
+        <label><!-- Hours Completed Value (Billable) --></label>
+        <name>amc__Hours_Completed_Value_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Summarises the Hours Completed Value of the Time Log based on the Cost Hourly Rate --></help>
+        <label><!-- Hours Completed Value (Cost) --></label>
+        <name>amc__Hours_Completed_Value_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Shows the number of hours spent on the Action during this Time Log --></help>
+        <label><!-- Hours Completed --></label>
+        <name>amc__Hours_Completed__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates if the Time Log has been included in a Billing Event --></help>
+        <label><!-- Invoiced --></label>
+        <name>amc__Invoiced__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Issue this Time Log relates to --></help>
+        <label><!-- Issue --></label>
+        <name>amc__Issue__c</name>
+        <relationshipLabel><!-- Time Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the cost value of any Material Costs related to the Action --></help>
+        <label><!-- Material Cost (Cost) --></label>
+        <name>amc__Material_Cost_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Used by trigger(s) to update Non Billable Tracker --></help>
+        <label><!-- Milestone Id --></label>
+        <name>amc__Milestone_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: References the Milestone Name that the Action this Time Log relate to is part of --></help>
+        <label><!-- Milestone Name --></label>
+        <name>amc__Milestone_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates if this Time Log is classified as Non Billable. If the Time Log &apos;Non Billable&apos; Field is set to TRUE, it takes this value, otherwise it takes the value from the Action &apos;Non Billable&apos; Field. --></help>
+        <label><!-- Non Billable Indicator --></label>
+        <name>amc__Non_Billable_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tracks the Non Billable Status of the Time Log taking into account the manual entry in the Non Billable field of this Time Log and any changes that may have occurred on the Non Billable Indicator field of the Parent Action --></help>
+        <label><!-- Non Billable Tracker --></label>
+        <name>amc__Non_Billable_Tracker__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Time Log is Non Billable --></help>
+        <label><!-- Non Billable --></label>
+        <name>amc__Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enter the details of what progress has been made on the Action during this Time Log --></help>
+        <label><!-- Notes --></label>
+        <name>amc__Notes__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the time being submitted is eligible to be calculated as overtime (subject to the Project being eligible for overtime) --></help>
+        <label><!-- Overtime --></label>
+        <name>amc__Overtime__c</name>
+    </fields>
+    <fields>
+        <help><!-- Used by trigger(s) to update Non_Billable_Tracker__c --></help>
+        <label><!-- Project Id --></label>
+        <name>amc__Project_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the User viewing the record is the User linked to the Role that is the Project Member. If true, 1 is displayed, if false, 0 is displayed. This field can be used to create Dynamic List View / Report Filters --></help>
+        <label><!-- Project Member Current User --></label>
+        <name>amc__Project_Member_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select the Project Member (Role) who this Time Log relates to --></help>
+        <label><!-- Project Member --></label>
+        <name>amc__Project_Member__c</name>
+        <relationshipLabel><!-- Time Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: References the Project Name that the Action this Time Log relate to is part of --></help>
+        <label><!-- Project Name --></label>
+        <name>amc__Project_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Project Owner Approval Required --></label>
+        <name>amc__Project_Owner_Approval_Required__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Approval Status of this Time Log from the Project Owner --></help>
+        <label><!-- Project Owner Approval Status --></label>
+        <name>amc__Project_Owner_Approval_Status__c</name>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending</masterLabel>
+            <translation><!-- Pending --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected</masterLabel>
+            <translation><!-- Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Submitted</masterLabel>
+            <translation><!-- Submitted --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Role record for the person that is Project Owner responsible for approving Time Logs for this project --></help>
+        <label><!-- Project Owner Approver --></label>
+        <name>amc__Project_Owner_Approver__c</name>
+        <relationshipLabel><!-- Time Logs (Project Owner Approver) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the Current User is the User required to approve this Time Log as the Project Owner --></help>
+        <label><!-- Project Owner Current User --></label>
+        <name>amc__Project_Owner_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the reason the Project Owner rejected the Time Log --></help>
+        <label><!-- Project Owner Rejection Comments --></label>
+        <name>amc__Project_Owner_Rejection_Comments__c</name>
+    </fields>
+    <fields>
+        <label><!-- Role Manager Approval Required --></label>
+        <name>amc__Role_Manager_Approval_Required__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Approval Status of this Time Log from the Role Manager --></help>
+        <label><!-- Role Manager Approval Status --></label>
+        <name>amc__Role_Manager_Approval_Status__c</name>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending</masterLabel>
+            <translation><!-- Pending --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected</masterLabel>
+            <translation><!-- Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Submitted</masterLabel>
+            <translation><!-- Submitted --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Role record for the person that is the Role Manager responsible for approving Time Logs for this person --></help>
+        <label><!-- Role Manager Approver --></label>
+        <name>amc__Role_Manager_Approver__c</name>
+        <relationshipLabel><!-- Time Logs (Role Manager Approver) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the Current User is the User required to approve this Time Log as the Role Manager --></help>
+        <label><!-- Role Manager Current User --></label>
+        <name>amc__Role_Manager_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the reason the Role Manager rejected the Time Log --></help>
+        <label><!-- Role Manager Rejection Comments --></label>
+        <name>amc__Role_Manager_Rejection_Comments__c</name>
+    </fields>
+    <fields>
+        <label><!-- Skill Id --></label>
+        <name>amc__Skill_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Skill Name --></label>
+        <name>amc__Skill_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Time --></label>
+        <name>amc__Start_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Stop Time --></label>
+        <name>amc__Stop_Time__c</name>
+    </fields>
+    <fields>
+        <help><!-- Detailed Notes about the Time Log --></help>
+        <label><!-- Time Log Notes --></label>
+        <name>amc__Time_Log_Notes_RT__c</name>
+    </fields>
+    <fields>
+        <help><!-- Can be used to identify the type / category of the Time Log --></help>
+        <label><!-- Time Log Type --></label>
+        <name>amc__Time_Log_Type__c</name>
+        <picklistValues>
+            <masterLabel>TBC</masterLabel>
+            <translation><!-- TBC --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Trigger Check --></label>
+        <name>amc__Trigger_Check__c</name>
+    </fields>
+    <layouts>
+        <layout>Time Log Layout</layout>
+        <sections>
+            <label><!-- Approval Information --></label>
+            <section>Approval Information</section>
+        </sections>
+        <sections>
+            <label><!-- Billing Event Information --></label>
+            <section>Billing Event Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Financial Information --></label>
+            <section>Financial Information</section>
+        </sections>
+        <sections>
+            <label><!-- Hours Information --></label>
+            <section>Hours Information</section>
+        </sections>
+        <sections>
+            <label><!-- Material Costs Information --></label>
+            <section>Material Costs Information</section>
+        </sections>
+        <sections>
+            <label><!-- Time Log Notes --></label>
+            <section>Time Log Notes</section>
+        </sections>
+        <sections>
+            <label><!-- Time Log Settings --></label>
+            <section>Time Log Settings</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You cannot set the Approval Status to Approved yet as either the Role Manager or Project Owner have not approved the Time Log --></errorMessage>
+        <name>amc__Enforce_Approvals</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This is a Fixed Price Project. Logging this billable time will exceed the Billable Hours Scheduled for this Action. --></errorMessage>
+        <name>amc__Fixed_Price_Hours_Scheduled</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Stop time should be greater than start time! --></errorMessage>
+        <name>amc__Logged_Time</name>
+    </validationRules>
+</CustomObjectTranslation>

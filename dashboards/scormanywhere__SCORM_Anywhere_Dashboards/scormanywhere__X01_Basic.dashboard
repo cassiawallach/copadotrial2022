@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dashboard xmlns="http://soap.sforce.com/2006/04/metadata">
+    <backgroundEndColor>#FFFFFF</backgroundEndColor>
+    <backgroundFadeDirection>Diagonal</backgroundFadeDirection>
+    <backgroundStartColor>#FFFFFF</backgroundStartColor>
+    <dashboardType>SpecifiedUser</dashboardType>
+    <description>Column A = Testing Data
+Column B = Transcript Data (Time)
+Column C = Transcript Data (%)</description>
+    <isGridLayout>false</isGridLayout>
+    <leftSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>ColumnStacked</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <header>What is status of all my courses?</header>
+            <legendPosition>Bottom</legendPosition>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X01_Course_Testing_Active_or_Inactive</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Active or Inactive (by Created Date)</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>ColumnStacked</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <footer>Complete = 100% of course was reviewed</footer>
+            <groupingSortProperties/>
+            <header>What is testing status of active courses?</header>
+            <legendPosition>Bottom</legendPosition>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X01_Course_Testing_Active_Only</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Completed, Failed, or Incomplete</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>ColumnLineStacked</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <footer>Note - minimal SCORM Data  available</footer>
+            <groupingSortProperties/>
+            <header>What testing did we do for active &amp; not complete?</header>
+            <legendPosition>Bottom</legendPosition>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X01_Course_Testing_Time</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Testing Time and % Progress</title>
+            <useReportChart>false</useReportChart>
+        </components>
+    </leftSection>
+    <middleSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <displayUnits>Auto</displayUnits>
+            <footer>Training Time in Seconds</footer>
+            <gaugeMax>30000.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <header>How much training time?</header>
+            <indicatorBreakpoint1>10000.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>20000.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X02_Transcript</report>
+            <showPercentage>false</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>false</showTotal>
+            <showValues>false</showValues>
+            <title>Total Training Time</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>Column</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <header>How much time by student?</header>
+            <legendPosition>Bottom</legendPosition>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X02_Transcript</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Training Time by User</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>ColumnLine</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <header>How much time by class?</header>
+            <legendPosition>Bottom</legendPosition>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X02_Transcript</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Training Time by Class</title>
+            <useReportChart>false</useReportChart>
+        </components>
+    </middleSection>
+    <rightSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <displayUnits>Auto</displayUnits>
+            <gaugeMax>100.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <header>What is overall progress?</header>
+            <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>66.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X02_Transcript</report>
+            <showPercentage>false</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>false</showTotal>
+            <showValues>false</showValues>
+            <title>Completion Percentage</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>Column</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <header>What is progress by User</header>
+            <legendPosition>Bottom</legendPosition>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X02_Transcript</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Progess by Student</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>Column</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <header>What is progress by class?</header>
+            <legendPosition>Bottom</legendPosition>
+            <report>scormanywhere__SCORM_Anywhere_Reports/scormanywhere__X02_Transcript</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Percent Complete by Class</title>
+            <useReportChart>false</useReportChart>
+        </components>
+    </rightSection>
+    <runningUser>metadata.integration@copa.do</runningUser>
+    <textColor>#000000</textColor>
+    <title>01 Basic</title>
+    <titleColor>#000000</titleColor>
+    <titleSize>12</titleSize>
+</Dashboard>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <field>Account$Type</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Org_Type__c</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Id</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Salesforce Orgs with Org ID&apos;s</description>
+    <filter>
+        <criteriaItems>
+            <column>Account.Salesforce_Orgs__r$Org_Type__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Production</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Salesforce Org ID&apos;s and Accounts</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_Salesforce_Orgs__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$Community_Login__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

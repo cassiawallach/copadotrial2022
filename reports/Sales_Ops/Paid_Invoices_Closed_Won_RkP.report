@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_54328748</developerName>
+        <masterLabel>AE</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>FK_OPP_OWNER_NAME</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Phil Lelliott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matthew Maiuri</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <value>AE</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>FK_OPP_ID</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_OWNER_NAME</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>CUST_LAST_UPDATE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Invoice__c.Total_Amount__c</field>
+    </columns>
+    <columns>
+        <field>Invoice__c.Status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>FK_OPP_AMOUNT</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_STAGE_NAME</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Invoices marked as paid but opportunities have not been changed to fully paid</description>
+    <filter>
+        <criteriaItems>
+            <column>FK_OPP_CLOSE_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_FISCAL_YEAR</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Invoice__c.Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Paid</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_OPP_STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Fully Paid</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_OPP_STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed Won</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Paid Invoices Closed Won</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>AccountCustomEntity$Invoice__c@Invoice__c.Opportunity__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>FK_OPP_CLOSE_DATE</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>DUE_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

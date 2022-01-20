@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>amc__Contributor_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>amc__Contributor_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>amc__Role__c</fields>
+        <fields>amc__Action__c</fields>
+        <fields>amc__Contribution_Billable__c</fields>
+        <fields>amc__Contribution_Non_Billable__c</fields>
+        <label>Contributor Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Child to the Action Object. It will enable additional Role(s) to be assigned to an Action to indicate they will be assisting the main Action Owner.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>amc__Action__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Links to the Action record</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Action record</inlineHelpText>
+        <label>Action</label>
+        <referenceTo>amc__Action__c</referenceTo>
+        <relationshipLabel>Contributors</relationshipLabel>
+        <relationshipName>Contributors</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Contribution_Billable__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the number of the biilable hours this Contributor will be responsible for</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the number of the billable hours this Contributor will be responsible for</inlineHelpText>
+        <label>Contribution Billable</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Contribution_Non_Billable__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the number of non biilable hours this Contributor will be responsible for</description>
+        <externalId>false</externalId>
+        <label>Contribution Non Billable</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Contribution_Total__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the number of total hours this Contributor will be responsible for</description>
+        <externalId>false</externalId>
+        <formula>amc__Contribution_Billable__c + amc__Contribution_Non_Billable__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies the number of total hours this Contributor will be responsible for</inlineHelpText>
+        <label>Contribution Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Contributor_Current_User__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(amc__Role__r.amc__User__r.Id  = $User.Id, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies if the User viewing the record is the User linked to the Role that is the Contributor. If true, 1 is displayed, if false, 0 is displayed. This field can be used to create Dynamic List View / Report Filters</inlineHelpText>
+        <label>Contributor Current User</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Exclude_from_Billable_Capacity_Indicator__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>If(amc__Action__r.amc__Exclude_from_Billable_Capacity_Indicator__c = TRUE, TRUE, amc__Exclude_from_Billable_Capacity__c)</formula>
+        <inlineHelpText>Formula: Identifies if this Contributor should be excluded from Billable Capacity</inlineHelpText>
+        <label>Exclude from Billable Capacity Indicator</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Exclude_from_Billable_Capacity__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies if this Contributor should be excluded from Billable Capacity</inlineHelpText>
+        <label>Exclude from Billable Capacity</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Hours_Completed_Billable__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the number of billable hours this Contributor has logged against the Action</inlineHelpText>
+        <label>Hours Completed - Billable</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Hours_Completed_Non_Billable__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the number of non billable hours this Contributor has logged against the Action</inlineHelpText>
+        <label>Hours Completed - Non Billable</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Hours_Remaining_Billable__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Contribution_Billable__c  -  amc__Hours_Completed_Billable__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula: Identifies the Hours Remaining - Billable value (&apos;Contribution Billable&apos; - &apos;Hours Completed - Billable&apos;)</inlineHelpText>
+        <label>Hours Remaining - Billable</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Hours_Remaining_Non_Billable__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Contribution_Non_Billable__c  -  amc__Hours_Completed_Non_Billable__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula: Identifies the Hours Remaining - Non Billable value (&apos;Contribution Non Billable&apos; - &apos;Hours Completed - Non Billable&apos;)</inlineHelpText>
+        <label>Hours Remaining - Non Billable</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Projected_Billable_Contribution__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Hours_Completed_Billable__c + amc__Projected_Billable_Remaining__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Projected Billable Contribution</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Projected_Billable_Remaining__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(AND(amc__Hours_Completed_Billable__c &gt; 0, amc__Action__r.amc__Completion_Percent__c &gt; 0), (amc__Hours_Completed_Billable__c / amc__Action__r.amc__Completion_Percent__c)-amc__Hours_Completed_Billable__c , amc__Hours_Remaining_Billable__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Projected Billable Remaining</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Projected_Contribution_Remaining__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(AND(amc__Total_Hours_Completed__c &gt; 0, amc__Action__r.amc__Completion_Percent__c &gt; 0), (amc__Total_Hours_Completed__c / amc__Action__r.amc__Completion_Percent__c)-amc__Total_Hours_Completed__c , amc__Total_Hours_Remaining__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Projected Contribution Remaining</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Projected_Non_Billable_Contribution__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Hours_Completed_Non_Billable__c + amc__Projected_Non_Billable_Remaining__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Projected Non Billable Contribution</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Projected_Non_Billable_Remaining__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(AND(amc__Hours_Completed_Non_Billable__c &gt; 0, amc__Action__r.amc__Completion_Percent__c &gt; 0), (amc__Hours_Completed_Non_Billable__c / amc__Action__r.amc__Completion_Percent__c)-amc__Hours_Completed_Non_Billable__c , amc__Hours_Remaining_Non_Billable__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Projected Non Billable Remaining</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Projected_Total_Contribution__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Total_Hours_Completed__c + amc__Projected_Contribution_Remaining__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Projected Total Contribution</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Role__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Links to the Role record of the person contributing to this Action</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Role record of the person contributing to this Action</inlineHelpText>
+        <label>Role</label>
+        <referenceTo>amc__Role__c</referenceTo>
+        <relationshipLabel>Contributors</relationshipLabel>
+        <relationshipName>Contributors</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Total_Hours_Completed__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Hours_Completed_Billable__c  +  amc__Hours_Completed_Non_Billable__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula: Identifies the Total Hours Completed (&apos;Hours Completed - Billable&apos; + &apos;Hours Completed - Non Billable&apos;)</inlineHelpText>
+        <label>Total Hours Completed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Total_Hours_Remaining__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Hours_Remaining_Billable__c  +  amc__Hours_Remaining_Non_Billable__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula: Identifies the Total Hours Remaining (&apos;Hours Remaining - Billable&apos; + &apos;Hours Remaining - Non Billable&apos;)</inlineHelpText>
+        <label>Total Hours Remaining</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Contributor</label>
+    <nameField>
+        <displayFormat>CON{0}</displayFormat>
+        <label>Contributor Id</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Contributors</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

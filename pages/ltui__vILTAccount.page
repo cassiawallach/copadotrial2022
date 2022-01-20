@@ -1,0 +1,30 @@
+<apex:page standardController="redwing__vILT_Account__c" extensions="ltui.vILTAccountCmpCtrl">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <apex:includeLightning />
+    <div id="lightning" />
+
+    <apex:form >
+        <apex:actionFunction action="{!cancel}" name="cancelEvent"></apex:actionFunction>
+    </apex:form>
+
+    <script>
+        var eventHandler = function(event) {
+            var opt = JSON.parse(event.getParam("message"));
+            if (opt.action == "cancel") {
+                cancelEvent();
+            }
+        };
+
+        $Lightning.use("{!ns}:ILTOutApp", function() {
+            $Lightning.createComponent("{!ns}:vILTAccountCmp",
+                    {
+                        "recordId" : '{!cid}',
+                        "recordName" : '{!JSENCODE(recordName)}'
+                    },
+                    "lightning",
+                    function(cmp) {
+                    });
+        });
+    </script>
+
+</apex:page>

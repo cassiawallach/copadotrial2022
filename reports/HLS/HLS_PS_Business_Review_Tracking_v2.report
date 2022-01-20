@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>IF(Account.Salesforce_AOV__c:SUM&gt;1,(Account.Copado_AOV__c.CONVERT:SUM/Account.Salesforce_AOV__c:SUM),(Account.Copado_AOV__c.CONVERT:SUM/20000))</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Salesforce Spend Capture</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <columns>
+        <field>USERS.NAME</field>
+    </columns>
+    <columns>
+        <field>Account.Account_Manager__c</field>
+    </columns>
+    <columns>
+        <field>Account.Customer_Success_Manager__c</field>
+    </columns>
+    <columns>
+        <field>INDUSTRY</field>
+    </columns>
+    <columns>
+        <field>Account.Account_Health__c</field>
+    </columns>
+    <columns>
+        <field>Account.Onboarded_Date__c</field>
+    </columns>
+    <columns>
+        <field>Account.Go_Live_Date__c</field>
+    </columns>
+    <columns>
+        <field>Account.Last_Business_Review_Date__c</field>
+    </columns>
+    <columns>
+        <field>Account.Account_Health_Next_Steps_Field__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Salesforce_AOV__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Copado_AOV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>CASE(Account.Salesforce_AOV__c,
+25000000,6,
+17500000,5,
+7500000,4,
+2500000,3,
+800000,2,
+400000,1,
+0)
+
++
+
+IF(Account.Salesforce_AOV__c&gt;1,
+
+IF((Account.Copado_AOV__c.CONVERT)/(Account.Salesforce_AOV__c*5/100)&lt;(5/100),5,IF((Account.Copado_AOV__c.CONVERT)/(Account.Salesforce_AOV__c*5/100)&lt;15/100,3,1)),
+
+IF((Account.Copado_AOV__c.CONVERT)/(20000)&lt;(5/100),1,IF((Account.Copado_AOV__c.CONVERT)/(20000)&lt;15/100,3,5))
+)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>QBR Prioritization</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Ranking QBR Targets</description>
+    <filter>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>USERS.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Zach,Dan,Kris,Stephen</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Month</dateGranularity>
+        <field>Account.Contract_Expiration_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <aggregateType>Sum</aggregateType>
+        <dateGranularity>Day</dateGranularity>
+        <field>ACCOUNT.NAME</field>
+        <sortByName>CDF1</sortByName>
+        <sortOrder>Desc</sortOrder>
+        <sortType>Aggregate</sortType>
+    </groupingsDown>
+    <name>HLS &amp; PS Business Review Tracking v2</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>AccountList</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn>CDF1</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

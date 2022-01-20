@@ -1,0 +1,47 @@
+<apex:page title="6sense Predictive Intelligence - Import" showHeader="true" sidebar="true" standardController="sixsense__X6sense_New_Company__c" extensions="sixsense.SixSenseAccountConversionListVFC" recordSetVar="companies" >
+    <apex:stylesheet value="{!URLFOR($Resource.sixsense__SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:sectionHeader title="New Company: Import" subtitle="{! selectedSize } records selected" />
+    <apex:pageMessages />
+
+    <apex:form >
+
+        <apex:outputPanel rendered="{!selectedSize<1}">
+            <div class="bPageTitle" style="padding-top: 0;">
+                <div class="ptBreadcrumb">&nbsp;«&nbsp;
+                    <apex:commandLink action="{!list}" value="Go to list view" />
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!AND(!accountsConverted, selectedSize>0)}">
+            <div class="slds">
+                <div class="slds-box slds-theme--shade">
+                    <p class="slds-m-top--small">Are you sure you want to import the following? This action will create new Account records.</p>
+                    <p class="slds-m-top-small" >
+                        <apex:repeat value="{!sixSenseAccountMap}" var="acctId" >
+                            <b><apex:outputText value="{!sixSenseAccountMap[acctId].Name}" /></b>
+                            <br />
+                        </apex:repeat>
+                    </p>
+                    <div class="slds-m-top--medium slds-text-body--regular slds-text-align--left">
+                        <apex:commandLink styleClass="slds-button  slds-button--brand" value="Import" action="{!convertAccounts}" />
+                        <apex:outputLink value="{!retURL}" styleclass="slds-button slds-button--neutral">Cancel</apex:outputLink>
+                    </div>
+                </div>
+            </div>
+        </apex:outputPanel>
+    
+        <apex:outputPanel rendered="{!AND(accountsConverted, selectedSize>0)}">
+            <div class="slds">
+                <div class="slds-box slds-theme--shade">
+                    <apex:repeat value="{!results}" var="res" >
+                        New Company record:&nbsp;<apex:outputLink value="/{!res.sourceAccount.Id}"><apex:outputText value="{!res.sourceAccount.Name}" /></apex:outputLink>&nbsp;has been imported as Account&nbsp;<apex:outputLink value="/{!res.convertedAccount.Id}"><apex:outputText value="{!res.convertedAccount.Name}" /></apex:outputLink>
+                        <br />
+                    </apex:repeat>
+                    <apex:commandLink styleClass="slds-button slds-button--brand" action="{!list}" value="Back to List" />
+                </div>
+            </div>
+        </apex:outputPanel>
+
+    </apex:form>
+</apex:page>

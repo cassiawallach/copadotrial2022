@@ -1,0 +1,5 @@
+<messaging:emailTemplate subject="You have been assigned to {!relatedTo.ILT_Session__r.Name} as an Instructor" recipientType="User" relatedToType="redwing__ILT_Instructor__c"  language="{!recipient.LanguageLocaleKey}">
+<messaging:htmlEmailBody >
+<c:ILTNotification instructor="{!relatedTo}" notificationName="LearnTrac_Instructor_Assigned_To_Session" />
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

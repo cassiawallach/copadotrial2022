@@ -1,0 +1,30 @@
+{
+    "name": "companies",
+    "total": 1,
+    "nextOffset": 1,
+    "lastTxnId": 21,
+    "data": [{
+        "country": "United States",
+        "audience": "N/A",
+        "buying_stage": "Awareness",
+        "website": "N/A",
+        "hidden": false,
+        "company_score": 16,
+        "city": "",
+        "employee_range": "N/A",
+        "profile_fit": "Weak",
+        "mid": "0004944cd6f9a84",
+        "industry": "",
+        "has_recent_open": 0,
+        "revenue_range": "N/A",
+        "opportunity_status": "Prospect",
+        "intent_score": 24,
+        "sub_industry": "",
+        "customer_status": "New",
+        "name": "Cynmax International LLC",
+        "contact_range": "1~10",
+        "state": "",
+        "employees": "N/A",
+        "profile_score": 0
+    }]
+}

@@ -1,0 +1,6 @@
+<messaging:emailTemplate renderUsingSystemContextWithoutSharing="True" subject="{!$Label.redwing__alms_assigned_to_class} {!relatedTo.Name} {!$Label.redwing__alms_email_session} {!$Label.redwing__alms_email_as_an} {!$Label.redwing__alms_email_instructor}" recipientType="User" relatedToType="redwing__ILT_Session__c"  language="{!recipient.LanguageLocaleKey}">
+    <messaging:htmlEmailBody >
+        <c:ILTNotification sessionId="{!relatedTo.Id}" notificationName="LearnTrac_vILT_Host_Assigned_To_Session" />
+    </messaging:htmlEmailBody>
+    <c:ILTNotificationIcsAttachment sessionId="{!relatedTo.Id}" notificationName="LearnTrac_vILT_Host_Assigned_To_Session" />
+</messaging:emailTemplate>

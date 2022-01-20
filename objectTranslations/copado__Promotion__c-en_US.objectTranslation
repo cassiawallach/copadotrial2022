@@ -17,10 +17,6 @@
         <name>copado__Pipeline_Manager</name>
     </fieldSets>
     <fields>
-        <label><!-- Merge Conflict --></label>
-        <name>Conflict__c</name>
-    </fields>
-    <fields>
         <help><!-- Select this checkbox if you are promoting from a higher to a lower environment in the pipeline. --></help>
         <label><!-- Is Back-Promotion --></label>
         <name>copado__Back_Promotion__c</name>
@@ -35,12 +31,12 @@
         <name>copado__Connection_Behavior__c</name>
     </fields>
     <fields>
-        <help><!-- Select this checkbox if you wish to move added profiles to a Full Profiles step. Doing this will remove the profiles from the Metadata step. --></help>
+        <help><!-- Select this checkbox if you wish to move added profiles to a Full Permission Sets step. Doing this will remove the profiles from the Metadata step. --></help>
         <label><!-- Create Full Permission Sets Step --></label>
         <name>copado__Create_Full_Permission_Sets_Step__c</name>
     </fields>
     <fields>
-        <help><!-- Select this checkbox if you wish to move added permission sets to a Full Permission Sets step. Doing this will remove the permission sets from the Metadata step. --></help>
+        <help><!-- Select this checkbox if you wish to move added permission sets to a Full Profiles step. Doing this will remove the permission sets from the Metadata step. --></help>
         <label><!-- Create Full Profiles Step --></label>
         <name>copado__Create_Full_Profiles_Step__c</name>
     </fields>
@@ -78,7 +74,7 @@
         <name>copado__Merge_Conflict__c</name>
     </fields>
     <fields>
-        <help><!-- Populate this field if you want to set an ascending or descending merge order for the selected user stories in a deployment. For example, status__c asc --></help>
+        <help><!-- Populate this field if you want to set an ascending or descending merge order for the selected user stories in a deployment. For example, status__c asc. --></help>
         <label><!-- Order User Stories by --></label>
         <name>copado__Order_by__c</name>
     </fields>
@@ -126,14 +122,6 @@
             <translation><!-- Completed --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Completed with errors</masterLabel>
-            <translation><!-- Completed with errors --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Conflicts Resolved</masterLabel>
-            <translation><!-- Conflicts Resolved --></translation>
-        </picklistValues>
-        <picklistValues>
             <masterLabel>Draft</masterLabel>
             <translation><!-- Draft --></translation>
         </picklistValues>
@@ -142,22 +130,41 @@
             <translation><!-- In Progress --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Merge Conflict</masterLabel>
-            <translation><!-- Merge Conflict --></translation>
-        </picklistValues>
-        <picklistValues>
             <masterLabel>Scheduled</masterLabel>
             <translation><!-- Scheduled --></translation>
         </picklistValues>
-        <picklistValues>
-            <masterLabel>Validated</masterLabel>
-            <translation><!-- Validated --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Validation failed</masterLabel>
-            <translation><!-- Validation failed --></translation>
-        </picklistValues>
     </fields>
+    <fields>
+        <label><!-- Caused Business Disruption? --></label>
+        <name>copadometrics__Caused_Business_Disruption__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination is a Production Org? --></label>
+        <name>copadometrics__Destination_is_a_Production_Org__c</name>
+    </fields>
+    <layouts>
+        <layout>Promotion Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Deploy Changes --></label>
+        <name>copado__Deploy_Changes</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Merge Changes --></label>
+        <name>copado__Merge_Changes</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Merge &amp; Deploy Changes --></label>
+        <name>copado__Merge_Deploy</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Open Pull Request --></label>
+        <name>copado__Open_Pull_Request</name>
+    </quickActions>
     <validationRules>
         <errorMessage><!-- Back Promotions to Scratch Orgs are not allowed --></errorMessage>
         <name>copado__Scratch_Orgs_Disabled_for_Back_Promoting</name>

@@ -1,0 +1,50 @@
+<apex:page showHeader="false" standardStylesheets="false">
+    <apex:includeLightning />
+    <apex:includeScript value="{!URLFOR($Resource.amc__cirrusinsight, '/release/cirrusinsight.min.js')}"/>
+    <style>
+        span.assistiveText{
+            display:none;
+        }
+        .uiDatePickerGrid--default .calGrid th{
+            font-size:8px;
+        }
+        a.uiDayInMonthCell{
+            font-size:10px;
+        }
+        .uiDatePicker--default .dateBar .monthYear{
+            margin:5px;
+        }
+    </style>
+    <div id="lightning"/>
+    <script>
+        $Lightning.use("amc:InboxApp", function() {
+          $Lightning.createComponent("amc:LightningInboxApp",
+          {
+          'id' : '{!JSENCODE($CurrentPage.parameters.id)}',
+          'ci_ref': '{!JSENCODE($CurrentPage.parameters.ci_ref)}',
+          'ci_host': '{!JSENCODE($CurrentPage.parameters.ci_host)}'
+          },
+          "lightning",
+          function(cmp) {
+            $A.eventService.addHandler({ "event": "amc:VfProxyEvent", "handler" : vfFunction});
+          });
+        });
+
+        function vfFunction(event){
+          var recordId = event.getParam('data').recordId;
+          //Only to use as we can test locker service with the inbox at present.
+          //now we can call the CI api as we are in VF context??
+          cirrusinsight.getEmailInfo(function(email) {
+            if (email !== null) {
+                var emailAction = $A.get('e.amc:SaveEmailEvent');
+                emailAction.setParams({
+                    'email': email,
+                    'recordId': recordId
+                });
+                emailAction.fire();
+            }
+          });
+
+        }
+    </script>
+</apex:page>

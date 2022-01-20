@@ -155,7 +155,7 @@
         <type>Default</type>
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>AccountId</fullName>
@@ -163,89 +163,99 @@
     </fields>
     <fields>
         <fullName>AdditionalName</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>BillingName</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>ContactId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ContractId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>Discount</fullName>
     </fields>
     <fields>
         <fullName>Email</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>ExpirationDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>Fax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>GrandTotal</fullName>
     </fields>
     <fields>
         <fullName>IsSyncing</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>LineItemCount</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>OpportunityId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>MasterDetail</type>
     </fields>
     <fields>
         <fullName>OwnerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Phone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>QuoteToName</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>ShippingHandling</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>ShippingName</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>Status</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
         <fullName>Subtotal</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>Tax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
         <fullName>TotalPrice</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
     </fields>
-    <listViews>
-        <fullName>mine</fullName>
-        <columns>QUOTE.NAME</columns>
-        <columns>OPPORTUNITY.NAME</columns>
-        <columns>QUOTE.ISSYNCING</columns>
-        <columns>QUOTE.EXPIRATIONDATE</columns>
-        <columns>QUOTE.SUBTOTAL</columns>
-        <columns>QUOTE.TOTALPRICE</columns>
-        <filterScope>Mine</filterScope>
-        <label>My Quotes</label>
-    </listViews>
     <searchLayouts>
         <customTabListAdditionalFields>QUOTE.NAME</customTabListAdditionalFields>
         <customTabListAdditionalFields>OPPORTUNITY.NAME</customTabListAdditionalFields>
@@ -274,4 +284,38 @@
         <searchResultsAdditionalFields>QUOTE.TOTALPRICE</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>CongaSign_sendForSignature</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send with Conga Sign</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/APXT_CongaSign__apxt_sendForSignature?id={!Quote.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Conga_Composer_Generate_Quote_Doc</fullName>
+        <availability>online</availability>
+        <description>Created by Conga Solution Manager. Record link: https://copado--copadodev--apxtconga4.visualforce.com/aBq1j0000000051CAA.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>660</height>
+        <isResizable>false</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Generate Quote Doc</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/APXTConga4__Conga_Composer?SolMgr=1
+&amp;serverUrl={!API.Partner_Server_URL_370}
+&amp;Id={!Quote.Id}</url>
+        <width>900</width>
+    </webLinks>
 </CustomObject>

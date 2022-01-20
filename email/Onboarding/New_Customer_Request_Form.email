@@ -1,0 +1,14 @@
+<table border="0" cellpadding="5" width="600" cellspacing="5" height="400" >
+<tr valign="top" height="50" >
+<td tEditID="c1r1" style=" background-color:#ffffff; color:#000000; bEditID:r3st1; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[Dear {!Contact.FirstName}]]></td>
+</tr>
+<tr valign="top" height="300" >
+<td tEditID="c1r2" style=" background-color:#ffffff; color:#000000; bEditID:r3st1; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r2" locked="0" >
+<![CDATA[<p>In order to set you up as a new customer, I would kindly like to ask that you confirm/provide me with the following information.</p><p><br></p><p>Company Name: {!Account.Billing_Name__c}</p><p>Company Address Line 1: {!Account.BillingStreet}</p><p>Company Address Line 2:</p><p>Company Address City: {!Account.BillingCity}</p><p>Company Address Postcode: {!Account.BillingPostalCode}</p><p>Company Address Country: {!Account.BillingCountry}</p><p><br></p><p>Billing Contact Name (Invoice recipient): {!Account.Billing_Name__c}</p><p>Billing Contact Email: </p><p><br></p><p>PO Number required?: Yes/No</p><p><br></p><p>Salesforce Production Org ID where Copado will be installed: </p><p>(This can be found by navigating to Setup - Company Profile (Administration Setup) - Company Information</p><p><br></p><p><strong>For European customers</strong></p><p>VAT Number: {!Account.VAT_Number__c}</p><p><br></p><p><strong>For US Customers only</strong></p><p>Copado Solutions has already signed&nbsp;a W-8BEN form, which&nbsp;is attached for your reference.&nbsp;</p><p>&nbsp;</p><p><br></p>]]></td>
+</tr>
+<tr valign="top" height="50" >
+<td tEditID="c1r3" style=" background-color:#ffffff; color:#000000; bEditID:r3st1; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r3" locked="0" >
+<![CDATA[<p>Kind regards,</p><p><br></p><p>{!User.FirstName}</p>]]></td>
+</tr>
+</table>

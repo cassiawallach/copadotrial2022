@@ -1,0 +1,10 @@
+<apex:page sidebar="false" tabStyle="Issue_Log__tab">
+    <apex:includeLightning /> 
+    <div id="issueLog"/>
+    <script>
+        $Lightning.use("amc:IssueLogApp", function() {
+          $Lightning.createComponent("amc:issueLog",{'isLightning': false},"issueLog",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

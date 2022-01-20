@@ -1,0 +1,805 @@
+<apex:page controller="TRIMDA.TRIMDA_Home_controller" docType="html-5.0" action="{!RefreshAll}">
+<apex:includeScript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/>
+<style>
+    
+    .trimda_header{
+        background-color:#ff9a9a;
+        background: linear-gradient(#ff9a9a, #d80210);
+        color:white;
+        border-radius: 0.25rem 0.25rem 0 0;
+        padding:0.5rem;
+    }
+    .trimda_headerb{
+        background-color:#0c8eff;
+        background: linear-gradient(#90cbfe, #0c8eff);
+        color:white;
+        border-radius: 0.25rem 0.25rem 0 0;
+        padding:0.5rem;
+    }
+    .trimda_grad{
+        background-color:#0c8eff;
+        background: linear-gradient(#90cbfe, #0c8eff);
+    }
+    
+    .dt_highlight{
+        font-weight:bold;
+    }
+    
+    .component{
+        background-color:#ffffff;
+        margin:10px 0 10px 0;
+        box-shadow:0 0 5px 0 #333;
+        border-radius:2px;
+        overflow:hidden;
+        }
+    
+    .statusvalue{
+        font-family:Arial;
+        font-size:36px;
+        vertical-align:top;
+        }
+    .statustext{
+        font-family:Arial;
+        font-size:14px;
+    }
+    .statussubtext{
+        font-family:Arial;
+        font-size:14px;
+        color:#777777;
+    }
+    .button_orange{
+        border:1px solid #ffad41; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+         background-color: #ffc579; background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc579), to(#fb9d23));
+         background-image: -webkit-linear-gradient(top, #ffc579, #fb9d23);
+         background-image: -moz-linear-gradient(top, #ffc579, #fb9d23);
+         background-image: -ms-linear-gradient(top, #ffc579, #fb9d23);
+         background-image: -o-linear-gradient(top, #ffc579, #fb9d23);
+         background-image: linear-gradient(to bottom, #ffc579, #fb9d23);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ffc579, endColorstr=#fb9d23);
+    }
+    
+    .button_orange:hover{
+         border:1px solid #ff9913;
+         background-color: #ffaf46; background-image: -webkit-gradient(linear, left top, left bottom, from(#ffaf46), to(#e78404));
+         background-image: -webkit-linear-gradient(top, #ffaf46, #e78404);
+         background-image: -moz-linear-gradient(top, #ffaf46, #e78404);
+         background-image: -ms-linear-gradient(top, #ffaf46, #e78404);
+         background-image: -o-linear-gradient(top, #ffaf46, #e78404);
+         background-image: linear-gradient(to bottom, #ffaf46, #e78404);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ffaf46, endColorstr=#e78404);
+         cursor: pointer;
+    }
+    .button_green{
+        border:1px solid #8bcf54; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+         background-color: #a9db80; background-image: -webkit-gradient(linear, left top, left bottom, from(#a9db80), to(#96c56f));
+         background-image: -webkit-linear-gradient(top, #a9db80, #96c56f);
+         background-image: -moz-linear-gradient(top, #a9db80, #96c56f);
+         background-image: -ms-linear-gradient(top, #a9db80, #96c56f);
+         background-image: -o-linear-gradient(top, #a9db80, #96c56f);
+         background-image: linear-gradient(to bottom, #a9db80, #96c56f);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#a9db80, endColorstr=#96c56f);
+    }
+    .button_green:hover{
+         border:1px solid #74bf36;
+         background-color: #8ed058; background-image: -webkit-gradient(linear, left top, left bottom, from(#8ed058), to(#7bb64b));
+         background-image: -webkit-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: -moz-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: -ms-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: -o-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: linear-gradient(to bottom, #8ed058, #7bb64b);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#8ed058, endColorstr=#7bb64b);
+         cursor: pointer;
+    }
+    .button_darkgreen{
+        border:1px solid #74bf36; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+         background-color: #8ed058; background-image: -webkit-gradient(linear, left top, left bottom, from(#8ed058), to(#7bb64b));
+         background-image: -webkit-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: -moz-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: -ms-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: -o-linear-gradient(top, #8ed058, #7bb64b);
+         background-image: linear-gradient(to bottom, #8ed058, #7bb64b);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#a9db80, endColorstr=#96c56f);
+    }
+    .button_darkgreen:hover{
+         border:1px solid #5f9b2d;
+         background-color: #8ed058; background-image: -webkit-gradient(linear, left top, left bottom, from(#8ed058), to(#4e7f25));
+         background-image: -webkit-linear-gradient(top, #8ed058, #4e7f25);
+         background-image: -moz-linear-gradient(top, #8ed058, #4e7f25);
+         background-image: -ms-linear-gradient(top, #8ed058, #4e7f25);
+         background-image: -o-linear-gradient(top, #8ed058, #4e7f25);
+         background-image: linear-gradient(to bottom, #8ed058, #4e7f25);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#8ed058, endColorstr=#7bb64b);
+         cursor: pointer;
+    }
+    .button_grey{
+         border:1px solid #b7b7b7; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+         background-color: #d3d3d3; background-image: -webkit-gradient(linear, left top, left bottom, from(#d3d3d3), to(#707070));
+         background-image: -webkit-linear-gradient(top, #d3d3d3, #707070);
+         background-image: -moz-linear-gradient(top, #d3d3d3, #707070);
+         background-image: -ms-linear-gradient(top, #d3d3d3, #707070);
+         background-image: -o-linear-gradient(top, #d3d3d3, #707070);
+         background-image: linear-gradient(to bottom, #d3d3d3, #707070);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d3d3d3, endColorstr=#707070);
+    }   
+    .button_grey:hover{
+         border:1px solid #a0a0a0;
+         background-color: #bababa; background-image: -webkit-gradient(linear, left top, left bottom, from(#bababa), to(#575757));
+         background-image: -webkit-linear-gradient(top, #bababa, #575757);
+         background-image: -moz-linear-gradient(top, #bababa, #575757);
+         background-image: -ms-linear-gradient(top, #bababa, #575757);
+         background-image: -o-linear-gradient(top, #bababa, #575757);
+         background-image: linear-gradient(to bottom, #bababa, #575757);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#bababa, endColorstr=#575757);
+         cursor: pointer;
+    }
+    .button_red{
+        border:1px solid #ff6262; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+         background-color: #ff9a9a; background-image: -webkit-gradient(linear, left top, left bottom, from(#ff9a9a), to(#ff4040));
+         background-image: -webkit-linear-gradient(top, #ff9a9a, #d80210);
+         background-image: -moz-linear-gradient(top, #ff9a9a, #d80210);
+         background-image: -ms-linear-gradient(top, #ff9a9a, #d80210);
+         background-image: -o-linear-gradient(top, #ff9a9a, #d80210);
+         background-image: linear-gradient(to bottom, #ff9a9a, #d80210);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff9a9a, endColorstr=#ff4040);
+    }
+    .button_red:hover{
+         border:1px solid #ff3434;
+         background-color: #ff6767; background-image: -webkit-gradient(linear, left top, left bottom, from(#ff6767), to(#ff0d0d));
+         background-image: -webkit-linear-gradient(top, #ff6767, #ff0d0d);
+         background-image: -moz-linear-gradient(top, #ff6767, #ff0d0d);
+         background-image: -ms-linear-gradient(top, #ff6767, #ff0d0d);
+         background-image: -o-linear-gradient(top, #ff6767, #ff0d0d);
+         background-image: linear-gradient(to bottom, #ff6767, #ff0d0d);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff6767, endColorstr=#ff0d0d);
+         cursor: pointer;
+    }
+    
+    Body .btn {
+    }
+    body input.btn, body input.btnDisabled, body input.btnCancel {
+        padding-left:1rem;
+        padding-right:1rem;
+        }
+        
+    .slds .slds-button--brand{
+     line-height:1.5rem;
+     /*
+     background-color:orange;
+     border-color:grey;
+     */
+    }
+    
+    .slds .slds-button--neutral{
+        padding-left:0.75rem;
+        padding-right:0.75rem;
+        }
+    
+    .dt_btn_disabled{
+        border-color:transparent;
+        background-color:#e0e5ee;
+        color:white;
+        cursor:default;
+     }
+    
+    .slds .slds-table tr > th:first-child, .slds .slds-table tr > td:first-child{padding-left:0;}
+</style>
+
+
+<!-- Auto Refresh page -->
+<apex:form style="background-color:white;">
+     <!--<apex:actionPoller action="{!RefreshAll}" rerender="console" interval="42" status="actionStatusStats" />-->
+    
+    <apex:actionstatus id="ImWorkingOnIt">
+            <apex:facet name="start">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;"> 
+                    <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                        <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." style="height:2rem;"/>
+                        <span class="waitingDescription">Please Wait ...I'm Working on it...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+
+<apex:outputpanel id="console" >
+                    
+<div class="slds" style="margin:0.5rem;">
+
+    <div class="slds-grid slds-wrap"> 
+        <div class="slds-col slds-size--1-of-1 slds-large-size--9-of-12" >
+            <div class="slds-grid slds-wrap" style="padding-right: 0.5rem;"> 
+                <div class="slds-col slds-size--1-of-1 " >
+                    <apex:outputpanel id="topbuttons">
+                        <div class="slds-page-header" role="banner" style="padding:0.2rem 0.2rem;">
+                          <div class="slds-grid trimda_header ">
+                            <div class="slds-col slds-has-flexi-truncate">
+                              <div class="slds-media">
+                                <div class="slds-media__figure">
+                                  <img src="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DupeAlert.png')}" style="height:2.5rem;" title="DataTrim Dupe Alerts Console" />
+                                </div>
+                                <div class="slds-media__body">
+                                  <div class="slds-grid">
+                                    <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Alert Results">Dupe Alerts Console</h1>
+                                  </div>
+                                  <p class="slds-text-heading--label" style="color:white;">by DataTrim</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="slds-col slds-no-flex slds-align-bottom">
+                                <apex:commandButton value="Refresh" title="Refresh" id="lnkrefresh1" action="{!RefreshAll}" styleClass="slds-button slds-button--neutral" rerender="console" status="ImWorkingOnIt"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="slds-grid slds-page-header__detail-row" >
+
+                            <div class="slds-col--padded slds-size--2-of-4 slds-large-size--1-of-4">
+                                <apex:outputPanel onclick="updateAlertList('a')" >
+                                <div class="{! if(Stat0Active = 0, 'button_grey','button_green')}" style="text-align:center;width:80%;line-height:1.8rem;">
+                                    <span class="statusvalue">{!Stat0Active}</span><span class=""><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'active.png')}" style="height:1rem;" title="Alerts currently being processed" rendered="{!Stat0Active > 0}" /></span><br />
+                                    <span class="statustext">Active</span>
+                                </div>
+                                </apex:outputPanel>
+                            </div>
+
+                            <div class="slds-col--padded slds-size--2-of-4 slds-large-size--1-of-4">
+                                <apex:outputPanel onclick="updateAlertList('s')" >
+                                <div class="{! if(Stat0Scheduled = 0, 'button_orange','button_green')}" style="text-align:center;width:80%;line-height:1.8rem;">
+                                    <span class="statusvalue">{!Stat0Scheduled}</span><span class=""><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'scheduled.png')}" style="height:1rem;" title="Alerts Scheduled and waiting for processing timeslot" /><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'warning.png')}" style="height:1rem;" title="Your should schedule alerts to run regulary in order to optimise the use of the app" rendered="{!Stat0Scheduled = 0}" /></span><br />
+                                    <span class="statustext">Scheduled</span>
+                                </div>
+                                </apex:outputPanel>
+                            </div>
+                            <div class="slds-col--padded slds-size--2-of-4 slds-large-size--1-of-4">
+                                <apex:outputPanel onclick="updateAlertList('f')" >
+                                <div class="{! if(Stat0Failed = 0, 'button_green','button_red')}" style="text-align:center;width:80%;line-height:1.8rem;">
+                                    <span class="statusvalue">{!Stat0Failed}</span><span class=""><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'warning.png')}" style="height:1rem;" title="Your have alerts which failed, correct the error and reactivate them" rendered="{!Stat0Failed > 0}" /></span><br />
+                                    <span class="statustext">&nbsp;&nbsp;Failed&nbsp;</span>
+                                </div>
+                                </apex:outputPanel>
+                            </div>
+                            <div class="slds-col--padded slds-size--2-of-4 slds-large-size--1-of-4">
+                                <apex:outputPanel onclick="updateAlertList('all')" >
+                                <div class="{! if(Stat0All= 0, 'button_red','button_grey')}"  style="text-align:center;width:80%;line-height:1.8rem;">
+                                    <span class="statusvalue">{!Stat0All}</span><span class=""><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'warning.png')}" style="height:1rem;" title="Your have no alerts yet, create yoru first alert to get started" rendered="{!Stat0All = 0}" /></span><br />
+                                    <span class="statustext">&nbsp;&nbsp;&nbsp;All&nbsp;&nbsp;&nbsp;</span><br />
+                                </div>
+                                </apex:outputPanel>
+                            </div>
+                           
+                        </div>
+                    </apex:outputpanel>
+                </div>
+                
+
+
+                <apex:actionFunction action="{!RefreshAlerts}" name="updateAlertList" rerender="topbuttons, alertqueue" status="actionStatus" >
+                    <apex:param name="firstParam" assignTo="{!view}" value="" />
+                </apex:actionFunction>
+
+                <div class="slds-col slds-size--1-of-1 " >
+                    <apex:pageMessages />
+                    <apex:actionStatus id="actionStatus"  style="font-size:11px;" startText="Updating..." />    
+                </div>      
+                
+<!-- ALERT LIST -->                
+                <div class="slds-col slds-size--1-of-1  " >
+                    <apex:outputpanel id="alertqueue">
+                        <apex:pageBlock title="Alert Queue ({!myAlertsQueue.Size})"  tabStyle="DataTrim_Dupe_Alert_Admin__tab">
+                            <apex:facet name="header" >
+                                <apex:panelGrid id="headerQueue1" columns="2" style="padding-top:0px;padding-bottom:0px;">
+                                    <apex:panelGrid id="headerQueue2" columns="2" style="border:1px;padding-top:0px;padding-bottom:0px">
+                                        <img class="dt_classic" src="{!URLFOR($Resource.DataTrimDupeAlerts, 'DupeAlerts60x60_NL.gif')}" style="height:32px" />
+                                        <span style="padding-top:0px;padding-bottom:0px;width:250px;font-weight:bold;" >
+                                            &nbsp;{!viewName}&nbsp;({!myAlertsQueue.Size})&nbsp;</span>
+                                    </apex:panelGrid>
+                                    <apex:panelGroup >
+                                        <div class="slds-button-group" role="group">
+                                            <button class="slds-button slds-button--neutral">
+                                              <a class="slds-truncate" style="text-decoration:none;" href="{!NewDAUrl}?saveURL=%2Fapex%2Ftrimda%2FTRIMDA__TRIMDA_DupeAlerts&retURL=%2Fapex%2Ftrimda%2FTRIMDA__TRIMDA_DupeAlerts" title="Create New Alert" >New</a>
+                                            </button>
+                                            <button class="slds-button slds-button--neutral">
+                                                <a class="slds-truncate" style="text-decoration:none;" href="/apex/TRIMDA__TRIMDA_Nav2ListView?retURL={!myURL}" title="Go to the DataTrim Matched Records Tab" >Review ALL Potential Dupes</a>
+                                            </button>
+                                        </div>
+                                    </apex:panelGroup>
+                                 </apex:panelGrid>
+                            </apex:facet>
+                            
+                            <apex:outputPanel styleClass="statustext" rendered="{!myAlertsQueue.Size = 0}">No {!viewName}</apex:outputPanel>
+                            
+                            <apex:dataTable id="AlertQueue" styleClass="slds-table slds-table--bordered" style="font-size:90%;" cellspacing="0" value="{!myAlertsQueue}" var="aq" onRowMouseOver="hiOn(this);" onRowMouseOut="hiOff(this);"  width="100%" rendered="{!myAlertsQueue.Size > 0}">
+                               <apex:column >
+                                    <apex:facet name="header" ><b>Name&nbsp;</b></apex:facet>
+                                    <div class="slds-tile">
+                                      <p class="slds-tile__title slds-truncate"><apex:outputLink value="/{!aq.id}?retURL={!aq.id}" title="View {!aq.Name}"  >{!aq.Name}</apex:outputLink></p>
+                                      <div class="slds-tile__detail slds-text-body--small">
+                                        <p class="slds-truncate">{!aq.TRIMDA__Alert_Status__c}</p>
+                                      </div>
+                                    </div>
+                              </apex:column>
+            
+                              <apex:column style="width:1px;">
+                                    <apex:facet name="header" ><b>Type&nbsp;/&nbsp;Match Level</b></apex:facet> 
+                                    <div class="slds-tile">
+                                      <p class="slds-tile__title slds-truncate">{!aq.TRIMDA__Dupe_Alert_Type__c}</p>
+                                      <div class="slds-tile__detail slds-text-body--small">
+                                        <p class="slds-truncate">{!aq.TRIMDA__Match_Binding__c}</p>
+                                      </div>
+                                    </div>
+                              </apex:column>
+                        
+                              <apex:column style="width:1px;">
+                                    <apex:facet name="header" ><b>Run&nbsp;/&nbsp;Time Slot&nbsp;</b></apex:facet> 
+                                    <div class="slds-tile">
+                                      <p class="slds-tile__title slds-truncate">{!aq.TRIMDA__Run_Frequency__c}</p>
+                                      <div class="slds-tile__detail slds-text-body--small">
+                                        <p class="slds-truncate">{!aq.TRIMDA__TimeSlot__c}</p>
+                                      </div>
+                                    </div>
+                              </apex:column>
+                                
+                                <apex:column rendered="{!view ='f'}" style="overflow: hidden;text-overflow: ellipsis;max-width:6rem;">
+                                    <apex:facet name="header" ><b>Status&nbsp;</b></apex:facet> 
+                                    <apex:outputpanel style="color:red;font-weight:bold;">
+                                        {!aq.TRIMDA__Last_Run_Result__c}
+                                    </apex:outputpanel>
+                                </apex:column>
+                                
+                                <apex:column rendered="{!view ='f'}" style="width:1px;">
+                                    <apex:facet name="header" ><b>Failed at (time)&nbsp;</b></apex:facet> 
+                                    <apex:outputField value="{!aq.LastModifiedDate}"  />
+                                </apex:column>
+                
+                               <apex:column style="text-align:center;padding-top:0.4rem;width:1rem;">
+                                    <apex:facet name="header" ><div style="text-align:center;"><b>Run Status&nbsp;</b></div></apex:facet> 
+                                     <div style="width:100%" class="{!if(and(aq.Active__c = true ,aq.Run_Status__c = 'Ready'), 'button_green',if(aq.Run_Status__c= 'Scheduled', 'button_green',if(aq.Run_Status__c= 'Started', 'button_orange',if(contains(aq.Last_Run_Result__c,'Failed'), 'button_red','button_grey'))))}">
+                                     <!-- <apex:outputpanel style="{! if(and(aq.Active__c = true ,aq.Run_Status__c = 'Ready'), 'color:green;',if(aq.Run_Status__c= 'Scheduled', 'color:darkgreen;',if(aq.Run_Status__c= 'Started', 'color:orange;','color:black;')))}"> -->
+                                     <apex:outputpanel style="color:white;text-shadow;0;">
+                                          <apex:outputtext value="{!aq.TRIMDA__Run_Status__c}" title="Your Alert is {!aq.TRIMDA__Run_Status__c}"  rendered="{!and(aq.TRIMDA__Active__c = true ,aq.TRIMDA__Run_Status__c != 'Ready')}"/>
+                                          <apex:outputtext value="Pending" title="Active and waiting to be processed..."  rendered="{!and(aq.TRIMDA__Active__c = true ,aq.TRIMDA__Run_Status__c = 'Ready')}" />
+                                          <a  onclick="ActivateAlert('{!aq.id}')" style="color:inherit;text-decoration:inherit;" ><apex:outputtext value="In Active"  title="Click to Activate" rendered="{!and(aq.TRIMDA__Active__c = false, or(aq.TRIMDA__Last_Run_Result__c = null, not contains(aq.TRIMDA__Last_Run_Result__c,'Failed')))}" /></a>
+                                          <apex:outputtext value="Failed"  title="Failed" rendered="{!and(aq.TRIMDA__Active__c = false, contains(aq.TRIMDA__Last_Run_Result__c,'Failed'))}" />
+                                      </apex:outputpanel>
+                                      </div>
+                              </apex:column>
+                            
+                              <apex:column style="text-align:right;width:1px;padding:0rem;padding-top:0.4rem;"  >
+                                  <apex:facet name="header" ><div style="text-align:center;"><b>Actions&nbsp;</b></div></apex:facet> 
+                                  <div class="slds-button-group" role="group">
+                                    <button class="slds-button slds-button--neutral"><a class="slds-truncate" style="text-decoration:none;" href="{!URLFOR($Action.TRIMDA_DupeAlerts__c.Edit, aq.id, ['retURL'='/apex/TRIMDA__TRIMDA_DupeAlerts'])}" title="Edit Alert" >Edit</a></button>
+                                  <div class="slds-dropdown-trigger slds-button--last">
+                                      <button class="slds-button slds-button--icon-border-filled">
+                                          <img  aria-hidden="true" class="slds-button__icon" src="{!URLFOR($Resource.DataTrimDupeAlerts, 'down.png')}" style="height:1rem;" title="Setup" />
+                                        <span class="slds-assistive-text">More Actions</span>
+                                      </button>
+                                      <div class="slds-dropdown slds-dropdown--right slds-dropdown--menu" style="text-align:left">
+                                        <ul class="slds-dropdown__list" role="menu">
+                                          <!--<li class="slds-dropdown__item"><a onclick="ReviewDupeAlert('{!aq.id}')" class="slds-truncate" role="menuitem">Review Dupes</a></li>-->
+                                          <li class="slds-dropdown__item" style="margin-left:0.25rem;"><a href="/apex/TRIMDA__TRIMDA_Nav2ListView?myId={!aq.id}&o=a&retURL={!myURL}" title="Review Potential Dupes" style="text-decoration:none;padding-bottom:0.25rem;" >Review Dupes</a></li>  
+                                          <li class="slds-dropdown__item" style="margin-left:0.25rem;"><apex:outputpanel rendered="{!aq.TRIMDA__Active__c = false}"><a  onclick="ActivateAlert('{!aq.id}')" class="slds-truncate" role="menuitem" style="color: initial;text-decoration:none;padding-bottom:0.25rem;">Activate</a></apex:outputpanel></li>
+                                          <li class="slds-dropdown__item" style="margin-left:0.25rem;"><a style="padding-bottom:0.25rem;text-decoration:none;" href="{!URLFOR($Action.TRIMDA_DupeAlerts__c.View, aq.id, ['retURL'='/apex/TRIMDA__TRIMDA_DupeAlerts'])}"   class="slds-truncate" role="menuitem">View</a></li>
+                                            <li class="slds-dropdown__item" style="margin-left:0.25rem;"><a style="padding-bottom:0.25rem;text-decoration:none; {!if(betaOn == false,'display:none;','')}" href="/apex/TRIMDA__trimda_matchedrecordsbatch?aid={!aq.id}"   class="slds-truncate" role="menuitem">Use Batch</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                               
+                               </apex:column>
+            
+            
+                        </apex:dataTable> 
+                      </apex:pageBlock>
+                    </apex:outputpanel>
+                </div>
+                
+                
+                <apex:actionFunction action="{!invoke_ActivateAlert}" name="ActivateAlert" rerender="console" status="ImWorkingOnIt">
+                    <apex:param name="firstParamaa" assignTo="{!currentAlert}" value="" />
+                </apex:actionFunction>
+ 
+
+<!-- RESULT LIST -->                
+                <div class="slds-col slds-size--1-of-1" >
+                     <!-- IF any alerts results, show them, if not show message (help to get started) -->
+                    <apex:outputpanel id="resultlist">
+                        <apex:actionStatus id="actionStatusResults"  style="font-size:11px;" startText="Updating..." />
+                        <apex:pageBlock title="Last ({!myLastResults.Size}) Results" tabStyle="TRIMDA_DupeAlertResult__c" >
+                            <apex:facet name="header" >
+                                    <apex:panelGrid id="headerResult2" columns="2" style="border:1px;padding-top:0px;padding-bottom:0px">
+                                        <img class="dt_classic" src="{!URLFOR($Resource.DataTrimDupeAlerts, 'DupeAlertResults60x60_NL.gif')}" style="height:32px" />
+                                        <span style="padding-top:0px;padding-bottom:0px;width:250px;font-weight:bold;" >
+                                            &nbsp;Recent Dupe Alert Result - Last ({!myLastResults.Size}) Results&nbsp;</span>
+                                    </apex:panelGrid>
+                            </apex:facet>
+                            
+                            <apex:outputPanel styleClass="statustext" rendered="{!myLastResults.Size = 0}">No results yet, create and activate your alerts to get started.</apex:outputPanel>
+                
+                            <apex:dataTable id="LastResults" styleClass="slds-table slds-table--bordered" style="font-size:90%;" value="{!myLastResults}" var="lr" onRowMouseOver="hiOn(this);" onRowMouseOut="hiOff(this);"  width="100%" rendered="{!myLastResults.Size > 0}">
+            
+                               <apex:column >
+                                    <apex:facet name="header" ><b>Run Date&nbsp;</b></apex:facet> 
+                                    <div class="slds-tile">
+                                        <p class="slds-tile__title slds-truncate"><a href="/apex/TRIMDA__TRIMDA_DupeAlertResultDetail?myid={!lr.id}&retURL={!lr.id}" title="View Dupe Alert Result: {!lr.Name}" style="text-decoration:none;"  ><apex:outputField value="{!lr.TRIMDA__Run_Date__c}"  /></a></p>
+                                      <div class="slds-tile__detail slds-text-body--small">
+                                          <p class="slds-truncate">(<a href="/apex/TRIMDA__TRIMDA_DupeAlertResultDetail?myid={!lr.id}&retURL={!lr.id}" title="View Dupe Alert Result: {!lr.Name}" style="text-decoration:none;"  >{!lr.Name}</a>)</p>
+                                      </div>
+                                    </div>
+                                    
+                              </apex:column>
+            
+                               <apex:column >
+                                    <apex:facet name="header" ><b>Alert Name&nbsp;</b></apex:facet> 
+                                    <div class="slds-tile">
+                                      <p class="slds-tile__title slds-truncate"> <apex:outputLink value="/{!lr.TRIMDA__DataTrim_Dupe_Alert__c}?retURL={!lr.TRIMDA__DataTrim_Dupe_Alert__c}" title="View {!lr.DataTrim_Dupe_Alert__r.Name}" target="_blank" >{!lr.DataTrim_Dupe_Alert__r.Name}</apex:outputLink></p>
+                                      <div class="slds-tile__detail slds-text-body--small">
+                                        <p class="slds-truncate"><apex:outputpanel style="{! if(lr.Result__c = 'OK', 'color:green;' , if(lr.Result__c = 'Failed', 'color:red;' , 'color:grey;'))}">
+                                            {!lr.TRIMDA__Result__c}
+                                            </apex:outputpanel></p>
+                                      </div>
+                                    </div>
+                                    
+                              </apex:column>
+                              
+                               <apex:column >
+                                   <apex:facet name="header" ><b>Type/ Match Level&nbsp;</b></apex:facet> 
+                                    <div class="slds-tile">
+                                      <p class="slds-tile__title slds-truncate"><apex:outputField value="{!lr.TRIMDA__AlertType__c}"  /></p>
+                                      <div class="slds-tile__detail slds-text-body--small">
+                                        <p class="slds-truncate">{!lr.MatchBinding__c}</p>
+                                      </div>
+                                            <!--
+                                        <p class="slds-truncate">
+                                            Checked:&nbsp;<apex:outputText value="{0, number, ###,##0}" > 
+                                                <apex:param value="{!lr.TRIMDA__Records_newandchanged__c}" />
+                                            </apex:outputText>
+                                            <apex:outputpanel rendered="{!lr.TRIMDA__Records_in_Target__c != lr.TRIMDA__Records_newandchanged__c}">&nbsp;-&nbsp;
+                                                <apex:outputText value="{0, number, ###,##0}" > 
+                                                    <apex:param value="{!lr.TRIMDA__Records_in_Target__c}" />
+                                                </apex:outputText>
+                                            </apex:outputpanel>
+                                        </p>
+                                        -->
+                                    </div>
+                              </apex:column>
+                                
+                              <apex:column style="text-align:center;">
+                                   <apex:facet name="header" ><b>Checked&nbsp;</b></apex:facet> 
+                                    <div class="slds-tile">
+                                      <p class="slds-tile__title slds-truncate">
+                                          <apex:outputText value="{0, number, ###,##0}" title="Secondary Records"> 
+                                                <apex:param value="{!lr.TRIMDA__Records_newandchanged__c}" />
+                                            </apex:outputText>
+                                       </p>
+                                      <div class="slds-tile__detail slds-text-body--small">
+                                            <apex:outputpanel rendered="{!lr.TRIMDA__Records_in_Target__c != lr.TRIMDA__Records_newandchanged__c}">
+                                                (<apex:outputText value="{0, number, ###,##0}" title="Master Records"> 
+                                                    <apex:param value="{!lr.TRIMDA__Records_in_Target__c}" />
+                                                </apex:outputText>)
+                                            </apex:outputpanel>
+                                      </div>
+                                    </div>
+                              </apex:column>
+                                  
+                               <apex:column style="text-align:center;">
+                                    <apex:facet name="header" ><div style="text-align:center;"><b>Dupes (new)&nbsp;</b></div></apex:facet>
+                                    <apex:outputText value="{0, number, ###,##0}" > 
+                                            <apex:param value="{! if (lr.New_Dupes_Found__c = null, lr.Possible_DupesFound__c, lr.New_Dupes_Found__c)}" />
+                                    </apex:outputText>
+                              </apex:column>
+                              
+                                <!--
+                              <apex:column style="text-align:right;padding:0rem;width:1rem;">
+                                    <apex:facet name="header" ><div style="text-align:center;"><b>Actions&nbsp;</b></div></apex:facet> 
+                                    <div class="slds-button-group" role="group">
+                                      <button class="slds-button slds-button--neutral slds-button--last" title="No Dupes to Review" style="{!IF(or(lr.New_Dupes_Found__c = 0,lr.New_Dupes_Found__c = null),'display:initial;','display:none;')}"  disabled="true" >Review&nbsp;Dupes</button>                                           
+                                      <a class=" slds-button slds-button--neutral slds-button--last" title="Review Potential Dupes"   style="font-weight:bold;{!IF(or(lr.New_Dupes_Found__c = 0,lr.New_Dupes_Found__c = null),'display:none;','display:initial;')}" href="/apex/TRIMDA__TRIMDA_Nav2ListView?myId={!lr.Id}&o=ar&retURL={!myURL}" >Review&nbsp;Dupes</a>     
+                                    </div>
+                              </apex:column>
+                        	  -->
+                              <!-- NEW 2017-12-08 -->  
+                              <apex:column style="text-align:right;width:1px;padding:0rem;padding-top:0.4rem;"  >
+                                  <apex:facet name="header" ><div style="text-align:center;"><b>Actions&nbsp;</b></div></apex:facet> 
+                                  <div class="slds-button-group" role="group">
+                                    <button class="slds-button slds-button--neutral"><a class="slds-truncate" style="text-decoration:none;" href="{!URLFOR($Action.TRIMDA__TRIMDA_DupeAlertResult__c.View, lr.id, ['retURL'='/apex/TRIMDA__TRIMDA_DupeAlerts'])}" title="View Alert Result" >View</a></button>
+                                  <div class="slds-dropdown-trigger slds-button--last">
+                                      <button class="slds-button slds-button--icon-border-filled">
+                                          <img  aria-hidden="true" class="slds-button__icon" src="{!URLFOR($Resource.DataTrimDupeAlerts, 'down.png')}" style="height:1rem;" title="Setup" />
+                                        <span class="slds-assistive-text">More Actions</span>
+                                      </button>
+                                      <div class="slds-dropdown slds-dropdown--right slds-dropdown--menu" style="text-align:left">
+                                        <ul class="slds-dropdown__list" role="menu">
+                                          <li class="slds-dropdown__item" style="margin-left:0.25rem;"><button class="slds-button slds-button--neutral" title="No Dupes to Review" style="{!IF(or(lr.New_Dupes_Found__c = 0,lr.New_Dupes_Found__c = null),'display:initial;','display:none;')}"  disabled="true" >Review&nbsp;Dupes</button>  </li>  
+                                          <li class="slds-dropdown__item" style="margin-left:0.25rem;"><a href="/apex/TRIMDA__TRIMDA_Nav2ListView?myId={!lr.Id}&o=ar&retURL={!myURL}"  title="Review Potential Dupes" style="text-decoration:none;padding-bottom:0.25rem;{!IF(or(lr.New_Dupes_Found__c = 0,lr.New_Dupes_Found__c = null),'display:none;','display:initial;')}" >Review Dupes</a></li>  
+                                          <li class="slds-dropdown__item" style="margin-left:0.25rem;"><a style="padding-bottom:0.25rem;text-decoration:none; {!if(betaOn == false,'display:none;','')}" href="/apex/TRIMDA__trimda_matchedrecordsbatch?arid={!lr.id}"   class="slds-truncate" role="menuitem">Use Batch</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                               
+                               </apex:column>
+                              
+                            </apex:dataTable> 
+                        </apex:pageBlock>
+                        <apex:outputpanel style="margin:1%" >
+                            <apex:selectList id="limitinput" value="{!ResultLimit}" size="1" style="font-size:11px;">
+                                <apex:actionSupport event="onchange" action="{!RefreshResults}" rerender="console" status="actionStatusResults" />
+                                <apex:selectOption itemValue="10" itemLabel="Display 10 last results"/>
+                                <apex:selectOption itemValue="25" itemLabel="Display 25 last results"/>
+                                <apex:selectOption itemValue="50" itemLabel="Display 50 last results"/>
+                                <apex:selectOption itemValue="100" itemLabel="Display 100 last results"/>
+                            </apex:selectList>
+                        </apex:outputpanel>
+                    </apex:outputpanel>
+                </div>
+    
+            </div>
+        </div>
+
+
+<!-- SIDEBAR - RIGHT -->                
+        <div class="slds-col slds-size--1-of-1 slds-large-size--3-of-12 " >
+            <div class="slds-grid slds-wrap ">
+                <div  id="refreshstatus" class="slds-col slds-size--1-of-1 statussubtext" style="text-align:right;" >
+                    <apex:actionStatus style="font-size:8px;" id="actionStatusStats" >
+                         <apex:facet name="start" >
+                            <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'spin.gif')}" style="height:1.5rem;" title="Updating..." />
+                            </apex:facet>
+                    </apex:actionStatus>
+                    <apex:outputText style="font-size:11px;" value="Last Refresh: {0,date,yyyy/MM/dd' at' HH:mm:ss z}">
+                       <apex:param value="{!NOW()}" />
+                    </apex:outputText>
+                    &nbsp;
+                    <a Class="DTaction" href="/apex/TRIMDA__TRIMDA_DupeAlertsSetup" target="_blank"  title="DataTrim setup/customization etc." ><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'setup.png')}" style="height:1.5rem;" title="Setup" /></a>
+                </div>
+
+                <!-- Stats -->
+                <div class="slds-col slds-size--1-of-1 " >
+                    <apex:outputpanel id="alertstats" styleClass="component"   layout="block">
+                        <div class="DTSHeader"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'userstats.png')}" style="height:1rem;" title="Basic Stats" />&nbsp;Alerts - Last {!StatDays} days</div>
+                        <table border="0" style="margin:2%;width:100%;line-height:normal;">
+                            <tr><td style="vertical-align: middle;text-align:center;">
+                                <span class="statusvalue dt_counter">{!Stat1Alerts}</span><br />
+                            </td><td style="vertical-align: middle;">
+                                <span class="statustext">Alerts</span><span class="statusicon"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'info20x20.png')}" height="16px" title="Activate and/or schedule alerts to continously check your data for dupes!" rendered="{!Stat1Alerts = 0}"/></span><br />
+                                <apex:outputPanel styleClass="statussubtext" rendered="{!myLastResult != null}" style="font-size:11px;">Last alert completed: <apex:outputField value="{!myLastResult.TRIMDA__Run_Date__c}"  /></apex:outputPanel>
+                                <apex:outputPanel styleClass="statussubtext" style="color:red;" rendered="{!myLastResult = null}">No alerts processed in this period</apex:outputPanel>
+                            </td></tr>
+                            <tr><td style="vertical-align: middle;text-align:center;">
+                                <apex:outputText styleClass="statusvalue" value="{0, number, ###,##0}K" rendered="{!Stat1Records >= 100000}" > 
+                                     <apex:param value="{!Stat1Records/1000}" />
+                                </apex:outputText>
+                                <apex:outputText styleClass="statusvalue dt_counter" value="{0, number, ###,##0}" rendered="{!Stat1Records < 100000}" > 
+                                     <apex:param value="{!Stat1Records}" />
+                                </apex:outputText>
+                            </td><td style="vertical-align: middle;line-height:normal;">
+                                <span class="statustext">Records Checked</span><span class="statusicon"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'info20x20.png')}" height="16px" title="total Sum of Secondary records" rendered="{!Stat1Records > 0}"/></span><br />
+                                <!-- <span class="statussubtext">last alert completed: 1/6/2015</span><br /> -->
+                            </td></tr>
+                            <tr><td style="vertical-align: middle;text-align:center;">
+                                <apex:outputText styleClass="statusvalue dt_counter" value="{0, number, ###,##0}" > 
+                                     <apex:param value="{!Stat1Dupes}" />
+                                </apex:outputText>
+                            </td><td style="vertical-align: middle;line-height:normal;">
+                                <span class="statustext">Potential Dupes Found</span>&nbsp;<span class="statusicon"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'info20x20.png')}" height="16px" title="To review and resolve (merge) these dupes, go to the DataTrim Matched Records Tab" rendered="{!Stat1Dupes > 0}"/></span><br />
+                                <!-- <span class="statussubtext">last alert completed: 1/6/2015</span><br /> -->
+                            </td></tr>
+                        </table>
+                    </apex:outputpanel>
+                </div> 
+                
+                <div class="slds-col slds-size--1-of-1 " >
+                    <apex:outputpanel id="alerttats2" styleClass="component"   layout="block">
+                        <div class="DTSHeader"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'allstats.png')}" style="height:1rem;" title="Stats by Alert Type" />&nbsp;Alert Types - Last {!StatDays} days</div>
+                        <table border="0"  style="border-color:#777777;margin:2%;width:96%;" class="statustext">
+                            <tr><td >
+                                <apex:outputPanel styleClass="statussubtext" style="color:red;" rendered="{!Stat1Alerts = 0}">No Statistics available for this period</apex:outputPanel>
+                                <apex:outputpanel >
+                                <apex:dataTable id="statlist" cellspacing="5" value="{!myAccStats}" var="a" styleClass="mylist" rowClasses="statrow" onRowMouseOver="hiOn(this);" onRowMouseOut="hiOff(this);"  width="100%">
+                                      <apex:column width="1">  
+                                            <apex:facet name="header">Alert<br />Type</apex:facet>
+                                                <apex:outputText value="{!a.Name}" styleClass="statustext" />
+                                      </apex:column> 
+                                      <apex:column style="text-align:center;">  <!-- {!a.Records}  -->
+                                            <apex:facet name="header" ><b>Alerts<br />Processed&nbsp;</b></apex:facet>
+                                            <apex:outputText styleClass="statussubtext " value="{0, number, ###,##0}" > 
+                                                <apex:param value="{!a.Alerts}" />
+                                             </apex:outputText>
+                                      </apex:column>
+                                      <apex:column style="text-align:center;">  <!-- {!a.Records}  -->
+                                            <apex:facet name="header" ><b>Records<br />Checked&nbsp;</b></apex:facet>
+                                            <apex:outputText styleClass="statussubtext " value="{0, number, ###,##0}" > 
+                                                <apex:param value="{!a.Records}" />
+                                             </apex:outputText>
+                                      </apex:column>
+                                      <apex:column style="text-align:center;">  <!-- {!a.Dupes}  -->
+                                            <apex:facet name="header" ><b>Dupes<br />Found&nbsp;</b></apex:facet>
+                                            <apex:outputText styleClass="statussubtext " value="{0, number, ###,##0}" > 
+                                                <apex:param value="{!a.Dupes}" />
+                                             </apex:outputText>
+                                      </apex:column>
+                                      <!-- 
+                                      <apex:column style="text-align:center;">
+                                            <apex:facet name="header" ><b>To<br />Review&nbsp;</b></apex:facet> 
+                                            <apex:outputText styleClass="statussubtext" value="{0, number, ###,##0}" > 
+                                                <apex:param value="{!a.Review}" />
+                                             </apex:outputText>
+                                      </apex:column>
+                                       -->
+                                </apex:dataTable>   
+                                </apex:outputpanel>
+                            </td></tr>
+                            <tr><td style="text-align:right;">
+                                 <apex:selectList id="lastdayinput" value="{!StatDays}" size="1" style="font-size:11px;">
+                                    <apex:actionSupport event="onchange" action="{!RefreshStats}" rerender="console" status="actionStatusStats" />
+                                    <apex:selectOption itemValue="1" itemLabel="Display counts for Last 1 Day"/>
+                                    <apex:selectOption itemValue="7" itemLabel="Display counts for Last 7 Days"/>
+                                    <apex:selectOption itemValue="14" itemLabel="Display counts for Last 14 Days"/>
+                                    <apex:selectOption itemValue="30" itemLabel="Display counts for Last 30 Days"/>
+                                    <apex:selectOption itemValue="45" itemLabel="Display counts for Last 45 Days"/>
+                                    <apex:selectOption itemValue="90" itemLabel="Display counts for Last 90 Days"/>
+                                    <apex:selectOption itemValue="120" itemLabel="Display counts for Last 120 Days"/>
+                                    <apex:selectOption itemValue="365" itemLabel="Display counts for Last 365 Days"/>
+                                    <!-- <apex:selectOption itemValue="36500" itemLabel="Display counts for All"/> -->
+                                </apex:selectList>
+                            </td></tr>
+                        </table>
+                    </apex:outputpanel>
+                </div> 
+                
+                <!-- Dupe Detection Upon Entry -->
+                <div class="slds-col slds-size--1-of-1 " >
+                    <apex:outputpanel id="ddue" styleClass="component"   layout="block">
+                        <div class="DTSHeader"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DDX.png')}" style="height:1rem;" title="Stats by Alert Type" />&nbsp;Dupe Detection Upon Entry</div>
+                        <div class="slds-grid slds-wrap" >
+                            <div class="slds-col slds-size--1-of-3" style="text-align:center;font-weight:bold;">{!$ObjectType.Account.labelPlural}</div>
+                            <div class="slds-col slds-size--1-of-3" style="text-align:center;font-weight:bold;">{!$ObjectType.Contact.labelPlural}</div>
+                            <div class="slds-col slds-size--1-of-3" style="text-align:center;font-weight:bold;">{!$ObjectType.Lead.labelPlural}</div>
+                            
+                            <div class="slds-col slds-size--1-of-3" style="font-size:90%;text-align:center;">
+                                <div onclick="toggle_DDX('Account')" class="{!IF(DDA = 'None','button_red', IF(DDA = 'Inactive', 'button_grey','button_green'))}" title="{!IF(DDA = 'None','Set a Match Level in the setup', IF(DDA = 'Inactive', 'Click to Activate/Deactivate','Active and Running'))}" style="padding:0.5rem;width:90%;">
+                                    {!DDA}
+                                </div>
+                                <div>
+                                    {!DDX_Account}{!IF(DDX_Account=10000,'+','')} Potential Dupes
+                                </div> 
+                                <a href="/apex/TRIMDA__TRIMDA_Nav2ListView?o=dda&retURL={!myURL}" style="{!if(DDX_Account ==0,'display=none;','display:normal;')}"><div class="slds-button slds-button--neutral"  title="Review Potential Dupes" style="font-weight:bold;margin-bottom:0.2rem;width:90%;">Review Dupes</div></a>
+                            </div>
+                            <div class="slds-col slds-size--1-of-3" style="font-size:90%;text-align:center;">
+                                <div onclick="toggle_DDX('Contact')" class="{!IF(DDC = 'None','button_red', IF(DDC = 'Inactive', 'button_grey','button_green'))}"  title="{!IF(DDC = 'None','Set a Match Level in the setup', IF(DDC = 'Inactive', 'Click to Activate/Deactivate','Active and Running'))}" style="padding:0.5rem;width:90%;">
+                                    {!DDC}
+                                </div>
+                                <div>
+                                    {!DDX_Contact}{!IF(DDX_Contact=10000,'+','')} Potential Dupes
+                                </div>
+                                <a href="/apex/TRIMDA__TRIMDA_Nav2ListView?o=ddc&retURL={!myURL}" style="{!if(DDX_Lead ==0,'display=none;','display:normal;')}"><div class="slds-button slds-button--neutral" title="Review Potential Dupes" style="font-weight:bold;margin-bottom:0.2rem;width:90%;">Review Dupes</div></a>
+                            </div>
+                            <div class="slds-col slds-size--1-of-3" style="font-size:90%;text-align:center;">
+                                <div onclick="toggle_DDX('Lead')" class="{!IF(DDL = 'None','button_red', IF(DDL = 'Inactive', 'button_grey','button_green'))}" title="{!IF(DDL = 'None','Set a Match Level in the setup', IF(DDL = 'Inactive', 'Click to Activate/Deactivate','Active and Running'))}" style="padding:0.5rem;width:90%;">
+                                    {!DDL}
+                                </div>
+                                <div>
+                                    {!DDX_Lead}{!IF(DDX_Lead=10000,'+','')} Potential Dupes
+                                </div> 
+                                <a href="/apex/TRIMDA__TRIMDA_Nav2ListView?o=ddl&retURL={!myURL}" style="{!if(DDX_Lead ==0,'display=none;','display:normal;')}"><div class="slds-button slds-button--neutral" title="Review Potential Dupes" style="font-weight:bold;margin-bottom:0.2rem;width:90%;">Review Dupes</div></a>
+                            </div>
+
+                        </div>
+                        <apex:actionFunction action="{!invoke_DDX}" immediate="true" name="toggle_DDX" rerender="ddue, console" status="ImWorkingOnIt">
+                            <apex:param name="firstParam" assignTo="{!currentDDX}" value="" />
+                        </apex:actionFunction>
+                    </apex:outputpanel>
+                    
+                </div> 
+                
+                
+                
+                <!-- Quick Tips -->
+                <div class="slds-col slds-size--1-of-1 " >
+                    <apex:outputpanel id="quicktips" styleClass="component trimda_grad" layout="block" >
+                        <div class="DTSHeader" style="color:white;">
+                            <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'links.png')}" style="height:1rem;" title="Links" />&nbsp;Quick Tips ({!Tips2Show})
+                        </div>
+                        
+                        <!--  TIP 1 -->
+                        <apex:outputpanel id="Tip1" rendered="{!Tips2Show = 1}">
+                            <div class="slds-grid slds-wrap" style="background-color:white;margin:0rem 1rem 0rem 1rem;padding:5px;font-size:90%;">
+                                <div class="slds-col slds-size--1-of-5"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'filtercolor.png')}" style="height:3rem;" title="..." /></div>
+                                <div class="slds-col slds-size--4-of-5" style="padding:0.3rem;"><b>Using Filters</b><br /><span style="color:red;">Subsegment your data</span> for improved effeciency.</div>
+                                <div class="slds-col slds-size--1-of-1">Think about dividing your data into subsegments instead of running your deduplication on ALL records<br />
+                                    By using the filters you can select exactly which records you want to include, e.g. by owner, record type, geography, or records from a specific import.<br />
+                                    In the user guide you will find examples of the most common filters, ready to copy/paste into your Alert.</div>
+                                
+                            </div>
+                        </apex:outputpanel>
+                        
+                        <!--  TIP 2 -->
+                        <apex:outputpanel id="Tip2" rendered="{!Tips2Show = 2}">
+                            <div class="slds-grid slds-wrap" style="background-color:white;margin:0rem 1rem 0rem 1rem;padding:5px;font-size:90%;">
+                                <div class="slds-col slds-size--1-of-5"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'candidate.png')}" style="height:3rem;" title="..." /></div>
+                                <div class="slds-col slds-size--4-of-5" style="padding:0.3rem;"><b>Persons / Candidates</b><br />Enable <span style="color:red;">best practice</span> matching processes.</div>
+                                <div class="slds-col slds-size--1-of-1">Our built-in matching processes are by default set to find duplicates in a b2b environment, but if your Contacts are Candidates or persons not associated to an account (private people/consumers etc.) you can add a simple parameter to the Advanced Parameter field, and enable the processes which we have built together with vendors of leading recruitment and staffing solutions.</div>
+                            </div>
+                        </apex:outputpanel>
+                
+                        <!--  TIP 3 -->
+                        <apex:outputpanel id="Tip3" rendered="{!Tips2Show = 3}">
+                            <div class="slds-grid slds-wrap" style="background-color:white;margin:0rem 1rem 0rem 1rem;padding:5px;font-size:90%;">
+                                <div class="slds-col slds-size--1-of-5"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'email.png')}" style="height:3rem;" title="..." /></div>
+                                <div class="slds-col slds-size--4-of-5" style="padding:0.3rem;"><b>Matching on specific fields</b><br />Advanced Parameter: <span style="color:red;">ExactMatchField</span></div>
+                                <div class="slds-col slds-size--1-of-1">Can I match on Email?<br />– A question we often get, and yes of cause!<br />BUT we also look at a range of other fields each time, so you do not have to specify which fields to use or how to compare the content, we have already taken care of this in the default setup, but should you want to focus the matching on a single field like the email, then the advanced parameter will help you tweak the process to do so.</div>
+                            </div>
+                        </apex:outputpanel>
+                        
+                         <!--  TIP 4 -->
+                        <apex:outputpanel id="Tip4" rendered="{!Tips2Show = 4}">
+                            <div class="slds-grid slds-wrap" style="background-color:white;margin:0rem 1rem 0rem 1rem;padding:5px;font-size:90%;">
+                                <div class="slds-col slds-size--1-of-5"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DupeAlert.png')}" style="height:3rem;" title="..." /></div>
+                                <div class="slds-col slds-size--4-of-5" style="padding:0.3rem;"><b>Dynamic Dupe Status</b><br />Show <span style="color:red;">Dupe Status</span> to your End Users</div>
+                                <div class="slds-col slds-size--1-of-1">The information about the duplicates being found by your alerts is stored in the DataTrim Matched Records tab.<br />This data can also be made available in other parts of salesforce, e.g. on the detail page of the Accounts/Contact/Lead.<br />Check out the Dynamic Dupe Status feature and push the dupe information out to your end Users, and make the clean-up process collaborative.</div>
+                            </div>
+                        </apex:outputpanel>
+                
+                         <!--  TIP 5 -->
+                        <apex:outputpanel id="Tip5" rendered="{!Tips2Show = 5}">
+                            <div class="slds-grid slds-wrap" style="background-color:white;margin:0rem 1rem 0rem 1rem;padding:5px;font-size:90%;">
+                                <div class="slds-col slds-size--1-of-5"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'youtube.png')}" style="height:3rem;" title="..." /></div>
+                                <div class="slds-col slds-size--4-of-5" style="padding:0.3rem;"><b>Tutorial:</b><br /><span style="color:red;">Reviewing and merging duplicates</span></div>
+                                <div class="slds-col slds-size--1-of-1"><a href="https://www.youtube.com/watch?v=fPJEC7BpISQ"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'Tutorial_review.png')}" height="120px" title="..." /></a>
+                                    <br />More tutorials on our <a href="https://www.datatrim.com/dupe-alerts/#demo">website.</a></div>
+                            </div>
+                        </apex:outputpanel>
+                        
+                        <div id="TipNav" style="text-align:center;">
+                                <apex:commandLink styleClass="DTaction" style="color:white;" action="{!Tip1}" title="1"  rerender="quicktips" >1</apex:commandLink>&nbsp;&nbsp;
+                                <apex:commandLink styleClass="DTaction" style="color:white;" action="{!Tip2}" title="2"  rerender="quicktips" >2</apex:commandLink>&nbsp;&nbsp;
+                                <apex:commandLink styleClass="DTaction" style="color:white;" action="{!Tip3}" title="3"  rerender="quicktips" >3</apex:commandLink>&nbsp;&nbsp;
+                                <apex:commandLink styleClass="DTaction" style="color:white;" action="{!Tip4}" title="4"  rerender="quicktips" >4</apex:commandLink>&nbsp;&nbsp;
+                                <apex:commandLink styleClass="DTaction" style="color:white;" action="{!Tip5}" title="5"  rerender="quicktips" >5</apex:commandLink>&nbsp;&nbsp;
+                        </div>
+                        
+                    </apex:outputpanel>
+                 </div> 
+                
+                <!-- Useful Links-->
+                <div class="slds-col slds-size--1-of-1 " >
+                     <apex:outputpanel id="usefullinks" styleClass="component" layout="block" >
+                         <div id="alertlinks" class="slds-grid slds-wrap component">
+                            <div class="slds-col slds-size--1-of-1 DTSHeader"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'links.png')}" style="height:1rem;" title="Links" />&nbsp;Useful Links</div>
+                            <div class="slds-col slds-size--1-of-4 slds-large-size--1-of-2 statustext" style="padding:0.5rem;"><a href="https://www.datatrim.com/downloads/DataTrimDupeAlertsUserGuide.pdf#zoom=80"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'userguide.png')}" style="height:2rem;" title="News" />&nbsp;User&nbsp;Guide</a></div>
+                             <div class="slds-col slds-size--1-of-4 slds-large-size--1-of-2 statustext" style="padding:0.5rem;"><a href="https://www.datatrim.com/dupe-alerts/#demo"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'tutorials.png')}" style="height:2rem;" title="News" />&nbsp;Tutorial&nbsp;Videos</a></div>
+                            <div class="slds-col slds-size--1-of-4 slds-large-size--1-of-2 statustext" style="padding:0.5rem;"><a href="mailto:support@datatrim.com"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'support1.png')}" style="height:2rem;" title="News" />&nbsp;Support</a></div>
+                             <div class="slds-col slds-size--1-of-4 slds-large-size--1-of-2 statustext" style="padding:0.5rem;"><a href="https://www.datatrim.com/datatrim-quality-blog/"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'news.png')}" style="height:2rem;" title="News" />&nbsp;Blog</a></div>
+                        </div>
+                    </apex:outputpanel>
+                </div> 
+                
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript" >
+$('.dt_counter').each(function () {
+    $(this).prop('Counter',0).animate({
+        Counter: $(this).text().replace(/(\d+),(?=\d{3}(\D|$))/g, "$1")
+    }, {
+        duration: 1000,
+        easing: 'swing',
+        step: function (now) {
+            $(this).text(Math.ceil(now));
+        }
+    });
+});
+</script>
+    
+</apex:outputpanel>
+
+</apex:form>    
+    
+
+    
+<div class="slds">
+    <div class="slds-grid slds-wrap">    
+        <div class="slds-col slds-size--1-of-1" >
+            <!-- COPYRIGHT -->
+            <div style="text-align:center;font-size:xx-small;font-family:Arial;margin-top:2rem;">Copyright © 2007-<script>document.write(new Date().getFullYear())</script> DataTrim Dupe Alerts by d2b International ApS, All rights reserved. </div>
+         </div>
+    </div>
+</div>          
+
+
+ 
+</apex:page>

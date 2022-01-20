@@ -1,0 +1,52 @@
+<!--
+	This page is use for Account hierarchy configuratin as this was not used by any other module and we have limitation on pages creation.
+-->
+<apex:page docType="html-5.0" id="AccountHierarchyConfig" sidebar="false" title="Account Hierarchy | Gainsight" controller="JBCXM.Customer360Broker" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker" tabStyle="Administration__tab">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var nsParams               = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        var GS                         = GS || {};
+        GS.remotingConfigEndPoint      = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingEndPoint            = '{!$RemoteAction.Customer360Broker.customer360RequestBroker}';
+        GS.commonRemotingEndPoint      = GS.remotingConfigEndPoint;
+        GS.remoting                    = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.NSSessionId                 = "{!(NSSessionId)}";
+        GS.orgId                       = "{!$Organization.Id}";
+        GS.nsURL                       = nsParams.url;
+    </script>
+
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gs-accountHierarchy-main-container"></div>
+        </div>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["accountHierarchy_configuration/scripts/accountHierarchy_configuration.bundle.js"], styles:["accountHierarchy_configuration/styles/accountHierarchy_configuration.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:8080/UI')}/accountHierarchy_configuration/styles/accountHierarchy_configuration.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "https://localhost:8080/UI")}/accountHierarchy_configuration/scripts/accountHierarchy_configuration.bundle.js"></script>
+    </apex:outputpanel>
+
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('Account Hierarchy');
+    </script>
+    <apex:Form ></apex:Form>
+</apex:page>

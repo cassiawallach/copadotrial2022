@@ -127,69 +127,99 @@
         <type>Default</type>
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Access_Code__c</fullName>
+        <externalId>true</externalId>
+        <inlineHelpText>The Access Code for the Default Entitlement (Standard Support) must be set to 1.</inlineHelpText>
+        <label>Access Code</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>AccountId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>MasterDetail</type>
     </fields>
     <fields>
         <fullName>AssetId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>BusinessHoursId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>CasesPerEntitlement</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>ContractLineItemId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>EndDate</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>IsPerIncident</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>LocationId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PS_Access_Code__c</fullName>
+        <displayFormat>{000000}</displayFormat>
+        <externalId>false</externalId>
+        <label>PS Access Code</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>RemainingCases</fullName>
-        <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>RemainingWorkOrders</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>ServiceContractId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>SlaProcessId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>StartDate</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
@@ -201,13 +231,34 @@
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>Status_Calculated__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK(StartDate), &apos;Inactive&apos;, IF(TODAY() &lt; StartDate, &apos;Inactive&apos;, IF ( ISBLANK( EndDate), &apos;Active&apos;, IF(TODAY() &lt;= EndDate, &apos;Active&apos;, &apos;Expired&apos;))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Status (Calculated)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Type</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>WorkOrdersPerEntitlement</fullName>
+        <fullName>Working_Business_Hours__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Regular Business hour times for that Entitlement (drives Severity 3 &amp; 4 times).</inlineHelpText>
+        <label>Working Business Hours</label>
+        <referenceTo>BusinessHours</referenceTo>
+        <relationshipName>Entitlements</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <listViews>
         <fullName>All_Entitlements</fullName>
@@ -217,7 +268,38 @@
         <columns>ENTITLEMENT.ENDDATE</columns>
         <columns>ENTITLEMENT.STATUS</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>ENTITLEMENT.STATUS</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
         <label>All Entitlements</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>RW_All_Entitlements</fullName>
+        <columns>ENTITLEMENT.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ENTITLEMENT.STARTDATE</columns>
+        <columns>ENTITLEMENT.ENDDATE</columns>
+        <columns>ENTITLEMENT.STATUS</columns>
+        <columns>ENTITLEMENT.STATUSINDICATOR</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Access_Code__c</field>
+            <operation>notEqual</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>ENTITLEMENT.STATUS</field>
+            <operation>notEqual</operation>
+            <value>2</value>
+        </filters>
+        <label>RW All Entitlements</label>
+        <language>en_US</language>
+        <sharedTo>
+            <role>VP_Customer_Success</role>
+        </sharedTo>
     </listViews>
     <searchLayouts>
         <customTabListAdditionalFields>ENTITLEMENT.NAME</customTabListAdditionalFields>

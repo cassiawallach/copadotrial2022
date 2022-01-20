@@ -1,0 +1,19 @@
+<!--
+    This component is referenced in the listingResultListTemplate component.
+    It expects a {row} property to added and must be placed into a <table> element.
+    The header rows (<th> must be kept in sync between this component and the listingResultListTemplate)
+-->
+<template>
+    <template if:true={row}>
+        <th data-label="Listing Header" scope="row">
+            <div class="slds-truncate" title={row.Name} >
+                <a href="javascript:void(0);" onclick={handleClick} data-id={row.Id} tabindex="-1" data-field="name">{row.Name}</a>
+            </div>
+        </th>
+        <td><div class="slds-truncate" title={row.Latest_Release__c} data-field="latestRelease">{row.Latest_Release__c}</div></td>
+        <!--<td><div class="slds-truncate">
+            <c-listing-result-row-rating rating={row.Rating__c} reviews={row.Reviews__c}></c-listing-result-row-rating>
+        </div></td>-->
+        <td><div class="slds-truncate" title={row.Price__c} data-field="price">{row.Price__c}</div></td>
+</template>
+</template>

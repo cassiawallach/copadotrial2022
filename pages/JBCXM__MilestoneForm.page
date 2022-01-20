@@ -1,0 +1,22 @@
+<apex:page sidebar="false" showHeader="true">
+	<style type="text/css">
+	        body #AppBodyHeader {
+	            display: none;
+	        }
+	</style> 
+ 
+	<script type="text/javascript">
+		function callBackAfterMilestoneFormSave(){
+			window.top.{!JSENCODE($CurrentPage.parameters.callbackAfterSave)}();
+		}
+		function callBackAfterMilestoneFormCancel()	{
+			window.top.{!JSENCODE($CurrentPage.parameters.callBackAfterCancel)}(); 
+		}
+	</script>
+ 
+	<apex:form >
+		<c:Milestone customerId="{!JSINHTMLENCODE($CurrentPage.parameters.customerId)}" headerText="Milestone" milestoneId="{!JSINHTMLENCODE($CurrentPage.parameters.milestoneId)}"
+				callBackAfterSave="callBackAfterMilestoneFormSave" callBackAfterCancel="callBackAfterMilestoneFormCancel">
+		</c:Milestone>
+	</apex:form>
+</apex:page>

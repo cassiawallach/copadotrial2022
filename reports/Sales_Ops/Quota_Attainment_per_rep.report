@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>ForecastingItem.ForecastAmount.CONVERT:SUM/ForecastingQuota.QuotaAmount.CONVERT:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>%</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_62458489</developerName>
+        <masterLabel>Sales Team</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>ForecastingQuota$Owner</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Phil Lelliott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <value>EMEA</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>ForecastingQuota$EndDate</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota$QuotaAmount.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastAmount.CONVERT</field>
+    </columns>
+    <columns>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ForecastingQuota$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notContain</operator>
+            <value>anish,matt hill,kevin robinson,edward elliot,zachary bayer,russell lott,phil barow</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_62458489</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota$Owner</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>ForecastingQuota$StartDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Quota Attainment - per rep</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Forecasting_Quotas__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>ForecastingQuota.ForecastingQuotaItems$StartDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

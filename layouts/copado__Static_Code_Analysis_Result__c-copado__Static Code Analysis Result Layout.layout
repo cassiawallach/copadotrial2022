@@ -23,6 +23,10 @@
                 <behavior>Edit</behavior>
                 <field>copado__Details__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Deployment_Step__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -40,15 +44,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>copado__Score_v11__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>copado__Number_of_Violations__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>copado__Highest_Priority_Violation__c</field>
+                <field>copado__Score_v11__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -87,13 +87,14 @@
     </relatedLists>
     <relatedLists>
         <excludeButtons>New</excludeButtons>
+        <fields>NAME</fields>
         <fields>copado__File__c</fields>
         <fields>copado__Line__c</fields>
         <fields>copado__Rule__c</fields>
         <fields>copado__Priority__c</fields>
         <fields>copado__Message__c</fields>
         <fields>copado__Info_URL_Link__c</fields>
-        <fields>CREATED_DATE</fields>
+        <fields>copado__Info_URL__c</fields>
         <relatedList>copado__Static_Code_Analysis_Violation__c.copado__Static_Code_Analysis_Result__c</relatedList>
         <sortField>copado__File__c</sortField>
         <sortOrder>Asc</sortOrder>
@@ -104,7 +105,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0Y000003x3CA</masterLabel>
+        <masterLabel>00hb000000XIaB4</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

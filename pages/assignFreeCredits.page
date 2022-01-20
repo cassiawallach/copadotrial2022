@@ -1,0 +1,98 @@
+<apex:page standardController="Salesforce_Org__c" extensions="assignFreeCreditsExtension" id="thePage">
+    <apex:pageMessages />    
+    <apex:form id="theForm">
+        <apex:pageBlock id="pb">
+            <apex:pageBlockSection id="pbs1" columns="1">
+                <apex:outputField value="{!org.Name}" rendered="false" />
+                <apex:outputField value="{!org.OrgId__c}" rendered="false" />
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value=""/>
+                    <select id="js-type" onchange="renderType();">
+                        <option value="credits" selected="selected">Add Credits</option>
+                        <option value="minutes">Add Minutes</option>
+                    </select>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <div id="pnlCredits" style="display:none;">
+                <apex:pageBlockSection id="pbs2" columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value=""/>
+                		<apex:commandButton value="Assign free credits" action="{!assignCredits}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+						<apex:outputLabel value="{!$ObjectType.Salesforce_Org__c.Fields.Credits__c.Label}"/>
+                        <apex:inputField id="ca" value="{!org.Credits__c}" onkeyup="doCalculation('{!$Component.ca}')" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Current Credits"/>
+                        <apex:outputField id="co" value="{!org.Credits__c}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="New Credits"/>
+                        <label id="creditsTotal"></label>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </div>
+            <div id="pnlMinutes" style="display:none;">
+                <apex:pageBlockSection id="pbs3" columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value=""/>
+                		<apex:commandButton value="Assign free minutes" action="{!assignMinutes}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+						<apex:outputLabel value="{!$ObjectType.Salesforce_Org__c.Fields.Selenium_Minutes__c.Label}"/>
+                        <apex:inputField id="sa" value="{!org.Selenium_Minutes__c}" onkeyup="doMinCalculation('{!$Component.sa}')"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Current Minutes"/>
+                        <apex:outputField id="so" value="{!org.Selenium_Minutes__c}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="New Minutes"/>
+                        <label id="minutesTotal"></label>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </div>
+        </apex:pageBlock>
+    <script>
+    	function doCalculation(ca){
+            var t = document.getElementById('creditsTotal');
+            var valueA = parseInt(document.getElementById(ca).value);
+            var valueO = parseInt('{!org.Credits__c}');
+			var total = valueA + valueO;
+            console.log(total);
+            t.innerText = numberWithCommas(total);
+        }
+        function doMinCalculation(sa){
+            var t = document.getElementById('minutesTotal');
+            var valueA = parseInt(document.getElementById(sa).value);
+            var valueO = parseInt('{!org.Selenium_Minutes__c}');
+			var total = valueA + valueO;
+            console.log(total);
+            t.innerText = numberWithCommas(total);
+        }
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        function renderType(){
+            var e = document.getElementById('js-type');
+			var x = e.options[e.selectedIndex].value;
+            console.log(x);
+        	if(x==='credits'){
+                document.querySelector('input[id$="sa"]').value = '';
+            	document.getElementById('pnlCredits').style.display = 'block';
+            	document.getElementById('pnlMinutes').style.display = 'none';
+                return false;
+            }
+            if(x==='minutes'){
+                document.querySelector('input[id$="ca"]').value = '';
+                document.getElementById('pnlMinutes').style.display = 'block';
+            	document.getElementById('pnlCredits').style.display = 'none';
+            	return false;
+            }
+        }
+        //Auto-run code
+        renderType();
+    </script> 
+    </apex:form>   
+</apex:page>

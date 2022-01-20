@@ -2,7 +2,7 @@
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
-        <customLabel>false</customLabel>
+        <customLabel>true</customLabel>
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Entitlement Information</label>
@@ -25,15 +25,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>AssetId</field>
+                <field>Access_Code__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IsPerIncident</field>
+                <behavior>Readonly</behavior>
+                <field>PS_Access_Code__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>CasesPerEntitlement</field>
+                <behavior>Readonly</behavior>
+                <field>Status_Calculated__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -55,15 +55,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>BusinessHoursId</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>SlaProcessId</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>RemainingCases</field>
+                <field>BusinessHoursId</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Working_Business_Hours__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -114,12 +114,13 @@
         <fields>OWNER_NAME</fields>
         <relatedList>RelatedCaseList</relatedList>
     </relatedLists>
-    <relatedLists>
-        <fields>CONTACT.NAME</fields>
-        <fields>CREATEDBY_USER.NAME</fields>
-        <relatedList>RelatedEntitlementContactList</relatedList>
-    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+    <summaryLayout>
+        <masterLabel>00h26000000Jcx2</masterLabel>
+        <sizeX>4</sizeX>
+        <sizeY>0</sizeY>
+        <summaryLayoutStyle>Default</summaryLayoutStyle>
+    </summaryLayout>
 </Layout>

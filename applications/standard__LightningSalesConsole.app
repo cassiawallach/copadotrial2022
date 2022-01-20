@@ -1,38 +1,262 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
-    <brand>
-        <headerColor>#0070D2</headerColor>
-        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
-    </brand>
-    <description>(Lightning Experience) Lets sales reps work with multiple records on one screen</description>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Opportunity_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+    </actionOverrides>
     <formFactors>Small</formFactors>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Sales Console</label>
     <navType>Console</navType>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Copado Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Copado Base Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Copado Metadata Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Copado Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Employee Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>MarketingProfile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Sales User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>SalesforceIQ Integration User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>SolutionManager</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>StandardAul</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Standard</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Success Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Support Feedback Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Support Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Website Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Support User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Z - External User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Accounts_2019</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Corporate_Entity</recordType>
+        <type>Flexipage</type>
+        <profile>Z - External User CC</profile>
+    </profileActionOverrides>
+    <tabs>standard-home</tabs>
+    <tabs>standard-Lead</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Contact</tabs>
     <tabs>standard-Opportunity</tabs>
-    <tabs>standard-Lead</tabs>
-    <tabs>MobileLanding</tabs>
+    <tabs>standard-Campaign</tabs>
+    <tabs>standard-Task</tabs>
+    <tabs>standard-Event</tabs>
+    <tabs>standard-ContentNote</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>standard-Feed</tabs>
+    <tabs>standard-CollaborationGroup</tabs>
+    <tabs>standard-File</tabs>
+    <tabs>Competitor__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>LightningSalesConsole_UtilityBar</utilityBar>
     <workspaceConfig>
         <mappings>
-            <tab>MobileLanding</tab>
+            <tab>Competitor__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
         </mappings>
         <mappings>
+            <tab>standard-Campaign</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-CollaborationGroup</tab>
+        </mappings>
+        <mappings>
             <tab>standard-Contact</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-ContentNote</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Dashboard</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Event</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Feed</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-File</tab>
         </mappings>
         <mappings>
             <tab>standard-Lead</tab>
         </mappings>
         <mappings>
             <tab>standard-Opportunity</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Task</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-home</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-report</tab>
         </mappings>
     </workspaceConfig>
 </CustomApplication>

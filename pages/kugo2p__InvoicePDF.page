@@ -1,0 +1,42 @@
+<apex:page standardController="kugo2p__KugamonInvoice__c" extensions="kugo2p.InvoicePDFExt" recordSetVar="printInvoices" renderas="{!renderAs}" 
+            showHeader="{!hasError}" sidebar="{!hasError}" standardStylesheets="{!hasError}" cache="false">
+
+    <apex:outputPanel rendered="{!hasError}">
+        <apex:pageMessages escape="false"/>
+    
+        <apex:form >
+            <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" >
+                <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+                <br></br>
+                <!-- <apex:commandButton value="Back" action="{!cancelPackingSlipNew}" styleClass="slds-button slds-button--neutral" immediate="true" /> -->
+            </apex:outputPanel>
+        </apex:form>
+    </apex:outputPanel>
+
+    <c:InvoicePDF invoiceId="{!Invoice.Id}" rendered="{!if(NOT(hasError) && totalPDFsToPrint==1,True,False)}"/>
+
+    <!-- don't print footer page number if printing multiple invoices -->
+    <head>
+        <style type="text/css">
+        @page {
+            @bottom-left {content: "";}
+            @bottom-right {content: "";}
+        }
+        </style>
+    </head>
+
+    <apex:outputPanel rendered="{!!hasError}">
+    <apex:variable value="{!0}" var="invoiceNumber"/>
+    <apex:datatable value="{!invoices}" var="invoice" rendered="{!if(totalPDFsToPrint>1,True,False)}">
+        <apex:column width="100%" >
+                <apex:variable value="{!invoiceNumber + 1}" var="invoiceNumber"/>
+                <apex:stylesheet value="{!$Resource.kugo2p__PdfCss}" />
+                <c:InvoicePDF invoiceId="{!invoice.Id}" />
+                <apex:outputPanel rendered="{!if(invoiceNumber<totalPDFsToPrint,True,False)}">
+                    <h1 style="page-break-after: always;"> </h1>
+                </apex:outputPanel>
+        </apex:column>
+    </apex:datatable>
+    </apex:outputPanel>
+
+</apex:page>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Payable Invoice</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Payable Invoices</value>
+    </caseValues>
+    <fields>
+        <label><!-- Account --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- Payable Invoices --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The batch payment where this invoice was paid. --></help>
+        <label><!-- Batch Payment --></label>
+        <name>Batch_Payment__c</name>
+        <relationshipLabel><!-- Payable Invoices --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Used for duplicate record prevention --></help>
+        <label><!-- External Id --></label>
+        <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Amount --></label>
+        <name>Invoice_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Date --></label>
+        <name>Invoice_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Due Date --></label>
+        <name>Invoice_Due_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Order --></label>
+        <name>Order__c</name>
+        <relationshipLabel><!-- Payable Invoices --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The customer to which this invoice relates --></help>
+        <label><!-- Related Customer --></label>
+        <name>Related_Customer__c</name>
+        <relationshipLabel><!-- Payable Invoices (Related Customer) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Cancelled</masterLabel>
+            <translation><!-- Cancelled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid</masterLabel>
+            <translation><!-- Paid --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending Payment</masterLabel>
+            <translation><!-- Pending Payment --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>Payable Invoice Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

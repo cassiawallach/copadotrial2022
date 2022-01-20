@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>RowCount</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <downGroupingContext>Network.DeflectionSignal.KnowledgeArticleVersion$Title</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Total Deflections</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <field>Network.DeflectionSignal$Signal</field>
+    </columns>
+    <columns>
+        <field>Network.DeflectionSignal$Date</field>
+    </columns>
+    <description>These articles have the most confirmed and potential deflections.</description>
+    <filter>
+        <criteriaItems>
+            <column>Network.DeflectionSignal$Signal</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>3</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Network.DeflectionSignal$Signal</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Network.DeflectionSignal.KnowledgeArticleVersion$Title</field>
+        <sortByName>FORMULA1</sortByName>
+        <sortOrder>Desc</sortOrder>
+        <sortType>CustomSummaryFormula</sortType>
+    </groupingsDown>
+    <name>Most Helpful Articles</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>casedeflection__Case_Deflections_from_Community_Articles__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Network$CreatedDate</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

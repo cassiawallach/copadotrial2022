@@ -1,0 +1,1030 @@
+<apex:page sidebar="false" standardController="Bread_Winner__Breadwinner_Account_Connection__c" extensions="Bread_Winner.BAC_PageExtension" action="{!EditContact}" title="{!IF(isContactEditPage,'Edit Xero Contact', 'Change Xero Contact Sync Status')}">
+    <apex:variable value="{!OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t')}" var="isLightning" />
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="x-ua-compatible" content="ie=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/jquery-1.11.3.js')}"></script>
+            <script type="text/javascript">
+            if(document.getElementsByTagName("title") && document.getElementsByTagName("title")[0]){                
+                if(document.getElementsByTagName("title")[0].innerText.includes("Edit Xero Contact")){
+                    document.getElementsByTagName("title")[0].innerHTML = 'Edit Xero Contact';
+                }
+                if(document.getElementsByTagName("title")[0].innerText.includes("Change Xero Contact Sync Status")){
+                    document.getElementsByTagName("title")[0].innerHTML = 'Change Xero Contact Sync Status';
+                }                               
+            }
+            var j$=jQuery.noConflict();
+            function HideStyleSheet() {
+                j$("link.user[href$='elements.css']").each(function() {
+                    j$(this).attr("href", "#");
+                });
+            }
+            function message() {
+                j$(".infoM6, .infoM4, .infoM3, .infoM2, .infoS1").addClass("slds-notify slds-notify_alert slds-theme_inverse-text  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","background-color":"rgba(84,105,141,.95)","border-color":"rgba(84,105,141,.95)", "justify-content": "left"} );
+                j$(".errorM6, .errorM4, .errorM3, .errorM2, .errorS1").addClass("slds-notify slds-notify_alert slds-theme_error  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css({"font-weight":"500","line-height":"1.4","word-spacing":"1px", "justify-content": "left"});
+                j$(".warningM6, .warningM4, .warningM3, .warningM2, .warningS1").addClass("slds-notify slds-notify_alert slds-theme_warning  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px", "justify-content": "left"} ) ;
+                j$(".confirmM6, .confirmM4, .confirmM3, .confirmM2, .confirmS1").addClass("slds-notify slds-notify_alert slds-theme_success slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px", "justify-content": "left"} ) ;
+                
+                j$("div .messageText h4").css( "color" , "white" );
+                j$("div[class*='warning'] div.messageText h4").css( "color", "black" );
+                j$("table.messageTable td").css({"color" : "white"});
+                j$("div[class*='warning'] table.messageTable td").css( "color", "black" );
+            }
+            function allfunctions(){
+                HideStyleSheet();
+                message();
+                j$("span.lookupInput input").addClass("slds-input");
+            }
+            j$(function(){
+                allfunctions();
+            });
+            function showSpinner(){
+                document.getElementById("spinnerDiv").style.display="";
+            }
+            function hideSpinner(){
+                document.getElementById("spinnerDiv").style.display="none";
+            }
+            function identifyfield(elementt, helptext, TopMinusparam,LeftMinusParam) {
+                var x = j$(elementt).offset();
+                var islightningparam='{!isLightning}';
+                if(islightningparam=='true'){
+                    LeftMinusParam=LeftMinusParam-9;
+                    TopMinusparam=TopMinusparam-105;
+                }
+                var ToSetleft = x.left - LeftMinusParam;
+                j$("#help p").text(helptext);
+                var ToSetheight = x.top - TopMinusparam;
+                var heptextdiv = document.getElementById("help");
+                j$(heptextdiv).css({
+                    top: ToSetheight + 'px',
+                    left: ToSetleft + 'px',
+                    display: ""
+                })
+            }
+            function mouseoutclose() {
+                var heptextdiv = document.getElementById("help");
+                j$(heptextdiv).css({
+                    top: "0px",
+                    left: "0px",
+                    display: "none"
+                });
+            }
+            </script>
+            <style>
+                .msgIcon {
+                display: none;
+                }
+                .message .messageText {
+                margin: 0px;
+                }
+                .message .messageText h4 {
+                font-weight: inherit;
+                display: initial;
+                }
+                .slds-scope .slds-panel__section {
+                padding: 0px !important;
+                }
+                .slds-scope .slds-form-element__icon {
+                vertical-align: baseline;
+                }
+                .slds-scope .slds-table td {
+                white-space: inherit;
+                text-align: left !important;
+                }
+                .arrow {
+                font-size: 25px;
+                color: #42B7F4;
+                }
+                .arrowLink{
+                text-decoration:none !important;
+                }
+                .slds-spinner.slds-spinner_x-small.slds-spinner_brand.arrowSpinner{
+                    top: inherit !important;
+                    left: inherit !important;
+                    transform: translate(200%, 0%) rotate(90deg) !important;
+                }
+                .slds-scope .slds-spinner_container{
+                position: fixed; z-index: 9999;
+                }
+            </style>
+            <apex:slds />
+        </head>
+        <body>
+            <apex:form id="theForm">
+                <div class="slds-scope">
+                    <apex:actionStatus id="assign-action-status" layout="block">
+                        <apex:facet name="start">
+                            <div class="slds-spinner_container">
+                                <div class="slds-spinner_brand slds-spinner slds-spinner_medium" aria-hidden="false" role="alert">
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>
+                            </div>
+                        </apex:facet>
+                    </apex:actionStatus>
+                    <apex:outputPanel rendered="{!isContactEditPage}" id="contactEditPage" layout="block" styleClass="{!IF(isLightning,'slds-p-around_small','')}">
+                        <div id="help" class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" aria-live="polite" style="display:none;position:absolute;top:0px;left:0px;">
+                            <div class="slds-popover__body slds-text-longform">
+                                <p>Help text will come here dynamically</p>
+                            </div>
+                        </div>
+                        <!-- Header starts -->
+                        <div class="slds-page-header slds-m-bottom_small" role="banner" style="background:#f7f9fb;">
+                            <div class="slds-media slds-media_center">
+                                <div class="slds-media__figure">
+                                    <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                                        <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#moneybag')}"></use>
+                                    </svg>
+                                </div>
+                                <div class="slds-media__body">
+                                    <p class="slds-page-header__title slds-truncate slds-align-middle" title="Edit Breadwinner Xero Contact"> Edit Breadwinner Xero Contact </p>
+                                    <p class="slds-text-body_small slds-line-height_reset">Breadwinner • Xero </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Header ends -->
+                        <div class="slds-m-horizontal_small">
+                            <apex:pageMessage severity="info" rendered="{!isReadOnlyMode}" summary="You are using Breadwinner in Xero Read Only Mode. While Breadwinner reads data from Xero, no changes will be made to Xero. Xero is in Read-Only mode and will not be altered in any way."></apex:pageMessage>
+                            <apex:pagemessage severity="WARNING" strength="3" rendered="{!!HasReadAccess}" escape="false">
+                                We are unable to change the associated Invoices owner, because the Account owner does not have access on Invoices. So please contact your Administrator.
+                            </apex:pagemessage>
+                            <apex:pageMessage rendered="{!OR(NOT($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.createable), NOT($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__CompanyName__c.createable))}" detail="{!PermissionSetErrorMessage}" summary="" severity="WARNING" strength="3" escape="false"/>
+                            
+                            <apex:pageMessages escape="false"></apex:pageMessages>
+                            <!-- <apex:pageMessage rendered="{!if(isBasicOrHigher, false, true)}" severity="WARNING" strength="3" summary="This feature is only available to customers on our latest subscription plan. You may be able to move to one of these plan at little or even no cost. Please contact jo@breadwinner.com, and ask her about moving onto a higher plan with more features." /> -->
+                            
+                            <!-- <apex:pageMessage summary="This Xero Contact is not yet matched to any of the Salesforce Accounts yet, if you want to match this, please match this Xero Contact to one of the Salesforce Accounts by visting the Setup section on Breadwinner tab."  severity="INFO"  rendered="{!AND(ISBLANK(AccountId),OR(AND(xeroCntct.Is_Customer__c, !xeroCntct.Do_not_Import_Invoices__c), AND(xeroCntct.Is_Supplier__c, !xeroCntct.Do_not_Import_Bills__c)))}"/> -->
+                            
+                            <apex:pageMessage summary="This Xero Contact is not associated with a Salesforce Account." severity="INFO" rendered="{!ISBLANK(AccountId)}" />
+                            
+                            <apex:outputPanel layout="block" rendered="{!bacExists}" style="border-radius:4px;" styleClass="warningM3 slds-m-top_small slds-m-bottom_small" >
+                                <apex:outputPanel layout="block" rendered="{!NOT(ISNULL(existingBAC.Bread_Winner__Salesforce_Account__c))}">
+                                    You are trying to create a Xero Contact, but another Xero Contact with that name already exists. The existing Xero Contact is called "{!xeroCntct.Bread_Winner__CompanyName__c}" and is already associated with a different Salesforce Account&nbsp;"<apex:outputField value="{!existingBAC.Bread_Winner__Salesforce_Account__c}"/>".
+                                    <br/> <br/>
+                                    You have several options:
+                                    <br/>
+                                    <ul>
+                                        <li>Edit Xero Contact but give it a different name.</li>
+                                        <li>Merge the Salesforce Account&nbsp;<apex:outputField value="{!existingBAC.Bread_Winner__Salesforce_Account__c}"/> with this one. Start the&nbsp;
+                                            <apex:outputLink value="/merge/accmergewizard.jsp?goNext=+Next+&cid={!xeroCntct.Bread_Winner__Salesforce_Account__c}&cid={!existingBAC.Bread_Winner__Salesforce_Account__c}" id="sfAccountMergeWizard">Salesforce Account merge wizard</apex:outputLink>.
+                                        </li>
+                                    </ul>
+                                    To understand more about how Breadwinner associates Xero contacts with Salesforce Accounts, this&nbsp;<a href="{!BW_SupportPortalURL}/support/solutions/articles/44001664285" target="_blank">knowledge base article</a> might help. Warning: it's long and technical!
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="block" rendered="{!ISNULL(existingBAC.Bread_Winner__Salesforce_Account__c)}">
+                                    You are trying to create a Xero Contact, but another Xero Contact with that name already exists. The existing Xero Contact is called "<apex:outputLink value="{!$Page.Bread_Winner__BreadwinnerAccountConnection_RecordInfo}?id={!xeroCntct.Id}&showNewUI=true" target="_blank">{!xeroCntct.Bread_Winner__CompanyName__c}</apex:outputLink>" and is already imported to Salesforce but not associated with any Salesforce Account.
+                                    <br/>
+                                    <ul>
+                                        <li>So Edit this Xero Contact but give it a different name.</li>
+                                    </ul>
+                                    To understand more about how Breadwinner associates Xero contacts with Salesforce Accounts, this&nbsp;<a href="{!BW_SupportPortalURL}/support/solutions/articles/44001664285" target="_blank">knowledge base article</a> might help. Warning: it's long and technical!
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel layout="block" rendered="{!bacExistsMsg2}" style="border-radius:4px;" styleClass="warningM3 slds-m-top_small slds-m-bottom_small" >
+                                A Xero Contact with the same name already exists and is related to the current Salesforce Account&nbsp; <apex:outputField value="{!existingBAC.Bread_Winner__Salesforce_Account__c}"/>. You can edit Xero Contact by giving it a different name.
+                            </apex:outputPanel>
+                            <apex:pageMessage rendered="{!isOAuthIssue}" escape="false" detail="{!oAuthExceptionWarningMessage}" summary="There was a problem with the connection to Xero." severity="WARNING" strength="3"/>
+                            <div class="slds-box slds-box_x-small slds-theme_alt-inverse" style="{!IF(showMultiTenantMessage, 'display:block', 'display:none')}" >
+                                <div class="slds-text-heading_small"><p>{!MultiTenantAlertMessage}</p></div>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1 slds-p-around_x-small">
+                                <div class="slds-col slds-grid slds-wrap slds-size_1-of-1 slds-medium-size_2-of-3 slds-large-size_4-of-12">
+                                    <apex:outputPanel layout="block" styleClass="slds-col_padded slds-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1">
+                                        <div class="slds-form-element">
+                                            <span class="slds-form-element__label">{!$ObjectType.Breadwinner_Account_Connection__c.fields.Name.label}</span>
+                                            <div class="slds-form-element__control">
+                                                <span class="slds-form-element__static" >{!xeroCntct.name}</span>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputpanel layout="block" id="conDefaultCurrency" styleClass="slds-col_padded slds-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1 slds-m-vertical_x-small slds-grid slds-grid_vertical" rendered="{!AND(OR(isProfessionalOrHigher, isOnTrial), OR(haveMultiCurrency, Not(ISBlank(xeroCntct.Bread_Winner__DefaultCurrency__c))))}">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label">Default Currency for Xero Contact</label>
+                                            <div class="slds-form-element__icon">
+                                                <apex:outputPanel rendered="{!isOnTrial}">
+                                                    <div class="slds-form-element__icon">
+                                                        <a href="javascript:void(0);">
+                                                            <svg aria-hidden="true" class="slds-icon slds-icon_x-small slds-icon-text-default" onmouseover="identifyfield(this,'Selecting the default Currency for Xero Contacts is only available on Breadwinner Professional Edition and above. You can use this feature during your free trial, but to keep using it after your trial you must subscribe at the Professional or more.','217','25')" onmouseout="mouseoutclose();">
+                                                                <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#info')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Help</span>
+                                                        </a>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <apex:outputPanel id="conDefaultCurrency1">
+                                                <apex:outputPanel rendered="{!haveMultiCurrency}">
+                                                    <div class="slds-select_container">
+                                                        <apex:selectList label="Default Currency" size="1" value="{!conDefaultCurrency}" styleClass="slds-select" rendered="{!haveMultiCurrency}">
+                                                            <apex:selectOptions value="{!xeroOrgCurrencies}"></apex:selectOptions>
+                                                        </apex:selectList>
+                                                    </div>  
+                                                </apex:outputPanel>
+                                                <div>
+                                                    <apex:outputText value="{!conDefaultCurrency}" rendered="{!NOT(haveMultiCurrency)}"></apex:outputText>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </apex:outputpanel>
+                                </div>
+                                <apex:outputPanel layout="block" id="CustomerMappingSection">
+                                    <div class="slds-section slds-is-open ">
+                                        <h3 class="slds-section__title slds-theme_shade" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                            <span class="slds-truncate slds-p-horizontal_small" title="Mapping Customer Details from Salesforce">Mapping Customer Details from Salesforce</span>
+                                        </h3>
+                                        <div aria-hidden="false">
+                                            <apex:outputPanel layout="block" styleClass="slds-size_1-of-1 slds-grid slds-grid_vertical">
+                                                <apex:outputPanel layout="block" styleClass="slds-p-vertical_medium slds-grid slds-wrap" rendered="{!AccountId != NULL}">
+                                                    <div class="slds-col_padded slds-size_1-of-1 slds-large-size_2-of-12"></div>
+                                                    <div class="slds-col_padded slds-large-size_4-of-12"> 
+                                                        <div class="slds-text-heading_medium slds-text-align_center">Details from Salesforce Contact</div>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle"></div>
+                                                    <div class="slds-col_padded slds-large-size_4-of-12"> 
+                                                        <div class="slds-text-heading_medium slds-text-align_center">Details from Xero Contact</div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <h3 class="slds-section__title slds-p-left_small" style="display:{!if(AccountId != NULL,'Block','None')};">Primary Contact Details:</h3>
+                                                <apex:outputPanel layout="block" styleClass="slds-grid slds-wrap slds-p-bottom_x-small" id="salesforceContacts" rendered="{!AccountId != NULL}">
+                                                    <div class="slds-col_padded slds-large-size_2-of-12 slds-size_1-of-1">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Salesforce Contact"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <apex:outputText rendered="{!sfContacts.size<2}" style="color:red;" value="No Salesforce Contacts exist for this Salesforce Account"/>
+                                                        <apex:outputPanel layout="block" rendered="{!sfContacts.size>1}">
+                                                            <div class="slds-form-element">
+                                                                <div class="slds-form-element__control">
+                                                                    <div class="slds-select_container">
+                                                                        <apex:selectList styleClass="slds-select" id="selectedContact" value="{!selectedContactId}" size="1">
+                                                                            <apex:selectOptions value="{!sfContacts}"></apex:selectOptions>
+                                                                            <apex:actionSupport event="onchange" reRender="FirstNameSection, LastNameSection, EmailSection" status="assign-action-status"/>
+                                                                        </apex:selectList>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-grid slds-wrap slds-p-vertical_x-small" id="FirstNameSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__FirstName__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="First Name"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputText id="sfFirstName" value="{!mapOfContactIdcontactWrapperList[selectedContactId].FirstName}" styleClass="slds-input slds-is-disabled" html-autofocus="false" disabled="true"/>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status1">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('firstNameInput','{!mapOfContactIdcontactWrapperList[selectedContactId].FirstName}');" status="status1" reRender="FirstNameSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__FirstName__c)!=lower(mapOfContactIdcontactWrapperList[selectedContactId].FirstName),NOT(ISBLANK(mapOfContactIdcontactWrapperList[selectedContactId].FirstName))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this First Name in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">First Name</label>
+                                                        <apex:inputField id="firstNameInput" label="First Name" value="{!xeroCntct.Bread_Winner__FirstName__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-grid slds-wrap slds-p-vertical_x-small" id="LastNameSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__LastName__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Last Name"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputText id="sfLastName" value="{!mapOfContactIdcontactWrapperList[selectedContactId].LastName}" styleClass="slds-input slds-is-disabled" html-autofocus="false" disabled="true"/>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status2">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('lastNameInput','{!mapOfContactIdcontactWrapperList[selectedContactId].Lastname}');" status="status2" reRender="LastNameSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__LastName__c)!=lower(mapOfContactIdcontactWrapperList[selectedContactId].Lastname),NOT(ISBLANK(mapOfContactIdcontactWrapperList[selectedContactId].Lastname))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Last Name in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Last Name</label>
+                                                        <apex:inputField id="lastNameInput" label="Last Name" value="{!xeroCntct.Bread_Winner__LastName__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-grid slds-wrap slds-p-vertical_x-small" id="EmailSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__EmailAddress__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Email"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputText id="contactEmail" value="{!mapOfContactIdcontactWrapperList[selectedContactId].Email}" styleClass="slds-input slds-is-disabled" html-autofocus="false" disabled="true" />
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status3">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('emailInput','{!mapOfContactIdcontactWrapperList[selectedContactId].Email}');" status="status3" reRender="EmailSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__EmailAddress__c)!=lower(mapOfContactIdcontactWrapperList[selectedContactId].Email),NOT(ISBLANK(mapOfContactIdcontactWrapperList[selectedContactId].Email))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Email in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Email</label>
+                                                        <apex:inputField id="emailInput" label="Email" value="{!xeroCntct.Bread_Winner__EmailAddress__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <div style="display:{!if(OR(xeroCntct.Contact_1_First_Name__c!='',xeroCntct.Contact_1_Last_Name__c!='',xeroCntct.Contact_1_Email__c!=''),'None','')};" class="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="AddConLink1">
+                                                    <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <apex:commandLink status="assign-action-status" onclick="ShowHideSection('AddConLink1');" oncomplete="ShowHideSection('ContactPersonSection1');">Add another Contact</apex:commandLink>
+                                                    </div>
+                                                </div>
+                                                <div id="ContactPersonSection1" style="display:{!if(OR(xeroCntct.Contact_1_First_Name__c!='',xeroCntct.Contact_1_Last_Name__c!='',xeroCntct.Contact_1_Email__c!=''),'','None')};">
+                                                    <apex:outputPanel layout="block" id="ContactSection1" rendered="{!IF(OR(xeroCntct.Bread_Winner__Contact_1_First_Name__c!='',xeroCntct.Bread_Winner__Contact_1_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_1_Email__c!=''),(OR(xeroCntct.Bread_Winner__Contact_1_First_Name__c!='',xeroCntct.Bread_Winner__Contact_1_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_1_Email__c!='')),true)}">
+                                                        <hr style="display:{!if(AccountId != NULL,'Block','None')};margin-top: 5px; margin-bottom: 10px;"/>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="FirstName1">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <hr style="display:{!if(AccountId = NULL,'Block','None')};margin-top: 5px; margin-bottom: 10px;"/>
+                                                                <label class="slds-form-element__label slds-p-top_none">First Name</label>
+                                                                <apex:inputField id="fname1" label="First Name" value="{!xeroCntct.Bread_Winner__Contact_1_First_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="LastName1">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Last Name</label>
+                                                                <apex:inputField id="lname1" label="Last Name" value="{!xeroCntct.Bread_Winner__Contact_1_Last_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="EmailAddress1">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Email Address</label>
+                                                                <apex:inputField id="email1" label="Email Address" value="{!xeroCntct.Bread_Winner__Contact_1_Email__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="IncludeInEmails1">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Include In Emails</label>
+                                                                <apex:inputCheckbox id="includeEmail1" label="Include In Emails" value="{!xeroCntct.Bread_Winner__Contact_1_Include_in_Emails__c}" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <div style="display:{!if(OR(xeroCntct.Contact_2_First_Name__c!='',xeroCntct.Contact_2_Last_Name__c!='',xeroCntct.Contact_2_Email__c!=''),'None','')};" class="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="AddConLink2">
+                                                        <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                        <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                            <apex:commandLink status="assign-action-status" onclick="ShowHideSection('AddConLink2');" oncomplete="ShowHideSection('ContactPersonSection2');">Add another Contact</apex:commandLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="ContactPersonSection2" style="display:{!if(OR(xeroCntct.Contact_2_First_Name__c!='',xeroCntct.Contact_2_Last_Name__c!='',xeroCntct.Contact_2_Email__c!=''),'','None')};">
+                                                    <apex:outputPanel layout="block" id="ContactSection2" rendered="{!IF(OR(xeroCntct.Bread_Winner__Contact_2_First_Name__c!='',xeroCntct.Bread_Winner__Contact_2_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_2_Email__c!=''),(OR(xeroCntct.Bread_Winner__Contact_2_First_Name__c!='',xeroCntct.Bread_Winner__Contact_2_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_2_Email__c!='')),true)}">
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="FirstName2">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <hr style="margin-top: 5px; margin-bottom: 10px;"/>
+                                                                <label class="slds-form-element__label slds-p-top_none">First Name</label>
+                                                                <apex:inputField id="fname2" label="First Name" value="{!xeroCntct.Bread_Winner__Contact_2_First_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="LastName2">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Last Name</label>
+                                                                <apex:inputField id="lname2" label="Last Name" value="{!xeroCntct.Bread_Winner__Contact_2_Last_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="EmailAddress2">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Email Address</label>
+                                                                <apex:inputField id="email2" label="Email Address" value="{!xeroCntct.Bread_Winner__Contact_2_Email__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="IncludeInEmails2">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Include In Emails</label>
+                                                                <apex:inputCheckbox id="includeEmail2" label="Include In Emails" value="{!xeroCntct.Bread_Winner__Contact_2_Include_in_Emails__c}" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <div style="display:{!if(OR(xeroCntct.Contact_3_First_Name__c!='',xeroCntct.Contact_3_Last_Name__c!='',xeroCntct.Contact_3_Email__c!=''),'None','')};" class="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="AddConLink3">
+                                                        <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                        <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                            <apex:commandLink status="assign-action-status" onclick="ShowHideSection('AddConLink3');" oncomplete="ShowHideSection('ContactPersonSection3');">Add another Contact</apex:commandLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="ContactPersonSection3" style="display:{!if(OR(xeroCntct.Contact_3_First_Name__c!='',xeroCntct.Contact_3_Last_Name__c!='',xeroCntct.Contact_3_Email__c!=''),'','None')};">
+                                                    <apex:outputPanel layout="block" id="ContactSection3" rendered="{!IF(OR(xeroCntct.Bread_Winner__Contact_3_First_Name__c!='',xeroCntct.Bread_Winner__Contact_3_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_3_Email__c!=''),(OR(xeroCntct.Bread_Winner__Contact_3_First_Name__c!='',xeroCntct.Bread_Winner__Contact_3_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_3_Email__c!='')),true)}">
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="FirstName3">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <hr style="margin-top: 5px; margin-bottom: 10px;"/>
+                                                                <label class="slds-form-element__label slds-p-top_none">First Name</label>
+                                                                <apex:inputField id="fname3" label="First Name" value="{!xeroCntct.Bread_Winner__Contact_3_First_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="LastName3">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Last Name</label>
+                                                                <apex:inputField id="lname3" label="Last Name" value="{!xeroCntct.Bread_Winner__Contact_3_Last_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="EmailAddress3">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Email Address</label>
+                                                                <apex:inputField id="email3" label="Email Address" value="{!xeroCntct.Bread_Winner__Contact_3_Email__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="IncludeInEmails3">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Include In Emails</label>
+                                                                <apex:inputCheckbox id="includeEmail3" label="Include In Emails" value="{!xeroCntct.Bread_Winner__Contact_3_Include_in_Emails__c}" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <div style="display:{!if(OR(xeroCntct.Contact_4_First_Name__c!='',xeroCntct.Contact_4_Last_Name__c!='',xeroCntct.Contact_4_Email__c!=''),'None','')};" class="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="AddConLink4">
+                                                        <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                        <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                            <apex:commandLink status="assign-action-status" onclick="ShowHideSection('AddConLink4');" oncomplete="ShowHideSection('ContactPersonSection4');">Add another Contact</apex:commandLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="ContactPersonSection4" style="display:{!if(OR(xeroCntct.Contact_4_First_Name__c!='',xeroCntct.Contact_4_Last_Name__c!='',xeroCntct.Contact_4_Email__c!=''),'','None')};">
+                                                    <apex:outputPanel layout="block" id="ContactSection4" rendered="{!IF(OR(xeroCntct.Bread_Winner__Contact_4_First_Name__c!='',xeroCntct.Bread_Winner__Contact_4_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_4_Email__c!=''),(OR(xeroCntct.Bread_Winner__Contact_4_First_Name__c!='',xeroCntct.Bread_Winner__Contact_4_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_4_Email__c!='')),true)}">
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="FirstName4">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <hr style="margin-top: 5px; margin-bottom: 10px;"/>
+                                                                <label class="slds-form-element__label slds-p-top_none">First Name</label>
+                                                                <apex:inputField id="fname4" label="First Name" value="{!xeroCntct.Bread_Winner__Contact_4_First_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="LastName4">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Last Name</label>
+                                                                <apex:inputField id="lname4" label="Last Name" value="{!xeroCntct.Bread_Winner__Contact_4_Last_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="EmailAddress4">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Email Address</label>
+                                                                <apex:inputField id="email4" label="Email Address" value="{!xeroCntct.Bread_Winner__Contact_4_Email__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="IncludeInEmails4">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Include In Emails</label>
+                                                                <apex:inputCheckbox id="includeEmail4" label="Include In Emails" value="{!xeroCntct.Bread_Winner__Contact_4_Include_in_Emails__c}" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <div style="display:{!if(OR(xeroCntct.Contact_5_First_Name__c!='',xeroCntct.Contact_5_Last_Name__c!='',xeroCntct.Contact_5_Email__c!=''),'None','')};" class="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="AddConLink5">
+                                                        <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                        <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                            <apex:commandLink status="assign-action-status" onclick="ShowHideSection('AddConLink5');" oncomplete="ShowHideSection('ContactPersonSection5');">Add another Contact</apex:commandLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="ContactPersonSection5" style="display:{!if(OR(xeroCntct.Contact_5_First_Name__c!='',xeroCntct.Contact_5_Last_Name__c!='',xeroCntct.Contact_5_Email__c!=''),'','None')};">
+                                                    <apex:outputPanel layout="block" id="ContactSection5" rendered="{!IF(OR(xeroCntct.Bread_Winner__Contact_5_First_Name__c!='',xeroCntct.Bread_Winner__Contact_5_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_5_Email__c!=''),(OR(xeroCntct.Bread_Winner__Contact_5_First_Name__c!='',xeroCntct.Bread_Winner__Contact_5_Last_Name__c!='',xeroCntct.Bread_Winner__Contact_5_Email__c!='')),true)}">
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="FirstName5">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <hr style="margin-top: 5px; margin-bottom: 10px;"/>
+                                                                <label class="slds-form-element__label slds-p-top_none">First Name</label>
+                                                                <apex:inputField id="fname5" label="First Name" value="{!xeroCntct.Bread_Winner__Contact_5_First_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="LastName5">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Last Name</label>
+                                                                <apex:inputField id="lname5" label="Last Name" value="{!xeroCntct.Bread_Winner__Contact_5_Last_Name__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="EmailAddress5">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Email Address</label>
+                                                                <apex:inputField id="email5" label="Email Address" value="{!xeroCntct.Bread_Winner__Contact_5_Email__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_xx-small" id="IncludeInEmails5">
+                                                            <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                            <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                                <label class="slds-form-element__label slds-p-top_none">Include In Emails</label>
+                                                                <apex:inputCheckbox id="includeEmail5" label="Include In Emails" value="{!xeroCntct.Bread_Winner__Contact_5_Include_in_Emails__c}" html-autofocus="false"/>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </apex:outputPanel>
+                                            <div class="slds-grid slds-grid_vertical">
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-top_medium" rendered="{!AccountId != NULL}">
+                                                    <div class="slds-col_padded slds-size_1-of-1 slds-large-size_2-of-12"></div>
+                                                    <div class="slds-col_padded slds-large-size_4-of-12"> 
+                                                        <div class="slds-text-heading_medium slds-text-align_center">Details from Salesforce Account</div>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle"></div>
+                                                    <apex:outputPanel styleClass="slds-col_padded slds-large-size_4-of-12" layout="block"> 
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="CompanyNameSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__CompanyName__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Company Name"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputText id="companyName" value="{!selectedAccountName}" styleClass="slds-input slds-is-disabled" html-autofocus="false" disabled="true" />
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status4">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('companyNameInput','{!selectedAccountName}');" status="status4" reRender="CompanyNameSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__CompanyName__c)!=lower(selectedAccountName),NOT(ISBLANK(selectedAccountName))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Company Name in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Company Name</label>
+                                                        <apex:inputField id="companyNameInput" label="Company Name" value="{!xeroCntct.Bread_Winner__CompanyName__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="StreetAddressSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__StreetAddress__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Street Address"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputTextarea id="billingAddress" label="Street Address" value="{!selectedAccount.BillingStreet}" styleClass="slds-input slds-is-disabled" html-autofocus="false" disabled="true"/>
+                                                    </div>                                                    
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status5">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('billingAddressInput','');" status="status5" reRender="StreetAddressSection" rendered="{!IF(AND(NOT(isStreetAddressSame),NOT(ISBLANK(selectedAccount.BillingStreet))),'TRUE','FALSE')}" oncomplete="reRenderStreetAddressValue();">
+                                                                        <span title="Copy this Street Address in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Street Address</label>
+                                                        <apex:inputTextarea id="billingAddressInput" label="Street Address" value="{!xeroCntct.Bread_Winner__StreetAddress__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:actionFunction name="reRenderStreetAddressValue" action="{!reRenderStreetAddress}" reRender="StreetAddressSection">
+                                                    <apex:param name="bacStreetAddress" value="{!selectedAccount.BillingStreet}" assignTo="{!xeroCntct.Bread_Winner__StreetAddress__c}" />
+                                                </apex:actionFunction>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="BillingCitySection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__City__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Town / City"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-medium-size_2-of-5 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputField id="billingCity" label="Town / City" value="{!selectedAccount.BillingCity}" styleClass="slds-input slds-is-disabled" html-autofocus="false" html-disabled="true" />
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status6">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('billingCityInput','{!selectedAccount.BillingCity}');" status="status6" reRender="BillingCitySection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__City__c)!=lower(selectedAccount.BillingCity),NOT(ISBLANK(selectedAccount.BillingCity))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Town / City in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-medium-size_2-of-5 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Town / City</label>
+                                                        <apex:inputField id="billingCityInput" label="Town / City" value="{!xeroCntct.Bread_Winner__City__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="BillingStateSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Region__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="State / Region"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-medium-size_2-of-5 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputField id="billingState" label="State / Region" value="{!selectedAccount.BillingState}" styleClass="slds-input slds-is-disabled" html-autofocus="false" html-disabled="true"/>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status7">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('billingStateInput','{!selectedAccount.BillingState}');" status="status7" reRender="BillingStateSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__Region__c)!=lower(selectedAccount.BillingState),NOT(ISBLANK(selectedAccount.BillingState))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this State / Region in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-medium-size_2-of-5 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">State / Region</label>
+                                                        <apex:inputField id="billingStateInput" label="State / Region" value="{!xeroCntct.Bread_Winner__Region__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="BillingZipSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__PostalCode__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Postal / Zip Code"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputField id="billingZip" label="Postal / Zip Code" value="{!selectedAccount.BillingPostalCode}" styleClass="slds-input slds-is-disabled" html-autofocus="false" html-disabled="true"/>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status8">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('billingZipInput','{!selectedAccount.BillingPostalCode}');" status="status8" reRender="BillingZipSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__PostalCode__c)!=lower(selectedAccount.BillingPostalCode),NOT(ISBLANK(selectedAccount.BillingPostalCode))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Postal / Zip Code in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Postal / Zip Code</label>
+                                                        <apex:inputField id="billingZipInput" label="Postal / Zip Code" value="{!xeroCntct.Bread_Winner__PostalCode__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="BillingCountrySection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Country__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Country"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-medium-size_2-of-5 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputField id="billingCountry" label="Country" value="{!selectedAccount.BillingCountry}" styleClass="slds-input slds-is-disabled" html-autofocus="false" html-disabled="true"/>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status9">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('countryInput','{!selectedAccount.BillingCountry}');" status="status9" reRender="BillingCountrySection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__Country__c)!=lower(selectedAccount.BillingCountry),NOT(ISBLANK(selectedAccount.BillingCountry))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Country in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Country</label>
+                                                        <apex:inputField id="countryInput" label="Country" value="{!xeroCntct.Bread_Winner__Country__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="PhoneSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Phone__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Phone"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputField id="phone" label="Phone" value="{!selectedAccount.Phone}" styleClass="slds-input slds-is-disabled" html-autofocus="false" html-disabled="true"/>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status10">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('phoneInput','{!selectedAccount.Phone}');" status="status10" reRender="PhoneSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__Phone__c)!=lower(selectedAccount.Phone),NOT(ISBLANK(selectedAccount.Phone))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Phone in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Phone</label>
+                                                        <apex:inputField id="phoneInput" label="Phone" value="{!xeroCntct.Bread_Winner__Phone__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="AccountNumberSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Account_Number__c.updateable}">
+                                                    <div class="slds-col_padded slds-p-top_x-small slds-large-size_2-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:outputText styleClass="slds-text-heading_small" value="Account Number"/>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <apex:inputField id="accountNumber" label="Account Number" value="{!selectedAccount.AccountNumber}" styleClass="slds-input slds-is-disabled" html-autofocus="false" html-disabled="true"/>
+                                                    </div>
+                                                    <div class="slds-col_padded slds-large-size_1-of-12 slds-align-middle" style="display:{!if(AccountId != NULL,'Block','None')};">
+                                                        <div class="arrowCell slds-text-align_center">
+                                                            <apex:actionStatus id="status11">
+                                                                <apex:facet name="start">
+                                                                    <div class="slds-spinner_brand slds-spinner slds-spinner_x-small  arrowSpinner" role="status">
+                                                                        <div class="slds-spinner__dot-a"></div>
+                                                                        <div class="slds-spinner__dot-b"></div>
+                                                                    </div>      
+                                                                </apex:facet>
+                                                                <apex:facet name="stop">
+                                                                    <apex:commandlink styleClass="arrowLink" onclick="changeTheValue('accountNumberInput','{!selectedAccount.AccountNumber}');" status="status11" reRender="AccountNumberSection" rendered="{!IF(AND(lower(xeroCntct.Bread_Winner__Account_Number__c)!=lower(selectedAccount.AccountNumber),NOT(ISBLANK(selectedAccount.AccountNumber))),'TRUE','FALSE')}">
+                                                                        <span title="Copy this Account Number in the Salesforce to Xero" class="arrow">&#10140;</span>
+                                                                    </apex:commandlink>
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                        </div>
+                                                    </div>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none" style="display:{!if(AccountId != NULL,'None','Block')};">Account Number</label>
+                                                        <apex:inputField id="accountNumberInput" label="Account Number" value="{!xeroCntct.Bread_Winner__Account_Number__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="AttentionToSection" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__AttentionTo__c.createable}">
+                                                    <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none">Attention To</label>
+                                                        <apex:inputField id="attentionToInput" label="Attention To" value="{!xeroCntct.Bread_Winner__AttentionTo__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="TaxNumberSection" rendered="{!AND(!isFreePlan, isBusinessOrHigher ,$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__TaxNumber__c.updateable)}">
+                                                    <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none">Xero {!if(SFOrgDefaultCurrency == 'AUD','Tax/VAT','Tax/GST')} Number</label>
+                                                        <apex:inputField id="TaxNumberInput" label="Attention To" value="{!xeroCntct.Bread_Winner__TaxNumber__c}" styleClass="slds-input" html-autofocus="false"/>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="DefaultTaxRateSection" rendered="{!AND(!isFreePlan, SpecialBusinessPlanOrHigher, $ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Accounts_Receivable_Tax_Type__c.updateable)}">
+                                                    <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <label class="slds-form-element__label slds-p-top_none">Default Sales Tax Rate</label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-select_container">
+                                                                <apex:selectList label="Default Sales Tax Rate" size="1" value="{!conDefaultTaxRate}" styleClass="slds-select" id="xeroOrgTaxRates">
+                                                                    <apex:selectOptions value="{!xeroOrgTaxRates}"></apex:selectOptions>
+                                                                </apex:selectList>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" styleClass="slds-col slds-grid slds-wrap slds-p-vertical_x-small" id="SalesTermsSection" rendered="{!AND(!isFreePlan, SpecialBusinessPlanOrHigher,$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Invoice_Default_Due_Date_Type__c.updateable, $ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Invoice_Default_Due_Date_Days__c.updateable)}">
+                                                    <div class="slds-col_padded slds-large-size_7-of-12" style="display:{!if(AccountId != NULL,'Block','None')};"/>
+                                                    <div valign="top" class="slds-col_padded slds-large-size_4-of-12 slds-size_1-of-1">
+                                                        <div class="slds-col">
+                                                            <label class="slds-form-element__label slds-p-top_none">Sales Terms</label>
+                                                            <div class="slds-form-element__control slds-grid slds-select_container">
+                                                                <apex:inputtext styleClass="slds-input slds-size_1-of-5 slds-m-right_small" value="{!defaultDueDateDays}" style=" padding-left: 0.3rem; padding-right: 0.1rem; " />
+                                                                <apex:selectList size="1" value="{!defaultDueDaysOption}" styleClass="slds-select" id="defaultDueDaysOptions"> 
+                                                                    <apex:selectOptions value="{!defaultDueDaysOptions}"/>
+                                                                </apex:selectList>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <script type="text/javascript">
+                                                    function changeTheValue(fieldId,value) {
+                                                        console.log('input[id$='+fieldId+']');
+                                                        if(fieldId=='billingAddressInput'){
+                                                            value = document.getElementById('{!JSENCODE($Component.theForm.billingAddress)}').value;
+                                                            console.log('Value ::: '+value);
+                                                            j$('textarea[id$='+fieldId+']').val(value);
+                                                        }else{
+                                                            console.log('Value ::: '+value);
+                                                            j$('input[id$='+fieldId+']').val(value);
+                                                        }
+                                                    }
+                                                    function ShowHideSection(sectionId){
+                                                        var x = document.getElementById(sectionId);
+                                                        console.log('Element');
+                                                        console.log(x);
+                                                        if (x.style.display === 'none') {
+                                                            x.style.display = '';
+                                                        } else {
+                                                            x.style.display = 'none';
+                                                        }
+                                                    }
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </div><br/>
+                        <div align="center">
+                            <apex:commandButton value="Save" action="{!saveXeroContact}" id="saveXeroContact" styleclass="slds-button slds-button_brand slds-m-right_x-small" disabled="{!OR(NOT(isXeroOrgConnected),isArchiveContact,isReadOnlyMode)}"/>
+                            <apex:commandButton value="Cancel" action="{!cancel}" styleclass="slds-button slds-button_neutral" />
+                            <div class="slds-m-top_small slds-m-bottom_small">
+                                <apex:outputLabel style="font-style:italic;font-weight:bold;font-size:16px" rendered="{!isReadOnlyMode}">You are using Breadwinner in Xero Read Only Mode. While Breadwinner reads data from Xero, no changes will be made to Xero. Xero is in Read-Only mode and will not be altered in any way.</apex:outputLabel>
+                            </div>
+                            <div class="slds-text slds-m-top_small slds-m-bottom_small" style="display:{!if(isReadOnlyMode,'none','block')}">
+                                Changing details will not alter the  associated Salesforce Account, nor will it break the association between the Xero Contact and Salesforce Account.
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                    <div class="slds-spinner_container" id="spinnerDiv" style="display:none;">
+                        <div class="slds-spinner_brand slds-spinner slds-spinner_medium" role="alert">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                    <apex:outputPanel rendered="{!NOT(isContactEditPage)}" id="controlSyncPage" layout="block" styleClass="{!IF(isLightning,'slds-p-around_x-small','')}">
+                        <!-- Header starts -->
+                        <div class="slds-page-header slds-m-bottom_medium" role="banner" style="background:#f7f9fb; border:none;">
+                            <div class="slds-media__body">
+                                <p class="slds-page-header__title slds-truncate slds-align-middle" title="Breadwinner Xero Contact">Change Xero Contact Sync Status</p>
+                                <p class="slds-text-body_small">Breadwinner • Xero</p>
+                            </div>
+                        </div>
+                        <!-- Header ends -->
+                        <apex:pageMessages escape="false" id="pm"/>                        
+                        <div class="slds-box">
+                            <apex:outputPanel id="controlstatus">
+                                <div class="slds-panel__section">
+                                    <div class="slds-section slds-is-open">
+                                        <h3 class="slds-section__title slds-theme_shade">
+                                            <span class="slds-truncate slds-p-horizontal_small">Associated Salesforce Account</span>
+                                        </h3>
+                                        <div class="slds-section__content slds-p-horizontal_small">
+                                            <apex:actionFunction name="changeAssociatedSFAccount" status="assign-action-status" oncomplete="allfunctions();" reRender="controlstatus,pm"/>
+                                            <table Class="slds-table slds-no-row-hover slds-max-medium-table_stacked-horizontal">
+                                                <tr style="width:100%;display:{!IF(($ObjectType.Breadwinner_Account_Connection__c.fields.No_Associated_SF_Account__c.Updateable),'','none')}">
+                                                    <td style="width:50%;vertical-align:middle">
+                                                        <div class="slds-text-heading_small" >Associate&nbsp;<apex:outputText value="{!xeroCntct.Bread_Winner__CompanyName__c}" style="color: blue;"/> with a Salesforce Account? </div>
+                                                    </td>
+                                                    <td style="vertical-align:middle">
+                                                        <div style="width:100px">
+                                                            <div class="slds-form-element">
+                                                                <label class="slds-checkbox_toggle slds-grid">
+                                                                    <apex:inputCheckbox id="checkbox-toggle-1" onclick="changeAssociatedSFAccount();" value="{!AssociatedSFAccount}"/>
+                                                                    <span  class="slds-checkbox_faux_container" aria-live="assertive">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-checkbox_on">Associate</span>
+                                                                        <span class="slds-checkbox_off">Do not associate</span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr style="width:100%;display:{!IF(AND($ObjectType.Breadwinner_Account_Connection__c.fields.Salesforce_Account__c.Updateable, AssociatedSFAccount),'','none')}">
+                                                    <td style="width:50%;vertical-align:middle">
+                                                        <apex:outputPanel id="associatedText">
+                                                            <apex:outputtext >
+                                                                <div class="slds-text-heading_small">Please choose the Salesforce Account</div>
+                                                            </apex:outputtext>
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td style="vertical-align:middle">
+                                                        <apex:outputPanel id="lkp" style="float:left;">
+                                                            <apex:inputfield value="{!xeroCntct.Bread_Winner__Salesforce_Account__c}" styleclass="slds-text-heading_small" style="width:200px;"></apex:inputfield>
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <apex:outputPanel layout="block" styleclass="slds-panel__section slds-m-top_large" rendered="{!!isFreePlan}">
+                                    <div class="slds-section slds-is-open">
+                                        <h3 class="slds-section__title slds-theme_shade">
+                                            <span class="slds-truncate slds-p-horizontal_small">Breadwinner Sync Status</span>
+                                        </h3>
+                                        <div class="slds-m-top_small">
+                                            <apex:pageMessage rendered="{!NOT(OR(isBreadwinnerAdministrator, canPerformBreadwinnerOperations))}" severity="INFO" strength="3" summary=" You must have a higher Breadwinner Permission set to change these settings, either the Breadwinner Operations or the Breadwinner Admin Permission Set."/>
+                                        </div>
+                                        <div class="slds-section__content slds-p-horizontal_small">
+                                            <table Class="slds-table slds-no-row-hover slds-max-medium-table_stacked-horizontal">
+                                                <tr style="width:100%;display:{!IF(($ObjectType.Breadwinner_Account_Connection__c.fields.Do_not_Import_Invoices__c.Updateable),'','none')}">
+                                                    <td style="width:50%;vertical-align:middle;">
+                                                        <div class="slds-text-heading_small">Do you want Breadwinner to sync Invoices for this Customer?</div> 
+                                                    </td>
+                                                    <td style='vertical-align:middle'>
+                                                        <div style="width:100px">
+                                                            <div class="slds-form-element">
+                                                                <label class="slds-checkbox_toggle slds-grid">
+                                                                    <apex:inputCheckbox id="checkbox-toggle-2" value="{!SyncInvoice}" disabled="{!NOT(OR(isBreadwinnerAdministrator, canPerformBreadwinnerOperations))}"/>
+                                                                    <span class="slds-checkbox_faux_container" aria-live="assertive">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-checkbox_on">Yes</span>
+                                                                        <span class="slds-checkbox_off">No</span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr style="width:100%;display:{!IF(AND(isBusinessOrHigher, appConfig.Sync_Suppliers_Bills, $ObjectType.Breadwinner_Account_Connection__c.fields.Do_not_Import_Bills__c.Updateable),'','none')}">
+                                                    <td style="width:50%;vertical-align:middle;">
+                                                        <div class="slds-text-heading_small">Do you want Breadwinner to sync Bills for this Supplier?</div>
+                                                    </td>
+                                                    <td style='vertical-align:middle'>
+                                                        <div style="width:100px">
+                                                            <div class="slds-form-element">
+                                                                <label class="slds-checkbox_toggle slds-grid"> 
+                                                                    <apex:inputCheckbox id="checkbox-toggle-3" value="{!SyncBill}" disabled="{!NOT(OR(isBreadwinnerAdministrator, canPerformBreadwinnerOperations))}"/>
+                                                                    <span  class="slds-checkbox_faux_container" aria-live="assertive">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-checkbox_on">Yes</span>
+                                                                        <span class="slds-checkbox_off">No</span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr style="width:100%;display:{!IF(AND(isBusinessOrHigher, appConfig.Sync_POs, $ObjectType.Breadwinner_Account_Connection__c.fields.Do_not_Import_Purchase_Orders__c.Updateable),'','none')}">
+                                                    <td style="width:50%;vertical-align:middle;">
+                                                        <div class="slds-text-heading_small">Do you want Breadwinner to sync Purchase Orders for this Xero Contact?</div>
+                                                    </td>
+                                                    <td style='vertical-align:middle'>
+                                                        <div style="width:100px">
+                                                            <div class="slds-form-element">
+                                                                <label class="slds-checkbox_toggle slds-grid"> 
+                                                                    <apex:inputCheckbox id="checkbox-toggle-4" value="{!SyncPO}" disabled="{!NOT(OR(isBreadwinnerAdministrator, canPerformBreadwinnerOperations))}"/>
+                                                                    <span class="slds-checkbox_faux_container" aria-live="assertive">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-checkbox_on">Yes</span>
+                                                                        <span class="slds-checkbox_off">No</span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>                                
+                            </apex:outputPanel>
+                        </div>
+                        <apex:outputPanel id="panelbutton" layout="block">
+                            <div class="slds-m-top_xx-large slds-m-bottom_x-small slds-text-heading_small" style="text-align:center;">
+                                <apex:commandButton value="Save" styleClass="slds-button slds-button_brand slds-m-right_x-small" action="{!changeStatus}" onclick="showSpinner();" id="savebutton" oncomplete="hideSpinner();allfunctions();" reRender="controlstatus, pm" disabled="{!OR(NOT($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.Updateable),NOT(isXeroOrgConnected))}"/>
+                                <apex:commandButton value="Cancel" styleClass="slds-button slds-button_neutral" action="{!Cancel}"/>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </div>
+            </apex:form>
+        </body>
+    </html>
+</apex:page>

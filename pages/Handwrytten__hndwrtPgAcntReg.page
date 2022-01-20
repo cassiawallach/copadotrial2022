@@ -1,0 +1,62 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Register Existing Account Page
+ -->
+<apex:page standardController="Handwrytten__hndwrtObjAccount__c" extensions="Handwrytten.hndwrtClsRegHelper" title="Register Existing Handwrytten Account" tabstyle="hndwrtTabAcnts__tab">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form >
+    
+    	<div class="slds">
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+    
+        <apex:sectionHeader title="Handwrytten" subtitle="Register Existing Account" help="/apex/hndwrtPgHelp" />
+        
+        <apex:pageBlock title="Register Existing Handwrytten Account" mode="Edit">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Register" action="{!regExistingAccount}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Handwrytten Account Information" columns="2"> 
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Account Name" for="name"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                       <apex:inputText id="name" value="{!nickName}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Email" for="email"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                       <apex:inputText id="email" value="{!email}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Password" for="isPw"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputSecret id="isPw" value="{!newPassword}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+        </div>
+    </apex:form>
+</apex:page>

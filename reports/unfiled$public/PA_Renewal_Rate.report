@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Opportunity.Account.Name:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Opportunity.Id:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Opportunities</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <acrossGroupingContext>Opportunity$CloseDate</acrossGroupingContext>
+        <calculatedFormula>IF(PREVGROUPVAL(SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT:SUM,Opportunity.CloseDate,1)&gt;0,
+
+
+SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT:SUM
+
+/
+
+PREVGROUPVAL(SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT:SUM,Opportunity.CloseDate,1),
+
+NULL)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA3</developerName>
+        <downGroupingContext>Opportunity$Account</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Account Renewal Rate</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <acrossGroupingContext>Opportunity$CloseDate</acrossGroupingContext>
+        <calculatedFormula>IF(PREVGROUPVAL(SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT:SUM,Opportunity.CloseDate,1)&gt;0,
+
+
+SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT:SUM
+
+/
+
+PREVGROUPVAL(SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT:SUM,Opportunity.CloseDate,1),
+
+NULL)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA4</developerName>
+        <downGroupingContext>ROW_GRAND_SUMMARY</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Total Renewal Rate</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_51457808</developerName>
+        <masterLabel>Oppty Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r$Opportunity_Type__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <value>1. New</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>2. Expansion</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <value>3. Renewal</value>
+        </values>
+    </buckets>
+    <colorRanges>
+        <columnName>FORMULA3</columnName>
+        <highColor>#FFFFFF</highColor>
+        <lowBreakpoint>0.0</lowBreakpoint>
+        <lowColor>#95FFAF</lowColor>
+        <midColor>#95FFAF</midColor>
+    </colorRanges>
+    <colorRanges>
+        <columnName>FORMULA4</columnName>
+        <highColor>#FFFFFF</highColor>
+        <lowBreakpoint>0.0</lowBreakpoint>
+        <lowColor>#95FFAF</lowColor>
+        <midColor>#95FFAF</midColor>
+    </colorRanges>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__NetTotal__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$PS_CPQ_Term_in_Months__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__EffectiveStartDate__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__EffectiveEndDate__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__Quantity__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$Opportunity_Type__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__Product__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Contract_End_Date__c</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(
+
+    OR(
+    
+    and(text(Opportunity.Type)=&quot;New Customer&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;),
+
+        and(text(Opportunity.Type)=&quot;Renewal&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;),
+
+        and(text(Opportunity.Type)=&quot;New Business Add-on&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;),
+
+        and(text(Opportunity.Type)=&quot;Add-on&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;)
+
+        ),1,0)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>PA Data Filter</label>
+        <scale>0</scale>
+    </customDetailFormulas>
+    <filter>
+        <booleanFilter>(1 AND 2 AND 3 AND 7 AND 8) OR (1 AND 2 AND 4 AND 5 AND 6)</booleanFilter>
+        <criteriaItems>
+            <column>Opportunity.SBQQ__Quotes2__r$SBQQ__Primary__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__Product__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Program Architect</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$IsClosed</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Renewal</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$CloseDate</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_FISCAL_YEAR</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$IsWon</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$CloseDate</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>LAST_FISCAL_YEAR</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <formattingRules>
+        <columnName>FORMULA3</columnName>
+        <values>
+            <backgroundColor>#95FFAF</backgroundColor>
+            <rangeUpperBound>0.0</rangeUpperBound>
+        </values>
+        <values>
+            <backgroundColor>#95FFAF</backgroundColor>
+        </values>
+    </formattingRules>
+    <formattingRules>
+        <columnName>FORMULA4</columnName>
+        <values>
+            <backgroundColor>#95FFAF</backgroundColor>
+            <rangeUpperBound>0.0</rangeUpperBound>
+        </values>
+        <values>
+            <backgroundColor>#95FFAF</backgroundColor>
+        </values>
+    </formattingRules>
+    <groupingsAcross>
+        <dateGranularity>FiscalYear</dateGranularity>
+        <field>Opportunity$CloseDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_51457808</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity$Account</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>PA - Renewal Rate</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Opportunities_with_Primary_Quote_and_Quote_Lines__c</reportType>
+    <roleHierarchyFilter>System_Administrator</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

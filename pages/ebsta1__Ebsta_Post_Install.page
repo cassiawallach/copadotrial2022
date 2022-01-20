@@ -1,0 +1,138 @@
+<apex:page applyBodyTag="true" docType="html-5.0" sidebar="true" showHeader="true" controller="ebsta1.ebstaPageController" extensions="ebsta1.ebstaCustomRemoteDataServices" tabStyle="Ebsta__tab" standardStyleSheets="true" title="Ebsta" >
+ 
+<div class="ebsta-postinstall-container">
+	<div class="ebsta-admin-postinstall">
+	
+	<br />
+	<center>
+	<span class="ebsta-admin-logo">
+		<img src="https://secure1.ebsta-webservices.com/Images/Ebsta-128.png" style="margin-top: -10px; vertical-align: middle; display: inline-block;"/>
+	</span>
+	</center>
+	<span class="clearer"> </span> 
+	</div>
+	<br />
+	
+	<div class="textcenter ebstaConnect">
+	<center>
+	<a href="#" class="vcex-button vcex-button- graphical align-center large teal ebsta-connect-button ebsta-disabledButton" target="_self" title="Install Ebsta" style="font-size: 30px;">
+	<span class="vcex-button-inner" style="font-size: 30px;font-weight: normal;">
+
+	Connect Ebsta to Salesforce
+	</span>
+	</a>
+	
+	   <br /> 
+            
+<p>
+	<input name="Terms and Conditions" value="Terms and Conditions" type="checkbox" class="ebsta-termsCheckBox" />
+	I agree to the Ebsta <a href="http://www.ebsta.com/terms/" target="_blank">Terms and Conditions </a>
+</p>
+	
+	</center>
+	</div>
+	
+	<div class="textcenter ebstaPostAdminConnect" style="display:none;">
+	<center>
+		<h1 style="font-size: 18px;">You've successfully connected to ebsta!</h1>
+		<br />
+		<br />
+		<span class="ebsta-pendingadminsetup">
+		<div class="slds-spinner--small" data-reactid=".2p.0"  style="text-align:center;">
+                            
+                                <img src="{!URLFOR($Resource.SLDS052, 'salesforce-lightning-design-system-v0.5.2/assets/images/spinners/slds_spinner.gif')}" style="width: 50px;height:50px;" />
+                            </div>
+		
+		<br />
+		
+		<h2>Please wait a moment while we finalize your profile setup.</h2>
+			
+                            <br />
+                            <br />
+		<h3>You will be redirected in a few seconds then you're good to go!</h3>
+		<h3>If you're not redirect within 10 seconds - simply visit the Ebsta tab to access the admin and reporting panel!</h3>
+		</span>
+	</center>
+	</div>
+	
+	<div class="textcenter ebstaPostAdminError" style="display:none;">
+	<center>
+		<h1 style="font-size: 18px;">You've successfully connected to ebsta!</h1>
+		<br />
+		
+		
+		<br />
+		<h2>Unfortunately there seems to have been a problem when setting up your Salesforce instance with Ebsta!</h2>
+			
+                            <br />
+                            <br />
+		<h3>Please contact support@ebsta.com for further assistance.</h3>
+	</center>
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+
+"use strict"; 
+
+var sandBoxStatus = '{!SandBoxStatus}';
+
+function SetupTeamViews()
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.SetupAdminTeams}', 
+            function(result, event){
+             
+            	
+            
+                if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         	ShowFailure();
+                         }
+                         else {
+							
+                         
+                         	AdminTeamSetupSuccess(result);                             
+                         }
+                    }
+
+                } else if (event.type === 'exception') {
+
+                } else {
+                    
+                }
+            }, 
+            {escape: false}
+    ); 
+}
+
+function LogEvent(eventName, actionTaken, eventId) {
+    
+
+     	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.LogEvent}', eventName, actionTaken, eventId,
+            function(result, event){
+                if (event.status) {
+            
+                }
+                else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerText = event.message;
+                } else {
+                    document.getElementById("responseErrors").innerText = event.message;
+                }                
+    		});    
+    }
+</script>
+
+<apex:stylesheet value="{!$Resource.ebsta1__ebstapostinstallcss}"/>
+
+<apex:includeScript value="{!URLFOR($Resource.ebsta1__jsframework, '/jsframework/jquery-1.11.3.min.js')}"/>
+<apex:includeScript value="{!$Resource.ebsta1__coresettings}"/> 
+<apex:includeScript value="{!$Resource.ebsta1__ebstapostinstalljs}"/>
+ 
+ </apex:page>

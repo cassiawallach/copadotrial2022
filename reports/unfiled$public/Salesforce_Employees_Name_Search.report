@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CONTACT_ID</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>Account.Region__c</field>
+    </columns>
+    <columns>
+        <field>FIRST_NAME</field>
+    </columns>
+    <columns>
+        <field>LAST_NAME</field>
+    </columns>
+    <columns>
+        <field>TITLE</field>
+    </columns>
+    <columns>
+        <field>CONTACT_OWNER</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(
+    UPPER(LEFT(FIRST_NAME,1))&amp;LOWER(Mid(FIRST_NAME, 2, Len(FIRST_NAME)-1))=NULL,
+    UPPER(LEFT(LAST_NAME,1))&amp;LOWER(Mid(LAST_NAME, 2, Len(LAST_NAME)-1)),
+    
+
+    
+    UPPER(LEFT(FIRST_NAME,1))&amp;LOWER(Mid(FIRST_NAME, 2, Len(FIRST_NAME)-1))
+&amp;&quot; &quot;&amp;
+UPPER(LEFT(LAST_NAME,1))&amp;LOWER(Mid(LAST_NAME, 2, Len(LAST_NAME)-1))
+)</calculatedFormula>
+        <dataType>Text</dataType>
+        <developerName>CDF1</developerName>
+        <label>Full Name</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Find Salesforce employees that are lookups on Prospect and Customer Accounts</description>
+    <filter>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Salesforce</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>click</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Salesforce Employees - Name Search</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ContactList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn>CONTACT_ID</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

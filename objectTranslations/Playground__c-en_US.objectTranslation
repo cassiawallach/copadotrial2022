@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Playground</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Playgrounds</value>
+    </caseValues>
+    <fields>
+        <help><!-- If all 25 jobs are completed (Status dependent) this checkbox evaluates to TRUE. --></help>
+        <label><!-- All Jobs Completed --></label>
+        <name>All_Jobs_Completed__c</name>
+    </fields>
+    <fields>
+        <help><!-- If the &quot;SBs Authorized&quot; count is 6 formula evaluates to true --></help>
+        <label><!-- All Sandboxes Authorized --></label>
+        <name>All_Sandboxes_Authorized__c</name>
+    </fields>
+    <fields>
+        <help><!-- When 5 Sandboxes have been created (defined by the Action &quot;Create Environment&quot;) this Checkbox evaluates to TRUE. --></help>
+        <label><!-- All Sandboxes Created --></label>
+        <name>All_Sandboxes_Created__c</name>
+    </fields>
+    <fields>
+        <label><!-- Api Key --></label>
+        <name>Api_Key__c</name>
+    </fields>
+    <fields>
+        <help><!-- The hash for the first commit (.gitignore) in Github. --></help>
+        <label><!-- Commit Hash --></label>
+        <name>Commit_Hash__c</name>
+    </fields>
+    <fields>
+        <label><!-- Contact --></label>
+        <name>Contact__c</name>
+        <relationshipLabel><!-- Playgrounds --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is populated by the wizard when a signup request is created via playground so that ProcessBuilder can handle updates. --></help>
+        <label><!-- Custom Signup Request --></label>
+        <name>Custom_Signup_Request__c</name>
+        <relationshipLabel><!-- Playgrounds --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The contents of this field is displayed on the detail page in the community when a playground fails fatally (ie no retries are available). --></help>
+        <label><!-- Error Message --></label>
+        <name>Error_Message__c</name>
+    </fields>
+    <fields>
+        <help><!-- Git token to call git provider api --></help>
+        <label><!-- Git Token --></label>
+        <name>Git_Token__c</name>
+    </fields>
+    <fields>
+        <help><!-- Git provider username. --></help>
+        <label><!-- Git Username --></label>
+        <name>Git_Username__c</name>
+    </fields>
+    <fields>
+        <label><!-- Install Organization --></label>
+        <name>Install_Organization__c</name>
+    </fields>
+    <fields>
+        <label><!-- Installer Username --></label>
+        <name>Installer_Username__c</name>
+    </fields>
+    <fields>
+        <help><!-- Link to the License record for easy reference and process builder usage. --></help>
+        <label><!-- License --></label>
+        <name>License__c</name>
+        <relationshipLabel><!-- Playgrounds --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Org Credential --></label>
+        <name>Org_Credential__c</name>
+        <relationshipLabel><!-- Playgrounds --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Org Id --></label>
+        <name>Org_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Full configuration will create all records for your playground including the complete pipeline. Choose light configuration only if you have been specifically instructed to do so --></help>
+        <label><!-- Playground Configuration --></label>
+        <name>Playground_Configuration__c</name>
+        <picklistValues>
+            <masterLabel>Full Configuration</masterLabel>
+            <translation><!-- Full Configuration --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Full Configuration - Scratch Orgs</masterLabel>
+            <translation><!-- Full Configuration - Scratch Orgs --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Light Configuration</masterLabel>
+            <translation><!-- Light Configuration --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Playground Jobs Completed --></label>
+        <name>Playground_Jobs_Completed__c</name>
+    </fields>
+    <fields>
+        <help><!-- Counts all the authorized sandboxes based on the status (set to Completed). If the count is 6 all SBs are authorized. --></help>
+        <label><!-- Sandboxes Authorized --></label>
+        <name>Sandboxes_Authorized__c</name>
+    </fields>
+    <fields>
+        <help><!-- This counts the number of sandboxes that have been created. This is used to the later send out an email to the user. --></help>
+        <label><!-- Sandboxes Created --></label>
+        <name>Sandboxes_Created__c</name>
+    </fields>
+    <fields>
+        <label><!-- Stage --></label>
+        <name>Stage__c</name>
+        <picklistValues>
+            <masterLabel>Completed</masterLabel>
+            <translation><!-- Completed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Connect</masterLabel>
+            <translation><!-- Connect --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CreateTrialOrg</masterLabel>
+            <translation><!-- CreateTrialOrg --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PostInstallScript</masterLabel>
+            <translation><!-- PostInstallScript --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Review</masterLabel>
+            <translation><!-- Review --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Setup</masterLabel>
+            <translation><!-- Setup --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Activated</masterLabel>
+            <translation><!-- Activated --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Expired</masterLabel>
+            <translation><!-- Expired --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Failed</masterLabel>
+            <translation><!-- Failed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>In Progress</masterLabel>
+            <translation><!-- In Progress --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This is the Org ID derived from the Custom Signup Request record. --></help>
+        <label><!-- Trial Org Id --></label>
+        <name>Trial_Org_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- User --></label>
+        <name>User__c</name>
+        <relationshipLabel><!-- Playgrounds --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Validates if the Trial Org Id and the authenticated org Id are equal --></help>
+        <label><!-- Using Trial Org --></label>
+        <name>Using_Trial_Org__c</name>
+    </fields>
+    <layouts>
+        <layout>Playground Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Job Status Summary --></label>
+            <section>Job Status Summary</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

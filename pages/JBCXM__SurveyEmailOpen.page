@@ -1,0 +1,24 @@
+<apex:page sidebar="false" showHeader="false" controller="JBCXM.SurveyDistributionController" action="{!updateParticipantEmailOpenStatus}">
+    <style type="text/css">
+        body { margin: 0px; padding: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; background: #f2f2f2; }
+        .survey-unsubscription-ctn { margin: 30px auto; width: 800px; padding: 20px; border: 1px solid #dbdbdb; border-radius: 3px; background: #fff; }
+        .unsubscription-title { border-bottom: 1px solid #dbdbdb; font-size: 18px; font-weight: bold; padding: 0 0 10px; }
+        .survey-unsubscription-ctn p { color: #999; margin-bottom: 0px; }
+        .error-msg { color: #F00; padding:20px; margin: 30px auto; width: 800px; background-color: #f2dede; border:solid 1px #ebccd1; border-radius: 3px; color: #a94442; }
+    </style>
+    <div class="survey-unsubscription-ctn" id="success" style="display:none">	
+        <div class="unsubscription-title" >You are now unsubscribed</div>
+        <p>You will not receive future remainders of this survey</p>
+    </div>
+    <div class="error-msg" id="fail" style="display:none">Survey unavailable.</div>
+    <script type="text/javascript">
+    if ({!JSINHTMLENCODE($CurrentPage.parameters.unsubscribe)} == 1){
+         var usStatus = "{!(UnsubscribeStatus)}";
+         if (usStatus == "true"){
+         document.getElementById("success").style.display ='block';
+        }else{
+        document.getElementById("fail").style.display ='block';
+    }
+    }
+    </script>
+</apex:page>

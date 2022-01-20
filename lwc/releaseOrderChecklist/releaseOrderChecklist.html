@@ -1,0 +1,88 @@
+<!--/*****************************************************************************************************************************************
+*   Name:          releaseOrderChecklist
+*    
+*   Description:   This component enables the user to release an Order based upon a set of pre-defined checklist criteria.
+*
+*   History:       Created by Kiran Kurella June 11th, 2021
+*
+*   Copyright 2021 Kugamon.  All rights reserved.    
+***************************************************************************************************************************************** -->
+
+<template>
+
+    <lightning-card>
+        <div class="slds-p-horizontal_medium">
+            <div class="slds-m-around_x-small">
+
+                <div class="slds-p-bottom_small slds-border_bottom">
+                    <div>
+                        <div style="width: 75%; float:left;">
+                            <lightning-button label="Release Order" onclick={releaseOrder} disabled={disableReleaseOder}></lightning-button>
+                        </div>
+    
+                        <div style="width: 25%; float:left;">
+                            <div class="slds-float_right slds-m-top_x-small slds-p-right_small">
+                                <lightning-progress-ring
+                                value={percentValue}
+                                variant="base-autocomplete"></lightning-progress-ring>
+                            </div>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <template if:true={record}>
+                        <c-carousel disable-auto-scroll>
+                            <c-carousel-item>
+                                <c-page-header icon-name="custom:custom5" icon-title="Order" title="Order Status" ></c-page-header>
+                                <span class="slds-p-left_small">The following items are required to Release an Order</span>
+                
+                                <div class="slds-box slds-box_x-small slds-m-top_small bg-color-white">
+                                    <c-checklist-item item-name="Account not Suspended / Closed" is-success={notSuspended} ></c-checklist-item>
+                                    <c-checklist-item item-name="Order not Released / Cancelled" is-success={notReleasedAndCancelled} ></c-checklist-item>
+                                    <c-checklist-item item-name="Order is Primary" is-success={isPrimary} ></c-checklist-item>
+                                    <c-checklist-item item-name="Order not Restricted" is-success={notRestricted} ></c-checklist-item>
+                                    <c-checklist-item item-name="Price Book is Active" is-success={isPriceBookActive} ></c-checklist-item>
+                                    <c-checklist-item item-name="Opportunity is Assigned" is-success={hasOpportunity} ></c-checklist-item>
+                                    <c-checklist-item item-name="Contacts are Filled" is-success={hasContacts} ></c-checklist-item>
+                                    <c-checklist-item item-name="Addresses are Filled" is-success={hasAddresses} ></c-checklist-item>
+                                    <c-checklist-item item-name="Lines are Added" is-success={hasLines} is-last-item="true" ></c-checklist-item>
+                                </div>
+                            </c-carousel-item>
+
+                            <c-carousel-item>
+                                <c-page-header icon-name="custom:custom5" icon-title="Order" title="Order Information" ></c-page-header>
+                                <span class="slds-p-left_small">The following is a snapshot of the Order</span>
+                
+                                <div class="slds-box slds-box_x-small slds-m-top_small bg-color-white">
+                                    <c-checklist-item item-name="Opportunity Age" item-description={oppAge} item-grid-first-column-size="2" ></c-checklist-item>
+                                    <c-checklist-item item-name="Order Age" item-description={orderAge} item-grid-first-column-size="2" ></c-checklist-item>
+                                    <c-checklist-item item-name="Date Required" item-description={dateRequired} item-style-class={dateRequiredStyleClass} item-data-type="date" item-grid-first-column-size="2"></c-checklist-item>
+                                    <c-checklist-item item-name="Customer PO Number" item-description={customerPONumber} item-grid-first-column-size="2" ></c-checklist-item>
+                                    <c-checklist-item item-name="Payment Status" item-description={paymentStatus} item-grid-first-column-size="2"></c-checklist-item>
+                                    <c-checklist-item item-name=""></c-checklist-item>
+
+                                    <c-checklist-item item-name="Order Owner" item-description={orderOwnerName} item-data-type="url" item-record-id={orderOwnerId} item-grid-first-column-size="2"></c-checklist-item>
+                                    <c-checklist-item item-name="Opportunity Owner" item-description={oppOwnerName} item-data-type="url" item-record-id={oppOwnerId} item-grid-first-column-size="2"></c-checklist-item>
+                                    <c-checklist-item item-name="Account Owner" item-description={accountOwnerName} item-data-type="url" item-record-id={accountOwnerId} is-last-item="true" item-grid-first-column-size="2"></c-checklist-item>
+                                </div>
+                            </c-carousel-item>
+                        </c-carousel>
+                    </template>
+
+                    <template if:true={error}>
+                        <c-page-header icon-name="custom:custom5" icon-title="Order" title="Order Status" ></c-page-header>
+                        <span class="slds-p-left_small">The following items are required to Release an Order</span>
+
+                        <div class="slds-box slds-box_x-small slds-m-top_small bg-color-white slds-m-bottom_large">
+                            <c-error-panel errors={error} ></c-error-panel>
+                        </div>
+                    </template>
+                </div>
+
+            </div>
+        </div>
+    </lightning-card>
+
+</template>

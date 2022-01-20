@@ -1,0 +1,19 @@
+<aura:component>
+  <aura:attribute name="id" type="String" />
+  <aura:attribute name="value" type="String" access="public" />
+  <aura:attribute name="placeholder" type="String" access="public" />
+  <aura:attribute name="disabled" type="Boolean" default="false" access="public" />
+  <aura:attribute name="pattern" type="String" access="public" />
+
+  <div>
+    <lightning:input
+      id="{! v.id }"
+      name="{! v.id }"
+      type="text"
+      value="{! v.value }"
+      placeholder="{! v.placeholder }"
+      disabled="{! v.disabled }"
+      pattern="{! v.pattern }"
+    />
+  </div>
+</aura:component>

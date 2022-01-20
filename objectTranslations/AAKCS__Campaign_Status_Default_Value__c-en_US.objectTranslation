@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Campaign Status Default --></label>
+        <name>AAKCS__Campaign_Status_Default__c</name>
+        <relationshipLabel><!-- Campaign Member Status Default Values --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Check this if this status is the default campaign member status.  This value will be assigned to the campaign status &quot;Default&quot; value.  Please ensure that only one Campaign Status Default value is selected  for the set of detaults. --></help>
+        <label><!-- Default --></label>
+        <name>AAKCS__Default__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check this if this status indicated that a campaign member has responded.  This value will be assigned to the campaign status &quot;Responded&quot; value. --></help>
+        <label><!-- Responded --></label>
+        <name>AAKCS__Responded__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enter a sequence number in which the order of the status&apos;s will be applied.
+NOTE: The squence order will only be applied to added status&apos;s to the individual campaign, even if the action is Replace All. --></help>
+        <label><!-- Sequence --></label>
+        <name>AAKCS__Sequence__c</name>
+    </fields>
+    <layouts>
+        <layout>Campaign Status Default Value Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Status can be a maximum of 40 characters --></errorMessage>
+        <name>AAKCS__Check_length_of_status</name>
+    </validationRules>
+</CustomObjectTranslation>

@@ -1,0 +1,35 @@
+<!-- *****************************************************************************************************************************************
+*    Name:        		ManageLinesQuote
+*    
+*    Description:       This page is used to add/edit Quote Product/Service Line items 
+*
+*   Page History:       Created by Kiran Kurella July 22nd 2014
+*
+*   Copyright 2016 Kugamon.  All rights reserved.    
+***************************************************************************************************************************************** -->
+
+<apex:page standardController="kugo2p__SalesQuote__c" extensions="kuga_sub.ManageLinesQuoteExt" sidebar="false" action="{!calculateTotal}" id="thePage">
+
+	<style>
+		.tertiaryPaletteNew {
+		    background-color: #f95e59 !important;
+		    border-color: #f95e59 !important;
+		}
+	</style>
+
+	<apex:outputPanel rendered="false" >
+		<apex:outputField value="{!kugo2p__SalesQuote__c.kugo2p__PriceBookName__c}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.kugo2p__DiscountPercent__c}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.Name}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.kugo2p__Account__r.Name}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.kugo2p__RecordStatus__c}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.RecordType.Name}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.kuga_sub__ContractNumber__c}" /> 
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.ContractNumber__r.EndDate}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.ContractNumber__r.StartDate}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.ContractNumber__r.kuga_sub__Pricebook2Id__c}" />
+	    <apex:outputField value="{!kugo2p__SalesQuote__c.ContractNumber__r.Pricebook2Id__r.Name}" />
+    </apex:outputPanel>
+
+	<c:ManageLines lineType="Quote" manageLinesQuoteCon="{!ManageLinesQuoteCon}" id="pageComp"/>
+</apex:page>

@@ -1,0 +1,45 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c" recordSetVar="TRIMDA_MatchingResult__cs" extensions="TRIMDA.TRIMDA_DupeAlertMatchedRecord_Extension" action="{!InitMergeWizard}">
+ <apex:sectionHeader title="DataTrim" subtitle="Dupe Alerts" ></apex:sectionHeader>
+     <apex:form >
+         <apex:actionFunction name="LaunchWizard" oncomplete="actionComplete('body loaded')" status="ProgressStatus" />
+         
+          <script language="JavaScript">
+              function actionComplete(msg)
+              {
+                  //alert(msg);
+                  if("{!WizardOK}" == "true"){
+                    window.open("{!MergeWizardURL}","_blank");
+                    retURL = "{!SUBSTITUTE($Request.retURL,'"',"%22")}";
+                    window.parent.location.href=retURL;
+                    return;
+                  }
+              }
+              
+              var previousOnload = window.onload;        
+              window.onload = function() {
+                  if (previousOnload) {
+                      previousOnload();
+                      LaunchWizard();
+                  }
+              }
+         </script> 
+            <apex:actionStatus id="ProgressStatus">
+            <apex:facet name="start">
+                <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Launching Wizard..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+         <apex:pageBlock title="Open Merge Wizard for Selected Pair" rendered="{!WizardOK}">
+          <apex:pageBlockButtons location="top">
+          <apex:commandButton action="{!retURL}" value="Back"/>
+          </apex:pageBlockButtons>  
+          <!-- <apex:outputLabel value="Wait, Launcing Merge Wizard..." />  -->
+          <apex:pageMessages /> 
+        </apex:pageBlock>
+        <apex:pageBlock title="Open Merge Wizard for Selected Pair" rendered="{!NOT WizardOK}">
+          <apex:pageBlockButtons location="both">
+          <apex:commandButton action="{!retURL}" value="Back"/>
+          </apex:pageBlockButtons>  
+          <apex:pageMessages /> 
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

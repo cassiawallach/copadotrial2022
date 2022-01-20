@@ -1,0 +1,18 @@
+Hi {!Contact.FirstName},
+
+Since we have not heard from you in the last 3 days, we will be closing this case now however, if you still need assistance, please do not hesitate to reply to this email and will be more than happy to help you.
+
+Case Number: {!Case.CaseNumber}
+Case Subject: {!Case.Subject}
+
+Link to Case: https://copado.secure.force.com/support/PublicCase?cn={!Case.CaseNumber}&ce={!Contact.Email} 
+
+You can re-open this case by replying to this email within the next 10 days. For new queries, please send us an email to support@copa.do
+
+Have a good day.
+
+Kind regards,
+
+{! IF(User.Username=='support_team@copa.do', '', User.Name) }
+
+{!Case.Thread_Id}

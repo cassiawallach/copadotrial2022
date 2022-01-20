@@ -1,0 +1,92 @@
+<apex:page docType="html-5.0" standardController="Account" showHeader="false" sidebar="false" title="Gainsight Standard Account Widget" showChat="false"  tabStyle="Administration__tab" extensions="JBCXM.Customer360Broker,JBCXM.NSRemoting,JBCXM.GSCommonBroker,JBCXM.AdminBroker,JBCXM.LayoutBroker,JBCXM.WorkFlowBroker">
+    <script type="text/javascript" src="/soap/ajax/49.0/connection.js"></script>
+    <script type="text/javascript" src="/support/console/49.0/integration.js"></script>
+
+    <style>
+
+        .bodyDiv, .bodyDiv table, .bodyDiv td, .noSidebarCell{
+          padding:0 !important;
+        }
+
+        .noDataFound {
+            background-color: #F2F2F2;
+            display: table;
+            font-size: 15px;
+            height: 40px;
+            line-height: 40px;
+            margin: 50px auto 0;
+            padding: 0 10px;
+            text-align: center;
+            width: auto;
+        }
+        #gs-app-container{
+          height:100vh;
+          width:100% !important;
+        }
+        #gs-app-container > iframe{
+            height:100% !important;
+            width:100% !important;
+        }
+    </style>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var GS  = GS || {};
+        var hc = fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+
+        GS.appSessionId = hc.appSessionId;
+        GS.appUserId = hc.appUserId;
+        GS.appOrgId = hc.appOrgId;
+        GS.NSURL = hc.nsURL;
+        GS.gatewayURL = hc.gatewayURL;
+        GS.hybridHostType = "SALESFORCE";
+        GS.params = {
+            context : "ACCOUNTWIDGET",
+            redirectPath : "customersuccess360",
+            accountId : "{!(account.Id)}"
+        };
+        GS.remotingEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.commonRemotingEndPoint       = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.commonRemotingBulkEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        GS.AdminRemotingEndPoint         = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.AdminRemotingBulkEndPoint     = '{!$RemoteAction.AdminBroker.adminBulkRequestBroker}';
+        GS.CR360RemotingEndPoint       = '{!$RemoteAction.Customer360Broker.customer360RequestBroker}';
+        GS.CR360RemotingBulkEndPoint   = '{!$RemoteAction.Customer360Broker.customer360BulkRequestBroker}';
+        GS.workflowRemotingEndPoint      = '{!$RemoteAction.WorkFlowBroker.workFlowRequestBroker}';
+        GS.dashboardRemotingEndPoint = '{!$RemoteAction.LayoutBroker.layoutRequestBroker}';
+        GS.dashboardRemotingBulkEndPoint = '{!$RemoteAction.LayoutBroker.layoutBulkRequestBroker}';
+        GS.isLightningEnabled           = hc.isLightningEnabled;
+    </script>
+
+    <div id="gs-app-container" style="height:100vh">
+        <div class="gs-module-container" style="height:100vh">
+            <iframe class='StandardGSFrame' frameborder="0" name="Standard360WidgetFrame" width='100%' height='100%' src=''></iframe>
+        </div>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["native_widget/scripts/native_widget.bundle.js"], styles:["native_widget/styles/native_widget.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <script type="text/javascript" src="https://localhost:9091/UI/native_widget/scripts/native_widget.bundle.js"></script>
+    </apex:outputpanel>
+
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('Gainsight Standard Account Widget');
+    </script>
+</apex:page>

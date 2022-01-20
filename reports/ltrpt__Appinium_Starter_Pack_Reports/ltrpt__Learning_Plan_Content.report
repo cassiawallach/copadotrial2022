@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>redwing__Training_Plan__c.redwing__Training_Plan_Sections__r.redwing__Training_Plan_Section_Items__r$redwing__Learning__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>redwing__Training_Plan__c.redwing__Training_Plan_Sections__r.redwing__Training_Plan_Section_Items__r$redwing__Order__c</field>
+    </columns>
+    <columns>
+        <field>redwing__Training_Plan__c.redwing__Training_Plan_Sections__r.redwing__Training_Plan_Section_Items__r$redwing__Duration_hours__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>redwing__Training_Plan__c.redwing__Training_Plan_Sections__r.redwing__Training_Plan_Section_Items__r$redwing__Optional__c</field>
+    </columns>
+    <description>A list of all Learning Plans with Learning Plan Sections and Learning Objects</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>redwing__Training_Plan__c$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>redwing__Training_Plan__c.redwing__Training_Plan_Sections__r$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Learning Plan Content</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ltrpt__LPs_with_Sections_with_LOs__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>redwing__Training_Plan__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

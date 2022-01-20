@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_78709218</developerName>
+        <masterLabel>Completed</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>redwing__Training_Plan_Assignment__c.redwing__Status__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <value>Completed</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>redwing__Training_Plan_Assignment__c.redwing__Contact__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Summer 20 Developer Maintenance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>redwing__Training_Plan_Assignment__c.redwing__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Not Started,Under Review,In Progress,Completed</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>redwing__Training_Plan_Assignment__c.redwing__Status__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Summer 20 Dev Maintenance v1</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$redwing__Training_Plan_Assignment__c@redwing__Training_Plan_Assignment__c.redwing__Training_Plan__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>redwing__Training_Plan_Assignment__c.redwing__Completed_On__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

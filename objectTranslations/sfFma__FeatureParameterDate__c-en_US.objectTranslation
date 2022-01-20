@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Feature Parameter --></label>
+        <name>sfFma__FeatureParameter__c</name>
+        <relationshipLabel><!-- Feature Parameter Dates --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Full Name --></label>
+        <name>sfFma__FullName__c</name>
+    </fields>
+    <fields>
+        <label><!-- License --></label>
+        <name>sfFma__License__c</name>
+        <relationshipLabel><!-- Feature Parameter Dates --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Feature Parameter Value --></label>
+        <name>sfFma__Value__c</name>
+    </fields>
+    <layouts>
+        <layout>Feature Parameter Date Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- This value is set by the installed package and cannot be changed. Click undo or cancel to continue. --></errorMessage>
+        <name>sfFma__FullNameUpdatePrevention</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Subscriber To LMO feature parameter values can only be created or updated by the Feature Management app. Click undo or cancel to continue. --></errorMessage>
+        <name>sfFma__MetricValueUpdatePrevention</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Full Name must be in the format of &lt;namespace&gt;__&lt;developer name&gt; --></errorMessage>
+        <name>sfFma__XSS_Prevention_FullName</name>
+    </validationRules>
+</CustomObjectTranslation>

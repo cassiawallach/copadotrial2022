@@ -1,3 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata"/>
-
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Alliance_Regulators</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Alliance Regulators</label>
+        <sharedTo>
+            <role>Director_Alliances</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Alliances Request</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Case_Study</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Share Case study cases</description>
+        <label>Case Study</label>
+        <sharedTo>
+            <group>Sales_Organization</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Case Study</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>IT_Request</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>IT Request</label>
+        <sharedTo>
+            <group>IT_Operations</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>IT Request</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Legal_Regulators</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Legal Regulators</label>
+        <sharedTo>
+            <group>Legal_Regulators</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Legal Request</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Marketing_Regulators</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Marketing Regulators</label>
+        <sharedTo>
+            <group>Marketing_Regulators</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Marketing Request</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Resource_Request_Alliance_Team</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Resource Request &amp; Alliance Team</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Director_Alliances</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Resource Request</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>OwnerId</field>
+            <operation>equals</operation>
+            <value>0050N000009ZmraQAC</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Resource_Request_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Resource Request Sharing</label>
+        <sharedTo>
+            <group>Resource_Regulators</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Resource Request</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Sales_Cases</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Sales Cases</label>
+        <sharedTo>
+            <group>Sales_Organization</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Sales Case</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Sales_Operations_Access</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Sales Operations Access</label>
+        <sharedTo>
+            <group>Sales_Organization</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Sales Operations</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Support_Cases</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Support Cases</label>
+        <sharedTo>
+            <group>Support_and_CSM_Engagement</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Support Case</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Support_Cases_Internal_Users</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Support Cases Internal Users</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Academy,Security Request,IT Request,Resource Request,Technical Investigations,Support Case,APO Request</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_and_Playground</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training and Playground</label>
+        <sharedTo>
+            <group>Training_and_Playground</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Playground</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Alliance_RegulatorsV2</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Alliance RegulatorsV2</label>
+        <sharedTo>
+            <managerSubordinates>csiqueira@copa.do</managerSubordinates>
+        </sharedTo>
+        <sharedFrom>
+            <role>Director_Alliances</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

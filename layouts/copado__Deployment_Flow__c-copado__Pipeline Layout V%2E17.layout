@@ -33,24 +33,16 @@
                 <field>copado__Calculate_Based_on__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Required</behavior>
+                <field>copado__Platform__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>copado__Promotion_Automation__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>copado__Deployment_Automation__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>copado__Platform__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__Promotion_Job_Template__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__Deployment_Job_Template__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -69,6 +61,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>copado__Exclude_From_Auto_Resolve__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Enable_Smart_Conflict_Resolution__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -217,23 +213,16 @@
         <relatedList>copado__Deployment_Flow_Step__c.copado__Deployment_Flow__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>MassChangeOwner</excludeButtons>
-        <fields>NAME</fields>
-        <fields>copado__API_Name__c</fields>
-        <fields>copado__Value__c</fields>
-        <fields>copado__Is_Sensitive__c</fields>
-        <fields>copado__Environment__c</fields>
-        <fields>copado__ParentId__c</fields>
-        <fields>copado__User__c</fields>
-        <relatedList>copado__System_Property__c.copado__Pipeline__c</relatedList>
-    </relatedLists>
-    <relatedLists>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>copado__Start_Date__c</fields>
         <fields>copado__End_Date__c</fields>
         <fields>copado__Status__c</fields>
         <relatedList>copado__Project__c.copado__Deployment_Flow__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>copado__System_Property__c.copado__Pipeline__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
@@ -244,7 +233,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h2o00000lsmvv</masterLabel>
+        <masterLabel>00h5p00000Z9JK8</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

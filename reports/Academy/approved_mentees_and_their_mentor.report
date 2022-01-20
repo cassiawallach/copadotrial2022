@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Mentee__c.Mentor_Name__c</field>
+    </columns>
+    <columns>
+        <field>Mentee__c.Mentorship_Start_Date__c</field>
+    </columns>
+    <columns>
+        <field>Mentee__c.Mentorship_End_Date__c</field>
+    </columns>
+    <columns>
+        <field>Mentee__c.Email__c</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Mentee__c.User__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Approved mentees and their mentor</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Mentee__c@Mentee__c.Mentor__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Mentee__c.Mentorship_End_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

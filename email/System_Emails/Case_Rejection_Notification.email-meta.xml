@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>This email template will be used to notify internal users of an rejected Case</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Copado_Letterhead</letterhead>
+    <name>Case Rejection Notification</name>
+    <style>freeForm</style>
+    <subject>Sales Case Request Rejected</subject>
+    <textOnly>Dear {!Case.OwnerFullName},
+
+Your case has been reviewed by {!Case.Case_Approver__c} and has been rejected. Please reach out to your Case Approver if you have any questions.</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

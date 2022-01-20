@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>amc__Issue__c$amc__Project__c</field>
+    </columns>
+    <columns>
+        <field>amc__Issue__c$CreatedBy</field>
+    </columns>
+    <columns>
+        <field>amc__Issue__c$CreatedDate</field>
+    </columns>
+    <columns>
+        <field>amc__Issue__c$amc__Issue_Name__c</field>
+    </columns>
+    <columns>
+        <field>amc__Issue__c$amc__Issue_Notes__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>amc__Issue__c$amc__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Awaiting Review,In Progress,Open</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Mission Control Open Issues Report</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Mission_Control_Issues__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>amc__Issue__c$LastModifiedDate</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,642 @@
+<apex:page standardController="kugo2p__Payment_Method__c" extensions="kugo2p.NewPaymentMethodController" tabstyle="kugo2p__Payment_Method__c">
+<style>
+.commandBtn {
+   margin-bottom: 10px;
+   width:160px;
+} 
+.panelGridText {
+   padding-bottom: 20px;
+} 
+.labelColumn {
+    width:150px;
+}
+    
+    .modalProgressBox {
+        display: block;
+        position: absolute;
+        z-index: 999;
+        text-align: center; 
+        width: 100%;
+        height: 100%;
+        background-color: #FFF;
+        top: 0px;
+        left: 0px;
+        filter:alpha(opacity=50);
+        -moz-opacity:0.5;
+        -khtml-opacity: 0.5;
+        opacity: 0.5;
+        color: black;
+        font-size: 14pt;
+    }
+    
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<apex:form id="addMethodForm">
+<script language="javascript">
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      if (oldonload) {
+        oldonload();
+      }
+      func();
+    }
+  }
+}
+
+    function numberOnly(event) {
+        var key = event ? event.which : window.event.keyCode;
+        console.log('key: ' + key);
+        //if (String.fromCharCode(key).match(/[^0-9]/g)) return false;
+
+        // 0 = left/right keys, 8 = delete/back key, 118 = paste key, 120 = cut key, 122 = undo key, 90 = redo key to over an issue in FireFox
+        if (key != 0 && key != 8 && key != 118 && key != 120 && key != 122 && key != 90 && (key < 47 || key > 57)) return false;
+    }
+
+// Disable browser autocomplete for fields accepting sensitive data
+function disableAutoComplete() {
+    var el;
+    el = document.getElementById("{!$Component.addMethodPageBlock.creditCardEntryPanel.cardMethodCardNumber}");
+    if (el) el.setAttribute("autocomplete","off");
+    el = document.getElementById("{!$Component.addMethodForm.addMethodPageBlock.cardInfo.cvvSI.cvvNumber}");
+    if (el) el.setAttribute("autocomplete","off");
+    el = document.getElementById("{!$Component.addMethodForm.addMethodPageBlock.echeckInfo.routingNumberSI.routingNumber}");
+    if (el) el.setAttribute("autocomplete","off");
+    el = document.getElementById("{!$Component.addMethodForm.addMethodPageBlock.echeckInfo.bankAcctNumberSI.bankAccountNumber}");
+    if (el) el.setAttribute("autocomplete","off");
+}
+
+addLoadEvent(disableAutoComplete);
+</script>
+<!-- <apex:sectionHeader title="Payment Methods" subtitle="Create a New Payment Method" rendered="{!((cardMgtEnabled || enableCIMOptions || enablePayPalOptions || enableEWayOptions || enableStoredCardOptions) )}" /> -->
+<apex:outputPanel rendered="{!((cardMgtEnabled || enableCIMOptions || enablePayPalOptions || enableEWayOptions || enableStoredCardOptions) )}">
+    <c:PageHeader title="Payment Methods" subtitle="Create a New Payment Method" pathname="custom" icon="custom40" description="" />
+</apex:outputPanel> 
+<apex:pageMessages id="messages"/>
+
+<apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!((!(cardMgtEnabled) && !(enableCIMOptions) && !(enablePayPalOptions) && !(enableEWayOptions) && !(enableStoredCardOptions)) )}" >
+    <br></br>
+    <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+</apex:outputPanel>
+
+<apex:outputPanel rendered="{!cardMgtEnabled || enableCIMOptions || enablePayPalOptions || enableEWayOptions || enableStoredCardOptions}">
+
+<apex:pageBlock title="Select a Payment Method" id="addMethodPageBlock" tabStyle="kugo2p__Payment_Method__c" mode="edit" rendered="{!showPaymentMethodOptions}">
+<apex:pageBlockButtons styleClass="kugamon">
+    <apex:commandButton value="Cancel" action="{!cancelFromPage}" immediate="true" styleClass="slds-button slds-button--neutral" />
+</apex:pageBlockButtons>
+
+        <apex:actionStatus id="modalActionStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel styleClass="modalProgressBox">&nbsp; 
+           <br/><br/><br/>
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/spinner_med.gif')}"  style="vertical-align:middle;" alt="busy..." />
+             &nbsp;Sending Request </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop"  >
+         </apex:facet>  
+    </apex:actionStatus>
+    
+<apex:panelGrid columns="2">
+<apex:commandLink action="{!showCardPanel}" immediate="true" rendered="{!enableStoredCardOptions}">
+       <!-- <apex:image value="{!URLFOR($Resource.PaymentConnect, '/images/CardTerminalButton.png')}"/> -->
+       <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, '/images/SalesforceTerminalButton.png')}"/>
+</apex:commandLink>
+
+<apex:outputPanel styleclass="panelGridText"  rendered="{!enableStoredCardOptions}">
+<br/><br/>
+<strong>Salesforce.com Encrypted Card Service</strong><br/><br/>
+<apex:outputText value="Store credit card information securely in Salesforce.com using the Salesforce's Advanced Encryption function."/>
+</apex:outputPanel>
+
+<apex:commandLink action="{!showCIMPanel}" immediate="true"   rendered="{!enableCIMOptions}">
+       <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, '/images/AuthNetARBTerminalButton.png')}"/>
+</apex:commandLink>
+<apex:outputPanel styleclass="panelGridText" rendered="{!enableCIMOptions}">
+<br/><br/>
+<strong>Authorize.Net CIM</strong><br/><br/>
+<apex:outputText value="Store customer credit card or bank account details using Authorize.Net's hosted Customer Information Management (CIM) service.  CIM support must be enabled in your merchant account at Authorize.net."/>
+</apex:outputPanel>
+
+<apex:commandLink action="{!showEWayPanel}" immediate="true"  rendered="{!enableEWayOptions}">
+       <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, '/images/eWayButton.png')}"/>
+</apex:commandLink>
+<apex:outputPanel styleclass="panelGridText" rendered="{!enableEWayOptions}">
+<br/><br/>
+<strong>eWay Customer Profile</strong><br/><br/>
+<apex:outputText value="Store customer credit card using eWay's Token Payments function." />
+</apex:outputPanel>
+
+<apex:commandLink action="{!showPayPalPanel}" immediate="true"  rendered="{!enablePayPalOptions}">
+       <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, '/images/PayPalARBTerminalButton.png')}"/>
+</apex:commandLink>
+
+<apex:outputPanel styleclass="panelGridText" rendered="{!enablePayPalOptions}">
+<br/><br/>
+<strong>PayPal Transaction Reference Profile</strong><br/><br/>
+<apex:outputText value="Process transactions using credentials from a previous PayPal transaction without having to save sensitive credit card information in Salesforce.  The doReferenceTransaction feature must be enabled in your merchant account at PayPal.  A Transaction Reference Profile stores the transaction Id of the reference transaction so you can use it in place of customer credit card information in the Payment Terminal." />
+</apex:outputPanel>
+
+
+</apex:panelGrid>
+<br/>
+</apex:pageBlock>
+
+<!--  ========================================================================================================== -->
+<apex:pageBlock title="Add Salesforce.com Payment Method" id="cardMethodEntryBlock" rendered="{!showCardPanel}" mode="edit">
+<apex:pageBlockButtons styleClass="kugamon">
+    <apex:commandButton value="Cancel" action="{!cancelFromPage}" immediate="true" styleClass="slds-button slds-button--neutral" />
+
+    <apex:commandButton value="Submit" action="{!addCreditCard}" styleClass="slds-button slds-button--brand" />
+    <apex:actionStatus id="cardFormActionStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             &nbsp;Updating </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+</apex:pageBlockButtons>
+    
+<apex:pageBlockSection id="cardMethodEntryPanel" title="Payment Information" columns="1">
+
+<!-- <apex:inputField value="{!tempPaymentMethod.kugo2p__Card_Type__c}"/> -->
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Card Type" for="cardType" />
+    <apex:selectList size="1" multiselect="false" value="{!tempPaymentMethod.kugo2p__Card_Type__c}">
+        <apex:selectOptions value="{!cardTypeOptions}"/>
+    </apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Credit Card Number"/>
+    <apex:inputText value="{!cardNumber}" id="cardMethodCardNumber" onkeypress="return numberOnly(event);"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Credit Card Expiration"/>
+    <apex:outputPanel layout="inline" >
+    <apex:selectList size="1" multiselect="false"  value="{!expMonth}">
+        <apex:selectOptions value="{!expMonthOptions}"/>
+    </apex:selectList>
+    &nbsp;
+    <apex:selectList size="1" multiselect="false" id="cardMethodExpYear" value="{!expYear}">
+        <apex:selectOptions value="{!expYearOptions}"/>
+    </apex:selectList>
+
+    </apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem > 
+<apex:outputText value=""/>
+<apex:outputPanel >
+    <!-- <apex:inputCheckbox value="{!makeDefaultMethod}"/>&nbsp;Set as Default Payment Method for {!contact.Name} -->
+    <apex:inputCheckbox id="creditCardDP" value="{!makeDefaultMethod}"/>&nbsp;<apex:outputLabel value="Set as Default Payment Method for {!contact.Name}" for="creditCardDP" />
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="Contact Billing Information" columns="1">
+
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c == null}"/>
+<apex:outputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c <> null}"/>
+
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Billing_First_Name__c}"/>
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Billing_Last_Name__c}"/>
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Billing_Street__c}"/>
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Billing_City__c}"/>
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Billing_State__c}"/>
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Billing_Postal_Code__c}"/>
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Billing_Country__c}"/>
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+<!--  ========================================================================================================== -->
+<apex:pageBlock title="Add PayPal Payment Method" id="payPalEntryBlock" rendered="{!showPayPalPanel}" mode="edit">
+<apex:pageBlockButtons styleClass="kugamon">
+    <apex:commandButton value="Cancel" action="{!cancelFromPage}" immediate="true" styleClass="slds-button slds-button--neutral" />
+
+    <apex:commandButton value="Submit" action="{!addPayPalProfile}" styleClass="slds-button slds-button--brand"/>
+    <apex:actionStatus id="payPalFormActionStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             &nbsp;Updating </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+</apex:pageBlockButtons>
+    
+<apex:pageBlockSection id="payPalEntryPanel" title="Payment Information" columns="1">
+
+
+<apex:inputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c == null}">
+    <apex:actionSupport event="onchange" action="{!loadContact}" id="payPalContactLookupChange" status="payPalProfileConnectionListStatus" rerender="payPalEntryBlock" />
+</apex:inputField>
+<apex:outputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c <> null}"/>
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Processor Connection"  />
+    <apex:outputPanel >
+       
+        <apex:selectList size="1" multiselect="false" value="{!selectedPayPalConnection}" id="payPalConnectionOptions" >
+            <apex:actionSupport event="onchange" action="{!payPalProcessorSelectionChanged}" id="payPalProcessorIdChange" status="payPalProfileConnectionListStatus" rerender="payPalEntryBlock"/>
+            <apex:selectOptions value="{!payPalConnectionOptions}" />
+        </apex:selectList>
+            <apex:actionStatus id="payPalProfileConnectionListStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+
+         </apex:facet>
+    </apex:actionStatus>
+    </apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Recent PayPal Transactions"/>
+    <apex:selectList size="1" multiselect="false" value="{!selectedPayPalTransaction}" >
+        <apex:selectOptions value="{!recentPayPalTransactions}"/>
+    </apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem > 
+<apex:outputText value=""/>
+<apex:outputPanel >
+    <!-- <apex:inputCheckbox value="{!makeDefaultMethod}"/>&nbsp;Set as Default Payment Method for {!contact.Name} -->
+    <apex:inputCheckbox id="payPalDP" value="{!makeDefaultMethod}"/>&nbsp;<apex:outputLabel value="Set as Default Payment Method for {!contact.Name}" for="payPalDP" />
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+<!--  ========================================================================================================== -->
+<apex:pageBlock title="Add Authorize.Net CIM Payment Method" id="CIMProfileEntryBlock" rendered="{!showCIMPanel}" mode="edit">
+<apex:pageBlockButtons styleClass="kugamon">
+    <apex:commandButton value="Cancel" action="{!cancelFromPage}" immediate="true" styleClass="slds-button slds-button--neutral" />
+    <apex:commandButton value="Submit" action="{!addCIMProfile}" status="cimProfileFormActionStatus" styleClass="slds-button slds-button--brand"/>
+    <apex:actionStatus id="cimProfileFormActionStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             &nbsp;Updating </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+</apex:pageBlockButtons>
+
+<apex:actionRegion >
+<apex:pageBlockSection id="CIMProfileEntryPanel" title="Customer Profile"  columns="1">
+
+    <apex:inputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c == null}">
+        <apex:actionSupport event="onchange" action="{!loadContact}" id="cimContactLookupChange" status="cimProfileConnectionListStatus" rerender="CIMProfileEntryBlock,CIMProfileEntryBlock2" />
+    </apex:inputField>
+    <apex:outputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c <> null}"/>
+
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Processor Connection"  />
+        <apex:outputPanel >
+           
+            <apex:selectList size="1" multiselect="false" value="{!selectedAuthNetConnection}" id="authNetConnectionOptions" >
+                <apex:actionSupport event="onchange" action="{!cimProcessorSelectionChanged}" id="cimProcessorIdChange" status="cimProfileConnectionListStatus" rerender="CIMProfileEntryBlock,CIMProfileEntryBlock2"/>
+                <apex:selectOptions value="{!authNetConnectionOptions}" />
+            </apex:selectList>
+                <apex:actionStatus id="cimProfileConnectionListStatus" >
+             <apex:facet name="start" > 
+               <apex:outputPanel >&nbsp; 
+                 <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                 </apex:outputPanel>
+             </apex:facet> 
+             <apex:facet name="stop">
+               <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+    
+             </apex:facet>
+        </apex:actionStatus>
+        </apex:outputPanel>
+    </apex:pageBlockSectionItem>
+
+    <!--
+    <apex:pageBlockSectionItem rendered="{!addingToExistingCIMProfile}">    <!-- rendered="{!(NOT ISBLANK(CIMProfileOptions) && CIMProfileOptions.size > 0)}" -- >
+        <apex:outputLabel value="Customer Profile Id" />
+        <apex:outputPanel layout="inline">
+            <apex:selectList size="1" multiselect="false" value="{!selectedCIMProfileId}">
+                <apex:actionSupport event="onchange" action="{!cimProfileSelectionChanged}" id="cimProfileIdChange" status="formActionStatus" rerender="CIMProfileEntryBlock,CIMProfileEntryBlock2, cimProfilePanelGrid, cimProfileEmail, cimProfileStatus, cimProfileFirstname, cimProfileLastname, cimProfileStreet, cimProfileCity, cimProfileState, cimProfileCountry, authNetConnectionOptions"/>
+                <apex:selectOptions value="{!CIMProfileOptions}"/> 
+            </apex:selectList>&nbsp;
+            <apex:commandLink action="{!retrieveCIMProfile}" 
+                       rerender="messages" 
+                       immediate="true"
+                       status="modalActionStatus">View AuthNet Customer Profile Details
+            </apex:commandLink>
+        </apex:outputPanel>
+    </apex:pageBlockSectionItem>
+    -->
+
+    <apex:inputField value="{!contact.email}" />    <!-- rendered="{!NOT(addingToExistingCIMProfile)}" -->
+    
+    <apex:pageBlockSectionItem >    <!-- rendered="{!NOT(addingToExistingCIMProfile)}" -->
+        <apex:outputLabel value="Description"  />
+        <apex:inputText value="{!cimCustomerProfileDescription}"/>
+    </apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+</apex:actionRegion>
+
+<apex:pageBlockSection title="Payment Information" id="cimProfileEntryBlock" columns="1">
+
+    <apex:pageBlockSectionItem rendered="{!cimEnableEchecks}" >
+        <apex:outputLabel value="CIM Payment Profile Type" />
+        <apex:outputPanel layout="inline">
+        <table><tr><td>
+        <apex:selectRadio value="{!cimPaymentProfileType}" disabled="{!NOT(cimEnableEchecks)}" >
+            <apex:selectOption itemValue="CreditCard" itemLabel="Credit Card" />
+            <apex:selectOption itemValue="BankAccount" itemLabel="Bank Account" />
+            <apex:actionSupport event="onchange" action="{!cimPaymentProfileTypeChanged}" id="cimPaymentProfileTypeChange" status="cimProfilePaymentTypeStatus" rerender="cimProfileEntryBlock,CIMProfileEntryBlock2"/>
+        </apex:selectRadio>
+        </td><td>
+            <apex:actionStatus id="cimProfilePaymentTypeStatus" >
+                 <apex:facet name="start" > 
+                   <apex:outputPanel >&nbsp; 
+                     <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                     </apex:outputPanel>
+                 </apex:facet> 
+                 <apex:facet name="stop">
+                   <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                 </apex:facet>
+            </apex:actionStatus>
+        </td></tr></table>
+        </apex:outputPanel>
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'CreditCard'}">
+        <apex:outputLabel value="Card Type" />
+        <apex:selectList size="1" multiselect="false" value="{!cardType}">
+            <apex:selectOptions value="{!cardTypeOptions}"/>
+        </apex:selectList>
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'CreditCard'}">
+        <apex:outputLabel value="Credit Card Number" />
+        <apex:inputText value="{!cardNumber}" onkeypress="return numberOnly(event);"/>
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'CreditCard'}">
+    <apex:outputLabel value="Credit Card Expiration" />
+    <apex:outputPanel layout="inline" >
+    <apex:selectList size="1" multiselect="false" value="{!expMonth}">
+        <apex:selectOptions value="{!expMonthOptions}" />
+    </apex:selectList>
+    &nbsp;
+    <apex:selectList size="1" multiselect="false" value="{!expYear}">
+        <apex:selectOptions value="{!expYearOptions}"/>
+    </apex:selectList>
+    
+    </apex:outputPanel>
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'CreditCard'}">
+        <apex:outputLabel value="Security Code" />
+        <apex:outputPanel >
+            <apex:inputText value="{!cardCode}" style="width:50px" onkeypress="return numberOnly(event);"/>
+            <apex:variable var="cvvHelpText" value="Card Verification Value is an additional security value printed on the physical credit card.<br/><br/> 
+                            Visa, MasterCard, Discover: a 3-digit number shown on the back of the card.<br/><br/>
+                            American Express: a 4-digit number printed on the front fo the card." /> 
+            <c:Tooltip uniqueId="cardCvv1" helpText="{!cvvHelpText}" qTipStyleClass="qtip-dark qtip-rounded qtip-shadow" loadJQuery="true" />
+        </apex:outputPanel> 
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'BankAccount'}">
+        <apex:outputLabel value="Bank Name" />
+        <apex:inputText value="{!bankName}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'BankAccount'}">
+        <apex:outputLabel value="Name on Account" />
+        <apex:inputText value="{!nameOnAccount}" />
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'BankAccount'}">
+        <apex:outputLabel value="Bank Account Number" />
+        <apex:inputText value="{!bankAccountNumber}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'BankAccount'}">
+        <apex:outputLabel value="Routing Number" />
+        <apex:inputText value="{!routingNumber}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'BankAccount'}">
+        <apex:outputLabel value="Account Type" />
+        <apex:selectList size="1" multiselect="false" value="{!bankAccountType}">
+            <!-- <apex:selectOption itemValue="" itemLabel="-- select a bank account type --"/> -->
+            <apex:selectOption itemValue="checking" itemLabel="Checking"/>
+            <apex:selectOption itemValue="savings" itemLabel="Savings"/>
+            <apex:selectOption itemValue="businessChecking" itemLabel="Business Checking"/>
+            <apex:actionSupport event="onchange" id="cimAccountTypeChange" rerender="cimProfileEntryBlock,CIMProfileEntryBlock2"/>
+        </apex:selectList>
+    </apex:pageBlockSectionItem> 
+
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'BankAccount' && bankAccountType != 'businessChecking'}">
+        <apex:outputLabel value="eCheck Type" />
+        <apex:selectList size="1" multiselect="false" value="{!eCheckType}" >   <!-- style="width: 207px;" -->          
+            <!-- 
+            <apex:selectOption itemValue="" itemLabel="-- select an eCheck type --"/>
+            <apex:selectOption itemValue="CCD" itemLabel="CCD - Cash Concentration or Disbursement"/>
+            <apex:selectOption itemValue="PPD" itemLabel="PPD - Prearranged Payment and Deposit Entry"/>
+            <apex:selectOption itemValue="TEL" itemLabel="TEL - Telephone-Initiated Entry"/>
+            <apex:selectOption itemValue="WEB" itemLabel="WEB - Internet-Initiated Entry"/>
+            <apex:selectOption itemValue="CCD" itemLabel="CCD (Corporate customer)" itemDisabled="true" />
+            -->
+
+            <apex:selectOption itemValue="TEL" itemLabel="TEL (Telephone Authorization)"/>
+            <apex:selectOption itemValue="WEB" itemLabel="WEB (Internet Authorization)"/>
+            <apex:selectOption itemValue="PPD" itemLabel="PPD (Written Authorization)" />           
+        </apex:selectList>
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem rendered="{!cimPaymentProfileType == 'BankAccount' && bankAccountType == 'businessChecking'}">
+        <apex:outputLabel value="eCheck Type" />
+        <apex:selectList size="1" multiselect="false" value="{!eCheckType}" >
+            <apex:selectOption itemValue="CCD" itemLabel="CCD (Corporate Customer)" />
+        </apex:selectList>
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem > 
+    <apex:outputText value=""/>
+    <apex:outputPanel >
+        <!-- <apex:inputCheckbox value="{!makeDefaultMethod}"/>&nbsp;Set as Default Payment Method for {!contact.Name} -->
+        <apex:inputCheckbox id="eCheckDP" value="{!makeDefaultMethod}"/>&nbsp;<apex:outputLabel value="Set as Default Payment Method for {!contact.Name}" for="eCheckDP" />
+    </apex:outputPanel>
+    </apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="Contact Billing Information" id="cimProfileEntryBlock2" columns="1">
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Customer Type" />
+        <apex:selectList size="1" multiselect="false">
+            <apex:selectOption itemValue="individual" itemLabel="Individual"/>
+            <apex:selectOption itemValue="business" itemLabel="Business"/>
+        </apex:selectList>
+    </apex:pageBlockSectionItem>
+
+    <apex:inputField value="{!contact.FirstName}"  />
+
+    <apex:inputField value="{!contact.LastName}"  />
+
+    <apex:inputField value="{!contact.MailingStreet}" style="width:149px;" />
+
+    <apex:inputField value="{!contact.MailingCity}"  />
+
+    <apex:inputField value="{!contact.MailingState}"  />
+
+    <apex:inputField value="{!contact.MailingPostalCode}"  />
+
+    <apex:inputField value="{!contact.MailingCountry}"  />
+
+</apex:pageBlockSection>
+
+</apex:pageBlock>
+
+<!--  ========================================================================================================== -->
+<apex:pageBlock title="Add eWay Payment Method" id="eWayProfileEntryBlock" rendered="{!showEWayPanel}" mode="edit">
+<apex:pageBlockButtons styleClass="kugamon">
+    <apex:commandButton value="Cancel" action="{!cancelFromPage}"  immediate="true" styleClass="slds-button slds-button--neutral" /> 
+    <apex:commandButton value="Submit" action="{!addEWayProfile}" status="eWayProfileFormActionStatus" styleClass="slds-button slds-button--brand"/>
+    <apex:actionStatus id="eWayProfileFormActionStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             &nbsp;Updating </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+</apex:pageBlockButtons>
+
+<apex:actionRegion >
+<apex:pageBlockSection id="eWayProfileEntryPanel" title="Payment Information"  columns="1">
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Processor Connection"  />
+    <apex:outputPanel >
+       
+        <apex:selectList size="1" multiselect="false" value="{!selectedEWayConnection}" id="eWayConnectionOptions" >
+            <apex:actionSupport event="onchange" action="{!eWayProcessorSelectionChanged}" id="eWayProcessorIdChange" status="eWayProfileConnectionListStatus" rerender="eWayProfileEntryBlock"/>
+            <apex:selectOptions value="{!eWayConnectionOptions}" />
+        </apex:selectList>
+            <apex:actionStatus id="eWayProfileConnectionListStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+
+         </apex:facet>
+    </apex:actionStatus>
+    </apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem >
+    <apex:outputLabel value="Card Type" />
+    <apex:selectList size="1" multiselect="false" value="{!cardType}">
+        <apex:selectOptions value="{!cardTypeOptions}"/>
+    </apex:selectList>
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Credit Card Number" />
+        <apex:inputText value="{!cardNumber}" onkeypress="return numberOnly(event);"/>
+    </apex:pageBlockSectionItem>
+        
+    <apex:pageBlockSectionItem >
+    <apex:outputLabel value="Credit Card Expiration" />
+    <apex:outputPanel layout="inline" >
+    <apex:selectList size="1" multiselect="false" value="{!expMonth}">
+        <apex:selectOptions value="{!expMonthOptions}" />
+    </apex:selectList>
+    &nbsp;
+    <apex:selectList size="1" multiselect="false" value="{!expYear}">
+        <apex:selectOptions value="{!expYearOptions}"/>
+    </apex:selectList>
+    </apex:outputPanel>
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Security Code" />
+        <apex:outputPanel >
+            <apex:inputText value="{!cardCode}" style="width:50px" onkeypress="return numberOnly(event);"/>
+            <apex:variable var="cvvHelpText" value="Card Verification Value is an additional security value printed on the physical credit card.<br/><br/> 
+                            Visa, MasterCard, Discover: a 3-digit number shown on the back of the card.<br/><br/>
+                            American Express: a 4-digit number printed on the front fo the card." /> 
+            <c:Tooltip uniqueId="cardCvv2" helpText="{!cvvHelpText}" qTipStyleClass="qtip-dark qtip-rounded qtip-shadow" loadJQuery="true" />
+        </apex:outputPanel>
+    </apex:pageBlockSectionItem>    
+
+    <apex:pageBlockSectionItem > 
+    <apex:outputText value=""/>
+    <apex:outputPanel >
+        <!-- <apex:inputCheckbox value="{!makeDefaultMethod}"/>&nbsp;Set as Default Payment Method for {!contact.Name} -->
+        <apex:inputCheckbox id="eWayDP" value="{!makeDefaultMethod}"/>&nbsp;<apex:outputLabel value="Set as Default Payment Method for {!contact.Name}" for="eWayDP" />
+    </apex:outputPanel>
+    </apex:pageBlockSectionItem>    
+
+
+</apex:pageBlockSection>
+</apex:actionRegion>
+
+<apex:pageBlockSection columns="1" title="Contact Billing Information">
+    <apex:inputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c == null}">
+        <apex:actionSupport event="onchange" action="{!loadContact}" id="eWayContactLookupChange" status="eWayProfileConnectionListStatus" rerender="eWayProfileEntryBlock"  />
+    </apex:inputField>
+    <apex:outputField value="{!tempPaymentMethod.kugo2p__Contact__c}" rendered="{!tempPaymentMethod.kugo2p__Contact__c <> null}"/>
+
+<apex:inputField value="{!contact.Salutation}" required="true" />
+
+<apex:inputField value="{!contact.FirstName}"  />
+
+<apex:inputField value="{!contact.LastName}"  />
+
+<apex:inputField value="{!contact.email}"  />
+
+<apex:inputField value="{!contact.MailingStreet}" style="width:149px;" />
+
+<apex:inputField value="{!contact.MailingCity}"  />
+
+<apex:inputField value="{!contact.MailingState}"  />
+
+<apex:inputField value="{!contact.MailingPostalCode}"  />
+
+<apex:inputField value="{!contact.MailingCountry}"  />
+
+<apex:pageBlockSectionItem >
+    <apex:outputLabel value="Comments" />
+    <apex:inputTextArea value="{!profileComments}" style="width:149px;"/>
+</apex:pageBlockSectionItem> 
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+</apex:outputPanel>
+
+</apex:form>
+</apex:page>

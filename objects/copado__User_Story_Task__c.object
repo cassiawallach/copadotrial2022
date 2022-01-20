@@ -141,7 +141,18 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>copado__User_Story_Task_compact_Layout</compactLayoutAssignment>
+    <compactLayoutAssignment>User_Story_Task_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>User_Story_Task_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>copado__Subject__c</fields>
+        <fields>copado__Status__c</fields>
+        <fields>Estimated_Time__c</fields>
+        <fields>Time_Spent_hours__c</fields>
+        <fields>Time_Remaining_Hours__c</fields>
+        <fields>copado__User_Story__c</fields>
+        <label>User Story Task Compact Layout</label>
+    </compactLayouts>
     <compactLayouts>
         <fullName>copado__User_Story_Task_compact_Layout</fullName>
         <fields>Name</fields>
@@ -153,7 +164,7 @@
     <deprecated>false</deprecated>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -162,12 +173,182 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Actual_Hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Hours</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Assignee__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Assignee</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>User_Story_Tasks</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Due Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Estimated Hours</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Estimated_Time_Hours__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+    CONTAINS( Estimated_Time__c , &quot;d&quot;) &amp;&amp; CONTAINS( Estimated_Time__c , &quot;h&quot;),
+    (VALUE(MID( SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;), 0, FIND(&quot;d&quot;, SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;))-1)) * 8 ) +
+    (VALUE(MID( SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;), FIND(&quot;d&quot;, SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;))+1, (LEN(SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;)) - (FIND(&quot;d&quot;, SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;)) + 1) ) ))) ,
+    IF(
+        CONTAINS( Estimated_Time__c , &quot;h&quot;),
+        (VALUE(MID( SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;), 0, FIND(&quot;h&quot;, SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;))-1)) ),
+        IF(
+            CONTAINS( Estimated_Time__c , &quot;d&quot;),
+            (VALUE(MID( SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;), 0, FIND(&quot;d&quot;, SUBSTITUTE(Estimated_Time__c , &quot; &quot;, &quot;&quot;))-1)) * 8),
+            0
+        )
+    )
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Estimated Time (hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Estimated_Time__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please use the format: &quot;X y&quot; where &quot;X&quot; is the amount of time (number) and &quot;y&quot; is the unit defined in &quot;d&quot; (day) or &quot;h&quot; (hour). For example &quot;1h&quot;, &quot;3d&quot; or &quot;1d 3h&quot;. If the amount of hours is equals or higher than 8, the value will be automatically translated into days and hours. For example: &quot;10h&quot; will be translated into &quot;1d2h&quot;.</inlineHelpText>
+        <label>Estimated Time</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Priority__c</fullName>
+        <externalId>false</externalId>
+        <label>Priority</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Time_Remaining_Hours__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+    ISBLANK( Estimated_Time__c ),
+    0,
+    Estimated_Time_Hours__c -  Time_Spent_hours__c 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Time Remaining (hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Time_Spent_hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Time Spent (hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Design</fullName>
+                    <default>false</default>
+                    <label>Design</label>
+                </value>
+                <value>
+                    <fullName>Development</fullName>
+                    <default>true</default>
+                    <label>Development</label>
+                </value>
+                <value>
+                    <fullName>Documentation</fullName>
+                    <default>false</default>
+                    <label>Documentation</label>
+                </value>
+                <value>
+                    <fullName>Testing</fullName>
+                    <default>false</default>
+                    <label>Testing</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>copado__Comments__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Comments</label>
         <length>32000</length>
-        <trackHistory>true</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>5</visibleLines>
@@ -180,6 +361,7 @@
         <precision>4</precision>
         <required>false</required>
         <scale>1</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -191,7 +373,8 @@
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
-        <trackHistory>true</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -209,19 +392,31 @@
                     <label>In Progress</label>
                 </value>
                 <value>
+                    <fullName>Progress Blocked</fullName>
+                    <default>false</default>
+                    <label>Progress Blocked</label>
+                </value>
+                <value>
                     <fullName>Completed</fullName>
                     <default>false</default>
                     <label>Completed</label>
                 </value>
                 <value>
-                    <fullName>Waiting on someone else</fullName>
+                    <fullName>Cancelled</fullName>
                     <default>false</default>
-                    <label>Waiting on someone else</label>
+                    <label>Cancelled</label>
                 </value>
                 <value>
                     <fullName>Deferred</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Deferred</label>
+                </value>
+                <value>
+                    <fullName>Waiting on someone else</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Waiting on someone else</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -233,7 +428,8 @@
         <label>Subject</label>
         <length>255</length>
         <required>false</required>
-        <trackHistory>true</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -248,7 +444,8 @@
         <relationshipName>User_Story_Tasks</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackHistory>true</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
@@ -268,20 +465,24 @@
     <nameField>
         <displayFormat>UST-{0000000}</displayFormat>
         <label>User Story Task Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>User Story Tasks</pluralLabel>
     <searchLayouts>
-        <customTabListAdditionalFields>copado__Subject__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__User_Story__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Comments__c</customTabListAdditionalFields>
         <searchResultsAdditionalFields>copado__Subject__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__User_Story__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Comments__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Estimated_Time_Correct_Format</fullName>
+        <active>true</active>
+        <errorConditionFormula>!REGEX( Estimated_Time__c , &quot;([1-9][0-9]*\\s*[d]\\s*)?([1-9][0-9]*\\s*[h])?&quot;)</errorConditionFormula>
+        <errorDisplayField>Estimated_Time__c</errorDisplayField>
+        <errorMessage>The provided format is incorrect. Please use the format: “X y” where “X” is the amount of time (number) and “y” is the unit defined in “d” (day) or “h” (hour). For example “1h”, “3d” or “1d 3h”.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

@@ -1,0 +1,157 @@
+<apex:page controller="Bread_Winner.CompleteAuthController" tabStyle="Breadwinner__tab" sidebar="false">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <meta charset="utf-8" />
+            <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/jquery-1.11.3.js')}"></script>
+            <apex:slds />
+            <script>
+               var j$ = jQuery.noConflict();
+            function HideStyleSheet() {
+                j$("link.user[href$='elements.css']").each(function() {
+                    j$(this).attr("href", "#");
+                });
+            }
+            function message() {
+                j$(".infoM6, .infoM4, .infoM3, .infoM2, .infoS1").addClass("slds-notify slds-notify_alert slds-theme_inverse-text  slds-text-align_left slds-text-heading_small slds-m-botto_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"} );
+                j$(".errorM6, .errorM4, .errorM3, .errorM2, .errorS1").addClass("slds-notify slds-notify_alert slds-theme_error  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css({"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"});
+                j$(".warningM6, .warningM4, .warningM3, .warningM2, .warningS1").addClass("slds-notify slds-notify_alert slds-theme_warning  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"}) ;
+                j$(".confirmM6, .confirmM4, .confirmM3, .confirmM2, .confirmS1").addClass("slds-notify slds-notify_alert slds-theme_success slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"} ) ;
+                
+                j$("div .messageText h4").css( "color", "white" );
+                j$("div[class*='warning'] div.messageText h4").css( "color", "black" );
+                j$("table.messageTable td").css({"color" : "white"});
+                j$("div[class*='warning'] table.messageTable td").css( "color", "black" );
+            }
+            
+             
+            j$(document).ready(function(){
+                var isCancel = '{!JSENCODE(IF(isCancel,"true","false"))}';
+                var isError = '{!JSENCODE(IF(isError,"true","false"))}';
+
+                if(isCancel == "true"){
+                    NavigateToBreawinnerTab();
+                }
+                else{
+                    addallfuncs();
+                    if(isError == "false") checkifLightningUI();
+                }
+            });
+            function addallfuncs(){
+                HideStyleSheet();
+                message();
+            }
+            function checkifLightningUI(){
+                if(j$(".bPageHeader").outerHeight(true)==null){
+                    //alert('Lightning');
+                    continueAction(true);
+                }
+                else{
+                    //alert('Classic');
+                    continueAction(false);
+                }
+            }
+            </script>
+            <apex:outputPanel id="redirectpanel">
+                <script>
+                function NavigateToBreawinnerTab(){
+                    var isappConfigupdated = '{!JSENCODE(IF(isappConfigupdated,"true","false"))}';
+                    var isCancel = '{!JSENCODE(IF(isCancel,"true","false"))}';
+                    if((isappConfigupdated == "true") || (isCancel == "true")){
+                        var actualURL=window.location.href;
+                        // var url =''+actualURL.split("/apex/").reverse().pop()+'/lightning?source=aloha#/n/{!breadwinnerPageName}';
+                        var url =''+actualURL.split("/apex/").reverse().pop();
+                        if(j$(".bPageHeader").outerHeight(true)==null){
+                            url = url+'/lightning/n/{!breadwinnerPageName}';
+                        }
+                        else{
+                            url = url+'/apex/{!breadwinnerPageName}';
+                        } 
+                        window.open(url,"_parent");
+                    }
+                }
+                </script>
+                
+            </apex:outputPanel>
+            <style>
+                .message {
+                background-color: inherit;
+                border-style: none;
+                padding: initial;
+                }
+                table.messageTable td {
+                border-top: 0px !important;
+                }
+                .msgIcon{
+                display:none;
+                }
+                .message .messageText {
+                margin: 0px;
+                }
+                .message .messageText h4 {
+                font-weight: inherit;
+                display: initial;
+                }
+                
+                .slds-scope .slds-table .messageTable td {
+                padding: 1px;
+                }
+            </style>
+        </head>
+        <body>            
+            <apex:form id="theForm">
+                <apex:actionStatus id="assign-action-status" layout="block">
+                    <apex:facet name="start">
+                        <div class="slds-spinner_container">
+                            <div class="slds-spinner_brand slds-spinner slds-spinner_medium" role="alert">
+                                <span class="slds-assistive-text">Redirecting to Breadwinner.</span>
+                                <div class="slds-spinner__dot-a"></div>
+                                <div class="slds-spinner__dot-b"></div>
+                            </div>
+                        </div>
+                    </apex:facet>
+                </apex:actionStatus>
+                <div class="slds-scope">
+                    <apex:outputPanel layout="block" styleClass="slds-m-top_small slds-m-horizontal_small">
+                        <apex:pageMessage rendered="{!isError}" severity="Warning" summary="Warning: Breadwinner cannot connect to multiple Xero Orgs at a time as you haven't subscribe to the Multi-Org add on. Please select one of the following Xero Orgs and click Continue to complete the authorization process." />
+                        <apex:pageMessages />
+                    </apex:outputPanel>
+                    <div class="slds-align_absolute-center">
+                        <div>
+                            <!-- -----------------------------header start ---------------------------->
+                            <apex:outputPanel layout="block" rendered="{!isSuccess}">
+                                <div class="slds-page-header" role="banner">
+                                    <div class="slds-media slds-media_center">
+                                        <div class="slds-media__body">
+                                            <p class="slds-page-header__title slds-truncate" title="Breadwinner is now connected to <i><b>{!XeroOrgName}</b></i>">Breadwinner is now connected to <i><b>{!XeroOrgName}</b></i></p>
+                                            <p class="slds-text-body_small">Breadwinner • Xero </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                            <!-- -----------------------------header END ---------------------------->
+                            <div class="slds-m-top_small slds-text-align_center">
+
+                                <apex:outputPanel layout="block" rendered="{!isError}" id="errorSection">
+                                    <apex:selectList value="{!selectedXeroOrg}" size="1" multiselect="false" styleClass="slds-select slds-m-top_medium" style="width:auto">
+                                        <apex:selectOption itemLabel="--Please select the Xero Org--" itemValue="" />
+                                        <apex:selectOptions value="{!xeroOrgsList}">
+                                        </apex:selectOptions>
+                                    </apex:selectList>
+                                    
+                                    <apex:outputPanel layout="block" id="continueButton">
+                                        <apex:commandButton value="Continue" action="{!setOneXeroOrg}" reRender="theForm,redirectpanel" oncomplete="message();addallfuncs();NavigateToBreawinnerTab();" status="assign-action-status" styleClass="slds-button slds-button_brand slds-m-top_large"/>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+
+                                <apex:actionFunction name="continueAction" action="{!upsertAppConfig}" reRender="theForm,redirectpanel" oncomplete="addallfuncs();NavigateToBreawinnerTab();" status="assign-action-status" rendered="{!!isError}">
+                                    <apex:param name="islightingparam" value="" assignTo="{!isLightning}"/>
+                                </apex:actionFunction>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </apex:form>
+        </body>
+    </html>
+</apex:page>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Template sent to inform users about maintenance exam window</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Maintenance Exam Opening Window</name>
+    <style>none</style>
+    <subject>Copado Certification Maintenance Reminder</subject>
+    <textOnly>Hello {!Receiving_User.FirstName},
+
+The new maintenance module is now available. 
+
+Remember that you will need to complete the exam by the required due date to be able to maintain your credentials. You can find the Maintenance Certification Module under your profile in Academy. 
+
+Maintenance Certification Module  {!redwing__Training_Plan__c.Name}
+Registration URL  {!redwing__Training_Plan__c.Module_Community_URL__c}
+Due Date  {!redwing__Training_Plan__c.Maintenance_Expiration_Date__c}
+
+
+
+Don&apos;t let your certification expire!
+
+
+Best regards,
+The Academy Team</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

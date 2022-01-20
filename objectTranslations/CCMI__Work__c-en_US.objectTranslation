@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldSets>
+        <label><!-- Quick Entry --></label>
+        <name>CCMI__quick_entry</name>
+    </fieldSets>
+    <fields>
+        <label><!-- Account --></label>
+        <name>CCMI__Account__c</name>
+        <relationshipLabel><!-- Time Entries --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Administration --></label>
+        <name>CCMI__Administration__c</name>
+        <picklistValues>
+            <masterLabel>PTO</masterLabel>
+            <translation><!-- PTO --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sick</masterLabel>
+            <translation><!-- Sick --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Billable Rate --></label>
+        <name>CCMI__Billable_Rate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Case --></label>
+        <name>CCMI__Case__c</name>
+        <relationshipLabel><!-- Time Entries --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Comment --></label>
+        <name>CCMI__Comment__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date --></label>
+        <name>CCMI__Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hours --></label>
+        <name>CCMI__HHmm__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hours (Number) --></label>
+        <name>CCMI__Hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- Milestone Task --></label>
+        <name>CCMI__Milestone_Task__c</name>
+        <relationshipLabel><!-- Time Entries --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Opportunity --></label>
+        <name>CCMI__Opportunity__c</name>
+        <relationshipLabel><!-- Time Entries --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Parent --></label>
+        <name>CCMI__Parent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Timesheet --></label>
+        <name>CCMI__Timesheet__c</name>
+        <relationshipLabel><!-- Time Entries --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Time Entry Layout</layout>
+        <sections>
+            <label><!-- Comments --></label>
+            <section>Comments</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Hours and Rate --></label>
+            <section>Hours and Rate</section>
+        </sections>
+        <sections>
+            <label><!-- Related To --></label>
+            <section>Related To</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Timesheet is locked. The Time Entry can not be modified. --></errorMessage>
+        <name>CCMI__Time_Entries_Timesheet_Locked</name>
+    </validationRules>
+</CustomObjectTranslation>

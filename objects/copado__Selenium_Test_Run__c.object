@@ -160,7 +160,7 @@
         <deprecated>false</deprecated>
         <description>Optional Base URL where this test will be run, if Credentials are not specified.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Optional Base URL where this test will be run, if Credentials are not specified.</inlineHelpText>
+        <inlineHelpText>Optional Base URL where this test will be run, if Org Credentials are not specified.</inlineHelpText>
         <label>Base URL</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -296,7 +296,7 @@ TEXT(copado__Last_Status__c)
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Copado will log in to Salesforce using this Credential.  There is no need to record username and password of the Salesforce login page.</inlineHelpText>
+        <inlineHelpText>Copado will log in to Salesforce using this Org Credential.  There is no need to record username and password of the Salesforce login page.</inlineHelpText>
         <label>Credential</label>
         <referenceTo>copado__Org__c</referenceTo>
         <relationshipLabel>Selenium Test Runs</relationshipLabel>
@@ -364,8 +364,12 @@ TEXT(copado__Last_Status__c)
         <columns>copado__Selenium_Settings__c</columns>
         <columns>UPDATEDBY_USER</columns>
         <columns>copado__Last_Status_Icon__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>copado__Last_Status_Date__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Selenium Test Run Name</label>
@@ -445,8 +449,6 @@ TEXT(copado__Last_Status__c)
         <customTabListAdditionalFields>UPDATEDBY_USER</customTabListAdditionalFields>
         <customTabListAdditionalFields>LAST_UPDATE</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Last_Status_Icon__c</customTabListAdditionalFields>
-        <listViewButtons>copado__Add_Selection_to_a_Test_Group</listViewButtons>
-        <searchResultsCustomButtons>copado__Add_Selection_to_a_Test_Group</searchResultsCustomButtons>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>

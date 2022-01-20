@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>MC Action</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>MC Actions</value>
+    </caseValues>
+    <fieldSets>
+        <label><!-- Action Clone Custom --></label>
+        <name>amc__Action_Clone_Custom</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Action Clone Standard --></label>
+        <name>amc__Action_Clone_Standard</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Action: Status Report Fields --></label>
+        <name>amc__Action_Status_Report_Fields</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Scheduler Hover --></label>
+        <name>amc__Scheduler_Hover</name>
+    </fieldSets>
+    <fields>
+        <help><!-- Field used to link an action to an account. this is required to ensure we can deduct assigned hours for clients. --></help>
+        <label><!-- Account --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- MC Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Detailed notes on how this User Story will be evaluated --></help>
+        <label><!-- Acceptance Criteria --></label>
+        <name>amc__Acceptance_Criteria__c</name>
+    </fields>
+    <fields>
+        <label><!-- Action Name --></label>
+        <name>amc__Action_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Detailed Notes relating to the Action --></help>
+        <label><!-- Action Notes --></label>
+        <name>amc__Action_Notes_RT__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the User viewing the record is the User linked to the Role that is the Action Owner. If true, 1 is displayed, if false, 0 is displayed. This field can be used to create Dynamic List View / Report Filters --></help>
+        <label><!-- Action Owner Current User --></label>
+        <name>amc__Action_Owner_Current_User__c</name>
+    </fields>
+    <fields>
+        <label><!-- Action Owner Email Formula --></label>
+        <name>amc__Action_Owner_Email_Formula__c</name>
+    </fields>
+    <fields>
+        <label><!-- Action Owner Email --></label>
+        <name>amc__Action_Owner_Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- Action Owner --></label>
+        <name>amc__Action_Owner__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Action Type --></label>
+        <name>amc__Action_Type__c</name>
+        <picklistValues>
+            <masterLabel>TBD</masterLabel>
+            <translation><!-- TBD --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Used by the Scheduler to plot an end time on the timeline. --></help>
+        <label><!-- End Time --></label>
+        <name>amc__Actual_End_Time__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Persona record that the User Story relates to --></help>
+        <label><!-- As a --></label>
+        <name>amc__As_a__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Tracks the original End Date set for this Action --></help>
+        <label><!-- Baseline End Date --></label>
+        <name>amc__Baseline_End_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tracks the original Start Date set for this Action --></help>
+        <label><!-- Baseline Start Date --></label>
+        <name>amc__Baseline_Start_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Detailed notes on the benefits that will be gained by delivering this Requirement --></help>
+        <label><!-- Benefit --></label>
+        <name>amc__Benefit__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Billable Hourly Rate, based on Hours Scheduled Value (Billable) / Hours Scheduled – Billable --></help>
+        <label><!-- Billable Hourly Rate --></label>
+        <name>amc__Billable_Hourly_Rate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Budget Item this record relates to --></help>
+        <label><!-- Budget Item --></label>
+        <name>amc__Budget_Item__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Card Size --></label>
+        <name>amc__Card_Size__c</name>
+    </fields>
+    <fields>
+        <label><!-- Complete Checklist Items --></label>
+        <name>amc__Complete_Checklist_Items__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies whether a User has manually overridden the Completion % value. If this field is TRUE, the Completion % will stop being updated automatically when new Time Logs are entered --></help>
+        <label><!-- Completion % Overridden --></label>
+        <name>amc__Completion_Overridden__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the completion percentage of progress made. This field is updated manually and can be used to adjust the completed billable value and remaining effort --></help>
+        <label><!-- Completion % --></label>
+        <name>amc__Completion_Percent__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Cost Hourly Rate, based on Hours Scheduled Value (Cost) / Hours Scheduled – Non Billable --></help>
+        <label><!-- Cost Hourly Rate --></label>
+        <name>amc__Cost_Hourly_Rate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>amc__Custom_Status__c</name>
+        <picklistValues>
+            <masterLabel>TBC</masterLabel>
+            <translation><!-- TBC --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Days Remaining --></label>
+        <name>amc__Days_Remaining__c</name>
+    </fields>
+    <fields>
+        <help><!-- The action selected here is the Parent in the dependency relationship. (Previously Labelled Dependant Action) --></help>
+        <label><!-- Parent Action --></label>
+        <name>amc__Dependant_Action__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Dependant Emails Sent --></label>
+        <name>amc__Dependant_Emails_Sent__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>amc__End_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Time --></label>
+        <name>amc__End_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enforce Dependency Validation --></label>
+        <name>amc__Enforce_Dependency_Validation__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tick this box to create a standard Calendar Event based on this Action (Note: Can only be used where the Action Owner&apos;s  Project Role record is linked to a User) --></help>
+        <label><!-- Event --></label>
+        <name>amc__Event__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies if this Action should be excluded from Billable Capacity --></help>
+        <label><!-- Exclude from Billable Capacity Indicator --></label>
+        <name>amc__Exclude_from_Billable_Capacity_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action should be excluded from Billable Capacity --></help>
+        <label><!-- Exclude from Billable Capacity --></label>
+        <name>amc__Exclude_from_Billable_Capacity__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies if this Action should be excluded from the Client Overview Page --></help>
+        <label><!-- Exclude from Client Page Indicator --></label>
+        <name>amc__Exclude_from_Client_Page_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action should be excluded from the Client Overview Page --></help>
+        <label><!-- Exclude from Client Page --></label>
+        <name>amc__Exclude_from_Client_Page__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action should be excluded from the Daily Digest --></help>
+        <label><!-- Exclude from Daily Digest --></label>
+        <name>amc__Exclude_from_Daily_Digest__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies whether this Action should be hidden from the Gantt Chart. --></help>
+        <label><!-- Exclude from Gantt Indicator --></label>
+        <name>amc__Exclude_from_Gantt_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies whether this Action should be hidden from the Gantt Chart --></help>
+        <label><!-- Exclude from Gantt --></label>
+        <name>amc__Exclude_from_Gantt__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates if this Action is excluded from the Scheduler. If the Action &apos;Exclude from Scheduler&apos; Field is set to TRUE, it takes this value, otherwise it takes the value from the Milestone &apos;Exclude from Scheduler&apos; Field. --></help>
+        <label><!-- Exclude from Scheduler Indicator --></label>
+        <name>amc__Exclude_from_Scheduler_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action should be excluded from the Scheduler --></help>
+        <label><!-- Exclude from Scheduler --></label>
+        <name>amc__Exclude_from_Scheduler__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action should be excluded fro the Project Status Report. Will be TRUE if either Action or parent Milestone is set to TRUE --></help>
+        <label><!-- Exclude from Status Report Indicator --></label>
+        <name>amc__Exclude_from_Status_Report_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action should be excluded from the Project Status Report --></help>
+        <label><!-- Exclude from Status Report --></label>
+        <name>amc__Exclude_from_Status_Report__c</name>
+    </fields>
+    <fields>
+        <help><!-- Prevents Checked Actions from Appearing on the Timesheet. --></help>
+        <label><!-- Exclude from Timesheet Indicator --></label>
+        <name>amc__Exclude_from_Timesheet_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Prevents Checked Actions from Appearing on the Timesheet --></help>
+        <label><!-- Exclude from Timesheet --></label>
+        <name>amc__Exclude_from_Timesheet__c</name>
+    </fields>
+    <fields>
+        <help><!-- This roll up field summaries the &apos;Cost&apos; of related Time Log records --></help>
+        <label><!-- Material Costs Completed (Billable) --></label>
+        <name>amc__Expense_Summary__c</name>
+    </fields>
+    <fields>
+        <help><!-- Used by the action trigger to update project financials. --></help>
+        <label><!-- Financial Tracker --></label>
+        <name>amc__Financial_Tracker__c</name>
+    </fields>
+    <fields>
+        <help><!-- If supplied, determines what order the Action is displayed in the Gantt relative to it&apos;s siblings. --></help>
+        <label><!-- Gantt Sort Order --></label>
+        <name>amc__Gantt_Sort_Order__c</name>
+    </fields>
+    <fields>
+        <help><!-- Automatically calculated number of working days between the parent Action --></help>
+        <label><!-- Gap From Parent --></label>
+        <name>amc__Gap_From_Parent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Has Dependant Actions --></label>
+        <name>amc__Has_Dependant_Actions__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field calculates the completed value (Billable) of this action by multiplying the Hours Completed with the Role&apos;s Hourly Rate. (Previously labelled Hours Completed Cost) --></help>
+        <label><!-- Hours Completed Value (Billable) --></label>
+        <name>amc__Hours_Completed_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the number of non billable hours completed for this Action
+Filtered to include Time Logs where Non Billable Tracker = TRUE AND Approval Status = Approved --></help>
+        <label><!-- Hours Completed - Non Billable --></label>
+        <name>amc__Hours_Completed_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Summarises the Hours Completed Value of the Action Costs based on the Total Hours Completed --></help>
+        <label><!-- Hours Completed Value (Cost) --></label>
+        <name>amc__Hours_Completed_Value_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Roll up summary of the Hours Completed on Time Logs. Filtered to include Time Logs where Non Billable Tracker = FALSE AND Approval Status = Approved. (Previously Labelled Hours Completed) --></help>
+        <label><!-- Hours Completed - Billable --></label>
+        <name>amc__Hours_Completed__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field calculates the remaining value (Billable) of this action by multiplying the Hours Remaining with the Role&apos;s Hourly Rate. (Previously labelled Hours Remaining Cost) --></help>
+        <label><!-- Hours Remaining Value (Billable) --></label>
+        <name>amc__Hours_Remaining_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the number of non billable hours remaining for this Action --></help>
+        <label><!-- Hours Remaining - Non Billable --></label>
+        <name>amc__Hours_Remaining_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Summarises the Hours Remaining Value of the Action Costs based on the Total Hours Remaining --></help>
+        <label><!-- Hours Remaining Value (Cost) --></label>
+        <name>amc__Hours_Remaining_Value_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Hours Remaining - Billable. (Previously Labelled Hours Remaining) --></help>
+        <label><!-- Hours Remaining - Billable --></label>
+        <name>amc__Hours_Remaining__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field calculates the Scheduled Cost (Billable) of this action by multiplying the Hours Scheduled with the Role&apos;s Hourly Rate. (Previously labelled Hours Scheduled Cost) --></help>
+        <label><!-- Hours Scheduled Value (Billable) --></label>
+        <name>amc__Hours_Scheduled_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the number of non billable hours scheduled for this Action --></help>
+        <label><!-- Hours Scheduled - Non Billable --></label>
+        <name>amc__Hours_Scheduled_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Summarises the Hours Scheduled Value of the Action Costs based on Total Hours Scheduled --></help>
+        <label><!-- Hours Scheduled Value (Cost) --></label>
+        <name>amc__Hours_Scheduled_Value_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the number of Billable hours scheduled for this Action. (Previously labelled Hours Scheduled) --></help>
+        <label><!-- Hours Scheduled - Billable --></label>
+        <name>amc__Hours_Scheduled__c</name>
+    </fields>
+    <fields>
+        <help><!-- A description of what the Persona would like to be able to do --></help>
+        <label><!-- I want to --></label>
+        <name>amc__I_want_to__c</name>
+    </fields>
+    <fields>
+        <help><!-- If this is ticked, the Action can be scheduled on a non-working day --></help>
+        <label><!-- Ignore Non-Working Days --></label>
+        <name>amc__Ignore_Non_Working_Days__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action will be recurring --></help>
+        <label><!-- Is Recurring --></label>
+        <name>amc__Is_Recurring__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Calculates Baseline End Date - End Date --></help>
+        <label><!-- KPI: End Date Variance --></label>
+        <name>amc__KPI_End_Date_Variance__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Calculates P&amp;L Scheduled - P&amp;L Forecast --></help>
+        <label><!-- KPI: P&amp;L Variance --></label>
+        <name>amc__KPI_P_L_Variance__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Calculates Baseline Start Date - Start Date --></help>
+        <label><!-- KPI: Start Date Variance --></label>
+        <name>amc__KPI_Start_Date_Variance__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Calculates Total Hours Scheduled - (Total Hours Completed + Total Hours Remaining) --></help>
+        <label><!-- KPI: Total Hours Variance --></label>
+        <name>amc__KPI_Total_Hours_Variance__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Owner Change --></label>
+        <name>amc__Last_Owner_Change__c</name>
+    </fields>
+    <fields>
+        <help><!-- Rollup Sum of the Material Cost (Cost) field on all related Time Log records --></help>
+        <label><!-- Material Costs Completed (Cost) --></label>
+        <name>amc__Material_Costs_Completed_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Calculates Material Costs Scheduled (Cost) - Material Costs Completed (Cost) --></help>
+        <label><!-- Material Costs Remaining (Cost) --></label>
+        <name>amc__Material_Costs_Remaining_Cost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Material Costs Remaining (Billable) --></label>
+        <name>amc__Material_Costs_Remaining__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the cost value of any Scheduled Material Costs related to the Action --></help>
+        <label><!-- Material Costs Scheduled (Cost) --></label>
+        <name>amc__Material_Costs_Scheduled_Cost__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to plan for any material costs related to the Action --></help>
+        <label><!-- Material Costs Scheduled (Billable) --></label>
+        <name>amc__Material_Costs_Scheduled__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the parent Milestone is recurring --></help>
+        <label><!-- Milestone Is Recurring --></label>
+        <name>amc__Milestone_Is_Recurring__c</name>
+    </fields>
+    <fields>
+        <label><!-- Milestone --></label>
+        <name>amc__Milestone__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Indicates if this Action is classified as Non Billable. If the Action &apos;Non Billable&apos; Field is set to TRUE, it takes this value, otherwise it takes the value from the Milestone &apos;Non Billable&apos; Field. --></help>
+        <label><!-- Non Billable Indicator --></label>
+        <name>amc__Non_Billable_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Action is Non Billable --></help>
+        <label><!-- Non Billable --></label>
+        <name>amc__Non_Billable__c</name>
+    </fields>
+    <fields>
+        <label><!-- Notes --></label>
+        <name>amc__Notes__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check this box to send an immediate notification to the Action Owner --></help>
+        <label><!-- Notify --></label>
+        <name>amc__Notify__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the number of times this Action should be recurred --></help>
+        <label><!-- Number of Recurrences --></label>
+        <name>amc__Number_of_Recurrences__c</name>
+    </fields>
+    <fields>
+        <label><!-- Old SFDC Action ID --></label>
+        <name>amc__Old_SFDC_Action_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Old SFDC ID --></label>
+        <name>amc__Old_SFDC_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the P&amp;L for the Action based on the Actual figures. If Fixed Price used Scheduled Billable Value otherwise use Completed Billable Value and minus Hours Completed Value Cost --></help>
+        <label><!-- P&amp;L (Actual) --></label>
+        <name>amc__P_L_Actual__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the P&amp;L for the Action based on the Forecast figures (Completed + Remaining). If Fixed Price use Scheduled Billable Value otherwise use Completed Billable Value + Remaining Billable Value and minus Completed &amp; Remaining Costs --></help>
+        <label><!-- P&amp;L (Forecast) --></label>
+        <name>amc__P_L_Forecast__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the P&amp;L for the Action based on the Scheduled figures --></help>
+        <label><!-- P&amp;L (Scheduled) --></label>
+        <name>amc__P_L_Scheduled__c</name>
+    </fields>
+    <fields>
+        <help><!-- Detailed notes on the current pain point that is driving this Action --></help>
+        <label><!-- Pain Points --></label>
+        <name>amc__Pain_Points__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent End Date --></label>
+        <name>amc__Parent_End_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the priority of this Action. High Priority Actions are flagged on the Gantt Chart --></help>
+        <label><!-- Priority --></label>
+        <name>amc__Priority__c</name>
+        <picklistValues>
+            <masterLabel>High</masterLabel>
+            <translation><!-- High --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Low</masterLabel>
+            <translation><!-- Low --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Used by triggers to prevent unnecessary queries. --></help>
+        <label><!-- Project Id --></label>
+        <name>amc__Project_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Project Name --></label>
+        <name>amc__Project_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Populated automatically via trigger. --></help>
+        <label><!-- Project --></label>
+        <name>amc__Project__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the projected number of billable hours remaining on this action --></help>
+        <label><!-- Projected Hours Remaining - Billable --></label>
+        <name>amc__Projected_Hours_Remaining_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the projected number of non billable hours remaining on this action --></help>
+        <label><!-- Projected Hours Remaining - Non Billable --></label>
+        <name>amc__Projected_Hours_Remaining_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Projected Profit &amp; Loss position for this Action. If Billing Type = Fixed Price, Hours Scheduled Value (Billable) - Projected Value (Cost), otherwise Projected Value (Billable) - Projected Value (Cost) --></help>
+        <label><!-- Projected P&amp;L --></label>
+        <name>amc__Projected_P_L__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the total projected billable hours for this Action. Hours Completed – Billable + Projected Hours Remaining – Billable --></help>
+        <label><!-- Projected Total Hours – Billable --></label>
+        <name>amc__Projected_Total_Hours_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the total projected non billable hours for this Action. Hours Completed – Non Billable + Projected Hours Remaining – Non Billable --></help>
+        <label><!-- Projected Total Hours – Non Billable --></label>
+        <name>amc__Projected_Total_Hours_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the total projected hours for this Action. Sums Projected Total Hours – Billable + Projected Total Hours – Non Billable --></help>
+        <label><!-- Projected Total Hours --></label>
+        <name>amc__Projected_Total_Hours__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the projected billable value for this action. If Billing Type = Fixed Price, Hours Scheduled Value (Billable), otherwise if Completion % is blank or zero, Hours Remaining Value (Billable), Hours Completed Value (Billable) / Completion % --></help>
+        <label><!-- Projected Value (Billable) --></label>
+        <name>amc__Projected_Value_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the projected cost value for this action. If Completion % is blank, Hours Remaining Value (Cost), otherwise ((Projected hours Remaining Billable + Projected Hours Remaining Non Billable) * Cost Hourly Rate) + Hours Completed Value (Cost) --></help>
+        <label><!-- Projected Value (Cost) --></label>
+        <name>amc__Projected_Value_Cost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Receive New Action Notification --></label>
+        <name>amc__Receive_New_Action_Notification__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the recognised revenue based on Completion % or Hours Completed (Billable). If Billing Type = Fixed Price, Completion % * Hours Scheduled Value (Billable), otherwise Hours Completed Value (Billable) --></help>
+        <label><!-- Recognised Revenue --></label>
+        <name>amc__Recognised_Revenue__c</name>
+    </fields>
+    <fields>
+        <help><!-- Detailed notes on the recommended solution --></help>
+        <label><!-- Recommendations --></label>
+        <name>amc__Recommendations__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the frequency of the recurring schedule for this Action --></help>
+        <label><!-- Recurring Frequency --></label>
+        <name>amc__Recurring_Frequency__c</name>
+    </fields>
+    <fields>
+        <label><!-- Requirement --></label>
+        <name>amc__Requirement__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Stores the JSON of the breakdown of scheduled hours for the Action Owner and Contributors for this Action --></help>
+        <label><!-- Scheduled Hours Breakdown --></label>
+        <name>amc__Scheduled_Hours_Breakdown__c</name>
+    </fields>
+    <fields>
+        <label><!-- Skill Name --></label>
+        <name>amc__Skill_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Skill record for the Skill the Role will be using when delivering this Action --></help>
+        <label><!-- Skill --></label>
+        <name>amc__Skill__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- A description of what the Persona is trying to achieve --></help>
+        <label><!-- So that I can --></label>
+        <name>amc__So_that_I_can__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>amc__Start_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Hour --></label>
+        <name>amc__Start_Hour__c</name>
+        <picklistValues>
+            <masterLabel>00</masterLabel>
+            <translation><!-- 00 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>01</masterLabel>
+            <translation><!-- 01 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>02</masterLabel>
+            <translation><!-- 02 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>03</masterLabel>
+            <translation><!-- 03 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>04</masterLabel>
+            <translation><!-- 04 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>05</masterLabel>
+            <translation><!-- 05 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>06</masterLabel>
+            <translation><!-- 06 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>07</masterLabel>
+            <translation><!-- 07 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>08</masterLabel>
+            <translation><!-- 08 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>09</masterLabel>
+            <translation><!-- 09 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>10</masterLabel>
+            <translation><!-- 10 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>11</masterLabel>
+            <translation><!-- 11 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>12</masterLabel>
+            <translation><!-- 12 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>13</masterLabel>
+            <translation><!-- 13 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>14</masterLabel>
+            <translation><!-- 14 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>15</masterLabel>
+            <translation><!-- 15 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>16</masterLabel>
+            <translation><!-- 16 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>17</masterLabel>
+            <translation><!-- 17 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>18</masterLabel>
+            <translation><!-- 18 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>19</masterLabel>
+            <translation><!-- 19 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>20</masterLabel>
+            <translation><!-- 20 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>21</masterLabel>
+            <translation><!-- 21 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>22</masterLabel>
+            <translation><!-- 22 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>23</masterLabel>
+            <translation><!-- 23 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Start Minute --></label>
+        <name>amc__Start_Minute__c</name>
+        <picklistValues>
+            <masterLabel>00</masterLabel>
+            <translation><!-- 00 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>01</masterLabel>
+            <translation><!-- 01 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>02</masterLabel>
+            <translation><!-- 02 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>03</masterLabel>
+            <translation><!-- 03 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>04</masterLabel>
+            <translation><!-- 04 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>05</masterLabel>
+            <translation><!-- 05 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>06</masterLabel>
+            <translation><!-- 06 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>07</masterLabel>
+            <translation><!-- 07 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>08</masterLabel>
+            <translation><!-- 08 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>09</masterLabel>
+            <translation><!-- 09 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>10</masterLabel>
+            <translation><!-- 10 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>11</masterLabel>
+            <translation><!-- 11 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>12</masterLabel>
+            <translation><!-- 12 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>13</masterLabel>
+            <translation><!-- 13 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>14</masterLabel>
+            <translation><!-- 14 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>15</masterLabel>
+            <translation><!-- 15 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>16</masterLabel>
+            <translation><!-- 16 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>17</masterLabel>
+            <translation><!-- 17 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>18</masterLabel>
+            <translation><!-- 18 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>19</masterLabel>
+            <translation><!-- 19 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>20</masterLabel>
+            <translation><!-- 20 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>21</masterLabel>
+            <translation><!-- 21 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>22</masterLabel>
+            <translation><!-- 22 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>23</masterLabel>
+            <translation><!-- 23 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>24</masterLabel>
+            <translation><!-- 24 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>25</masterLabel>
+            <translation><!-- 25 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>26</masterLabel>
+            <translation><!-- 26 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>27</masterLabel>
+            <translation><!-- 27 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>28</masterLabel>
+            <translation><!-- 28 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>29</masterLabel>
+            <translation><!-- 29 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>30</masterLabel>
+            <translation><!-- 30 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>31</masterLabel>
+            <translation><!-- 31 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>32</masterLabel>
+            <translation><!-- 32 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>33</masterLabel>
+            <translation><!-- 33 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>34</masterLabel>
+            <translation><!-- 34 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>35</masterLabel>
+            <translation><!-- 35 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>36</masterLabel>
+            <translation><!-- 36 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>37</masterLabel>
+            <translation><!-- 37 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>38</masterLabel>
+            <translation><!-- 38 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>39</masterLabel>
+            <translation><!-- 39 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>40</masterLabel>
+            <translation><!-- 40 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>41</masterLabel>
+            <translation><!-- 41 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>42</masterLabel>
+            <translation><!-- 42 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>43</masterLabel>
+            <translation><!-- 43 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>44</masterLabel>
+            <translation><!-- 44 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>45</masterLabel>
+            <translation><!-- 45 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>46</masterLabel>
+            <translation><!-- 46 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>47</masterLabel>
+            <translation><!-- 47 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>48</masterLabel>
+            <translation><!-- 48 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>49</masterLabel>
+            <translation><!-- 49 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>50</masterLabel>
+            <translation><!-- 50 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>51</masterLabel>
+            <translation><!-- 51 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>52</masterLabel>
+            <translation><!-- 52 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>53</masterLabel>
+            <translation><!-- 53 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>54</masterLabel>
+            <translation><!-- 54 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>55</masterLabel>
+            <translation><!-- 55 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>56</masterLabel>
+            <translation><!-- 56 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>57</masterLabel>
+            <translation><!-- 57 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>58</masterLabel>
+            <translation><!-- 58 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>59</masterLabel>
+            <translation><!-- 59 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>amc__Status__c</name>
+        <picklistValues>
+            <masterLabel>Cancelled</masterLabel>
+            <translation><!-- Cancelled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation><!-- Complete --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>In Progress</masterLabel>
+            <translation><!-- In Progress --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>On Hold</masterLabel>
+            <translation><!-- On Hold --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Planned</masterLabel>
+            <translation><!-- Planned --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- System End --></label>
+        <name>amc__System_End__c</name>
+    </fields>
+    <fields>
+        <label><!-- System Start --></label>
+        <name>amc__System_Start__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tick this box to create a standard Task based on this Action (Note: Can only be used where the Action Owner&apos;s  Project Role record is linked to a User) --></help>
+        <label><!-- Task --></label>
+        <name>amc__Task__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Checklist Items --></label>
+        <name>amc__Total_Checklist_Items__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: Sum of the total hours completed, billable and non billable --></help>
+        <label><!-- Total Hours Completed --></label>
+        <name>amc__Total_Hours_Completed__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: Sum of the total hours remaining, billable and non billable --></help>
+        <label><!-- Total Hours Remaining --></label>
+        <name>amc__Total_Hours_Remaining__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: Sum of the total hours scheduled, billable and non billable --></help>
+        <label><!-- Total Hours Scheduled --></label>
+        <name>amc__Total_Hours_Scheduled__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Projected Hours Remaining --></label>
+        <name>amc__Total_Projected_Hours_Remaining__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total User Story Efforts --></label>
+        <name>amc__Total_User_Story_Efforts__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the User Story record that this Action was created from --></help>
+        <label><!-- User Story --></label>
+        <name>amc__User_Story__c</name>
+        <relationshipLabel><!-- Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Whiteboard Priority Order --></label>
+        <name>amc__Whiteboard_Priority_Order__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tracks the number of automatically calculated working days for this Action. --></help>
+        <label><!-- Working Days --></label>
+        <name>amc__Working_Days__c</name>
+    </fields>
+    <layouts>
+        <layout>Action Layout</layout>
+        <sections>
+            <label><!-- Action Settings --></label>
+            <section>Action Settings</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Dependency Information --></label>
+            <section>Dependency Information</section>
+        </sections>
+        <sections>
+            <label><!-- Financial Information --></label>
+            <section>Financial Information</section>
+        </sections>
+        <sections>
+            <label><!-- Hours Information --></label>
+            <section>Hours Information</section>
+        </sections>
+        <sections>
+            <label><!-- KPI Information --></label>
+            <section>KPI Information</section>
+        </sections>
+        <sections>
+            <label><!-- Material Costs Information --></label>
+            <section>Material Costs Information</section>
+        </sections>
+        <sections>
+            <label><!-- Notes --></label>
+            <section>Notes</section>
+        </sections>
+        <sections>
+            <label><!-- Projected Financial Information --></label>
+            <section>Projected Financial Information</section>
+        </sections>
+        <sections>
+            <label><!-- Recurring Settings --></label>
+            <section>Recurring Settings</section>
+        </sections>
+        <sections>
+            <label><!-- Schedule Information --></label>
+            <section>Schedule Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>MC Action ID</nameFieldLabel>
+    <quickActions>
+        <label><!-- Manage Checklist --></label>
+        <name>amc__Manage_Checklist</name>
+    </quickActions>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <errorMessage><!-- You cannot enter billable hours for this action as the non-billable indicator is set to True. --></errorMessage>
+        <name>amc__Billable_Hours_Cannot_Be_Entered</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The Action&apos;s End Date must not exceed the Milestone Deadline --></errorMessage>
+        <name>amc__End_Date_Exceeds_Milestone_Deadline</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The End Date must be greater or equal to the Start Date --></errorMessage>
+        <name>amc__End_Date_Validation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This Action will exceed the &apos;Milestone Budget&apos;, please reduce the Hours Scheduled (Billable) --></errorMessage>
+        <name>amc__Exceed_Milestone_Budget</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must set the Recurring Frequency --></errorMessage>
+        <name>amc__Recurring_Validation_Frequency</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must set the Number of Recurrences --></errorMessage>
+        <name>amc__Recurring_Validation_Number</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The dependant action has an end date greater than the start date of the current action.  Please adjust your dates accordingly. --></errorMessage>
+        <name>amc__Related_Task_Validation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Skill must be populated for Projects that use Skill-based costings. --></errorMessage>
+        <name>amc__Skill_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Start Hour and Start Minute are required to create an Event for this Action --></errorMessage>
+        <name>amc__Start_Time_Validation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can only create a Task or an Event from an Action, noth both. --></errorMessage>
+        <name>amc__Task_or_Event_Creation</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Reassignment --></label>
+        <name>amc__Reassignment</name>
+    </webLinks>
+</CustomObjectTranslation>

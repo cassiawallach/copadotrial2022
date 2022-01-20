@@ -1,0 +1,34 @@
+<apex:page standardController="TRIMDA__TRIMDA_DupeAlerts__c" extensions="TRIMDA.TRIMDA_DupeAlert_Extension" >
+ 
+  <apex:form > 
+     
+     <apex:actionFunction name="RunAlert" oncomplete="actionComplete('{!runMsg}','{!retUrl}')" action="{!runAlert}" reRender="RunResult" status="ProgressStatus" />    
+          <script language="JavaScript">
+              function actionComplete(msg, dest)
+              {
+                  //alert(msg);
+                  //alert(dest);
+                  //if (dest != null){window.location.assign(dest);}
+              }
+              var previousOnload = window.onload;        
+              window.onload = function() {
+                  if (previousOnload) {
+                      previousOnload();
+                      RunAlert();
+                  }
+              }
+          </script> 
+        
+        <apex:actionStatus id="ProgressStatus">
+         <apex:facet name="start">
+            <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Validating Alert..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+        
+        </apex:actionStatus>
+        <apex:pageBlock Id="RunResult" title="Running Alert:" > 
+                <apex:pageMessages /> 
+        </apex:pageBlock>
+         
+  </apex:form> 
+  <apex:detail subject="{!TRIMDA__TRIMDA_DupeAlerts__c}" />
+ </apex:page>

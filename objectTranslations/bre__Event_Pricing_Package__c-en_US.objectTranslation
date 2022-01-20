@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- AC Event --></label>
+        <name>bre__AC_Event__c</name>
+        <relationshipLabel><!-- Event Pricing Packages --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>bre__Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Early Bird End Datetime --></label>
+        <name>bre__Early_Bird_End_Datetime__c</name>
+    </fields>
+    <fields>
+        <label><!-- Early Bird Price --></label>
+        <name>bre__Early_Bird_Price__c</name>
+    </fields>
+    <fields>
+        <label><!-- Normal Price --></label>
+        <name>bre__Normal_Price__c</name>
+    </fields>
+    <layouts>
+        <layout>AC Event Pricing Package Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You must specify early bird price deadline. --></errorMessage>
+        <name>bre__Early_Bird_Deadline_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Early bird price deadline cannot be later than event start time. --></errorMessage>
+        <name>bre__Early_Bird_Price_Deadline_Max_Value</name>
+    </validationRules>
+</CustomObjectTranslation>

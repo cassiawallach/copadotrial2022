@@ -26,10 +26,6 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ExpirationDate</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>IsSyncing</field>
             </layoutItems>
@@ -39,7 +35,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Description</field>
+                <field>ExpirationDate</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -49,32 +45,11 @@
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>Totals</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Subtotal</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Discount</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>TotalPrice</field>
-            </layoutItems>
-        </layoutColumns>
+        <layoutColumns/>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Tax</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ShippingHandling</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>GrandTotal</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -134,6 +109,27 @@
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Special conditions</label>
+        <layoutColumns/>
+        <style>OneColumn</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Internal Information</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Description</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>OneColumn</style>
+    </layoutSections>
+    <layoutSections>
         <customLabel>false</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
@@ -167,8 +163,6 @@
         <fields>OpportunityId</fields>
         <fields>ExpirationDate</fields>
         <fields>Status</fields>
-        <fields>Discount</fields>
-        <fields>GrandTotal</fields>
     </miniLayout>
     <relatedContent>
         <relatedContentItems>
@@ -192,12 +186,12 @@
     </relatedContent>
     <relatedLists>
         <fields>QUOTE_LI.PRODUCT2</fields>
-        <fields>QUOTE_LI.UNIT_PRICE</fields>
         <fields>QUOTE_LI.QUANTITY</fields>
-        <fields>QUOTE_LI.SUBTOTAL</fields>
-        <fields>QUOTE_LI.DISCOUNT</fields>
-        <fields>QUOTE_LI.TOTAL_PRICE</fields>
-        <fields>QUOTE_LI.LIST_PRICE</fields>
+        <fields>Unit_Price__c</fields>
+        <fields>Discount__c</fields>
+        <fields>Total_Price__c</fields>
+        <fields>Order_Start_Date__c</fields>
+        <fields>Order_End_Date__c</fields>
         <relatedList>RelatedQuoteLineItemList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -206,12 +200,6 @@
         <fields>QUOTE_DOC.GRANDTOTAL</fields>
         <fields>CreatedBy</fields>
         <relatedList>RelatedQuoteDocumentList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <relatedList>RelatedContentNoteList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <relatedList>RelatedFileList</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
@@ -232,7 +220,16 @@
         <fields>TASK.LAST_UPDATE</fields>
         <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
+    <relatedLists>
+        <relatedList>RelatedNoteList</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+    <summaryLayout>
+        <masterLabel>00hb00000011M0g</masterLabel>
+        <sizeX>4</sizeX>
+        <sizeY>0</sizeY>
+        <summaryLayoutStyle>Default</summaryLayoutStyle>
+    </summaryLayout>
 </Layout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>GetFeedback_Aut__Survey__c$Name</field>
+    </columns>
+    <columns>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r.GetFeedback_Aut__Answers__r$GetFeedback_Aut__DisplayValue__c</field>
+    </columns>
+    <columns>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r.GetFeedback_Aut__Answers__r$GetFeedback_Aut__QuestionTitle__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>GetFeedback_Aut__Survey__c$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>PA Satisfaction Survey</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$CreatedDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$GetFeedback_Aut__Url__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r.GetFeedback_Aut__Answers__r$GetFeedback_Aut__GridItem__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>PA CSAT Responses v2</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>GetFeedback_Surveys_and_Repsones__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>GetFeedback_Aut__Survey__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

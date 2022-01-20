@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$OrgId__c</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Org_Type__c</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Account_Status__c</field>
+    </columns>
+    <columns>
+        <field>Account$Customer_Success_Manager__c</field>
+    </columns>
+    <columns>
+        <field>Account$RecordType</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Tabular</format>
+    <name>Accounts with SF Orgs</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_Salesforce_Orgs__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$Usage__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

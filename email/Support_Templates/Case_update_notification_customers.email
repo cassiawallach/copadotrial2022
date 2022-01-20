@@ -1,0 +1,20 @@
+Dear {!Case.Contact},
+
+Your case has been updated.
+
+Status: {!Case.Status}
+
+Description:
+{!Case.Description}
+
+You can check the status or close your case from the following link
+https://copado.secure.force.com/support/PublicCase?cn={!Case.CaseNumber}&ce={!Contact.Email}
+
+
+Visit our documentation site: http://docs.copa.do/
+
+Kind regards,
+
+{! IF(User.Username=='support_team@copa.do', '', User.Name) }
+
+{!Case.Thread_Id}

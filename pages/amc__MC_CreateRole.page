@@ -1,0 +1,259 @@
+<apex:page standardController="amc__Role__c" extensions="amc.RoleExtension" lightningStyleSheets="true">
+    <apex:pageMessages />
+    <apex:form >
+        <apex:actionFunction action="{!updateTeamAssignments}" name="onMasterTeamChange" reRender="teamAssignment">
+            <apex:param name="rowIdx" assignTo="{!index}" value="" />
+        </apex:actionFunction>
+        <apex:outputPanel style="display:none;visibility:hidden">
+            {!amc__Role__c.amc__Contact__c} {!amc__Role__c.amc__User__c}
+        </apex:outputPanel>
+        <apex:pageBlock title="Mission Control: Create a new Role">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save" />
+                <apex:commandButton action="{!cancel}" value="Cancel" />
+            </apex:pageBlockButtons>
+            <apex:actionRegion >
+                <apex:pageBlockSection title="Person Details" columns="2">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Role Source" />
+                        <apex:selectList size="1" value="{!roleSource}">
+                            <apex:actionSupport action="{!changeField}" event="onchange" rerender="Lookup_Field, Digest_Field" />
+                            <apex:selectOption itemValue="User" itemLabel="User" />
+                            <apex:selectOption itemValue="Contact" itemLabel="Contact" />
+                            <apex:selectOption itemValue="Asset" itemLabel="Asset" />
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:actionRegion>
+            <apex:outputPanel id="Lookup_Field">
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem rendered="{!roleSource == 'Contact'}">
+                        <!-- Insert the fields for User & Contact Lookup here -->
+                        <apex:outputLabel value="Contact" />
+                        <apex:inputField value="{!amc__Role__c.amc__Contact__c}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!roleSource == 'User'}">
+                        <apex:outputLabel value="User" />
+                        <apex:inputField value="{!amc__Role__c.amc__User__c}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!roleSource == 'Asset'}">
+                        <apex:outputLabel value="Role Name" />
+                        <apex:inputField value="{!amc__Role__c.Name}" />
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            <apex:pageBlockSection title="Role Details" columns="2">
+                <apex:inputField value="{!amc__Role__c.amc__Job_Title__c}" />
+                <apex:pageBlockSectionItem rendered="{!isMulti}">
+                    <apex:outputLabel value="Currency" />
+                    <apex:inputField value="{!amc__Role__c['CurrencyIsoCode']}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Resource Settings" columns="2">
+                <apex:inputField value="{!amc__Role__c.amc__Hours_Per_Week__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Hourly_Rate__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Billable_Target__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Cost_Hourly_Rate__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Timesheet_Approver__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Permission/Notification Settings" columns="2" id="Digest_Field">
+                <apex:inputField value="{!amc__Role__c.amc__Active__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Receive_Digest__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Receive_Timesheet_Reminder__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Receive_Exception_Notification__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Manage_Timesheets__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Receive_Action_Notifications__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Manage_Subordinate_Timesheets__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Exclude_from_Scheduler__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Daily_Digest_Monday__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Daily_Digest_Tuesday__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Daily_Digest_Wednesday__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Daily_Digest_Thursday__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Daily_Digest_Friday__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Daily_Digest_Saturday__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Daily_Digest_Sunday__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Expense Settings" columns="2">
+                <apex:inputField value="{!amc__Role__c.amc__Expense_Approver__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__Mileage_Rate__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Console Settings" columns="2">
+                <apex:inputField value="{!amc__Role__c.amc__Console_Default_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Launch_Pad__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Progress_Pad__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Management_Pad__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Control_Pad__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Track Pad Settings" columns="2">
+                <apex:inputField value="{!amc__Role__c.amc__Track_Pad_Default_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad_Timeline__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad_Time_Logger__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad_Feed__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad_Expense_Logger__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad_Add_Action__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad_Add_Risk__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Track_Pad_Add_Issue__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Project Overview Settings" columns="2">
+                <apex:inputField value="{!amc__Role__c.amc__Project_Overview_Default_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Insights_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Overview_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Overview_Tab_Charts__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Detail_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Action_Pad_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Time_Logs_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Time_Logs_Tab_Charts__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Expenses_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Expenses_Tab_Charts__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Risks_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Risks_Tab_Charts__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Issue_Log_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Billing_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Billing_Tab_Charts__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Whiteboard_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Chart_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Rev_Rec_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Scheduler_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Budget_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Retro_Tab__c}" />
+            </apex:pageBlockSection>
+
+            <!-- Gantt Chart Settings -->
+            <apex:pageBlockSection title="Gantt Chart Settings" columns="2">
+
+                <apex:inputField value="{!amc__Role__c.amc__Gantt_Project_Default_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Project_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Project_Record_Detail_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Project_Chatter_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+
+                <apex:inputField value="{!amc__Role__c.amc__Gantt_Milestone_Default_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Milestone_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Milestone_Record_Detail_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Milestone_Chatter_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+
+                <apex:inputField value="{!amc__Role__c.amc__Gantt_Action_Default_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Action_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Action_Log_Time_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Action_Chatter_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Action_Record_Detail_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+
+                <apex:inputField value="{!amc__Role__c.amc__Gantt_Checklist_Default_Tab__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Checklist_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Checklist_Record_Detail_Tab__c}" />
+                <apex:inputField value="{!amc__Role__c.amc__View_Gantt_Checklist_Chatter_Tab__c}" />
+                <apex:pageBlockSectionItem />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Notes" columns="1">
+                <apex:inputField value="{!amc__Role__c.amc__Role_Notes_RT__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection showHeader="true" title="Custom Role Data" rendered="{!$ObjectType.amc__Role__c.FieldSets.amc__Custom_Fields.empty = false}">
+                <!-- Custom Field Set Data -->
+                <apex:repeat value="{!$ObjectType.amc__Role__c.FieldSets.amc__Custom_Fields}" var="f">
+                    <apex:inputField value="{!amc__Role__c[f]}" required="{!OR(f.required, f.dbrequired)}" />
+                </apex:repeat>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="teamAssignment" title="Team Assignment" columns="1">
+                <apex:variable var="idx" value="{!0}" />
+                <apex:pageBlockTable value="{!teamAssignments}" var="t">
+                    <apex:column headerValue="Team">
+                        <apex:selectList size="1" value="{!t.amc__Team__c}">
+                            <apex:selectOptions value="{!teamOptions}" />
+                        </apex:selectList>
+                    </apex:column>
+                    <apex:column headerValue="Active">
+                        <apex:inputField value="{!t.amc__Active__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Master Team">
+                        <apex:inputField value="{!t.amc__Master_Team__c}" onclick="onMasterTeamChange('{!idx}')" />
+                        <apex:variable var="idx" value="{!idx+1}" />
+                        <!-- <apex:inputField value="{!t.amc__Master_Team__c}" /> -->
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:inputText size="2" value="{!teamRows}" />
+                <apex:commandButton value="Add Row(s)" action="{!addTeamRow}" reRender="teamAssignment" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Skill Assignment" id="assignmentSection" columns="1">
+                <apex:pageBlockTable value="{!skillAssignments}" var="s">
+                    <apex:column headerValue="Type">
+                        <apex:selectList size="1" value="{!s.skillType}">
+                            <apex:selectOptions value="{!s.typeOptions}" />
+                            <apex:actionSupport event="onchange" status="ajaxLoader" reRender="assignmentSection" action="{!s.filterSkills}" />
+                        </apex:selectList>
+                        <div style="height:20px; width:20px; float:left;">
+                            <apex:actionStatus id="ajaxLoader">
+                                <apex:facet name="start">
+                                    <apex:image value="{!$Resource.amc__timelog_loader}" />
+                                </apex:facet>
+                            </apex:actionStatus>
+                        </div>
+                    </apex:column>
+                    <apex:column headerValue="Skill">
+                        <apex:selectList size="1" value="{!s.skillAssignment.amc__Skill__c}">
+                            <apex:selectOptions value="{!s.skillOptions}" />
+                        </apex:selectList>
+                    </apex:column>
+                    <apex:column headerValue="Active">
+                        <apex:inputField value="{!s.skillAssignment.amc__Active__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Proficiency">
+                        <apex:inputField value="{!s.skillAssignment.amc__Proficiency__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Expiry Date">
+                        <apex:inputField value="{!s.skillAssignment.amc__Expiry_Date__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Billable Hourly Rate">
+                        <apex:inputField value="{!s.skillAssignment.amc__Billable_Hourly_Rate__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Cost Hourly Rate">
+                        <apex:inputField value="{!s.skillAssignment.amc__Cost_Hourly_Rate__c}" />
+                    </apex:column>
+                    <!-- Multi Currency Field Here -->
+                    <apex:column rendered="{!isMulti}" headerValue="Currency">
+                        <apex:inputField value="{!s.skillAssignment['CurrencyIsoCode']}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:inputText size="2" value="{!skillRows}" />
+                <apex:commandButton value="Add Row(s)" action="{!addSkillRow}" reRender="assignmentSection" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

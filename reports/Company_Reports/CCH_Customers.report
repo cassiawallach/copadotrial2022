@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__Product__c</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__StartDate__c</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__EndDate__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Customers who have subscriptions for either Copado Enterprise Edition or Compliance Hub.</description>
+    <filter>
+        <criteriaItems>
+            <column>SBQQ__Subscription__c.SBQQ__Product__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Copado Enterprise,Compliance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>SBQQ__Subscription__c.SBQQ__EndDate__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>TODAY</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>SBQQ__Subscription__c.SBQQ__StartDate__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessThan</operator>
+            <value>TODAY</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>SBQQ__Subscription__c.SBQQ__Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CCH Customers</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$SBQQ__Subscription__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>SBQQ__Subscription__c.SBQQ__EndDate__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

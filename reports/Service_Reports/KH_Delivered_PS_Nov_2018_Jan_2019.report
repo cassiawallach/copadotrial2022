@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Demo__c.PS_Consumed_Time__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <description>KH Delivered PS Nov 2018 - Jan 2019</description>
+    <filter>
+        <criteriaItems>
+            <column>Demo__c.Assigned_to__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Konstantin Heidt</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Demo__c.Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Completed</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Demo__c.Type__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Professional Services</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FK_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>KH Delivered PS Nov 2018 - Jan 2019</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Demo__c@Demo__c.Account__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Demo__c.Date__c</dateColumn>
+        <endDate>2019-01-31</endDate>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2018-11-01</startDate>
+    </timeFrameFilter>
+</Report>

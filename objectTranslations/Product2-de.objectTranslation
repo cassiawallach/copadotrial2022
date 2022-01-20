@@ -1,0 +1,937 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldSets>
+        <label><!-- Configurator Filters --></label>
+        <name>SBQQ__ConfiguratorFilter</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Configurator Lookup --></label>
+        <name>SBQQ__ConfiguratorLookup</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Search Filters --></label>
+        <name>SBQQ__SearchFilters</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Search Results --></label>
+        <name>SBQQ__SearchResults</name>
+    </fieldSets>
+    <fields>
+        <help><!-- This field to identify ACV/ARR product &amp; Aggregate to ACV Field on Quote. --></help>
+        <label><!-- ACV/ARR Product --></label>
+        <name>ACV_ARR_Product__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifying code from Avalara that indicates it belongs to a certain product taxability. --></help>
+        <label><!-- Avalara Tax Code --></label>
+        <name>AVA_SFCPQ__TaxCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Credits to be assigned --></label>
+        <name>Credits_to_be_assigned__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Engagement Type this Product relates to. --></help>
+        <label><!-- Engagement Type --></label>
+        <name>Engagement_Type__c</name>
+        <picklistValues>
+            <masterLabel>Professional Services</masterLabel>
+            <translation><!-- Professional Services --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Program Architect</masterLabel>
+            <translation><!-- Program Architect --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Strategic Services</masterLabel>
+            <translation><!-- Strategic Services --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hidden Product for new quote --></label>
+        <name>Hidden_Product_for_new_quote__c</name>
+    </fields>
+    <fields>
+        <label><!-- Image URL --></label>
+        <name>Image_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Image --></label>
+        <name>Image__c</name>
+    </fields>
+    <fields>
+        <label><!-- Image height --></label>
+        <name>Image_height__c</name>
+    </fields>
+    <fields>
+        <label><!-- Image width --></label>
+        <name>Image_width__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field to identify Non Standard product &amp; Aggregate to Non Standard ACV Field on Quote. --></help>
+        <label><!-- Non Standard Product --></label>
+        <name>Non_Standard_Product__c</name>
+    </fields>
+    <fields>
+        <label><!-- Partner Product Catalog --></label>
+        <name>Partner_Product_Catalog__c</name>
+        <relationshipLabel><!-- Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Product Grouping --></label>
+        <name>Product_Grouping__c</name>
+        <picklistValues>
+            <masterLabel>ARR Services</masterLabel>
+            <translation><!-- ARR Services --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CICD</masterLabel>
+            <translation><!-- CICD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Certification</masterLabel>
+            <translation><!-- Certification --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Credit</masterLabel>
+            <translation><!-- Credit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Discontinued</masterLabel>
+            <translation><!-- Discontinued --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Essentials</masterLabel>
+            <translation><!-- Essentials --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Services</masterLabel>
+            <translation><!-- Services --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Success</masterLabel>
+            <translation><!-- Success --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Testing</masterLabel>
+            <translation><!-- Testing --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Select to base its calculations within an order on the targets. --></help>
+        <label><!-- Allocate POT on Orders --></label>
+        <name>SBQQ__AllocatePotOnOrders__c</name>
+    </fields>
+    <fields>
+        <help>Wählen Sie das Verhalten beim Ändern von Vermögenswerten aus, die dieses Produkt repräsentieren. Die Vermögenswertmengen können standardmäßig nicht verringert werden, es sei denn, es wird ein Upgrade hinzugefügt und keine Erstattung angewendet.</help>
+        <label><!-- Asset Amendment Behavior --></label>
+        <name>SBQQ__AssetAmendmentBehavior__c</name>
+        <picklistValues>
+            <masterLabel>Allow Refund</masterLabel>
+            <translation>Erstattung zulassen</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Default</masterLabel>
+            <translation>Standard</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Gibt an, wie dieses Produkt in einen Vermögenswert konvertiert wird.</help>
+        <label><!-- Asset Conversion --></label>
+        <name>SBQQ__AssetConversion__c</name>
+        <picklistValues>
+            <masterLabel>One per quote line</masterLabel>
+            <translation>Eines je Angebotsbelegposten</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>One per unit</masterLabel>
+            <translation>Eines je Einheit</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Wird hier ein Wert eingegeben, bedeutet dies, dass dieses Produkt in Losen verkauft wird. Geben Sie die Menge je Los ein. Die eingegebene Menge wird durch diesen Wert dividiert und auf die nächste Ganzzahl gerundet.</help>
+        <label><!-- Batch Quantity --></label>
+        <name>SBQQ__BatchQuantity__c</name>
+    </fields>
+    <fields>
+        <help>Bestimmt, wie oft dieses Produkt abgerechnet wird.</help>
+        <label><!-- Billing Frequency --></label>
+        <name>SBQQ__BillingFrequency__c</name>
+    </fields>
+    <fields>
+        <help>Die Abrechnungsart definiert, wann die Abrechnung erfolgt. Bei der Abrechnung im Voraus stellen Sie Kunden Produkte oder Services in Rechnung, bevor diese geliefert bzw. geleistet wurden. Bei der rückwirkenden Abrechnung stellen Sie Kunden eine Rechnung, nachdem die Produkte oder Services geliefert bzw. erbracht wurden.</help>
+        <label><!-- Billing Type --></label>
+        <name>SBQQ__BillingType__c</name>
+    </fields>
+    <fields>
+        <help>Feld, das zum Berechnen der Zonenpreise verwendet wird.</help>
+        <label><!-- Block Pricing Field --></label>
+        <name>SBQQ__BlockPricingField__c</name>
+        <picklistValues>
+            <masterLabel>Quantity</masterLabel>
+            <translation>Menge</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Die Art der Produktkosten.</help>
+        <label><!-- Charge Type --></label>
+        <name>SBQQ__ChargeType__c</name>
+    </fields>
+    <fields>
+        <help>Kennzeichnet dieses Produkt als Komponente und schließt es damit von der Auswahl beim Nachschlagen von Produkten aus.</help>
+        <label><!-- Component --></label>
+        <name>SBQQ__Component__c</name>
+    </fields>
+    <fields>
+        <help>Der Rabatt wird anhand der Menge zusammengesetzt.</help>
+        <label><!-- Compound Discount (%) --></label>
+        <name>SBQQ__CompoundDiscountRate__c</name>
+    </fields>
+    <fields>
+        <help>Hiermit steuern Sie, wann der Bildschirm &quot;Produkte konfigurieren&quot; für dieses Produkt angezeigt wird. Wählen Sie &quot;Hinzufügen&quot; aus, um die Bildschirmanzeige auf die anfängliche Konfiguration zu beschränken. Bei Auswahl von &quot;Bearbeiten&quot; erfolgt die Anzeige bei der nachfolgenden Konfiguration.</help>
+        <label><!-- Configuration Event --></label>
+        <name>SBQQ__ConfigurationEvent__c</name>
+        <picklistValues>
+            <masterLabel>Add</masterLabel>
+            <translation>Addieren</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Always</masterLabel>
+            <translation>Immer</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Edit</masterLabel>
+            <translation>Bearbeiten</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Der API-Name des Feldsets, das bei der Konfiguration für dieses Produkt verwendet wird.</help>
+        <label><!-- Configuration Field Set --></label>
+        <name>SBQQ__ConfigurationFieldSet__c</name>
+        <picklistValues>
+            <masterLabel>OptionConfiguration</masterLabel>
+            <translation>Optionskonfiguration</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Configuration Fields --></label>
+        <name>SBQQ__ConfigurationFields__c</name>
+    </fields>
+    <fields>
+        <help>Titel des Konfigurationsformulars, das von festgelegten Konfigurationsfeldern dargestellt wird.</help>
+        <label><!-- Configuration Form Title --></label>
+        <name>SBQQ__ConfigurationFormTitle__c</name>
+    </fields>
+    <fields>
+        <help>Konfigurationstyp dieses Produkts: Wählen Sie &quot;Zulässig&quot;, wenn der Benutzer das Produkt/Paket konfigurieren darf, aber nicht muss, &quot;Deaktiviert&quot;, wenn Ihr Paket Optionen automatisch auswählt, und &quot;Erforderlich&quot;, wenn das Produkt/Paket konfiguriert werden muss.</help>
+        <label><!-- Configuration Type --></label>
+        <name>SBQQ__ConfigurationType__c</name>
+        <picklistValues>
+            <masterLabel>Allowed</masterLabel>
+            <translation>Zulässig</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Disabled</masterLabel>
+            <translation>Deaktiviert</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Required</masterLabel>
+            <translation>Erforderlich</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>JavaScript-Funktion, die zum Validieren der Konfiguration dieses Produkts verwendet wird.</help>
+        <label><!-- Configuration Validator --></label>
+        <name>SBQQ__ConfigurationValidator__c</name>
+    </fields>
+    <fields>
+        <help>Muster, das zum Erzeugen von Produktcode (SKU) für konfigurierte Produkte verwendet wird.</help>
+        <label><!-- Configured Code Pattern --></label>
+        <name>SBQQ__ConfiguredCodePattern__c</name>
+    </fields>
+    <fields>
+        <help>Muster, das zum Erzeugen einer dynamischen Produktbeschreibung für konfigurierte Produkte verwendet wird.</help>
+        <label><!-- Configured Description Pattern --></label>
+        <name>SBQQ__ConfiguredDescriptionPattern__c</name>
+    </fields>
+    <fields>
+        <help>Steuert, ob Kosten für dieses Produkt in einzelnen Angeboten geändert werden können.</help>
+        <label><!-- Cost Editable --></label>
+        <name>SBQQ__CostEditable__c</name>
+    </fields>
+    <fields>
+        <help>Rabattregelung, die als Kostenregelung für dieses Produkt verwendet wird.</help>
+        <label><!-- Cost Schedule --></label>
+        <name>SBQQ__CostSchedule__c</name>
+        <relationshipLabel><!-- Products (Cost Schedule) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Custom Configuration Page --></label>
+        <name>SBQQ__CustomConfigurationPage__c</name>
+    </fields>
+    <fields>
+        <label><!-- Custom Configuration Required --></label>
+        <name>SBQQ__CustomConfigurationRequired__c</name>
+    </fields>
+    <fields>
+        <help>Legen Sie fest, wie dieses Produkt in Kunden-Communitys verfügbar sein soll.</help>
+        <label><!-- Customer Community Availability --></label>
+        <name>SBQQ__CustomerCommunityAvailability__c</name>
+        <picklistValues>
+            <masterLabel>Always</masterLabel>
+            <translation>Immer</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Never</masterLabel>
+            <translation>Nie</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Only when already owned</masterLabel>
+            <translation>Nur, wenn bereits Inhaber</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Default Pricing Table --></label>
+        <name>SBQQ__DefaultPricingTable__c</name>
+        <picklistValues>
+            <masterLabel>Segmented</masterLabel>
+            <translation>Segmentiert</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Standard</masterLabel>
+            <translation>Standard</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Geben Sie die Anfangsmenge des Produkts beim Hinzufügen an.</help>
+        <label><!-- Default Quantity --></label>
+        <name>SBQQ__DefaultQuantity__c</name>
+    </fields>
+    <fields>
+        <help>Kennzeichen, das angibt, dass die Beschreibung dieses Produkts gesperrt ist (also im Angebot nicht bearbeitet werden kann).</help>
+        <label><!-- Lock Description --></label>
+        <name>SBQQ__DescriptionLocked__c</name>
+    </fields>
+    <fields>
+        <help>Geben Sie die Rabattkategorie für dieses Produkt an.</help>
+        <label><!-- Discount Category --></label>
+        <name>SBQQ__DiscountCategory__c</name>
+        <relationshipLabel><!-- Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Rabattregelung, die bei diesem Produkt verwendet werden soll.</help>
+        <label><!-- Discount Schedule --></label>
+        <name>SBQQ__DiscountSchedule__c</name>
+        <relationshipLabel><!-- Quantity Discounted Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Hiermit legen Sie Beschränkungen für dynamisch berechnete Preise fest.</help>
+        <label><!-- Percent Of Total Constraint --></label>
+        <name>SBQQ__DynamicPricingConstraint__c</name>
+        <picklistValues>
+            <masterLabel>List price is maximum</masterLabel>
+            <translation>Listenpreis ist Maximum</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>List price is minimum</masterLabel>
+            <translation>Listenpreis ist Minimum</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Sollte aktiviert werden, wenn bei der Paketkonfiguration Leistungsfehler auftreten. Das Paket wird asynchron verarbeitet.</help>
+        <label><!-- Enable Large Configuration --></label>
+        <name>SBQQ__EnableLargeConfiguration__c</name>
+    </fields>
+    <fields>
+        <help>Aktivieren Sie dieses Kontrollkästchen, um dieses Produkt bei Berechnungen von &quot;Prozent vom Gesamtwert&quot; immer auszuschließen. (Normalerweise werden nicht abonnementbezogene Produkte bei diesen Berechnungen berücksichtigt).</help>
+        <label><!-- Exclude From Percent Of Total --></label>
+        <name>SBQQ__ExcludeFromMaintenance__c</name>
+    </fields>
+    <fields>
+        <help>Gibt an, dass dieses Produkt nicht in die Opportunity übertragen werden soll.</help>
+        <label><!-- Exclude From Opportunity --></label>
+        <name>SBQQ__ExcludeFromOpportunity__c</name>
+    </fields>
+    <fields>
+        <help>Wenn diese Option aktiviert ist, wird durch die Konfiguration dieses Produkts automatisch der URL zur externen Konfiguration aufgerufen, der in den Einstellungen von Salesforce CPQ definiert ist.</help>
+        <label><!-- Externally Configurable --></label>
+        <name>SBQQ__ExternallyConfigurable__c</name>
+    </fields>
+    <fields>
+        <help>Generiert einen Vertragspreis auf der Basis des angepassten Angebotsbelegpostens, sofern gekennzeichnet.</help>
+        <label><!-- Generate Contracted Price --></label>
+        <name>SBQQ__GenerateContractedPrice__c</name>
+        <picklistValues>
+            <masterLabel>Discount Schedule</masterLabel>
+            <translation>Rabattregelung</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Do Not Generate</masterLabel>
+            <translation>Nicht generieren</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Price</masterLabel>
+            <translation>Preis</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Has Configuration Attributes --></label>
+        <name>SBQQ__HasConfigurationAttributes__c</name>
+    </fields>
+    <fields>
+        <help>Gibt an, ob dieses Produkt über mindestens eine Verbrauchsregelung verfügt.</help>
+        <label><!-- Has Consumption Schedules --></label>
+        <name>SBQQ__HasConsumptionSchedule__c</name>
+    </fields>
+    <fields>
+        <help>Bewirkt, dass dieses Produkt nicht im PDF-Angebotsdokument angezeigt wird.</help>
+        <label><!-- Hidden --></label>
+        <name>SBQQ__Hidden__c</name>
+    </fields>
+    <fields>
+        <help>Aktivieren Sie das Kontrollkästchen, um den Preis dieses Produkts in Suchergebnissen auszublenden.</help>
+        <label><!-- Hide Price in Search Results --></label>
+        <name>SBQQ__HidePriceInSearchResults__c</name>
+    </fields>
+    <fields>
+        <help>Aktivieren Sie dieses Kontrollkästchen, um dieses Produkt bei Berechnungen von &quot;Prozent vom Gesamtwert&quot; immer einzubeziehen. (Normalerweise werden Abonnementprodukte von diesen Berechnungen ausgeschlossen).</help>
+        <label><!-- Include In Percent Of Total --></label>
+        <name>SBQQ__IncludeInMaintenance__c</name>
+    </fields>
+    <fields>
+        <help>Aktivieren Sie dieses Kontrollkästchen, um eine neue Angebotsgruppe zu erstellen, wenn dieses Produkt hinzugefügt wird (es sei denn, die aktuelle Gruppe ist leer).</help>
+        <label><!-- New Quote Group --></label>
+        <name>SBQQ__NewQuoteGroup__c</name>
+    </fields>
+    <fields>
+        <help>Kennzeichnet dieses Produkt als nicht rabattfähig.</help>
+        <label><!-- Non Discountable --></label>
+        <name>SBQQ__NonDiscountable__c</name>
+    </fields>
+    <fields>
+        <help>Aktivieren Sie dieses Kontrollkästchen, um dieses Produkt als nicht rabattfähig für Partner zu kennzeichnen.</help>
+        <label><!-- Non Partner Discountable --></label>
+        <name>SBQQ__NonPartnerDiscountable__c</name>
+    </fields>
+    <fields>
+        <help>Bestimmt, wie Optionen für Benutzer angezeigt werden.</help>
+        <label><!-- Option Layout --></label>
+        <name>SBQQ__OptionLayout__c</name>
+        <picklistValues>
+            <masterLabel>Sections</masterLabel>
+            <translation>Abschnitte</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tabs</masterLabel>
+            <translation>Registerkarten</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Wizard</masterLabel>
+            <translation>Assistent</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Bestimmt, wie der Benutzer mit diesem Produkt verknüpfte Optionen auswählt. Bei der Methode &quot;Klicken&quot; werden Kontrollkästchen neben den Optionen angezeigt. Bei &quot;Hinzufügen&quot; wird eine Schaltfläche angezeigt, über die ein Dialogfeld mit verfügbaren Optionen aufgerufen wird.</help>
+        <label><!-- Option Selection Method --></label>
+        <name>SBQQ__OptionSelectionMethod__c</name>
+        <picklistValues>
+            <masterLabel>Add</masterLabel>
+            <translation>Addieren</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Click</masterLabel>
+            <translation>Klicken</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Aktivieren Sie dieses Kontrollkästchen, wenn dieses Produkt standardmäßig optional ist. Optionale Produkte zählen nicht zum Angebotsgesamtwert und werden auch nicht in die Opportunity übertragen.</help>
+        <label><!-- Optional --></label>
+        <name>SBQQ__Optional__c</name>
+    </fields>
+    <fields>
+        <help>Gibt an, dass es bei diesem Produkt zulässig ist, den Preis bei der Angebotserstellung uneingeschränkt zu ändern.</help>
+        <label><!-- Price Editable --></label>
+        <name>SBQQ__PriceEditable__c</name>
+    </fields>
+    <fields>
+        <help>Preisempfehlung, die bei diesem Produkt verwendet werden soll.</help>
+        <label><!-- Pricing Guidance --></label>
+        <name>SBQQ__PricingGuidance__c</name>
+        <relationshipLabel><!-- Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Aktivieren Sie dieses Kontrollkästchen, wenn die Preisfestlegungsmethode geändert werden kann, wenn dieses Produkt zum Angebot hinzugefügt wird.</help>
+        <label><!-- Pricing Method Editable --></label>
+        <name>SBQQ__PricingMethodEditable__c</name>
+    </fields>
+    <fields>
+        <help>Die Preisfestlegungsmethode, die bei diesem Produkt verwendet werden soll.</help>
+        <label><!-- Pricing Method --></label>
+        <name>SBQQ__PricingMethod__c</name>
+        <picklistValues>
+            <masterLabel>Block</masterLabel>
+            <translation>Zone</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Cost</masterLabel>
+            <translation>Kosten</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Custom</masterLabel>
+            <translation><!-- Custom --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>List</masterLabel>
+            <translation>Liste</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Percent Of Total</masterLabel>
+            <translation>Prozent vom Gesamtwert</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>ID des Dokument- oder Inhaltsdatensatzes, der das Bild für dieses Produkt enthält.</help>
+        <label><!-- Product Picture Id --></label>
+        <name>SBQQ__ProductPictureID__c</name>
+    </fields>
+    <fields>
+        <help>Hiermit erlauben oder verhindern Sie eine Änderung der Menge für dieses Produkt.</help>
+        <label><!-- Quantity Editable --></label>
+        <name>SBQQ__QuantityEditable__c</name>
+    </fields>
+    <fields>
+        <help>Gibt die Anzahl an Dezimalstellen im Feld &quot;Menge&quot; an.</help>
+        <label><!-- Quantity Scale --></label>
+        <name>SBQQ__QuantityScale__c</name>
+    </fields>
+    <fields>
+        <help>Ist dieses Kontrollkästchen aktiviert, kann dieses Produkt nur konfiguriert werden, wenn es zum ersten Mal zu einem Angebot hinzugefügt wird. Die Benutzer können dann nach dem Hinzufügen des Produkts nicht auf einen &quot;Konfigurieren&quot;-Link auf der Seite &quot;Belegposten bearbeiten&quot; zugreifen.</help>
+        <label><!-- Disable Reconfiguration --></label>
+        <name>SBQQ__ReconfigurationDisabled__c</name>
+    </fields>
+    <fields>
+        <help>Produkt, das dieses Produkt bei einer Verlängerung ersetzt. Hiermit verwenden Sie bei der Verlängerung im Angebot eine andere SKU.</help>
+        <label><!-- Renewal Product --></label>
+        <name>SBQQ__RenewalProduct__c</name>
+        <relationshipLabel><!-- Original Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Bestimmt eine standardmäßige Sortierreihenfolge für Produkte auf der Seite &quot;Produkt nachschlagen&quot; und damit die Reihenfolge, in der sie zum Angebot hinzugefügt werden.</help>
+        <label><!-- Sort Order --></label>
+        <name>SBQQ__SortOrder__c</name>
+    </fields>
+    <fields>
+        <help>Formatierte Spezifikationen für dieses Produkt zur Verwendung in Angebotsvorlagen, um Datenblätter zu erstellen.</help>
+        <label><!-- Specifications --></label>
+        <name>SBQQ__Specifications__c</name>
+    </fields>
+    <fields>
+        <help>Bestimmt, ob &quot;Prozent vom Gesamtwert&quot; anhand der Listen- oder Nettopreise der Produkte berechnet wird.</help>
+        <label><!-- Percent Of Total Base --></label>
+        <name>SBQQ__SubscriptionBase__c</name>
+        <picklistValues>
+            <masterLabel>Customer</masterLabel>
+            <translation>Kunde</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>List</masterLabel>
+            <translation>Liste</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Net</masterLabel>
+            <translation>Netto</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Regular</masterLabel>
+            <translation>Regulär</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Hiermit können Sie die Berechnungen von &quot;Prozent vom Gesamtwert&quot; auf bestimmte Produktkategorien beschränken. &quot;Softwarepflege&quot; sollte beispielsweise nur bei Produkten mit einer entsprechenden &quot;Prozent vom Gesamtwert&quot;-Kategorie in die Berechnung einfließen.</help>
+        <label><!-- Percent Of Total Category --></label>
+        <name>SBQQ__SubscriptionCategory__c</name>
+        <picklistValues>
+            <masterLabel>Licenses</masterLabel>
+            <translation><!-- Licenses --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Gibt an, wie dieses Produkt in Abonnements konvertiert wrid</help>
+        <label><!-- Subscription Conversion --></label>
+        <name>SBQQ__SubscriptionConversion__c</name>
+        <picklistValues>
+            <masterLabel>One per subscribed asset</masterLabel>
+            <translation>Eine pro abonniertem Vermögenswert</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Prozentanteil vom nicht abonnementbasierten Gesamtwert, der als Preis für dieses Abonnement verwendet werden soll.</help>
+        <label><!-- Percent Of Total (%) --></label>
+        <name>SBQQ__SubscriptionPercent__c</name>
+    </fields>
+    <fields>
+        <help>Die Art der Preisfestlegung für dieses Abonnement. &quot;Keine&quot; bedeutet, dass dieses Produkt kein Abonnement ist.</help>
+        <label><!-- Subscription Pricing --></label>
+        <name>SBQQ__SubscriptionPricing__c</name>
+        <picklistValues>
+            <masterLabel>Fixed Price</masterLabel>
+            <translation>Festpreis</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Percent Of Total</masterLabel>
+            <translation>Prozent vom Gesamtwert</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Verwenden Sie dieses Feld, um ein Produkt zu überschreiben, das bei der Berechnung von &quot;Prozent vom Gesamtwert&quot; berücksichtigt wird. Verweisen Sie diese Nachschlagefunktion auf ein Produkt mit einem Listenpreis, den Sie für &quot;Prozent vom Gesamtwert&quot;-Berechnungen des aktuellen Produkts verwenden möchten.</help>
+        <label><!-- Percent Of Total Target --></label>
+        <name>SBQQ__SubscriptionTarget__c</name>
+        <relationshipLabel><!-- Subscription Targeting Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Dauer dieses Abonnements. Nur anwendbar, wenn das Produkt ein Abonnement ist.</help>
+        <label><!-- Subscription Term --></label>
+        <name>SBQQ__SubscriptionTerm__c</name>
+    </fields>
+    <fields>
+        <help>Verlängerbare Abonnements werden in Verlängerungsangebote übertragen, einmalige Abonnements nicht.</help>
+        <label><!-- Subscription Type --></label>
+        <name>SBQQ__SubscriptionType__c</name>
+        <picklistValues>
+            <masterLabel>One-time</masterLabel>
+            <translation>Einmalig</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Renewable</masterLabel>
+            <translation>Verlängerbar</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Legt den Steuercode für Besteuerungsregeln fest.</help>
+        <label><!-- Tax code --></label>
+        <name>SBQQ__TaxCode__c</name>
+    </fields>
+    <fields>
+        <help>Gibt an, ob dieses Produkt besteuert ist.</help>
+        <label><!-- Taxable --></label>
+        <name>SBQQ__Taxable__c</name>
+    </fields>
+    <fields>
+        <help>Geben Sie die Rabattklasse der Abonnementlaufzeit an, die beim Berechnen des Laufzeitrabatts verwendet werden soll. Wenn Sie keine Angabe machen, wird der Standardwert verwendet.</help>
+        <label><!-- Term Discount Level --></label>
+        <name>SBQQ__TermDiscountLevel__c</name>
+        <picklistValues>
+            <masterLabel>Group</masterLabel>
+            <translation>Gruppe</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Line</masterLabel>
+            <translation>Belegposten</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quote</masterLabel>
+            <translation>Angebot</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Regelung für Rabatte, die auf der Abonnementlaufzeit basieren.</help>
+        <label><!-- Term Discount Schedule --></label>
+        <name>SBQQ__TermDiscountSchedule__c</name>
+        <relationshipLabel><!-- Term Discounted Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Hiermit geben Sie Kredite an, wenn Sie Angebote für Produkt-Upgrades erstellen.</help>
+        <label><!-- Upgrade Credit --></label>
+        <name>SBQQ__UpgradeCredit__c</name>
+        <relationshipLabel><!-- Credited Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Die Konvertierungsrate zwischen der Menge dieses Produkts und der seines Quellprodukts.</help>
+        <label><!-- Upgrade Ratio --></label>
+        <name>SBQQ__UpgradeRatio__c</name>
+    </fields>
+    <fields>
+        <help>Produkt, für das ein Upgrade vorgenommen wird. Durch Ausfüllen dieses Felds wird das Produkt zum Upgrade.</help>
+        <label><!-- Upgrade Source --></label>
+        <name>SBQQ__UpgradeSource__c</name>
+        <relationshipLabel><!-- Target Upgrades --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Geben Sie das Produkt an, für das das Upgrade durchgeführt wurde. Ist nur anwendbar, wenn dieses Produkt ein Upgrade ist, was daran erkennbar ist, dass das Feld &quot;Upgrade-Quelle&quot; ausgefüllt ist oder zugehörige &quot;Upgrade-Quelle&quot;-Datensätze vorhanden sind.</help>
+        <label><!-- Upgrade Target --></label>
+        <name>SBQQ__UpgradeTarget__c</name>
+        <relationshipLabel><!-- Source Upgrades --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Select Profile --></label>
+        <name>Select_Profile__c</name>
+        <picklistValues>
+            <masterLabel>ABM Sales User</masterLabel>
+            <translation><!-- ABM Sales User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Operations End user</masterLabel>
+            <translation><!-- Operations End user --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sales User</masterLabel>
+            <translation><!-- Sales User --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Used on Website --></label>
+        <name>Used_on_Website__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Milestone that will be used as a Template when auto-generating a new Project from the Opportunity --></help>
+        <label><!-- Milestone  Template --></label>
+        <name>amc__Milestone_Template__c</name>
+        <relationshipLabel><!-- Products (Template) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the unit of measure for calculating the total Hours required on the Actions required for this Product --></help>
+        <label><!-- Project Unit --></label>
+        <name>amc__Project_Unit__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour</masterLabel>
+            <translation><!-- Hour --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Addon Applicability --></label>
+        <name>chargebeeapps__Addon_Applicability__c</name>
+    </fields>
+    <fields>
+        <label><!-- Addon Type --></label>
+        <name>chargebeeapps__Addon_Type__c</name>
+    </fields>
+    <fields>
+        <label><!-- Bill Every Unit --></label>
+        <name>chargebeeapps__Bill_Every_Unit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Bill Every --></label>
+        <name>chargebeeapps__Bill_Every__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Cycles --></label>
+        <name>chargebeeapps__Billing_Cycles__c</name>
+    </fields>
+    <fields>
+        <label><!-- ChargeBee Modified Time --></label>
+        <name>chargebeeapps__ChargeBee_Modified_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Currency --></label>
+        <name>chargebeeapps__Currency__c</name>
+    </fields>
+    <fields>
+        <label><!-- Free Quantity --></label>
+        <name>chargebeeapps__Free_Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Name --></label>
+        <name>chargebeeapps__Invoice_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Price --></label>
+        <name>chargebeeapps__Price__c</name>
+    </fields>
+    <fields>
+        <help><!-- Product Type as classified in Chargebee --></help>
+        <label><!-- Product Type --></label>
+        <name>chargebeeapps__Product_Type__c</name>
+        <picklistValues>
+            <masterLabel>ADDON</masterLabel>
+            <translation><!-- ADDON --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PLAN</masterLabel>
+            <translation><!-- PLAN --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Recurring charge model --></label>
+        <name>chargebeeapps__Recurring_charge_model__c</name>
+    </fields>
+    <fields>
+        <label><!-- Set Up Fee --></label>
+        <name>chargebeeapps__Set_Up_Fee__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>chargebeeapps__Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Trial Period Unit --></label>
+        <name>chargebeeapps__Trial_Period_Unit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Trial Period --></label>
+        <name>chargebeeapps__Trial_Period__c</name>
+    </fields>
+    <fields>
+        <help><!-- Renewable Services are Auto-Added to Renewal Opportuntiy when an Order is Approved or Released, as per Kugamon Settings. 
+
+Renewable Products are only Auto-Added to Renewal Opportuntiy if the Order also contains a Renewable Service. --></help>
+        <label><!-- Renewable --></label>
+        <name>kuga_sub__Renewable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Replacement Product/Service that is used for Renewal. --></help>
+        <label><!-- Renewal Product --></label>
+        <name>kuga_sub__RenewalProduct__c</name>
+        <relationshipLabel><!-- Products --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Applies to Services only. Subscriptions are Auto-Created for Services when an Order is Approved or Released, as per Kugamon Settings. --></help>
+        <label><!-- Create Subscription --></label>
+        <name>kuga_sub__Track__c</name>
+    </fields>
+    <fields>
+        <help><!-- Increases the Price to the Renewable Product/Service when Auto-Added to the Renewal Opportunity. Price Increase is determined by the Uplift Renewal Price on the Additional Account Info object for the related Account. --></help>
+        <label><!-- Uplift Renewal Price --></label>
+        <name>kuga_sub__UpliftRenewalPrice__c</name>
+    </fields>
+    <layouts>
+        <layout>CPQ Product Layout</layout>
+        <sections>
+            <label>Benutzerdefinierte Links</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Felder</label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- Mission Control Fields --></label>
+            <section>Mission Control Fields</section>
+        </sections>
+        <sections>
+            <label>Preise</label>
+            <section>Pricing</section>
+        </sections>
+        <sections>
+            <label><!-- Renewal Information (Kugamon) --></label>
+            <section>Renewal Information (Kugamon)</section>
+        </sections>
+        <sections>
+            <label>Verlängerungen</label>
+            <section>Renewals</section>
+        </sections>
+        <sections>
+            <label>Salesforce CPQ-Konfiguration</label>
+            <section>Salesforce CPQ Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Scheduling Information (Kugamon Invoicing) --></label>
+            <section>Scheduling Information (Kugamon Invoicing)</section>
+        </sections>
+        <sections>
+            <label>Abonnements</label>
+            <section>Subscriptions</section>
+        </sections>
+        <sections>
+            <label><!-- TEMP --></label>
+            <section>TEMP</section>
+        </sections>
+        <sections>
+            <label>Upgrades</label>
+            <section>Upgrades</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Product (Kugamon) Layout</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- Renewal Information --></label>
+            <section>Renewal Information</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Product Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- Mission Control Fields --></label>
+            <section>Mission Control Fields</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- This Product can&apos;t be an ACV/ARR Product or Non Standard Product since the subscription type is not &quot;Renewable&quot; --></errorMessage>
+        <name>Product_Identification</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You cannot have Allocate POT on Orders enabled if Percent of Total Constraint is specified. --></errorMessage>
+        <name>SBQQ__Cannot_Allocate_POT_With_Constraint</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must check either Include In Maintenance or Exclude From Maintenance checkbox. --></errorMessage>
+        <name>SBQQ__Include_or_Exclude_Maintenance</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- When Charge Type is Recurring, a Billing Type must be selected. --></errorMessage>
+        <name>SBQQ__RecurringChargeTypeMustHaveBillingType</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can only select One per Subscribed Asset for Subscription Conversion for Percent of Total Subscriptions --></errorMessage>
+        <name>SBQQ__Subscription_Conversion_Validation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Subscription Pricing must be &apos;Percent of Total&apos; to set this field to true. --></errorMessage>
+        <name>SBQQ__Subscription_Pricing_Must_Be_POT</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Only subscription products may specify term discount schedule --></errorMessage>
+        <name>SBQQ__Term_schedule_requires_subscription</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- When Charge Type is One-Time, a Billing Frequency value cannot be selected. --></errorMessage>
+        <name>SBQQ__Validate_billing_frequency</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- When Charge Type is One-Time or Usage, a Billing Type value cannot be selected. --></errorMessage>
+        <name>SBQQ__Validate_billing_type</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- CloneWithRelated --></label>
+        <name>SBQQ__CloneWithRelated</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- CloneWithRelatedClassic --></label>
+        <name>SBQQ__CloneWithRelatedClassic</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Translate --></label>
+        <name>SBQQ__Translate</name>
+    </webLinks>
+</CustomObjectTranslation>

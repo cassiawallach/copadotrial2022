@@ -1,0 +1,19 @@
+<apex:page lightningStylesheets="true" sidebar="false" standardStylesheets="false">
+    <apex:includeLightning />
+    <div id="lightning" class="cb-lighting-popup-classic"/>
+    <script>
+        $Lightning.use("chargebeeapps:DependencyApp", function() {
+          $Lightning.createComponent("chargebeeapps:SyncCustomerModal",
+              { recordId : "{!$CurrentPage.parameters.id}",
+                isLightning:false,
+                isPreview: "{!JSENCODE($CurrentPage.parameters.isPreview)}",
+                successUrl:"{!JSENCODE($CurrentPage.parameters.successUrl)}",
+                cancelUrl: "{!JSENCODE($CurrentPage.parameters.cancelUrl)}"
+              },
+              "lightning",
+              function(cmp) {
+              }
+          );
+        });
+    </script>
+</apex:page>

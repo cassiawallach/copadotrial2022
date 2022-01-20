@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Contains the case impacted ares.</description>
+    <fields>
+        <fullName>Case_Module__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Case Module</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Case_Reason__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Case Reason</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Keyword__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Keyword</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>RecordTypeName__c</fullName>
+        <description>Contains the record type name corresponding to the impacted area.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>RecordTypeName</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Academy</fullName>
+                    <default>false</default>
+                    <label>Academy</label>
+                </value>
+                <value>
+                    <fullName>Playground</fullName>
+                    <default>false</default>
+                    <label>Playground</label>
+                </value>
+                <value>
+                    <fullName>Support_Case</fullName>
+                    <default>false</default>
+                    <label>Support_Case</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Case Impacted Area</label>
+    <pluralLabel>Case Impacted Areas</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

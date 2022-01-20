@@ -1,0 +1,154 @@
+<apex:page docType="html-5.0" controller="JBCXM.SurveyController"
+    sidebar="false" showheader="false" title="Survey"
+    extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+            var GS = GS || {};
+
+                GS.remotingEndPoint         = '{!$RemoteAction.SurveyController.surveyRequestBroker}';
+                GS.remotingBulkEndPoint     = '{!$RemoteAction.SurveyController.surveyBulkRequestBroker}';
+                GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+
+                GS.isPackagedInstance   = "{!(isPkgInstance)}";
+                GS.packageNS            = "{!(packagePrefix)}";
+                GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+
+                GS.nsParams      =      {!(nsParams)};
+                GS.sessionId =  GS.nsParams.sessionId;
+                GS.remoting = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+
+                GS.userConfig = {
+                    userLocale  : {!(dateTimeFormatByLocale)}
+                };
+
+                GS.generalPageSize = 500;
+                GS.scmuPageSize = 100;
+                GS.useSparkLinesforAdoption = true;
+                GS.isPermissionsEnabled = {!(isPermissionsEnabled)};
+                GS.surveyModulePermission = {!(surveyModulePermission)};
+
+                GS.survey = {
+                    surveyId:'{!(JSINHTMLENCODE($CurrentPage.parameters.surveyId))}',
+                    participantId:'{!(JSINHTMLENCODE($CurrentPage.parameters.participantId))}',
+                    pId:'{!(JSINHTMLENCODE($CurrentPage.parameters.pId))}',
+                    stId:'{!(JSINHTMLENCODE($CurrentPage.parameters.stId))}',
+                    atId:'{!(JSINHTMLENCODE($CurrentPage.parameters.atId))}',
+                    uid:'{!(JSINHTMLENCODE($CurrentPage.parameters.uid))}',
+                    mode:'{!(JSINHTMLENCODE($CurrentPage.parameters.mode))}',
+                    ed : '{!(JSINHTMLENCODE($CurrentPage.parameters.ed))}',
+                    id : '{!(JSINHTMLENCODE($CurrentPage.parameters.id))}',
+                    ln : '{!(JSINHTMLENCODE($CurrentPage.parameters.ln))}',
+                    origin : '{!(JSINHTMLENCODE($CurrentPage.parameters.origin))}'
+                };
+
+                //pId exist, use pId
+                GS.survey.internalSubmission = (typeof GS.survey.pId == "string" && GS.survey.pId.length >0);
+                GS.survey.participantId = GS.survey.internalSubmission ? GS.survey.pId : GS.survey.participantId;
+                GS.survey.preview = (GS.survey.preview == true || GS.survey.preview == "true");
+                GS.appName = "gainsight-ng-ui/surveys";
+
+                var questionComposer = null;
+    </script>
+
+  	<apex:form ></apex:form>
+    <div class="survey-app  clearfix">
+        <div align="center" class="gs-loadingMsg gs-loader-container-64" id="gs-loadingMsg"><div class=" gs-loader-image-64"></div><div class="gs-loader-message-64">Loading</div></div>
+        <!--[if lte IE 8]>
+            <div class="alert alert-danger" role="alert" style="text-align:center;">
+                Your browser is not supported, please find the supported browser list <a target="_blank" href="https://support.gainsight.com/Product_Documentation/Administration/General_Administration/Gainsight_Installation_Prerequisites_and_Supported_Browsers">here</a>
+            </div>
+            <script>
+                document.getElementById('gs-loadingMsg').innerHTML='';
+            </script>
+        <![endif]-->
+        <div class="survey-preview hide clearfix survey-ressponse-nooverlay" style="display:none;">
+            <!-- survey-preview-header -->
+            <div class="survey-preview-header clearfix">
+                <div class="preview-title clearfix">
+                    <div class="previewlogo">
+                        <img width="170" />
+                    </div>
+                    <h3></h3>
+                </div>
+
+                <div class="preview-description clearfix">
+                    <!--  <p>Dear Customer:</p> -->
+                    <div class="row preview-profile hide">
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item"><span class="pre-display-label">Name
+                                        :</span> <span class="pre-display-name"></span></li>
+                                <li class="list-group-item"><span class="pre-display-label">Email
+                                        :</span> <span class="pre-display-email"></span></li>
+                                <li class="list-group-item"><span class="pre-display-label">Relationship
+                                        :</span><span class="pre-display-relationship"></span></li>
+                                <li class="list-group-item list-group-item-object"><span class="pre-display-label pre-display-object-label">Associated Object : </span><span class="pre-display-object"></span></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item"><span class="pre-display-label">Account
+                                        :</span><span class="pre-display-account"></span></li>
+                                <li class="list-group-item"><span class="pre-display-label">Responded
+                                        date :</span><span class="pre-display-responded"></span></li>
+                                 <li class="list-group-item"><span class="pre-display-label">Role
+                                        :</span><span class="pre-display-role"></span></li>
+                                <li class="list-group-item list-group-item-field"><span class="pre-display-label pre-display-field-label"></span><span class="pre-display-field"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="description">
+                    <p></p>
+                    </div>
+                    <div class="text-right  question-required" translate="true" uid="REQUIRED_MSG">All questions marked with <span>*</span> are required</div>
+                </div>
+            </div>
+            <!--end survey-preview-header -->
+            <div class="survey-preview-body">
+                <div class="savebtns hide">
+                    <ul>
+                        <li><a class="gs-btn-flat" data-action="SAVE" translate="true" uid="SAVE_BUTTON" href="javascript:void(0)">Save for later</a></li>
+                        <li><a class="primary-btn" data-action="NEXT" translate="true" uid="NEXT_BUTTON" href="javascript:void(0)">Next</a></li>
+                        <li><a class="primary-btn" data-action="SUBMIT" translate="true" uid="SUBMIT_BUTTON" href="javascript:void(0)">Submit</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="survey-complete-msg hide"></div>
+            <!-- survey-preview-footer -->
+            <div class="survey-preview-footer">
+                <div class="ans-range clearfix"><p></p></div>
+                <div class="powered-by">Powered by </div>
+
+            </div>
+            <!--end survey-preview-footer -->
+        </div>
+    </div>
+
+     <script>
+        var GSGA = {
+            orgId: "{!$Organization.Id}",
+            orgName: "{!(JSINHTMLENCODE($Organization.Name))}"
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+     </script>
+    
+     <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:Features360 />
+        <script>
+            installResources({scripts: ["survey_runtime/scripts/app.bundle.js"], styles:["survey_runtime/styles/app.css"]});
+        </script>
+    </apex:outputpanel>
+   	
+	 <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:9091/UI')}/survey_runtime/styles/app.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), 'https://localhost:9091/UI')}/survey_runtime/scripts/app.bundle.js"></script>
+	</apex:outputpanel>
+
+</apex:page>

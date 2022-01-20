@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Password for API transactions --></help>
+        <label><!-- API Password --></label>
+        <name>kugo2p__API_Password__c</name>
+    </fields>
+    <fields>
+        <help><!-- Username for API transaction --></help>
+        <label><!-- API Username --></label>
+        <name>kugo2p__API_Username__c</name>
+    </fields>
+    <fields>
+        <help><!-- Payment processor account type. --></help>
+        <label><!-- Account Type --></label>
+        <name>kugo2p__Account_Type__c</name>
+        <picklistValues>
+            <masterLabel>AIM</masterLabel>
+            <translation><!-- AIM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AU Shared</masterLabel>
+            <translation><!-- AU Shared --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AU Shared (CVN)</masterLabel>
+            <translation><!-- AU Shared (CVN) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AU XML</masterLabel>
+            <translation><!-- AU XML --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AU XML (CVN)</masterLabel>
+            <translation><!-- AU XML (CVN) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>NZ Shared</masterLabel>
+            <translation><!-- NZ Shared --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>UK Shared</masterLabel>
+            <translation><!-- UK Shared --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Website Payments Pro</masterLabel>
+            <translation><!-- Website Payments Pro --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Website Payments Standard</masterLabel>
+            <translation><!-- Website Payments Standard --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Check to enable this payment processor connection in the payment terminal. --></help>
+        <label><!-- Assigned to Terminal --></label>
+        <name>kugo2p__Assigned_to_Terminal__c</name>
+    </fields>
+    <fields>
+        <label><!-- AuthNet Direct Response Delimiter --></label>
+        <name>kugo2p__AuthNet_Direct_Response_Delim__c</name>
+        <picklistValues>
+            <masterLabel>&quot;</masterLabel>
+            <translation><!-- &quot; --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>&apos;</masterLabel>
+            <translation><!-- &apos; --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>*</masterLabel>
+            <translation><!-- * --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>,</masterLabel>
+            <translation><!-- , --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>/</masterLabel>
+            <translation><!-- / --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>;</masterLabel>
+            <translation><!-- ; --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>|</masterLabel>
+            <translation><!-- | --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- AuthNet Enable Echecks --></label>
+        <name>kugo2p__AuthNet_Enable_Echecks__c</name>
+    </fields>
+    <fields>
+        <label><!-- AuthNet API Login Id --></label>
+        <name>kugo2p__AuthNet_Login_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- AuthNet Transaction Key --></label>
+        <name>kugo2p__AuthNet_Trans_Key__c</name>
+    </fields>
+    <fields>
+        <help><!-- Automatically connect Product records to new shopping cart items using the product code. --></help>
+        <label><!-- Connect Products to Cart Items --></label>
+        <name>kugo2p__Auto_Attach_Products__c</name>
+    </fields>
+    <fields>
+        <help><!-- Determines which methods of auto-attaching records will be used for transactions originating outside of Salesforce. --></help>
+        <label><!-- Auto Attach --></label>
+        <name>kugo2p__Auto_Attach__c</name>
+        <picklistValues>
+            <masterLabel>Contact using PayPal Payer Id</masterLabel>
+            <translation><!-- Contact using PayPal Payer Id --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contact using email</masterLabel>
+            <translation><!-- Contact using email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Order and Invoice Name</masterLabel>
+            <translation><!-- Order and Invoice Name --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- When auto-creating contacts - this setting determines whether an account should also be created.  &apos;Individual Accounts&apos; are accounts given the same name as the Contact and marked &apos;Convert To Person Account&apos; so they can be batch converted later. --></help>
+        <label><!-- Auto-Create Account --></label>
+        <name>kugo2p__Auto_Create_Account__c</name>
+        <picklistValues>
+            <masterLabel>Create Business Account</masterLabel>
+            <translation><!-- Create Business Account --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Create Individual Account</masterLabel>
+            <translation><!-- Create Individual Account --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Create Individual or Business Account</masterLabel>
+            <translation><!-- Create Individual or Business Account --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Use Default Account</masterLabel>
+            <translation><!-- Use Default Account --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Automatically add shopping cart items when receiving a new payment notification with cart item data. --></help>
+        <label><!-- Auto Create Shopping Cart Items --></label>
+        <name>kugo2p__Auto_Create_Cart_Items__c</name>
+    </fields>
+    <fields>
+        <help><!-- Create a new contact (using transaction details) if the external transaction cannot be matched up with an existing contact in Salesforce. --></help>
+        <label><!-- Auto-Create Contacts --></label>
+        <name>kugo2p__Auto_Create_Contacts__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default Account to use when auto-creating Contacts --></help>
+        <label><!-- Default Account --></label>
+        <name>kugo2p__Default_Account__c</name>
+        <relationshipLabel><!-- Processor Connections --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Indicates this connection is the default connection to use for shopping carts, donation pages, quote payment pages and other customer-facing interfaces. --></help>
+        <label><!-- Default Connection --></label>
+        <name>kugo2p__Default_Connection__c</name>
+    </fields>
+    <fields>
+        <label><!-- Default Currency --></label>
+        <name>kugo2p__Default_Currency__c</name>
+        <picklistValues>
+            <masterLabel>AUD</masterLabel>
+            <translation><!-- AUD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CAD</masterLabel>
+            <translation><!-- CAD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CHF</masterLabel>
+            <translation><!-- CHF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CZK</masterLabel>
+            <translation><!-- CZK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DKK</masterLabel>
+            <translation><!-- DKK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>EUR</masterLabel>
+            <translation><!-- EUR --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>GBP</masterLabel>
+            <translation><!-- GBP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>HKD</masterLabel>
+            <translation><!-- HKD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>HUF</masterLabel>
+            <translation><!-- HUF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ILS</masterLabel>
+            <translation><!-- ILS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>JPY</masterLabel>
+            <translation><!-- JPY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>MXN</masterLabel>
+            <translation><!-- MXN --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>NOK</masterLabel>
+            <translation><!-- NOK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>NZD</masterLabel>
+            <translation><!-- NZD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PLN</masterLabel>
+            <translation><!-- PLN --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SEK</masterLabel>
+            <translation><!-- SEK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SGD</masterLabel>
+            <translation><!-- SGD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>USD</masterLabel>
+            <translation><!-- USD --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Description or notes about this payment processor account. --></help>
+        <label><!-- Description --></label>
+        <name>kugo2p__Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- The character that is used to encapsulate the fields in transaction responses from the payment processor. --></help>
+        <label><!-- Direct Response Encaps --></label>
+        <name>kugo2p__Direct_Response_Encaps__c</name>
+        <picklistValues>
+            <masterLabel>&quot;</masterLabel>
+            <translation><!-- &quot; --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>&apos;</masterLabel>
+            <translation><!-- &apos; --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>*</masterLabel>
+            <translation><!-- * --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>-</masterLabel>
+            <translation><!-- - --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>/</masterLabel>
+            <translation><!-- / --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>:</masterLabel>
+            <translation><!-- : --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>;</masterLabel>
+            <translation><!-- ; --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>\</masterLabel>
+            <translation><!-- \ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>|</masterLabel>
+            <translation><!-- | --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Card types to show in payment terminal(s) using this processor connection.  If left empty, a default card type list will be displayed. --></help>
+        <label><!-- Enabled Card Types --></label>
+        <name>kugo2p__Enabled_Card_Types__c</name>
+        <picklistValues>
+            <masterLabel>Amex</masterLabel>
+            <translation><!-- Amex --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Diners Club</masterLabel>
+            <translation><!-- Diners Club --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Discover</masterLabel>
+            <translation><!-- Discover --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>JCB</masterLabel>
+            <translation><!-- JCB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Maestro</masterLabel>
+            <translation><!-- Maestro --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mastercard</masterLabel>
+            <translation><!-- Mastercard --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Solo</masterLabel>
+            <translation><!-- Solo --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Visa</masterLabel>
+            <translation><!-- Visa --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Preference for handling transactions coming from outside of Salesforce.  Auto Attach will attempt to auto-create relationships between the new payment record and orders and  invoices in your Salesforce instance. --></help>
+        <label><!-- External Transactions --></label>
+        <name>kugo2p__External_Transactions__c</name>
+        <picklistValues>
+            <masterLabel>Auto Attach</masterLabel>
+            <translation><!-- Auto Attach --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Discard</masterLabel>
+            <translation><!-- Discard --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Leave Unattached</masterLabel>
+            <translation><!-- Leave Unattached --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__Google_Merchant_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Used for eWay API Key --></help>
+        <label><!-- API Key --></label>
+        <name>kugo2p__Google_Merchant_Key__c</name>
+    </fields>
+    <fields>
+        <help><!-- WorldPay Installation Id --></help>
+        <label><!-- Installation Id --></label>
+        <name>kugo2p__Installation_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Merchant ID assigned to you by the payment processor. --></help>
+        <label><!-- Merchant Id --></label>
+        <name>kugo2p__Merchant_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Relay Method --></label>
+        <name>kugo2p__Notification_Relay_Method__c</name>
+        <picklistValues>
+            <masterLabel>API</masterLabel>
+            <translation><!-- API --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Visualforce</masterLabel>
+            <translation><!-- Visualforce --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This setting determines what should be done with external transactions that cannot be matched. --></help>
+        <label><!-- Unattached External Transactions --></label>
+        <name>kugo2p__Orphaned_Payments__c</name>
+        <picklistValues>
+            <masterLabel>Discard</masterLabel>
+            <translation><!-- Discard --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Keep</masterLabel>
+            <translation><!-- Keep --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- PDF Checkout --></label>
+        <name>kugo2p__PDF_Checkout__c</name>
+        <picklistValues>
+            <masterLabel>Native</masterLabel>
+            <translation><!-- Native --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Redirect</masterLabel>
+            <translation><!-- Redirect --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- PayPal API Password --></label>
+        <name>kugo2p__PP_API_Password__c</name>
+    </fields>
+    <fields>
+        <label><!-- PayPal API Signature --></label>
+        <name>kugo2p__PP_API_Signature__c</name>
+    </fields>
+    <fields>
+        <label><!-- PayPal API Username --></label>
+        <name>kugo2p__PP_API_Username__c</name>
+    </fields>
+    <fields>
+        <help><!-- PayPal assigned merchant Id.  Used to build buy-now buttons and similar shopping links in visual force. --></help>
+        <label><!-- PayPal Merchant Id --></label>
+        <name>kugo2p__PP_Merchant_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Payment Settings --></label>
+        <name>kugo2p__PaymentConnect_Setup__c</name>
+        <relationshipLabel><!-- Processor Connections --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Used for either  Authorize.Net MD5 hash value, WorldPay Payment Response Password, or eWay XML Refund Password --></help>
+        <label><!-- Verification Code --></label>
+        <name>kugo2p__Post_Verification_Code__c</name>
+    </fields>
+    <fields>
+        <label><!-- Processor --></label>
+        <name>kugo2p__Processor_Id__c</name>
+        <picklistValues>
+            <masterLabel>Authorize.Net</masterLabel>
+            <translation><!-- Authorize.Net --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Google</masterLabel>
+            <translation><!-- Google --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PayPal</masterLabel>
+            <translation><!-- PayPal --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>WorldPay</masterLabel>
+            <translation><!-- WorldPay --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>eWay</masterLabel>
+            <translation><!-- eWay --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Used to match notifications passing through the relay with the correct processor connection record.  For visualforce relay scripts this is the page name of the relay.  For api relays, this Id is set in the relay&apos;s configuration file. --></help>
+        <label><!-- Relay Id --></label>
+        <name>kugo2p__Relay_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Relay Script --></label>
+        <name>kugo2p__Relay_Script__c</name>
+    </fields>
+    <fields>
+        <help><!-- Determines the type of checkout offered in Sites - Native (API), Redirect (hosted at the processor) --></help>
+        <label><!-- Online Checkout --></label>
+        <name>kugo2p__Site_Checkout__c</name>
+        <picklistValues>
+            <masterLabel>Both</masterLabel>
+            <translation><!-- Both --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Native</masterLabel>
+            <translation><!-- Native --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Redirect</masterLabel>
+            <translation><!-- Redirect --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This is a connection to a test or sandbox account. --></help>
+        <label><!-- Test Account --></label>
+        <name>kugo2p__Test_Mode__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check if tokenized card services are enabled for this processor (e.g. Authorize.Net CIM) --></help>
+        <label><!-- Stored Card Service Enabled --></label>
+        <name>kugo2p__Tokenized_Card_Service_Enabled__c</name>
+    </fields>
+    <fields>
+        <help><!-- If enabled, requires that each notification pass a verification check before processing. --></help>
+        <label><!-- Verify Notifications --></label>
+        <name>kugo2p__Verify_Notifications__c</name>
+    </fields>
+    <layouts>
+        <layout>Authorize.Net Connection Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Inbound Notification Handling --></label>
+            <section>Inbound Notification Handling</section>
+        </sections>
+        <sections>
+            <label><!-- Notification Relay Configuration --></label>
+            <section>Notification Relay Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration --></label>
+            <section>Payment Processor Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration (cont) --></label>
+            <section>Payment Processor Configuration (cont)</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>PayPal Connection Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Inbound Notification Handling --></label>
+            <section>Inbound Notification Handling</section>
+        </sections>
+        <sections>
+            <label><!-- Notification Relay Configuration --></label>
+            <section>Notification Relay Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration --></label>
+            <section>Payment Processor Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration (cont) --></label>
+            <section>Payment Processor Configuration (cont)</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Processor Connection Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>WorldPay Connection Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Inbound Notification Handling --></label>
+            <section>Inbound Notification Handling</section>
+        </sections>
+        <sections>
+            <label><!-- Notification Relay Configuration --></label>
+            <section>Notification Relay Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration --></label>
+            <section>Payment Processor Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration (cont) --></label>
+            <section>Payment Processor Configuration (cont)</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>eWay Connection Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Description --></label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration --></label>
+            <section>Payment Processor Configuration</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Processor Configuration (cont) --></label>
+            <section>Payment Processor Configuration (cont)</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <label><!-- Authorize.Net --></label>
+        <name>kugo2p__Authorize_Net</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- PayPal --></label>
+        <name>kugo2p__PayPal</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- WorldPay --></label>
+        <name>kugo2p__WorldPay</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- eWay --></label>
+        <name>kugo2p__eWay</name>
+    </recordTypes>
+    <validationRules>
+        <errorMessage><!-- Assigned to Terminal cannot be check for this account type.  Native terminal transaction are not supported. --></errorMessage>
+        <name>kugo2p__Check_Assign_to_Terminal</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Test_Relay_Script --></label>
+        <name>kugo2p__Test_Relay_Script</name>
+    </webLinks>
+</CustomObjectTranslation>

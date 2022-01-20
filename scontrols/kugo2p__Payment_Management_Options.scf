@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head> 
+</head>
+<body scroll="no" >
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+   id="ManagePayment" width="100%" height="100" 
+    codebase="https://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+<param name="movie" value="{!Scontrol.JavaArchive}" />
+<param name="quality" value="high" /><param name="play" value="true" />
+<param name="bgcolor" value="#f3f3ec" />
+<param name="allowScriptAccess" value="always" />
+<param name="flashvars"
+   value="session_id={!API.Session_ID}&server_url={!API.Partner_Server_URL_90}&payment_id={!kugo2p__PaymentX__c.Id}&payment_amount={!kugo2p__PaymentX__c.kugo2p__Amount__c}&payment_processor={!kugo2p__PaymentX__c.kugo2p__Payment_Processor__c}&transaction_id={!kugo2p__PaymentX__c.kugo2p__Transaction_Id__c}&last_four={!Substitute(Substitute(Substitute(Substitute(kugo2p__PaymentX__c.kugo2p__Last_4_Digits__c,"\"",""),"&",""),"=",""),"?","")}" />
+<embed src="{!Scontrol.JavaArchive}" play="true" bgcolor="#f3f3ec"
+  width="100%" height="100" name="ManagePayment" align="middle"
+  flashvars="session_id={!API.Session_ID}&server_url={!API.Partner_Server_URL_90}&payment_id={!kugo2p__PaymentX__c.Id}&payment_amount={!kugo2p__PaymentX__c.kugo2p__Amount__c}&payment_processor={!kugo2p__PaymentX__c.kugo2p__Payment_Processor__c}&transaction_id={!kugo2p__PaymentX__c.kugo2p__Transaction_Id__c}&last_four={!Substitute(Substitute(Substitute(Substitute(kugo2p__PaymentX__c.kugo2p__Last_4_Digits__c,"\"",""),"&",""),"=",""),"?","")}"
+loop="false" allowScriptAccess="always" type="application/x-shockwave-flash"
+pluginspage="http://www.adobe.com/go/getflashplayer">
+</embed>
+</object>
+</body>
+</html>

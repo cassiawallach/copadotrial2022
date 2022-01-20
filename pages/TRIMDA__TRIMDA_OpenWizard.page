@@ -1,0 +1,70 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c" recordSetVar="TRIMDA_MatchingResult__cs" extensions="TRIMDA.TRIMDA_DupeAlertMatchedRecord_Extension" action="{!InitWizard}">
+ <apex:sectionHeader title="DataTrim Wizard" subtitle="Dupe Alerts" ></apex:sectionHeader>
+     <apex:form >
+         <apex:actionFunction name="LaunchWizard" oncomplete="actionComplete('body loaded')" status="ProgressStatus" />    
+          <script language="JavaScript">
+              function actionComplete(msg)
+              {
+                  //alert(msg + "{!WizardURL}");
+                  if("{!WizardOK}" == "true"){
+                    var myWindow =window.open("{!WizardURL}","_blank");
+                    //var myWindow = window.open("http://www.datatrim.com","_blank");
+                    if(!myWindow || myWindow.outerheight === 0){
+                        //First Checking Condition Works For IE & Firefox
+                        //Second Checking Condition Works For Chrome
+                        //alert("Popup Blocker is enabled! Please add this site to your exception list.");
+                        var myhost = encodeURI(location.hostname);
+                        document.getElementById('msg').innerHTML="Popup Blocker is enabled! <br />Please add this site to your exception list: <br />"+ decodeURI(myhost);
+                        
+                    }else{
+                        retURL = "{!SUBSTITUTE($Request.retURL,'"',"%22")}";
+                        window.parent.location.href=retURL;
+                        return;
+                    }
+                  }
+              }
+              var previousOnload = window.onload;        
+              window.onload = function() {
+                  if (previousOnload) {
+                      previousOnload();
+                      LaunchWizard();
+                  }
+              }
+         </script> 
+        <apex:actionStatus id="ProgressStatus">
+            <apex:facet name="start">
+                <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Launching Wizard..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+        
+         <apex:pageBlock title="Open Wizard for Selected Pair" rendered="{!WizardOK}">
+          <apex:pageBlockButtons location="top">
+          <apex:commandButton action="{!retURL}" value="Back"/>
+          </apex:pageBlockButtons>  
+          <apex:pageMessages /> 
+          <div id="msg"></div>
+        </apex:pageBlock>
+        <apex:pageBlock title="Failed Opening Wizard for Selected Pair" rendered="{!NOT WizardOK}">
+          <apex:pageBlockButtons location="both">
+          <apex:commandButton action="{!retURL}" value="Back"/>
+          </apex:pageBlockButtons>  
+          <apex:pageMessages /> 
+        </apex:pageBlock>
+    </apex:form>
+    
+    <div style="font-size:10px; color:grey">
+        <table align="left" cellspacing='0' cellpadding='0' border='0' width="100%" >
+        <tr valign="top" >
+            <td colspan='4' align="center">
+                <br />© Copyright 2001-2014 d2b International ApS, All rights reserved Various trademarks held by their respective owners.
+                <br />General Enquiries: Email:info@datatrim.com | Mail:d2b International ApS. Kostskolevej 5-7, 2880 Bagsvaerd, Denmark
+                <br />Support Enquiries: Email:support@datatrim.com 
+                <br />All rights reserved, <a href='https://www.datatrim.com/d2b.php?mode=privacypolicy'>privacy policy</a>
+             </td>
+        </tr> 
+    </table >
+    </div>
+    <div style="font-size:7px; color:grey" align="center">
+    WizardURL: {!WizardURL}
+    </div>
+</apex:page>

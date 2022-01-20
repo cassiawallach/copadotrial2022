@@ -1,0 +1,15 @@
+<apex:page standardController="amc__Role__c" tabStyle="amc__Role__c">
+    <style>
+      html, body, .reassignment{
+        height:100%;
+      }
+    </style>
+    <apex:includeLightning /> 
+    <div id="reassignment" class="reassignment"/>
+    <script>
+        $Lightning.use("amc:ResourceReassignmentApp", function() {
+          $Lightning.createComponent("amc:ReassignmentWizard",{'recordId':'{!Role__c.Id}','isClassic': true, 'isLightning':false},"reassignment",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

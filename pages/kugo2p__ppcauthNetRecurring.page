@@ -1,0 +1,164 @@
+<apex:page standardController="kugo2p__Payment_Profile__c" extensions="kugo2p.PaymentProfileExtAuthNetController" showHeader="false" sidebar="false">
+
+    <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<style>
+    body {
+       font-size:.75em;
+    }
+    p {
+       margin:6px 0px 6px 0px;
+       padding:0;    
+    }
+    .ppc_inner {
+        padding:4px;
+    }
+    .pbBody {
+     /*   background:#f3f3ec; */
+    }
+    .reasonbox {
+        width:400px; 
+    }
+    .ppc_button_bar {
+        background-color:#e0e0e0;
+        /* background: url({!URLFOR($Resource.kugo2p__PaymentConnect,'/images/btnBarBkgd.png')}); 
+        background-position: 0px -25px; */
+        border: solid 1px #a4a4a4;
+        padding:4px 12px 4px 12px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .message {
+        margin-top: 15px;
+    }
+</style>
+    <script type="text/javascript">
+    //resizeIframe();
+    function resizeIframe() {
+        var me = window.name;
+        
+        if (me){
+            var iframes = parent.document.getElementsByName(me);
+            if (iframes && iframes.length == 1) {
+                var height = document.body.scrollHeight;
+                iframes[0].style.height = height + "px";
+            }
+        }
+    } 
+    
+    function promptForCancel() {
+        var reason = prompt("Enter a reason (option) and click 'OK' to cancel this recurring payment profile:");
+    }
+
+
+    </script>
+<apex:form id="profileControlForm" style="height:250px">
+<div class="ppc_button_bar">
+    <span class="kugamon">
+    <apex:commandButton value="Activate Subscription" onclick="parent.location.replace('{!URLFOR($Page.kugo2p__kugAuthNetARBTerminal)}?ppid={!kugo2p__Payment_Profile__c.Id}&cancelURL=%2F{!kugo2p__Payment_Profile__c.Id}');" styleClass="slds-button slds-button--neutral" status="formActionStatus" rendered="{!IF(kugo2p__Payment_Profile__c.kugo2p__Subscription_Status__c =='Not Activated' && kugo2p__Payment_Profile__c.kugo2p__SalesOrder__c!=null, true, false)}" />
+    <apex:commandButton value="Cancel"  action="{!cancelRecurringPaymentConfirm}" styleClass="slds-button slds-button--neutral" status="formActionStatus" disabled="{!IF(kugo2p__Payment_Profile__c.kugo2p__Subscription_Status__c =='Active',false,true)}"  rerender="contentArea, cancelRecurringView"/>
+    <apex:commandButton value="Update Card Info"  action="{!UpdateCardInfoConfirm}" styleClass="slds-button slds-button--neutral" status="formActionStatus" disabled="{!IF(kugo2p__Payment_Profile__c.kugo2p__Subscription_Status__c =='Active',false,true)}"  rerender="contentArea, updateCardNumView"/>
+    <apex:commandButton value="Update Profile Amount"  action="{!UpdateAmountConfirm}" styleClass="slds-button slds-button--neutral" status="formActionStatus" disabled="{!IF(kugo2p__Payment_Profile__c.kugo2p__Subscription_Status__c =='Active',false,true)}"  rerender="contentArea, updateAmountView"/>
+    <apex:commandButton value="Refresh Status" 
+                        action="{!refreshStatus}"
+                        styleClass="slds-button slds-button--brand"
+                        rerender="contentArea,updateAmountView"
+                        rendered="{!kugo2p__Payment_Profile__c.kugo2p__AuthNet_Subscription_Id__c != null && kugo2p__Payment_Profile__c.kugo2p__Processor_Connection__c != null}"
+                        status="formActionStatus" />
+
+    <apex:actionStatus id="formActionStatus" >
+         <apex:facet name="start" >
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/loadingAnimation.gif')}"  style="vertical-align:middle;" alt="busy..." />
+             &nbsp;</apex:outputPanel>
+         </apex:facet>
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+    </span>
+</div>
+    <apex:outputPanel id="contentArea">
+    <!-- <apex:messages id="pageMessages" styleClass="message" style="margin-top:15px;"/> -->
+    <apex:pageMessages id="pageMessages" escape="false" />
+
+    <apex:outputPanel id="cancelRecurringView" rendered="{!IF(currentAction == 'CancelRecurringPayment',true,false)}">
+        <div class="ppc_inner">
+        <p>Enter a reason for canceling this recurring payment profile (optional) and click the button below to complete this action:</p>
+        <apex:inputText styleclass="reasonbox" value="{!reason}" /><br/><br/>
+        <span class="kugamon">
+            <apex:commandButton value="Cancel Recurring Payment" styleClass="slds-button slds-button--brand" action="{!cancelRecurringPaymentExecute}" status="formActionStatus" />
+        </span>
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel id="updateCardNumView" rendered="{!IF(currentAction == 'UpdateCardInfo',true,false)}">
+        <div class="ppc_inner">
+        <p>Enter a new card number and expiration date for this subscription profile:</p>
+        <table>
+        <tr><td>
+        <p>Card Number Number:</p>
+        </td>
+        <td><apex:inputText value="{!cardNumber}" /></td>
+        </tr>
+        <tr>
+        <td><p>Security Code:</p></td>
+        <td><apex:inputText value="{!cardCode}" style="width:50px;"/></td>
+        </tr>
+        <tr>
+        <td><p>Credit Card Expiration:</p></td>
+        <td><apex:selectList value="{!expMonth}" size="1">
+                            <apex:selectOptions value="{!monthList}"/>
+                        </apex:selectList>
+        
+        &nbsp;<apex:selectList value="{!expYear}" size="1">
+                            <apex:selectOptions value="{!yearList}"/>
+                        </apex:selectList>
+        </td>
+        </tr>
+        <tr><td>&nbsp;</td>
+        <td>
+            <span class="kugamon">
+                <apex:commandButton value="Update Subscription" action="{!updateCardInfoExecute}" status="formActionStatus" styleClass="slds-button slds-button--brand" />
+            </span>
+        </td>
+        </tr>
+        </table>
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel id="updateAmountView" rendered="{!IF(currentAction == 'UpdateAmount',true,false)}">
+        <div class="ppc_inner">
+        <p>Enter a new subscription amount for this profile:</p>
+        <table>
+        <tr>
+        <td><p>Amount:</p></td>
+        <td><apex:inputText value="{!profile.kugo2p__Amount__c}" /></td> 
+        </tr>
+        <tr><td>&nbsp;</td>
+        <td>
+            <span class="kugamon">
+                <apex:commandButton value="Update Subscription" action="{!updateAmountExecute}" styleClass="slds-button slds-button--neutral" status="formActionStatus"/>
+            </span> 
+        </td>
+        </tr>
+        </table>
+        </div>
+    </apex:outputPanel>    
+    <apex:outputPanel id="introView" rendered="{!IF(currentAction == 'intro',true,false)}">
+        <div class="ppc_inner">
+        <p>Use the button(s) above to manage this AuthNet Subscription Profile.</p>
+        </div>
+
+    </apex:outputPanel>
+    <apex:outputPanel id="reloadView" rendered="{!IF(currentAction == 'ReloadPage',true,false)}">
+        <div class="ppc_inner">
+        <p>It may be necessary to reload the current page to see the latest updates to this payment profile.</p>
+        <span class="kugamon">
+            <apex:commandButton value="Reload Page" action="{!clearCurrentAction}" styleClass="slds-button slds-button--neutral" status="formActionStatus" oncomplete="window.parent.location='{!URLFOR($Action.kugo2p__Payment_Profile__c.View, kugo2p__Payment_Profile__c.Id)}'" />
+        </span>
+        </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+</apex:form>
+
+</apex:page>

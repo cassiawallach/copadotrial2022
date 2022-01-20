@@ -1,0 +1,14 @@
+<apex:page Controller="amc.MC_Controller" tabStyle="Mission_Control__tab">
+    <apex:includeLightning /> 
+    <apex:pageMessages />
+    <div id="console"/>
+    <script>
+        $Lightning.use("amc:LightningConsole", function() {
+            $Lightning.createComponent("amc:Console",
+            {isLightning:false},
+            "console",
+            function(cmp) {
+            });
+        });
+    </script>
+</apex:page>

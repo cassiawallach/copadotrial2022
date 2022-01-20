@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Set_Playground_License</name>
+        <label>Set Playground License</label>
+        <locationX>811</locationX>
+        <locationY>348</locationY>
+        <assignmentItems>
+            <assignToReference>Playground_Record.License__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sflma_License.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Playground_Record</targetReference>
+        </connector>
+    </assignments>
+    <constants>
+        <description>Copado Deployer Package Id</description>
+        <name>copado_deployer_package_id</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>a0Hb0000002aPPLEA2</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Copado Package Name</description>
+        <name>Copado_Package_Name</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Copado Deployer</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>Check_if_License_found</name>
+        <label>Check if License found</label>
+        <locationX>196</locationX>
+        <locationY>371</locationY>
+        <defaultConnector>
+            <targetReference>Playground_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>License Record Found</defaultConnectorLabel>
+        <rules>
+            <name>No_License_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Sflma_License</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>No License Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_Playground_Record</name>
+        <label>Has Playground Record</label>
+        <locationX>542</locationX>
+        <locationY>353</locationY>
+        <defaultConnector>
+            <targetReference>Set_Playground_License</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Playground Record Found</defaultConnectorLabel>
+        <rules>
+            <name>No_Playground_Record_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Playground_Record</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>No Playground Record Found</label>
+        </rules>
+    </decisions>
+    <description>This flow will update the Playground with a license record if a match based on Org Id and Package Id was found</description>
+    <interviewLabel>Set Playground License {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Set Playground License</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Playground_Record</name>
+        <label>Playground Record</label>
+        <locationX>453</locationX>
+        <locationY>138</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Has_Playground_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PlaygroundRecordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Playground__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>License__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>The Salesforce License Management App license record for a particular Org Id.</description>
+        <name>Sflma_License</name>
+        <label>Sflma License</label>
+        <locationX>204</locationX>
+        <locationY>137</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_License_found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>sfLma__Subscriber_Org_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SalesforceOrgId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>sfLma__Package__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>copado_deployer_package_id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>sfLma__License__c</object>
+        <queriedFields>Id</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Playground_Record</name>
+        <label>Update Playground Record</label>
+        <locationX>1031</locationX>
+        <locationY>348</locationY>
+        <inputReference>Playground_Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Sflma_License</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>PlaygroundRecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SalesforceOrgId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

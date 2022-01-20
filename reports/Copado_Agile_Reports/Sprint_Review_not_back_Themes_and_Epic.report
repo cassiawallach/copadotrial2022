@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_64428300</developerName>
+        <masterLabel>Main Epic</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Parent_Epic_Title__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Nested Components: Commit &amp; Auto Resolve Conflict of Profiles, Permission Sets and Custom Objects</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>NestedMetadata-related user stories</sourceValue>
+            </sourceValues>
+            <value>Nested Components</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Simplified DX Format (Happy path)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Git Commit Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Git SnapShot Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Git Repository in Source DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format: Autoresolve - 2nd iteration</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format (4th): Integrate with copado-cli</sourceValue>
+            </sourceValues>
+            <value>Simplified DX Format</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Continuous Delivery 2 - Alpha</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Continuous Delivery 3 - Pre-Beta</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Continuous Delivery 4 - BETA</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Continuous Delivery 5 - Pre-GA</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Continuous Delivery 6 - Future</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Continuous Delivery 6 - GA</sourceValue>
+            </sourceValues>
+            <value>Continuous Delivery</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>ADD 1 - Pre Beta</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 2 - Beta</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 3 - Pre GA</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 4 - GA</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 5 - Future</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>(ADD) Advanced Data Deployments</sourceValue>
+            </sourceValues>
+            <value>ADD</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_RECORDTYPE</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_Other__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Priority__c</field>
+    </columns>
+    <columns>
+        <field>CUST_CREATED_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>copado__User_Story__c.copado__Progress__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Epic__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Sprint__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>current</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Draft,Awaiting Approval,Approved,Cancelled</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Project__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>backend,platform,qa,academy,infra,success,design</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Story_Points_SFDC__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>0</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Project__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Theme__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Parent_Epic_Title__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Sprint Review - not back Themes and Epic</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>copado__User_Story__c.copado__Progress__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>Bread_Winner__Invoice_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Bread_Winner__Invoice_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>Bread_Winner__Amount_Due__c</fields>
+        <fields>Bread_Winner__Amount_Overdue__c</fields>
+        <fields>Bread_Winner__Due_Date__c</fields>
+        <fields>Bread_Winner__Status__c</fields>
+        <label>Invoice Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Invoices from your finance system synced into Salesforce through Breadwinner</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Bread_Winner__Account_Bills_PO__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Account (Bills &amp; PO)</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Bills &amp; Purchase Orders</relationshipLabel>
+        <relationshipName>Account_Bills</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Invoices</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Amount_Credit__c</fullName>
+        <defaultValue>0.00</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Amount Credited field in Invoice is the total amount allocated to Invoice via Credit Notes, Over Payments and Pre Payments</description>
+        <externalId>false</externalId>
+        <label>Amount Credited</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Amount_Due__c</fullName>
+        <defaultValue>0.00</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Amount Due</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Amount_Overdue__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( Bread_Winner__Due_Date__c  &lt;  TODAY(),  Bread_Winner__Amount_Due__c , 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Amount Overdue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Amount_Paid__c</fullName>
+        <defaultValue>0.00</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Amount Paid</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Amounts_Are__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Amounts Are</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Attention_To__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Creating for Purchase Orders</description>
+        <externalId>false</externalId>
+        <label>Attention To</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Client_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Client ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Company_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Company Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Created_via__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Created via</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Credit_Note_Allocated_Credit__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Credit Note - Allocated Credit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Credit_Note_Total_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Credit Note - Total Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Currency_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Currency Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Currency_Rate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Currency Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Days_Overdue__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(OR(Bread_Winner__Amount_Overdue__c == 0.00,ISBLANK(Bread_Winner__Amount_Overdue__c))  , null, TODAY() - Bread_Winner__Due_Date__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days Overdue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Delivery_Address__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Delivery Address</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Delivery_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Delivery Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Delivery_Instructions__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Delivery Instructions</label>
+        <length>500</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Due_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Due Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Expected_Arrival_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Expected Arrival Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Expected_Payment_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Expected Payment Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Fully_Paid_On_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Fully Paid On Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Invoice_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Invoice Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Invoice_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>Invoice Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Invoice_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>if( CONTAINS(Bread_Winner__Type__c, &apos;Purchase Order&apos;),
+	HYPERLINK( &quot;https://go.xero.com/Accounts/Payable/PurchaseOrders/Edit/&quot;&amp;Bread_Winner__Invoice_Id__c, 
+		&quot;Click Here&quot;
+	),
+	if(CONTAINS(Bread_Winner__Type__c, &apos;Invoice&apos;),
+		HYPERLINK( &quot;https://go.xero.com/AccountsReceivable/&quot;&amp; 
+		IF(Bread_Winner__Type__c == &apos;Credit Note (Invoice)&apos;,
+			&quot;ViewCreditNote.aspx?creditNoteID=&quot;,
+			IF(Bread_Winner__Status__c == &apos;DRAFT&apos;,
+				&quot;Edit.aspx?invoiceID=&quot;,
+				&quot;View.aspx?invoiceID=&quot;
+			)
+		)
+		&amp;Bread_Winner__Invoice_Id__c,
+		&quot;Click Here&quot;
+		), 
+		HYPERLINK( &quot;https://go.xero.com/AccountsPayable/&quot;&amp; 
+		IF(Bread_Winner__Type__c == &apos;Credit Note (Bill)&apos;,
+			&quot;ViewCreditNote.aspx?creditNoteID=&quot;,
+			IF(Bread_Winner__Status__c == &apos;DRAFT&apos;,
+				&quot;Edit.aspx?invoiceID=&quot;,
+				&quot;View.aspx?invoiceID=&quot;
+			)
+		)
+		&amp;Bread_Winner__Invoice_Id__c,
+		&quot;Click Here&quot;
+		)
+	)
+)</formula>
+        <label>See this Invoice in Xero</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Last_Modified_in_Xero_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Last Modified in Xero Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Opportunity_Bills_PO__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Opportunity (Bills &amp; PO)</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Bills &amp; Purchase Orders</relationshipLabel>
+        <relationshipName>Opportunity_Bills</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Invoices</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Reference__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Reference</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Sent_to_Contact__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sent to Contact</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Status_Flag__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Representing statuses in images</description>
+        <externalId>false</externalId>
+        <formula>IF(CONTAINS($User.UIThemeDisplayed, &apos;Theme4&apos;),
+  IF(OR(Bread_Winner__Status__c = &apos;VOIDED&apos;, Bread_Winner__Status__c = &apos;DELETED&apos;),
+    IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/x-ltng.png&quot;, &quot;Deleted / Voided&quot;),
+    IF(
+      OR(Bread_Winner__Type__c==&apos;Credit Note (Invoice)&apos;, Bread_Winner__Type__c==&apos;Invoice&apos;),
+      IF( 
+        OR(Bread_Winner__Status__c = &apos;DRAFT&apos;, Bread_Winner__Status__c = &apos;SUBMITTED&apos;),
+        IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/pencil.png&quot;, &quot;Draft / Submitted for Approval&quot; ) ,
+        IF(Bread_Winner__Amount_Overdue__c &gt; 0,
+          IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/red-flag.png&quot;, &quot;Overdue&quot;) ,
+          IF( Bread_Winner__Amount_Due__c &gt; 0,
+            IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/yellow-flag.png&quot;, &quot;Due&quot;) ,
+            IF(AND(Bread_Winner__Type__c == &apos;Credit Note (Invoice)&apos;,Bread_Winner__Credit_Note_Allocated_Credit__c  &lt;&gt; Bread_Winner__Credit_Note_Total_Amount__c) ,
+              IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/yellow-flag.png&quot;, &quot;Due&quot;),
+              IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/green-flag.png&quot;, &quot;Paid&quot;)
+            )))
+      ),      
+      IF(AND(OR(Bread_Winner__Type__c==&apos;Credit Note (Bill)&apos;, Bread_Winner__Type__c==&apos;Bill&apos;),Bread_Winner__Status__c!=&apos;DRAFT&apos;),
+        IF(OR(Bread_Winner__Status__c != &apos;PAID&apos;,Bread_Winner__Amount_Due__c &gt; 0,Bread_Winner__Amount_Overdue__c &gt; 0),IF(Bread_Winner__Amount_Overdue__c&gt;0,IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/bills_r.png&quot;, &quot;Overdue&quot;),IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/bills_o.png&quot;, &quot;Due&quot;)),IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/bills_g.png&quot;, &quot;Paid&quot;)
+            ),
+        IF(Bread_Winner__Status__c == &apos;DRAFT&apos;,IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/pencil.png&quot;, &quot;Draft&quot; ),
+           IF(OR(Bread_Winner__Status__c == &apos;SUBMITTED&apos;, Bread_Winner__Status__c == &apos;AUTHORISED&apos;),IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/po_o.png&quot;, &quot;SUBMITTED/AUTHORISED &quot;),IF(OR(Bread_Winner__Status__c == &apos;BILLED&apos;),IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/po_g.png&quot;, &quot;BILLED&quot;),IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/pencil.png&quot;, &quot;Draft&quot; ) ) ) ) ) )   
+  ),
+  IF( 
+   OR(Bread_Winner__Status__c = &apos;VOIDED&apos;, Bread_Winner__Status__c = &apos;DELETED&apos;),   
+   IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/x-cls.png&quot;, &quot;Deleted / Voided&quot;,16,16),      
+    IF( OR(Bread_Winner__Type__c==&apos;Credit Note (Invoice)&apos;, Bread_Winner__Type__c==&apos;Invoice&apos;),
+      IF(OR(Bread_Winner__Status__c = &apos;DRAFT&apos;, Bread_Winner__Status__c = &apos;SUBMITTED&apos;),
+        IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/pencil.png&quot;, &quot;Draft / Submitted for Approval&quot;, 16, 16) ,
+        IF( Bread_Winner__Amount_Overdue__c &gt; 0,
+          IMAGE(&quot;/img/samples/flag_red.gif&quot;, &quot;Overdue&quot;) ,
+          IF( Bread_Winner__Amount_Due__c &gt; 0,
+            IMAGE(&quot;/img/samples/flag_yellow.gif&quot;, &quot;Due&quot;) ,
+            IF(AND(Bread_Winner__Type__c == &apos;Credit Note (Invoice)&apos;,Bread_Winner__Credit_Note_Allocated_Credit__c  &lt;&gt; Bread_Winner__Credit_Note_Total_Amount__c), IMAGE(&quot;/img/samples/flag_yellow.gif&quot;, &quot;Due&quot;), IMAGE(&quot;/img/samples/flag_green.gif&quot;, &quot;Paid&quot;))))),
+      IF(AND(OR(Bread_Winner__Type__c==&apos;Credit Note (Bill)&apos;, Bread_Winner__Type__c==&apos;Bill&apos;),Bread_Winner__Status__c!=&apos;DRAFT&apos;),
+        IF(OR(Bread_Winner__Status__c != &apos;PAID&apos;,Bread_Winner__Amount_Due__c &gt; 0,Bread_Winner__Amount_Overdue__c &gt; 0),IF(Bread_Winner__Amount_Overdue__c&gt;0,IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/bills_r.png&quot;, &quot;Overdue&quot;,18,18),IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/bills_o.png&quot;, &quot;Due&quot;,18,18)),IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/bills_g.png&quot;, &quot;Paid&quot;,18,18)),
+        IF(Bread_Winner__Status__c == &apos;DRAFT&apos;,IMAGE(&quot;https://s3.amazonaws.com/bw-cdn/pencil.png&quot;,&quot;Draft&quot;,16,16),IF(Bread_Winner__Status__c == &apos;BILLED&apos;,IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/po_g.png&quot;, &quot;Billed&quot;,18,18),IMAGE(&quot;https://s3.amazonaws.com/cdn.breadwinner/po_o.png&quot;,&quot;SUBMITTED&quot;,18,18)))
+       ))))</formula>
+        <label>Status Flag</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Sub_Total__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sub Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Telephone__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Telephone</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Total_Tax__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Total Tax</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Total__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Xero_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Associated Xero Contact</description>
+        <externalId>false</externalId>
+        <label>Xero Contact</label>
+        <referenceTo>Bread_Winner__Breadwinner_Account_Connection__c</referenceTo>
+        <relationshipLabel>Invoices, Bills and POs</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Xero_Org_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Xero Org ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bread_Winner__Xero_Org_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Xero Org Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Invoice</label>
+    <listViews>
+        <fullName>Bread_Winner__All</fullName>
+        <columns>NAME</columns>
+        <columns>Bread_Winner__Status_Flag__c</columns>
+        <columns>Bread_Winner__Status__c</columns>
+        <columns>Bread_Winner__Company_Name__c</columns>
+        <columns>Bread_Winner__Account__c</columns>
+        <columns>Bread_Winner__Opportunity__c</columns>
+        <columns>Bread_Winner__Amount_Due__c</columns>
+        <columns>Bread_Winner__Amount_Overdue__c</columns>
+        <columns>Bread_Winner__Amount_Credit__c</columns>
+        <columns>Bread_Winner__Amount_Paid__c</columns>
+        <columns>Bread_Winner__Invoice_Date__c</columns>
+        <columns>Bread_Winner__Due_Date__c</columns>
+        <columns>Bread_Winner__Currency_Code__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Bread_Winner__Bills</fullName>
+        <columns>NAME</columns>
+        <columns>Bread_Winner__Status_Flag__c</columns>
+        <columns>Bread_Winner__Status__c</columns>
+        <columns>Bread_Winner__Company_Name__c</columns>
+        <columns>Bread_Winner__Account_Bills_PO__c</columns>
+        <columns>Bread_Winner__Opportunity_Bills_PO__c</columns>
+        <columns>Bread_Winner__Invoice_Date__c</columns>
+        <columns>Bread_Winner__Reference__c</columns>
+        <columns>Bread_Winner__Total_Tax__c</columns>
+        <columns>Bread_Winner__Total__c</columns>
+        <columns>Bread_Winner__Currency_Code__c</columns>
+        <columns>Bread_Winner__Xero_Org_Name__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Bread_Winner__Type__c</field>
+            <operation>equals</operation>
+            <value>Bill</value>
+        </filters>
+        <label>Bills</label>
+    </listViews>
+    <listViews>
+        <fullName>Bread_Winner__Credit_Notes</fullName>
+        <columns>NAME</columns>
+        <columns>Bread_Winner__Status_Flag__c</columns>
+        <columns>Bread_Winner__Status__c</columns>
+        <columns>Bread_Winner__Company_Name__c</columns>
+        <columns>Bread_Winner__Account__c</columns>
+        <columns>Bread_Winner__Credit_Note_Allocated_Credit__c</columns>
+        <columns>Bread_Winner__Credit_Note_Total_Amount__c</columns>
+        <columns>Bread_Winner__Invoice_Date__c</columns>
+        <columns>Bread_Winner__Currency_Code__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Bread_Winner__Type__c</field>
+            <operation>contains</operation>
+            <value>Credit Note</value>
+        </filters>
+        <label>Credit Notes</label>
+    </listViews>
+    <listViews>
+        <fullName>Bread_Winner__Due_Overdue_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Bread_Winner__Account__c</columns>
+        <columns>Bread_Winner__Opportunity__c</columns>
+        <columns>Bread_Winner__Amount_Due__c</columns>
+        <columns>Bread_Winner__Due_Date__c</columns>
+        <columns>Bread_Winner__Invoice_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Bread_Winner__Amount_Due__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>Bread_Winner__Status__c</field>
+            <operation>notEqual</operation>
+            <value>DRAFT</value>
+        </filters>
+        <filters>
+            <field>Bread_Winner__Type__c</field>
+            <operation>equals</operation>
+            <value>Invoice</value>
+        </filters>
+        <label>Due &amp; Overdue Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Bread_Winner__Overdue_Invoices</fullName>
+        <columns>NAME</columns>
+        <columns>Bread_Winner__Days_Overdue__c</columns>
+        <columns>Bread_Winner__Account__c</columns>
+        <columns>Bread_Winner__Opportunity__c</columns>
+        <columns>Bread_Winner__Amount_Overdue__c</columns>
+        <columns>Bread_Winner__Amount_Paid__c</columns>
+        <columns>Bread_Winner__Due_Date__c</columns>
+        <columns>Bread_Winner__Invoice_Date__c</columns>
+        <columns>Bread_Winner__Currency_Code__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Bread_Winner__Amount_Overdue__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>Bread_Winner__Status__c</field>
+            <operation>notEqual</operation>
+            <value>DRAFT</value>
+        </filters>
+        <filters>
+            <field>Bread_Winner__Type__c</field>
+            <operation>equals</operation>
+            <value>Invoice</value>
+        </filters>
+        <label>Overdue Invoices</label>
+    </listViews>
+    <listViews>
+        <fullName>Bread_Winner__Purchase_Orders</fullName>
+        <columns>NAME</columns>
+        <columns>Bread_Winner__Status_Flag__c</columns>
+        <columns>Bread_Winner__Status__c</columns>
+        <columns>Bread_Winner__Company_Name__c</columns>
+        <columns>Bread_Winner__Account_Bills_PO__c</columns>
+        <columns>Bread_Winner__Opportunity_Bills_PO__c</columns>
+        <columns>Bread_Winner__Invoice_Date__c</columns>
+        <columns>Bread_Winner__Reference__c</columns>
+        <columns>Bread_Winner__Total_Tax__c</columns>
+        <columns>Bread_Winner__Total__c</columns>
+        <columns>Bread_Winner__Attention_To__c</columns>
+        <columns>Bread_Winner__Delivery_Date__c</columns>
+        <columns>Bread_Winner__Currency_Code__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Bread_Winner__Type__c</field>
+            <operation>equals</operation>
+            <value>Purchase Order</value>
+        </filters>
+        <label>Purchase Orders</label>
+    </listViews>
+    <nameField>
+        <label>Invoice Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Invoices</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Bread_Winner__Status_Flag__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Invoice_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Due_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Total__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Amount_Overdue__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Amount_Due__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Amount_Credit__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Amount_Paid__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Bread_Winner__Status__c</customTabListAdditionalFields>
+        <excludedStandardButtons>New</excludedStandardButtons>
+        <lookupDialogsAdditionalFields>Bread_Winner__Status_Flag__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Invoice_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Due_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Total__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Amount_Overdue__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Amount_Due__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Amount_Credit__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Amount_Paid__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Bread_Winner__Status__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Status_Flag__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Invoice_Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Due_Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Total__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Amount_Overdue__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Amount_Due__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Amount_Credit__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Amount_Paid__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Bread_Winner__Status__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Status_Flag__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Invoice_Date__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Due_Date__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Total__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Amount_Overdue__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Amount_Due__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Amount_Credit__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Amount_Paid__c</searchFilterFields>
+        <searchFilterFields>Bread_Winner__Status__c</searchFilterFields>
+        <searchResultsAdditionalFields>Bread_Winner__Status_Flag__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Invoice_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Due_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Total__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Amount_Overdue__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Amount_Due__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Amount_Credit__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Amount_Paid__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bread_Winner__Status__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Bread_Winner__New_Bill</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New Bill</masterLabel>
+        <openType>noSidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/bread_winner__NewInvoicePage?accountid={!Account.Id}&amp;opportunityid={!Opportunity.Id}&amp;invoice_type=bill</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Bread_Winner__New_Purchase_Order</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New Purchase Order</masterLabel>
+        <openType>noSidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/bread_winner__NewInvoicePage?accountid={!Account.Id}&amp;opportunityid={!Opportunity.Id}&amp;invoice_type=purchaseorder</url>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_80486602</developerName>
+        <masterLabel>Team</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>FULL_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Erez Akiva</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matthew Maiuri</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <value>Summit</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Phil Lelliott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <value>Europe</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <value>Select</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy App Integration</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Sanjay Gidwani</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ryan Nebuda</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Simon Bishop</sourceValue>
+            </sourceValues>
+            <value>ClickDeploy</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Victoria Murillo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Martin Ryder</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Galina Knop</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Rachel Wong</sourceValue>
+            </sourceValues>
+            <value>Renewals</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ebsta1__Ebsta_Score__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>AMOUNT.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Implementation_Partner__c</field>
+    </columns>
+    <columns>
+        <field>NEXT_STEP</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Opportunity.Default</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Marketing Qualification,Prospecting,Discovery,Solution Alignment,Solution Validation,Value Proposition,Formal Proposal,Negotiation,Signed Contract Received,Fully Paid,Negotiation/Review,Pipeline,Best Case,Negotiation CS,Commit</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>KeyBank</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>KeyBank Open Opportunities</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>open</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

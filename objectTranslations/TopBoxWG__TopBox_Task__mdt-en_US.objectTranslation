@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- The assignee will be notified with a standard Salesforce task popup/reminder email prior to the due date (if enabled in Custom Metadata Types: TopBox Task | Manage Records). If an API name is not populated, the task will be assigned to the Account Owner. --></help>
+        <label><!-- Assignee Field Name --></label>
+        <name>TopBoxWG__Assignee_Field_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- DEPRECATED Assignee Id --></label>
+        <name>TopBoxWG__Assignee_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Assignee Id --></label>
+        <name>TopBoxWG__Assignee_UserId__c</name>
+    </fields>
+    <fields>
+        <help><!-- The weekday of the week before the send date. --></help>
+        <label><!-- CSM Due Weekday --></label>
+        <name>TopBoxWG__CSM_Due_Weekday__c</name>
+        <picklistValues>
+            <masterLabel>Friday</masterLabel>
+            <translation><!-- Friday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Monday</masterLabel>
+            <translation><!-- Monday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Thursday</masterLabel>
+            <translation><!-- Thursday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tuesday</masterLabel>
+            <translation><!-- Tuesday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Wednesday</masterLabel>
+            <translation><!-- Wednesday --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The first weekday of the month --></help>
+        <label><!-- CSM Reminder Weekday --></label>
+        <name>TopBoxWG__CSM_Reminder_Weekday__c</name>
+        <picklistValues>
+            <masterLabel>Friday</masterLabel>
+            <translation><!-- Friday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Monday</masterLabel>
+            <translation><!-- Monday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Thursday</masterLabel>
+            <translation><!-- Thursday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tuesday</masterLabel>
+            <translation><!-- Tuesday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Wednesday</masterLabel>
+            <translation><!-- Wednesday --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- When CSM Task Automation is enabled, the CSM Reminder/Due Weekday are specified, setting the CSM Task Hour determines time of the day tasks are due/reminder emails sent. --></help>
+        <label><!-- CSM Task Hour --></label>
+        <name>TopBoxWG__CSM_Task_Hour__c</name>
+    </fields>
+    <fields>
+        <help><!-- When CSM Task Automation is enabled, the CSM Reminder/Due Weekday/Task Hour are specified, setting the CSM Task Minute determines time of the day tasks are due/reminder emails sent. --></help>
+        <label><!-- CSM Task Minute --></label>
+        <name>TopBoxWG__CSM_Task_Minute__c</name>
+    </fields>
+    <fields>
+        <help><!-- If Task Type CSM is selected, specify the account stage/questionnaire type. Further configuration may be necessary to customize values in Custom Metadata Types: TopBox Questionnaire Type | Manage Records. Field is designated for admins during integration. --></help>
+        <label><!-- CSM Task Type --></label>
+        <name>TopBoxWG__CSM_Task_Type__c</name>
+        <picklistValues>
+            <masterLabel>Initial</masterLabel>
+            <translation><!-- Initial --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Onboarding</masterLabel>
+            <translation><!-- Onboarding --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Ongoing</masterLabel>
+            <translation><!-- Ongoing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Renewal</masterLabel>
+            <translation><!-- Renewal --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Customizable field that allows customizable fields to be pulled in from  the TopBox Feedback custom object (if Task Type: Followup Task) or Account object (if Task Type: CSM). If applicable, Comments field can be used for additional manual notes. --></help>
+        <label><!-- Comments --></label>
+        <name>TopBoxWG__Comments__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set the Due Date and Due Date Hours for a task when Hour Based is selected. These two fields do not apply if Due Date &amp; Reminders is set to CSM System. --></help>
+        <label><!-- Due Date Hours --></label>
+        <name>TopBoxWG__Due_Date_Hours__c</name>
+    </fields>
+    <fields>
+        <help><!-- When CSM Task Automation and Use Scheduling Automation are enabled, and Task Type: CSM, selecting CSM System will allow  scheduling in CSM Due Date &amp; Reminder section below. Selecting Hour Based will work with both Task Type: CSM and Feedback Followup. --></help>
+        <label><!-- Due Date &amp; Reminders --></label>
+        <name>TopBoxWG__Due_Date_Reminders__c</name>
+        <picklistValues>
+            <masterLabel>CSM System</masterLabel>
+            <translation><!-- CSM System --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour-based</masterLabel>
+            <translation><!-- Hour-based --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Set the Due Date and Due Date Hours for a task when Hour Based is selected. These two fields do not apply if Due Date &amp; Reminders is set to CSM System. --></help>
+        <label><!-- Due Date --></label>
+        <name>TopBoxWG__Due_Date__c</name>
+        <picklistValues>
+            <masterLabel>Hours After</masterLabel>
+            <translation><!-- Hours After --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hours Before</masterLabel>
+            <translation><!-- Hours Before --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Populate comma separated email addresses here in order to CC specific recipients on task reminder emails. --></help>
+        <label><!-- Email CC - Email Addresses --></label>
+        <name>TopBoxWG__Email_CC_Email_Addresses__c</name>
+    </fields>
+    <fields>
+        <help><!-- Populate comma separated API field names here in order to dynamically CC recipients on task reminder emails. --></help>
+        <label><!-- Email CC - Field Names --></label>
+        <name>TopBoxWG__Email_CC_Field_Names__c</name>
+    </fields>
+    <fields>
+        <help><!-- If Task Type is Feedback Followup, specify sentiment criteria that triggers task: Yes/No (response to contact request question). Can be used in addition to Feedback Followup Type or on its own. Field is designated for admins during integration/config. --></help>
+        <label><!-- Feedback Contact Me Value --></label>
+        <name>TopBoxWG__Feedback_Contact_Me_Value__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- If Task Type is Feedback Followup, specify sentiment criteria that triggers task: Detractor (0-6 overall scrore/recommend rating), Passive (7-8), Promoter (9-10). --></help>
+        <label><!-- Feedback Followup Type --></label>
+        <name>TopBoxWG__Feedback_Followup_Type__c</name>
+        <picklistValues>
+            <masterLabel>Contact Me</masterLabel>
+            <translation><!-- Contact Me --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Detractor</masterLabel>
+            <translation><!-- Detractor --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Low Support Score</masterLabel>
+            <translation><!-- Low Support Score --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Passive</masterLabel>
+            <translation><!-- Passive --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Promoter</masterLabel>
+            <translation><!-- Promoter --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- If checked, the CSM Tasks will be scheduled when the send dates are populated on the account records. ToBox Feedback records are created for each response and trigger Followup Tasks that meet the response criteria. --></help>
+        <label><!-- Is Active --></label>
+        <name>TopBoxWG__Is_Active__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set Reminder and Reminder Hours for a task when Hour Based is selected. These two fields do not apply if Due Date &amp; Reminders is set to CSM System. --></help>
+        <label><!-- Reminder Hours --></label>
+        <name>TopBoxWG__Reminder_Hours__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set Reminder and Reminder Hours for a task when Hour Based is selected. These two fields do not apply if Due Date &amp; Reminders is set to CSM System. --></help>
+        <label><!-- Reminder --></label>
+        <name>TopBoxWG__Reminder__c</name>
+        <picklistValues>
+            <masterLabel>Hours After</masterLabel>
+            <translation><!-- Hours After --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hours Before</masterLabel>
+            <translation><!-- Hours Before --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>None</masterLabel>
+            <translation><!-- None --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This subject field can be edited to include any fields from the TopBox Feedback custom object (if Task Type: Followup Task) or Account object (if Task Type: CSM). --></help>
+        <label><!-- Searchable Subject Text --></label>
+        <name>TopBoxWG__Searchable_Subject_Text__c</name>
+    </fields>
+    <fields>
+        <help><!-- If checked, reminder emails will be sent to the Assignee and CCed recipients based on selected settings in Reminder/Reminder Hours (for Hour Based) and CSM Reminder Weekday (for CSM System). --></help>
+        <label><!-- Send Notification Email --></label>
+        <name>TopBoxWG__Send_Notification_Email__c</name>
+    </fields>
+    <fields>
+        <help><!-- Do not edit &quot;{{search text}}&quot; merge field, as it pulls in the customizable values from Searchable Subject Text (hover over help text for more details). Additional text such as &quot;TopBox Alert&quot; usually edited by admin during integration/configuration. --></help>
+        <label><!-- Subject --></label>
+        <name>TopBoxWG__Subject__c</name>
+    </fields>
+    <fields>
+        <help><!-- Specifies task type: CSM (for active recruiting) or Feedback Followup (followup for Call-to-action). Field is designated for admins during initial integration/configuration. --></help>
+        <label><!-- Task Type --></label>
+        <name>TopBoxWG__Task_Type__c</name>
+        <picklistValues>
+            <masterLabel>CSM</masterLabel>
+            <translation><!-- CSM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Feedback Followup</masterLabel>
+            <translation><!-- Feedback Followup --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>TopBox Task Template Layout</layout>
+        <sections>
+            <label><!-- Assignee --></label>
+            <section>Assignee</section>
+        </sections>
+        <sections>
+            <label><!-- CSM Due Date &amp; Reminder --></label>
+            <section>CSM Due Date &amp; Reminder</section>
+        </sections>
+        <sections>
+            <label><!-- Content --></label>
+            <section>Content</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Due Date &amp; Reminder --></label>
+            <section>Due Date &amp; Reminder</section>
+        </sections>
+        <sections>
+            <label><!-- Email --></label>
+            <section>Email</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- All CSM fields are required --></errorMessage>
+        <name>TopBoxWG__CSM_Tasks</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Type is required --></errorMessage>
+        <name>TopBoxWG__Feedback_Followup</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Due Date &amp; Reminder are required --></errorMessage>
+        <name>TopBoxWG__NonCSM</name>
+    </validationRules>
+</CustomObjectTranslation>

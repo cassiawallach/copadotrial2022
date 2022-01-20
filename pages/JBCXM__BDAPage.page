@@ -1,0 +1,157 @@
+<apex:page docType="html-5.0" Controller="JBCXM.ReportBuilder" extensions="JBCXM.NSRemoting" title="Gainsight Analytics" sidebar="false" >
+
+    <apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__JQuery,'css/redmond/jquery-ui-1.8.11.custom.css'))}"/>
+    <apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSVendor, 'js/vendor/grids/jqgrid-4.5.2/css/ui.jqgrid.css'))}"/>
+    <apex:includeScript value="{!JSENCODE(URLFOR($Resource.JBCXM__CustomJS, 'CustomJS/date.format.js'))}" />
+    
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/jquery/jquery-1.10.2.min.js'))}"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js'))}"></script>
+    
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/grids/jqgrid-4.5.2/js/jquery.jqGrid.min.js'))}"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/grids/jqgrid-4.5.2/js/i18n/grid.locale-en.js'))}"></script>
+        
+    <script src="{!JSENCODE(URLFOR($Resource.jqGrid,'js/jqgrid.Custom.Utility.js'))}"></script>    
+    <script src="{!JSENCODE(URLFOR($Resource.CustomJS, 'CustomJS/jbaraCustomUtility.js'))}" ></script>   
+    <link   href="{!JSENCODE(URLFOR($Resource.GSVendor, 'js/vendor/multiple-select/multiple-select.css'))}" rel="stylesheet" type="text/css" />
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor, 'js/vendor/multiple-select/jquery.multiple.select.js'))}" type="text/javascript"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor, 'js/vendor/multiple-select/jquery.multiselect.filter.js'))}"></script>
+    <apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSVendor, 'js/vendor/multiple-select/jquery.multiselect.filter.css'))}"/>
+    
+    
+    
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/require.min.js'))}"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/underscore-min.js'))}"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/backbone-min.js'))}"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/jquery.hcsticky-min.js'))}"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.GSVendor, 'js/vendor/jquery.htmlClean.min.js'))}" type="text/javascript"></script>
+    <script src="{!JSENCODE(URLFOR($Resource.NS,'NS/newStack/js/pivotgrid/pivotGrid.js'))}"></script>
+    <apex:includeScript value="{!JSENCODE(URLFOR($Resource.JBCXM__NS, 'NS/newStack/js/restclient/restClient.js'))}" />
+    
+    <apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__NS,'NS/newStack/stylesheets/pivotgrid/pivotgrid.css'))}" />
+    <script
+        src="{!JSENCODE(URLFOR($Resource.HighchartsJS, '3.0.7/highcharts.js'))}"></script>
+    <script
+        src="{!JSENCODE(URLFOR($Resource.HighchartsJS, '3.0.7/highcharts-more.js'))}"></script>
+    <script
+        src="{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/jquery.expose.js'))}"></script>
+    <style></style>
+    
+    
+    <script type="text/javascript">
+        var j$ = $.noConflict();
+        window.jLatest = j$;
+    </script>
+    
+    <script>
+        
+        var GS = GS || {};
+            
+            
+            GS.userConfig = {
+                userName    : "{!$User.FirstName}"+" "+"{!$User.LastName}", 
+                userId      : "{!$User.Id}",
+                emailId     : "{!$User.Email}"
+            };
+                        
+           GS.remoting = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+           GS.sessionId = "{!NSSessionId}";
+           var dimensionFileds = {};
+           var selectedFields = [];
+            require.config({
+                baseUrl : "",
+                    paths : {
+                    'framework': "{!JSENCODE(URLFOR($Resource.GSApp,'js/Gainsight'))}",
+                    //'framework': "https://localhost:8080/Gainsight-UI/GSApp/js/Gainsight",
+                    'vendor' : "{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor'))}",
+                    'text' : "{!JSENCODE(URLFOR($Resource.GSVendor,'js/vendor/text'))}"
+                },
+                config: {
+                    text: {
+                            useXhr: function(url, protocol, hostname, port) {
+                                return true;
+                            }
+                    }
+                },
+                //urlArgs: "bust=" +  (new Date()).getTime()
+                
+            });
+            
+            j$(document).ready(function() {debugger
+                restClient.config = {remoting:"{!$RemoteAction.NSRemoting.apinsinvoke}",sessionId : "{!NSSessionId}"};
+                var layoutManagerRouter = null;
+                var bdaManager = null;
+                require([
+                            "framework/views/BDAAnalyzer/BDAManager",
+                            "framework/utils/jQueryProxy"
+                        ], function(BDAManager, jQ){
+                        
+                        bdaManager =  new BDAManager({
+                            el:jQ(".Reports_homepage")
+                        });
+                        bdaManager.initRouter();
+                });
+                
+            });
+
+</script>
+
+  
+<apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSAppCSS, 'css/CS360/gsApps.css'))}"/>
+<apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSAppCSS, 'css/layout/layout_stylesheet.css'))}"/>
+<apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSAppCSS, 'bootstrap/bootstrap.css'))}"/>
+<apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSVendor, 'js/vendor/gridster/jquery.gridster.css'))}"/>
+<apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSVendor, 'js/vendor/gridster/jquery.gridster.css'))}"/>
+<apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSVendor, 'js/vendor/gridster/jquery.gridster.css'))}"/>
+<script src="{!JSENCODE(URLFOR($Resource.GSVendor, 'js/vendor/gridster/jquery.gridster.js'))}"></script>
+<apex:stylesheet value="{!JSENCODE(URLFOR($Resource.JBCXM__GSAppCSS, 'css/bda-analytics.css'))}"/>
+ <!--
+ <apex:stylesheet value="https://localhost:8080/Gainsight-UI/GSAppCSS/css/bda-analytics.css"/>
+  <apex:stylesheet value="https://localhost:8080/Gainsight-UI/GSAppCSS/css/bda-analytics.css"/>
+    <link rel="stylesheet" type="text/css" href="https://localhost:8080/Gainsight-UI/GSAppCSS/css/CS360/gsApps.css"/>
+    <link rel="stylesheet" type="text/css" href="https://localhost:8080/Gainsight-UI/GSAppCSS/css/layout/layout_stylesheet.css"/>
+  
+    <apex:stylesheet value="https://localhost:8080/Gainsight-UI/GSAppCSS/css/CS360/gsApps.css"/>
+    <apex:stylesheet value="https://localhost:8080/Gainsight-UI/GSAppCSS/css/bda-analytics.css"/>
+    <apex:stylesheet value="https://localhost:8080/Gainsight-UI/GSAppCSS/bootstrap/bootstrap.css"/>
+      
+      -->
+     
+ <style>
+ 
+    .gridster li {
+    
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 100%;
+        text-align: center;
+        background-color: #FFF; list-style: none;
+    
+    }   
+    .gridster {
+        margin: 0 auto;
+        opacity: 0.8;
+        transition: opacity 0.6s ease 0s;
+    }
+    .ui-dialog{
+        z-index:99999 !important;
+    }   
+    .report-item-helper{
+        z-index:1000 !important;
+    }
+    .noSidebarCell, .sidebarCell .fixed {
+        padding: 0px !important;
+    }
+    
+</style>
+
+<div class="Reports_homepage">        
+     <div class="reportManager">
+     
+     </div>
+     
+     <div class="reportContainer">
+     
+     </div>
+</div>
+
+</apex:page>

@@ -1,0 +1,10 @@
+<apex:page sidebar="false" tabStyle="Timesheet__tab">
+    <apex:includeLightning /> 
+    <div id="timesheet"/>
+    <script>
+        $Lightning.use("amc:TimesheetApp", function() {
+          $Lightning.createComponent("amc:Timesheet",{'isClassic': true, 'isLightning':false},"timesheet",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

@@ -101,6 +101,18 @@
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>External_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Generic external Id for data migration purposes</description>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>IsActive</fullName>
         <trackHistory>false</trackHistory>
     </fields>
@@ -126,6 +138,34 @@
         <fullName>UseStandardPrice</fullName>
         <trackHistory>false</trackHistory>
     </fields>
+    <fields>
+        <fullName>chargebeeapps__Setup_Cost__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Setup cost for each product in each pricebook</description>
+        <externalId>false</externalId>
+        <label>Setup Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <listViews>
+        <fullName>Price_Book_Full_Data</fullName>
+        <columns>PRODUCT.NAME</columns>
+        <columns>PRODUCT.CUSTOMER_PRODUCT_ID</columns>
+        <columns>PRODUCT.DEFAULT_PRICE</columns>
+        <columns>PRODUCT.ACTIVE</columns>
+        <columns>PRICEBOOK.CURRENCY_ISO_CODE</columns>
+        <columns>PRODUCT2.FAMILY_ENUM</columns>
+        <columns>PRICEBOOK.ACTIVE</columns>
+        <columns>PRICEBOOK.NAME</columns>
+        <columns>Product2.External_Id__c</columns>
+        <columns>External_Id__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Price Book Full Data</label>
+        <language>en_US</language>
+    </listViews>
     <searchLayouts>
         <searchResultsAdditionalFields>PRODUCT.NAME</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>PRODUCT.CUSTOMER_PRODUCT_ID</searchResultsAdditionalFields>

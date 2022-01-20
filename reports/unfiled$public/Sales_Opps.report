@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_78588815</developerName>
+        <masterLabel>SEGMENT</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>INDUSTRY</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Biotechnology, Pharmaceuticals and Medicine</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Chemicals</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Healthcare</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Public Sector and Government</sourceValue>
+            </sourceValues>
+            <value>HLS</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Computers</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Electronics</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>High Tech</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Telecommunications and Publishing</sourceValue>
+            </sourceValues>
+            <value>TECH</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Banking and Finance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Insurance</sourceValue>
+            </sourceValues>
+            <value>FINS</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Aerospace and Defense</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Automotive and Transportation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Construction and Building Materials</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Manufacturing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Mining, Quarrying and Drilling</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Utilities and Energy</sourceValue>
+            </sourceValues>
+            <value>INDUSTRIAL</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Agriculture, Forestry and Fishing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Business and Management Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Consumer Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Education</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Entertainment, Travel and Leisure</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Food and Beverage</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Nonclassifiable Establishments</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Not For Profit</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Professional Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Real Estate</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Rental and Leasing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Repair and Maintenance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Retail</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Wholesale</sourceValue>
+            </sourceValues>
+            <value>GB</value>
+        </values>
+    </buckets>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <field>LAST_STAGE_CHANGE_DATE</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>AMOUNT</field>
+    </columns>
+    <columns>
+        <field>PROBABILITY</field>
+    </columns>
+    <columns>
+        <field>NEXT_STEP</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Closed Won,Closed Lost,Fully Paid</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FULL_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>knop,jeffrey,murillo,ryder,wong</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FORECAST_CATEGORY</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>,Omitted,Closed</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Sales Opps</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>AGE</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

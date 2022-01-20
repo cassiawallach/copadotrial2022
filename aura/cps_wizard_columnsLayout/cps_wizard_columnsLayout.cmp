@@ -1,0 +1,26 @@
+<aura:component>
+  <aura:attribute name="tasks" type="Object[]" required="true" />
+    <aura:attribute name="stage" type="String" required="true" />
+
+  <div>
+    <div class="with-right-border">
+      {! v.body }
+    </div>
+    <div class="right-col">
+      <ul>
+        <aura:iteration items="{! v.tasks }" var="task">            
+          <aura:if isTrue="{! task.displayOnUI }">
+              <c:cps_wizard_listActionItem
+                                           jobId = "{! task.id}"                                           
+                                           text="{! task.label }"
+                                           failed="{! task.status == 'Failed' }"
+                                           checked="{! task.status == 'Completed' }"
+                                           loading="{! task.status == 'In progress' }"
+                                           stage="{!v.stage}"
+                                           />
+          </aura:if>
+        </aura:iteration>
+      </ul>
+    </div>
+  </div>
+</aura:component>

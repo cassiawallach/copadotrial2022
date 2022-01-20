@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies the Action that is the Child in the dependency relationship --></help>
+        <label><!-- Child Action --></label>
+        <name>amc__Child_Action__c</name>
+        <relationshipLabel><!-- Dependencies (Child Action) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Days that must pass before Child Action can begin.  Applicable to all Relationship Types. --></help>
+        <label><!-- Lag --></label>
+        <name>amc__Lag__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Action that is the Parent in the dependency relationship --></help>
+        <label><!-- Parent Action --></label>
+        <name>amc__Parent_Action__c</name>
+        <relationshipLabel><!-- Dependencies --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Milestone that is the Parent in the dependency relationship --></help>
+        <label><!-- Parent Milestone --></label>
+        <name>amc__Parent_Milestone__c</name>
+        <relationshipLabel><!-- Dependencies --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the type of relationship between the Parent and Child --></help>
+        <label><!-- Relationship Type --></label>
+        <name>amc__Relationship_Type__c</name>
+        <picklistValues>
+            <masterLabel>Finish to Start</masterLabel>
+            <translation><!-- Finish to Start --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Start to Start</masterLabel>
+            <translation><!-- Start to Start --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>Dependency Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You can only specify a Parent Milestone or Parent Action, not both. --></errorMessage>
+        <name>amc__Ensure_only_one_parent_is_entered</name>
+    </validationRules>
+</CustomObjectTranslation>

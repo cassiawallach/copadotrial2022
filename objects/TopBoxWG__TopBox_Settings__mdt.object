@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>TopBoxWG__Account_Renewal_Failsafe__c</fullName>
+        <defaultValue>60</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Number of days before and after the Account Renewal Date that should NOT have a questionnaire.  If a questionnaire falls within this period, it will be skipped.</inlineHelpText>
+        <label>Account Renewal Failsafe</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Account_Types_to_Include__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>List the Account Types to include in bulk Field Mapping sync separated by a comma. Example: Customer - Direct,Customer - Channel</inlineHelpText>
+        <label>Account Types to Include</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Assignee_Field_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task Assignee Field Name</label>
+        <length>140</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Automation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked, tasks will be created automatically when the Relationship Wave Send Date is changed. Further configuration may be necessary via Custom Metadata Type: TopBox Task.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>If checked, tasks will be created automatically when the Relationship Wave Send Date is changed. Further configuration may be necessary via Custom Metadata Type: TopBox Task.</inlineHelpText>
+        <label>CSM Task Automation</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Comments__c</fullName>
+        <defaultValue>&apos;This is an automated notification to remind you to begin Active Recruiting activities for {{Name}}, as this account will be included in the {{Relationship_Wave_Month__c}} TopBox feedback wave (campaign). Active Recruiting typically entails the following steps: \n\n&apos;  
+&amp;
+&apos;1) Educate your customer-Champion in the account about your company’s “customer listening/feedback” program. Position the program with, “Will you help us help you by answering a short questionnaire that helps us drive the right improvements? The questionnaire is planned to launch on {{Relationship_Wave_Send_Date__c}}, will take no more than 5 minutes, and I (and my colleagues across the company) am personally committed to follow-up and address what you tell us. Will you participate?” \n\n&apos;
+&amp;
+&apos;2) Upon receiving your champion’s opt-in/agreement to participate, “In order to make sure we’re addressing the optimal areas for {{Name}}, it’s important that we understand the various perspectives of key contacts. I am committed to being transparent, sharing results with you, and using feedback to driving the right improvements. Who else is in a good position to assess the relationship between our two companies and the value that we provide to {{Name}}?” \n\n&apos;
+&amp;
+&apos;3) Finally, ask your champion if they would be willing to help you gain an affirmative opt-in to participate from the other contacts, “I have a brief email that I’d like to ask that you forward on to these other people. Will you help me gain their agreement to participate so we can be confident that we’re addressing the right areas moving forward?”&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task Comments</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Due_Weekday__c</fullName>
+        <defaultValue>&apos;Friday&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The weekday of the week before the send date.</inlineHelpText>
+        <label>CSM Task Due Weekday</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monday</fullName>
+                    <default>true</default>
+                    <label>Monday</label>
+                </value>
+                <value>
+                    <fullName>Tuesday</fullName>
+                    <default>false</default>
+                    <label>Tuesday</label>
+                </value>
+                <value>
+                    <fullName>Wednesday</fullName>
+                    <default>false</default>
+                    <label>Wednesday</label>
+                </value>
+                <value>
+                    <fullName>Thursday</fullName>
+                    <default>false</default>
+                    <label>Thursday</label>
+                </value>
+                <value>
+                    <fullName>Friday</fullName>
+                    <default>false</default>
+                    <label>Friday</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Hour__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task Hour</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Initial__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task - Initial</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Minute__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task Minute</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Onboarding__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task - Onboarding</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Ongoing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task - Ongoing</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Reminder_Weekday__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The first weekday of the month</inlineHelpText>
+        <label>CSM Task Reminder Weekday</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monday</fullName>
+                    <default>true</default>
+                    <label>Monday</label>
+                </value>
+                <value>
+                    <fullName>Tuesday</fullName>
+                    <default>false</default>
+                    <label>Tuesday</label>
+                </value>
+                <value>
+                    <fullName>Wednesday</fullName>
+                    <default>false</default>
+                    <label>Wednesday</label>
+                </value>
+                <value>
+                    <fullName>Thursday</fullName>
+                    <default>false</default>
+                    <label>Thursday</label>
+                </value>
+                <value>
+                    <fullName>Friday</fullName>
+                    <default>false</default>
+                    <label>Friday</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Renewal__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task - Renewal</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Searchable_Subject_Text__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task - Searchable Subject Text</label>
+        <length>250</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Subject__c</fullName>
+        <defaultValue>&apos;{{Account Name}} will be included in {{Month}} TopBox Customer Feedback wave&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM Task Subject</label>
+        <length>254</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__CSM_Task_Template__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>CSM - Default Task Template</label>
+        <referenceTo>TopBoxWG__TopBox_Task__mdt</referenceTo>
+        <relationshipLabel>TopBox Settings</relationshipLabel>
+        <relationshipName>TopBox_Settings</relationshipName>
+        <required>false</required>
+        <type>MetadataRelationship</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Client_Admin_Email__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This will be used for notifications</inlineHelpText>
+        <label>Client Admin Email</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Initial_Send_Date_Months_from_Onboard__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Defines the number of months from the Onboarding to set the Initial Send Date</inlineHelpText>
+        <label>Initial Send Date - Months from Onboard</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Now_Override__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Override for current time used for TopBox internal testing purposes.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Override for current time used for TopBox internal testing purposes.</inlineHelpText>
+        <label>Now Override</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Object_Access_Error_Handling__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This will control how object access errors are handled. 
+Exception will throw an error and stop the current operation
+Email will continue with all other operations and email admins</inlineHelpText>
+        <label>Object Access Error Handling</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Exception</fullName>
+                    <default>true</default>
+                    <label>Exception</label>
+                </value>
+                <value>
+                    <fullName>Email</fullName>
+                    <default>false</default>
+                    <label>Email</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Onboarding_Months_from_Go_Live__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Defines the allowable gap of months since Go Live for Onboarding</inlineHelpText>
+        <label>Onboarding - Allowed Months from Go Live</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Ongoing_Send_Date_Months_from_Previous__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Defines the number of months from the previous send date to set the next ongoing send date.</inlineHelpText>
+        <label>Ongoing Send Date - Months from Previous</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Ongoing_Send_Date_Reset_Delay_Weeks__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Sets a delay to updating the Next Questionnaire Type field for a specified number of weeks. This enables additional contacts (previously not included during the scheduled send date) to receive the correct version of the  Relationship questionnaire.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Sets a delay to updating the Next Questionnaire Type field for a specified number of weeks. This enables additional contacts (previously not included during the scheduled send date) to receive the correct version of the  Relationship questionnaire.</inlineHelpText>
+        <label>Ongoing Send Date Reset Delay (Weeks)</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Profiles_to_Exclude_from_TopBox__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Enter profile names separated by a semicolon. Example: Profile One;Profile Two</inlineHelpText>
+        <label>Profiles to Exclude from TopBox</label>
+        <length>30000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Record_Types_to_Include__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>List the Account Record Types to include in bulk Field Mapping sync separated by a comma. Example: Customer,Partner</inlineHelpText>
+        <label>Account Record Types to Include</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Relationship_Wave_Hour__c</fullName>
+        <deprecated>false</deprecated>
+        <description>When Use Scheduling Automation is enabled, the Relationship Weekday Number/Wave Weekday are specified, setting the Relationship Wave Hour determines which time of the day send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month at 6am.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>When Use Scheduling Automation is enabled, the Relationship Weekday Number/Wave Weekday are specified, setting the Relationship Wave Hour determines which time of the day send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month at 6am.</inlineHelpText>
+        <label>Relationship Wave Hour</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Relationship_Wave_Minute__c</fullName>
+        <deprecated>false</deprecated>
+        <description>When Use Scheduling Automation is enabled, the Relationship Weekday Number/Wave Weekday are specified, setting the Relationship Wave Hour/Minute determines which time of the day send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month at 6am.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>When Use Scheduling Automation is enabled, the Relationship Weekday Number/Wave Weekday are specified, setting the Relationship Wave Hour/Minute determines which time of the day send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month at 6am</inlineHelpText>
+        <label>Relationship Wave Minute</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Relationship_Wave_Weekday_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>When Use Scheduling Automation is enabled, setting the weekday number determines which weekday of the month send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>When Use Scheduling Automation is enabled, setting the weekday number determines which weekday of the month send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month.</inlineHelpText>
+        <label>Relationship Wave Weekday Number</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>true</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>4</fullName>
+                    <default>false</default>
+                    <label>4</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Relationship_Wave_Weekday__c</fullName>
+        <deprecated>false</deprecated>
+        <description>When Use Scheduling Automation is enabled and the Relationship Weekday Number is specified, setting the Relationship Wave Weekday determines which day of the week send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>When Use Scheduling Automation is enabled and the Relationship Weekday Number is specified, setting the Relationship Wave Weekday determines which day of the week send dates are scheduled using the time zone of your org. Default setting: 3rd Tuesday of the month.</inlineHelpText>
+        <label>Relationship Wave Weekday</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monday</fullName>
+                    <default>true</default>
+                    <label>Monday</label>
+                </value>
+                <value>
+                    <fullName>Tuesday</fullName>
+                    <default>false</default>
+                    <label>Tuesday</label>
+                </value>
+                <value>
+                    <fullName>Wednesday</fullName>
+                    <default>false</default>
+                    <label>Wednesday</label>
+                </value>
+                <value>
+                    <fullName>Thursday</fullName>
+                    <default>false</default>
+                    <label>Thursday</label>
+                </value>
+                <value>
+                    <fullName>Friday</fullName>
+                    <default>false</default>
+                    <label>Friday</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Renewal_Send_Date_Months_from_Previous__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Defines the number of months from the previous send date to set the next renewal send date</inlineHelpText>
+        <label>Renewal Send Date - Months from Previous</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Send_PreNote_Emails__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If Send PreNote Emails is checked, contacts included in the upcoming send date (Contact: Send Onboarding/Relationship = True) will receive a PreNote email 24 hours prior to the send date. Further configuration may be necessary in Email Alert: TopBox - PreNote  and Workflow Rule: TopBox - PreNoteHandler. *Enabled by default for install - keep checked for new package upload for Test coverage.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>If Send PreNote Emails is checked, contacts included in the upcoming wave (Contact: Send Onboarding/Relationship = True) will receive a PreNote email 24 hours prior to send date. Further config may be necessary in Email Alert: TopBox - PreNoteHandler. *Enabled by default for install.</inlineHelpText>
+        <label>Send PreNote Emails</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Today_Override__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Override for today&apos;s date used for TopBox internal testing related to scheduling feature.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Override for today&apos;s date used for TopBox internal testing related to scheduling feature.</inlineHelpText>
+        <label>Today Override</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__TopBox_Alert_Email__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This will be used for any apex errors</inlineHelpText>
+        <label>TopBox Alert Email</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Use_Feedback_Follow_Tasks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked, followup tasks will be created automatically when a TopBox Feedback record is created due to a questionnaire response. Further configuration may be necessary via Custom Metadata Type: TopBox Task.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>If checked, followup tasks will be created automatically when a TopBox Feedback record is created due to a questionnaire response. Further configuration may be necessary via Custom Metadata Type: TopBox Task.</inlineHelpText>
+        <label>Use Feedback Follow Tasks</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Use_Scheduling_Automation__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked, send dates will be automatically scheduled when Initial Go-Live Date is populated and Set Relationship Month is edited. Further configuration may be necessary via Custom Metadata Type: TopBox Settings.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>If checked, send dates will be automatically scheduled when Initial Go-Live Date is populated and Set Relationship Month is edited. Further configuration may be necessary via Custom Metadata Type: TopBox Settings.</inlineHelpText>
+        <label>Use Scheduling Automation</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>TopBox Settings</label>
+    <pluralLabel>TopBox Settings</pluralLabel>
+    <validationRules>
+        <fullName>TopBoxWG__Require_Task_Fields_if_using_Automation</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(
+				TopBoxWG__CSM_Task_Automation__c,
+				ISBLANK(TopBoxWG__CSM_Task_Template__c)
+)</errorConditionFormula>
+        <errorDisplayField>TopBoxWG__CSM_Task_Template__c</errorDisplayField>
+        <errorMessage>A template must be selected</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>TopBoxWG__Task_Send_Types</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(
+					TopBoxWG__CSM_Task_Automation__c == TRUE,
+					TopBoxWG__CSM_Task_Onboarding__c == FALSE,
+					TopBoxWG__CSM_Task_Initial__c == FALSE,
+					TopBoxWG__CSM_Task_Renewal__c == FALSE,
+					TopBoxWG__CSM_Task_Ongoing__c == FALSE
+	)</errorConditionFormula>
+        <errorDisplayField>TopBoxWG__CSM_Task_Automation__c</errorDisplayField>
+        <errorMessage>You must check at least one of the send types when using Task Automation</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,64 @@
+<apex:page showHeader="true" sidebar="false">
+
+    <apex:sectionHeader title="Copado Solutions" subtitle="Beta Program Packages" />    
+    <script>
+        data = [];
+        //Add new items above
+        data.push({Name:'Winter 2016', Version:'Beta', Status:'Private Beta', PackageId:'04tb0000000cBcU'});
+    </script>
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="1">
+            <table id="theTable" style="width: 1462px;" border="0" cellspacing="0" cellpadding="0" class="list">
+                <thead>
+                    <tr class="headerRow">
+                        <td>Name</td>
+                        <td>Version</td>
+                        <td>Status</td>
+                        <td>Package URL</td>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <script>
+        var tbl = document.getElementById('theTable');
+        var tbody = document.getElementById('tbody');
+        for(var i=0; i<data.length; i++){
+            var row = tbl.insertRow(tbl.rows.length);
+            row.setAttribute('class', 'dataRow');
+            for(var c=0; c<4; c++){
+                var c1 = row.insertCell(c);
+                var lbl = (c==0)?'Name':(c==1)?'Version':(c==2)?'Status':'PackageId';
+                console.info(lbl);
+                var c1_txt = document.createTextNode(data[i][lbl]);
+
+                if(c==3){
+                    var sandboxurl = 'https://test.salesforce.com/packaging/installPackage.apexp?p0='+data[i][lbl];
+                    var productionurl = 'https://login.salesforce.com/packaging/installPackage.apexp?p0='+data[i][lbl];
+
+                    var createLinks = data[i]['Status']!='Closed';
+                    var se = document.createElement('a');
+                    var createAText = document.createTextNode(sandboxurl);
+                    se.setAttribute('href', sandboxurl);
+                    se.appendChild(createAText);
+                    if(createLinks)c1.appendChild(se);
+                    
+                    var br = document.createElement('br');
+                    if(createLinks)c1.appendChild(br);
+
+                    var se = document.createElement('a');
+                    var createBText = document.createTextNode(productionurl);
+                    se.setAttribute('href', productionurl);
+                    se.appendChild(createBText);
+                    if(createLinks)c1.appendChild(se);
+                }
+                else{
+                    c1.appendChild(c1_txt);
+                }
+            }
+        }
+    </script>
+    <site:googleAnalyticsTracking />
+</apex:page>

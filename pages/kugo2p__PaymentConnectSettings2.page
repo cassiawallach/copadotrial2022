@@ -1,0 +1,598 @@
+<apex:page standardcontroller="kugo2p__Settings__c" extensions="kugo2p.AdvancedSettingsController" tabStyle="kugo2p__KugamonSetting__c" action="{!reloadWithId}">
+
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<!-- <apex:sectionHeader title="Payment Settings" subtitle="Advanced Settings" /> -->
+<c:PageHeader title="Payment Settings" subtitle="Advanced Settings" pathname="custom" icon="custom3" description="" />
+<apex:pageMessage severity="INFO" 
+                strength="2" 
+                summary="Payment processing is currently in gateway simulation mode. In this mode, transactions will result in a simulated responses from your payment processor and by-pass actual credit card charges, refunds, etc. To run live transactions, have your Salesforce administrator turn gateway simulation mode off." 
+                rendered="{!simulationMode}"/>
+<apex:pageMessages id="messages"/>
+<style>
+.rich-tabpanel-content {
+    background:none;
+    padding-left:0px;
+    padding-right:0px;
+    border-left:none;
+    border-right:none;
+    border-bottom:none;
+    font-size:1.1em;
+}
+.rich-tab-header { 
+    font-size:1.1em;
+}
+.rich-tab-active {
+   background-image: url("/img/alohaSkin/opacity75.png");
+   
+}
+.rich-tab-inactive {
+    background: #e0e0e0;
+}
+
+.pageBlockSubtext {
+    padding:12px 15px 15px 15px;
+}
+
+.labelColumn {
+    text-align:right;
+    width:150px;
+    font-weight:bold; 
+}
+.btnActivate {
+    background: #008cd1 !important; /* Old browsers */
+    background: -moz-linear-gradient(top,  #008cd1 0%, #01a5f8 100%) !important; /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008cd1), color-stop(100%,#01a5f8)) !important; /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* IE10+ */
+    background: linear-gradient(to bottom,  #008cd1 0%,#01a5f8 100%) !important; /* W3C */
+    //padding: 4px 10px !important;
+    padding: 2px 5px !important;
+    border: 1px solid #008dd4 !important;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    text-decoration: none !important;
+    vertical-align: middle !important;
+    //font-size:11px !important;
+    height: 21px !important;
+}
+
+hr {
+    //display: none;
+}
+
+div.hr {
+    height: 1px;
+    background-color: #999;
+}
+</style>
+<br/>
+
+<apex:form rendered="{!If(settingsRecord.Id == null,true,false)}" id="formId">
+<apex:outputField value="{!kugo2p__Settings__c.kugo2p__Gateway_Simulation_Mode__c}" rendered="false" />
+<apex:pageBlock >
+<p>A settings record is required to begin configuration of your Kugamon installation.  Please click "Configure Kugamon Setting" to create the record and begin the configuration process.</p>
+<br/>
+<apex:outputPanel styleClass="kugamon">
+<apex:commandButton value="Configure Payment Settings" action="{!createSettingsRecord}" styleClass="slds-button slds-button--neutral"/>
+</apex:outputPanel>
+</apex:pageBlock>
+</apex:form>
+
+<apex:outputPanel id="tabPanelOP">
+<apex:tabPanel rendered="{!If(settingsRecord.Id == null,false,true)}" id="tabpanelId">
+<apex:tab label="General" rendered="false">
+<apex:form >
+<apex:detail relatedList="false" title="false"/>
+</apex:form>
+</apex:tab>
+
+<apex:tab label="Processor Connections" rendered="false">
+<apex:relatedList list="Processor_Connections__r" pageSize="20"/>
+</apex:tab>
+
+<apex:tab label="Advanced Payment Settings">
+<apex:form >
+
+<apex:pageBlock title="Advanced Payment Settings" mode="{!if(storedPaymentMethodActivated, 'detail', 'edit')}">
+<apex:pageBlockButtons location="bottom" styleClass="kugamon"> 
+<apex:commandButton value="Cancel" action="{!returnToMainPage}" styleClass="slds-button slds-button--neutral" />
+<apex:commandButton value="Save" action="{!saveAndReturnToMainPage}" styleClass="slds-button slds-button--brand" />
+</apex:pageBlockButtons>
+<!-- <div class="pageBlockSubtext">Use the form below to manage your organization's payment page settings:</div> -->
+<apex:pageBlockSection title="General Settings" collapsible="false" >
+<apex:inputField value="{!applicationSettings.kugo2p__Enable_Sharing_Restrictions__c}" />
+</apex:pageBlockSection>
+
+<!--  
+<apex:pageBlockSection title="Payment Terminal">
+<apex:inputField value="{!terminalSettings.kugo2p__Auto_Check_Save_Payment_Method__c}"/> 
+<apex:inputField value="{!terminalSettings.Hide_Pmt_Term_Shipping_Address__c}"/>
+<apex:inputField value="{!terminalSettings.Hide_Pmt_Term_Shipping_Handling__c}"/>
+</apex:pageBlockSection>
+-->
+
+<!-- 
+<apex:pageBlockSection title="PayPal Recurring Billing Terminal">
+<apex:inputField value="{!terminalSettings.Hide_PayPal_Trial_Fields__c}"/>
+<apex:inputField value="{!terminalSettings.Hide_PayPal_Profile_Reference__c}"/>
+<apex:inputField value="{!terminalSettings.Hide_PayPal_Recurring_Tax__c}"/>
+<apex:inputField value="{!terminalSettings.Hide_PayPal_Recurring_Shipping__c}"/>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="AuthNet Recurring Billing Terminal">
+<apex:inputField value="{!terminalSettings.Hide_AuthNet_Trial_Fields__c}"/>
+<apex:inputField value="{!terminalSettings.Hide_ARB_Invoice_Number__c}"/>
+<apex:inputField value="{!terminalSettings.Hide_ARB_Shipping__c}"/>
+</apex:pageBlockSection>
+-->
+
+<!-- 
+<apex:pageBlockSection title="Recurring Payment Terminal">
+<apex:inputField value="{!terminalSettings.Hide_PayPal_Trial_Fields__c}"/>
+<apex:inputField value="{!terminalSettings.Hide_AuthNet_Trial_Fields__c}"/>
+</apex:pageBlockSection>
+-->
+
+<apex:pageBlockSection title="Saved Payment Method Authorization" columns="1" collapsible="false" rendered="{!NOT(storedPaymentMethodActivated)}">
+
+    <apex:outputPanel >
+    <table style="width:100%" >
+    <tr >
+        <td >
+            <!-- <apex:outputText value="To enable the stored payment method feature please sign and accept below. Activating stored payment methods does not guarantee PCI Compliance." /> -->
+            The saved payment method feature is not activated. To activate the saved payment method feature, please accept and sign below. <br/><br/>
+            <!-- <apex:inputCheckbox id="authorizeActivation" value="{!authorizeActivation}" label="I certify that" dir="RTL"/> <br/><br/> -->
+            <apex:inputCheckbox id="authorizeActivation" value="{!authorizeActivation}" /> <apex:outputLabel for="authorizeActivation">I certify that</apex:outputLabel><br/>
+
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1) I have authority to activate the saved payment method feature, and<br/>         
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) I agree that activating the saved payment method feature does not exclude this organization from PCI compliance.<br/><br/> 
+
+            <apex:inputCheckbox id="readPCICompliance" value="{!readPCICompliance}" />
+            <apex:outputLabel for="readPCICompliance">I have read the&nbsp;<apex:outputLink target="_blank" value="https://www.pcisecuritystandards.org/security_standards/index.php" >PCI SSC Data Security Standards Overview</apex:outputLink></apex:outputLabel>&nbsp;at pcisecuritystandards.org.      
+        </td>
+    </tr>
+    </table>
+    <br/>
+    </apex:outputPanel>
+    
+    <apex:pageBlockSectionItem labelStyle="width:40%;">
+        <apex:outputLabel value="User"/>
+        <apex:outputText value="{!SFUserName}" />
+    </apex:pageBlockSectionItem>
+
+    <apex:pageBlockSectionItem labelStyle="width:40%;">
+        <apex:outputLabel value="Name"/>
+        <apex:inputText value="{!userName}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem labelStyle="width:40%;">
+        <apex:outputLabel value="Title"/>
+        <apex:inputText value="{!title}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:outputPanel style="text-align:center;">
+    <table style="width:100%" >
+    <tr >
+        <td >
+            <apex:outputPanel styleClass="kugamon">
+                <apex:commandButton value="Activate" action="{!Activate}" styleClass="slds-button slds-button--brand" reRender="messages,tabpanelId,tabPanelOP" status="statusid"/>
+                &nbsp;
+                <apex:actionStatus id="statusid">
+                    <apex:facet name="start">
+                        <!-- <apex:image value="{!$Resource.spinner}" width="16" height="16" alt="waiting" /> -->
+                        <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:outputPanel>
+        </td>       
+    </tr>
+    </table>
+    </apex:outputPanel>
+
+</apex:pageBlockSection>
+
+<apex:outputPanel rendered="{!storedPaymentMethodActivated}" id="activatedPanel" >
+    <apex:pageBlockSection title="Saved Payment Method Settings" collapsible="false" columns="1" >
+        
+    <apex:outputPanel style="text-align:center;">
+    <table style="width:100%" >
+    <tr >
+        <td >
+        <apex:outputText value="{!activatedByTask.Description}" style="text-align:center;"/>
+        </td>
+    </tr>
+    
+    <tr >
+        <td >
+            <apex:outputPanel styleClass="kugamon">
+                <apex:commandButton value="Deactivate" action="{!deActivate}" styleClass="slds-button slds-button--neutral" reRender="messages,tabpanelId,tabPanelOP" status="statusid"/>
+                &nbsp;
+                <apex:actionStatus id="statusid">
+                    <apex:facet name="start">
+                        <!-- <apex:image value="{!$Resource.spinner}" width="16" height="16" alt="waiting" /> -->
+                        <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:outputPanel>
+        </td>
+    </tr>
+    </table>
+    </apex:outputPanel>
+
+    <!--    
+    <apex:outputPanel style="text-align:center;">
+    <table style="width:100%" >
+    <tr >
+        <td >
+        <apex:commandButton value="Deactivate" action="{!deActivate}" reRender="messages,tabpanelId" status="statusid"/>
+        &nbsp;
+        <apex:actionStatus id="statusid">
+            <apex:facet name="start"><apex:image value="{!$Resource.spinner}" width="16" height="16" alt="waiting" /></apex:facet>
+        </apex:actionStatus>
+        </td>
+    </tr>
+    </table>
+    </apex:outputPanel>
+    -->
+
+    </apex:pageBlockSection>
+
+    <apex:pageBlockSection title="Salesforce Card Service" columns="2" >
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Enable Salesforce.com Encrypted Card Service"/>
+            <apex:inputField value="{!terminalSettings.kugo2p__Encrypted_Card_Service_Enabled__c}" >
+                <apex:actionSupport event="onchange" action="{!setPreferredPaymentMethod}" reRender="messages,tabpanelId,tabPanelOP" />
+            </apex:inputField>
+        </apex:pageBlockSectionItem>
+
+        <!-- 
+        <apex:inputField value="{!terminalSettings.kugo2p__Save_Payment_Method_from_Terminal__c}" >
+            <apex:actionSupport event="onchange" action="{!setPreferredPaymentMethod}" reRender="messages,tabpanelId" />
+        </apex:inputField>
+        --> 
+
+        <!-- 
+        <apex:pageBlockSectionItem >
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputText value="Note: Processor Based Card Service settings are enabled at the individual Processor Connections." style="font-size: 12px;"/>
+        </apex:pageBlockSectionItem>
+        -->
+
+        <!--        
+        <apex:inputField value="{!terminalSettings.kugo2p__Auto_Check_Save_Payment_Method__c}" rendered="{!terminalSettings.kugo2p__Save_Payment_Method_from_Terminal__c}"/>    <!--style="{!IF(terminalSettings.Save_Payment_Method_from_Terminal__c,'','readOnly:readOnly')}" disabled: true  disabled="{!(!terminalSettings.kugo2p__Save_Payment_Method_from_Terminal__c)}" -- >
+        <apex:outputField value="{!terminalSettings.kugo2p__Auto_Check_Save_Payment_Method__c}" rendered="{!(!terminalSettings.kugo2p__Save_Payment_Method_from_Terminal__c)}"/>
+        -->
+        
+        <!-- 
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Preferred Payment Method Type"/>
+            <apex:selectList size="1" multiselect="false" value="{!terminalSettings.kugo2p__Preferred_Payment_Method_from_Terminal__c}" disabled="{! (!terminalSettings.Encrypted_Card_Service_Enabled__c || (!terminalSettings.Save_Payment_Method_from_Terminal__c && !terminalSettings.kugo2p__SavePaymentMethodfromCheckout__c) )}">
+                <apex:selectOption itemValue="" itemLabel="--None--"/>
+                <apex:selectOption itemValue="Salesforce.com" itemLabel="Salesforce.com"/>
+                <apex:selectOption itemValue="Processor" itemLabel="Processor"/>
+            </apex:selectList>
+        </apex:pageBlockSectionItem>
+        -->
+
+        <br/>
+        <!--  <apex:pageBlockSectionItem >
+        </apex:pageBlockSectionItem>-->
+    </apex:pageBlockSection>
+
+    <!-- <div class="hr"><hr /></div> -->
+    <apex:pageBlockSection title="Payment Terminal" columns="2" >
+        <apex:inputField value="{!terminalSettings.kugo2p__Save_Payment_Method_from_Terminal__c}" >
+            <apex:actionSupport event="onchange" action="{!setPreferredPaymentMethod}" reRender="messages,tabpanelId,tabPanelOP" />
+        </apex:inputField>
+
+        <apex:inputField value="{!terminalSettings.kugo2p__Auto_Check_Save_Payment_Method__c}" rendered="{!terminalSettings.kugo2p__Save_Payment_Method_from_Terminal__c}"/>
+        <apex:outputField value="{!terminalSettings.kugo2p__Auto_Check_Save_Payment_Method__c}" rendered="{!(!terminalSettings.kugo2p__Save_Payment_Method_from_Terminal__c)}"/>
+    </apex:pageBlockSection>
+
+    <!-- <div class="hr"><hr /></div> -->
+    <apex:pageBlockSection title="Checkout Terminal" columns="2" >
+        <apex:inputField value="{!terminalSettings.kugo2p__SavePaymentMethodfromCheckout__c}" >
+            <apex:actionSupport event="onchange" action="{!setPreferredPaymentMethod}" reRender="messages,tabpanelId,tabPanelOP" />
+        </apex:inputField>
+    </apex:pageBlockSection>    
+
+    <!-- <div class="hr"><hr /></div> -->
+    <apex:pageBlockSection title="Method Type" columns="1" >
+
+        <apex:pageBlockSectionItem >
+            <apex:outputPanel >
+            <apex:outputLabel value="Preferred Payment Method Type" styleClass="labelCol vfLabelColTextWrap  first  last " />
+            <apex:selectList size="1" multiselect="false" value="{!terminalSettings.kugo2p__Preferred_Payment_Method_from_Terminal__c}" disabled="{! (!terminalSettings.Encrypted_Card_Service_Enabled__c || (!terminalSettings.Save_Payment_Method_from_Terminal__c && !terminalSettings.kugo2p__SavePaymentMethodfromCheckout__c) )}">
+                <apex:selectOption itemValue="" itemLabel="--None--"/>
+                <apex:selectOption itemValue="Salesforce.com" itemLabel="Salesforce.com"/>
+                <apex:selectOption itemValue="Processor" itemLabel="Processor"/>
+            </apex:selectList>
+            <br/><br/>
+            <apex:outputText value="Note: Processor Based Card Service settings are enabled at the individual Processor Connections." style="font-size: 12px;"/>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        
+        <!--
+        <apex:pageBlockSectionItem >
+            <apex:outputText value="" />
+        </apex:pageBlockSectionItem>         
+         -->
+        
+    </apex:pageBlockSection>
+
+    <!--    
+    <apex:outputPanel style="text-align:center;">
+    <table style="width:100%" >
+    <tr >
+        <td >
+        <apex:commandButton value="Deactivate" action="{!deActivate}" reRender="messages,tabpanelId" status="statusid"/>
+        &nbsp;
+        <apex:actionStatus id="statusid">
+            <apex:facet name="start"><apex:image value="{!$Resource.spinner}" width="16" height="16" alt="waiting" /></apex:facet>
+        </apex:actionStatus>        
+        </td>
+    </tr>
+    </table>
+    </apex:outputPanel>
+    -->
+
+    <!-- 
+    <apex:pageBlockSection columns="1" >
+        <apex:outputText value="Note: Processor Based Card Service settings are enabled at the individual Processor Connections." style="font-size: 12px;"/>
+    </apex:pageBlockSection>
+    -->
+</apex:outputPanel> 
+
+</apex:pageBlock>
+
+</apex:form>
+
+</apex:tab>
+
+<apex:tab label="Scheduling" rendered="false">
+<apex:form >
+<apex:pageBlock title="Native Scheduled Payments" mode="Edit" >
+<div class="pageBlockSubtext">
+<apex:pageMessage severity="INFO" strength="2" title="Batch Processing Scheduled Payments in Salesforce" summary="Kugamon supports batch processing of scheduled payments and native scheduling for recurring payments using the following scripts.  
+Be sure you have read the documentation on these features and fully understand the process of creating and maintaining native scheduled payments prior to using them in your production environment.
+  "/>
+</div>
+
+<apex:pageBlockSection title="Batch Payment Processing">
+</apex:pageBlockSection>
+<div class="pageBlockSubtext">
+This batch utility searches for Payment records configured for batch processing and processes them according to payment configuration settings on the scheduled payment date. </div>
+
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem rendered="{!(processorIsScheduled)}">
+<apex:outputLabel value="Scheduled Batch Job Status:" />
+<apex:outputText value="Scheduled"/>
+</apex:pageBlockSectionItem> 
+
+<apex:pageBlockSectionItem rendered="{!(processorIsScheduled)}">
+<apex:outputLabel value="Next Scheduled Run:" />
+<apex:outputText value="{!processorNextFireTime}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!NOT(processorIsScheduled)}">
+<apex:outputLabel value="Schedule batch job to run:"/>
+<apex:selectList size="1" multiselect="false" value="{!processorSelectedFreqHour}">
+<apex:selectOption itemValue="*" itemLabel="Hourly"/>
+<apex:selectOption itemValue="0/2" itemLabel="Every 2 Hours"/>
+<apex:selectOption itemValue="0/4" itemLabel="Every 4 Hours"/>
+<apex:selectOption itemValue="0/6" itemLabel="Every 6 Hours"/>
+<apex:selectOption itemValue="0/12" itemLabel="Every 12 Hours"/>
+<apex:selectOption itemValue="0" itemLabel="0:30"/>
+<apex:selectOption itemValue="1" itemLabel="1:30"/>
+<apex:selectOption itemValue="2" itemLabel="2:30"/> 
+<apex:selectOption itemValue="3" itemLabel="3:30"/>
+<apex:selectOption itemValue="4" itemLabel="4:30"/>
+<apex:selectOption itemValue="5" itemLabel="5:30"/>
+<apex:selectOption itemValue="6" itemLabel="6:30"/>
+<apex:selectOption itemValue="7" itemLabel="7:30"/>
+<apex:selectOption itemValue="8" itemLabel="8:30"/>
+<apex:selectOption itemValue="9" itemLabel="9:30"/>
+<apex:selectOption itemValue="10" itemLabel="10:30"/>
+<apex:selectOption itemValue="11" itemLabel="11:30"/>
+<apex:selectOption itemValue="12" itemLabel="12:30"/>
+<apex:selectOption itemValue="13" itemLabel="13:30"/>
+<apex:selectOption itemValue="14" itemLabel="14:30"/>
+<apex:selectOption itemValue="14" itemLabel="14:30"/>
+<apex:selectOption itemValue="15" itemLabel="15:30"/>
+<apex:selectOption itemValue="16" itemLabel="16:30"/>
+<apex:selectOption itemValue="17" itemLabel="17:30"/>
+<apex:selectOption itemValue="18" itemLabel="18:30"/>
+<apex:selectOption itemValue="19" itemLabel="19:30"/>
+<apex:selectOption itemValue="20" itemLabel="20:30"/>
+<apex:selectOption itemValue="21" itemLabel="21:30"/>
+<apex:selectOption itemValue="22" itemLabel="22:30"/>
+<apex:selectOption itemValue="23" itemLabel="23:30"/>
+</apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value=""/>
+<apex:outputLabel value=""/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!NOT(processorIsScheduled)}">
+<apex:outputLabel value="Day of the week:"/>
+<apex:selectList size="1" multiselect="false" value="{!processorSelectedFreqDay}">
+<apex:selectOption itemValue="E" itemLabel="Every Day"/>
+<!-- 
+<apex:selectOption itemValue="1" itemLabel="Sun"/>
+<apex:selectOption itemValue="2" itemLabel="Mon"/>
+<apex:selectOption itemValue="3" itemLabel="Tue"/>
+<apex:selectOption itemValue="4" itemLabel="Wed"/>
+<apex:selectOption itemValue="5" itemLabel="Thu"/>
+<apex:selectOption itemValue="6" itemLabel="Fri"/>
+<apex:selectOption itemValue="7" itemLabel="Sat"/>
+ -->
+</apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value=""/>
+<apex:outputLabel value=""/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!NOT(processorIsScheduled)}">
+<apex:outputLabel value=""/>
+<apex:commandButton value="Schedule Batch Job" action="{!scheduleBatchProcessor}" />
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem rendered="{!(processorIsScheduled)}">
+<apex:outputLabel value=""/>
+<apex:outputPanel >
+<apex:commandButton value="Cancel Scheduled Batch Job" action="{!cancelBatchProcessor}" />
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+<apex:outputLabel value=""/>
+<apex:commandButton value="Run Batch Job Once" action="{!runBatchProcessor}" />
+</apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+<br/>
+<apex:pageBlockSection columns="1" title="Batch Profile Management">
+</apex:pageBlockSection>
+<div class="pageBlockSubtext">This batch utility finds native subscriptions (Scheduled Payments Profiles) that have missed a payment date and changes the 
+subscription status to "Suspended".  Or, if missed payments are allowed for a subscription, schedules the next payment in the series. If you have not created any Scheduled Payment Profiles (under "Recurring Payments") this feature does not need to be active.
+</div>
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem rendered="{!(subscriptionCheckerIsScheduled)}">
+<apex:outputLabel value="Scheduled Batch Job Status:" />
+<apex:outputText value="Scheduled"/>
+</apex:pageBlockSectionItem> 
+
+<apex:pageBlockSectionItem rendered="{!(subscriptionCheckerIsScheduled)}">
+<apex:outputLabel value="Next Scheduled Run:" />
+<apex:outputText value="{!subscriptionCheckerNextFireTime}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!NOT(subscriptionCheckerIsScheduled)}">
+<apex:outputLabel value="Schedule batch job to run:"/>
+<apex:selectList size="1" multiselect="false" value="{!subscriptionCheckerSelectedFreqHour}">
+<apex:selectOption itemValue="*" itemLabel="Hourly"/>
+<apex:selectOption itemValue="0/2" itemLabel="Every 2 Hours"/>
+<apex:selectOption itemValue="0/4" itemLabel="Every 4 Hours"/>
+<apex:selectOption itemValue="0/6" itemLabel="Every 6 Hours"/>
+<apex:selectOption itemValue="0/12" itemLabel="Every 12 Hours"/>
+<apex:selectOption itemValue="0" itemLabel="0:00"/>
+<apex:selectOption itemValue="1" itemLabel="1:00"/>
+<apex:selectOption itemValue="2" itemLabel="2:00"/> 
+<apex:selectOption itemValue="3" itemLabel="3:00"/>
+<apex:selectOption itemValue="4" itemLabel="4:00"/>
+<apex:selectOption itemValue="5" itemLabel="5:00"/>
+<apex:selectOption itemValue="6" itemLabel="6:00"/>
+<apex:selectOption itemValue="7" itemLabel="7:00"/>
+<apex:selectOption itemValue="8" itemLabel="8:00"/>
+<apex:selectOption itemValue="9" itemLabel="9:00"/>
+<apex:selectOption itemValue="10" itemLabel="10:00"/>
+<apex:selectOption itemValue="11" itemLabel="11:00"/>
+<apex:selectOption itemValue="12" itemLabel="12:00"/>
+<apex:selectOption itemValue="13" itemLabel="13:00"/>
+<apex:selectOption itemValue="14" itemLabel="14:00"/>
+<apex:selectOption itemValue="14" itemLabel="14:00"/>
+<apex:selectOption itemValue="15" itemLabel="15:00"/>
+<apex:selectOption itemValue="16" itemLabel="16:00"/>
+<apex:selectOption itemValue="17" itemLabel="17:00"/>
+<apex:selectOption itemValue="18" itemLabel="18:00"/>
+<apex:selectOption itemValue="19" itemLabel="19:00"/>
+<apex:selectOption itemValue="20" itemLabel="20:00"/>
+<apex:selectOption itemValue="21" itemLabel="21:00"/>
+<apex:selectOption itemValue="22" itemLabel="22:00"/>
+<apex:selectOption itemValue="23" itemLabel="23:00"/>
+</apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value=""/>
+<apex:outputLabel value=""/>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem rendered="{!NOT(subscriptionCheckerIsScheduled)}">
+<apex:outputLabel value="Day of the week:"/>
+<apex:selectList size="1" multiselect="false" value="{!subscriptionCheckerSelectedFreqDay}">
+<apex:selectOption itemValue="E" itemLabel="Every Day"/>
+<!-- <apex:selectOption itemValue="1" itemLabel="Sun"/>
+<apex:selectOption itemValue="2" itemLabel="Mon"/>
+<apex:selectOption itemValue="3" itemLabel="Tue"/>
+<apex:selectOption itemValue="4" itemLabel="Wed"/>
+<apex:selectOption itemValue="5" itemLabel="Thu"/>
+<apex:selectOption itemValue="6" itemLabel="Fri"/>
+<apex:selectOption itemValue="7" itemLabel="Sat"/>
+ -->
+</apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value=""/>
+<apex:outputLabel value=""/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!NOT(subscriptionCheckerIsScheduled)}">
+<apex:outputLabel value=""/>
+<apex:commandButton value="Schedule Batch Job" action="{!scheduleSubscriptionChecker}" />
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem rendered="{!(subscriptionCheckerIsScheduled)}">
+<apex:outputLabel value=""/>
+<apex:outputPanel >
+<apex:commandButton value="Cancel Scheduled Batch Job" action="{!cancelSubscriptionChecker}" />
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+<apex:outputLabel value=""/>
+<apex:commandButton value="Run Batch Job Once" action="{!runSubscriptionChecker}" />
+</apex:pageBlockSectionItem>
+
+
+</apex:pageBlockSection>
+<br/>
+</apex:pageBlock>
+
+</apex:form>
+
+</apex:tab>
+
+<apex:tab label="Blocked Notifications"> 
+<apex:form id="blockedNotificationsForm">
+<p>Current contents of the Blocked Notifications queue.  Silent Post and IPN notifications for the following transaction Ids will be rejected by the Payment Terminal 
+relay scripts to prevent notifications from overwriting data on existing Payment records that have been processed successfully under a different transaction Id.
+</p>
+<apex:pageblock title="Blocked Transaction Ids">
+<apex:pageBlockTable value="{!BlockedNotifications}" var="item">
+<apex:column value="{!item.Name}"/> 
+<apex:column value="{!item.kugo2p__Transaction_Id__c}"/> 
+<apex:column value="{!item.CreatedDate}"/> 
+<apex:column >
+<apex:commandLink action="{!removeBlockedNotification}" value="Remove" rerender="blockedNotificationsForm" >
+    <apex:param id="blockedNotificationId" name="blockedNotificationId" value="{!item.Id}" assignTo="{!selectedBlockedNotification}" />
+</apex:commandLink> 
+</apex:column>
+</apex:pageBlockTable>
+</apex:pageblock>
+</apex:form>
+</apex:tab>
+
+<apex:tab label="Activities"  rendered="false">
+<div class="pageBlockSubtext">General Payment Terminal error and trace activities. 
+ For processor connection-specific error and trace activities also check the related activities list on each processor connection detail page.</div>
+<apex:relatedList list="OpenActivities" pageSize="10"/>
+<apex:relatedList list="ActivityHistories" pageSize="10"/>
+</apex:tab>
+
+
+</apex:tabPanel>
+</apex:outputPanel>
+
+</apex:page>

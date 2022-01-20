@@ -1,0 +1,14 @@
+Dear {!Contact.FirstName},
+
+We inform you that your case {!Case.CaseNumber}  is now escalated to the product team.
+
+Case Number: {!Case.CaseNumber} 
+Case Subject: {!Case.Subject}
+
+You will hear from us soon.
+
+Kind regards,
+
+{! IF(User.Username=='support_team@copa.do', '', User.Name) } 
+
+{!Case.Thread_Id}

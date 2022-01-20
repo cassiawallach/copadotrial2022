@@ -1,0 +1,494 @@
+<apex:page controller="G2Crowd.G2DiscoverVisitors" sidebar="false">
+  <apex:slds />
+  <c:G2_Base_Includes />
+
+  <apex:includeScript value="{!$Resource.G2Crowd__visiting_organizations_js}" />
+
+  <script type="text/javascript">
+    (function () {
+      if (G2 && G2.app && G2.$) {
+        G2.VisitingOrganizations = {};
+        G2.VisitingOrganizations.vars = {
+          HasAccess: '{!HasAccess}',
+          LeadMapping: '{!LeadMapping }',
+          ProductList: G2.$.parseJSON('{!JSENCODE(RawProductList)}'),
+          APIToken: '{!APIToken}'
+        };
+
+        G2.VisitingOrganizations.callouts = {
+          AssignVisitor: '{!$RemoteAction.G2DiscoverVisitors.AssignVisitor}',
+          GetMappedOrganizations: '{!$RemoteAction.G2DiscoverVisitors.GetMappedOrganizations}',
+          GetMappedLeads: '{!$RemoteAction.G2DiscoverVisitors.GetMappedLeads}'
+        };
+
+        var event = new Event('readyVisitingOrganizations');
+        document.dispatchEvent(event);
+      }
+    })()
+  </script>
+
+  <div class="slds-scope">
+    <div ng-app="G2Crowd" class='G2Crowd'>
+      <div ng-controller="G2CrowdOrganizations">
+        <div ng-cloak='true' ng-if='HasAccess' style='position: relative;'>
+          <div ng-cloak='true'>
+            <c:G2Notice />
+
+            <a target='_blank' href='https://www.g2crowd.com' style='position: absolute; top: -6px; right: 36px; z-index: 1;'>
+              <img src='{!$Resource.G2Logo}' style='height: 30px;' />
+            </a>
+            <div ng-if='Product.UUID == undefined || Product.UUID == ""' style='height: 150px; display: flex; justify-content: center; align-items: center; padding-bottom: 50px;'>
+              <div>
+                Please select a product to see visitors
+                <span>
+                  <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                      <div class="slds-select_container">
+                        <select ng-model="Product.UUID" ng-change='productSelected()' class="slds-select" ng-options="p.G2Crowd__G2_Unique_Identifier__c as p.Name for p in ProductList"
+                          style='height: 34px; margin-right: 16px; background-color: white; font-size: 13px;'>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+
+            <div ng-if='Product.UUID !== undefined && Product.UUID !== ""' class='full-width-form'>
+              <div class="slds-form slds-form_stacked slds-p-bottom_medium" style='display: flex; justify-content: space-between; flex-wrap: wrap;'>
+                <div class="slds-form-element" style="width: 30%; margin-top: 16px;">
+                  <label class="slds-form-element__label" for="Organization">Organization Name</label>
+                  <div class="slds-form-element__control">
+                    <input type="text" id="Organization" class="slds-input" placeholder="Organization Name" ng-model="search.Organization" />
+                  </div>
+                </div>
+                <div class="slds-form-element" style="width: 30%; margin-top: 16px;">
+                  <label class="slds-form-element__label" for="Company Size">Organization Size</label>
+                  <div class="slds-form-element__control">
+                    <div class="slds-select_container">
+                      <select class="slds-select" id="CompanySize" ng-model="search.CompanySize" ng-options="item as item + ' employees' for item in ['1-10', '11-50', '51-250', '251-1000', '1000+'] track by item">
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="slds-form-element" style="width: 30%; margin-top: 16px;; display: flex; justify-content: space-between;">
+                  <div style='width: 45%;'>
+                    <label class="slds-form-element__label" for="StartDate">Start Date</label>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                        <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#event')}"></use>
+                        </svg>
+                        <input id="date" class="slds-input" type="text" placeholder="Pick a Date" label="Date Picker Label" />
+                      </div>
+                    </div>
+                  </div>
+                  <div style='width: 45%;'>
+                    <label class="slds-form-element__label" for="EndDate">End Date</label>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                        <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#event')}"></use>
+                        </svg>
+                        <input id="EndDate" class="slds-input" type="text" placeholder="Pick a Date" label="Date Picker Label" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slds-form-element" style="width: 30%; margin-top: 16px;">
+                  <label class="slds-form-element__label" for="Country">Country</label>
+                  <div class="slds-form-element__control">
+                    <div class="slds-select_container">
+                      <select class="slds-select" id="Country" ng-model="search.Country" ng-options="item as item.name for item in Countries track by item.code">
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="slds-form-element" style="width: 30%; margin-top: 16px;">
+                  <label class="slds-form-element__label" for="Region">Region</label>
+                  <div class="slds-form-element__control">
+                    <div class="slds-select_container">
+                      <div ng-if='search.Country !== undefined && search.Country !== "" && search.Country !== null'>
+                        <div isteven-multi-select='true' input-model="InputRegions" output-model="search.Region" button-label="name" item-label="name"
+                          tick-property="ticked">
+                        </div>
+                      </div>
+                      <div ng-if='search.Country === undefined || search.Country === "" || search.Country === null'>
+                        <select class="slds-select" disabled='true'>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slds-form-element" style="width: 30%; margin-top: 16px;"></div>
+
+              </div>
+              <div style='display: flex; justify-content: space-between;'>
+                <div>
+                  <button ng-click='executeSearch()' class="slds-button slds-button_brand slds-m-bottom_medium">Search</button>
+                  <button ng-click='clear()' class="slds-button slds-button_neutral slds-m-bottom_medium">Clear</button>
+                </div>
+                <div>
+                  <button ng-click='setShowMapped(!showMapped)' class="slds-button slds-button_neutral slds-m-bottom_medium">
+                    <span ng-if='!showMapped'>Show Mapped ({{orgLength}})</span>
+                    <span ng-if='showMapped'>Hide Mapped</span>
+                  </button>
+                </div>
+              </div>
+              <div class="slds-form-element slds-m-bottom_medium" style="float: right;">
+                <label class="slds-form-element__label" for="Sort By">Sort By</label>
+                <div class="slds-form-element__control">
+                  <div class="slds-select_container">
+                    <select class="slds-select" id="SortBy" ng-change='executeSearch()' ng-model="search.SortBy" ng-options="item as item[0] for item in SortOptions track by item[1]">
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-text-body_regular">
+                <thead>
+                  <tr class="slds-text-title_caps">
+                    <th scope="col">
+                      <div class="slds-truncate" title="Organization">Organization</div>
+                    </th>
+                    <th scope="col">
+                      <div class="slds-truncate" title="Location">Location</div>
+                    </th>
+                    <th scope="col">
+                      <div class="slds-truncate" title="Overview">Overview</div>
+                    </th>
+                    <th scope="col">
+                      <div class="slds-truncate" title="Mapped Accounts">Mapped Accounts
+                      </div>
+                    </th>
+                    <th scope="col">
+                      <div class="slds-truncate" title="Edit"></div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="visit in Visits" ng-if='showMapped || (MappedOrgs[visit.org_id].account === undefined && !showMapped)'>
+                  <tr>
+                    <td data-label="Organization" style='max-width: 25%;' class='slds-truncate_container_75'>
+                      <svg ng-click='expand(visit.org_id, visit)' ng-if='expanded.indexOf(visit.org_id) === -1' class="expand-{{visit.org_id}} slds-button__icon slds-button__icon_small slds-m-left_medium"
+                        aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#chevronright')}"></use>
+                      </svg>
+                      <svg ng-click='collapse(visit.org_id)' ng-if='expanded.indexOf(visit.org_id) !== -1' class="collapse-{{visit.org_idx}} slds-button__icon slds-button__icon_small slds-m-left_medium"
+                        aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#chevrondown')}"></use>
+                      </svg>
+                      <span class="slds-truncate" title="Organization">
+                        {{visit.org_name}}</span>
+                    </td>
+                    <td data-label="Location">
+                      <div class="slds-truncate" title="Location">
+                        <div ng-if='visit.org_state !== null'>{{visit.org_state}},</div>
+                        <div>{{visit.org_country}}</div>
+                      </div>
+                    </td>
+                    <td data-label="Overview">
+                      <div class="slds-truncate" title="Overview">
+                        <div ng-if="visit.product_profile_pageviews > 0">Profile Views: {{visit.product_profile_pageviews}}</div>
+                        <div ng-if="visit.category_pageviews > 0">Category Views: {{visit.category_pageviews}}</div>
+                        <div ng-if="visit.comparison_pageviews > 0">Comparisons Made: {{visit.comparison_pageviews}}</div>
+                        <div ng-if="visit.competitor_pageviews > 0">Alternatives Viewed: {{visit.competitor_pageviews}}</div>
+                      </div>
+                    </td>
+                    <td data-label="Favorite" class='slds-truncate_container_75'>
+                      <div ng-if="MappedOrgs[visit.org_id] !== undefined && (MappedOrgs[visit.org_id].account !== undefined && MappedOrgs[visit.org_id].account.G2Crowd__Account__r !== undefined) || (MappedOrgs[visit.org_id].account !== undefined && MappedOrgs[visit.org_id].account.G2Crowd__Opportunity__r !== undefined) || (MappedOrgs[visit.org_id].leads !== undefined && MappedOrgs[visit.org_id].leads.length > 0)"
+                        style='display: flex; align-items: center;'>
+                        <div>
+                          <div class="slds-truncate" title="{{MappedOrgs[visit.org_id].account.G2Crowd__Account__r.Name}}">
+                            Account:
+                            <a href='/{{MappedOrgs[visit.org_id].account.G2Crowd__Account__c}}'>{{MappedOrgs[visit.org_id].account.G2Crowd__Account__r.Name}}</a>
+                          </div>
+                          <div class="slds-truncate" title="{{MappedOrgs[visit.org_id].account.G2Crowd__Opportunity__r.Name}}">
+                            Opportunity:
+                            <a href='/{{MappedOrgs[visit.org_id].account.G2Crowd__Opportunity__c}}'>{{MappedOrgs[visit.org_id].account.G2Crowd__Opportunity__r.Name}}</a>
+                          </div>
+                          <div class="slds-truncate" ng-if="LeadMapping">
+                            Leads: {{MappedOrgs[visit.org_id].leads.length}}
+                          </div>
+                        </div>
+                      </div>
+                      <button ng-if='!((MappedOrgs[visit.org_id].account !== undefined && MappedOrgs[visit.org_id].account.G2Crowd__Account__r !== undefined) || (MappedOrgs[visit.org_id].account !== undefined && MappedOrgs[visit.org_id].account.G2Crowd__Opportunity__r !== undefined) || (MappedOrgs[visit.org_id].leads !== undefined && MappedOrgs[visit.org_id].leads.length > 0))'
+                        ng-click='open(visit)' class="slds-button slds-button_neutral">Map</button>
+                    </td>
+                    <td style='width: 35px;'>
+                      <div ng-if="(MappedOrgs[visit.org_id].account !== undefined && MappedOrgs[visit.org_id].account.G2Crowd__Account__r !== undefined) || (MappedOrgs[visit.org_id].account !== undefined && MappedOrgs[visit.org_id].account.G2Crowd__Opportunity__r !== undefined) || (MappedOrgs[visit.org_id].leads !== undefined && MappedOrgs[visit.org_id].leads.length > 0)"
+                        style='display: flex; align-items: center;'>
+                        <button ng-click='open(visit)' class="slds-button slds-button_icon slds-button_icon-border" title="Provide description of action"
+                          style='margin-left: 16px;'>
+                          <svg class="slds-button__icon" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#edit')}"></use>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr style='display: none;' id='organization_{{visit.org_id}}'>
+                    <td colspan="5" display='padding: 0'>
+                      <div class='loading-mask loading-mask__absolute' id='organization_loading_{{visit.org_id}}'>
+                        <div class="slds-spinner_container">
+                          <div role="status" class="slds-spinner slds-spinner_large">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div style='display: flex; flex-wrap: wrap;' id='organization_section_{{visit.org_id}}'>
+                        <div class='tile slds-p-bottom_x-large slds-p-top_x-large slds-border_right slds-truncate_container_75' style='min-width: 350px; padding-left: 32px; padding-right: 32px;'>
+                          <div class="slds-text-heading_medium" style="color: #0070d2;">Company Details</div>
+                          <div class='slds-p-top_large'>
+                            <div class='slds-truncate' ng-if='visit.org_name !== null'>
+                              Name: {{visit.org_name}}
+                            </div>
+                            <div class='slds-truncate' ng-if='visit.org_domain !== null'>
+                              Domain:
+                              <a target='_blank' href='https://{{visit.org_domain}}'>{{visit.org_domain}}</a>
+                            </div>
+                            <div class='slds-truncate' ng-if='visit.org_employees_range !== null'>
+                              Employee Count: {{visit.org_employees_range}}
+                            </div>
+                            <div class='slds-truncate' ng-if="visit.org_linkedin !== undefined && visit.org_linkedin !== null && visit.org_linkedin !== ''">
+                              LinkedIn:
+                              <a target='_blank' href='https://www.linkedin.com/{{visit.org_linkedin}}'>{{visit.org_name}}</a>
+                            </div>
+                            <div class='slds-truncate' ng-if='visit.org_annual_revenue !== null'>
+                              Revenue: {{visit.org_annual_revenue | currency}}
+                            </div>
+                            <div>
+                              Most Recent: {{formatted(visit.last_seen_at)}}
+                            </div>
+                            <div>
+                              {{visitTimeframe(detailList[visit.org_id].count, search.StartDate, search.EndDate)}}
+                            </div>
+                          </div>
+                        </div>
+                        <div class='tile slds-p-bottom_x-large slds-p-top_x-large slds-border_right slds-truncate_container_75' style='min-width: 350px; padding-left: 32px; padding-right: 32px;'>
+                          <div class="slds-text-heading_medium" style="color: #{{color(visit.product_profile_pageviews)}}">Profile Views
+                          </div>
+                          <div class='slds-p-top_large' ng-if="visit.product_profile_pageviews > 0">
+                            <b>{{visit.attributes['product-name']}}</b>
+                            <div ng-repeat="(key, count) in detailList[visit.org_id].details" ng-if="key.indexOf('products') === 0" class='slds-truncate'>{{translation(key, '')}} {{count}} times</div>
+                          </div>
+                        </div>
+                        <div class='tile slds-p-bottom_x-large slds-p-top_x-large slds-border_right slds-truncate_container_75' style='min-width: 350px; padding-left: 32px; padding-right: 32px;'>
+                          <div class="slds-text-heading_medium" style="color: #{{color(detailList[visit.org_id].compares.length)}}">Comparisons</div>
+                          <div class='slds-p-top_large'>
+                            <div ng-repeat="compared in detailList[visit.org_id].compares" class='slds-truncate slds-p-bottom_small' style='display: flex; align-items: center;'>
+                              <div style="width: 32px; height: 32px; margin: 0 4px;">
+                                <a target='_blank' href="{{compared.attributes['public-detail-url']}}">
+                                  <img style='max-width: 100%; max-height: 100%; width: 100%; height: 100%;' src='{{compared.attributes.favicon}}' />
+                                </a>
+                              </div>
+                              <a target='_blank' href="{{compared.attributes['public-detail-url']}}">{{compared.attributes.name}}</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class='tile slds-p-bottom_x-large slds-p-top_x-large slds-border_right slds-truncate_container_75' style='min-width: 350px; padding-left: 32px; padding-right: 32px;'>
+                          <div class="slds-text-heading_medium" style="color: #{{color(detailList[visit.org_id].competitors.length)}}">Viewed Alternatives Of</div>
+                          <div class='slds-p-top_large'>
+                            <div ng-repeat="competitor in detailList[visit.org_id].competitors" class='slds-truncate slds-p-bottom_small' style='display: flex; align-items: center;'>
+                              <div style="width: 32px; height: 32px; margin: 0 4px;">
+                                <a target='_blank' href="{{competitor.attributes['public-detail-url']}}">
+                                  <img style='max-width: 100%; max-height: 100%; width: 100%; height: 100%;' src='{{competitor.attributes.favicon}}' />
+                                </a>
+                              </div>
+                              <a target='_blank' href="{{competitor.attributes['public-detail-url']}}">{{competitor.attributes.name}} Alternatives</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class='tile slds-p-bottom_x-large slds-p-top_x-large slds-truncate_container_75' style='min-width: 350px; padding-left: 32px; padding-right: 32px;'>
+                          <div class="slds-text-heading_medium" style="color: #{{color(detailList[visit.org_id].categories.length)}}">Categories Viewed
+                          </div>
+                          <div class='slds-p-top_large'>
+                            <div ng-repeat="category in detailList[visit.org_id].categories" class='slds-p-bottom_small slds-truncate'>
+                              {{category}}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class='slds-m-top_medium slds-m-left_large slds-m-top_medium slds-m-right_large'>
+                        <div class="slds-text-heading_medium" style="color: #0070d2;">Event Stream (Recent {{detailList[visit.org_id].stream.data.length}})</div>
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                          <thead>
+                            <tr class="slds-text-title_caps">
+                              <th scope="col">
+                                <div class="slds-truncate" title="Date">Date</div>
+                              </th>
+                              <th scope="col">
+                                <div class="slds-truncate" title="Event">Page Viewed</div>
+                              </th>
+                              <th scope="col">
+                                <div class="slds-truncate" title="Type">Type</div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat='event in detailList[visit.org_id].stream.data' ng-hide='$index > 4 && (table[visit.org_id] === false || table[visit.org_id] === undefined)'>
+                              <th scope="row" data-label="Time" class='slds-size_1-of-4'>
+                                <div>{{daysAgo(event.attributes.time)}}</div>
+                              </th>
+                              <td data-label="Event" class='slds-size_2-of-4'>
+                                <div style='max-width: 300px; white-space: normal'>
+                                  <a href='{{event.attributes.url}}'>{{event.attributes.title.split('| G2 Crowd')[0]}}</a>
+                                </div>
+                              </td>
+                              <td data-label="Type" class='slds-size_1-of-4'>
+                                <div>{{type(event.attributes.tag)}}</div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class='slds-button' ng-show='detailList[visit.org_id].stream.data.length > 5 && (table[visit.org_id] === false || table[visit.org_id] === undefined)'
+                          ng-click='toggle(visit.org_id, true)'>Show More</div>
+                        <div class='slds-button' ng-show='detailList[visit.org_id].stream.data.length > 5 && table[visit.org_id] === true' ng-click='toggle(visit.org_id, false)'>Show Less</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div style='display: flex; flex-direction: row; justify-content: center; font-size: 16px; margin-top: 16px;'>
+            <div style='padding: 0 4px;' ng-if='Page !== undefined && Page > 1'>
+              <a ng-click='executeSearch(1)'>
+                « First
+              </a>
+            </div>
+            <div style='padding: 0 4px;' ng-if='Page !== undefined && Page > 1'>
+              <a ng-click='executeSearch(Page - 1)'>
+                ‹ Previous
+              </a>
+            </div>
+            <div style='padding: 0 4px;' ng-if='Page !== undefined && Visits.length === 500'>
+              <a ng-click='executeSearch(Page + 1)'>
+                Next ›
+              </a>
+            </div>
+          </div>
+          <div>
+            <div class='slds-button' ng-click='processCSV()'>Download CSV</div>
+            <form method="POST" action="ExportToCSV" style='display: none;'>
+              <textarea name="csvData" value="" />
+              <button type="submit" class='exportSubmit'>
+                Post Submit
+              </button>
+            </form>
+          </div>
+          <div style='float: right;'>Powered by
+            <a href='https://clearbit.com' target='_blank'>Clearbit</a>
+          </div>
+          <div class='lookup-html' style='opacity: 0'>
+            <input class='accountName' ng-model='selection.accountName' />
+            <input class='accountId' ng-model='selection.accountId' />
+            <input class='opportunityName' ng-model='selection.opportunityName' />
+            <input class='opportunityId' ng-model='selection.opportunityId' />
+            <input class='leadName' ng-model='selection.leadName' />
+            <input class='leadId' ng-model='selection.leadId' />
+            <apex:form >
+              <div class="acct-lookup-form" watch-id='true' id-type='account'>
+                <apex:outputLabel >Account </apex:outputLabel>
+                <apex:inputField html-ng-model="selection.defaultAccountName" value="{!event.G2Crowd__G2_Visitor__r.G2Crowd__Account__c}" />
+              </div>
+              <div class="oppty-lookup-form" watch-id='true' id-type='opportunity'>
+                <apex:outputLabel >Opportunity </apex:outputLabel>
+                <apex:inputField html-ng-model="selection.opportunityName" value="{!event.G2Crowd__G2_Visitor__r.G2Crowd__Opportunity__c}" />
+              </div>
+              <div class="lead-lookup-form" watch-id='true' id-type='lead'>
+                <apex:outputLabel >Lead </apex:outputLabel>
+                <apex:inputField html-ng-model="selection.leadName" value="{!event.G2Crowd__G2_Visitor__r.G2Crowd__Lead__c}" />
+              </div>
+            </apex:form>
+          </div>
+          <script type="text/ng-template" id="G2AssignForm.html">
+					<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-modal_large slds-fade-in-open slds-slide-down-cancel">
+					    <div class="slds-modal__container">
+					      <header class="slds-modal__header">
+					        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" ng-click="$ctrl.cancel()">
+					          <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+					            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+					          </svg>
+					          <span class="slds-assistive-text">Close</span>
+					        </button>
+					        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{{$ctrl.organization}}</h2>
+					      </header>
+
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style='display: flex; flex-direction: column; align-items: center; justify-content: center;'>
+                                <div style='display: flex; flex-direction: row; justify-content: space-between; width: 100%;'>
+                                    <div style='display: flex; flex-direction: column; padding: 8px 0;'>
+                                        <div class="slds-form-element" style='display: flex; flex-direction: column; align-items: center;'>
+                                            <label class="slds-form-element__label" for="input-unique-id">Account</label>
+                                            <div class="slds-form-element__control" style='margin-bottom: 8px;'>
+                                                <button class="slds-button slds-button_neutral" ng-if="$ctrl.accountName === undefined || $ctrl.accountName === ''" ng-click="$ctrl.lookup('acct')">Find Account</button>
+                                                <span ng-if="$ctrl.accountName !== undefined && $ctrl.accountName !== ''">
+												{{$ctrl.accountName}}
+												<button ng-click="$ctrl.lookup('acct')" class="slds-button slds-button_icon slds-button_icon-border" title="Provide description of action">
+												  <svg class="slds-button__icon slds-m-left_x-small" aria-hidden="true">
+													<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#edit')}"></use>
+												  </svg>
+												  <span class="slds-assistive-text">Provide description of action</span>
+												</button>
+											</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style='display: flex; flex-direction: column; padding: 8px 0;'>
+                                        <div class="slds-form-element" style='display: flex; flex-direction: column; align-items: center;'>
+                                            <label class="slds-form-element__label" for="input-unique-id">Opportunity</label>
+                                            <div class="slds-form-element__control" style='margin-bottom: 8px;'>
+                                                <button class="slds-button slds-button_neutral" ng-if="$ctrl.opportunityName === undefined || $ctrl.opportunityName === ''" ng-click="$ctrl.lookup('oppty')">Find Opportunity</button>
+                                                <span ng-if="$ctrl.opportunityName !== undefined && $ctrl.opportunityName !== ''">
+												{{$ctrl.opportunityName}}
+												<button ng-click="$ctrl.lookup('oppty')" class="slds-button slds-button_icon slds-button_icon-border" title="Provide description of action">
+												  <svg class="slds-button__icon slds-m-left_x-small" aria-hidden="true">
+													<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#edit')}"></use>
+												  </svg>
+												  <span class="slds-assistive-text">Provide description of action</span>
+												</button>
+											</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style='display: flex; flex-direction: column; padding: 8px 0;' ng-if="$ctrl.LeadMapping">
+                                        <div class="slds-form-element" style='display: flex; flex-direction: column; align-items: center;'>
+                                            <label class="slds-form-element__label" for="input-unique-id">Leads</label>
+                                            <div class="slds-form-element__control" style='margin-bottom: 8px;'>
+                                                <button class="slds-button slds-button_neutral" ng-click="$ctrl.lookup('lead')">Find Lead</button>
+												<div ng-repeat="lead in $ctrl.leads">
+													{{lead.Name}}
+													<button ng-click="$ctrl.remove(lead.Id)" class="slds-button slds-button_icon slds-button_icon-border" title="Provide description of action">
+													  <svg class="slds-button__icon slds-m-left_x-small" aria-hidden="true">
+														<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#delete')}"></use>
+													  </svg>
+													</button>
+												</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+					      <footer class="slds-modal__footer">
+					      	<button class="slds-button slds-button_brand" ng-disable="($ctrl.opportunityName !== undefined && $ctrl.opportunityName !== '') || ($ctrl.accountName !== undefined && $ctrl.accountName !== '')" ng-click="$ctrl.ok()">Save</button>
+					        <button class="slds-button slds-button_neutral" ng-click="$ctrl.cancel()">Cancel</button>
+					      </footer>
+					    </div>
+				  </section>
+		        </script>
+          <div ng-if='loading' class='loading-mask'>
+            <div class="demo-only" style="height: 6rem;">
+              <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_large">
+                  <span class="slds-assistive-text">Loading</span>
+                  <div class="slds-spinner__dot-a"></div>
+                  <div class="slds-spinner__dot-b"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <c:NoAccessMessage />
+      </div>
+    </div>
+  </div>
+</apex:page>

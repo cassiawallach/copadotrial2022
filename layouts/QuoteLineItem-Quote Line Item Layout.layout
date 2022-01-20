@@ -30,23 +30,35 @@
                 <behavior>Required</behavior>
                 <field>Quantity</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Discount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Price__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Unit_Price__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Subtotal</field>
+                <behavior>Edit</behavior>
+                <field>Order_Start_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Discount</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>TotalPrice</field>
+                <field>Order_End_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Description</field>
+                <field>Custom_Discount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>HasSchedule</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -81,14 +93,21 @@
         <style>CustomLinks</style>
     </layoutSections>
     <multilineLayoutFields>Product2Id</multilineLayoutFields>
-    <multilineLayoutFields>ListPrice</multilineLayoutFields>
     <multilineLayoutFields>UnitPrice</multilineLayoutFields>
     <multilineLayoutFields>Quantity</multilineLayoutFields>
-    <multilineLayoutFields>Subtotal</multilineLayoutFields>
-    <multilineLayoutFields>Discount</multilineLayoutFields>
-    <multilineLayoutFields>TotalPrice</multilineLayoutFields>
+    <multilineLayoutFields>Discount__c</multilineLayoutFields>
+    <multilineLayoutFields>Order_Start_Date__c</multilineLayoutFields>
+    <multilineLayoutFields>ListPrice</multilineLayoutFields>
+    <multilineLayoutFields>Order_End_Date__c</multilineLayoutFields>
+    <multilineLayoutFields>Custom_Discount__c</multilineLayoutFields>
     <multilineLayoutFields>QuoteId</multilineLayoutFields>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+    <summaryLayout>
+        <masterLabel>00hb00000011M0h</masterLabel>
+        <sizeX>4</sizeX>
+        <sizeY>0</sizeY>
+        <summaryLayoutStyle>Default</summaryLayoutStyle>
+    </summaryLayout>
 </Layout>

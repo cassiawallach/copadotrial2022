@@ -1,0 +1,59 @@
+<apex:page sidebar="false" title="Sites" controller="JBCXM.GSCommonBroker" tabStyle="Administration__tab">
+     <div id="gs-app-container">
+        <div class="gs-module-container">
+           <div class="gainsight-app" style="width:100%">
+             <gs-root></gs-root>
+            </div>
+        </div>
+     </div>
+    <style>
+        .gs-spaces-admin-cnt {
+            height: calc(100vh - 5rem);
+            width:100%;
+        }
+    </style>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var hc= fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+        var apiEndPoint = hc.gatewayURL;
+        var authorization= "";
+
+        var appSessionId = hc.appSessionId;
+        var appUserId = hc.appUserId;
+        var appOrgId = hc.appOrgId;
+        var GS = GS || {};
+        GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.gainsightTabs = fakeEval('{!JSINHTMLENCODE(GainsightTabs)}');
+
+        GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingCommonBulkEndPoint  ='{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        var host = "SALESFORCE";
+        GS.appName = "gainsight-ng-ui/gainsight-spaces";
+        app = "sites";
+
+    </script>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:Features360 />
+        <script>
+
+            installResources({
+                              scripts: [
+                                    "gainsight-ng-ui/gainsight-spaces/sites/runtime",
+                                    "gainsight-ng-ui/gainsight-spaces/sites/polyfills",
+                                    "gainsight-ng-ui/gainsight-spaces/sites/main"
+                              ],
+                              styles: ["gainsight-ng-ui/gainsight-spaces/sites/styles"]
+                          });
+        </script>
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <script>
+            GS.cdnUrl ="https://localhost:4200/";
+        </script>
+        <script type="text/javascript" src="https://localhost:4200/runtime.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/polyfills.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/scripts.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/vendor.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/styles.js"></script>
+    </apex:outputpanel>
+</apex:page>

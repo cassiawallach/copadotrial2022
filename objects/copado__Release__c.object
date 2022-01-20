@@ -144,10 +144,10 @@
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <deprecated>false</deprecated>
-    <enableActivities>false</enableActivities>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
@@ -235,6 +235,109 @@
         <label>Copado Header Fields</label>
     </fieldSets>
     <fields>
+        <fullName>Blocking_reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Blocking reason</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Close_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This day, the release will be closed for development and no more User Stories will be allowed to be added.</inlineHelpText>
+        <label>Close Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Documentation_Release_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Documentation Release Notes</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Installation_Link_in_Production__c</fullName>
+        <externalId>false</externalId>
+        <label>Installation Link in Production</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Installation_Link_in_Sandbox__c</fullName>
+        <externalId>false</externalId>
+        <label>Installation Link in Sandbox</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Release__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Use this to create a Version Map of related project/services.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>e.g. Backend v45.0.0 will be the parent for Jobs v45.0.0 and API v45.0.0</inlineHelpText>
+        <label>Parent Release</label>
+        <referenceTo>copado__Release__c</referenceTo>
+        <relationshipLabel>Releases</relationshipLabel>
+        <relationshipName>Releases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Sandboxes_Planned_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Planned Date for Customers&apos; Sandboxes</inlineHelpText>
+        <label>Sandboxes Planned Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Technical_Release_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Technical Release Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Visible_in_Community__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Visible in Community</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>copado__Base_Branch__c</fullName>
         <deprecated>false</deprecated>
         <description>All user story feature branches are created out of the main branch of the Deployment Flow. If a Release base branch is specified, all feature branches of user stories linked to the Release will be created out of the base branch.</description>
@@ -243,6 +346,8 @@
         <label>Base Branch</label>
         <length>180</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -253,6 +358,8 @@
         <externalId>false</externalId>
         <label>Description</label>
         <length>10000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
@@ -261,8 +368,11 @@
         <fullName>copado__Planned_Date__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
+        <inlineHelpText>Planned date for Production environments</inlineHelpText>
         <label>Planned Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -276,6 +386,8 @@
         <relationshipLabel>Releases</relationshipLabel>
         <relationshipName>Releases</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -285,6 +397,8 @@
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -301,14 +415,44 @@
                     <label>Planned</label>
                 </value>
                 <value>
-                    <fullName>Released</fullName>
-                    <default>false</default>
-                    <label>Released</label>
-                </value>
-                <value>
                     <fullName>Cancelled</fullName>
                     <default>false</default>
                     <label>Cancelled</label>
+                </value>
+                <value>
+                    <fullName>Blocked</fullName>
+                    <default>false</default>
+                    <label>Blocked</label>
+                </value>
+                <value>
+                    <fullName>Beta</fullName>
+                    <default>false</default>
+                    <label>Beta</label>
+                </value>
+                <value>
+                    <fullName>Ready for Testing</fullName>
+                    <default>false</default>
+                    <label>Ready for Testing</label>
+                </value>
+                <value>
+                    <fullName>Approved by QA</fullName>
+                    <default>false</default>
+                    <label>Approved by QA</label>
+                </value>
+                <value>
+                    <fullName>Rejected by QA</fullName>
+                    <default>false</default>
+                    <label>Rejected by QA</label>
+                </value>
+                <value>
+                    <fullName>Ready for Release</fullName>
+                    <default>false</default>
+                    <label>Ready for Release</label>
+                </value>
+                <value>
+                    <fullName>Released</fullName>
+                    <default>false</default>
+                    <label>Released</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -322,23 +466,124 @@
         <label>Version</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>copadoccmint__External_Id__c</fullName>
-        <caseSensitive>true</caseSensitive>
-        <deprecated>false</deprecated>
-        <externalId>true</externalId>
-        <label>External Id</label>
-        <length>18</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>true</unique>
-    </fields>
     <label>Release</label>
+    <listViews>
+        <fullName>APO_Releases</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>APO Week</value>
+        </filters>
+        <label>APO Releases</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Version__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Planned_Date__c</columns>
+        <columns>Close_Date__c</columns>
+        <columns>copado__Description__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Project__c</field>
+            <operation>contains</operation>
+            <value>backend</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>Backend</value>
+        </filters>
+        <label>Backend</label>
+    </listViews>
+    <listViews>
+        <fullName>Analytics_Releases</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Planned_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>Analytics,DevOps 360,tableau</value>
+        </filters>
+        <label>Analytics Releases</label>
+    </listViews>
+    <listViews>
+        <fullName>Application</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Version__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Planned_Date__c</columns>
+        <columns>Close_Date__c</columns>
+        <columns>copado__Description__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Project__c</field>
+            <operation>contains</operation>
+            <value>Application</value>
+        </filters>
+        <label>Application</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Next_Releases_Calendar</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Project__c</columns>
+        <columns>Close_Date__c</columns>
+        <columns>copado__Planned_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notContain</operation>
+            <value>Cancelled,Rejected by QA,Released</value>
+        </filters>
+        <filters>
+            <field>Parent_Release__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>copado__Planned_Date__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>1/1/2021</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>APO,Playgrounds</value>
+        </filters>
+        <label>Next Releases Calendar</label>
+    </listViews>
+    <listViews>
+        <fullName>Playgrounds_Releases</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>Playgrounds Week</value>
+        </filters>
+        <label>Playgrounds Releases</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
@@ -346,22 +591,22 @@
         <columns>copado__Version__c</columns>
         <columns>copado__Planned_Date__c</columns>
         <columns>copado__Status__c</columns>
-        <columns>copado__Base_Branch__c</columns>
+        <columns>Technical_Release_Notes__c</columns>
+        <columns>copado__Description__c</columns>
+        <columns>Close_Date__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
-        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Release Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Releases</pluralLabel>
     <searchLayouts>
-        <customTabListAdditionalFields>copado__Project__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Version__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Planned_Date__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Base_Branch__c</customTabListAdditionalFields>
         <searchResultsAdditionalFields>copado__Project__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Version__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Planned_Date__c</searchResultsAdditionalFields>
@@ -369,6 +614,17 @@
         <searchResultsAdditionalFields>copado__Base_Branch__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Provide_a_blocking_reason</fullName>
+        <active>true</active>
+        <description>If the release is blocked a reason must be provided</description>
+        <errorConditionFormula>AND(
+TEXT(copado__Status__c)==&quot;Blocked&quot;,
+ISBLANK(Blocking_reason__c)
+)</errorConditionFormula>
+        <errorDisplayField>Blocking_reason__c</errorDisplayField>
+        <errorMessage>You must provide a blocking reason.</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>copado__Validate_spaces_in_version</fullName>
         <active>true</active>
@@ -378,6 +634,25 @@
         <errorMessage>please dont include spaces in version field</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Mass_Add_To_Release2</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Mass Add To Release2</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/{!if($Setup.copado__Settings__c.copado__Namespace__c =&apos;none&apos;,&apos;&apos;,&apos;copado__&apos;)}MassAddToRelease?id={!copado__Release__c.Id}</url>
+    </webLinks>
     <webLinks>
         <fullName>copado__Mass_add_to_Release</fullName>
         <availability>online</availability>

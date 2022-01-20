@@ -128,11 +128,14 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Test_Script_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -155,6 +158,23 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Is_Obsolete__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Is Obsolete</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Total_Steps__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Steps</label>
+        <summaryForeignKey>copado__Test_Script_Step__c.copado__Test_Script__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
     <fields>
         <fullName>copado__Expected_Result__c</fullName>
         <deprecated>false</deprecated>
@@ -355,6 +375,26 @@
     </fields>
     <label>Test Script</label>
     <listViews>
+        <fullName>Regression_Tests_APO</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Test_Title__c</columns>
+        <columns>copado__Org__c</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__User_Story__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Test_Title__c</field>
+            <operation>contains</operation>
+            <value>APO regression</value>
+        </filters>
+        <label>Regression Tests APO</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
         <columns>copado__Test_Title__c</columns>
@@ -362,6 +402,7 @@
         <columns>copado__Project__c</columns>
         <columns>copado__Status__c</columns>
         <columns>copado__User_Story__c</columns>
+        <columns>CREATEDBY_USER</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

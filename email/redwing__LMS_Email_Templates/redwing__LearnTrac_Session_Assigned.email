@@ -1,0 +1,6 @@
+<messaging:emailTemplate subject="{!$Label.redwing__alms_assigned_to_class} {!$Label.redwing__alms_email_session}" recipientType="User" relatedToType="redwing__ILT_Roster__c" language="{!recipient.LanguageLocaleKey}">
+    <messaging:htmlEmailBody >
+        <c:ILTNotification roster="{!relatedTo}" notificationName="LearnTrac_Session_Assigned" />
+    </messaging:htmlEmailBody>
+    <c:ILTNotificationIcsAttachment roster="{!relatedTo}" notificationName="LearnTrac_Session_Assigned" />
+</messaging:emailTemplate>

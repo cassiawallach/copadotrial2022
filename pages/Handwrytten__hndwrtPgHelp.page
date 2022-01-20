@@ -1,0 +1,47 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Help page
+ -->
+<apex:page id="thePage" title="Handwrytten Help" tabstyle="hndwrtTabAcnts__tab" showHeader="false" sidebar="false" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <style>
+    
+        .txtSize {
+            font-size: 14px;
+        }
+    
+    </style>
+
+    <apex:sectionHeader title="Handwrytten" subtitle="Quality Cards, Your Words, In Pen and Ink "/>
+
+    <apex:form >
+    <div class="slds">
+        <apex:pageBlock title="Handwrytten for Salesforce">
+            <apex:outputPanel styleClass="txtSize">
+                Welcome to Handwrytten for Salesforce.com! Select a contact, type your message and our 
+                robots will wryte out your card in the handwryting style of your choice.
+                
+                <ul>
+                    <li>Choose from our beautiful selection of cards</li>
+                    <li>You type, we write</li>
+                    <li>Stamped and Delivered for You! <i>Our prices start at $3.00 and include tax and postage!</i></li>
+                    <li>Include gift cards from your favorite brands. <i>Adding a gift card to your note will truly make your message stand out.</i></li>
+                    <li>Automate your messages! <i>Use templates and other great features to speed your correspondence.Type once. Use over and over!</i></li>
+                </ul>
+                
+                Please see the post&nbsp;<apex:outputLink value="http://cdn.handwrytten.com/sfdc/HandwryttenPostInstallation.pdf" target="_blank"><b>installation instructions</b></apex:outputLink>&nbsp;to get started started.
+
+            </apex:outputPanel>
+            
+            <br/>
+
+            <apex:image id="theImage" value="{!$Resource.Handwrytten__hndwrtRobot}"/>
+        
+        </apex:pageBlock>
+    
+    </div>
+    </apex:form>
+  
+
+</apex:page>

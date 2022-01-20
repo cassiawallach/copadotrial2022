@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Use to mass communicate Service Maintenance.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Sales_Email_Letterhead</letterhead>
+    <name>Release Communication Maintenance</name>
+    <style>formalLetter</style>
+    <subject>MAINTENANCE: Copado affected by Salesforce/Heroku Maintenance</subject>
+    <textOnly>You are receiving this email because our records indicate you are the subscriber to the Copado Application.
+Dear Valued User,
+
+
+At Copado Solutions we have a 0 downtime policy for releases, however when Salesforce or Heroku perform schedule maintenance we are affected by their downtime.
+We would like you to be informed of the following Scheduled Maintenance.
+
+{!Release_Communication__c.What_is_changing__c}
+
+How will this change impact me?
+{!Release_Communication__c.How_will_this_change_impact_me__c}
+
+What action do I need to take?
+{!Release_Communication__c.What_action_do_I_need_to_take__c}
+
+How can I get more information?
+{!Release_Communication__c.How_can_I_get_more_information__c}
+Please rate our app on the AppExchange.
+
+Visit our AppExchange listing by clicking here.
+
+
+
+To unsubscribe click here</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

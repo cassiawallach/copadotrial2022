@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <acrossGroupingContext>BucketField_83676490</acrossGroupingContext>
+        <calculatedFormula>Opportunity.ACV__c.CONVERT:SUM/((CDF1:SUM/RowCount)-PREVGROUPVAL(Opportunity.ACV__c.CONVERT:SUM,BucketField_83676490,1))</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <downGroupingContext>FULL_NAME</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Pipeline Coverage</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>1/(WON:SUM/CLOSED:SUM)</calculatedFormula>
+        <datatype>number</datatype>
+        <description>Based on Win Rate (Record Count)</description>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Coverage Needed</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_9253928</developerName>
+        <masterLabel>Ebsta Grade</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Opportunity.ebsta1__Ebsta_Score__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>40</to>
+            </sourceValues>
+            <value>LOW</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>40</from>
+                <to>60</to>
+            </sourceValues>
+            <value>MEDIUM</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>60</from>
+            </sourceValues>
+            <value>HIGH</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_83676490</developerName>
+        <masterLabel>Opp Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>STAGE_NAME</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Pipeline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Prospecting</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trial</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Proposition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Demo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation/Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Procurement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <value>Open</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <value>Closed Won</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <value>Closed Lost</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA1</column>
+        </chartSummaries>
+        <chartType>VerticalColumnGrouped</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>FULL_NAME</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_83676490</secondaryGroupingColumn>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Coverage vs Needed</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Alliances_Owner__c</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <field>BucketField_9253928</field>
+    </columns>
+    <columns>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Next_Contact__c</field>
+    </columns>
+    <columns>
+        <field>NEXT_STEP</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>CASE(FULL_NAME,
+&quot;Marcel Assaraf&quot;,1110000,
+&quot;Juan Pablo Heitz&quot;,600000,
+&quot;Steve Harris&quot;,1125000,
+&quot;Andrew Kline&quot;,960000,
+&quot;Brad Benz&quot;,1350000,
+&quot;Caitlin Ursini&quot;,1100000,
+&quot;Dan McDevitt&quot;,1020000,
+&quot;Gabriel Deupree&quot;,1350000,
+&quot;Kris Jacobs&quot;,1200000,
+&quot;Kyle Phelan&quot;,1000000,
+&quot;Maci Hansen&quot;,950000,
+&quot;Matt Sterner&quot;,1020000,
+&quot;Patrick Boyle&quot;,1500000,
+&quot;Paul Litterer&quot;,1400000,
+&quot;Russell Lott&quot;,1350000,
+&quot;Steve Harris&quot;,1125000,
+&quot;Todd Shelton&quot;,1600000,
+&quot;Zachary Bayer&quot;,1600000,
+0)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Coverage Helper</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Account Executive Scorecard</description>
+    <filter>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer,Add-on,New Business Add-on,Growth</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>OWNER_MANAGER</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Anish Patel,Matt Hill,Kevin Robinson</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_83676490</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FULL_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>FY21 - Pipeline Coverage</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

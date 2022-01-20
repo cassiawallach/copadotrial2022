@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>if(OR(Opportunity.IsClosed:SUM=0,ISBLANK(Opportunity.IsClosed:SUM)),NULL,
+    Opportunity.IsWon:SUM/Opportunity.IsClosed:SUM)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Win Rate (#)</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF(OR(Opportunity.TCV_Closed__c.CONVERT:SUM=0,ISBLANK(Opportunity.TCV_Closed__c.CONVERT:SUM)),NULL,
+Opportunity.TCV_Won__c.CONVERT:SUM/Opportunity.TCV_Closed__c.CONVERT:SUM)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Win Rate ($)</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_75724531</developerName>
+        <masterLabel>Team Source</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity$CreatedBy.UserRole</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Continental EMEA Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Core Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>EMEA Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Financial Services Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>High Tech Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>HighTech Strategic Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>HLS Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Non AOV Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Public Sector Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Retail &amp; CG Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Testing Overlay Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Insurance Strategic Sales</sourceValue>
+            </sourceValues>
+            <value>AE</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Alliances Team</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP, Alliances</sourceValue>
+            </sourceValues>
+            <value>Alliances</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>BDR Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marketing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marketing Analyst</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>SVP, Marketing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Senior Director, Development</sourceValue>
+            </sourceValues>
+            <value>Marketing</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Account Manager</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Customer Success Manager</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP, Customer Solutions</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP, Customer Success</sourceValue>
+            </sourceValues>
+            <value>CSM</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_43195690</developerName>
+        <masterLabel>Team Source (manager role)</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Opportunity$CreatedBy.Manager.UserRole</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>VP EMEA Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP Commercial Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP AMER Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Testing Overlay Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP Testing Overlay Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP Sales Retail &amp; CG</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP Sales NonAOV</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP Sales HLS&amp;GOV</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP Sales High Tech</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP Sales Financial Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP Sales Core</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>RVP, Sales Continental EMEA</sourceValue>
+            </sourceValues>
+            <value>Sales</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Alliances Team</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP, Alliances</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>CEO</sourceValue>
+            </sourceValues>
+            <value>Alliances</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>BDR Sales</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>SVP, Marketing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marketing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marketing Analyst</sourceValue>
+            </sourceValues>
+            <value>Marketing</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Account Manager</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Customer Success Manager</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP, Customer Solutions</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP, Customer Success</sourceValue>
+            </sourceValues>
+            <value>CSM</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity$CreatedBy</field>
+    </columns>
+    <columns>
+        <field>Opportunity$CreatedBy.Manager.UserRole</field>
+    </columns>
+    <columns>
+        <field>Opportunity$IsClosed</field>
+    </columns>
+    <columns>
+        <field>Opportunity$IsWon</field>
+    </columns>
+    <columns>
+        <field>Opportunity$ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity$StageName</field>
+    </columns>
+    <columns>
+        <field>Opportunity$SAL_Acceptance_Date__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity$LeadSource</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Account</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Account.Owner</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Type</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>if(Opportunity.SAL_Acceptance_Date__c&lt;=today(),&apos;SAL&apos;,
+if(Opportunity.SQL_Transfer_Date__c&lt;=today(),&apos;SQL&apos;,&apos;SQL&apos;))</calculatedFormula>
+        <dataType>Text</dataType>
+        <developerName>CDF1</developerName>
+        <label>Conversion Status</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity$CreatedBy.UserRole</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>System administrator,sales operations</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Account.Vertical__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>FINS</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Account.Region__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>AMER</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$IsClosed</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Lost_Reason__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Duplicate/replace by another Opp</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$StageName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Closed Duplicate</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer,Renewal,Add-on,New Business Add-on</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity$Fiscal_Quarter__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_43195690</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CFY - Closed/Won Opps - FINS</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunities_with_Additional_Info__c</reportType>
+    <roleHierarchyFilter>System_Administrator</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

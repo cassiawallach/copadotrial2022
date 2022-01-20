@@ -1,0 +1,19 @@
+<apex:page sidebar="true">
+    <apex:includeLightning />
+    
+    <div id="LcDisplayId"></div> 
+    
+    <script>
+
+    $Lightning.use("AVA_SFCPQ:AvaTaxConfigApp", function() {
+ 
+        $Lightning.createComponent("AVA_SFCPQ:AvaTaxConfigCmp",
+                                   {
+                                       sessionId : "{!$API.Session_ID}"
+                                   },
+                                   "LcDisplayId",
+                                   function(component) {}
+                                  );
+    });
+    </script>
+</apex:page>

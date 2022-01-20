@@ -1,0 +1,15 @@
+<aura:component controller="cps_PlaygroundWizardController" access="global" >
+	<aura:attribute name="channel" type="String" default="/event/Playground_Job_Event__e"/>
+    
+    <ltng:require scripts="{! $Resource.copado1p__cometd }" afterScriptsLoaded="{! c.onCometdLoaded }" />
+
+    <aura:attribute name="cometd" type="Object" />
+    <aura:attribute name="cometdSubscriptions" type="Object[]" />
+    <aura:attribute name="sessionId" type="String" />
+    <aura:attribute name="notification" type="Object" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:registerEvent name="c1p_notifier" type="c:cps_c1p_notifier"/>
+
+    <div> </div>    
+</aura:component>

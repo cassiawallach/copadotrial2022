@@ -1,0 +1,85 @@
+<apex:page standardController="redwing__Training_Activity__c" sidebar="false">
+
+    <script src="{!URLFOR($Resource.lmscore_uilib, '/js/jquery.min.js')}" />
+
+    <apex:outputPanel layout="none" rendered="{!$CurrentPage.parameters.lnid == null}">
+        <apex:sectionHeader title="{!$Label.redwing__alms_manage_assignments}" subtitle="{!redwing__Training_Activity__c.redwing__Learning_Name__c}">
+            <div class="bPageTitle" style="padding:0px;">
+                <div class="ptBreadcrumb">&nbsp;&lt;&lt;&nbsp;
+                    <a href="/{!Training_Activity__c.Id}">{!$Label.ALMS_Training_Activity_Back}</a>
+                </div>
+            </div>
+        </apex:sectionHeader>
+    </apex:outputPanel>
+    <apex:outputPanel layout="none" rendered="{!$CurrentPage.parameters.lnid != null}">
+        <apex:sectionHeader title="{!$Label.redwing__alms_manage_assignments}" subtitle="{!redwing__Training_Activity__c.redwing__Learning_Name__c}">
+            <div class="bPageTitle" style="padding:0px;">
+                <div class="ptBreadcrumb">&nbsp;&lt;&lt;&nbsp;
+                    <a href="/{!JSENCODE($CurrentPage.parameters.lnid)}">{!$Label.ALMS_Learning_Back}</a>
+                    <span style="padding: 0 0 0 10px;"><a href="/{!Training_Activity__c.Id}">{!$Label.ALMS_View_Activity_Details}</a></span>
+                </div>
+            </div>
+        </apex:sectionHeader>
+    </apex:outputPanel>
+
+    <style>
+        .lmsTabActive{
+            background-image:none;
+            background-color:#eee;
+            font-size:12px;
+        }
+        .lmsTabInActive{
+            background-image:none;
+            background-color:#ddd;
+            font-size:12px;
+        }
+    </style>
+
+    <apex:actionStatus id="status">
+        <apex:facet name="start">
+            <c:LMSStatus />
+        </apex:facet>
+    </apex:actionStatus>
+
+    <apex:form >
+        <apex:pageBlock rendered="{! IF(Training_Activity__c.Learning__r.Published__c == false, true, false) }">
+
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="{!$Label.redwing__alms_cancel}" action="{!cancel}" />
+            </apex:pageBlockButtons>
+
+            <apex:outputPanel layout="none">
+                <apex:pageMessage severity="error" strength="2" title="Error:" summary="{!$Label.redwing__alms_unpublished_learning_message}"/>
+            </apex:outputPanel>
+
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:tabPanel rendered="{!IF(redwing__Training_Activity__c.Learning__r.redwing__Published__c == true, true, false)}"
+        value="{!IF($CurrentPage.parameters.stab != null,$CurrentPage.parameters.stab,'upsertTab')}"
+        id="theTabPanel"
+        switchType="client"
+        activeTabClass="lmsTabActive"
+        inactiveTabClass="lmsTabInActive"
+    >
+        <apex:tab label="{!$Label.redwing__alms_create_assignments}" name="upsertTab" id="tabOne">
+            <apex:include pageName="redwing__TrainingActivityAssignmentNew"/>
+        </apex:tab>
+        <apex:tab label="{!$Label.redwing__alms_single_assignments}" name="singleUpsertTab" id="tabFour">
+            <apex:include pageName="redwing__TrainingActivityAssignmentNewSingle"/>
+        </apex:tab>
+        <apex:tab label="{!$Label.redwing__alms_update_delete_assignments}" name="updatedeleteTab" id="tabTwo">
+            <apex:include pageName="redwing__TrainingActivityAssignmentExisting"/>
+        </apex:tab>
+    </apex:tabPanel>
+
+    <script>
+        $j = jQuery.noConflict();
+        function selectAllCBs(className){
+            $j('.'+className).prop('checked',true);
+        }
+        function unSelectAllCBs(className){
+            $j('.'+className).prop('checked',false);
+        }
+    </script>
+</apex:page>

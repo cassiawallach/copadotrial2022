@@ -1,0 +1,119 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account New Card page
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjAccount__c" extensions="Handwrytten.hndwrtClsCrdtCrdsNew" title="Handwrytten Account Add Credit Card: {!Handwrytten__hndwrtObjAccount__c.Name}" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theForm">
+    <div class="slds">
+    
+    <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+        
+        <apex:sectionHeader title="Handwrytten" subtitle="New Credit Card" help="/apex/hndwrtPgHelp" />
+    
+        <apex:pageBlock title="New Credit Card" mode="Edit">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Add Card" action="{!saveCreditCard}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Credit Card Information" columns="2">
+            
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Name}"/>
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Email__c}"/>
+				
+				<apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="First Name"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText value="{!firstName}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Last Name"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText value="{!lastName}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Address"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText value="{!billingAddr}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="City"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText value="{!city}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="State"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText value="{!state}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Zip Code" for="itZip"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText id="itZip" label="Zip" value="{!zip}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+				
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Card Number" for="itCardNum"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText value="{!cardNum}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="CCV" for="itCCV"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText value="{!cardccv}" required="true"/>  
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Expiration Date" for="monthList"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:SelectList size="1" id="monthsList"  value="{!month}" >
+                            <apex:selectOptions value="{!months}" />
+                        </apex:SelectList>
+                        <apex:SelectList size="1" id="yearsList"  value="{!year}" >
+                            <apex:selectOptions value="{!years}" />
+                        </apex:SelectList>     
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                
+                
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+        </div>
+    </apex:form>
+</apex:page>

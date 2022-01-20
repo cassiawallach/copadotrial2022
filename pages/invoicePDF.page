@@ -1,0 +1,169 @@
+<apex:page standardController="Invoice__c" extensions="invoicePDFextension" id="thePage" showHeader="false" standardStylesheets="false" renderAs="pdf">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <apex:stylesheet value="{!URLFOR($Resource.InvoiceStyleSheet)}"/>
+        <title>Copado Invoice: {!invoice.name}</title>
+    </head>
+    
+    <div id="logo">
+        <img alt="Home" src="{!URLFOR($Resource.WebsitePack, '/Images/CopadoLogo.png')}"/>
+    </div>
+    <div class="clear"> </div>
+    
+    <div id="leftSection">
+        <b>Bill to:</b><br />
+        <apex:outputText id="companyName" value="{!if(not(isblank(invoice.Account__r.Billing_Name__c)),invoice.Account__r.Billing_Name__c,invoice.Account__r.Name)}" /><br />
+        <apex:outputField value="{!invoice.Account__r.BillingStreet}" /><br />
+        <apex:outputField value="{!invoice.Account__r.BillingCity}" />{!if(invoice.Account__r.BillingPostalCode!=null, ', ','')}<apex:outputText value="{!invoice.Account__r.BillingPostalCode}" /><br />
+        <apex:outputField value="{!invoice.Account__r.BillingState}" /><br />
+        <apex:outputField value="{!invoice.Account__r.BillingCountry}" /><br />
+        VAT Number:&nbsp;<apex:outputField id="companyVAT" value="{!invoice.Account__r.VAT_Number__c}" /><br />
+        
+    </div>
+    
+    <div id="rightSection">
+        <table>
+            <tr>
+                <td class="col1">
+                    <b>Invoice Number</b><br />
+                    <apex:outputField value="{!Invoice__c.Name}"/><br /><br />
+                    <b>Invoice Date</b><br />
+                    <apex:outputField id="invoiceDate" value="{!Invoice__c.Invoice_Date__c}"/><br /><br />
+                    <b>Invoice Due Date</b><br />
+                    <apex:outputField id="invoiceDueDate" value="{!Invoice__c.Due_Date__c}"/><br /><br />
+                    <b>Days to Pay</b><br />
+                    <apex:outputField id="invoiceDaystoPay" value="{!Invoice__c.Days_to_Pay__c}"/><br /><br />
+                    <b>PO Number</b><br />
+                    <apex:outputField id="invoicePO" value="{!Invoice__c.PO_number__c}"/><br /><br />
+                    <b>Invoice Status</b><br />
+                    <apex:outputText id="invoiceStatus" value="{!Invoice__c.Status__c}" />
+                </td>
+                <td class="col2">
+                    Copado Solutions SL<br />
+                    Calle Basauri 6<br />
+                    28023 Madrid<br />
+                    Spain<br />
+                    CIF: B86815370
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="clear" style="padding-bottom:50px;"> </div>
+    
+    <div id="lineItems">
+        <table id="tbl_lineItems">
+            <tr>
+                <th class="col1">Service</th>
+                <th class="col2">Start Date</th>
+                <th class="col3">End Date</th>
+                <th class="col4">Quantity</th>
+                <th class="col5">Unit Price</th>
+                <th class="col6">Total Price</th>
+            </tr>
+            <tr>
+                <td colspan="7"><hr/></td>
+            </tr>
+        <apex:repeat id="rptLineItem" value="{!lineItems}" var="li">
+            <tr>
+                <td class="col1"><apex:outputField value="{!li.name}" /></td>
+                <td class="col2"><apex:outputField value="{!li.Start_Date__c}" /></td>
+                <td class="col3"><apex:outputField value="{!li.End_Date__c}" /></td>
+                <td class="col4"><apex:outputField value="{!li.Quantity__c}" /></td>
+                <td class="col5"><apex:outputText value="{!invoice.CurrencyIsoCode} {0,number,#,###.00}">
+                        <apex:param value="{!li.Unit_Price__c}" />
+                    </apex:outputText></td>
+                <td class="col6"><apex:outputText value="{!invoice.CurrencyIsoCode} {0,number,#,###.00}">
+                        <apex:param value="{!li.Total_Price__c}" />
+                    </apex:outputText></td>
+            </tr>
+            <tr>
+                <td colspan="7" style="color:#cccccc;"><hr/></td>
+            </tr>
+        </apex:repeat>
+        </table>
+    </div>
+    <div class="clear"> </div>
+    
+    <div id="lineItemTotals">
+        <table id="tbl_totals">
+            <tr>
+                <td class="col1"></td>
+                <td class="col2"></td>
+                <td class="col3">Subtotal</td>
+                <td class="col4"><apex:outputText value="{!invoice.CurrencyIsoCode} {0,number,#,###.00}">
+                        <apex:param value="{!invoice.Invoice_Amount__c}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td class="col1"></td>
+                <td class="col2"></td>
+                <td class="col3">VAT Amount (21%)</td>
+                <td class="col4"><apex:outputText value="{!invoice.CurrencyIsoCode} {0,number,#,###.00}" rendered="{!invoice.VAT_Amount__c>0}">
+                        <apex:param value="{!invoice.VAT_Amount__c}" />
+                    </apex:outputText><apex:outputText value="{!invoice.CurrencyIsoCode} 0.00" rendered="{!invoice.VAT_Amount__c=0}"/></td>
+            </tr>
+            <tr style="display:{!if(not(isblank(Invoice__c.Discount__c)),'true','none')}">
+                <td class="col1"></td>
+                <td class="col2"></td>
+                <td class="col3">Discount ({!Invoice__c.Discount__c})%</td>
+                <td class="col4">-<apex:outputText value="{!invoice.CurrencyIsoCode} {0,number,#,###.00}">
+                        <apex:param value="{!invoice.Discounted_Amount__c}" />
+                    </apex:outputText></td>
+            </tr>
+            <tr style="display:{!if(not(isblank(Invoice__c.Discount_off__c)),'true','none')}">
+                <td class="col1"></td>
+                <td class="col2"></td>
+                <td class="col3">Discount</td>
+                <td class="col4">-<apex:outputText value="{!invoice.CurrencyIsoCode} {0,number,#,###.00}">
+                        <apex:param value="{!invoice.Discounted_Amount__c}" />
+                    </apex:outputText></td>
+            </tr>
+            <tr>
+                <td class="col1"></td>
+                <td class="col2"></td>
+                <td colspan="2"><hr /></td>
+            </tr>
+            <tr>
+                <td class="col1"></td>
+                <td class="col2"></td>
+                <td class="col3">Invoice Total</td>
+                <td class="col4"><apex:outputText value="{!invoice.CurrencyIsoCode} {0,number,#,###.00}">
+                        <apex:param value="{!invoice.Total_Amount__c}" />
+                    </apex:outputText></td>
+            </tr>
+        </table>
+    </div>
+    <div class="clear"> </div>
+    
+<p> <apex:outputField value="{!Invoice__c.Invoice_Notes__c}"/> </p>
+<br/>
+    <p style="display:{!if(Invoice__c.Payment_method__c='Transfer','yes','none')}">Payment details:  Deutsche Bank	</p>
+    <table width="100%" style="border-spacing: 10px; border:1px solid black;text-align:center; display:{!if(Invoice__c.Payment_method__c='Transfer','yes','none')}">
+        <tr>
+            <td><b>OWNER</b></td>
+            <td><b>CURRENCY</b></td>
+            <td><b>IBAN</b></td>
+            <td><b>BIC/SWIFT CODE</b></td>
+        </tr>
+        <tr  style="display:{!if(Invoice__c.CurrencyIsoCode!='USD','yes','none')}">
+            <td>Copado Solutions SL</td>
+            <td>EUR</td>
+            <td>ES90 0019 0472 9740 1004 4900</td>
+            <td>DEUTESBBXXX</td>
+        </tr>
+        <tr  style="display:{!if(Invoice__c.CurrencyIsoCode='USD','yes','none')}">
+            <td>Copado Solutions SL</td>
+            <td>USD</td>
+            <td>ES59 0019 0472 9440 5204 8254</td>
+            <td>DEUTESBBXXX</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="border-top: 1px solid black;text-align:left">
+                <br />
+                Reminder: Invoice payments are to be received in full, where sender pays all transfer fees. Funds need to be sent in the currency indicated on the invoice and will be received in full by Copado Solutions SL. Any differences will be raised as an additional invoice.
+                <br /><br />Cheques are not accepted.
+            </td>
+        </tr>
+    </table>
+</apex:page>

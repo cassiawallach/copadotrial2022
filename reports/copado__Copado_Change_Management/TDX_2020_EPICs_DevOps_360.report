@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>copado__User_Story__c.copado__Story_Points_SFDC__c:SUM / copado__User_Story__c.copado__Story_Points_Other__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>It calculates the % of actual points completed</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Actual Progress (Story Points)</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_94433941</developerName>
+        <masterLabel>Main Epic</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Parent_Epic_Title__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Git Repository in Source DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Git Commit Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Git SnapShot Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Simplified DX Format (Happy path)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Deploy Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Promotion Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format: Autoresolve</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format: 3rd Iteration</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format: Autoresolve - 2nd iteration</sourceValue>
+            </sourceValues>
+            <value>Simplified DX Format</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_959820</developerName>
+        <masterLabel>Main Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Status__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Completed</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tested in Base Package</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Released</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Beta</sourceValue>
+            </sourceValues>
+            <value>Completed</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>In Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Testing</sourceValue>
+            </sourceValues>
+            <value>In Progress</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Draft</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Backlog</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Backburner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Awaiting Approval</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Approved</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Waiting for customer</sourceValue>
+            </sourceValues>
+            <value>Pending</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Cancelled</sourceValue>
+            </sourceValues>
+            <value>Cancelled</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>copado__User_Story__c.copado__Story_Points_Other__c</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>copado__User_Story__c.copado__Story_Points_SFDC__c</column>
+        </chartSummaries>
+        <chartType>VerticalColumn</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>copado__User_Story__c.copado__Parent_Epic_Title__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>true</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_Other__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>copado__User_Story__c.copado__Progress__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Sprint__c</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <currency>EUR</currency>
+    <description>Summary of  v16 DevOps 360 (VSM and Analytics) epics.</description>
+    <filter>
+        <booleanFilter>1 AND 2 AND 3 AND 4 AND (5 OR 6 OR 7)</booleanFilter>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Project__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>design,academy,success,infra</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Rejected,Cancelled</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CUST_RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>copado__User_Story__c.Subtask</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$copado__Epic__c.copado__Release__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>v16</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$copado__Epic__c.Parent_Epic_Name__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Value Stream Mapping</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$copado__Epic__c.copado__Epic_Title__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Value Stream Mapping</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$copado__Epic__c.copado__Epic_Title__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>DevOps 360 Metrics</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Parent_Epic_Title__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_959820</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>TDX 2020 EPICs - DevOps 360</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Epic__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

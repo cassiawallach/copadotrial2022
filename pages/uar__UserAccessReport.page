@@ -1,0 +1,1274 @@
+<apex:page controller="uar.UserAccessReportController" showheader="false" sidebar="false" lightningStyleSheets="true" >
+    <apex:slds />
+<style>
+.red {
+    background-color: red;
+    color: white;
+}
+.green {
+    background-color: green;
+    color: white;
+}  
+.yellow {
+    background-color: yellow;
+    color: black;
+}   
+.hide {
+    visibility: hidden;
+}
+.green-highlight {
+    background: #00ff00;
+}
+.highlight-values {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.disclaimer {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+}
+.important {
+    font-size: 2em;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+h1 {
+    font-size: 2em;
+}
+
+.verticalText {
+    text-orientation: mixed;
+    writing-mode: vertical-rl;
+    max-height: 250px;
+    display: inline-block;
+    border: 0;
+    padding: 5px;
+}
+
+.subTable {
+    background: #ffffed;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.wrapper {
+    padding: 2rem;
+}
+
+.wrapper h1 {
+    font-size: 22px;
+}
+
+.wrapper th {
+    white-space: normal;
+    padding: 10px;
+}
+
+.wrapper td {
+    padding: 0px 10px 0px 10px;
+}
+
+.wrapper table {
+    border-color: black;
+    overflow: visible;
+}
+
+.wrapper .flowLink {
+    color: white;
+    text-decoration: underline;
+    font-size: smaller;
+}
+
+.wrapper .yellow a {
+    color: black;
+}
+
+.wrapper .securityUpdatesTable li {
+    margin-left: 1.5em;
+    list-style-type: square;
+}
+
+.wrapper .greenLight {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-size: medium;
+    text-align: center;
+}
+
+.wrapper .greenLight button,
+.wrapper .greenLight button:active,
+.wrapper .greenLight button:hover,
+.wrapper .greenLight button:focus,
+.wrapper .greenLight button:visited {
+    background-color: green;
+    border-color: green;
+    box-shadow: 1px 1px 20px 5px #9aff00;
+    padding: 10px;
+    color: white;
+    margin-top: 10px;
+}
+
+.wrapper .greenLight a,
+.wrapper .greenLight a:hover,
+.wrapper .greenLight a:focus,
+.wrapper .greenLight a:visited,
+.wrapper .greenLight a:active {
+    color: white;
+}
+
+.wrapper .version {
+    width: 100%;
+    text-align: right;
+}
+
+.wrapper .loadingStatus {
+    transform: translate(0%, 230%) rotate(0deg);
+    width: 100vw;
+    text-align: center;
+    font-weight: bolder;
+    background-color: white;
+    height: 32vh;
+    border: 1px solid #1589ee;
+}
+
+.wrapper .loadingStatus .loadingStatusChild {
+    display: inline-block;
+    text-align:left;
+}
+
+.wrapper .slds-spinner_container {
+    top: -30vh;
+}
+
+.wrapper .custom-close-container {
+    vertical-align: top;
+    margin-top: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.wrapper .slds-icon-custom-close {
+    background-color: #b59a9a;
+    border-radius: 20px;
+    padding: 5px;
+    width: 30px;
+}
+.wrapper .custom-close-container .custom-close-text {
+    font-size: smaller;
+}
+
+.wrapper .quickJump {
+    font-size: 20px;
+}
+
+.wrapper .backToQuickJump {
+    position: fixed;
+    border: 1px solid white;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    top: 20px;
+    left: 0;
+    padding-top: 6px;
+    padding-bottom: 5px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 30px;
+}
+
+.wrapper .backToQuickJump > a,
+.wrapper .backToQuickJump > a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}
+
+</style>
+
+<div class="slds-scope wrapper">
+
+    <div class="backToQuickJump"><a href="#quickJump">^</a></div>
+
+<div id="spinner" style="height:6rem">
+    <div class="slds-spinner_container slds-is-fixed">
+        <div role="status" class="slds-spinner slds-spinner_large slds-spinner_brand">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+        <div class="loadingStatus">
+            <div id="loadingStatusDiv" class="loadingStatusChild">
+
+                <div class="custom-close-container slds-hide">
+                    <span class="slds-icon_container slds-icon-custom-close" title="Close" onclick="closeLoadingStatus();">
+                        <img src="/apexpages/slds/latest/assets/icons/action/close_60.png"/>
+                        <span class="slds-assistive-text">Close</span>
+                    </span>
+                    <div class="custom-close-text">Close</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="important">
+    IMPORTANT: Remember to immediately revoke the user's access to this page once you finish running the report.
+</p>
+<br/>
+<p class="disclaimer">
+    Note: Use this tool to check your security settings after you’ve read the security updates and recommendations by Salesforce. 
+    Ensure you have a good understanding of any upcoming changes and their potential impact. 
+    Do not use this tool as your only security check - it is meant to offer some guidance / insights throughout your assessment of your org, 
+    but it is NOT a definitive assessment of your org.
+</p>
+<br/>
+<p class="disclaimer">
+    It is recommended to run this report before and after activating security updates and making any security modifications in your org, so you can compare impact.
+</p>
+<br/>
+<p class="disclaimer">
+    This report runs in the context of a specific user, and hence a separate report should be run for each user.
+</p>
+<br/>
+
+<p class="version">
+    User Access Report {!version}
+</p>
+
+<span class="" id="loadingSpan">Loading...</span>
+<p>&nbsp;</p><p>&nbsp;</p>
+
+<div class="slds-grid slds-size_12-of-12">
+
+    <div class="slds-col slds-size_4-of-12">
+        <a id="quickJump"></a>
+        <div class="quickJump">Quick Jump:</div>
+        <ul>
+            <li><a href="#permissionSetInformation">Permission Set Information</a></li>
+            <li><a href="#publicGroupInformation">Queue / Public Group Membership Information</a></li>
+            <li><a href="#objectAccessInformation">Object Access Information</a></li>
+            <li><a href="#userPermissionInformation">User Permission Information</a></li>
+            <li><a href="#auraEnabledApexInformation">AuraEnabled Apex Profile Permission Information</a></li>
+            <li><a href="#nonAuraEnabledApexInformation">Non-AuraEnabled Apex Profile Permission Information</a></li>
+            <li><a href="#apexPageInformation">Visualforce Page Permission Information</a></li>
+            <li><a href="#externalDataSourceInformation">External Data Source Permission Information</a></li>
+            <li><a href="#namedCredentialInformation">Named Credential Permission Information</a></li>
+            <li><a href="#customEntityDefinitionInformation">Custom Metadata Type Permission Information</a></li>
+            <li><a href="#customPermissionInformation">Custom Permission Information</a></li>
+            <li><a href="#accountTeamMemberInformation">Account Team Member Access Information</a></li>
+            <li><a href="#caseTeamMemberInformation">Case Team Member Access Information</a></li>
+            <li><a href="#opportunityTeamMemberInformation">Opportunity Team Member Access Information</a></li>
+            <li><a href="#networkMemberInformation">Community Member Access Information</a></li>
+            <li><a href="#collaborationGroupMemberInformation">Chatter Group Member Access Information</a></li>
+        </ul>
+    </div>
+
+
+    <div class="slds-col slds-size_8-of-12">
+        <h1>Legend:</h1>
+        <p>** In this report, we will assume that we are working towards locking down / securing the user's access / permissions. 
+            Any access will be flagged as potential risk. No access will be flagged as no risk.</p>
+        <table border="1px" >
+            <tr>
+                <th class="slds-p-vertical_small">Indicator</th>
+                <th class="slds-p-vertical_small">Explanation</th>
+            </tr>
+            <tr>
+                <td class="red slds-p-vertical_small">Potential Risk</td>
+                <td class="slds-p-vertical_small">Potential Risk detected due to user having access to entity. Remediate to secure / lock down access.</td>
+            </tr>
+            <!--
+            <tr>
+                <td class="yellow slds-p-vertical_small">Potential Risk</td>
+                <td class="slds-p-vertical_small">Potential Risk flagged. Must be further reviewed / assessed to determine risk with higher confidence.
+                    <br/><br/> <ul>
+                    <li><b>Security Updates:</b> The report may not be able to make an accurate determination. 
+                                    Review release notes and best practices against your org configuration to determine risks with higher confidence. </li>
+                    <li><br/></li>
+                    <li><b>Record Data:</b> Review and determine best practices are being followed, and any data being exposed is being done so intentionally.</li>
+                    <li><br/></li>
+                    <li><b>Permissions:</b> Review and determine whether to grant or revoke.</li>
+                    <li><br/></li>
+                    <li><b>AuraEnabled Apex classes:</b> The report will highlight any class with potential risks that is:<br/> 
+                        1) AuraEnabled or maybe AuraEnabled (if part of a managed package and the report cannot read the code within the class)<br/>
+                        2) If the User does not have access to the class</li>
+                    </ul>
+                </td>
+            </tr>
+            -->
+            <tr>
+                <td class="green slds-p-vertical_small">no Risk</td>
+                <td class="slds-p-vertical_small">No Risk detected by the report</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+
+<h1>Report for User (<span class="green-highlight highlight-values">{!currentUserPermissionInfo.userName}</span>) with Profile (<span class="green-highlight highlight-values">{!currentUserPermissionInfo.profileName}</span>). Ran on [<span class="green-highlight highlight-values"><apex:outputText value="{!NOW()}"/></span>]:</h1>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="permissionSetInformation"></a>
+<h1>Permission Set Information (<span>{!currentUserPermissionInfo.permissionSetInfoList.size}</span>):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Type</th>
+    </tr>
+    <apex:variable value="{!1}" var="permissionSetInfoCounter"/>
+    <apex:repeat value="{!currentUserPermissionInfo.permissionSetInfoList}" var="permissionSetInfo" id="permissionSetInfo">
+        <tr>
+            <td>{!permissionSetInfoCounter}</td>
+            <td>{!permissionSetInfo.name} - {!permissionSetInfo.id}</td>
+            <td>{!permissionSetInfo.type}</td>
+        </tr>
+        <apex:variable var="permissionSetInfoCounter" value="{!permissionSetInfoCounter + 1}"/>
+    </apex:repeat>
+
+</table>
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="publicGroupInformation"></a>
+<h1>Queue / Public Group Membership Information (<span class="{!IF(publicGroupMembershipList.size > 0,'red','green')}">{!publicGroupMembershipList.size} - {!IF(publicGroupMembershipList.size > 0,'potential risk','no risk')}</span>):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Type</th>
+    </tr>
+    <apex:variable value="{!1}" var="publicGroupMembershipInfoCounter"/>
+    <apex:repeat value="{!publicGroupMembershipList}" var="publicGroupObj" id="publicGroupMembershipInfo">
+        <tr>
+            <td>{!publicGroupMembershipInfoCounter}</td>
+            <td>{!publicGroupObj.name} - {!publicGroupObj.id}</td>
+            <td>{!publicGroupObj.type}</td>
+        </tr>
+        <apex:variable var="publicGroupMembershipInfoCounter" value="{!publicGroupMembershipInfoCounter + 1}"/>
+    </apex:repeat>
+
+</table>
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="objectAccessInformation"></a>
+<apex:outputPanel id="objectInfoTitlePanel">
+<h1>Object Access Information ({!mapObjectKeysLength}):</h1>
+</apex:outputPanel>
+<span class="" id="objectTableLoadingSpan">Calculating...</span>
+<span class="hide" id="objectTableSpan">
+<apex:outputPanel id="objectInfoPanel">
+<table class="objectTable" border="1px" >
+        <tr class="slds-p-around_small">
+            <th>#</th>
+            <th>Object Name</th>
+            <th><span class="">Is Custom?</span></th>
+            <th><span class="">Is Exposing Data?</span></th>
+            <th><span class="">Total Number of Records with Access To</span></th>
+            <th><span class="">Total Number of Records Owned</span></th>
+            <th><span class="">Total Number of Records due to Owner Sharing</span></th>
+            <th><span class="">Total Number of Records due to Manual and/or Apex Sharing</span></th>
+            <th><span class="">Total Number of Records due to Sharing Rules</span></th>
+            <th>Create / Read / Edit / Delete / View All / Modify All Access</th>
+            <!--<th>Profile Read Access?</th>
+            <th>Profile Create Access?</th>
+            <th>Profile Edit Access?</th>
+            <th>Profile Delete Access?</th>
+            <th>Profile View All Access?</th>
+            <th>Profile Modify All Access?</th>-->
+            
+            <!-- commenting these out as they are irrelevant
+            <th>Query Access?</th>
+            <th>Read Access?</th>
+            <th>Create Access?</th>
+            <th>Update Access?</th>
+            <th>Delete Access?</th>
+            -->
+        </tr>                    
+    <apex:variable value="{!1}" var="objectInfoCounter"/>
+    <apex:repeat value="{!mapObjectKeysProgressive}" var="objName" id="objectInfo">
+        <tr class="slds-p-around_small">
+            <td>{!objectInfoCounter}</td>
+            <td>{!mapObjectInfo[objName].objectName}</td>
+            <td>{!mapObjectInfo[objName].isCustom}</td>
+            <td class="{!mapObjectInfo[objName].isExposingDataColor}">{!IF(mapObjectInfo[objName].isExposingData,'potential risk','no risk')}</td>
+            <td class="{!IF(AND(NOT(ISBLANK(mapObjectInfo[objName].totalRecordsWithAccessTo)),mapObjectInfo[objName].totalRecordsWithAccessTo > 0),'red','green')}"><span id="totalRecordsSpan-{!objName}">{!IF(ISBLANK(mapObjectInfo[objName].totalRecordsWithAccessTo),'Loading values...',mapObjectInfo[objName].totalRecordsWithAccessToLabel)}</span><input class="totalRecords" value="{!objName}" id="totalRecords-{!objName}" type="hidden"/></td>
+            <td class="{!IF(AND(NOT(ISBLANK(mapObjectInfo[objName].totalRecordsOwned)),mapObjectInfo[objName].totalRecordsOwned > 0),'red','green')}"><span id="totalRecordsOwnedSpan-{!objName}">{!IF(ISBLANK(mapObjectInfo[objName].totalRecordsOwned),'Loading values...',mapObjectInfo[objName].totalRecordsOwnedLabel)}</span><input class="totalRecordsOwned" value="{!objName}" id="totalRecordsOwned-{!objName}" type="hidden"/></td>
+            <td class="{!IF(AND(NOT(ISBLANK(mapObjectInfo[objName].totalRecordsWithOwnerShare)),mapObjectInfo[objName].totalRecordsWithOwnerShare > 0),'red','green')}"><span id="totalRecordsOwnerShareSpan-{!objName}">{!IF(ISBLANK(mapObjectInfo[objName].totalRecordsWithOwnerShare),'Loading values...',mapObjectInfo[objName].totalRecordsWithOwnerShareLabel)}</span><input class="totalRecordsOwnerShare" value="{!objName}" id="totalRecordsOwnerShare-{!objName}" type="hidden"/></td>
+            <td class="{!IF(AND(NOT(ISBLANK(mapObjectInfo[objName].totalRecordsWithManualShare)),mapObjectInfo[objName].totalRecordsWithManualShare > 0),'red','green')}"><span id="totalRecordsManualShareSpan-{!objName}">{!IF(ISBLANK(mapObjectInfo[objName].totalRecordsWithManualShare),'Loading values...',mapObjectInfo[objName].totalRecordsWithManualShareLabel)}</span><input class="totalRecordsManualShare" value="{!objName}" id="totalRecordsManualShare-{!objName}" type="hidden"/></td>
+            <td class="{!IF(AND(NOT(ISBLANK(mapObjectInfo[objName].totalRecordsWithRuleShare)),mapObjectInfo[objName].totalRecordsWithRuleShare > 0),'red','green')}"><span id="totalRecordsRuleShareSpan-{!objName}">{!IF(ISBLANK(mapObjectInfo[objName].totalRecordsWithRuleShare),'Loading values...',mapObjectInfo[objName].totalRecordsWithRuleShareLabel)}</span><input class="totalRecordsRuleShare" value="{!objName}" id="totalRecordsRuleShare-{!objName}" type="hidden"/></td>
+            
+            <td>
+                <table class="objectTable subTable" border="1px" >
+                    <tr class="slds-p-around_small">
+                        <th><span class="">Source</span></th>
+                        <th><span class="">Read Access?</span></th>
+                        <th><span class="">Create Access?</span></th>
+                        <th><span class="">Edit Access?</span></th>
+                        <th><span class="">Delete Access?</span></th>
+                        <th><span class="">View All Access?</span></th>
+                        <th><span class="">Modify All Access?</span></th>
+                    </tr>
+                    <tr class="slds-p-around_small">
+                        <td>Overall</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasReadAccessCalculated,'red','green')}">{!IF(mapObjectInfo[objName].hasReadAccessCalculated,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasCreateAccessCalculated,'red','green')}">{!IF(mapObjectInfo[objName].hasCreateAccessCalculated,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasEditAccessCalculated,'red','green')}">{!IF(mapObjectInfo[objName].hasEditAccessCalculated,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasDeleteAccessCalculated,'red','green')}">{!IF(mapObjectInfo[objName].hasDeleteAccessCalculated,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasViewAllAccessCalculated,'red','green')}">{!IF(mapObjectInfo[objName].hasViewAllAccessCalculated,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasModifyAllAccessCalculated,'red','green')}">{!IF(mapObjectInfo[objName].hasModifyAllAccessCalculated,'potential risk','no risk')}</td>
+                    </tr>
+                    <tr class="slds-p-around_small">
+                        <td>Profile</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasProfileReadAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasProfileReadAccess,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasProfileCreateAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasProfileCreateAccess,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasProfileEditAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasProfileEditAccess,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasProfileDeleteAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasProfileDeleteAccess,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasProfileViewAllAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasProfileViewAllAccess,'potential risk','no risk')}</td>
+                        <td class="{!IF(mapObjectInfo[objName].hasProfileModifyAllAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasProfileModifyAllAccess,'potential risk','no risk')}</td>
+                    </tr>
+                    <apex:repeat value="{!mapObjectInfo[objName].objectPermissionSetInfoList}" var="objectPermissionSetInfo" id="objectPermissionSetInfo">
+                        <tr class="slds-p-around_small">
+                            <td>{!objectPermissionSetInfo.name}</td>
+                            <td class="{!IF(objectPermissionSetInfo.hasPSReadAccess,'red','green')}">{!IF(objectPermissionSetInfo.hasPSReadAccess,'potential risk','no risk')}</td>
+                            <td class="{!IF(objectPermissionSetInfo.hasPSCreateAccess,'red','green')}">{!IF(objectPermissionSetInfo.hasPSCreateAccess,'potential risk','no risk')}</td>
+                            <td class="{!IF(objectPermissionSetInfo.hasPSEditAccess,'red','green')}">{!IF(objectPermissionSetInfo.hasPSEditAccess,'potential risk','no risk')}</td>
+                            <td class="{!IF(objectPermissionSetInfo.hasPSDeleteAccess,'red','green')}">{!IF(objectPermissionSetInfo.hasPSDeleteAccess,'potential risk','no risk')}</td>
+                            <td class="{!IF(objectPermissionSetInfo.hasPSViewAllAccess,'red','green')}">{!IF(objectPermissionSetInfo.hasPSViewAllAccess,'potential risk','no risk')}</td>
+                            <td class="{!IF(objectPermissionSetInfo.hasPSModifyAllAccess,'red','green')}">{!IF(objectPermissionSetInfo.hasPSModifyAllAccess,'potential risk','no risk')}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+
+            </td>
+
+
+            <!-- commenting these out as they are irrelevant
+            <td class="{!IF(mapObjectInfo[objName].hasQueryAccess,'yellow','green')}">{!IF(mapObjectInfo[objName].hasQueryAccess,'potential risk','no risk')}</td>
+            <td class="{!IF(mapObjectInfo[objName].hasReadAccess,'yellow','green')}">{!IF(mapObjectInfo[objName].hasReadAccess,'potential risk','no risk')}</td>
+            <td class="{!IF(mapObjectInfo[objName].hasCreateAccess,'yellow','green')}">{!IF(mapObjectInfo[objName].hasCreateAccess,'potential risk','no risk')}</td>
+            <td class="{!IF(mapObjectInfo[objName].hasUpdateAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasUpdateAccess,'potential risk','no risk')}</td>
+            <td class="{!IF(mapObjectInfo[objName].hasDeleteAccess,'red','green')}">{!IF(mapObjectInfo[objName].hasDeleteAccess,'potential risk','no risk')}</td>          
+            -->
+        </tr>
+        <apex:variable var="objectInfoCounter" value="{!objectInfoCounter + 1}"/>
+    </apex:repeat>
+
+</table>
+</apex:outputPanel>
+</span>
+<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="userPermissionInformation"></a>
+<h1>User Permission Information:</h1>
+
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Permission Name</th>
+        <th>Permission Values</th>
+    </tr>
+    <apex:variable value="{!1}" var="profilePermissionInfoCounter"/>
+    <apex:repeat value="{!profilePermissionInfoList}" var="profilePermissionObjTmp" id="profilePermissionInfoTmp">
+            <apex:repeat value="{!profilePermissionObjTmp}" var="profilePermissionObj" id="profilePermissionInfoTmp">
+                <tr>
+                    <td>{!profilePermissionInfoCounter}</td>
+                    <td>{!profilePermissionObj.name}</td>
+                    <td>
+                        <table class="subTable" border="1px">
+                            <tr>
+                                <th>Source</th>
+                                <th style="width: 100px;">Value</th>
+                            </tr>
+                            <tr>
+                                <td>Overall</td>
+                                <td class="{!IF(profilePermissionObj.valueCalculated == false,'green','red')}">{!IF(profilePermissionObj.valueCalculated == false,'no risk','potential risk')}</td>
+                            </tr>
+                            <tr>
+                                <td>Profile</td>
+                                <td class="{!IF(profilePermissionObj.value == false,'green','red')}">{!IF(profilePermissionObj.value == false,'no risk','potential risk')}</td>
+                            </tr>
+
+                            <apex:repeat value="{!profilePermissionObj.permissionSetPermissionInfoList}" var="permissionSetPermissionInfo" id="permissionSetPermissionInfo">
+                                <tr>
+                                    <td>{!permissionSetPermissionInfo.name}</td>
+                                    <td class="{!IF(permissionSetPermissionInfo.value == false,'green','red')}"><span class="">{!IF(permissionSetPermissionInfo.value == false,'no risk','potential risk')}</span></td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                        
+                    </td>
+                    
+                </tr>
+                <apex:variable var="profilePermissionInfoCounter" value="{!profilePermissionInfoCounter + 1}"/>
+            </apex:repeat>
+    </apex:repeat>
+</table>
+
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="auraEnabledApexInformation"></a>
+<apex:outputPanel id="apexClassInfo">
+    <h1>AuraEnabled Apex Profile Permission Information ({!apexClassInfoTotals}):</h1>
+    <apex:outputPanel rendered="{!!apexClassInfoComplete}">
+        <p>Loading...</p>
+    </apex:outputPanel>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Apex Class Name</th>
+        <th>Apex Class Namespace Prefix</th>
+        <th>Has AuraEnabled Methods?</th>
+        <th>Is Accessible by User?</th>
+    </tr>
+    <apex:variable value="{!1}" var="apexClassInfoCounter"/>
+    <apex:repeat value="{!apexClassInfoList}" var="apexClassInfoObjTmp" id="profileApexPermissionInfoTmp">
+        <apex:repeat value="{!apexClassInfoObjTmp}" var="apexClassInfoObj" id="profileApexPermissionInfo">
+            <tr>
+                <td>{!apexClassInfoCounter}</td>
+                <td>{!apexClassInfoObj.name}<br/>{!apexClassInfoObj.id}</td>
+                <td>{!apexClassInfoObj.namespacePrefix}</td>
+                <td>{!apexClassInfoObj.hasAuraEnabled}</td>
+                <td>
+                    <table class="subTable" border="1px" >
+                        <tr>
+                            <th>Source</th>
+                            <th>Access</th>
+                        </tr>
+                        <tr>
+                            <td>Overall</td>
+                            <td class="{!IF(apexClassInfoObj.isAccessibleByUserCalculated == false,'green','red')}">{!IF(apexClassInfoObj.isAccessibleByUserCalculated == false,'no risk','potential risk')}</td>
+                        </tr>
+                        <tr>
+                            <td>Profile</td>
+                            <td class="{!IF(apexClassInfoObj.isAccessibleByUserProfile == false,'green','red')}">{!IF(apexClassInfoObj.isAccessibleByUserProfile == false,'no risk','potential risk')}</td>
+                        </tr>
+                        <apex:repeat value="{!apexClassInfoObj.apexClassPermissionSetInfoList}" var="apexClassPermissionSetInfo" id="apexClassPermissionSetInfo">
+                            <tr>
+                                <td>{!apexClassPermissionSetInfo.name}</td>
+                                <td class="{!IF(apexClassPermissionSetInfo.isAccessibleByUser == false,'green','red')}">{!IF(apexClassPermissionSetInfo.isAccessibleByUser == false,'no risk','potential risk')}</td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </td>
+            </tr>
+            <apex:variable var="apexClassInfoCounter" value="{!apexClassInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="nonAuraEnabledApexInformation"></a>
+<apex:outputPanel id="apexClassInfoNonAura">
+    <h1>Non-AuraEnabled Apex Profile Permission Information ({!apexClassInfoTotalsNonAura}):</h1>
+    <apex:outputPanel rendered="{!!apexClassInfoComplete}">
+        <p>Loading...</p>
+    </apex:outputPanel>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Apex Class Name</th>
+        <th>Apex Class Namespace Prefix</th>
+        <th>Has AuraEnabled Methods?</th>
+        <th>Is Accessible by User?</th>
+    </tr>
+    <apex:variable value="{!1}" var="apexClassInfoCounter"/>
+    <apex:repeat value="{!apexClassInfoListNonAura}" var="apexClassInfoObjTmp" id="profileApexPermissionInfoNonAuraTmp">
+        <apex:repeat value="{!apexClassInfoObjTmp}" var="apexClassInfoObj" id="profileApexPermissionInfoNonAura">
+            <tr>
+                <td>{!apexClassInfoCounter}</td>
+                <td>{!apexClassInfoObj.name}<br/>{!apexClassInfoObj.id}</td>
+                <td>{!apexClassInfoObj.namespacePrefix}</td>
+                <td>{!apexClassInfoObj.hasAuraEnabled}</td>
+                <td>
+                    <table class="subTable" border="1px" >
+                        <tr>
+                            <th>Source</th>
+                            <th>Access</th>
+                        </tr>
+                        <tr>
+                            <td>Overall</td>
+                            <td class="{!IF(apexClassInfoObj.isAccessibleByUserCalculated == false,'green','red')}">{!IF(apexClassInfoObj.isAccessibleByUserCalculated == false,'no risk','potential risk')}</td>
+                        </tr>
+                        <tr>
+                            <td>Profile</td>
+                            <td class="{!IF(apexClassInfoObj.isAccessibleByUserProfile == false,'green','red')}">{!IF(apexClassInfoObj.isAccessibleByUserProfile == false,'no risk','potential risk')}</td>
+                        </tr>
+                        <apex:repeat value="{!apexClassInfoObj.apexClassPermissionSetInfoList}" var="apexClassPermissionSetInfo" id="apexClassPermissionSetInfo2">
+                            <tr>
+                                <td>{!apexClassPermissionSetInfo.name}</td>
+                                <td class="{!IF(apexClassPermissionSetInfo.isAccessibleByUser == false,'green','red')}">{!IF(apexClassPermissionSetInfo.isAccessibleByUser == false,'no risk','potential risk')}</td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </td>
+                
+            </tr>
+            <apex:variable var="apexClassInfoCounter" value="{!apexClassInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="apexPageInformation"></a>
+<apex:outputPanel id="apexPageInfo">
+    <h1>Visualforce Page Permission Information ({!apexPageInfoTotals}):</h1>
+    <apex:outputPanel rendered="{!!apexPageInfoComplete}">
+        <p>Loading...</p>
+    </apex:outputPanel>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Page Name</th>
+        <th>Page Namespace Prefix</th>
+        <th>Is Accessible by User?</th>
+    </tr>
+    <apex:variable value="{!1}" var="apexPageInfoCounter"/>
+    <apex:repeat value="{!apexPageInfoList}" var="apexPageInfoObjTmp" id="profileApexPagePermissionInfoTmp">
+        <apex:repeat value="{!apexPageInfoObjTmp}" var="apexPageInfoObj" id="profileApexPagePermissionInfo">
+            <tr>
+                <td>{!apexPageInfoCounter}</td>
+                <td>{!apexPageInfoObj.name}<br/>{!apexPageInfoObj.id}</td>
+                <td>{!apexPageInfoObj.namespacePrefix}</td>
+                <td>
+                    <table class="subTable" border="1px" >
+                        <tr>
+                            <th>Source</th>
+                            <th>Access</th>
+                        </tr>
+                        <tr>
+                            <td>Overall</td>
+                            <td class="{!IF(apexPageInfoObj.isAccessibleByUserCalculated == false,'green','red')}">{!IF(apexPageInfoObj.isAccessibleByUserCalculated == false,'no risk','potential risk')}</td>
+                        </tr>
+                        <tr>
+                            <td>Profile</td>
+                            <td class="{!IF(apexPageInfoObj.isAccessibleByUserProfile == false,'green','red')}">{!IF(apexPageInfoObj.isAccessibleByUserProfile == false,'no risk','potential risk')}</td>
+                        </tr>
+                        <apex:repeat value="{!apexPageInfoObj.apexPagePermissionSetInfoList}" var="apexPagePermissionSetInfo" id="apexPagePermissionSetInfo">
+                            <tr>
+                                <td>{!apexPagePermissionSetInfo.name}</td>
+                                <td class="{!IF(apexPagePermissionSetInfo.isAccessibleByUser == false,'green','red')}">{!IF(apexPagePermissionSetInfo.isAccessibleByUser == false,'no risk','potential risk')}</td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </td>
+            </tr>
+            <apex:variable var="apexPageInfoCounter" value="{!apexPageInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="externalDataSourceInformation"></a>
+<apex:outputPanel id="externalDataSourceInfo">
+    <h1>External Data Source Permission Information ({!externalDataSourceInfoList.size}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Namespace Prefix</th>
+        <th>Is Accessible by User?</th>
+    </tr>
+    <apex:variable value="{!1}" var="externalDataSourceInfoCounter"/>
+    <apex:repeat value="{!externalDataSourceInfoList}" var="externalDataSourceInfoObjTmp" id="externalDataSourceInfoTmp">
+        <tr>
+            <td>{!externalDataSourceInfoCounter}</td>
+            <td>{!externalDataSourceInfoObjTmp.name}<br/>{!externalDataSourceInfoObjTmp.id}</td>
+            <td>{!externalDataSourceInfoObjTmp.namespacePrefix}</td>
+            <td>
+                <table class="subTable" border="1px" >
+                    <tr>
+                        <th>Source</th>
+                        <th>Access</th>
+                    </tr>
+                    <tr>
+                        <td>Overall</td>
+                        <td class="{!IF(externalDataSourceInfoObjTmp.isAccessibleByUserCalculated == false,'green','red')}">{!IF(externalDataSourceInfoObjTmp.isAccessibleByUserCalculated == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <tr>
+                        <td>Profile</td>
+                        <td class="{!IF(externalDataSourceInfoObjTmp.isAccessibleByUserProfile == false,'green','red')}">{!IF(externalDataSourceInfoObjTmp.isAccessibleByUserProfile == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <apex:repeat value="{!externalDataSourceInfoObjTmp.apexPagePermissionSetInfoList}" var="externalDataSourcePermissionSetInfo" id="externalDataSourcePermissionSetInfo">
+                        <tr>
+                            <td>{!externalDataSourcePermissionSetInfo.name}</td>
+                            <td class="{!IF(externalDataSourcePermissionSetInfo.isAccessibleByUser == false,'green','red')}">{!IF(externalDataSourcePermissionSetInfo.isAccessibleByUser == false,'no risk','potential risk')}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+        </tr>
+        <apex:variable var="externalDataSourceInfoCounter" value="{!externalDataSourceInfoCounter + 1}"/>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="namedCredentialInformation"></a>
+<apex:outputPanel id="namedCredentialInfo">
+    <h1>Named Credential Permission Information ({!namedCredentialInfoList.size}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Namespace Prefix</th>
+        <th>Is Accessible by User?</th>
+    </tr>
+    <apex:variable value="{!1}" var="namedCredentialInfoCounter"/>
+    <apex:repeat value="{!namedCredentialInfoList}" var="namedCredentialInfoObjTmp" id="namedCredentialInfoTmp">
+        <tr>
+            <td>{!namedCredentialInfoCounter}</td>
+            <td>{!namedCredentialInfoObjTmp.name}<br/>{!namedCredentialInfoObjTmp.id}</td>
+            <td>{!namedCredentialInfoObjTmp.namespacePrefix}</td>
+            <td>
+                <table class="subTable" border="1px" >
+                    <tr>
+                        <th>Source</th>
+                        <th>Access</th>
+                    </tr>
+                    <tr>
+                        <td>Overall</td>
+                        <td class="{!IF(namedCredentialInfoObjTmp.isAccessibleByUserCalculated == false,'green','red')}">{!IF(namedCredentialInfoObjTmp.isAccessibleByUserCalculated == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <tr>
+                        <td>Profile</td>
+                        <td class="{!IF(namedCredentialInfoObjTmp.isAccessibleByUserProfile == false,'green','red')}">{!IF(namedCredentialInfoObjTmp.isAccessibleByUserProfile == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <apex:repeat value="{!namedCredentialInfoObjTmp.apexPagePermissionSetInfoList}" var="namedCredentialPermissionSetInfo" id="namedCredentialPermissionSetInfo">
+                        <tr>
+                            <td>{!namedCredentialPermissionSetInfo.name}</td>
+                            <td class="{!IF(namedCredentialPermissionSetInfo.isAccessibleByUser == false,'green','red')}">{!IF(namedCredentialPermissionSetInfo.isAccessibleByUser == false,'no risk','potential risk')}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+        </tr>
+        <apex:variable var="namedCredentialInfoCounter" value="{!namedCredentialInfoCounter + 1}"/>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="customEntityDefinitionInformation"></a>
+<apex:outputPanel id="customEntityDefinitionInfo">
+    <h1>Custom Settings / Metadata Type Permission Information ({!customEntityDefinitionInfoList.size}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Namespace Prefix</th>
+        <th>Type</th>
+        <th>Is Accessible by User?</th>
+    </tr>
+    <apex:variable value="{!1}" var="customEntityDefinitionInfoCounter"/>
+    <apex:repeat value="{!customEntityDefinitionInfoList}" var="customEntityDefinitionInfoObjTmp" id="customEntityDefinitionInfoTmp">
+        <tr>
+            <td>{!customEntityDefinitionInfoCounter}</td>
+            <td>{!customEntityDefinitionInfoObjTmp.name}<br/>{!customEntityDefinitionInfoObjTmp.id}</td>
+            <td>{!customEntityDefinitionInfoObjTmp.namespacePrefix}</td>
+            <td>{!customEntityDefinitionInfoObjTmp.type}</td>
+            <td>
+                <table class="subTable" border="1px" >
+                    <tr>
+                        <th>Source</th>
+                        <th>Access</th>
+                    </tr>
+                    <tr>
+                        <td>Overall</td>
+                        <td class="{!IF(customEntityDefinitionInfoObjTmp.isAccessibleByUserCalculated == false,'green','red')}">{!IF(customEntityDefinitionInfoObjTmp.isAccessibleByUserCalculated == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <tr>
+                        <td>Profile</td>
+                        <td class="{!IF(customEntityDefinitionInfoObjTmp.isAccessibleByUserProfile == false,'green','red')}">{!IF(customEntityDefinitionInfoObjTmp.isAccessibleByUserProfile == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <apex:repeat value="{!customEntityDefinitionInfoObjTmp.customEntityDefinitionPermissionSetInfoList}" var="customEntityDefinitionPermissionSetInfo" id="customEntityDefinitionPermissionSetInfo">
+                        <tr>
+                            <td>{!customEntityDefinitionPermissionSetInfo.name}</td>
+                            <td class="{!IF(customEntityDefinitionPermissionSetInfo.isAccessibleByUser == false,'green','red')}">{!IF(customEntityDefinitionPermissionSetInfo.isAccessibleByUser == false,'no risk','potential risk')}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+        </tr>
+        <apex:variable var="customEntityDefinitionInfoCounter" value="{!customEntityDefinitionInfoCounter + 1}"/>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="customPermissionInformation"></a>
+<apex:outputPanel id="customPermissionInfo">
+    <h1>Custom Permission Information ({!customPermissionInfoList.size}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Namespace Prefix</th>
+        <th>Is Accessible by User?</th>
+    </tr>
+    <apex:variable value="{!1}" var="customPermissionInfoCounter"/>
+    <apex:repeat value="{!customPermissionInfoList}" var="customPermissionInfoObjTmp" id="customPermissionInfoTmp">
+        <tr>
+            <td>{!customPermissionInfoCounter}</td>
+            <td>{!customPermissionInfoObjTmp.name}<br/>{!customPermissionInfoObjTmp.id}</td>
+            <td>{!customPermissionInfoObjTmp.namespacePrefix}</td>
+            <td>
+                <table class="subTable" border="1px" >
+                    <tr>
+                        <th>Source</th>
+                        <th>Access</th>
+                    </tr>
+                    <tr>
+                        <td>Overall</td>
+                        <td class="{!IF(customPermissionInfoObjTmp.isAccessibleByUserCalculated == false,'green','red')}">{!IF(customPermissionInfoObjTmp.isAccessibleByUserCalculated == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <tr>
+                        <td>Profile</td>
+                        <td class="{!IF(customPermissionInfoObjTmp.isAccessibleByUserProfile == false,'green','red')}">{!IF(customPermissionInfoObjTmp.isAccessibleByUserProfile == false,'no risk','potential risk')}</td>
+                    </tr>
+                    <apex:repeat value="{!customPermissionInfoObjTmp.apexPagePermissionSetInfoList}" var="customPermissionPermissionSetInfo" id="customPermissionPermissionSetInfo">
+                        <tr>
+                            <td>{!customPermissionPermissionSetInfo.name}</td>
+                            <td class="{!IF(customPermissionPermissionSetInfo.isAccessibleByUser == false,'green','red')}">{!IF(customPermissionPermissionSetInfo.isAccessibleByUser == false,'no risk','potential risk')}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </td>
+        </tr>
+        <apex:variable var="customPermissionInfoCounter" value="{!customPermissionInfoCounter + 1}"/>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="accountTeamMemberInformation"></a>
+<apex:outputPanel id="accountTeamMemberInfo">
+    <h1>Account Team Member Access Information ({!accountTeamMemberInfoTotals}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Account Name</th>
+        <th>Account Team Member Role</th>
+        <th>Account Access Level</th>
+        <th>Contact Access Level</th>
+        <th>Case Access Level</th>
+        <th>Opportunity Access Level</th>
+    </tr>
+    <apex:variable value="{!1}" var="accountTeamMemberInfoCounter"/>
+    <apex:repeat value="{!accountTeamMemberInfoList}" var="accountTeamMemberInfoObjTmp" id="accountTeamMemberInfoTmp">
+        <apex:repeat value="{!accountTeamMemberInfoObjTmp}" var="accountTeamMemberInfoObj" id="accountTeamMemberInfo">
+            <tr>
+                <td>{!accountTeamMemberInfoCounter}</td>
+                <td>{!accountTeamMemberInfoObj.relatedRecordName}<br/>{!accountTeamMemberInfoObj.relatedRecordId}</td>
+                <td>{!accountTeamMemberInfoObj.teamMemberRole}</td>
+                <td>{!accountTeamMemberInfoObj.accountLevelAccess}</td>
+                <td>{!accountTeamMemberInfoObj.contactLevelAccess}</td>
+                <td>{!accountTeamMemberInfoObj.caseLevelAccess}</td>
+                <td>{!accountTeamMemberInfoObj.opportunityLevelAccess}</td>
+            </tr>
+            <apex:variable var="accountTeamMemberInfoCounter" value="{!accountTeamMemberInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="caseTeamMemberInformation"></a>
+<apex:outputPanel id="caseTeamMemberInfo">
+    <h1>Case Team Member Access Information ({!caseTeamMemberInfoTotals}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Case Number</th>
+        <th>Case Team Member Role</th>
+    </tr>
+    <apex:variable value="{!1}" var="caseTeamMemberInfoCounter"/>
+    <apex:repeat value="{!caseTeamMemberInfoList}" var="caseTeamMemberInfoObjTmp" id="caseTeamMemberInfoTmp">
+        <apex:repeat value="{!caseTeamMemberInfoObjTmp}" var="caseTeamMemberInfoObj" id="caseTeamMemberInfo">
+            <tr>
+                <td>{!caseTeamMemberInfoCounter}</td>
+                <td>{!caseTeamMemberInfoObj.relatedRecordName}<br/>{!caseTeamMemberInfoObj.relatedRecordId}</td>
+                <td>{!caseTeamMemberInfoObj.teamMemberRole}</td>
+            </tr>
+            <apex:variable var="caseTeamMemberInfoCounter" value="{!caseTeamMemberInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="opportunityTeamMemberInformation"></a>
+<apex:outputPanel id="opportunityTeamMemberInfo">
+    <h1>Opportunity Team Member Access Information ({!opportunityTeamMemberInfoTotals}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Opportunity Name</th>
+        <th>Opportunity Team Member Role</th>
+        <th>Opportunity Access Level</th>
+    </tr>
+    <apex:variable value="{!1}" var="opportunityTeamMemberInfoCounter"/>
+    <apex:repeat value="{!opportunityTeamMemberInfoList}" var="opportunityTeamMemberInfoObjTmp" id="opportunityTeamMemberInfoTmp">
+        <apex:repeat value="{!opportunityTeamMemberInfoObjTmp}" var="opportunityTeamMemberInfoObj" id="opportunityTeamMemberInfo">
+            <tr>
+                <td>{!opportunityTeamMemberInfoCounter}</td>
+                <td>{!opportunityTeamMemberInfoObj.relatedRecordName}<br/>{!opportunityTeamMemberInfoObj.relatedRecordId}</td>
+                <td>{!opportunityTeamMemberInfoObj.teamMemberRole}</td>
+                <td>{!opportunityTeamMemberInfoObj.opportunityLevelAccess}</td>
+            </tr>
+            <apex:variable var="opportunityTeamMemberInfoCounter" value="{!opportunityTeamMemberInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="networkMemberInformation"></a>
+<apex:outputPanel id="networkMemberInfo">
+    <h1>Community Member Access Information ({!networkMemberInfoTotals}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Community Id</th>
+        <th>Community Name</th>
+    </tr>
+    <apex:variable value="{!1}" var="networkMemberInfoCounter"/>
+    <apex:repeat value="{!networkMemberInfoList}" var="networkMemberInfoObjTmp" id="networkMemberInfoTmp">
+        <apex:repeat value="{!networkMemberInfoObjTmp}" var="networkMemberInfoObj" id="networkMemberInfo">
+            <tr>
+                <td>{!networkMemberInfoCounter}</td>
+                <td>{!networkMemberInfoObj.id}</td>
+                <td>{!networkMemberInfoObj.name}</td>
+            </tr>
+            <apex:variable var="networkMemberInfoCounter" value="{!networkMemberInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+<p>&nbsp;</p><p>&nbsp;</p>
+<a id="collaborationGroupMemberInformation"></a>
+<apex:outputPanel id="collaborationGroupMemberInfo">
+    <h1>Chatter Group Member Access Information ({!collaborationGroupMemberInfoTotals}):</h1>
+<table border="1px" >
+    <tr>
+        <th>#</th>
+        <th>Chatter Group Name</th>
+        <th>Chatter Group Member Role</th>
+        <th>Community</th>
+    </tr>
+    <apex:variable value="{!1}" var="collaborationGroupMemberInfoCounter"/>
+    <apex:repeat value="{!collaborationGroupMemberInfoList}" var="collaborationGroupMemberInfoObjTmp" id="collaborationGroupMemberInfoTmp">
+        <apex:repeat value="{!collaborationGroupMemberInfoObjTmp}" var="collaborationGroupMemberInfoObj" id="collaborationGroupMemberInfo">
+            <tr>
+                <td>{!collaborationGroupMemberInfoCounter}</td>
+                <td>{!collaborationGroupMemberInfoObj.name}<br/>{!collaborationGroupMemberInfoObj.id}</td>
+                <td>{!collaborationGroupMemberInfoObj.value}</td>
+                <td>{!collaborationGroupMemberInfoObj.type} <br/> {!collaborationGroupMemberInfoObj.typeId}</td>
+            </tr>
+            <apex:variable var="collaborationGroupMemberInfoCounter" value="{!collaborationGroupMemberInfoCounter + 1}"/>
+        </apex:repeat>
+    </apex:repeat>
+</table>
+</apex:outputPanel>
+
+
+
+
+</div>
+
+
+
+
+<apex:outputPanel id="apexPageInfoComplete">
+    <script>
+        var apexPageInfoComplete = '{!apexPageInfoComplete}';
+    </script>
+</apex:outputPanel>
+
+<apex:outputPanel id="apexClassInfoComplete">
+    <script>
+        var apexClassInfoComplete = '{!apexClassInfoComplete}';
+    </script>
+</apex:outputPanel>
+
+<apex:outputPanel id="objectInfoComplete">
+    <script>
+        var objectInfoComplete = '{!objectInfoComplete}';
+        var mapObjectInfoJSON = '{!mapObjectInfoJSON}';
+    </script>
+</apex:outputPanel>
+
+
+<apex:form >
+
+<apex:actionFunction action="{!rerenderTables}" 
+                    name="rerenderTables" 
+                    rerender=""
+                    oncomplete="removeSpinner()">
+</apex:actionFunction>
+
+<apex:actionFunction action="{!buildApexPageInfoList}" 
+                    name="buildApexPageInfoList" 
+                    rerender="apexPageInfoComplete,apexPageInfo" 
+                    oncomplete="checkApexPageInfoCompletion()">
+        <apex:param name="firstParam" assignTo="{!userProfileApexPageIdSetListJSON}" value="" />
+</apex:actionFunction>
+
+<apex:actionFunction action="{!buildApexClassInfoList}" 
+                    name="buildApexClassInfoList" 
+                    rerender="apexClassInfoComplete,apexClassInfo,apexClassInfoNonAura" 
+                    oncomplete="checkApexClassInfoCompletion()">
+        <apex:param name="firstParam" assignTo="{!userProfileApexClassIdSetListJSON}" value="" />
+</apex:actionFunction>
+
+<apex:actionFunction action="{!updateTotalCounts}" 
+                    name="updateTotalCounts" 
+                    rerender="objectInfoPanel,objectInfoComplete" 
+                    oncomplete="doBuildApexClassInfoList()">
+    <apex:param name="firstParam" assignTo="{!totalCountsMap}" value="" />
+    <apex:param name="secondParam" assignTo="{!mapObjectInfoJSON}" value="" />
+</apex:actionFunction>
+
+<apex:actionFunction action="{!buildProfileObjectInfoMap}" 
+                    name="buildProfileObjectInfoMap" 
+                    rerender="objectInfoPanel,objectInfoComplete,objectInfoTitlePanel" 
+                    oncomplete="checkBuildProfileObjectInfoMapComplete()">
+    <apex:param name="firstParam" assignTo="{!mapObjectInfoJSON}" value="" />
+</apex:actionFunction>
+
+</apex:form>
+
+<script>
+    var userProfileApexClassIdSetListJSON = '{!userProfileApexClassIdSetListJSON}';
+    var userProfileApexPageIdSetListJSON = '{!userProfileApexPageIdSetListJSON}';
+
+    var totalRecordsMap = {};
+    function getTotalRecords(objInfo) {
+        
+
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.UserAccessReportController.getTotalRecordCount}',
+                objInfo.objName, 
+                function(result, event){
+                    var tmpOI = {};
+                    try {
+
+                        if (event.status) {
+                            // Get DOM IDs for HTML and Visualforce elements like this
+                            var outputResultTotalRecords = (result.totalRecordsWithAccessTo === -1) ? 'N/A' : result.totalRecordsWithAccessTo;
+                            var outputResultTotalRecordsOwned = (result.totalRecordsOwned === -1) ? 'N/A' : result.totalRecordsOwned;
+                            var outputResultTotalRecordsManualShare = (result.totalRecordsWithManualShare === -1) ? 'N/A' : result.totalRecordsWithManualShare;
+                            var outputResultTotalRecordsRuleShare = (result.totalRecordsWithRuleShare === -1) ? 'N/A' : result.totalRecordsWithRuleShare;
+                            var outputResultTotalRecordsGuestRuleShare = (result.totalRecordsWithGuestRuleShare === -1) ? 'N/A' : result.totalRecordsWithGuestRuleShare;
+                            var outputResultTotalRecordsOwnerShare = (result.totalRecordsWithOwnerShare === -1) ? 'N/A' : result.totalRecordsWithOwnerShare;
+                            
+                            /*document.getElementById('totalRecordsSpan-'+result.objectName).innerHTML = outputResultTotalRecords + '<a href="' + result.flowPageUrl + '" target="_blank"> Help me secure this</a>';
+                            document.getElementById('totalRecordsOwnedSpan-'+result.objectName).innerHTML = outputResultTotalRecordsOwned;
+                            document.getElementById('totalRecordsManualShareSpan-'+result.objectName).innerHTML = outputResultTotalRecordsManualShare;
+                            document.getElementById('totalRecordsRuleShareSpan-'+result.objectName).innerHTML = outputResultTotalRecordsRuleShare;
+                            */
+
+                            tmpOI.objectName = result.objectName;
+                            tmpOI.totalRecordsWithAccessTo = result.totalRecordsWithAccessTo;
+                            tmpOI.totalRecordsOwned = result.totalRecordsOwned;
+                            tmpOI.totalRecordsWithManualShare = result.totalRecordsWithManualShare;
+                            tmpOI.totalRecordsWithRuleShare = result.totalRecordsWithRuleShare;
+                            tmpOI.totalRecordsWithGuestRuleShare = result.totalRecordsWithGuestRuleShare;
+                            tmpOI.totalRecordsWithOwnerShare = result.totalRecordsWithOwnerShare;
+
+                            tmpOI.totalRecordsWithAccessToLabel = (result.totalRecordsWithAccessToLabel !== null && result.totalRecordsWithAccessToLabel !== undefined) ? result.totalRecordsWithAccessToLabel : 'N/A';
+                            tmpOI.totalRecordsOwnedLabel = (result.totalRecordsOwnedLabel !== null && result.totalRecordsOwnedLabel !== undefined) ? result.totalRecordsOwnedLabel : 'N/A';
+                            tmpOI.totalRecordsWithManualShareLabel = (result.totalRecordsWithManualShareLabel != null && result.totalRecordsWithManualShareLabel != undefined) ? result.totalRecordsWithManualShareLabel : 'N/A';
+                            tmpOI.totalRecordsWithRuleShareLabel = (result.totalRecordsWithRuleShareLabel !== null && result.totalRecordsWithRuleShareLabel !== undefined) ? result.totalRecordsWithRuleShareLabel : 'N/A';
+                            tmpOI.totalRecordsWithGuestRuleShareLabel = (result.totalRecordsWithGuestRuleShareLabel !== null && result.totalRecordsWithGuestRuleShareLabel !== undefined) ? result.totalRecordsWithGuestRuleShareLabel : 'N/A';
+                            tmpOI.totalRecordsWithOwnerShareLabel = (result.totalRecordsWithOwnerShareLabel !== null && result.totalRecordsWithOwnerShareLabel !== undefined) ? result.totalRecordsWithOwnerShareLabel : 'N/A';
+
+                        } 
+                        else if (event.type === 'exception') {
+                            document.getElementById('totalRecordsSpan-'+objInfo.objName).innerHTML = event.message;
+                            
+                            tmpOI.objectName = objInfo.objName;
+                            tmpOI.totalRecordsWithAccessTo = -1;
+                            tmpOI.totalRecordsOwned = -1;
+                            tmpOI.totalRecordsWithManualShare = -1;
+                            tmpOI.totalRecordsWithRuleShare = -1;
+                            tmpOI.totalRecordsWithGuestRuleShare = -1;
+                            tmpOI.totalRecordsWithOwnerShare = -1;
+
+                            tmpOI.totalRecordsWithAccessToLabel = 'N/A';
+                            tmpOI.totalRecordsOwnedLabel = 'N/A';
+                            tmpOI.totalRecordsWithManualShareLabel = 'N/A';
+                            tmpOI.totalRecordsWithRuleShareLabel = 'N/A';
+                            tmpOI.totalRecordsWithGuestRuleShareLabel = 'N/A';
+                            tmpOI.totalRecordsWithOwnerShareLabel = 'N/A';
+                        } else {
+                            document.getElementById('totalRecordsSpan-'+objInfo.objName).innerHTML = event.message;
+                            tmpOI.objectName = objInfo.objName;
+                            tmpOI.totalRecordsWithAccessTo = -1;
+                            tmpOI.totalRecordsOwned = -1;
+                            tmpOI.totalRecordsWithManualShare = -1;
+                            tmpOI.totalRecordsWithRuleShare = -1;
+                            tmpOI.totalRecordsWithGuestRuleShare = -1;
+                            tmpOI.totalRecordsWithOwnerShare = -1;
+
+                            tmpOI.totalRecordsWithAccessToLabel = 'N/A';
+                            tmpOI.totalRecordsOwnedLabel = 'N/A';
+                            tmpOI.totalRecordsWithManualShareLabel = 'N/A';
+                            tmpOI.totalRecordsWithRuleShareLabel = 'N/A';
+                            tmpOI.totalRecordsWithGuestRuleShareLabel = 'N/A';
+                            tmpOI.totalRecordsWithOwnerShareLabel = 'N/A';
+                        }
+                        totalRecordsMap[tmpOI.objectName] = tmpOI;
+
+                        checkTotalCountCompletion();
+
+                    } catch(e) {
+                        console.log(objInfo.objName+' exception: ' + e);
+                    }
+
+                }, 
+                {escape: true, buffer: false,timeout: 120000}
+            );
+
+    }
+
+    function checkTotalCountCompletion() 
+    {
+        var objectNameElementList = document.getElementsByClassName('totalRecords');
+        if(objectNameElementList.length === Object.keys(totalRecordsMap).length)
+        {
+            updateTotalCounts(JSON.stringify(totalRecordsMap), mapObjectInfoJSON);
+            document.getElementById('loadingSpan').classList.add('hide');
+            document.getElementById('objectTableLoadingSpan').classList.add('hide');
+            document.getElementById('objectTableSpan').classList.remove('hide');
+        }
+    }
+
+    function checkApexPageInfoCompletion()
+    {
+        if(apexPageInfoComplete !== 'true')
+        {
+            buildApexPageInfoList(userProfileApexPageIdSetListJSON);
+        }
+        else
+        {
+            doRerenderTables();
+        }
+    }
+
+    function checkApexClassInfoCompletion()
+    {
+        if(apexClassInfoComplete !== 'true')
+        {
+            buildApexClassInfoList(userProfileApexClassIdSetListJSON);
+        }
+        else
+        {
+            updateLoadingStatus('Retrieving Visualforce Page Information ...');
+            buildApexPageInfoList(userProfileApexPageIdSetListJSON);
+        }
+    }
+
+    function doRerenderTables()
+    {
+        rerenderTables();
+    }
+
+    function doBuildApexClassInfoList()
+    {
+        updateLoadingStatus('Retrieving ApexClass Information ...');
+        checkApexClassInfoCompletion();
+    }
+
+
+    function doGetTotalRecords() 
+    {
+        updateLoadingStatus('Retrieving Object Totals ...');
+        var objectNameElementList = document.getElementsByClassName('totalRecords');
+
+        if(objectNameElementList.length && objectNameElementList.length > 0)
+        {
+            for(var i=0;i<objectNameElementList.length;i++)
+            {
+                var tmpObjInfo = {};
+                tmpObjInfo.objName = objectNameElementList[i].value;
+                var objInfo = JSON.parse(JSON.stringify(tmpObjInfo));
+                getTotalRecords( objInfo );
+            }
+        }
+        else
+        {
+            checkTotalCountCompletion();
+        }
+    }
+
+    function checkBuildProfileObjectInfoMapComplete()
+    {
+        if(objectInfoComplete !== 'true')
+        {
+            buildProfileObjectInfoMap(mapObjectInfoJSON);
+        }
+        else
+        {
+            doGetTotalRecords();
+        }
+    }
+
+    function removeSpinner()
+    {
+        updateLoadingStatus('Completed.');
+        closeLoadingStatus();
+    }
+
+    function updateLoadingStatus(statusText) 
+    {
+        var d = new Date();
+        var n = d.toString() + ': ' + statusText;
+        document.getElementById('loadingStatusDiv').innerHTML += '<br/>' + n + '<br/>';
+    }
+
+    function closeLoadingStatus()
+    {
+        document.getElementById("spinner").classList.add('slds-hide');
+    }
+
+    Visualforce.remoting.timeout = 120000; // Set timeout at page level
+    
+    updateLoadingStatus('Initializing ...');
+    buildProfileObjectInfoMap(mapObjectInfoJSON);
+    updateLoadingStatus('Retrieving Object Information ...');
+    
+
+</script>
+
+</apex:page>

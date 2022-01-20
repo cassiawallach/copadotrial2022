@@ -1,0 +1,11 @@
+<apex:page standardController="Bread_Winner__Breadwinner_Account_Connection__c" sidebar="false" showHeader="true">
+    <apex:slds /> 
+    <script>
+    if(document.getElementsByTagName("title") && document.getElementsByTagName("title")[0]){
+        document.getElementsByTagName("title")[0].innerHTML="New Xero Contact";
+    }  
+    </script> 
+    <apex:outputPanel styleClass="slds-notify slds-notify_alert slds-theme_error slds-text-align_left slds-text-heading_small slds-m-bottom_small" style="border-radius:5px;font-weight:500; line-height:1.4; word-spacing:1px;justify-content:left;">
+        It is not possible to create or clone Xero Contacts. <br/>You can create New Xero Contacts while creating New Invoices.     
+    </apex:outputPanel>
+</apex:page>

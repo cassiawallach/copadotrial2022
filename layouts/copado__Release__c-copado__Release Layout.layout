@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>copado__Mass_add_to_Release</customButtons>
-    <customButtons>copado__Select_Base_Branch</customButtons>
-    <excludeButtons>Submit</excludeButtons>
+    <customButtons>Mass_Add_To_Release2</customButtons>
+    <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>PrintableView</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
@@ -18,8 +19,16 @@
                 <field>copado__Project__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>copado__Version__c</field>
+                <behavior>Edit</behavior>
+                <field>copado__Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Blocking_reason__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Parent_Release__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -29,11 +38,23 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>copado__Status__c</field>
+                <field>Close_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Sandboxes_Planned_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>copado__Planned_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Base_Branch__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Version__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -48,22 +69,28 @@
                 <behavior>Edit</behavior>
                 <field>copado__Description__c</field>
             </layoutItems>
-        </layoutColumns>
-        <style>OneColumn</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Advanced</label>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>copado__Base_Branch__c</field>
+                <field>Technical_Release_Notes__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Visible_in_Community__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Installation_Link_in_Sandbox__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Installation_Link_in_Production__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Documentation_Release_Notes__c</field>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
-        <style>TwoColumnsLeftToRight</style>
+        <style>OneColumn</style>
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -94,74 +121,153 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <miniLayout>
-        <fields>Name</fields>
-        <fields>copado__Project__c</fields>
-        <fields>copado__Status__c</fields>
-        <fields>copado__Planned_Date__c</fields>
-    </miniLayout>
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>Edit</actionName>
-            <actionType>StandardButton</actionType>
+            <actionName>copado__Release__c.copado__Send_to_Slack</actionName>
+            <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Clone</actionName>
+            <actionName>copado__Release__c.copado__Slack_Alerts</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>1</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Submit</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>2</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>ChangeOwnerOne</actionName>
+            <actionName>Clone</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>3</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>ChangeRecordType</actionName>
-            <actionType>StandardButton</actionType>
+            <actionName>copado__Mass_add_to_Release</actionName>
+            <actionType>CustomButton</actionType>
             <sortOrder>4</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>copado__Mass_Add_To_Release2</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>5</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>ChangeOwnerOne</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>6</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Share</actionName>
             <actionType>StandardButton</actionType>
-            <sortOrder>5</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>copado__Mass_add_to_Release</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>6</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>copado__Select_Base_Branch</actionName>
-            <actionType>CustomButton</actionType>
             <sortOrder>7</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Edit</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>8</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Delete</actionName>
             <actionType>StandardButton</actionType>
-            <sortOrder>1</sortOrder>
+            <sortOrder>9</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedLists>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>copado__User_Story_Title__c</fields>
-        <fields>copado__Project__c</fields>
         <fields>copado__Status__c</fields>
-        <fields>copado__Progress__c</fields>
-        <fields>copado__Sprint__c</fields>
-        <fields>copado__Epic__c</fields>
-        <fields>copado__View_in_Git__c</fields>
+        <fields>copado__Project__c</fields>
+        <fields>copado__Theme__c</fields>
+        <fields>copado__Developer__c</fields>
+        <fields>Known_Issue__c</fields>
+        <fields>Test_Runs_Counter__c</fields>
+        <fields>Pull_Requests_Counter__c</fields>
+        <fields>copado__Cancellation_Reason__c</fields>
         <relatedList>copado__User_Story__c.copado__Release__c</relatedList>
+        <sortField>NAME</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>copado__Artifact__c</fields>
         <fields>copado__Version__c</fields>
-        <fields>copado__Release_Status__c</fields>
-        <fields>copado__View_In_Git__c</fields>
-        <relatedList>copado__Artifact_Version__c.copado__Release__c</relatedList>
+        <fields>copado__Project__c</fields>
+        <fields>copado__Status__c</fields>
+        <relatedList>copado__Release__c.Parent_Release__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>copado__User_Story_Title__c</fields>
+        <fields>copado__Status__c</fields>
+        <fields>copado__Project__c</fields>
+        <fields>copado__Theme__c</fields>
+        <relatedList>copado__User_Story__c.Customer_Version__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>CreatedDate</fields>
+        <fields>StepStatus</fields>
+        <fields>OriginalActor</fields>
+        <fields>Actor</fields>
+        <fields>Comments</fields>
+        <relatedList>RelatedProcessHistoryList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>copado__Epic_Title__c</fields>
+        <fields>copado__Epic_Details__c</fields>
+        <fields>copado__Status__c</fields>
+        <fields>CREATED_DATE</fields>
+        <fields>LAST_UPDATE</fields>
+        <relatedList>copado__Epic__c.copado__Release__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>copado__Status__c</fields>
+        <fields>copado__Project__c</fields>
+        <fields>copado__Start_Date__c</fields>
+        <fields>copado__End_Date__c</fields>
+        <relatedList>copado__Sprint__c.copado__Release__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Email_date__c</fields>
+        <fields>Package_Version__c</fields>
+        <fields>What_is_changing__c</fields>
+        <relatedList>Release_Communication__c.Release__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>New</excludeButtons>
+        <fields>NAME</fields>
+        <fields>copado__User_Story_Title__c</fields>
+        <fields>copado__Status__c</fields>
+        <fields>copado__Progress_Status__c</fields>
+        <fields>copado__Environment__c</fields>
+        <fields>copado__Project__c</fields>
+        <relatedList>copado__User_Story__c.Patch_Release__c</relatedList>
+        <sortField>NAME</sortField>
+        <sortOrder>Asc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>TASK.SUBJECT</fields>
+        <fields>TASK.WHO_NAME</fields>
+        <fields>ACTIVITY.TASK</fields>
+        <fields>TASK.DUE_DATE</fields>
+        <fields>CORE.USERS.FULL_NAME</fields>
+        <fields>TASK.LAST_UPDATE</fields>
+        <relatedList>RelatedHistoryList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>copado__Tester__c</fields>
+        <fields>copado__Type__c</fields>
+        <fields>copado__User_Story__c</fields>
+        <fields>copado__Percent_Passed__c</fields>
+        <fields>copado__Test_Completion__c</fields>
+        <fields>copado__Status__c</fields>
+        <fields>copado__Overall_Test_Comments__c</fields>
+        <relatedList>copado__Test_Run__c.Release__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
@@ -169,7 +275,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0Y000004yHmH</masterLabel>
+        <masterLabel>00hb000000CuzgH</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

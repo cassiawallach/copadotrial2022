@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>amc__MC_Project_Request_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>amc__MC_Project_Request_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>amc__Project_Name__c</fields>
+        <fields>amc__Project_Start_Date__c</fields>
+        <fields>amc__Project_Request_Summary__c</fields>
+        <fields>amc__Proposed_Budget__c</fields>
+        <label>MC Project Request Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>The Project Request Object enables Users to submit a request for a new Project to be created. It can also be used to automatically generate the Project based on a template.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>amc__Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Account this Project Request was generated from</inlineHelpText>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Project Requests</relationshipLabel>
+        <relationshipName>Project_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Case__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Case this Project Request was generated from</inlineHelpText>
+        <label>Case</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipLabel>Project Requests</relationshipLabel>
+        <relationshipName>Project_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Contact this Project Request was generated from</inlineHelpText>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Project Requests</relationshipLabel>
+        <relationshipName>Project_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Generate_Project__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Set this field to TRUE to auto-generate the Project</inlineHelpText>
+        <label>Generate Project</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Lead this Project Request was generated from</inlineHelpText>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Project Requests</relationshipLabel>
+        <relationshipName>Project_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Opportunity this Project Request was generated from</inlineHelpText>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Project Requests</relationshipLabel>
+        <relationshipName>Project_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the name to use when creating the Project</inlineHelpText>
+        <label>Project Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Request_Summary__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the summary information relating to this Project Request</inlineHelpText>
+        <label>Project Request Summary</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Start_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the date that will be used for scheduling the Project</inlineHelpText>
+        <label>Project Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Template__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Project that will be used as a Template when auto-generating a new Project from this Project Request</inlineHelpText>
+        <label>Project Template</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>amc__Project__c.amc__Template__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>amc__Project__c</referenceTo>
+        <relationshipLabel>Project Requests</relationshipLabel>
+        <relationshipName>Project_Requests</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Project this request generated.</inlineHelpText>
+        <label>Project</label>
+        <referenceTo>amc__Project__c</referenceTo>
+        <relationshipLabel>Project Requests (Project)</relationshipLabel>
+        <relationshipName>Project_Requests1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Proposed_Budget__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the anticipated budget required to deliver this Project</inlineHelpText>
+        <label>Proposed Budget</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Project Request</label>
+    <listViews>
+        <fullName>amc__All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>PRQ:{00000}</displayFormat>
+        <label>Project Request Number</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Project Requests</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>amc__Project_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Project_Request_Summary__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Project_Start_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Proposed_Budget__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Project_Template__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Generate_Project__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Project__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Project_Name__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Project_Start_Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Proposed_Budget__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Project_Template__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Project_Name__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Project_Start_Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Proposed_Budget__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Project_Template__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>amc__Project_Name__c</searchFilterFields>
+        <searchFilterFields>amc__Project_Request_Summary__c</searchFilterFields>
+        <searchFilterFields>amc__Project_Template__c</searchFilterFields>
+        <searchResultsAdditionalFields>amc__Project_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Project_Request_Summary__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Project_Start_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Proposed_Budget__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>amc__Ensure_Project_Name</fullName>
+        <active>true</active>
+        <description>Ensures required fields are populated if Generate Project = TRUE</description>
+        <errorConditionFormula>AND( amc__Generate_Project__c = TRUE , ISBLANK(amc__Project_Name__c) )</errorConditionFormula>
+        <errorMessage>You must specify a Project Name if Generate Project = TRUE</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>amc__Ensure_Project_Start_Date</fullName>
+        <active>true</active>
+        <description>Ensures required fields are populated if Generate Project = TRUE</description>
+        <errorConditionFormula>AND( amc__Generate_Project__c = TRUE , ISBLANK(amc__Project_Start_Date__c) )</errorConditionFormula>
+        <errorMessage>You must specify a Project Start Date if Generate Project = TRUE</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>amc__Ensure_Project_Template_Specified</fullName>
+        <active>true</active>
+        <description>Ensures required fields are populated if Generate Project  = TRUE</description>
+        <errorConditionFormula>AND( amc__Generate_Project__c = TRUE , ISBLANK(amc__Project_Template__c))</errorConditionFormula>
+        <errorMessage>You must specify a Project Template if Generate Project = TRUE</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

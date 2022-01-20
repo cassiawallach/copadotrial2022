@@ -11,7 +11,6 @@
     </actionOverrides>
     <brand>
         <headerColor>#00C3EF</headerColor>
-        <logo>copado__Copado_Logo_Symbol_Only_Blue</logo>
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
     </brand>

@@ -1,0 +1,396 @@
+<apex:page standardController="kugo2p__Payment_Method__c" extensions="kugo2p.ManageCIMProfileController" tabstyle="kugo2p__Payment_Method__c"  action="{!onLoad}">
+<style>
+    .modalProgressBox {
+        display: block;
+        position: absolute;
+        z-index: 999;
+        text-align: center; 
+        width: 100%;
+        height: 100%;
+        background-color: #FFF;
+        top: 0px;
+        left: 0px;
+        filter:alpha(opacity=50);
+        -moz-opacity:0.5;
+        -khtml-opacity: 0.5;
+        opacity: 0.5;
+        color: black;
+        font-size: 14pt;
+    }
+    
+.cimSideBySideTable {
+    width:100%;
+}
+.cimSideBySideTable td {
+    vertical-align:top;
+    
+}
+.cimSideBySideTable td.leftColumn {
+    width:43%;
+    
+}
+.cimSideBySideTable td.middleColumn {
+    width:14%;
+    text-align:center;
+    
+}
+.cimSideBySideTable td.rightColumn {
+    width:43%;
+    
+}
+
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<!-- <apex:sectionHeader title="Authorize.Net CIM Profile" subtitle="{!pmtMethod.Name}" /> --> 
+<c:PageHeader title="Authorize.Net CIM Profile" subtitle="{!pmtMethod.Name}" pathname="custom" icon="custom40" description="" />
+
+<apex:form id="cimMgtForm">
+<apex:pageMessages id="messages"/>
+
+        <apex:actionStatus id="modalActionStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel styleClass="modalProgressBox">&nbsp; 
+           <br/><br/><br/>
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/spinner_med.gif')}"  style="vertical-align:middle;" alt="busy..." />
+             &nbsp;Sending Request </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop"  >
+         </apex:facet>
+    </apex:actionStatus>
+    
+<apex:pageBlock id="mainPageBlock"  mode="edit" >
+<apex:pageBlockButtons styleClass="kugamon">
+<apex:commandButton value="Back" action="{!gotoReturnURL}" styleClass="slds-button slds-button--neutral" />
+<apex:commandButton value="Delete Authorize.Net CIM Profile" action="{!deleteProfile}" styleClass="slds-button slds-button--neutral" 
+                    onclick="return confirm('Deleting this profile will remove both the local payment method record and the profile stored at Authorize.Net.  Would you like to continue?');" />
+</apex:pageBlockButtons>
+
+<apex:pageBlockSection columns="1" >
+<p>Use this CIM manager utility to keep your Kugamon payment method record in sync with the CIM profile stored at Authorize.Net:</p>
+</apex:pageBlockSection>
+<apex:pageBlockSection columns="2" title="General Details">
+<apex:outputField value="{!pmtMethod.kugo2p__Processor_Connection__c}" />
+<apex:outputField value="{!pmtMethod.kugo2p__Customer_Profile_Id__c}" />
+
+</apex:pageBlockSection>
+
+<table class="cimSideBySideTable">
+<tr>
+<td class="leftColumn">
+<apex:pageBlockSection title="Customer Profile (Kugamon Copy)"  id="localCustomerProfileSection" columns="1">
+<apex:pageBlockSectionItem labelStyle="width:40%;">
+<apex:outputLabel value="Profile Description"/>
+<apex:inputText value="{!localDescription}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Profile Email"/>
+<apex:inputText value="{!localEmail}"/>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value=""/>
+<apex:outputPanel styleClass="kugamon">
+    <apex:commandButton value="Save Changes to Authorize.Net >>" action="{!updateCIMProfile}" styleClass="slds-button slds-button--neutral" status="modalActionStatus" rerender="modalActionStatus, messages"/>
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+</td>
+<td class="middleColumn">
+<img src="{!URLFOR($Resource.PaymentConnect, '/images/dbl_white_arrow.png')}"/>
+</td>
+<td  class="rightColumn">
+<apex:pageBlockSection title="Customer Profile (Authorize.Net Copy)"  id="remoteCustomerProfileSection" columns="1">
+<apex:pageBlockSectionItem labelStyle="width:40%;" >
+<apex:outputLabel value="Description" />
+<apex:outputText value="{!cpDescription}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Email" />
+<apex:outputText value="{!cpEmail}" />
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+</td>
+</tr>
+<tr>
+<td>
+<apex:pageBlockSection title="Payment Profile (Kugamon Copy)"  id="localPmtProfileSection"  columns="1">
+<apex:outputField value="{!pmtMethod.kugo2p__Contact__c}" />
+<apex:inputField value="{!pmtMethod.kugo2p__Billing_First_Name__c}" /> 
+<apex:inputField value="{!pmtMethod.kugo2p__Billing_Last_Name__c}" />
+<apex:inputField value="{!pmtMethod.kugo2p__Billing_Street__c}" />
+<apex:inputField value="{!pmtMethod.kugo2p__Billing_City__c}" />
+<apex:inputField value="{!pmtMethod.kugo2p__Billing_State__c}" />
+<apex:inputField value="{!pmtMethod.kugo2p__Billing_Postal_Code__c}" />
+<apex:inputField value="{!pmtMethod.kugo2p__Billing_Country__c}" />
+
+<apex:pageBlockSectionItem labelStyle="width:40%;">
+<apex:outputLabel value="Company" />
+<apex:inputText value="{!company}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Phone" />
+<apex:inputText value="{!phone}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Fax" />
+<apex:inputText value="{!fax}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Payment Type"/>
+<apex:outputPanel >
+<table><tr><td>
+<apex:selectList size="1" multiselect="false" value="{!localPaymentProfileType}">
+<apex:selectOption itemLabel="Credit Card" itemValue="Credit Card" />
+<apex:selectOption itemLabel="Bank Account" itemValue="Bank Account" />
+    <apex:actionSupport event="onchange" action="{!localPaymentProfileTypeChanged}" id="localPaymentProfileTypeChange" status="localProfilePaymentTypeStatus" rerender="localCustomerProfileSection, localPmtProfileSection"/>
+
+</apex:selectList>
+</td><td>
+    <apex:actionStatus id="localProfilePaymentTypeStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+</td></tr></table>
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Credit Card'}">
+<apex:outputLabel value="Card Type" />
+<apex:selectList size="1" multiselect="false">
+    <apex:selectOption itemValue="Visa" itemLabel="Visa"/>
+    <apex:selectOption itemValue="Mastercard" itemLabel="Mastercard"/>
+    <apex:selectOption itemValue="Amex" itemLabel="American Express"/>
+    <apex:selectOption itemValue="Discover" itemLabel="Discover"/>
+</apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Credit Card'}">
+    <apex:outputLabel value="Card Number" />
+    <apex:inputText value="{!cardNumber}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Credit Card'}">
+<apex:outputLabel value="Card Expiration" />
+<apex:outputPanel layout="inline" >
+<apex:selectList size="1" multiselect="false" value="{!expMonth}">
+    <apex:selectOptions value="{!expMonthOptions}" />
+</apex:selectList>
+&nbsp;
+<apex:selectList size="1" multiselect="false" value="{!expYear}">
+    <apex:selectOptions value="{!expYearOptions}"/>
+</apex:selectList>
+
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Credit Card'}" helpText="The three- or four-digit number on the back of a credit card (on the front for American Express).  This field is required if the merchant would like to use the Security Code Verification (CCV) security feature.">
+    <apex:outputLabel value="Security Code" />
+    <apex:inputText value="{!cardCode}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Bank Account'}">
+    <apex:outputLabel value="Bank Name" />
+    <apex:inputText value="{!bankName}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Bank Account'}">
+    <apex:outputLabel value="Name on Account" />
+    <apex:inputText value="{!nameOnAccount}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Bank Account'}" helpText="5-17 digital account number.  Can be masked (e.g. XXXX111). If value is masked, the last four digits must match the original value in the profile.
+If a masked value is submitted, the original value will not be updated.">
+    <apex:outputLabel value="Bank Account Number" />
+    <apex:inputText value="{!bankAccountNumber}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Bank Account'}" helpText="9 digit bank account routing number.  Can be masked (e.g. XXXX1111). If value is masked, the last four digits must match the original value in the profile.
+If a masked value is submitted, the original value will not be updated.">
+    <apex:outputLabel value="Routing Number" />
+    <apex:inputText value="{!routingNumber}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Bank Account'}">
+    <apex:outputLabel value="Account Type" />
+    <apex:selectList size="1" multiselect="false" value="{!bankAccountType}">
+        <apex:selectOption itemValue="" itemLabel="-- select a bank account type --"/>
+        <apex:selectOption itemValue="checking" itemLabel="Checking"/>
+        <apex:selectOption itemValue="savings" itemLabel="Savings"/>
+        <apex:selectOption itemValue="businessChecking" itemLabel="Business Checking"/>
+    </apex:selectList>
+</apex:pageBlockSectionItem> 
+
+<apex:pageBlockSectionItem rendered="{!localPaymentProfileType == 'Bank Account'}" helpText="(Optional) The type of electronic check transaction.  Currently, the CIM API does not support ARC or BOC transaction types.">
+    <apex:outputLabel value="eCheck Type" />
+    <apex:selectList size="1" multiselect="false" value="{!eCheckType}">
+        <apex:selectOption itemValue="" itemLabel="-- select an eCheck type --"/>
+        <apex:selectOption itemValue="CCD" itemLabel="CCD - Cash Concentration or Disbursement"/>
+        <apex:selectOption itemValue="PPD" itemLabel="PPD - Prearranged Payment and Deposit Entry"/>
+        <apex:selectOption itemValue="TEL" itemLabel="TEL - Telephone-Initiated Entry"/>
+        <apex:selectOption itemValue="WEB" itemLabel="WEB - Internet-Initiated Entry"/>
+    </apex:selectList>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem helpText="If selected, tells Authorize.Net to validate the payment profile information with a test authorization."> 
+    <apex:outputLabel value="" />
+    <apex:outputPanel >
+        <apex:inputCheckbox value="{!validate}" />&nbsp;Validate changes to this profile before saving.
+    </apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+
+</apex:pageBlockSection>
+</td>
+<td class="middleColumn">
+<img src="{!URLFOR($Resource.kugo2p__PaymentConnect, '/images/dbl_white_arrow.png')}"/>
+</td>
+<td>
+<apex:pageBlockSection title="Payment Profile (Authorize.Net Copy)" id="remotePmtProfileSection" columns="1" >
+<apex:pageBlockSectionItem labelStyle="width:40%;">
+<apex:outputLabel value="Payment Profile Id" /> 
+<apex:outputText value="{!pmtMethod.kugo2p__Profile_Id__c}" /> 
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Billing Firstname" /> 
+<apex:outputText value="{!ppBillingFirstName}" /> 
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Billing Lastname" />
+<apex:outputText value="{!ppBillingLastName}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Address" />
+<apex:outputText value="{!ppBillingStreet}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="City" />
+<apex:outputText value="{!ppBillingCity}" />
+</apex:pageBlockSectionItem> 
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="State" />
+<apex:outputText value="{!ppBillingState}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Postal Code" />
+<apex:outputText value="{!ppBillingPostalCode}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Country" />
+<apex:outputText value="{!ppBillingCountry}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Company" />
+<apex:outputText value="{!ppBillingCompany}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Phone" />
+<apex:outputText value="{!ppBillingPhone}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Fax" />
+<apex:outputText value="{!ppBillingFax}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="Payment Type" />
+<apex:outputText value="{!ppPaymentType}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!ppPaymentType == 'Credit Card'}">
+<apex:outputLabel value="Card Number" />
+<apex:outputText value="{!ppCardNumber}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!ppPaymentType == 'Bank Account'}">
+<apex:outputLabel value="Bank Name" />
+<apex:outputText value="{!ppBankName}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!ppPaymentType == 'Bank Account'}">
+<apex:outputLabel value="Name on Account" />
+<apex:outputText value="{!ppNameOnAccount}" />
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem rendered="{!ppPaymentType == 'Bank Account'}">
+<apex:outputLabel value="Account Number" />
+<apex:outputText value="{!ppBankAccountNumber}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!ppPaymentType == 'Bank Account'}">
+<apex:outputLabel value="Routing Number" />
+<apex:outputText value="{!ppRoutingNumber}" />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!ppPaymentType == 'Bank Account'}">
+<apex:outputLabel value="eCheck Type" />
+<apex:outputText value="{!ppEcheckType}" />
+</apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+</td>
+</tr>
+<tr>
+<td>
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem labelStyle="width:40%;">
+<apex:outputLabel value=""/>
+<apex:outputPanel styleClass="kugamon" >
+    <apex:commandButton value="Save Changes to Authorize.Net >>" action="{!updateCIMPaymentProfile}" style="width:225px;" styleClass="slds-button slds-button--neutral" status="modalActionStatus" rerender="modalActionStatus, messages"/>
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+</td>
+<td></td>
+<td>
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem labelStyle="width:40%;">
+<apex:outputLabel value=""/>
+<apex:outputPanel layout="none">
+<table><tr>
+<td>
+<apex:outputPanel styleClass="kugamon">
+    <apex:commandButton value="<< Update Kugamon Profile" action="{!updateLocalProfile}" style="width:190px;" styleClass="slds-button slds-button--neutral"/>
+</apex:outputPanel>
+</td>
+<td>
+<apex:outputPanel styleClass="kugamon"> 
+    <apex:commandButton value="Reload" action="{!retrieveCIMProfile}" styleClass="slds-button slds-button--neutral" status="modalActionStatus" rerender="modalActionStatus,  cimMgtForm, messages"/>
+</apex:outputPanel>
+</td>
+</tr></table>
+</apex:outputPanel>
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+</td>
+</tr>
+</table>
+
+</apex:pageBlock>
+
+</apex:form>
+</apex:page>

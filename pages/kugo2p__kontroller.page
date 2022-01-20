@@ -1,0 +1,48 @@
+<apex:page id="pageId" controller="kugo2p.Kontroller"> <!-- action="{!Director}" -->
+
+<apex:outputPanel id="opId">
+    <apex:pageMessages escape="false"/>
+
+    <apex:form id="formId">
+        <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+        <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!showCancel}" >
+            <br></br>
+            <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+            <apex:commandButton value="Make Payment" action="{!proceedToPayment}" rendered="{!showMakePayment}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Approve Order & Make Payment" action="{!ApproveOrderandPay}" rendered="{!showApproveOrderandPay}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Set Quote Status to Closed/Won & Generate Order" action="{!updateQuoteStatusToWonAndGenerateOrder}" rendered="{!showClosedWonandGenerateOrder}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Cancel Shipment & Order" action="{!CancelShipmentsAndOrder}" rendered="{!showCancelShipments}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Cancel Order and All Associated Invoices" action="{!CancelOrderwithInvoicePayments}" rendered="{!showCancelOrderwithInvoicePayments}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Cancel Order" action="{!CancelOrder}" rendered="{!showCancelOrder}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Cancel Quote" action="{!CancelQuote}" rendered="{!showCancelQuote}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Cancel Invoice" action="{!CancelInvoice}" rendered="{!showCancelInvoice}" styleClass="slds-button slds-button--brand" />
+            <apex:commandButton value="Refresh Assets" action="{!refreshAssets}" rendered="{!showRefreshAssets}" styleClass="slds-button slds-button--brand" />
+        </apex:outputPanel>
+ 
+        <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" >
+            <apex:actionStatus id="busyStatus" >
+                <apex:facet name="start">
+                    <div class="kugamon">
+                        <div class="slds-spinner_container">
+                            <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                                <span class="slds-assistive-text">Processing...</span>
+                                <div class="slds-spinner__dot-a"></div>
+                                <div class="slds-spinner__dot-b"></div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:outputPanel>
+
+        <apex:commandButton id="processBtn" value="Process" action="{!Director}" style="display: none;" status="busyStatus" rerender="opId" />
+    </apex:form>
+
+    <script>
+        window.onload=function()
+        {
+            document.getElementById("{!$Component.pageId:formId:processBtn}").click();
+        };
+    </script>
+</apex:outputPanel>
+</apex:page>

@@ -1,0 +1,41 @@
+<aura:component>
+  <aura:attribute name="id" type="String" />
+  <aura:attribute name="playgroundId" type="String" required="true" />
+  <aura:attribute name="name" type="String" required="true" />
+  <aura:attribute name="status" type="String" required="false" />
+  <aura:attribute name="onRemove" type="Object" />
+  <aura:attribute name="configuration" type="String" required="false" />
+  <aura:attribute name="isContinueShow" type="Boolean" default="true" />
+
+  <div id="{! v.id }">
+    <!--  -->
+    <div class="picture">
+      <img src="{! $Resource.cps_assets + '/Assets/playground_profile.png' }" />
+    </div>
+    <p class="name">{! v.name }</p>
+    <div class="configuration">{!v.configuration}</div>
+    <div class="status">
+      <aura:if isTrue="{! v.status == 'Activated' }">
+        <img src="{! $Resource.cps_assets + '/Assets/activated.svg' }" />
+      </aura:if>
+      <aura:if isTrue="{! v.status == 'In Progress' }">
+        <img src="{! $Resource.cps_assets + '/Assets/in_progress.svg' }" />
+      </aura:if>
+      <aura:if isTrue="{! v.status == 'Failed' }">
+        <img src="{! $Resource.cps_assets + '/Assets/close.svg' }" />
+      </aura:if>
+      <p>{! v.status }</p>
+    </div>
+
+    <aura:if isTrue="{! or(v.status == 'Activated', v.status == 'Failed') }">
+      <button class="details-btn" onclick="{! c.goToPlayground }">Details</button>
+    </aura:if>
+    <aura:if isTrue="{! and(v.status == 'In Progress', v.isContinueShow) }">
+      <button class="details-btn" onclick="{! c.goToPlayground }">Continue</button>
+    </aura:if>
+
+    <button class="remove-btn" data-playgroundid="{! v.playgroundId }" onclick="{! v.onRemove }" >
+      <img src="{! $Resource.cps_assets + '/Assets/delete.svg' }" />
+    </button>
+  </div>
+</aura:component>

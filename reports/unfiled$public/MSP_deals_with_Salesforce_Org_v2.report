@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Account.Id:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Salesforce_Org__c.OrgId__c:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of SF Orgs</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$OrgId__c</field>
+    </columns>
+    <crossFilters>
+        <criteriaItems>
+            <column>Name</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>contains</operator>
+            <value>MSP</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>StageName</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed Won,Fully Paid</value>
+        </criteriaItems>
+        <operation>with</operation>
+        <primaryTableColumn>Account$Id</primaryTableColumn>
+        <relatedTable>Opportunity</relatedTable>
+        <relatedTableJoinColumn>Account</relatedTableJoinColumn>
+    </crossFilters>
+    <currency>USD</currency>
+    <description>For Alliances</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>MSP deals with Salesforce Org v1</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_Salesforce_Orgs__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

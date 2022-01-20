@@ -1,0 +1,34 @@
+<apex:page standardController="kugo2p__SalesOrder__c"
+    title="Manage Lines | Kugamon" 
+    applyBodyTag="false"
+    sidebar="false" 
+    docType="html-5.0">
+
+    <script>
+        // get the id of the order record
+        var orderId = "{!JSENCODE(kugo2p__SalesOrder__c.Id)}";
+        var discountPercent = "{!kugo2p__SalesOrder__c.kugo2p__DiscountPercent__c}";
+        var pricebookName = "{!JSENCODE(kugo2p__SalesOrder__c.kugo2p__PriceBookName__c)}";
+
+        // determine the current view that is to be displayed on page launch. Add Lines or Edit Lines
+        let selectedView = "{!$CurrentPage.parameters.view}";    
+
+        selectedView = (selectedView == undefined || selectedView == '') ? 'additionalChargesAndCredits' : selectedView;
+
+        //console.log('componentName?: ' + componentName + ' selectedView: ' + selectedView);
+
+        const appName = 'ManageLinesContainerApp';
+        const cmpName = 'ManageLinesContainer';
+        const cmpParams = {
+		                    isLightningMode: {!$User.UIThemeDisplayed == 'Theme4d'},
+		                    isModal: true,
+		                    objectName: 'Order',
+		                    recordId: orderId,
+		                    discountPercent: discountPercent,
+		                    pricebookName: pricebookName,
+		                    selectedView: selectedView
+                        };
+    </script>
+
+    <c:BaseLightningOut />
+</apex:page>

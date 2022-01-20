@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Opportunity.ACV__c.CONVERT:SUM/309000</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Percent of Budget</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>1048000</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA2</developerName>
+        <downGroupingContext>GRAND_SUMMARY</downGroupingContext>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Summit Budget</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_79608058</developerName>
+        <masterLabel>Deal Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>TYPE</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Partner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Growth</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Credit Order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free credits</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Basic - Annual</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Premium - Annual</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Basic - Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Premium - Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <value>1. New Business + Add-on (existing contract)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Auto-recharge</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Recurly order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Existing Business</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <value>2. Renewals</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Multi-year</sourceValue>
+            </sourceValues>
+            <value>3. Renewals (Multi-year)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>4. Expansion (new contract)</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_80755632</developerName>
+        <masterLabel>Sales Group</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>ACCOUNT_OWNER</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <value>Select</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <value>Summit</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <value>Europe</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>Opportunity.ACV__c.CONVERT</column>
+        </chartSummaries>
+        <chartType>LineCumulative</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_79608058</groupingColumn>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Cumulative Total vs Budget Total</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>FISCAL_QUARTER</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Sales Performance DB</description>
+    <filter>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,New Customer,Credit Order,Auto-recharge,Recurly order,Existing Business,Free credits,Free minutes,Renewal,Add-on,New Business Add-on,Partner,Growth,Multi-year</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_80755632</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Europe</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_79608058</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1. New Business + Add-on (existing contract)</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_80755632</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_79608058</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CQCW - Sales Group: Europe (New)</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closedwon</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <endDate>2020-07-31</endDate>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2020-05-01</startDate>
+    </timeFrameFilter>
+</Report>

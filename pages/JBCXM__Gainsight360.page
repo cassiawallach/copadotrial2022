@@ -1,0 +1,350 @@
+<apex:page docType="html-5.0"  sidebar="false" title="Gainsight 360" tabStyle="CustomerSuccess360__tab" controller="JBCXM.Customer360Broker" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <style id="gs-app-temp-style-for-flash" type="text/css"> object{opacity: 0} </style>
+    <script type="text/javascript">
+        window.addEventListener('load', function(){
+            var styleNode = document.querySelector('#gs-app-temp-style-for-flash');
+            styleNode.remove ? styleNode.remove() : styleNode.parentElement.removeChild(styleNode);
+        });
+
+        if(("{!(JSINHTMLENCODE($CurrentPage.parameters.env))}" !== "" || "{!(pkgNS)}" === "") && 'serviceWorker' in navigator) {
+            //Unregister Service Worker if in Dev mode.
+            navigator.serviceWorker.getRegistrations().then(function(r) {
+                
+              r.forEach(function(item) {
+                console.log("Unregistering Service Worker because we are in dev mode");
+                item.unregister();
+              });
+            });
+        }
+        if(!window.GSPerformance){
+            window.GSPerformance = {};
+            window.GSPerformance.mark = window.GSPerformance.measure = function(){};
+        }
+        if(window.performance && window.performance.mark && window.performance.measure){
+            window.GSPerformance = {
+                mark: function(){
+                    try{
+                        window.performance.mark.apply(window.performance, arguments);
+                    } catch(e){
+                        console.log("Failed to create mark", e);
+                    }
+                },
+                measure: function(){
+                    try{
+                        window.performance.measure.apply(window.performance, arguments);
+                    } catch(e){
+                        console.log("Failed to create measure", e);
+                    }
+                },
+                getEntriesByType: function(){
+                    try{
+                        return window.performance.getEntriesByType.apply(window.performance, arguments);
+                    } catch(e){
+                        console.log("Failed to create entries", e);
+                    }
+                },
+                getEntriesByName:function(){
+                    try{
+                        return window.performance.getEntriesByName.apply(window.performance, arguments);
+                    } catch(e){
+                        console.log("Failed to create entries by name", e);
+                    }
+                }
+            };
+        }
+
+        if(window.localStorage && window.localStorage.getItem("showSFHeader") === "false"
+            && "{!(isAccountExists)}" !== "false") {
+            
+            var _headerEle = document.getElementById('AppBodyHeader');
+            _headerEle && (_headerEle.style.display = 'none');
+
+        }
+        var defaultImage = "{!(URLFOR($Resource.GSAppCSS))}";
+            defaultImage = defaultImage +"/images/sponsor-images/empty-img.png" ;
+            var hideTopbar = "{!JSINHTMLENCODE($CurrentPage.parameters.hideMenu) == '1'}";
+            var GS = GS || {};
+            var d = new Date();
+            var nsParams                = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+            GS.activityServiceUrl       = nsParams.url + "/ant";
+            GS.remotingEndPoint     = '{!($RemoteAction.Customer360Broker.customer360RequestBroker)}';
+            GS.remotingBulkEndPoint = '{!($RemoteAction.Customer360Broker.customer360BulkRequestBroker)}';
+            GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.nsRemotingEndpint        = '{!$RemoteAction.NSRemoting.getNSParams}';
+            GS.packageNS            = "{!(pkgNS)}";
+            GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+            GS.customerName         = "{!(JSINHTMLENCODE(customerName))}";
+            GS.encodedcustomerName  = "{!(URLENCODE(customerName))}";
+            GS.customerStatus       = "{!(customerStatus)}";
+            GS.custStatusSysName    = "{!(custStatusSysName)}";
+            GS.sessionId =  "{!(NSSessionId)}";
+            GS.remoting = "{!($RemoteAction.NSRemoting.apinsinvoke)}";
+            GS.userConfig = {
+
+            };
+
+            GS.extApiAction = "sfdc/proxy";
+            GS.Partner_Server_URL_V12 = "{!($Api.Partner_Server_URL_120)}";
+            GS.fiscalYrEnabled      = {!(IsCustomFiscalYearSettingsEnabled)};
+            GS.isCustomerExists = "{!(isCustomerExists)}";
+            GS.accountId  = "{!(JSINHTMLENCODE(accountId))}";
+            GS.customerId = "{!(JSINHTMLENCODE(customerId))}";
+            GS.isAccountExists = "{!(isAccountExists)}";
+            GS.isFromWidgets        = false;
+
+            GS.dataConfig = {
+               date: d.getFullYear() + '-' + (d.getMonth()>8 ? "":"0") + (d.getMonth() + 1) + "-" + (d.getDate() > 9 ? "":"0") + (d.getDate()),
+               interval:"days",
+               units:"7" // last 7 days
+           }
+            GS.isNSScorecardEnabled = false;
+            GS.isCS360 = true;
+            GS.userBlankPhoto = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/images/workflow/No-User.jpg";
+            GS.insId = "{!JSINHTMLENCODE($CurrentPage.parameters.insId)}";
+
+            //restClient.config = {remoting: "{!NSSessionId}", sessionId : "{!$RemoteAction.NSRemoting.apinsinvoke}"};
+            GS.maxAjaxRetries = 2; //Used for refiring the ajax remoting request
+            GS.maxAjaxTimeout = 120000; //Used for timeout in case of ajax remoting request
+
+
+
+            GS.hasAccessToCallCenter =  {!(IsCallCenterIsAssignedToLoggedInUser)};
+            GS.isCustomizedCTI = {!(IsCustomizedCTI)};
+            GS.isDAMigrationInProcess = {!(IsDAMigrationInProcess)};
+            GS.hasCustomerInfoPermissions = {!(CustomerInfoPermissions)};
+            GS.isRelationshipEnabled = {!(isRelationshipEnabled)};
+            GS.externalApp = "EXTAPP_GSC";
+            GS.app_mode = 0;
+            GS.isExternalLayouts= true;
+            GS.isFromWidgets = false;
+            GS.isCS360 = true;
+            GS.isReadOnlyApp =true;
+            GS.isAllowProxy = true;
+            GS.disableGlobalSearch = true;
+            GS.honourTimezonePreferences = true; // Only in few pages needs to honor, timezone needs to honored for sfdc data
+            GS.displayTimezone = true; // Display Timezone on UI
+
+            if(!window.Visualforce) {
+                var redirectURL = window.location.href;
+                var numOfReloads = "{!JSINHTMLENCODE($CurrentPage.parameters.numOfReloads)}";
+                numOfReloads = parseInt(numOfReloads || 0);
+                if(numOfReloads <= 1) {
+                    var joinerChar = (redirectURL.indexOf("?") > 0) ? "&" : "?"
+                    numOfReloads = numOfReloads+1;
+                    window.location.href = redirectURL+joinerChar+"numOfReloads="+numOfReloads+"";
+                }
+            }
+
+            var viewport = {width:0, height:0};
+            
+            function addDynamicDivs() {
+                j$(".gs_main_wrapper").html("");
+                j$("<div class='gs_invalidCustomerWrapper'>").appendTo('.gs_main_wrapper');
+                j$("<div class='gs_inavlidCustomerSpan'>").appendTo('.gs_invalidCustomerWrapper');
+            }
+
+            function prepareHTML() {
+
+                var htmlStr = "";
+
+                    htmlStr += "<div class='gs_invalidCustomerWrapper'>";
+                    htmlStr += "<div class = 'gs_invalidCustomer'>";
+                    htmlStr += "<div class = 'gs_inavlidTextSpan'><div class = 'dmContainer'><div class = 'gs_inavlidCustomerSpanForNewAccount' style = 'float: none;'></div><span>"+ GS.customerName +"</span></div><div style = 'clear:both;margin: 15px 0px;'>This Account is not added to Gainsight Customer Repository!</div>";
+                    htmlStr += "&nbsp;&nbsp;<a class = 'gs_inavlidAnchor' href= '#' onclick = 'NavigateAccount()'>View Account</a></div></div></div>";
+
+                return htmlStr;
+            }
+            function NavigateAccount() {
+                window.location.href = "/" + GS.accountId;
+            }
+            function appendAdoptionGraph() {
+                j$("#Adoption").append(j$(".AdoptionPanelChild"));
+            }
+            function OnChatterRendered(){
+
+                j$(".gs-chatter-loader-img").hide();
+                j$(".chatterMainDivClass").show();
+                //Topic is added only when the feed is not on cta object
+                if(GS.topic && GS.topic.length >0 ){
+                    j$("#publishersharebutton").on("click", onClickShareButton);
+                    j$("#publishereditablearea").val(GS.topic + ": ");
+                    j$(".publisherFeedItemTypeChoice a").on("click", addTopic);
+                    j$("#publishereditablearea").mousedown(addTopic);
+
+                }
+                j$(".cxcontentcommentaction").on("click", onClickAttachFile);
+                AutoCompleteInputElement.prototype.positionACBox = function(a) {
+                    if(this.element && this.acBox && (!a || this.isACBoxVisible())) {
+                        pos =j$(':focus').offset();
+                        this.acBox.setStyle("left", pos.left + "px");
+                        this.acBox.setStyle("top", pos.top+20 + "px");
+                        this.acBox.setStyle("width", "auto");
+                        "object" === typeof Ext && (a = Ext.get("massEdit"), null !== a && this.acBox.setStyle("zIndex", parseFloat(a.getStyle("z-index"), 10) + 10))
+                    }
+                };
+            }
+            function addTopic() {
+
+                   var iFrameChecker = setInterval(function() {
+
+                     if(j$(".cke_wysiwyg_frame").length) {
+                         var chatterIFrameBody = j$(".cke_wysiwyg_frame").contents().find("body");
+                         if(chatterIFrameBody.length){
+
+                          setTimeout(function(){
+
+                                    j$(".cke_wysiwyg_frame").contents().find("body").text(GS.topic + ": ").removeClass("placeholder").focus();
+
+                           }, 200);
+                           clearInterval(iFrameChecker);
+                         }
+                     }
+                 },200);
+            }
+            function onClickShareButton(){
+
+                window.setTimeout(function(){
+                        j$("#publishereditablearea").val(GS.topic + ": ");
+                }, 1500);
+            }
+            function onClickAttachFile(){
+
+                    var self = this;
+                    setTimeout(function(){
+                      j$("#contentCommentDropdown").position({
+                        at:"left bottom",
+                        of:j$(self),
+                        my:"left top"
+                      });
+
+                    },150);
+
+            }
+            //GS.isSFConsole = sforce.console.isInConsole();
+    </script>
+
+    
+
+    <div id="gs-app-container">
+    <div class="gs-topNav gs" style="display: none;">
+        <div class="gs-topNav">
+            <div class="left">
+                <div class="gs-g-logo left">
+                    <div class="gs-g-logo-icon"></div>
+                </div>
+            </div>
+            <div class="gs-module-title"><ul class="gs-breadcrumb"><li><span>Administration / General / Gainsight 360</span></li></ul></div>
+        </div>
+    </div>
+    <div class="gs-module-container">
+        
+        <div class="gs_main_wrapper">
+            <div class="header-holder"></div>
+            <div class="container-holder">
+            <div class="gs-container">
+                <div class="splash-screen abs-center">
+            <div class="logo-spin">
+                <div class="preloader-wrapper big active">
+                   <div class="spinner-layer spinner-blue-only">
+                     <div class="circle-clipper left">
+                       <div class="circle"></div>
+                     </div><div class="gap-patch">
+                       <div class="circle"></div>
+                     </div><div class="circle-clipper right">
+                       <div class="circle"></div>
+                     </div>
+                   </div>
+                 </div>
+            </div>
+        </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({staticScripts: ["angular8/scripts.js" ], scripts: ["gsc360/scripts/gsc360.bundle.js"], styles:["gsc360/styles/gsc360.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:8090/UI')}/gsc360/styles/gsc360.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "https://localhost:8090/UI")}/gsc360/scripts/gsc360.bundle.js"></script>
+    </apex:outputpanel>
+
+    <apex:form >
+        
+
+        <apex:actionFunction name="actionCTAIdforChatter"
+                             action="{!getCTAIdForChatter}"
+                             reRender="chatterIdCTA, rerenderCTAChatterPanel"
+                             oncomplete="OnChatterRendered()">
+            <apex:param name="paramCTAId" value="" />
+        </apex:actionFunction>
+    </apex:form>
+    <div class="gs-chatter-loader-img" style="display: none;">
+        <div class="gs-chatter-loader"></div>
+        <span>Loading Chatter</span>
+    </div>
+    <div class="chatterMainDivClass" style="display: none;">
+        <apex:outputPanel id="rerenderCTAChatterPanel">
+            <apex:outputPanel id="renderCTAChatterPanel">
+                <div id="chatterDivId">
+                    <chatter:feed entityId="{!ctaChatterId}" id="chatterIdCTA" />
+                </div>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </div>
+    
+    <!-- JB-000 -->
+    <div id="nsParams" style="display: none; width: 100%;"></div>
+
+    <apex:outputPanel rendered="{!IsCallCenterIsAssignedToLoggedInUser}">
+        <div class="sfSoftPhoneLayout"  style="display:none;">
+            <div class="cti-frame-header ui-state-default ui-widget-content ui-state-default ui-widget-header ui-state-default">
+                <div class="cti-frame-state" data-state="+">
+                    <div class="cti-title">Click to Call</div>
+                    <a href="#" onclick="return false;">+</a>
+                </div>
+            </div>
+            <iframe src="/apex/SurveyQuestionFrame" width="300" height="395"></iframe>
+        </div>
+    </apex:outputPanel>
+    <script>
+        var GSGA = {
+            orgId: "{!$Organization.Id}",
+            orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script
+            src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('GSCustomerApp - G360');
+        if(GS.userConfig && GS.userConfig.isLightningEnabled) {
+            gainsightTrackEvents.pushEvents("LightningMode", 'LightningMode', 'LightningMode', 1);
+        }
+        //Register only if it is packaged Environment..
+        if ('serviceWorker' in navigator && GS.packageNS !== "") {
+          navigator.serviceWorker
+            .register('/apex/'+GS.packageNS+'ExportNPSAnalytics')
+            .then(function(registration) {
+                if("{!(JSINHTMLENCODE($CurrentPage.parameters.env))}" !== "") {
+                   console.log("SW Unregistered - Dev Mode"); 
+                   return registration.unregister();
+                }
+              console.log("Service Worker Registered");
+            })
+            .catch(function(err) {
+              console.log("Service Worker Failed to Register", err);
+            });
+        }
+    </script>
+</apex:page>

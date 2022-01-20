@@ -1,0 +1,178 @@
+<apex:page id="thePage" showHeader="false" sidebar="false" standardStylesheets="false" 
+           controller="SelfServiceSupportController"
+           contentType="{!IF(isJSON, 'application/json', 'text/html')}">
+<apex:outputPanel rendered="{!isJSON}" layout="none">
+    {!JSONValue}
+</apex:outputPanel>    
+
+<apex:outputPanel rendered="{! !isJSON}" layout="none">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+		<head>
+			<title>Copado Solutions Home Page</title>
+			<meta name="description" content="" />
+			<meta name="keywords" content="" />
+			<c:websiteHeadTag />
+			<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.SFLightningDesignSystem, 'assets/styles/salesforce-lightning-design-system.min.css')}" />
+            <style>
+            	.solutionSearchText{
+                	width:50%;
+                }
+            </style>
+        </head>
+		<body class="homepage" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+				<div id="top-wrapper">
+					<c:websiteHeader />
+					<script>setActiveTab('Support');</script>			           
+					 <section>
+							<header>
+							   <div class="container">
+								<h2>Solutions Center</h2>
+								</div>
+							</header>
+						</section>
+				</div>
+	
+				<div id="main">
+					<div class="container"> 
+						<div class="row">
+							<section class="11u">
+								<apex:outputPanel id="pnlSearchSolution" rendered="{!!isSolutionSelected}" layout="block">
+									<div>
+										<input type="text" id="searchBox" placeholder="Search for a solution" class="solutionSearchText" value="{!searchString}"/>
+                                        <a href="#" onclick="doSearch();">
+                                            <i class="fa fa-search" aria-hidden="true" style="padding-left:5px;"></i>
+                                        </a>
+									</div>
+                                    <script>
+                                        function doSearch(){
+                                            var s = document.getElementById('searchBox').value;
+                                            window.location = '/SelfServiceSupport?q='+s; 
+                                        }
+                                        document.getElementById('searchBox').addEventListener('keydown', function(e) {
+                                            if (!e){ var e = window.event; }
+                                        
+                                            // Enter is pressed
+                                            if(e.keyCode == 13){ doSearch(); }
+                                        }, false);
+                                    </script>
+									<br />
+									<div class="alert, alert-info">
+										<apex:pageMessages id="theMessages" />
+									</div>
+									<br />
+									<apex:repeat id="rptSolutionResults" value="{!solutions}" var="s">
+										<div>
+											<h2>
+                                                <a href="/selfServiceSupport?solutionId={!s.solution.Id}&retUrl={!searchString}">{!s.solution.SolutionName}</a>
+												<span style="font-weight:normal;"> - 
+													<apex:outputText id="solutionDate" value="{0,date, dd' 'MMMMM' 'yyyy}">
+														<apex:param value="{!s.solution.LastModifiedDate}" />
+													</apex:outputText>
+												</span>
+											</h2>
+											<div><apex:outputText id="solutionShortBody" value="{!s.shortBody}" /></div>
+											<apex:outputPanel id="pnlDocsUrl" rendered="{!!ISBLANK(s.solution.Documentation_URL__c)}">
+												<a id="lnkDocsUrl" href="{!s.solution.Documentation_URL__c}" target="_blank">Documentation</a>
+											</apex:outputPanel>
+											<div><apex:repeat id="rptCategories" value="{!s.categories}" var="c">{!c.MasterLabel};&nbsp;</apex:repeat></div>
+										</div>
+									</apex:repeat>
+									<br />
+									<apex:outputPanel id="pnlEndOfResults" rendered="{!!ISBLANK(searchString)}">
+										<hr />
+										<a href="http://docs.copa.do/system/app/pages/search?scope=search-site&q={!searchString}" target="_blank">Try more results in the Documentation site</a>
+									 </apex:outputPanel>
+								</apex:outputPanel>
+														
+								<apex:outputPanel id="pnlSelectedSolution" rendered="{!isSolutionSelected}" layout="block">
+                                    <script>
+                                    	function getUrlParameter(sParam) {
+                                            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                                                sURLVariables = sPageURL.split('&'),
+                                                sParameterName,
+                                                i;
+                                        
+                                            for (i = 0; i < sURLVariables.length; i++) {
+                                                sParameterName = sURLVariables[i].split('=');
+                                                if (sParameterName[0] === sParam) {
+                                                    return sParameterName[1] === undefined ? '' : sParameterName[1];
+                                                }
+                                            }
+                                        }
+                                    	function backToResults(){
+                                        	var retUrl = getUrlParameter('retUrl');
+                                            if(retUrl){
+                                            	window.location = '/SelfServiceSupport?q='+retUrl;
+                                            }
+                                            else{
+                                            	window.location = '/SelfServiceSupport';
+                                            }
+                                        }
+                                    </script>
+									<a href="#" onclick="backToResults();" >Back to Results</a>
+									<br />
+									<div id="preview">
+										<div class="slds-page-header" role="banner">
+											<div class="slds-grid">
+												<div class="slds-col slds-has-flexi-truncate">
+													<div class="slds-media">
+														<div class="slds-media__figure">
+															<svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-standard-solution">
+																<use xlink:href="{!URLFOR($Resource.SFLightningDesignSystem, 'assets/icons/standard-sprite/svg/symbols.svg#solution')}" />
+															</svg>															
+														</div>
+														<div class="slds-media__body">
+															<p class="slds-text-heading--label">Solutions</p>
+															<div class="slds-grid">
+																<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="Solution Name">
+																	<apex:outputLabel id="selectedSolutionName">{!selectedSolution.solution.SolutionName}</apex:outputLabel>
+																</h1>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<ul class="slds-grid slds-page-header__detail-row">
+												<li class="slds-col--padded slds-size--1-of-2">
+													<p class="slds-text-heading--label slds-truncate" title="Documentation">Documentation</p>
+													<a href="{!selectedSolution.solution.Documentation_URL__c}" style="{!IF(ISBLANK(selectedSolution.solution.Documentation_URL__c),'display:none;','')}" target="_blank">Documentation</a>
+												</li>
+												<li class="slds-col--padded slds-size--1-of-2">
+													<p class="slds-text-heading--label slds-truncate" title="Categories">Categories</p>
+													<p class="slds-text-body--regular"><apex:repeat id="rptSSCategories" value="{!selectedSolution.categories}" var="c">{!c.MasterLabel};&nbsp;</apex:repeat></p>
+												</li>
+											</ul>
+											<ul class="slds-grid slds-page-header__detail-row">
+												<li class="slds-col--padded slds-size--1-of-2">
+													<p class="slds-text-heading--label slds-truncate" title="Created Date">Created Date</p>
+													<p>
+														<apex:outputText id="selectedSolutionCreatedDate" value="{0,date, dd' 'MMMMM' 'yyyy}">
+															<apex:param value="{!selectedSolution.solution.CreatedDate}" />
+														</apex:outputText>
+													</p>
+												</li>
+												<li class="slds-col--padded slds-size--1-of-2">
+													<p class="slds-text-heading--label slds-truncate" title="Last Modified Date">Last Modified Date</p>
+													<p>
+														<apex:outputText id="selectedSolutionLastModifiedDate" value="{0,date, dd' 'MMMMM' 'yyyy}">
+															<apex:param value="{!selectedSolution.solution.LastModifiedDate}" />
+														</apex:outputText>
+													</p>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<p><apex:outputField id="selectedSolutionNote" value="{!selectedSolution.solution.SolutionNote}"></apex:outputField></p>
+								</apex:outputPanel>
+							</section>
+						</div>
+					</div>
+				</div>
+	
+				<c:websiteFooter id="footer" />
+		</body>
+	</html>
+</apex:outputPanel>    
+
+</apex:page>

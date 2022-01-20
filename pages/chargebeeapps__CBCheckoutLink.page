@@ -1,0 +1,120 @@
+<apex:page controller="chargebeeapps.SendCheckoutLink" id="thepage" docType="html-5.0" action="{!fetchCusMeta}" tabStyle="chargebeeapps__CB_Subscription__c">  
+
+<head>
+<script type="application/javascript">
+function enableAllButtons() {
+    var buttons = document.getElementsByClassName("btn");
+    for (var i = 0; i < buttons.length; i++) {
+    var button = buttons[i];
+    button.disabled = false;
+    button.classList.add("btn");
+}    
+enableAllButtons();            
+</script>
+</head>
+
+     <apex:sectionHeader title="Subscriptions" subtitle="Send Subscription For Checkout" /> 
+     <apex:form id="theform">
+     <apex:pageBlock id="pb_err">
+                 <apex:outputPanel rendered="{!err.isErr}"> 
+                 
+                        <div class="cn-message cn-message--info cn-message--sm cn-message--compact">
+                          <div class="cn-message__container">
+                              <div class="cn-message__main">
+                                  {!err.err_msg}
+                              </div>
+                          </div>
+                      </div>
+                  
+                  </apex:outputPanel>   
+     </apex:pageBlock>  
+     <apex:pageBlock id="pb1" >  
+          <Apex:pageBlockSection title="Subscription Checkout"  collapsible="False"/>
+          <table cellspacing="8">
+          <tr>
+          <td>
+          <apex:outputLabel >
+          To Address : 
+          </apex:outputLabel>
+          </td>
+          <td>
+          <apex:input type="email" size="50" value="{!toAddr}"></apex:input>
+          </td>
+          </tr>
+          <tr>
+          <apex:outputPanel >
+          <td>
+          <apex:outputLabel >
+          Cc : 
+          </apex:outputLabel>
+          </td>
+          <td>
+          <apex:input size="100" value="{!ccAddr}"></apex:input>
+          </td>
+          </apex:outputPanel>
+          </tr>
+          <tr>
+          <apex:outputPanel >
+          <td>
+          <apex:outputLabel >
+          Bcc : 
+          </apex:outputLabel>
+          </td>
+          <td>
+          <apex:input size="100" value="{!bccAddr}"></apex:input>
+          </td>
+          </apex:outputPanel>
+          </tr>
+          <tr>
+          <td>
+          <apex:outputLabel >
+          Subject : 
+          </apex:outputLabel>
+          </td>
+          <td>
+          <apex:inputText size="40" value="{!subject}"/>
+          </td>
+          </tr>
+           <tr>
+          <td>
+          <apex:outputLabel >
+          Message : 
+          </apex:outputLabel>
+          </td>
+          
+          <td>
+          <table cellpadding="0" cellspacing="0" border="0"><tr><td>
+          <apex:inputTextarea rows="15" cols="100" value="{!body}"/> 
+          </td></tr>
+          
+                    
+          </table>
+          </td>
+          </tr>     
+          <tr>
+                    <td>
+             <apex:outputPanel >
+              <apex:commandButton value="Send" action="{!send}" reRender="pb4,pb_err"/>
+             </apex:outputPanel>
+              
+          </td>
+          
+          </tr>                    
+              
+          </table>
+          
+     </apex:pageBlock>
+     
+    <apex:pageBlock id="pb4"> 
+        <apex:outputPanel rendered="{!if(response!=null,true,false)}">
+          
+          Error : Some data communication error occurs...
+          
+          
+         
+          {!HTMLENCODE(response)}
+          </apex:outputPanel>
+     </apex:pageBlock>
+     </apex:form>
+    
+</apex:page>

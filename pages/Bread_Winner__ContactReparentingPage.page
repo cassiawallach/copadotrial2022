@@ -1,0 +1,491 @@
+<apex:page standardController="Bread_Winner__Breadwinner_Account_Connection__c"  extensions="Bread_Winner.BAC_PageExtension" sidebar="false" action="{!ReparentContact}" title="Reparenting Account">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head>       
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/jquery-1.11.3.js')}"></script>
+        <apex:slds />
+        <script>
+            if(document.getElementsByTagName("title") && document.getElementsByTagName("title")[0]){
+                document.getElementsByTagName("title")[0].innerHTML="Reparenting Account";
+            }
+            function HideStyleSheet(){
+            $("link.user[href$='elements.css']").each(function(){
+                $(this).attr("href", "#");
+            });
+        }
+        function message() {
+                $(".infoM6, .infoM4, .infoM3, .infoM2, .infoS1").addClass("slds-notify slds-notify_alert slds-theme_inverse-text  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px"} );
+                $(".errorM6, .errorM4, .errorM3, .errorM2, .errorS1").addClass("slds-notify slds-notify_alert slds-theme_error  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css({"font-weight":"500","line-height":"1.4","word-spacing":"1px"});
+                $(".warningM6, .warningM4, .warningM3, .warningM2, .warningS1").addClass("slds-notify slds-notify_alert slds-theme_warning  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px"} ) ;
+                $(".confirmM6, .confirmM4, .confirmM3, .confirmM2, .confirmS1").addClass("slds-notify slds-notify_alert slds-theme_success slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px"} ) ;
+               
+                $("div .messageText h4").css( "color", "white" );
+                $("div[class*='warning'] div.messageText h4").css( "color", "black" );
+                $("table.messageTable td").css({"color" : "white"});
+                $("div[class*='warning'] table.messageTable td").css( "color", "black" );
+            }
+        
+        function allfunctions(){
+            HideStyleSheet();
+            message();
+            $("span.lookupInput input").addClass("slds-input");
+        }
+        $(function(){
+            allfunctions();
+        });        
+        
+        </script>
+        <style>
+            
+            .message {
+            background-color: inherit;
+            border-style: none;
+            padding:initial;
+            }
+            message .messageText h4 {
+            font-weight: inherit;
+            display: initial;
+            }
+            .msgIcon{
+            display:none;
+            }
+            .message .messageText {
+            margin: 0px;
+            }
+            
+            .arrow {
+            font-size: 37px;
+            color: #42B7F4;
+            }
+            
+            .tdCell {
+            background: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 1px 1px 2px -2px #ccc;
+            }
+            
+            .arrowCell {
+            text-align: center;
+            vertical-align: middle!important;
+            }
+        </style>
+    </head>
+    <apex:form >
+        <div class="slds-scope">
+            <apex:actionStatus id="assign-action-status" layout="block">
+                <apex:facet name="start">
+                    <div class="slds-spinner_container">
+                        <div class="slds-spinner_brand slds-spinner slds-spinner_medium" aria-hidden="false" role="alert">
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+            <apex:outputPanel layout="block" styleClass="slds-m-around_small" rendered="{!NOT(initialized)}">
+                <apex:pageMessage summary="This Xero Contact is not yet matched to any of the Salesforce Accounts yet, if you want to match this, please match this Xero Contact to one of the Salesforce Accounts by visting the Setup section on Breadwinner tab."  severity="WARNING"  rendered="{!AND(ISBLANK(AccountId),OR(AND(CurrentBAC.Bread_Winner__Is_Customer__c, !CurrentBAC.Bread_Winner__Do_not_Import_Invoices__c), AND(CurrentBAC.Bread_Winner__Is_Supplier__c, !CurrentBAC.Bread_Winner__Do_not_Import_Bills__c)))}"/>
+                <apex:pageMessage summary="This Xero Contact is not yet matched to any of the Salesforce Accounts yet, if you want to match this, please match this Xero Contact to one of the Salesforce Accounts by clicking the Control Sync Status button on Xero Contact detail page."  severity="WARNING"  rendered="{!AND(ISBLANK(AccountId),NOT(OR(AND(CurrentBAC.Bread_Winner__Is_Customer__c, !CurrentBAC.Bread_Winner__Do_not_Import_Invoices__c), AND(CurrentBAC.Bread_Winner__Is_Supplier__c, !CurrentBAC.Bread_Winner__Do_not_Import_Bills__c))))}"/>
+            </apex:outputPanel>
+            <apex:outputPanel layout="block" rendered="{!initialized}">
+            <apex:pageMessages />
+            
+            <apex:pagemessage summary="Insufficient Access:" severity="WARNING" strength="3" rendered="{!!Have_FLS_permissions}">
+                You do not have sufficient access to Reparent Xero Contact,&nbsp;<apex:outputLink styleClass="link" target="_blank" value="/{!Permissionsetid}">{!if(isAdministrator, 'Please assign Permission set.', 'Please contact your administrator.')}</apex:outputLink>
+            </apex:pagemessage>
+            
+            <apex:outputPanel id="InValidAccess">
+                <apex:pagemessage severity="WARNING" strength="3" rendered="{!!HasReadAccess}" summary="<b>Warning:</b>" escape="false">
+                    Breadwinner will not update owner of related Invoices as Account Owner of <a href="/{!NewAccount.Id}" target="_parent" style="color: #4169E1"> {!NewAccount.Name}</a>. Account owner does not have a minimum Read permission on Invoice. If you need to change owner, Please ask your Salesforce Administrator to assign "Breadwinner Full User" or "Breadwinner Read-Only" permission set from Breadwinner Tab for Account Owner and then do this process again or <b>Import related Invoices without assigning the Account Owner as Invoice Owner</b> by clicking the Save button below.
+                </apex:pagemessage>
+                <apex:pageMessage severity="WARNING" strength="2" rendered="{!isOwnerTransferissueDuringUpdate}" summary="<b>Warning:</b>" escape="false" >
+                          Breadwinner is not able to import related Invoices as Account owner does not have a minimum Read permission on Invoice. If you need to change owner, Please ask your Salesforce Administrator to give "Breadwinner Full User" permission set for Account Owner and then do this process again or <b>Import related Invoices without assigning the Account Owner as Invoice Owne</b> by clicking the Save button below.
+                </apex:pageMessage>
+            </apex:outputPanel>
+    
+            <div class="slds-page-header slds-m-bottom_medium" role="banner">
+                <div class="slds-media__body">
+                    <p class="slds-page-header__title slds-truncate slds-align-middle">Reparenting Account Page</p>
+                    <p class="slds-text-body_small slds-line-height_reset">Breadwinner • Xero </p>
+                </div>
+            </div>
+            
+            <div class="slds-m-horizontal_medium">                
+                <apex:outputPanel id="AccInfo">
+                    <apex:outputPanel rendered="{!NewParentingBAC.Bread_Winner__Salesforce_Account__c==null}">
+                        <div class="slds-m-bottom_medium slds-text-heading_regular slds-text-align_center" >The Xero company <b>{!CurrentBAC.CompanyName__c}</b> is currently associated with the Salesforce Account  <b>{!oldaccount.Name}</b>. Choose a different Salesforce Account in the lookup below to associate with it.</div> 
+                        <table width="100%">
+                            <tr>
+                                <td valign="top" style="border-bottom:0px;width:45%" class=" slds-box ">
+                                    <div class="slds-m-horizontal_medium">
+                                        
+                                        <ul class="slds-has-dividers_bottom-space">
+                                            <li class="slds-item"><span class="slds-text-heading_medium">{!CurrentBAC.CompanyName__c}</span> </li>
+                                        </ul>
+                                        <div style="background: #f4f6f9;padding: 10px;">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Company Name:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.CompanyName__c}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Phone:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.Phone__c}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Website:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.Website__c}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Email:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.EmailAddress__c }</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <label class="slds-form-element__label">Address:</label>
+                                                    </td>
+                                                    <td valign="top">
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__StreetAddress__c))}">{!CurrentBAC.Bread_Winner__StreetAddress__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__City__c))}">{!CurrentBAC.Bread_Winner__City__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__Region__c))}">{!CurrentBAC.Bread_Winner__Region__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__Country__c))}">{!CurrentBAC.Bread_Winner__Country__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__PostalCode__c))}">{!CurrentBAC.Bread_Winner__PostalCode__c} </apex:outputPanel>
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </td>
+                                <td style="width:10%">
+                                    <div class="arrowCell" width="10%">
+                                        <span class="arrow">&#10140;</span>
+                                    </div>
+                                    
+                                </td>
+                                <td valign="top" style="border-bottom:0px;width:45%" class="slds-box ">
+                                    
+                                    <div class="slds-m-horizontal_medium">
+                                        <ul class="slds-has-dividers_bottom-space">
+                                            <li class="slds-item"><span class="slds-text-heading_medium">{!oldaccount.Name}</span></li>
+                                        </ul>
+                                        <div style="background: #f4f6f9;padding: 10px;">
+                                            
+                                            <table>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Company Name:</label>
+                                                    </td>
+                                                    <td> {!oldaccount.Name}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Phone:</label>
+                                                    </td>
+                                                    <td>{!oldaccount.Phone}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Website:</label>
+                                                    </td>
+                                                    <td>{!oldaccount.Website}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <label class="slds-form-element__label">Address:</label>
+                                                    </td>
+                                                    <td>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingStreet))}">{!oldaccount.BillingStreet}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingCity))}">{!oldaccount.BillingCity}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingState))}">{!oldaccount.BillingState}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingCountry))}">{!oldaccount.BillingCountry}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingPostalCode))}">{!oldaccount.BillingPostalCode}</apex:outputPanel>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-box" style="border-top:0px;">
+                                    <div class="slds-m-top_small">
+                                        <img src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/xero_logo_30px.png')}" /> &nbsp; Xero Customer
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td class="slds-box" style="border-top:0px;">
+                                    <div class="slds-m-top_small">
+                                        <img src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/sf_logo_30px.png')}" /> &nbsp; Salesforce Account
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="slds-grid slds-m-bottom_small">
+                                        <label style="font-size: 14px;margin-top: 22px;" class="slds-form-element__label">Salesforce Account</label>
+                                        <apex:inputField required="true" value="{!NewParentingBAC.Bread_Winner__Salesforce_Account__c}" styleClass="slds-m-top_medium">
+                                            <apex:actionSupport event="onchange" action="{!Accoutinfo}" reRender="AccInfo,inputsection,InValidAccess" status="assign-action-status" oncomplete="allfunctions();" />
+                                        </apex:inputField>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!NewParentingBAC.Bread_Winner__Salesforce_Account__c!=null}">
+                        <table width="100%">
+                            <tr>
+                                <td valign="top" style="width:45%">
+                                    
+                                </td>
+                                <td style="width:10%">
+                                </td>
+                                <td valign="top" style="border-bottom:0px;width:45%" class="slds-box ">
+                                    
+                                    <div class="slds-m-horizontal_medium">
+                                        <ul class="slds-has-dividers_bottom-space">
+                                            <li class="slds-item"><span class="slds-text-heading_medium">{!oldaccount.Name}</span></li>
+                                        </ul>
+                                        <div style="background: #f4f6f9;padding: 10px;">
+                                            
+                                            <table>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Company Name:</label>
+                                                    </td>
+                                                    <td> {!oldaccount.Name}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Phone:</label>
+                                                    </td>
+                                                    <td>{!oldaccount.Phone}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Website</label>
+                                                    </td>
+                                                    <td>{!oldaccount.Website}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <label class="slds-form-element__label">Address:</label>
+                                                    </td>
+                                                    <td>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingStreet))}">{!oldaccount.BillingStreet}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingCity))}">{!oldaccount.BillingCity}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingState))}">{!oldaccount.BillingState}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingCountry))}">{!oldaccount.BillingCountry}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(oldaccount.BillingPostalCode))}">{!oldaccount.BillingPostalCode}</apex:outputPanel>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td></td>
+                                <td class="slds-box" style="border-top:0px;">
+                                    <div class="slds-m-top_small">
+                                        <img src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/sf_logo_30px.png')}" /> &nbsp; Salesforce Account
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="slds-grid slds-m-bottom_small">
+                                        <label style="font-size: 14px;margin-top: 22px;" class="slds-form-element__label">Salesforce Account</label>
+                                        <apex:inputField required="true" value="{!NewParentingBAC.Bread_Winner__Salesforce_Account__c}" styleClass="slds-m-top_medium">
+                                            <apex:actionSupport event="onchange" action="{!Accoutinfo}" reRender="AccInfo,inputsection,InValidAccess" status="assign-action-status" oncomplete="allfunctions();" />
+                                        </apex:inputField>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                           
+                            <tr>
+                                <td valign="top" style="border-bottom:0px;width:45%" class=" slds-box">
+                                    <div class="slds-m-horizontal_medium">
+                                        
+                                        <ul class="slds-has-dividers_bottom-space">
+                                            <li class="slds-item"><span class="slds-text-heading_medium">{!CurrentBAC.CompanyName__c}</span> </li>
+                                        </ul>
+                                        <div style="background: #f4f6f9;padding: 10px;">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Company Name:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.CompanyName__c}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Phone:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.Phone__c}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Website:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.Website__c}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Email:</label>
+                                                    </td>
+                                                    <td>{!CurrentBAC.EmailAddress__c }</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <label class="slds-form-element__label">Address:</label>
+                                                    </td>
+                                                    <td valign="top">
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__StreetAddress__c))}">{!CurrentBAC.Bread_Winner__StreetAddress__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__City__c))}">{!CurrentBAC.Bread_Winner__City__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__Region__c))}">{!CurrentBAC.Bread_Winner__Region__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__Country__c))}">{!CurrentBAC.Bread_Winner__Country__c} </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(CurrentBAC.Bread_Winner__PostalCode__c))}">{!CurrentBAC.Bread_Winner__PostalCode__c} </apex:outputPanel>
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </td>
+                                <td style="width:10%">
+                                    <div class="arrowCell" width="10%">
+                                        <span class="arrow">&#10140;</span>
+                                    </div>
+                                    
+                                </td>
+                                <td valign="top" style="border-bottom:0px;width:45%" class="slds-box ">
+                                    
+                                    <div class="slds-m-horizontal_medium">
+                                        <ul class="slds-has-dividers_bottom-space">
+                                            <li class="slds-item"><span class="slds-text-heading_medium">{!newaccount.Name}</span></li>
+                                        </ul>
+                                        <div style="background: #f4f6f9;padding: 10px;">
+                                            
+                                            <table>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Company Name:</label>
+                                                    </td>
+                                                    <td> {!newaccount.Name}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Phone:</label>
+                                                    </td>
+                                                    <td>{!newaccount.Phone}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <label class="slds-form-element__label">Website</label>
+                                                    </td>
+                                                    <td>{!newaccount.Website}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <label class="slds-form-element__label">Address:</label>
+                                                    </td>
+                                                    <td>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(newaccount.BillingStreet))}">{!newaccount.BillingStreet}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(newaccount.BillingCity))}">{!newaccount.BillingCity}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(newaccount.BillingState))}">{!newaccount.BillingState}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(newaccount.BillingCountry))}">{!newaccount.BillingCountry}</apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(newaccount.BillingPostalCode))}">{!newaccount.BillingPostalCode}</apex:outputPanel>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-box" style="border-top:0px;">
+                                    <div class="slds-m-top_small">
+                                        <img src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/xero_logo_30px.png')}" /> &nbsp; Xero Customer
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td class="slds-box" style="border-top:0px;">
+                                    <div class="slds-m-top_small">
+                                        <img src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/sf_logo_30px.png')}" /> &nbsp; Salesforce Account
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="slds-m-vertical_large" style="text-align:center;">
+                            <apex:outputPanel layout="block" styleclass="slds-form-element slds-m-top_medium slds-m-bottom_large" rendered="{!isActiveOrganization}">
+                                <label class="slds-checkbox_toggle slds-grid slds-align_absolute-center">
+                                    <span class="slds-form-element__label slds-m-bottom_none">Remove the link between the Xero Invoices and any Opportunities on the old Salesforce Account</span>
+                                    <apex:inputCheckbox value="{!oppInvReparent}" />
+                                    <span class="slds-checkbox_faux_container" aria-live="assertive">
+                                        <span class="slds-checkbox_faux"></span>
+                                    </span>
+                                </label>
+                            </apex:outputPanel>
+
+                            <div class="slds-m-bottom_medium slds-text-heading_small slds-text-align_center" >    The Xero company <b>{!CurrentBAC.CompanyName__c}</b> was associated with the Salesforce Account <b>{!oldaccount.Name}</b>, but once you click Save it will be instead associated with the Salesforce Account <b>{!newaccount.Name}</b>. <apex:outputText rendered="{!isActiveOrganization}"> Invoices will be moved as well</apex:outputText></div>
+                            <apex:commandButton value="Save" styleClass="slds-button slds-button_brand slds-m-right_x-small" action="{!saveBAC}"/>
+                            <apex:commandButton value="Cancel" styleClass="slds-button slds-button_neutral" action="{!cancel}"/>
+                        
+                        </div>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                                
+            </div>
+            </apex:outputPanel>
+        </div>
+    </apex:form>
+ </html>   
+</apex:page>

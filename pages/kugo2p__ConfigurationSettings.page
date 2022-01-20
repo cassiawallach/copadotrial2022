@@ -1,0 +1,21 @@
+<apex:page standardController="kugo2p__KugamonSetting__c" 
+    applyBodyTag="false"
+    sidebar="false" 
+    docType="html-5.0">
+
+    <script>
+        // get the id of the Kugamon Settings record
+        //debugger;
+        var settingsId = "{!JSENCODE(kugo2p__KugamonSetting__c.Id)}";
+
+        const appName = 'ConfigurationSettingsApp';
+        const cmpName = 'ConfigurationSettings';
+        const cmpParams = {
+		                    isLightningMode: {!$User.UIThemeDisplayed == 'Theme4d'},
+		                    isModal: true, // show modal
+		                    recordId: settingsId
+                        };
+    </script>
+
+    <c:BaseLightningOut />
+</apex:page>

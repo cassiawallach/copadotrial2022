@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- ActiveRoutingRecord --></label>
+        <name>fcio1__ActiveRoutingRecord__c</name>
+    </fields>
+    <fields>
+        <label><!-- Current UTC Time --></label>
+        <name>fcio1__CurrentUTCTime__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date --></label>
+        <name>fcio1__Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Day of the Week --></label>
+        <name>fcio1__Day_of_the_Week__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Time --></label>
+        <name>fcio1__End_time__c</name>
+    </fields>
+    <fields>
+        <label><!-- QueueID --></label>
+        <name>fcio1__QueueID__c</name>
+    </fields>
+    <fields>
+        <label><!-- QueueSkills --></label>
+        <name>fcio1__QueueSkills__c</name>
+    </fields>
+    <fields>
+        <label><!-- QueueTags --></label>
+        <name>fcio1__QueueTags__c</name>
+    </fields>
+    <fields>
+        <label><!-- QueueType --></label>
+        <name>fcio1__QueueType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Routing Queues --></label>
+        <name>fcio1__RoutingQueue__c</name>
+        <relationshipLabel><!-- Fullcast Queue Timings --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Start Time --></label>
+        <name>fcio1__Start_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- TodayEndDate --></label>
+        <name>fcio1__TodayEndDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- TodayStartDate --></label>
+        <name>fcio1__TodayStartDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- isQueueEnabled --></label>
+        <name>fcio1__isQueueEnabled__c</name>
+    </fields>
+    <layouts>
+        <layout>Queue Timing Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Date must in the Future --></errorMessage>
+        <name>fcio1__Date_Cannot_be_in_the_Past</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Only values 0 thru 6 is valid with 0 being Sunday and 6 being Saturday. Please fix the Day of the Week to be within this range. --></errorMessage>
+        <name>fcio1__ValidateDayInput</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Must be in the format HH:MM:SS. Leading 0&apos;s are mandatory. --></errorMessage>
+        <name>fcio1__ValidateEndTime</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Must be in the format HH:MM:SS. Leading 0&apos;s are mandatory. --></errorMessage>
+        <name>fcio1__ValidateStartTime</name>
+    </validationRules>
+</CustomObjectTranslation>

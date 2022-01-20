@@ -1,0 +1,15 @@
+<apex:page tabstyle="kugo2p__KugamonInvoice__c" StandardController="kugo2p__KugamonInvoice__c" id="sortLineItemPageId" cache="false" sidebar="true">
+
+    <!-- mapped the help page to Opportunity sort help page 
+    <apex:sectionHeader title="Invoice" 
+        subtitle="{!kugo2p__KugamonInvoice__c.Name}" help="/help/doc/user_ed.jsp?loc=help&target=sorting_products_on_opportunities.htm&section=Products"/>
+    -->
+    <c:PageHeader title="Invoice" subtitle="{!kugo2p__KugamonInvoice__c.Name}" pathname="custom" icon="custom16" description="Use the arrows to sort the invoice lines into the desired order." addLineBreak="false" />    
+        
+    <apex:form id="sortLineItemformId">
+            
+    <c:SortLineItems cid="{!kugo2p__KugamonInvoice__c.Id}" formType="invoice"/>
+    
+    </apex:form>
+
+</apex:page>

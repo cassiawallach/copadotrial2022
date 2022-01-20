@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- The branch of the defined repository where copado_start.sh should exist --></help>
+        <label><!-- Branch --></label>
+        <name>copado1p__Branch__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>copado1p__Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- Git Repository record where external code is. --></help>
+        <label><!-- Git Repository --></label>
+        <name>copado1p__Git_Repository__c</name>
+        <relationshipLabel><!-- Platform Jobs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Last Job Run --></label>
+        <name>copado1p__Last_Job_Run__c</name>
+    </fields>
+    <fields>
+        <help><!-- Virtual Machine Provider, the external platform where VM will be initialised and Job will be executed. --></help>
+        <label><!-- VM Provider --></label>
+        <name>copado1p__VM_Provider__c</name>
+    </fields>
+    <fields>
+        <help><!-- Virtual Machine Type, in Heroku: Dyno Type --></help>
+        <label><!-- VM Type --></label>
+        <name>copado1p__VM_Type__c</name>
+    </fields>
+    <fields>
+        <help><!-- Determines whether this job may be run. Inactive jobs will not be executed. --></help>
+        <label><!-- Active --></label>
+        <name>copado1p__isActive__c</name>
+    </fields>
+    <layouts>
+        <layout>Platform Job Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Run Platform Job --></label>
+        <name>copado1p__Run_Platform_Job</name>
+    </quickActions>
+</CustomObjectTranslation>

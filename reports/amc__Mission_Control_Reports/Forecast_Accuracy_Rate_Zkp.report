@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>amc__Project__c.Project_Kick_off_Date__c</field>
+    </columns>
+    <columns>
+        <field>amc__Project__c.amc__Start_Date__c</field>
+    </columns>
+    <columns>
+        <field>amc__Project__c.amc__End_Date__c</field>
+    </columns>
+    <columns>
+        <field>amc__Project__c.amc__Category__c</field>
+    </columns>
+    <columns>
+        <field>amc__Project__c.amc__Status__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Tracks the Win Rate for Opportunities that had a Forecast Project generated</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FK_OPP_OWNER_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FK_OPP_WON</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Forecast Accuracy Rate</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$amc__Project__c@amc__Project__c.amc__Opportunity__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>amc__Project__c.amc__Baseline_End_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

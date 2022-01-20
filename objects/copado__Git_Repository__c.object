@@ -154,7 +154,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
+    <externalSharingModel>Read</externalSharingModel>
     <fieldSets>
         <fullName>copado__Copado_Header_Fields</fullName>
         <availableFields>
@@ -325,7 +325,6 @@
         <deprecated>false</deprecated>
         <description>Copado generates specific links to the Git Repository, its branches and commits based on the selected Git Provider.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Copado generates specific links to the Git Repository, its branches and commits based on the selected Git Provider.</inlineHelpText>
         <label>Git Provider</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -355,17 +354,23 @@
                     <label>Microsoft Team Service</label>
                 </value>
                 <value>
-                    <fullName>Copado Version Control</fullName>
-                    <default>false</default>
-                    <label>Copado Version Control</label>
-                </value>
-                <value>
                     <fullName>Others</fullName>
                     <default>false</default>
                     <label>Others</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>copado__Password__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>copado__Pull_Request_Base_URL__c</fullName>
@@ -401,7 +406,6 @@
                 <value>
                     <fullName>DX</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>DX</label>
                 </value>
             </valueSetDefinition>
@@ -424,8 +428,18 @@
         <deprecated>false</deprecated>
         <description>HTTPS or SSH URL to connect to the Git Repository.</description>
         <externalId>false</externalId>
-        <inlineHelpText>HTTPS or SSH URL to connect to the Git Repository.</inlineHelpText>
         <label>URI</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>copado__Username__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Username</label>
         <length>255</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -439,6 +453,7 @@
         <columns>copado__URI__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Git Repository Name</label>
@@ -447,9 +462,10 @@
     <pluralLabel>Git Repositories</pluralLabel>
     <searchLayouts>
         <customTabListAdditionalFields>copado__URI__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>copado__Username__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>LAST_UPDATE</customTabListAdditionalFields>
         <customTabListAdditionalFields>CREATED_DATE</customTabListAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Read</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

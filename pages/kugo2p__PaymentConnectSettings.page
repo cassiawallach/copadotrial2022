@@ -1,0 +1,16 @@
+<apex:page standardController="kugo2p__Settings__c" extensions="kugo2p.AdvancedSettingsController" showHeader="true" action="{!reloadWithId}" tabStyle="kugo2p__KugamonSetting__c">
+<apex:messages />
+<apex:form rendered="{!If(settingsRecord.Id == null,true,false)}">
+<apex:pageBlock >
+<p>A settings record is required to begin configuration of your Kugamon installation.  Please click "Configure Kugamon Setting" to create the record and begin the configuration process.</p>
+<br/><apex:commandButton value="Configure Payment Settings" action="{!createSettingsRecord}" />
+</apex:pageBlock>
+</apex:form>
+<br/>
+<apex:detail relatedList="false" />
+<apex:relatedList list="Processor_Connections__r" pageSize="10"/>
+<apex:relatedList list="OpenActivities" pageSize="10"/>
+<apex:relatedList list="ActivityHistories" pageSize="10"/>
+
+
+</apex:page>

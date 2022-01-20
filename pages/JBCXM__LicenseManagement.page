@@ -1,0 +1,123 @@
+<apex:page docType="html-5.0" controller="JBCXM.AdminBroker" sidebar="false" title="License Management" tabStyle="Administration__tab" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+   <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gainsight-app" style="width:100%">
+                <gs-root></gs-root>
+            </div>
+        </div>
+    </div>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var hc= fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+        var apiEndPoint = hc.gatewayURL;
+        var authorization= "";
+        var app = 'license-management';
+
+        var appSessionId = hc.appSessionId;
+        var appUserId = hc.appUserId;
+        var appOrgId = hc.appOrgId;
+        var GS                      = GS || {};
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.sessionId                = "{!NSSessionId}";
+        GS.isScorecardEnabled       = {!(isScorecardEnabled)};
+        GS.nsParams                 = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        GS.isNSEnabled              = (GS.nsParams.nsenabled == "true" || GS.nsParams.nsenabled == true);
+        GS.nsURL                    = GS.nsParams.url;
+        GS.remotingEndPoint         = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.remotingBulkEndPoint     = '{!$RemoteAction.AdminBroker.adminBulkRequestBroker}';
+        GS.commonRemotingEndPoint  = "{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}";
+        GS.usageConfigInfo          = fakeEval('{!JSINHTMLENCODE(UsageConfigInfo)}');
+        GS.packageNS            	= "{!(pkgNS)}";
+        GS.isPackagedInstance   	= (GS.packageNS) ? "true" : "false";
+        GS.customLookUpConfig       = fakeEval('{!JSINHTMLENCODE(customLookUpConfigMap)}');
+        GS.userConfig = {
+          userLocale        : {!(dateTimeFormatByLocale)},
+          userName          : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+          userId            : "{!$User.Id}",
+          emailId           : "{!$User.Email}",
+          profilePhoto      : "{!(profilePhoto)}",
+          userDisplayName   : "{!(JSINHTMLENCODE(userDisplayName))}",
+          gainsightTabs     :  fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+          isLightningEnabled: {!(isLightningEnabled)}
+        };
+        GS.orgId = "{!$Organization.Id}";
+        GS.appName = "gainsight-ng-ui";
+        var host = "SALESFORCE";
+        var urlParams =  window.location.search
+                .substring(1)
+                .split("&")
+                .map(function(v) {
+                    return v.split("=");
+                })
+                .reduce(function(acc, arr) {
+                    if (acc[arr[0]]) {
+                        if (!Array.isArray(acc[arr[0]])) {
+                            acc[arr[0]] = [acc[arr[0]]]
+                        }
+                        if(arr[0]) {
+                            acc[arr[0]].push(decodeURIComponent(arr[1]))
+                        }
+                    } else {
+                        if(arr[0]) {
+                            acc[arr[0]] = decodeURIComponent(arr[1]);
+                        }
+                    }
+                    return acc;
+                }, {});
+
+        var nsParams            = GS.nsParams;
+
+        var mode            = '{!JSINHTMLENCODE($CurrentPage.parameters.mode)}';
+
+    </script>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:Features360 moduleName="lms" />
+        <script>
+            installResources({
+                scripts: [
+                    "runtime-es2015.js",
+                    "runtime-es5.js",
+                    "polyfills-es5.js",
+                    "polyfills-es2015.js",
+                    "vendor-es2015.js",
+                    "vendor-es5.js",
+                    "main-es2015.js",
+                    "main-es5.js"
+                    ],
+                styles:["styles.css"]
+            });
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+    <script>
+        GS.cdnUrl ="https://localhost:4200/";
+    </script>
+    <script type="text/javascript" src="https://localhost:4200/runtime.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/polyfills.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/styles.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/scripts.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/vendor.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/main.js"></script>
+    </apex:outputpanel>
+
+    <apex:form ></apex:form>
+
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('LicenseManagement 1.0');
+    </script>
+
+</apex:page>

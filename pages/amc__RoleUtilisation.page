@@ -1,0 +1,10 @@
+<apex:page sidebar="false">
+    <apex:includeLightning /> 
+    <div id="roleutil"/>
+    <script>
+        $Lightning.use("amc:RoleUtilisationApp", function() {
+          $Lightning.createComponent("amc:RoleUtilisation",{'isClassic':true, 'isLightning':false},"roleutil",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

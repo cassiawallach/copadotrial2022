@@ -1,0 +1,1606 @@
+<apex:page standardController="Bread_Winner__Breadwinner_Account_Connection__c" extensions="Bread_Winner.BAC_PageExtension" sidebar="false" title="Xero Contact: {!bac.Bread_Winner__CompanyName__c}">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="x-ua-compatible" content="ie=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <apex:stylesheet value="{!URLFOR($Resource.Bread_Winner__Breadwinner_Xero, 'Breadwinner_Xero/SLDS/assets/styles/salesforce-lightning-design-system-vf.min.css')}" ></apex:stylesheet>
+            <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/jquery-1.11.3.js')}"></script>
+            <apex:variable value="{!OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t')}" var="isLightning" />
+            <apex:slds />
+            <script>
+                if(document.getElementsByTagName("title") && document.getElementsByTagName("title")[0]){
+                    document.getElementsByTagName("title")[0].innerHTML="Xero Contact: {!bac.Bread_Winner__CompanyName__c}";
+                }
+                var j$ = jQuery.noConflict();
+                function HideStyleSheet() {
+                    j$("link.user[href$='elements.css']").each(function() {
+                        j$(this).removeAttr("href");
+                    });
+                }
+                function message() {
+                    j$(".infoM6, .infoM4, .infoM3, .infoM2, .infoS1").addClass("slds-notify slds-notify_alert slds-theme_inverse-text  slds-text-align_left slds-text-heading_small slds-m-botto_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"} );
+                    j$(".errorM6, .errorM4, .errorM3, .errorM2, .errorS1").addClass("slds-notify slds-notify_alert slds-theme_error  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css({"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"});
+                    j$(".warningM6, .warningM4, .warningM3, .warningM2, .warningS1").addClass("slds-notify slds-notify_alert slds-theme_warning  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"}) ;
+                    j$(".confirmM6, .confirmM4, .confirmM3, .confirmM2, .confirmS1").addClass("slds-notify slds-notify_alert slds-theme_success slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","justify-content":"left"} ) ;
+                    
+                    j$("div .messageText h4").css( "color", "white" );
+                    j$("div[class*='warning'] div.messageText h4").css( "color", "black" );
+                    j$("table.messageTable td").css({"color" : "white"});
+                    j$("div[class*='warning'] table.messageTable td").css( "color", "black" );
+                }
+                function addallfuncs(){
+                    HideStyleSheet();
+                    message();
+                }
+                j$(function(){
+                    addallfuncs();
+                });
+                function showHideSectionConent(sectionId,imageid){
+                    var sectiondiv=document.getElementById(sectionId);
+                    var imagediv=document.getElementById(imageid);
+                    if(j$(sectiondiv).hasClass("slds-is-open")){
+                        j$(sectiondiv).removeClass("slds-is-open");
+                        j$(imagediv).attr("src","{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/SectionClose.png')}");
+                        j$(imagediv).css({"margin-bottom":"3px", "margin-right":"5px", "width":"14px"});
+                    }
+                    else{
+                        j$(sectiondiv).addClass("slds-is-open");
+                        j$(imagediv).attr("src","{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/SectionOpen.png')}");
+                        j$(imagediv).css({"margin-bottom":"0px", "margin-right":"5px", "width":"15px"});
+                    }
+                }
+                function DownloadInvoice(invoiceXeroID,invName){                
+                    DownloadInvoiceActionFunction(invoiceXeroID, invName);                
+                }
+                function renderDownloadSVG(){
+                    console.log('RERENDER');
+                    var imageURL = '{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#download')}';
+                    var SVG = j$('<svg/>', {
+                        class: 'slds-button__icon',
+                    });
+                    
+                    var SVGUse = j$('<use/>');
+                    SVGUse.attr('xlink:href',imageURL);
+                    j$('.downloadIcon').prepend(SVG.append(SVGUse));
+                    j$('.downloadIcon' ).html(j$('.downloadIcon').html());                    
+                }
+                function renderInvoiceIcon(){
+                    console.log('RERENDERInvoice');
+                    var imageURL = '{!URLFOR($Asset.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom41')}';
+                    var SVG = j$('<svg/>', {
+                        class: 'slds-icon slds-icon_medium',
+                    });
+                    
+                    var SVGUse = j$('<use/>');
+                    SVGUse.attr('xlink:href',imageURL);
+                    j$('#InvoiceIcon').prepend(SVG.append(SVGUse));
+                    j$('#InvoiceIcon' ).html(j$('#InvoiceIcon').html());
+                    xlink:href=""
+                }
+    
+            </script>
+            <apex:includeScript value="{!URLFOR($Resource.Bread_Winner__Breadwinner_Xero, 'Breadwinner_Xero/JS/BW_Account_Charts.js')}" />        
+            <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart", "gauge", "bar"]});
+            google.setOnLoadCallback(drawChart);
+            
+            function drawChart() {
+                
+                var jsonDataTotalInvoicesBilled = {!SUBSTITUTE(JSENCODE(jsonTotalBilledPieChartData), '\\', '') };
+                var pie_chart_data = new google.visualization.DataTable(jsonDataTotalInvoicesBilled);
+                
+                var pie_chart_options = {
+                    width: 200,
+                    height: 200,             
+                    is3D: true,
+                    colors: ['green', 'orange', 'red'],              
+                    legend: { position: 'none' },
+                    chartArea:{top:20}
+                };
+                
+                var gaugeData = {!JSENCODE(longestOverDueGaugeChartData)};
+                var guage_data = google.visualization.arrayToDataTable([
+                    ['Label', 'Value'],
+                    ['Days', gaugeData ],
+                ]);
+                    
+                    var guage_options = {
+                    width: 130, height: 150,
+                    max: 90,
+                    redFrom: 30, redTo: 90,
+                    yellowFrom:0, yellowTo: 30,
+                    majorTicks: [0,30,60,90],
+                    minorTicks: 5,
+                    chartArea:{top:20}
+                    };
+                                                                       
+            var barChartData = {!SUBSTITUTE(JSENCODE(barChartData), '\\', '') };
+            var bar_chart_data = new google.visualization.DataTable(barChartData);
+            
+            var bar_chart_options = {
+                
+                width:450,
+                height:250,
+                legend: { position: 'bottom' },
+                bar: { groupWidth: '50%' },
+                isStacked: true,
+                colors: ['green','orange', '#dc3912','#B0C4DE'],
+                chartArea:{righ:0,top:20}
+                
+            };
+            if({!IF(noBarChartData,true,false)}){
+                bar_chart_options.vAxis= {minValue : 1000};
+            }
+            
+            var pie_chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            pie_chart.draw(pie_chart_data, pie_chart_options); 
+            
+            var guage_chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+            guage_chart.draw(guage_data, guage_options);
+            
+            var bar_chart = new google.visualization.ColumnChart(document.getElementById('bar_chart_div'));
+            bar_chart.draw(bar_chart_data, bar_chart_options);
+            //Centre Total billed if Multi currency Enabled
+            if({!isMultiCurrency})
+                $( "div#piechart_3d text:nth-child(1)" ).attr( "x","30");
+            }
+            window.onresize = drawChart;
+            
+            </script>
+            
+            <style type="text/css">
+                .slds-scope img {
+                    max-width: initial;
+                    height: initial;                    
+                }
+                .image img{
+                    margin: 35px 50px;
+                }
+                .infoTable td{
+                    vertical-align: top !important;
+                }
+                .innerTable td{
+                    padding: .25rem .25rem !important;
+                    font-size: 0.875rem;
+                }
+                .postpadding{
+                    padding-left: .25rem;
+                    padding-right: 0.25rem;
+                    font-size: 0.875rem;
+                }
+                .customLabel {
+                    font-weight: bold !important; font-size: 0.75rem !important;                    
+                }
+                .slds-scope .slds-card__body {
+                    margin-bottom: 0px !important;
+                }                
+                .defaultheight {
+                    min-height: 45px;
+                }
+                .slds-scope .slds-section__title-action:hover, .slds-scope .slds-section__title-action:focus, .slds-scope .slds-section__title-action:active {
+                    background: rgb(243, 242, 242); box-shadow: none;
+                }
+                .slds-scope .slds-panel__section{
+                    padding: 1rem 1rem 0rem 1rem;
+                }
+                img[src*="https://s3.amazonaws.com/"]{
+                    max-height: 22px;
+                }
+                @media only screen and (min-width: 1023px) {
+                    .firsttable {
+                        table-layout: fixed;
+                    }
+                    .firsttable td{
+                       overflow-wrap: break-word; 
+                    }
+                    .customLabel1{
+                       width: 6.4rem;
+                    }
+                    .customLabel3{
+                       width: 7rem;
+                    }
+                }             
+                @media only screen and (max-width: 1023px) {
+                    .innerTable {
+                        table-layout: fixed;
+                    }                 
+                    .customLabel1, .customLabel2, .customLabel3 {
+                       width: 10rem !important;
+                    }
+                    .innerTable td{
+                        overflow-wrap: break-word;                        
+                    }
+                    #multipadding {
+                        padding-left: 0px !important;                        
+                    }
+                    #bar_chart_div { padding-top: 0.75rem; }
+                }
+                @media only screen and (max-width: 779px) {
+                    .bordr td:last-child {
+                    border-bottom: 1px solid rgb(221, 219, 218) !important;
+                    }
+                    .bordr th:last-child {
+                    border-bottom: 1px solid rgb(221, 219, 218) !important;
+                    }
+                    .gaugeChartText { padding-top: 1rem; }
+                    .pieChart3dTitle { padding-top: 0.5rem; }
+                    .InvInfoTable { padding-top: 1.5rem !important; }
+                    .paddingtop { padding-top: 5px }
+                    .headersecondcol { justify-content: left !important; padding-top: 0.75rem;}
+                }
+                @media only screen and (min-width: 780px) {
+                    .bordr th:nth-child(1),.bordr td:nth-child(1) {
+                    border-left: initial !important;                    
+                    }
+                    .bordr th,.bordr td {
+                    border-left: 1px solid rgb(221, 219, 218);                    
+                    }
+                    #piechart_3d{padding-top: 0.75rem}
+                    .tableResponsiveStyling th, .tableResponsiveStyling td{
+                        width: 12% !important;
+                    }
+                    .tableResponsiveStyling th:last-child, .tableResponsiveStyling td:last-child{
+                        width: 80px !important;
+                    }
+                    .tableResponsiveStyling{
+                        table-layout: fixed;
+                    }
+                }                
+                .rightText{ text-align:right !important;}                            
+                #invoiceInfoTable td{padding:5px; background: #f1f1f1;border-bottom: 1px solid #fff;}
+                .gaugeChartText{font-size: 11px;width: 200px;}
+                #piechart_3d div[dir*='ltr']{height: 150px !important; }
+                #piechart_3d svg{height: 150px !important;}
+                .pieChart3dTitle{font-size: 11px;font-weight: bold;}
+                #bar_chart_div svg{width: 380px !important;} 
+                .bodyDiv .outerNoSidebar {
+                    padding: 0px !important;
+                }
+                div.slds-template_iframe.slds-card.iframe-parent {
+                    margin: -0.85rem !important;
+                }
+                .slds-section {
+                    margin-top: .25rem !important;
+                    margin-bottom:  0px !important;
+                }
+                .downloadInvoiceStatus .slds-spinner_container{
+                	position: fixed;top: 0%; z-index: 9999;
+                }                                
+            </style>
+        </head>
+        <body style="padding:0px;{!IF(AND(OR($User.UIThemeDisplayed == 'Theme4d',$User.UIThemeDisplayed == 'Theme4t'),showNewUI), 'background: rgba(176, 196, 223, 1);','')}">
+            <div class="slds-scope">
+                <apex:form id="formid">
+                    <div class="downloadInvoiceStatus">       
+                        <apex:actionStatus id="assign-action-status" layout="block" onstop="saveToPC();" >
+                            <apex:facet name="start" >
+                                <div class="slds-spinner_container">
+                                    <div class="slds-spinner_brand slds-spinner slds-spinner_medium" role="alert">
+                                        <span class="slds-assistive-text">Loading</span>
+                                        <div class="slds-spinner__dot-a"></div>
+                                        <div class="slds-spinner__dot-b"></div>
+                                    </div>
+                                </div>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </div>       
+                    <apex:outputPanel id="invoiceContentPanel">        
+                        <a id="downloadInvoiceContentAnchorTag" download="{!JSENCODE(invoiceName)}.pdf" style="display: none;" ></a>
+                    </apex:outputPanel>
+    
+                    
+                    <apex:outputPanel layout="block" rendered="{!NOT(showNewUI)}">
+                        <div class="slds-box">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td class="image" style="width: 200px;">
+                                        <apex:image url="{!URLFOR($Resource.Bread_Winner__Breadwinner_Xero, 'Breadwinner_Xero/Images/BreadwinnerLogo.png')}" />
+                                    </td>
+                                    <td class="content">
+                                        <div style="text-align: center;">
+                                            <apex:outputLink id="newBACUI" rendered="{!NOT(isLightning)}" value="{!$Page.Bread_Winner__BreadwinnerAccountConnection_RecordInfo}?id={!xeroCntct.Id}&showNewUI=true" target="_parent" style="font-size: 2.5em;">See our new Layout!</apex:outputLink>
+                                            <apex:outputLink id="newBACUILtng" rendered="{!isLightning}" value="{!$Page.Bread_Winner__BreadwinnerAccountConnection_RecordInfo}?id={!xeroCntct.Id}&showNewUI=true" style="font-size: 2.5em;">See our new Layout!</apex:outputLink>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" rendered="{!showNewUI}">
+                        <apex:outputPanel id="bacNewLayout" layout="block" styleClass="{!IF(isLightning,'slds-p-around_small slds-brand-band slds-brand-band_cover slds-brand-band_medium','')}">
+                            <!-- PAGE HEADER -->
+                            <div class="slds-page-header slds-m-bottom_small" role="banner">
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-large-size_3-of-12">                                    
+                                        <div class="slds-media slds-media_center">
+                                            <div class="slds-media__figure">
+                                                <span class="slds-icon_container slds-icon-standard-user">
+                                                    <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#account')}" />
+                                                    </svg>
+                                                    <span class="slds-assistive-text">Xero Contact</span>
+                                                </span>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <p><apex:outputText title="Xero Contact" id="CompanyNameLable" value="Xero Contact"/></p>
+                                                <p class="slds-page-header__title slds-truncate"><apex:outputText id="CompanyNamevalue" title="{!bac.Bread_Winner__CompanyName__c}" value="{!bac.Bread_Winner__CompanyName__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__CompanyName__c.Accessible}"/></p>
+                                            </div>
+                                        </div>
+                                    </div>                                
+                                    <div class="slds-col slds-grid slds-align-middle slds-grid_align-end slds-size_1-of-1 slds-medium-size_9-of-12 slds-large-size_9-of-12 headersecondcol">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-p-left_xx-small paddingtop">                                            
+                                            <apex:outputLink id="Editlightning" title="Edit this Xero Contact" rendered="{!AND(isAuthorized,OR(isActiveOrganization,isFreePlan),appConfig.Name!=null)}" styleClass="slds-button slds-button_brand" value="{!$Page.Bread_Winner__ContactEditPage}?id={!bac.Id}">Edit this Xero Contact</apex:outputLink>
+                                            </div>
+
+                                            <div class="slds-col slds-p-left_xx-small paddingtop">                                            
+                                            <apex:outputLink id="CntrlSynclightning" title="Control Sync Status" rendered="{!AND(isAuthorized,OR(isActiveOrganization,isFreePlan),appConfig.Name!=null)}" styleClass="slds-button slds-button_brand" value="{!$Page.Bread_Winner__ContactEditPage}?id={!bac.Id}&isContactEdit=false">Control Sync Status</apex:outputLink>
+                                            </div>
+
+                                            <div class="slds-col slds-p-left_xx-small paddingtop">
+                                            <apex:outputLink id="Reparentlightning" title="Reparent to a different Salesforce Account" rendered="{!AND(NOT(ISBLANK(bac.Bread_Winner__Salesforce_Account__c)),isAuthorized,OR(isActiveOrganization,isFreePlan),appConfig.Name!=null)}" styleClass="slds-button slds-button_brand" value="{!$Page.Bread_Winner__ContactReparentingPage}?id={!bac.Id}">Reparent to a different Salesforce Account</apex:outputLink>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / PAGE HEADER -->
+                            <apex:outputPanel layout="block" id="pagemsgs">
+                                <apex:pageMessages escape="false"></apex:pageMessages>                                
+                            </apex:outputPanel>
+
+                            <div class="slds-card slds-grid slds-grid_vertical slds-m-bottom_small">
+                                <div class="slds-card__header slds-p-bottom_small slds-border_bottom">
+                                    <div class="infoTable slds-table slds-no-row-hover slds-grid slds-wrap">   
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-4 slds-large-size_4-of-12">
+                                            <div style="float: left;">
+                                                <table class="innerTable firsttable">
+                                                    <tr>
+                                                        <td class="customLabel1"><span class="customLabel">Company Name</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__CompanyName__c.Accessible}">
+                                                                <apex:outputText value="{!bac.Bread_Winner__CompanyName__c}"/>
+                                                                <apex:outputText id="seethisinxero" rendered="{!AND($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Reference_Id__c.Accessible,$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__See_this_Account_in_Xero__c.Accessible)}">&nbsp;(<a href="https://go.xero.com/Contacts/View/{!bac.Bread_Winner__Reference_Id__c}" target="_blank">see this in Xero</a>)</apex:outputText>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel1"><span class="customLabel">Contact Person</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!bac.Bread_Winner__FirstName__c} " rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__FirstName__c.Accessible}"/> <apex:outputText value="{!bac.Bread_Winner__LastName__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__LastName__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel1"><span class="customLabel">Email</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!bac.Bread_Winner__EmailAddress__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__EmailAddress__c.Accessible}" />
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel1"><span class="customLabel">Phone</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!bac.Bread_Winner__Phone__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Phone__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel1"><span class="customLabel">Fax</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!bac.Bread_Winner__Fax__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Fax__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel1"><span class="customLabel">Website</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!bac.Bread_Winner__Website__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Website__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-4 slds-large-size_3-of-12">
+                                            <div id="multipadding" style="padding-left: {!IF(isMultiOrgEnabled,'0px','4rem')}; float: left;">
+                                                <table class="innerTable">
+                                                    <tr style="display:{!IF(isMultiOrgEnabled,'','none')};">
+                                                        <td class="customLabel2"><span class="customLabel">Xero Org Name</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!bac.Bread_Winner__Xero_Org_Name__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Xero_Org_Name__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Status</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!bac.Bread_Winner__Status__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Status__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Is Customer</span></td>
+                                                        <td>
+                                                            <apex:outputText value="{!IF(bac.Bread_Winner__Is_Customer__c,'Yes','No')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Is_Customer__c.Accessible}" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Is Supplier</span></td>
+                                                        <td>
+                                                            <apex:outputText value="{!IF(bac.Bread_Winner__Is_Supplier__c,'Yes','No')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Is_Supplier__c.Accessible}"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-4 slds-large-size_3-of-12">
+                                            <div style="float: left;">
+                                                <table class="innerTable">
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Default Currency</span></td>
+                                                        <td>
+                                                            <apex:outputText value="{!IF(LEN(bac.Bread_Winner__DefaultCurrency__c)>0, bac.Bread_Winner__DefaultCurrency__c,'None')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__DefaultCurrency__c.Accessible}"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Default Invoice Due Date</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                 <apex:outputText value="{!IF(LEN(bac.Bread_Winner__Invoice_Default_Due_Date_Days__c)>0, bac.Bread_Winner__Invoice_Default_Due_Date_Days__c, 'None')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Invoice_Default_Due_Date_Days__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Default Bill Due Date</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!IF(LEN(bac.Bread_Winner__Bill_Default_Due_Date_Days__c)>0, bac.Bread_Winner__Bill_Default_Due_Date_Days__c, 'None')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Bill_Default_Due_Date_Days__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Tax Number</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!IF(LEN(bac.Bread_Winner__TaxNumber__c)>0, bac.Bread_Winner__TaxNumber__c,'None')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__TaxNumber__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="customLabel2"><span class="customLabel">Account Number</span></td>
+                                                        <td>
+                                                            <apex:outputPanel layout="block" style="white-space: normal;">
+                                                                <apex:outputText value="{!IF(LEN(bac.Bread_Winner__Account_Number__c)>0, bac.Bread_Winner__Account_Number__c,'None')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Account_Number__c.Accessible}"/>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-p-left_xx-small slds-size_1-of-1 slds-medium-size_2-of-4 slds-large-size_2-of-12" style="white-space: normal;">
+                                            <div style="float: left;">
+                                                <b>Postal Address</b>
+                                                <div class="postpadding">
+                                                <apex:outputPanel layout="block" style="white-space: normal;" rendered="{!AND($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__AttentionTo__c.Accessible,LEN(bac.Bread_Winner__AttentionTo__c)>0)}">
+                                                    <span class="customLabel">Attention:&nbsp;</span>
+                                                    <apex:outputText styleClass="slds-wrap" value="{!bac.Bread_Winner__AttentionTo__c}"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" style="white-space: normal;" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__City__c.Accessible}">
+                                                    <apex:outputText styleClass="slds-wrap" value="{!bac.Bread_Winner__StreetAddress__c}"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" style="white-space: normal;" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__City__c.Accessible}">
+                                                    <apex:outputText value="{!bac.Bread_Winner__City__c}"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" style="white-space: normal;">
+                                                    <apex:outputText value="{!bac.Bread_Winner__Region__c} " rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Region__c.Accessible}"/><apex:outputText value="{!bac.Bread_Winner__PostalCode__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__PostalCode__c.Accessible}"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" style="white-space: normal;" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Country__c.Accessible}">
+                                                    <apex:outputText value="{!bac.Bread_Winner__Country__c}"/>
+                                                </apex:outputPanel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <apex:outputPanel rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Last_Modified_in_Xero_Date__c.Accessible}">
+                                    <div class="slds-m-bottom_small slds-m-horizontal_medium" style="font-size: 0.85rem;font-style: italic;color: gray;">
+                                        <span>This Xero Contact was Last Modified in Xero on&nbsp;</span>
+                                        <apex:outputField value=" {!bac.Bread_Winner__Last_Modified_in_Xero_Date__c}" />.
+                                        <apex:outputText > This Xero Contact is accurate as of {!showLastUpdatedTime} in Xero.</apex:outputText>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+
+                            <!-- Contact Persons section start -->
+                            <apex:outputPanel layout="block" styleclass="slds-card slds-m-top_none slds-m-bottom_small" rendered="{!OR(bac.Bread_Winner__Contact_1_First_Name__c != '', bac.Bread_Winner__Contact_1_Last_Name__c != '', bac.Bread_Winner__Contact_1_Email__c != '',bac.Bread_Winner__Contact_2_First_Name__c != '', bac.Bread_Winner__Contact_2_Last_Name__c != '', bac.Bread_Winner__Contact_2_Email__c != '',bac.Bread_Winner__Contact_3_First_Name__c != '', bac.Bread_Winner__Contact_3_Last_Name__c != '', bac.Bread_Winner__Contact_3_Email__c != '',bac.Bread_Winner__Contact_4_First_Name__c != '', bac.Bread_Winner__Contact_4_Last_Name__c != '', bac.Bread_Winner__Contact_4_Email__c != '',bac.Bread_Winner__Contact_5_First_Name__c != '', bac.Bread_Winner__Contact_5_Last_Name__c != '', bac.Bread_Winner__Contact_5_Email__c != '')}">
+                                <div class="slds-card__body slds-m-top_none">
+                                    <div class="slds-panel__section">
+                                        <div class="slds-section slds-is-open" id="contactsSectionId">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <button class="slds-button slds-section__title-action" onclick="showHideSectionConent('contactsSectionId','contactsSectionImage');" type="button">
+                                                    <img id="contactsSectionImage" src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/SectionOpen.png')}" style="margin-bottom: 3px;margin-right: 5px;" />
+                                                    <span class="slds-truncate">Additional Xero Contacts</span>
+                                                </button>
+                                            </h3>
+                                            <div class="slds-section__content">
+                                                <div class="slds-grid slds-gutters_medium" style="flex-wrap: wrap;">
+                                                    <apex:outputPanel layout="block" styleclass="slds-col slds-grid slds-large-size_4-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" rendered="{!OR(bac.Bread_Winner__Contact_1_First_Name__c != '', bac.Bread_Winner__Contact_1_Last_Name__c != '', bac.Bread_Winner__Contact_1_Email__c != '')}">
+                                                        <div class="slds-card__body slds-card__body_inner">
+                                                            <div class="slds-card slds-card_boundary">
+                                                                <div class="slds-card__body slds-card__body_inner">
+                                                                    <table class="innerTable firsttable">
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Name</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_1_First_Name__c}&nbsp;{!bac.Contact_1_Last_Name__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Email</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_1_Email__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Include in Emails</span></td>
+                                                                            <td>
+                                                                                <apex:inputCheckbox value="{!bac.Bread_Winner__Contact_1_Include_in_Emails__c}" disabled="true"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div class="slds-m-top_small"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="block" styleclass="slds-col slds-grid slds-large-size_4-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" rendered="{!OR(bac.Bread_Winner__Contact_2_First_Name__c != '', bac.Bread_Winner__Contact_2_Last_Name__c != '', bac.Bread_Winner__Contact_2_Email__c != '')}">
+                                                        <div class="slds-card__body slds-card__body_inner">
+                                                            <div class="slds-card slds-card_boundary">
+                                                                <div class="slds-card__body slds-card__body_inner">
+                                                                    <table class="innerTable firsttable">
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Name</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_2_First_Name__c}&nbsp;{!bac.Contact_2_Last_Name__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Email</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_2_Email__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Include in Emails</span></td>
+                                                                            <td>
+                                                                                <apex:inputCheckbox value="{!bac.Bread_Winner__Contact_2_Include_in_Emails__c}" disabled="true"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div class="slds-m-top_small"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="block" styleclass="slds-col slds-grid slds-large-size_4-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" rendered="{!OR(bac.Bread_Winner__Contact_3_First_Name__c != '', bac.Bread_Winner__Contact_3_Last_Name__c != '', bac.Bread_Winner__Contact_3_Email__c != '')}">
+                                                        <div class="slds-card__body slds-card__body_inner">
+                                                            <div class="slds-card slds-card_boundary">
+                                                                <div class="slds-card__body slds-card__body_inner">
+                                                                    <table class="innerTable firsttable">
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Name</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_3_First_Name__c}&nbsp;{!bac.Contact_3_Last_Name__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Email</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_3_Email__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Include in Emails</span></td>
+                                                                            <td>
+                                                                                <apex:inputCheckbox value="{!bac.Bread_Winner__Contact_3_Include_in_Emails__c}" disabled="true"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div class="slds-m-top_small"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="block" styleclass="slds-col slds-grid slds-large-size_4-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" rendered="{!OR(bac.Bread_Winner__Contact_4_First_Name__c != '', bac.Bread_Winner__Contact_4_Last_Name__c != '', bac.Bread_Winner__Contact_4_Email__c != '')}">
+                                                        <div class="slds-card__body slds-card__body_inner">
+                                                            <div class="slds-card slds-card_boundary">
+                                                                <div class="slds-card__body slds-card__body_inner">
+                                                                    <table class="innerTable firsttable">
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Name</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_4_First_Name__c}&nbsp;{!bac.Contact_4_Last_Name__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Email</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_4_Email__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Include in Emails</span></td>
+                                                                            <td>
+                                                                                <apex:inputCheckbox value="{!bac.Bread_Winner__Contact_4_Include_in_Emails__c}" disabled="true"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div class="slds-m-top_small"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="block" styleclass="slds-col slds-grid slds-large-size_4-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" rendered="{!OR(bac.Bread_Winner__Contact_5_First_Name__c != '', bac.Bread_Winner__Contact_5_Last_Name__c != '', bac.Bread_Winner__Contact_5_Email__c != '')}">
+                                                        <div class="slds-card__body slds-card__body_inner">
+                                                            <div class="slds-card slds-card_boundary">
+                                                                <div class="slds-card__body slds-card__body_inner">
+                                                                    <table class="innerTable firsttable">
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Name</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_5_First_Name__c}&nbsp;{!bac.Contact_5_Last_Name__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Email</span></td>
+                                                                            <td>
+                                                                                {!bac.Contact_5_Email__c}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="customLabel3"><span class="customLabel">Include in Emails</span></td>
+                                                                            <td>
+                                                                                <apex:inputCheckbox value="{!bac.Bread_Winner__Contact_5_Include_in_Emails__c}" disabled="true"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div class="slds-m-top_small"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><div class="slds-m-bottom_medium"></div>
+                            </apex:outputPanel>
+                            <!-- Contact Persons section end -->
+
+                            <apex:outputPanel layout="block" styleclass="slds-card slds-m-top_none slds-m-bottom_small" rendered="{! AND($ObjectType.Breadwinner_Account_Connection__c.accessible, $ObjectType.Breadwinner_Account_Connection__c.Queryable, $ObjectType.Invoice__c.accessible, $ObjectType.Invoice__c.Queryable, !isFreePlan)}">
+                                <div class="slds-card__body slds-m-top_none">                                    
+                                    <div class="slds-panel__section">
+                                        <div class="slds-section slds-is-open" id="BreadwinnerDivId">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <span class="slds-truncate slds-p-horizontal_small">Breadwinner Charts</span>
+                                            </h3>
+                                            <div class="slds-section__content  slds-clearfix" id="" >
+                                                <div class="slds-grid slds-gutters_medium slds-clearfix" style="flex-wrap: wrap;">
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label">BW Company Status</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static slds-p-bottom_x-small" >                                                
+                                                                        <img src="{!IF(TotalAmountOverdue > 0,'https://bw-cdn.s3.amazonaws.com/overdue.png',IF(TotalAmountDue > 0, 'https://bw-cdn.s3.amazonaws.com/due.png',IF(TotalAmountPaid > 0, 'https://bw-cdn.s3.amazonaws.com/paid.png','https://bw-cdn.s3.amazonaws.com/never-billed.png')) )}" />
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                            
+                                                <div class="slds-grid slds-gutters_medium slds-clearfix" style="flex-wrap: wrap;">    
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label"> Total Amount Overdue</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!TotalAmountOverdue!= null}">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!TotalAmountOverdue}" />
+                                                                            </apex:outputText>
+                                                                        </apex:outputPanel>                                                                                                                                                   
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label">Total Amount Credit</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!TotalAmountCredit!= null}">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!TotalAmountCredit}" />
+                                                                            </apex:outputText>
+                                                                        </apex:outputPanel>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                       
+                                                    </div>
+                                                    
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label">Total Amount Invoiced</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!TotalAmountInvoiced!= null}">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!TotalAmountInvoiced}" />
+                                                                            </apex:outputText>
+                                                                        </apex:outputPanel>                                                                        
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                       
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label">Total Amount Due</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!TotalAmountDue!= null}">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!TotalAmountDue}" />
+                                                                            </apex:outputText>
+                                                                        </apex:outputPanel>                                                                                                                                                    
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label">Total Unallocated Credit</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!TotalUnallocatedCredit!= null}">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!TotalUnallocatedCredit}" />
+                                                                            </apex:outputText>
+                                                                        </apex:outputPanel>                                                                                                                                                   
+                                                                    </span>
+                                                                </div>
+                                                            </div>                                                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label">Total Amount Paid</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!TotalAmountPaid!= null}">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!TotalAmountPaid}" />
+                                                                            </apex:outputText>
+                                                                        </apex:outputPanel>
+                                                                    </span>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left">
+                                                        <div class="slds-col">
+                                                            <div class="slds-form-element slds-border_bottom">
+                                                                <label class="slds-form-element__label">Total Draft Amount</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!TotalDraftAmount!= null}">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!TotalDraftAmount}" />
+                                                                            </apex:outputText>
+                                                                        </apex:outputPanel>                                                                        
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <apex:outputPanel rendered="{!isInvoicePresent}">
+                                                    <div class="slds-grid slds-wrap slds-clearfix slds-m-top_medium slds-m-left_medium"  id="chartDivId">
+                                                        <div class="slds-col slds-large-size_2-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left slds-align_absolute-center">
+                                                            <div class="pieChart3dTitle" style="text-align:center;text-align: -webkit-center;text-align: -moz-center;">
+                                                                <apex:outputPanel >
+                                                                Total Billed:<apex:outputText value="{0, number, ##,##0.00}">
+                                                                        <apex:param value="{!totalBilledAmount}" />
+                                                                    </apex:outputText> {!currencyCode}
+                                                                </apex:outputPanel>
+                                                                <div id="piechart_3d"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-large-size_3-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left slds-align_absolute-center ">
+                                                            <div class="gaugeChartText" style="text-align:center;text-align: -webkit-center;text-align: -moz-center;">                                                                
+                                                                {!longestOverDueGaugeChartTitle}
+                                                                <apex:outputPanel rendered="{!!noOverdueInvoices}">
+                                                                    <apex:outputText value="{0, number, ##,##0.00}">
+                                                                            <apex:param value="{!maxOverdueAmount}" />
+                                                                    </apex:outputText> and is the longest overdue at 
+                                                                    <apex:outputText value="{0, number, ##,##0}">
+                                                                            <apex:param value="{!noOfOverdueDays}" />
+                                                                    </apex:outputText> Days 
+                                                                </apex:outputPanel>
+                                                                <div id="chart_div" class="slds-p-top_small slds-p-left_x-large"></div>
+                                                            </div>
+                                                            
+                                                            
+                                                        </div>    
+                                                        <div class="slds-col slds-large-size_3-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left invoiceTable slds-p-top_xx-large slds-align_absolute-center InvInfoTable">
+                                                            <div>
+                                                                <table id="invoiceInfoTable">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <apex:outputText value="{0, number,##,##0}">
+                                                                                <apex:param value="{!invoiceInfo.noOfOverdueInvoice}" />
+                                                                            </apex:outputText>
+                                                                        </td>
+                                                                        <td>
+                                                                            Invoices Overdue:
+                                                                        </td>
+                                                                        <td class="rightText">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!invoiceInfo.amountOverdue}" />
+                                                                            </apex:outputText>                                                                                
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>                                                                        
+                                                                        <td>
+                                                                            <apex:outputText value="{0, number,##,##0}">
+                                                                                <apex:param value="{!invoiceInfo.noOfDueInvoice}" />
+                                                                            </apex:outputText>
+                                                                        </td>
+                                                                        <td> 
+                                                                            Invoices Due:
+                                                                        </td>
+                                                                        <td class="rightText">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!invoiceInfo.amountDue}" />
+                                                                            </apex:outputText>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <apex:outputText value="{0, number,##,##0}">
+                                                                                <apex:param value="{!invoiceInfo.noOfFullyPaidInvoice}" />
+                                                                            </apex:outputText>
+                                                                        </td>                                                                        
+                                                                        <td>
+                                                                            Invoices Fully Paid:
+                                                                        </td>
+                                                                        <td class="rightText">
+                                                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                                                <apex:param value="{!invoiceInfo.amountFullyPaid}" />
+                                                                            </apex:outputText>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <div>
+                                                                    <apex:outputLabel style="{!IF(isMultiCurrency,'','padding-left:25%;')}" value="{!IF(isMultiCurrency==true, 'Amounts are in Multiple Currencies','Amounts in '+CurrencyCode)}"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>      
+                                                        <div class="slds-col slds-large-size_4-of-12 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate slds-float_left barChart slds-align_absolute-center">
+                                                            <div id="bar_chart_div"></div>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputpanel rendered="{!!isInvoicePresent}">
+                                                    <div style="font-size: 18px;text-align: center;" class="slds-p-vertical_medium">
+                                                        {!noInvoiceMessageHeading}
+                                                    </div>
+                                                    <div style="font-size: 14px;text-align: center;" class="slds-p-bottom_large">
+                                                        {!noInvoiceMessageSubHeading}
+                                                    </div>    
+                                                </apex:outputpanel>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                            </apex:outputPanel>
+                            <div class="slds-card slds-m-top_none slds-m-bottom_small">
+                                <div class="slds-card__body slds-m-top_none">
+                                    <!-- Breadwinner Sync Settings SECTION START -->
+                                    <div class="slds-panel__section">
+                                        <div class="slds-section slds-is-open">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <span class="slds-truncate slds-p-horizontal_small">Breadwinner Sync Settings</span>
+                                            </h3>
+                                            <div class="slds-section__content">
+                                                <div class="slds-grid slds-gutters_medium" style="display: {!IF(AND($ObjectType.Breadwinner_Account_Connection__c.fields.No_Associated_SF_Account__c.Accessible,NOT(bac.No_Associated_SF_Account__c)),'','none')}; flex-wrap: wrap;">
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Associated Salesforce Account</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField id="sfaccount" value="{!bac.Bread_Winner__Salesforce_Account__c}" rendered="{!AND($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Salesforce_Account__c.Accessible,NOT(ISNULL(bac.Bread_Winner__Salesforce_Account__c)))}"/>
+                                                                        <apex:outputPanel rendered="{!AND($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Salesforce_Account__c.Accessible,ISNULL(bac.Bread_Winner__Salesforce_Account__c))}">
+                                                                            <apex:outputText value="None " />
+                                                                            (<apex:outputLink id="sfaccount2" value="{!$Page.Bread_Winner__ContactEditPage}?id={!bac.Id}&isContactEdit=false">Please Match to a SF Account</apex:outputLink>)
+                                                                        </apex:outputPanel>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" style="display: {!IF(NOT(isBusinessOrHigher),'','none')};">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Sync Invoices from Xero</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!IF(bac.Bread_Winner__Do_not_Import_Invoices__c,'No', 'Yes')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Do_not_Import_Invoices__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight"></div>
+                                                    </div> -->
+                                                </div>
+                                                <div class="slds-grid slds-gutters_medium" style="display: {!IF(AND($ObjectType.Breadwinner_Account_Connection__c.fields.No_Associated_SF_Account__c.Accessible,bac.No_Associated_SF_Account__c),'','none')}; flex-wrap: wrap;">
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Associated Salesforce Account</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="None"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Do not associate with Salesforce Account</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!IF(bac.Bread_Winner__No_Associated_SF_Account__c,'Yes', 'No')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__No_Associated_SF_Account__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" style="display: {!IF(NOT(isBusinessOrHigher),'','none')};">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Sync Invoices from Xero</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!IF(bac.Bread_Winner__Do_not_Import_Invoices__c,'No', 'Yes')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Do_not_Import_Invoices__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-grid slds-gutters_medium" style="display: {!IF(isBusinessOrHigher,'','none')}; flex-wrap: wrap;">
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Sync Invoices from Xero</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!IF(bac.Bread_Winner__Do_not_Import_Invoices__c,'No', 'Yes')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Do_not_Import_Invoices__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Sync Bills from Xero</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!IF(appConfig.Sync_Suppliers_Bills,IF(bac.Bread_Winner__Do_not_Import_Bills__c,'No', 'Yes'),'Bills not yet enabled')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Do_not_Import_Bills__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Sync Purchase Orders from Xero</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!IF(appConfig.Sync_POs,IF(bac.Bread_Winner__Do_not_Import_Purchase_Orders__c,'No', 'Yes'),'Purchase Orders not yet enabled')}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Do_not_Import_Purchase_Orders__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Breadwinner Sync Settings SECTION END -->
+                                    
+                                   <!-- Sales Settings SECTION START -->
+                                    <div class="slds-panel__section">
+                                        <div class="slds-section slds-is-open">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <span class="slds-truncate slds-p-horizontal_small">Sales Settings</span>
+                                            </h3>
+                                            <div class="slds-section__content">
+                                                <div class="slds-grid slds-gutters_medium" style="flex-wrap: wrap;">
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Accounts Receivable Tax Type</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.Bread_Winner__Accounts_Receivable_Tax_Type__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Accounts_Receivable_Tax_Type__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Default Revenue Account Code</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.Bread_Winner__Default_Revenue_Account_Code__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Default_Revenue_Account_Code__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Default Discount</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!bac.Bread_Winner__Default_Discount__c}%" rendered="{!AND($ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Default_Discount__c.Accessible,NOT(ISNULL(bac.Bread_Winner__Default_Discount__c)))}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Default Invoice Branding Theme</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Default_Invoice_Branding_Theme__c.Accessible}">
+                                                                            <apex:outputField value="{!bac.Bread_Winner__Default_Invoice_Branding_Theme__c}"/>
+                                                                        </apex:outputPanel>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" style="display:{!IF(LEN(trackingCategory1)>0,'','none')}">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Default Sales&nbsp;{!trackingCategory1}</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.Bread_Winner__Tracking_Category_1_Default_Value__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Tracking_Category_1_Default_Value__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" style="display:{!IF(LEN(trackingCategory2)>0,'','none')}">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Default Sales&nbsp;{!trackingCategory2}</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.Bread_Winner__Tracking_Category_2_Default_Value__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Tracking_Category_2_Default_Value__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Sales Settings SECTION END -->
+                                    
+                                    <!-- Purchase Settings SECTION START -->
+                                    <div class="slds-panel__section">
+                                        <div class="slds-section slds-is-open">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <span class="slds-truncate slds-p-horizontal_small">Purchase Settings</span>
+                                            </h3>
+                                            <div class="slds-section__content">
+                                                <div class="slds-grid slds-gutters_medium" style="flex-wrap: wrap;">
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Accounts Payable Tax Type</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.Bread_Winner__Accounts_Payable_Tax_Type__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Accounts_Payable_Tax_Type__c.Accessible}"/> 
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Default Purchase Revenue Account Code</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.Bread_Winner__Default_Purchase_Revenue_Account_Code__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Default_Purchase_Revenue_Account_Code__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;display:{!IF(LEN(trackingCategory1)>0,'','none')};">
+                                                                <label class="slds-form-element__label">Default Purchase&nbsp;{!trackingCategory1}</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.Bread_Winner__Purchase_Tracking_Category_1_Value__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Purchase_Tracking_Category_1_Value__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" style="display:{!IF(LEN(trackingCategory2)>0,'','none')}">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Default Purchase&nbsp;{!trackingCategory2}</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputPanel rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Purchase_Tracking_Category_2_Value__c.Accessible}">
+                                                                            <apex:outputField value="{!bac.Bread_Winner__Purchase_Tracking_Category_2_Value__c}"/>
+                                                                        </apex:outputPanel>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Purchase Settings SECTION END -->
+                                    
+                                    <!-- Additional Information SECTION START -->
+                                    <div class="slds-panel__section" style="padding-bottom: 1.25rem"> 
+                                        <div class="slds-section" id="additionalInfoSectionId">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <button class="slds-button slds-section__title-action" type="button" onclick="showHideSectionConent('additionalInfoSectionId','additionalInfoSectionImage');">
+                                                    <img id="additionalInfoSectionImage" src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/SectionClose.png')}" style="margin-bottom: 3px;margin-right: 5px;" />
+                                                    <span class="slds-truncate">Additional Information</span>
+                                                </button>
+                                            </h3>
+                                            <div class="slds-section__content">
+                                                <div class="slds-grid slds-gutters_medium" style="flex-wrap: wrap;">
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" style="display: {!IF(LEN(ownerName)>0,'','none')};">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Owner</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!ownerName}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Last Modified in Salesforce</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputField value="{!bac.LastModifiedDate}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.LastModifiedDate.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Reference Id</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!bac.Bread_Winner__Reference_Id__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Reference_Id__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate" style="display: {!IF(LEN(ownerName)>0,'none','')};">
+                                                        <div class="slds-col defaultheight"></div>
+                                                    </div> -->
+                                                
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Xero Org Name</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!bac.Bread_Winner__Xero_Org_Name__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Xero_Org_Name__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-m-top_x-small slds-grid slds-large-size_1-of-3 slds-medium-size_1-of-2 slds-size_1-of-1 slds-has-flexi-truncate">
+                                                        <div class="slds-col defaultheight">
+                                                            <div class="slds-form-element slds-border_bottom" style="height: 100%;">
+                                                                <label class="slds-form-element__label">Xero Org ID</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <span class="slds-form-element__static">
+                                                                        <apex:outputText value="{!bac.Bread_Winner__Xero_Org_ID__c}" rendered="{!$ObjectType.Bread_Winner__Breadwinner_Account_Connection__c.fields.Bread_Winner__Xero_Org_ID__c.Accessible}"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Additional Information SECTION END -->
+                                </div>
+                            </div>
+
+                            <apex:outputPanel layout="block" rendered="{!$ObjectType.Bread_Winner__Invoice__c.Accessible}" styleClass="slds-card__body slds-p-bottom_medium slds-card slds-m-top_none" id="relatedList">                            
+                                <!-- Invoices Section Start -->
+                                <apex:outputPanel layout="block" rendered="{!$ObjectType.Bread_Winner__Invoice__c.Accessible}" styleClass="slds-m-top_medium slds-m-horizontal_medium">
+                                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                                        <div class="slds-media__figure">
+                                            <span class="slds-icon_container slds-icon-custom-custom41" title="Invoices" id="InvoiceIcon">
+                                                <svg class="slds-icon slds-icon_medium" aria-hidden="true">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom41')}" />
+                                                </svg>
+                                                <span class="slds-assistive-text">Invoices</span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">
+                                                <span class="slds-text-heading_small" style="width:50%; margin-top:0.5rem">Invoices</span>                                                    
+                                                <span style="width:50%; text-align:right;">
+                                                    <apex:commandButton value="Show 3 Most Recent Invoices by Invoice Date" style="float:right; font-size:0.8125rem" styleClass="slds-button slds-button_brand" action="{!recentMostInvoices}" rendered="{!AND(isFreePlan, appConfig != null)}" status="assign-action-status" reRender="pagemsgs,relatedList" oncomplete="renderDownloadSVG();renderInvoiceIcon();message();HideStyleSheet();"></apex:commandButton>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>                                                                            
+                                    <apex:outputPanel layout="block" styleClass="slds-p-horizontal_small" rendered="{!isFreePlan}" id="mostRecentInvoices">
+                                        <apex:dataTable value="{!recentMostInvoicesList}" var="inv" rows="3" styleclass=" tableResponsiveStyling slds-m-top_medium slds-table slds-no-row-hover slds-table_bordered slds-border_right slds-border_left slds-max-medium-table_stacked-horizontal bordr" width="100" rendered="{!AND(recentMostInvoicesList.size!=null, recentMostInvoicesList.size>0)}">
+                                            <apex:column headerValue="Invoice" html-data-label="Invoice" headerClass="headerBackgroundColor slds-truncate  " styleClass="slds-truncate " value="{!inv.Name}" width="12"/>
+                                            
+                                            <apex:column headerValue="Status" html-data-label="Status" headerClass="headerBackgroundColor slds-truncate " styleClass="slds-truncate " rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Status__c.Accessible}" width="15">
+                                            <apex:image value="{!IF(OR(inv.Status == 'VOIDED', inv.Status == 'DELETED'),
+                                            "https://s3.amazonaws.com/bw-cdn/x-ltng.png",
+                                            IF(
+                                            OR(inv.Status == 'DRAFT', inv.Status == 'SUBMITTED'),
+                                            "https://s3.amazonaws.com/bw-cdn/pencil.png",
+                                            IF(AND(inv.Due_Date != null, inv.AmountDue!= null, inv.AmountDue > 0,inv.Due_Date  <  TODAY()),
+                                            "https://s3.amazonaws.com/bw-cdn/red-flag.png" ,
+                                            IF(AND(inv.Due_Date != null, inv.AmountDue!= null, inv.AmountDue > 0, NOT(inv.Due_Date  <  TODAY()) ),
+                                            "https://s3.amazonaws.com/bw-cdn/yellow-flag.png" ,              
+                                            "https://s3.amazonaws.com/bw-cdn/green-flag.png"
+                                            ))))}"/>&nbsp;
+                                            <apex:outputText value="{!IF(inv.Status=='AUTHORISED',IF(AND (inv.AmountDue != null, inv.AmountDue>0, inv.Due_Date  <  TODAY() ),'OVERDUE','DUE'),IF(inv.Status=='SUBMITTED','Submitted for Approval',inv.Status))}"/>
+                                            </apex:column>                              
+                                            <apex:column headerValue="Invoice Date" value="{!inv.DateString}" title="{!inv.DateString}" html-data-label="Invoice Date" headerClass="headerBackgroundColor slds-truncate" styleClass="slds-truncate" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Invoice_Date__c.Accessible}" width="14" />                                            
+                                            <apex:column headerValue="Due Date" value="{!inv.DueDateString}" title="{!inv.DueDateString}" html-data-label="Due Date" headerClass="headerBackgroundColor slds-truncate " styleClass="slds-truncate" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Due_Date__c.Accessible}" width="14" />                                            
+                                            <apex:column headerValue="Paid" title="{!inv.AmountPaid}" html-data-label="Paid" styleClass="slds-text-align_right slds-truncate" headerClass="slds-text-align_right   headerBackgroundColor" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Paid__c.Accessible}" width="12">
+                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                <apex:param value="{!inv.AmountPaid}" /> 
+                                            </apex:outputText>
+                                            </apex:column>            
+                                            <apex:column headerValue="Due" title="{!inv.AmountDue}" html-data-label="Due" styleClass="slds-text-align_right slds-truncate  " headerClass="slds-text-align_right   headerBackgroundColor" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Due__c.Accessible}" width="12">
+                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                <apex:param value="{!inv.AmountDue}" /> 
+                                            </apex:outputText>
+                                            </apex:column>            
+                                            <apex:column headerValue="Total" title="{!inv.Total}" html-data-label="Total" styleClass="slds-text-align_right slds-truncate " headerClass="slds-text-align_right   headerBackgroundColor" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Total__c.Accessible}" width="12">
+                                            <apex:outputText value="{0, number,##,##0.00}">
+                                                <apex:param value="{!inv.Total}" /> 
+                                            </apex:outputText>
+                                            </apex:column>
+                                            <apex:column headerValue="Download" html-data-label="Download" headerClass="headerBackgroundColor slds-truncate slds-text-align_center " styleClass="slds-text-align_center" width="9" >
+                                            
+                                                <apex:commandLink styleclass="slds-icon_container slds-icon-utility-download" onclick="DownloadInvoice('{!inv.externalId}','{!inv.Name}');" reRender="mostRecentInvoices">
+                                                    <span class="downloadIcon">
+                                                        <svg class="slds-button__icon">
+                                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#download')}" />
+                                                        </svg>
+                                                    </span>   
+                                                </apex:commandLink>
+                                                                                            
+                                            </apex:column>
+                                            
+                                        </apex:dataTable>
+                                        <apex:outputpanel rendered="{!AND(!isInvoicePresent, !unAuthorized, isFreePlan)}">
+                                            <div style="font-size: 20px; text-align: center;">
+                                            {!noInvoiceMessageHeadingInFreePlan}
+                                            </div>
+                                        </apex:outputpanel>
+                                        <apex:actionFunction name="DownloadInvoiceActionFunction" action="{!downloadInvoicePDF}" status="assign-action-status" reRender="invoiceContentPanel,refreshpanel,relatedList" oncomplete="renderDownloadSVG();renderInvoiceIcon();">
+                                        <apex:param assignTo="{!invoiceXeroID}" value="" name="firstparam" />
+                                        <apex:param assignTo="{!invoiceName}" value="" name="secondparam" />                                            
+                                        </apex:actionFunction>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel layout="block" rendered="{!!isFreePlan}">
+                                        <apex:dataTable value="{!bacInvoiceslist}" var="inv" styleclass="slds-m-top_medium slds-table slds-no-row-hover slds-table_bordered slds-border_right slds-border_left slds-max-medium-table_stacked-horizontal bordr" rows="50" rendered="{!AND(bacInvoiceslist != null, bacInvoiceslist.size>0)}">
+                                            <apex:column headerValue="Invoice #" html-data-label="Invoice #" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Name.Accessible}">
+                                                <apex:outputLink id="invName" rendered="{!NOT(isLightning)}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true" target="_blank">{!inv.Name}</apex:outputLink>
+                                                <apex:outputLink id="invName2" rendered="{!isLightning}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true">{!inv.Name}</apex:outputLink>
+                                            </apex:column>
+                                            <apex:column headerValue="Status" html-data-label="Status" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Status__c.Accessible}">
+                                                <apex:outputField value="{!inv.Bread_Winner__Status_Flag__c}"/>&nbsp;&nbsp;
+                                                <apex:outputText value="{!IF(inv.Bread_Winner__Status__c=='AUTHORISED', IF(AND($ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Overdue__c.Accessible,inv.Bread_Winner__Amount_Overdue__c != null,inv.Bread_Winner__Amount_Overdue__c>0), 'OVERDUE', 'DUE'), inv.Bread_Winner__Status__c)}"/>
+                                            </apex:column>
+                                            <apex:column headerValue="Invoice Date" html-data-label="Invoice Date" value="{!inv.Bread_Winner__Invoice_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Invoice_Date__c.Accessible}"/>
+                                            <apex:column headerValue="Due Date" html-data-label="Due Date" value="{!inv.Bread_Winner__Due_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Due_Date__c.Accessible}"/>
+                                            <apex:column headerValue="Amount Paid" html-data-label="Amount Paid" value="{!inv.Bread_Winner__Amount_Paid__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Paid__c.Accessible}"/>
+                                            <apex:column headerValue="Amount Credited" html-data-label="Amount Credited" value="{!inv.Bread_Winner__Amount_Credit__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Credit__c.Accessible}"/>
+                                            <apex:column headerValue="Amount Due" html-data-label="Amount Due" value="{!inv.Bread_Winner__Amount_Due__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Due__c.Accessible}"/>
+                                            <apex:column headerValue="Subtotal" html-data-label="Subtotal" value="{!inv.Bread_Winner__Sub_Total__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Sub_Total__c.Accessible}"/>
+                                            <apex:column headerValue="Total" html-data-label="Total" value="{!inv.Bread_Winner__Total__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Total__c.Accessible}"/>
+                                        </apex:dataTable>
+                                        <apex:outputPanel layout="block" rendered="{!bacInvoiceslist.size<=0}" styleClass="slds-m-top_medium slds-m-horizontal_medium">
+                                            <div class="slds-align_absolute-center slds-border_top slds-border_bottom slds-p-top_small slds-p-bottom_small">
+                                                This Customer has no Invoices
+                                            </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!bacInvoiceslist.size>50}">
+                                            <p style="margin-top:8px;margin-left:3px;color:grey;">
+                                              * Only the first 50 Invoices are displayed. To see all the Invoices, please create a custom view or report in Salesforce
+                                            </p>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                                    <!-- Invoices Section End -->
+
+                                <!-- Credit Note Invoices Section Start -->
+                                <apex:outputPanel layout="block" rendered="{!!isFreePlan}" styleClass="slds-m-top_medium slds-m-horizontal_medium">
+                                    <div class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_x-small">
+                                        <div class="slds-media__figure">
+                                            <span class="slds-icon_container slds-icon-custom-custom41" title="Credit Notes">
+                                                <svg class="slds-icon slds-icon_medium" aria-hidden="true">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom41')}" />
+                                                </svg>
+                                                <span class="slds-assistive-text">Credit Notes</span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">
+                                                <span class="slds-text-heading_small">Credit Notes</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <apex:dataTable value="{!bacCreditNoteInvoiceslist}" var="inv" styleclass="slds-table slds-no-row-hover slds-table_bordered slds-border_right slds-border_left slds-max-medium-table_stacked-horizontal bordr" rows="50" rendered="{!AND($ObjectType.Bread_Winner__Invoice__c.Accessible,bacCreditNoteInvoiceslist.size>0)}">
+                                        <apex:column headerValue="Credit Note #" html-data-label="Credit Note #" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Name.Accessible}">
+                                            <apex:outputLink id="cinvName" rendered="{!NOT(isLightning)}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true" target="_blank">{!inv.Name}</apex:outputLink>
+                                            <apex:outputLink id="cinvName2" rendered="{!isLightning}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true">{!inv.Name}</apex:outputLink>
+                                        </apex:column>
+                                        <apex:column headerValue="Status" html-data-label="Status" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Status__c.Accessible}">
+                                            <apex:outputField value="{!inv.Bread_Winner__Status_Flag__c}"/>&nbsp;&nbsp;
+                                            <apex:outputText value="{!inv.Bread_Winner__Status__c}"/>
+                                        </apex:column>
+                                        <apex:column headerValue="Date" html-data-label="Date" value="{!inv.Bread_Winner__Invoice_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Invoice_Date__c.Accessible}"/>
+                                        <apex:column headerValue="Allocated Credit" html-data-label="Allocated Credit" value="{!inv.Bread_Winner__Credit_Note_Allocated_Credit__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Credit_Note_Allocated_Credit__c.Accessible}"/>
+                                        <apex:column headerValue="Total" html-data-label="Total" value="{!inv.Bread_Winner__Total__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Total__c.Accessible}"/>
+                                    </apex:dataTable>
+                                    <apex:outputPanel layout="block" rendered="{!AND($ObjectType.Bread_Winner__Invoice__c.Accessible,bacCreditNoteInvoiceslist.size<=0)}" styleClass="slds-m-top_medium slds-m-horizontal_medium">
+                                            <div class="slds-align_absolute-center slds-border_top slds-border_bottom slds-p-top_small slds-p-bottom_small">
+                                                <p>
+                                                    No Credit Notes have been applied to this customer
+                                                </p>
+                                            </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!AND(!isFreePlan,bacCreditNoteInvoiceslist.size>50)}">
+                                    <p style="margin-top:8px;margin-left:19px;color:grey;">
+                                        * Only the first 50 Credit Notes are displayed. To see all the Credit Notes, please create a custom view or report in Salesforce
+                                    </p>
+                                </apex:outputPanel>
+                                <!-- Credit Note Invoices Section End -->
+                                
+                                <!-- Bills Section Start -->
+                                <apex:outputPanel layout="block" rendered="{!AND($ObjectType.Bread_Winner__Invoice__c.Accessible,bacBillslist.size>0,!isFreePlan)}" styleClass="slds-m-top_medium slds-m-horizontal_medium">
+                                    <div class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_x-small">
+                                        <div class="slds-media__figure">
+                                            <span class="slds-icon_container slds-icon-custom-custom41" title="Bills">
+                                                <svg class="slds-icon slds-icon_medium" aria-hidden="true">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom41')}" />
+                                                </svg>
+                                                <span class="slds-assistive-text">Bills</span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">
+                                                <span class="slds-text-heading_small">Bills</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <apex:dataTable value="{!bacBillslist}" var="inv" styleclass="slds-table slds-no-row-hover slds-table_bordered slds-border_right slds-border_left slds-max-medium-table_stacked-horizontal bordr" rows="50">
+                                        <apex:column headerValue="Bill Name" html-data-label="Bill Name" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Name.Accessible}">
+                                            <apex:outputLink id="billName" rendered="{!NOT(isLightning)}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true" target="_blank">{!inv.Name}</apex:outputLink>
+                                            <apex:outputLink id="billName2" rendered="{!isLightning}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true">{!inv.Name}</apex:outputLink>
+                                        </apex:column>
+                                        <apex:column headerValue="Status" html-data-label="Status" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Status__c.Accessible}">
+                                            <apex:outputField value="{!inv.Bread_Winner__Status_Flag__c}"/>&nbsp;&nbsp;
+                                            <apex:outputText value="{!IF(inv.Bread_Winner__Status__c=='AUTHORISED', IF(AND($ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Overdue__c.Accessible,inv.Bread_Winner__Amount_Overdue__c>0), 'OVERDUE', 'DUE'), inv.Bread_Winner__Status__c)}"/>
+                                        </apex:column>
+                                        <apex:column headerValue="Bill Date" html-data-label="Bill Date" value="{!inv.Bread_Winner__Invoice_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Invoice_Date__c.Accessible}"/>
+                                        <apex:column headerValue="Due Date" html-data-label="Due Date" value="{!inv.Bread_Winner__Due_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Due_Date__c.Accessible}"/>
+                                        <apex:column headerValue="Amount Paid" html-data-label="Amount Paid" value="{!inv.Bread_Winner__Amount_Paid__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Paid__c.Accessible}"/>
+                                        <apex:column headerValue="Amount Credited" html-data-label="Amount Credited" value="{!inv.Bread_Winner__Amount_Credit__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Credit__c.Accessible}"/>
+                                        <apex:column headerValue="Amount Due" html-data-label="Amount Due" value="{!inv.Bread_Winner__Amount_Due__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Amount_Due__c.Accessible}"/>
+                                        <apex:column headerValue="Total" html-data-label="Total" value="{!inv.Bread_Winner__Total__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Total__c.Accessible}"/>
+                                    </apex:dataTable>
+                                        <apex:outputPanel rendered="{!bacBillslist.size>50}">
+                                        <p style="margin-top:8px;margin-left:5px;color:grey;">
+                                            * Only the first 50 Bills are displayed. To see all the Bills, please create a custom view or report in Salesforce
+                                        </p>
+                                        </apex:outputPanel>
+                                </apex:outputPanel>
+                                
+                                <!-- Bills Section End -->
+
+                                <!-- Credit Note Bills Section Start -->
+                                <apex:outputPanel layout="block" rendered="{!AND($ObjectType.Bread_Winner__Invoice__c.Accessible,bacCreditNoteBillslist.size>0,!isFreePlan)}" styleClass="slds-m-top_medium slds-m-horizontal_medium">
+                                    <div class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_x-small">
+                                        <div class="slds-media__figure">
+                                            <span class="slds-icon_container slds-icon-custom-custom41" title="Credit Notes (Bill)">
+                                                <svg class="slds-icon slds-icon_medium" aria-hidden="true">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom41')}" />
+                                                </svg>
+                                                <span class="slds-assistive-text">Credit Notes (Bill)</span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">
+                                                <span class="slds-text-heading_small">Credit Notes (Bill)</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <apex:dataTable value="{!bacCreditNoteBillslist}" var="inv" styleclass="slds-table slds-no-row-hover slds-table_bordered slds-border_right slds-border_left slds-max-medium-table_stacked-horizontal bordr" rows="50">
+                                        <apex:column headerValue="Credit Note Name" html-data-label="Credit Note Name" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Name.Accessible}">
+                                            <apex:outputLink id="cbillName" rendered="{!NOT(isLightning)}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true" target="_blank">{!inv.Name}</apex:outputLink>
+                                            <apex:outputLink id="cbillName2" rendered="{!isLightning}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true">{!inv.Name}</apex:outputLink>
+                                        </apex:column>
+                                        <apex:column headerValue="Status" html-data-label="Status" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Status__c.Accessible}">
+                                            <apex:outputField value="{!inv.Bread_Winner__Status_Flag__c}"/>&nbsp;&nbsp;
+                                            <apex:outputText value="{!inv.Bread_Winner__Status__c}"/>
+                                        </apex:column>
+                                        <apex:column headerValue="Date" html-data-label="Date" value="{!inv.Bread_Winner__Invoice_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Invoice_Date__c.Accessible}"/>
+                                        <apex:column headerValue="Allocated Credit" html-data-label="Allocated Credit" value="{!inv.Bread_Winner__Credit_Note_Allocated_Credit__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Credit_Note_Allocated_Credit__c.Accessible}"/>
+                                        <apex:column headerValue="Total" html-data-label="Total" value="{!inv.Bread_Winner__Total__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Total__c.Accessible}"/>
+                                    </apex:dataTable>
+                                    <apex:outputPanel rendered="{!bacCreditNoteBillslist.size>50}">
+                                        <p style="margin-top:8px;margin-left:5px;color:grey;">
+                                            * Only the first 50 Credit Note Bills are displayed. To see all the Credit Note Bills, please create a custom view or report in Salesforce
+                                        </p>
+                                        </apex:outputPanel>
+                                </apex:outputPanel>
+                                <!-- Credit Note Bills Section End -->
+
+                                <!-- POs Section Start -->
+                                <apex:outputPanel layout="block" rendered="{!AND($ObjectType.Bread_Winner__Invoice__c.Accessible,bacPOslist.size>0,!isFreeplan)}" styleClass="slds-m-top_medium slds-m-horizontal_medium">
+                                    <div class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_x-small">
+                                        <div class="slds-media__figure">
+                                            <span class="slds-icon_container slds-icon-custom-custom41" title="Purchase Orders">
+                                                <svg class="slds-icon slds-icon_medium" aria-hidden="true">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom41')}" />
+                                                </svg>
+                                                <span class="slds-assistive-text">Purchase Orders</span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">
+                                                <span class="slds-text-heading_small">Purchase Orders</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <apex:dataTable value="{!bacPOslist}" var="inv" styleclass="slds-table slds-no-row-hover slds-table_bordered slds-border_right slds-border_left slds-max-medium-table_stacked-horizontal bordr" rows="50">
+                                        <apex:column headerValue="Order Number" html-data-label="Order Number" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Name.Accessible}">
+                                            <apex:outputLink id="poName" rendered="{!NOT(isLightning)}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true" target="_blank">{!inv.Name}</apex:outputLink>
+                                            <apex:outputLink id="poName2" rendered="{!isLightning}" value="{!$Page.Bread_Winner__Invoice_RecordInfo}?id={!inv.Id}&showNewUI=true">{!inv.Name}</apex:outputLink>
+                                        </apex:column>
+                                        <apex:column headerValue="Status" html-data-label="Status" styleClass="slds-cell-wrap" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Status__c.Accessible}">
+                                            <apex:outputField value="{!inv.Bread_Winner__Status_Flag__c}"/>&nbsp;&nbsp;
+                                            <apex:outputText value="{!inv.Bread_Winner__Status__c}"/>
+                                        </apex:column>
+                                        <apex:column headerValue="Purchase Order Date" html-data-label="Purchase Order Date" value="{!inv.Bread_Winner__Invoice_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Invoice_Date__c.Accessible}"/>
+                                        <apex:column headerValue="Delivery Date" html-data-label="Delivery Date" value="{!inv.Bread_Winner__Delivery_Date__c}" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Delivery_Date__c.Accessible}"/>
+                                        <apex:column headerValue="Total" html-data-label="Total" value="{!inv.Bread_Winner__Total__c}" styleClass="slds-text-align_right" headerClass="slds-text-align_right" rendered="{!$ObjectType.Bread_Winner__Invoice__c.fields.Bread_Winner__Total__c.Accessible}"/>
+                                    </apex:dataTable>
+                                    <apex:outputPanel rendered="{!bacPOslist.size>50}">
+                                        <p style="margin-top:8px;margin-left:5px;color:grey;">
+                                            * Only the first 50 Purchase Orders are displayed. To see all the Purchase Orders, please create a custom view or report in Salesforce
+                                        </p>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                                <!-- POs Section End -->                            
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <apex:outputPanel id="refreshpanel">    
+                        <apex:outputPanel rendered="{!refreshPage}">
+                            <script>
+                                function saveToPC(){
+                                    console.log('save to PC');
+                                    try{
+                                        var url = "data:application/pdf;content-disposition:attachment;headers=filename%3D{!JSENCODE(invoiceXeroID)}.pdf;base64,{!JSENCODE(base64Value)}";
+                                        var nAgt = navigator.userAgent;
+                                        var verOffset;
+                                        var isClassic = false;
+                                        var isFirefox = false;
+                                        
+                                        var link = document.getElementById('downloadInvoiceContentAnchorTag');
+                                        var canDownload = true;
+                                        if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+                                            isFirefox = true;
+                                            var windowURL = decodeURIComponent(window.location.href);
+                                            isClassic = (windowURL.includes(".com/servlet/"));
+                                            if(isClassic  || "{! $User.UIThemeDisplayed == 'Theme3'}"=="true"){
+                                                canDownload = true;
+                                            }
+                                            else{
+                                                canDownload = false;
+                                            }
+                                        }
+                                        if(canDownload){
+                                            link.href = "data:application/pdf;content-disposition:attachment;content-length:{!LEN(JSENCODE(base64Value))};base64,{!JSENCODE(base64Value)}";
+                                            link.target = '_top';
+                                            link.click();
+                                        }
+                                        else{
+                                            window.open(url,'_blank');
+                                        }
+                                    }catch(e){
+                                        Console.log('Exception while saving Invoice to PC :::'+e);
+                                    }
+                                }
+                            </script>
+                        </apex:outputPanel>
+                    </apex:outputPanel>                    
+                </apex:form>
+            </div>
+        </body>
+    </html>
+</apex:page>

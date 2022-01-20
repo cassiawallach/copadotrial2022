@@ -1,0 +1,48 @@
+<apex:page tabStyle="Administration__tab" docType="html-5.0" sidebar="false" controller="JBCXM.ConfigBroker" extensions="JBCXM.GSCommonBroker" title="Journey Orchestrator Permissions">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var headerConf= fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+        var GS = GS || {};
+
+        GS.remotingEndPoint     = '{!$RemoteAction.ConfigBroker.configRequestBroker}';
+        GS.commonRemotingEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+
+        GS.userConfig = {
+              userLocale        : {!(dateTimeFormatByLocale)},
+              userName          : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+              userId            : "{!$User.Id}",
+              emailId           : "{!$User.Email}",
+              profilePhoto      : "{!(profilePhoto)}",
+              gainsightTabs     : fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+              isLightningEnabled: {!(isLightningEnabled)},
+              userDisplayName   : "{!(JSINHTMLENCODE(userDisplayName))}"
+            };
+
+        GS.customerId = "";
+
+        GS.surveyId = unescape("{!URLENCODE($CurrentPage.parameters.surveyId)}");
+        GS.gatewayURL = headerConf.gatewayURL;
+
+    </script>
+
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div id="permissionsMainCntr" class="survey-permissions"></div>
+        </div>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["touchhubpermissions/scripts/app.bundle.js"], styles:["touchhubpermissions/styles/app.css"]});
+        </script>
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:9091/UI')}/touchhubpermissions/styles/app.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "https://localhost:9091/UI")}/touchhubpermissions/scripts/app.bundle.js"></script>
+    </apex:outputpanel>
+ 
+</apex:page>

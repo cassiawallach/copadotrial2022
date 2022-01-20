@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notification when the user story was approved or rejected after submitting it for approval.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Copado_default</letterhead>
+    <name>Release Approved</name>
+    <style>freeForm</style>
+    <subject>Your Release {!copado__Release__c.Name} was Approved</subject>
+    <textOnly>Your Release &quot;{!copado__Release__c.Name}&quot; was submitted for approval and approved.
+
+Approval Request Status: Approved by QA
+Link to the Release: {!copado__Release__c.Link}
+Last comment: {!ApprovalRequest.Comments}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

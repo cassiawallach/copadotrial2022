@@ -1,0 +1,78 @@
+<apex:page standardController="kugo2p__Shipment__c" extensions="kugo2p.ShipmentsHelper" recordSetVar="StatusUpdateShipments" title="Update Shipment Status" tabStyle="kugo2p__SalesOrder__c">
+    <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+    <!--<script>function setFocusOnLoad(){ /*NOOP*/ }</script>
+    // override setFocus method instead of setFocusOnLoad, as SF relies upon setFocusOnLoad to set up elements on the page.-->
+    <script type="text/javascript">function setFocus() { }</script>
+    <c:PageHeader title="Shipment" subtitle="Update Shipment Status" pathname="custom" icon="custom92" description="Update the status for the selected shipments and click 'Save'." rendered="{!!showCancel}" />
+
+    <apex:form >
+    <apex:pagemessages id="msgId"/>
+
+    <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!showCancel}" >
+        <br></br>
+        <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+    </apex:outputPanel>
+
+    <apex:pageBlock mode="edit" id="pbId" rendered="{!!showCancel}">    <!-- title="Update Shipment Status" -->
+        <apex:pageBlockButtons styleClass="kugamon">
+            <apex:commandButton value="Save" action="{!saveShipmentStatus}" styleClass="slds-button slds-button--brand" status="processStatus" rerender="msgId,pbId" />
+            <apex:commandButton action="{!cancelShipmentStatus}" value="Cancel" styleClass="slds-button slds-button--neutral" />
+            &nbsp;
+            <apex:outputPanel >
+                <apex:actionstatus id="processStatus" stopText="">
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            <!-- <apex:image value="/img/loading.gif"/>&nbsp;Processing... -->
+                            <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />&nbsp;Processing...
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionstatus>
+            </apex:outputPanel>
+        </apex:pageBlockButtons>
+    
+        <apex:pageBlockSection columns="1">
+            <!-- <p>Update the status for the selected shipments and click 'Save'.</p> -->
+            <apex:pageBlockTable value="{!StatusUpdateShipments}" var="shipment">
+                
+                <apex:column value="{!shipment.Name}" />
+                
+                <apex:column value="{!shipment.SalesOrder__r.Account__r.Name}" />
+
+                <apex:column value="{!shipment.SalesOrder__r.Name}" />
+
+                <apex:column headerValue="Status">
+                    <apex:facet name="header">
+                        <apex:outputPanel >
+                            Status<br/>
+                            <apex:selectList id="headerStatusId" value="{!headerShipment.kugo2p__RecordStatus__c}" size="1">
+                                <apex:selectOptions value="{!HeaderShipmentStatusList}"/>
+                                <apex:actionSupport event="onchange" action="{!updateheaderStatus}" reRender="pbId" status="processStatus" focus="headerStatusId" />
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:facet>
+
+                    <apex:selectList value="{!shipment.kugo2p__RecordStatus__c}" size="1">
+                        <apex:selectOptions value="{!ShipmentStatusList}"/>
+                    </apex:selectList>              
+                </apex:column>
+
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:outputPanel >
+                            Shipment Date<br/>
+                            <apex:inputField id="headerDateId" value="{!headerShipment.kugo2p__ShipmentDate__c}" required="false" >
+                                <apex:actionSupport event="onchange" action="{!updateheaderDate}" reRender="pbId" status="processStatus" focus="headerStatusId" />
+                            </apex:inputField>
+                        </apex:outputPanel>
+                    </apex:facet>
+
+                    <apex:inputField value="{!shipment.kugo2p__ShipmentDate__c}" />
+                </apex:column>
+                
+                <apex:column rendered="false" value="{!shipment.kugo2p__SalesOrder__c}" />
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

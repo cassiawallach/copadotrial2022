@@ -1,0 +1,104 @@
+<apex:page id="install" showHeader="false" sidebar="false" standardStylesheets="false">
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+  <title>Copado Solutions Installation</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <c:websiteHeadTag />
+  </head>
+  <body class="homepage">
+  <div id="top-wrapper">
+    <c:websiteHeader />
+    <script>setActiveTab('install');</script>
+    <section>
+      <header>
+        <div class="container">
+          <h2>Install Copado</h2>
+        </div>
+      </header>
+    </section>
+  </div>
+  <div id="extra">
+    <div class="container">
+      <div class="row">
+        <section class="6u">
+          <header>
+            <h2 style="font-size:2em">Production</h2>
+          </header>
+          <p style="max-width:550px;">Existing customers should install the application in Production. Prospective customers
+            may install Copado also in production. A 30-day trial is available. To have the Enterprise feature enabled, click <a href="ContactUs?install=PleaseEnableEE">here</a>.</p>
+          <a href="https://login.salesforce.com/packaging/installPackage.apexp?p0={!$Setup.Copado_Hierarchy_Settings__c.Install_Package_ID__c}" class="button small" style="margin:0px;">Install in Production</a> </section>
+        <section class="6u">
+          <header>
+            <h2 style="font-size:2em">Sandbox</h2>
+          </header>
+          <p style="max-width:550px;">Prospective customers may install Copado in a sandbox.  Please consider, however, that moving data (existing deployments etc...) 
+            is a complex process and will need to be migrated by the customer, if required.</p>
+          <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0={!$Setup.Copado_Hierarchy_Settings__c.Install_Package_ID__c}" class="button small" style="margin:0px;">Install in Sandbox</a> </section>
+      </div>
+    </div>
+  </div>
+  <div id="featured-white">
+    <div class="container">
+      <section>
+        <header>
+          <h2>What our customers say</h2>
+        </header>
+      </section>
+      <div id="owl-demo" class="owl-carousel owl-theme">
+        <div class="item">
+          <p class="fa-2x fa-pull-left"> The deployment solution alone has taken the pain out of managing change sets for our large organization with heavy Salesforce.com use. Partnering with Copado has been incredibly valuable. <br />
+            <br />
+            - Lesley Morgan, Coca-Cola Enterprises</p>
+        </div>
+        <div class="item">
+          <p class="fa-2x fa-pull-left"> Best cloud based deployment tool for salesforce. <br />
+            <br />
+            - Kapil Sama, NISA</p>
+        </div>
+        <div class="item">
+          <p class="fa-2x fa-pull-left">This tool is a must-have for every developer, saving a lot of deployment <br />
+            time and effort. <br />
+            <br />
+            - Evgenij Starchak, Deloitte</p>
+        </div>
+        <div class="item">
+          <p class="fa-2x fa-pull-left"> This is by far the best app for deployments I've used. <br />
+            <br />
+            - David Affentranger, Salesforce.com</p>
+        </div>
+        <div class="item">
+          <p class="fa-2x fa-pull-left"> This tool has saved us a lot of time and headache and I especially like the profile feature. Copado Deployer is by far the best Salesforce Deployment tool! <br />
+            <br />
+            - Joseph Alviani, Salesforce.com</p>
+        </div>
+        <div class="item">
+          <p class="fa-2x fa-pull-left"> I evaluated this app for adoption by my team, and found it to be a superior solution to anything else I've looked at. <br />
+            <br />
+            - Dennis Denton, Capital One Home Loans</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <c:websiteFooter />
+  </body>
+  <script>
+
+   $(document).ready(function() {
+ 
+  $("#owl-demo").owlCarousel({
+ 
+      navigation : false, // Show next and prev buttons
+      slideSpeed : 300,
+      paginationSpeed : 400,
+      singleItem:true
+
+ 
+  });
+ 
+});
+
+
+    </script>
+  </html>
+</apex:page>

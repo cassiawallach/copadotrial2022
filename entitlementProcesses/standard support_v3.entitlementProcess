@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitlementProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <SObjectType>Case</SObjectType>
+    <active>true</active>
+    <entryStartDateField>Case.CreatedDate</entryStartDateField>
+    <exitCriteriaFilterItems>
+        <field>Case.IsClosed</field>
+        <operation>equals</operation>
+        <value>true</value>
+    </exitCriteriaFilterItems>
+    <isVersionDefault>false</isVersionDefault>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.RecordTypeId</field>
+            <operation>notEqual</operation>
+            <value>APO Request, IT Request</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>First Response</milestoneName>
+        <minutesToComplete>960</minutesToComplete>
+        <useCriteriaStartTime>false</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>In progress</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.RecordTypeId</field>
+            <operation>notEqual</operation>
+            <value>APO Request, IT Request</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>Response Time</milestoneName>
+        <minutesToComplete>960</minutesToComplete>
+        <timeTriggers>
+            <actions>
+                <name>URGENT_Case_Violation_at_Risk</name>
+                <type>Task</type>
+            </actions>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <timeTriggers>
+            <actions>
+                <name>URGENT_Case_Violation_at_Risk</name>
+                <type>Task</type>
+            </actions>
+            <timeLength>-4</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <name>Standard Support</name>
+    <versionMaster>5522600000000Za</versionMaster>
+    <versionNotes>New business hours... working hours</versionNotes>
+    <versionNumber>3</versionNumber>
+</EntitlementProcess>

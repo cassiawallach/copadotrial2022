@@ -1,0 +1,251 @@
+<!-- 
+Using for success plan collaboration.
+ -->
+<apex:page docType="html-5.0" controller="JBCXM.Customer360Broker" extensions="JBCXM.GSCommonBroker" sidebar="false" title="Success Plans" showHeader="false">
+
+    <style id="gs-app-temp-style-for-flash" type="text/css"> object{opacity: 0} </style>
+    <script type="text/javascript">
+     window.addEventListener('load', function(){
+         var styleNode = document.querySelector('#gs-app-temp-style-for-flash');
+         styleNode.remove ? styleNode.remove() : styleNode.parentElement.removeChild(styleNode);
+     });
+     </script>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+     
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/css/workflow/workflow.css" />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/css/successplans/successplans.css"  />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/module/successplans/survey-create.css"  />
+   <!-- <link rel="stylesheet" type="text/css" href="https://localhost/GS-SP/GSAppCSS/css/successplans/successplans.css"/> -->
+  
+    <script type="text/javascript">
+        var j$ = $.noConflict();
+        window.jLatest = j$;
+    </script>
+    
+   <script>
+     
+         var GS = GS || {} ;
+         j$(document).ready(function() {
+         
+         		var privateFileUpload = getQueryStringParam("privateFileUpload");
+         		if(privateFileUpload)
+         			j$("body").addClass("private-chatter-body-ctn");
+         });
+         function privateChatterfileAttachmentObserver() {
+                if(!document._observer){
+                    document._observer = new MutationObserver(function(mutations) {
+                       for (var mutationIdx=0; mutationIdx < mutations.length; mutationIdx++) {
+                           var mutation = mutations[mutationIdx];
+                           for (var childIndex=0; childIndex < mutation.addedNodes.length; childIndex++) {
+                               var child = mutation.addedNodes[childIndex];
+                               if (child.nodeType != 3 && child.classList.contains('cxfeeditem')) {
+                                  
+                                  var ele = child.getElementsByClassName("cxfeeditemattachments");
+                                  if(ele && ele.length >0 ){
+                                  	
+                                  	var docIdElement = ele[0].getElementsByClassName("contentActionMenu")[0];
+                                    var docId = docIdElement.getAttribute("docid");
+                                  	var fileEle = ele[0].getElementsByClassName("contentActionLink")[0];
+                                  	j$("#publisherAttachContentPost").click();
+                                  	j$("#chatterUploadFileAction").click();
+                                    j$("#richTextEditorContainer").hide();
+                                    j$(".clearContentPanelButtonContainer .clearContentPanelButton").hide();
+                                  	parent.window.privateFileAddded(docId, fileEle.getElementsByTagName("span")[0].innerHTML);
+                                  	
+                                  	//ele[0].addEventListener('click', onClickAttachFile);
+                                  	
+                                  	}
+                           
+                               }
+                           }
+                       }
+                    });
+                    document.defaultView.addEventListener('unload', function(evt){
+                        if(document._observer){
+                            document._observer.disconnect();
+                            delete document._observer;
+                        }
+                    });
+                  
+                }
+                return document._observer;
+            }
+            function stopDOMObserver(){
+            
+            	if(document._observer){
+                     document._observer.disconnect();
+                     delete document._observer;
+                }
+  
+            }
+         function OnChatterRendered(){
+ 				
+ 				var privateFileUpload = getQueryStringParam("privateFileUpload");
+ 				if(privateFileUpload){
+                	j$(".sp-chatter-ctn").show();
+                	
+                    j$("#publisherAttachContentPost").click();
+                    j$(".publisherFeedItemTypeChoices"). attr("style", "display: none !important");
+                    j$(".chatterPublisherFileActionContainerLeft").hide();
+                    j$(".sp-chatter-ctn").show();
+                    j$("#chatterUploadFileAction").click();
+                    j$(".feedcontainer").hide();
+                    j$("#cke_publisherRichTextEditor").hide();
+                    j$("#richTextEditorContainer").hide();
+                    j$(".publisherBottomBarPlaceholder .bottomBarLeft").hide();
+                    j$(".clearContentPanelButtonContainer .clearContentPanelButton").hide();
+                   	var config = { attributes: false, subtree: true, childList: true, characterData: false };
+               		privateChatterfileAttachmentObserver().observe(document.getElementById('chatterId'), config);
+             		parent.window.hideLoading();
+             		parent.window.document && j$(parent.window.document).find('.wf-details-body').scrollTop(0);
+                    
+                }else{
+	 				//j$(".gs-sp-chatter-loader-img").hide();
+	                j$(".sp-chatter-loader #gainsight-preloader-spinner").remove();
+	 				j$(".sp-chatter-ctn").show();
+	 				if(j$("#chatterId span").length <= 1){
+	                    j$(".enableFeedMessage").show();
+	                }
+	 				j$("#publishersharebutton").on("click", onClickShareButton);
+	                j$("#publishereditablearea").val("#Gainsight-SuccessPlans "+"#"+ GS.SPName + ": ");
+	                j$(".cxcontentcommentaction").on("click", onClickAttachFile);
+	                j$(".contentFileTitle a, .contentActionMenuItem.upload a, .contentActionMenuItem.blockLinkItem.emptyIcon a").on("click", onClickAnchor);
+	                j$(".publisherFeedItemTypeChoice a").on("click", addTopic);
+	                j$("#publishereditablearea").mousedown(addTopic);
+	                
+	                AutoCompleteInputElement.prototype.positionACBox = function(a) {
+						if (this.element && this.acBox && (!a || this.isACBoxVisible())) {
+							pos =j$(':focus').offset();
+							this.acBox.setStyle("left", pos.left + "px");
+							this.acBox.setStyle("top", pos.top+20 + "px");
+							this.acBox.setStyle("width", "auto");
+							"object" === typeof Ext && (a = Ext.get("massEdit"), null !== a && this.acBox.setStyle("zIndex", parseFloat(a.getStyle("z-index"), 10) + 10))
+						}
+					};
+				}
+ 
+           }
+           function getQueryStringParam(param){
+           
+           		var url = window.location.href;
+           		if(url.indexOf("?") > 0){
+	           		var paramsPart = url.substring(url.indexOf("?")+1, url.length);
+	           		if(paramsPart .length > 0){
+		           		var paramsArr = paramsPart.split("&");
+		           		var params = {};
+		                for(var i = 0 ;  i<paramsArr.length; i++){
+		                	 
+		                	 var pair = paramsArr[i].split("=");
+		                	
+      						 params[pair[0]] = decodeURIComponent(pair[1]);
+						    
+		                }
+
+		                var value  = (params && params[param]) ?   params[param] :  null;
+		                return value;
+		             }else
+		             	return null;
+	             }
+	             return null;	
+           	
+           }
+           function addTopic() {
+                    
+                     var iFrameChecker = setInterval(function() {
+                       
+                        if(j$(".cke_wysiwyg_frame").length) {
+                            var chatterIFrameBody = j$(".cke_wysiwyg_frame").contents().find("body");
+                            if(chatterIFrameBody.length){
+                          
+								setTimeout(function(){
+                               
+                              			j$(".cke_wysiwyg_frame").contents().find("body").text("#Gainsight-SuccessPlans "+"#"+ GS.SPName + ": ").removeClass("placeholder").focus();
+                            	}, 200);
+                            
+                             	clearInterval(iFrameChecker);
+                            }
+                        }
+                    },200);
+            }
+       	   function onClickShareButton(){
+                
+                window.setTimeout(function(){
+                        j$("#publishereditablearea").val("#Gainsight-SuccessPlans "+"#"+ GS.SPName + ": ");
+                }, 1500);
+                ga('send', 'event', {'eventCategory': 'collaboration',
+                    'eventAction': 'share',
+                    'eventLabel': 'success plan'
+                });
+            }
+            function onClickAnchor(evt){
+                 j$(evt.currentTarget).attr("target","_blank");
+          
+            }
+            function onClickAttachFile(){
+        
+                var self = this;
+                setTimeout(function(){      
+                  j$("#contentCommentDropdown").position({      
+                    at:"left bottom",       
+                    of:j$(self),        
+                    my:"left top"       
+                  });       
+                        
+                },150);     
+        
+             }
+           
+       </script> 
+        <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=es6,Array.prototype.includes"></script>
+      <script>
+        var GSGA = {
+            orgId: "{!JSINHTMLENCODE($Organization.Id)}",
+            orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      </script>
+      <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+      <script>
+          window.addEventListener("message", function(event) {
+              var spData = fakeEval(event.data);
+              GS.SPName = spData.Name;
+              document.querySelector(".sp-chatter-ctn").style.display = "none";
+              window.actionCTAGroupIdforChatter(spData.Id);
+          }, false);
+      </script>
+  <apex:form >
+        <apex:actionFunction name="actionCTAGroupIdforChatter" action="{!getEntityIdForChatter}" reRender="chatterIdCTAGroup, rerenderCTAGroupChatterPanel" oncomplete="OnChatterRendered()" >
+            <apex:param name="entityId" value="" />
+        </apex:actionFunction> 
+    </apex:form>
+    <div class="sp-chatter-loader">
+    </div>
+    <div class="sp-chatter-ctn" style="display:none;">
+        <apex:outputPanel id="rerenderCTAGroupChatterPanel"> 
+            <apex:outputPanel id="renderCTAGroupChatterPanel">
+                <div id="chatterId">
+                    <chatter:feed entityId="{!JSINHTMLENCODE(entityId)}" id="chatterIdCTAGroup" />
+                   
+                </div>
+            </apex:outputPanel> 
+        </apex:outputPanel>
+    </div>
+  	 <div class="enableFeedMessage" style="display:none;">
+        <span class="enable-msg">
+          To enable collaboration section please <a href="/feeds/feedTracking.apexp" target="blank">click here</a>,
+        </span>
+        <br/>
+        <span>
+          Go to "CTA Group" and select "Enable Feed Tracking" checkbox
+        </span>
+        <br/>
+        <span class="enable-msg-note">
+          Note: Only user with 'Modify All' permissions can enable it
+        </span>
+     </div>
+</apex:page>

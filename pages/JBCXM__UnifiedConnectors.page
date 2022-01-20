@@ -1,0 +1,128 @@
+<apex:page docType="html-5.0" sidebar="false" title="Unified Connectors" controller="JBCXM.AdminBroker" tabStyle="Administration__tab" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+    <style>
+        body {
+        font-size: 12px !important;
+        }
+        .layout_name .selectedLayout {
+        height: 30px;
+        overflow: hidden;
+        width: 160px: break-word;
+        border: 1px solid #DBDBDB;
+        border-radius: 3px;
+        line-height: 21px !important;
+        padding: 4px 20px 4px 4px;
+        background: url({!URLFOR($Resource.GSAppCSS)}/images/orange/orange_arrow_down.png) no-repeat 97% 12px;
+        z-index: 0;
+        position: relative;
+        cursor : pointer;
+        }
+        ul {
+        list-style: none outside none;
+        }
+
+        .ui-Blocker {
+        position: absolute !important;
+        height: 100%;
+        width : 100% !important;
+        background-color: rgba(0, 0, 0, 0.1);
+        z-index: 999999 !important;
+        display: block;
+        }
+
+        .ui-Blocker .loadingImage {
+        left: 0px !important;
+        right: 0px !important;
+        top: 0px !important;
+        bottom: 0px !important;
+        position: absolute !important;
+        margin: auto !important;
+        background-position-x: 0;
+        padding-left: 44px;
+        width: 250px;
+        }
+        #growls.default {
+        bottom : 10px;
+        top : auto;
+        }
+        .ui-widget-header {
+        background-image: none !important;
+        background-color: #FFFFFF;
+        border-radius: 0px !important;
+        border-right: none !important;
+        border-color: #FFFFFF;
+        color: #333;
+        }
+
+        .ui-widget-content.ui-state-hover {
+        background: none !important;
+        }
+
+    </style>
+
+
+    <html>
+    <body>
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="connectorsContainer">
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var GS                      = GS || {};
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.sessionId                = "{!NSSessionId}";
+        GS.NSSessionId              = "{!NSSessionId}";
+        GS.nsParams                 = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        GS.isNSEnabled              = (GS.nsParams.nsenabled == "true" || GS.nsParams.nsenabled == true);
+        GS.nsURL                    = GS.nsParams.url;
+
+        GS.remotingEndPoint         = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.remotingBulkEndPoint     = '{!$RemoteAction.AdminBroker.adminBulkRequestBroker}';
+
+        GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.commonRemotingBulkEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        GS.packageNS                = "{!(pkgNS)}";
+        GS.isPackagedInstance       = (GS.packageNS) ? "true" : "false";
+        var nsParams            = GS.nsParams;
+        GS.customLookUpConfig       = fakeEval('{!JSINHTMLENCODE(customLookUpConfigMap)}');
+
+    </script>
+
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+                installResources({scripts: ["unifiedConnectors/scripts/unifiedConnectors.bundle.js"], styles:["unifiedConnectors/styles/unifiedConnectors.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),JSINHTMLENCODE($CurrentPage.parameters.apppath))}/unifiedConnectors/styles/unifiedConnectors.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), JSINHTMLENCODE($CurrentPage.parameters.apppath))}/unifiedConnectors/scripts/unifiedConnectors.bundle.js"></script>
+    </apex:outputpanel>
+
+
+    <apex:form >
+    </apex:form>
+
+    <script>
+    	var GSGA = {
+			orgId: "{!$Organization.Id}",
+			orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+			userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+		};
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	</script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+		gainsightTrackEvents.pushPageViews('UnifiedConnectors');
+	</script>
+
+</apex:page>

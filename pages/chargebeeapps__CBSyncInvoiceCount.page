@@ -1,0 +1,12 @@
+<apex:page controller="chargebeeapps.CBRouter"  tabStyle="chargebeeapps__CB_Subscription__c" >
+    <apex:stylesheet value="{!URLFOR($Resource.chargebeeapps__CB_LAYOUT)}"/>
+    <div class="cb-layout">
+        <apex:form id="theform">
+            <div style="padding:20px;">
+	            <apex:outputText value="This will update the number of due invoices for this subscription." />
+            </div>
+            <apex:commandButton style="background:none !important;color:black !important;text-decoration: underline;" action="{!backToContact}" immediate="true" value="Back" />
+            <apex:commandButton action="{!syncInvCount}" immediate="true" value="Continue" />
+        </apex:form>
+    </div>
+</apex:page>

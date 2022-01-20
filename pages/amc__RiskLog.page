@@ -1,0 +1,10 @@
+<apex:page sidebar="false" tabStyle="Risk_Log__tab">
+    <apex:includeLightning /> 
+    <div id="riskLog"/>
+    <script>
+        $Lightning.use("amc:RiskLogApp", function() {
+          $Lightning.createComponent("amc:RiskLog",{'isLightning': false},"riskLog",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

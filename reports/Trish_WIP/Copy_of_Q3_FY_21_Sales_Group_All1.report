@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <acrossGroupingContext>BucketField_87147015</acrossGroupingContext>
+        <calculatedFormula>PREVGROUPVAL(Opportunity.ACV__c.CONVERT:SUM,BucketField_87147015)/Opportunity.ACV__c.CONVERT:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA3</developerName>
+        <downGroupingContext>BucketField_79608058</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Attainment %</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_79608058</developerName>
+        <masterLabel>Deal Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>TYPE</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Partner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Growth</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Credit Order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free credits</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <value>1. New Business + Add-on (existing contract)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Auto-recharge</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Recurly order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Existing Business</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <value>2. Renewals</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Multi-year</sourceValue>
+            </sourceValues>
+            <value>3. Renewals (Multi-year)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>4. Expansion (new contract)</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_87147015</developerName>
+        <masterLabel>Performance</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>STAGE_NAME</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <value>Sales</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <value>Target</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_80755632</developerName>
+        <masterLabel>Sales Group</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>ACCOUNT_OWNER</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Maci Hansen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Max Lakavage</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Simon Bishop</sourceValue>
+            </sourceValues>
+            <value>Select</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>LeRoy Brown</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matthew Maiuri</sourceValue>
+            </sourceValues>
+            <value>Summit</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Phil Lelliott</sourceValue>
+            </sourceValues>
+            <value>Europe</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>Opportunity.ACV__c.CONVERT</column>
+        </chartSummaries>
+        <chartSummaries>
+            <axisBinding>y2</axisBinding>
+            <column>FORMULA3</column>
+        </chartSummaries>
+        <chartType>VerticalColumnGroupedLine</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_79608058</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_87147015</secondaryGroupingColumn>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>true</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Sales Total vs Target Total</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>FISCAL_QUARTER</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Sales Performance DB | 
+Q3 FY &apos;20</description>
+    <filter>
+        <booleanFilter>(1 AND 2) OR (2 AND 3 AND 4)</booleanFilter>
+        <criteriaItems>
+            <column>WON</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_79608058</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1. New Business + Add-on (existing contract),2. Renewals,3. Renewals (Multi-year),4. Expansion (new contract)</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FULL_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Trisha Hinojosa</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>OPPORTUNITY_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>TEST Sales Performance Overall (Q3 FY &apos;21 )</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_87147015</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_80755632</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_79608058</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Copy of Q3 FY&apos;21 - Sales Group: All</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closed</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

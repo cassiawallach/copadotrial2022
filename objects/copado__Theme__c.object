@@ -211,15 +211,27 @@
     </fields>
     <label>Theme</label>
     <listViews>
-        <fullName>copado__All</fullName>
+        <fullName>Development_Themes</fullName>
         <columns>NAME</columns>
-        <columns>copado__Active__c</columns>
         <columns>copado__Status__c</columns>
-        <columns>OWNER.FIRST_NAME</columns>
         <columns>copado__Theme_Details__c</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Active__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>Feature,Tech,Bug,QA,Quality,BAU,release</value>
+        </filters>
+        <label>Development Themes</label>
+    </listViews>
+    <listViews>
+        <fullName>copado__All</fullName>
+        <filterScope>Everything</filterScope>
         <label>All</label>
-        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Theme Name</label>
@@ -227,10 +239,6 @@
     </nameField>
     <pluralLabel>Themes</pluralLabel>
     <searchLayouts>
-        <customTabListAdditionalFields>copado__Active__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>OWNER.FIRST_NAME</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Theme_Details__c</customTabListAdditionalFields>
         <searchResultsAdditionalFields>copado__Active__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>OWNER.FIRST_NAME</searchResultsAdditionalFields>

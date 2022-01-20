@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_77494185</developerName>
+        <masterLabel>Progress</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Status__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Planning in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Planning</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Investigation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Development</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Draft</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Design</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Design In Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Design Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Planning Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Backburner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Approved</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Awaiting Approval</sourceValue>
+            </sourceValues>
+            <value>Not Started</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Investigation in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Waiting for customer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Development In Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Testing in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Testing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Investigation Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Development Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Tech. Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tech. Review in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tech. Review Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Testing Blocked</sourceValue>
+            </sourceValues>
+            <value>In Progress</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Ready for Packaging</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Packaging in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Packaging Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Regression</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Regression in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Regression Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Release</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Release in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Release Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Released</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tested in Base Package</sourceValue>
+            </sourceValues>
+            <value>Ready to release</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>VerticalColumnStacked</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>copado__User_Story__c.copado__Team__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_77494185</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_$Known_Issue__c.Status__c</field>
+    </columns>
+    <columns>
+        <field>FK_$Known_Issue__c.Title__c</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.Module_Name__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Release__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_$Known_Issue__c.Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Resolved,No_Resolution</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Released,Completed,Cancelled</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CUST_RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>copado__User_Story__c.Subtask</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.Module_Name__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Copado Selenium Testing</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Team__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_77494185</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Known Issues Status</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.Known_Issue__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

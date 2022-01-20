@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>redwing__ILT_Class__c$Name</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$Name</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$redwing__User__c.Contact.Name</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Class__c.redwing__ILT_Rosters__r$redwing__User__c.Contact.Email</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>redwing__ILT_Class__c$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Admin</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>ILT classes</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ILT_class_and_ILT_roster_with_Accounts_and_Contact__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>redwing__ILT_Class__c$redwing__Start_Date__c</dateColumn>
+        <endDate>2021-01-31</endDate>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2021-01-01</startDate>
+    </timeFrameFilter>
+</Report>

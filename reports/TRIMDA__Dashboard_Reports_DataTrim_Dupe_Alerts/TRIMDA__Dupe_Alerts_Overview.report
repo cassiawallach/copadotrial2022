@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_DupeAlerts__c.TRIMDA__Active__c</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_DupeAlerts__c.TRIMDA__Last_Run_Date__c</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_DupeAlerts__c.TRIMDA__Match_Binding__c</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_DupeAlerts__c.TRIMDA__Run_Frequency__c</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_DupeAlerts__c.TRIMDA__Run_Status__c</field>
+    </columns>
+    <description>Active/InActive alerts</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>TRIMDA__TRIMDA_DupeAlerts__c.TRIMDA__Dupe_Alert_Type__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Dupe Alerts Overview</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$TRIMDA__TRIMDA_DupeAlerts__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CUST_CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

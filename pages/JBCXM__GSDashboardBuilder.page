@@ -1,0 +1,83 @@
+<apex:page sidebar="false" title="Gainsight Dashboard builder" controller="JBCXM.GSCommonBroker" extensions="JBCXM.NSRemoting" tabStyle="Administration__tab">
+<script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/NS/NS/newStack/js/restclient/restClient.js"></script>
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gainsight-app" style="width:100%">
+                <gs-root></gs-root>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .bPageFooter.noTableFooter {
+            display:none;
+        }
+    </style>
+
+    <script>
+        var hc = eval({!(headerConfig)
+        });
+        var apiEndPoint = hc.gatewayURL;
+        var authorization = "";
+
+        var appSessionId = hc.appSessionId;
+        var appUserId = hc.appUserId;
+        var appOrgId = hc.appOrgId;
+        var GS = GS || {};
+        GS.gainsightTabs = eval({!(GainsightTabs)});
+
+        GS.commonRemotingEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingCommonBulkEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        var host = "SALESFORCE";
+        GS.appName = "gainsight-ng-ui/dashboard-builder/dashboard-builder";
+        GS.gatewayURL = hc.gatewayURL;
+        GS.sessionId = "{!NSSessionId}";
+        GS.remoting = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.isLightningEnabled = hc.isLightningEnabled;
+
+        var urlParams = window.location.search
+            .substring(1)
+            .split("&")
+            .map(function(v) {
+                return v.split("=");
+            })
+            .reduce(function(acc, arr) {
+                if (acc[arr[0]]) {
+                    if (!Array.isArray(acc[arr[0]])) {
+                        acc[arr[0]] = [acc[arr[0]]]
+                    }
+                    if (arr[0]) {
+                        acc[arr[0]].push(decodeURIComponent(arr[1]))
+                    }
+                } else {
+                    if (arr[0]) {
+                        acc[arr[0]] = decodeURIComponent(arr[1]);
+                    }
+                }
+                return acc;
+            }, {});
+
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSApp/cdnVersionResolver.js"  type="text/javascript"></script>
+    <apex:includeScript value="/support/console/43.0/integration.js"/>
+    <apex:outputpanel rendered="{!If($CurrentPage.parameters.env == null , true, false)}">
+        <c:Features360 moduleName="dashboard-builder"/>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.4.4/custom-elements-es5-adapter.js"
+            integrity="sha512-ghu3B55L7mKaf35O7RoyJTyarNPaxcpas/jKNvZAEBMRxr7BR4Oi52Aqnv/H8kyiXZtTVH9IZ490f9z7F4f4kA=="
+            crossorigin="anonymous"></script>
+           <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSApp/layoutManagerFeatureResolver.js"  type="text/javascript"></script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If($CurrentPage.parameters.env == 'dev' , true, false)}">
+        <script>
+            GS.cdnUrl = "https://localhost:4200/";
+        </script>
+        <apex:stylesheet value="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <script type="text/javascript" src="https://localhost:4200/runtime.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/polyfills.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/styles.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/vendor.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/main.js"></script>
+    </apex:outputpanel>
+
+</apex:page>

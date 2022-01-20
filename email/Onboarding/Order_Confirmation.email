@@ -1,0 +1,29 @@
+<messaging:emailTemplate subject="Copado Order Confirmation" recipientType="Contact" relatedToType="Order">
+<messaging:plainTextEmailBody >
+Dear {!recipient.Name},
+
+Your Order has been processed. Order# {!relatedTo.OrderNumber} was activated on <apex:outputText value=" {0,date,dd MMM yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>. Your Contract Start Date is <apex:outputText value=" {0,date,dd MMM yyyy}"><apex:param value="{!relatedTo.Contract.StartDate}" /></apex:outputText> and your Contract End Date is <apex:outputText value=" {0,date,dd MMM yyyy}"><apex:param value="{!relatedTo.Contract.EndDate}" /></apex:outputText>.
+
+Your order below has been activated and will be available on the Order Start Date specified below:
+
+Order Start Date: <apex:outputText value=" {0,date,dd MMM yyyy}"><apex:param value="{!relatedTo.EffectiveDate}" /></apex:outputText>
+Order End Date: <apex:outputText value=" {0,date,dd MMM yyyy}"><apex:param value="{!relatedTo.EndDate}" /></apex:outputText>
+
+Products Ordered
+<apex:repeat value="{!relatedTo.OrderItems}" var="i">
+{!i.Quantity}  x  {!i.PricebookEntry.Product2.Name}
+</apex:repeat>
+
+Please note: this is an order confirmation, not an invoice.
+Please do not respond to this email.
+
+Thank you for your business.
+Copado Solutions
+
+
+To log a case for Customer Service, please click here:
+https://www.copa.do/Support
+
+Contact customer service at support@copa.do for any questions.
+</messaging:plainTextEmailBody>
+</messaging:emailTemplate>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>CDF1:SUM/Opportunity.ACV__c.CONVERT:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Won within 90 Days</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>(
+CDF1:SUM +
+PREVGROUPVAL(CDF1:SUM, CLOSE_MONTH,1)  +
+PREVGROUPVAL(CDF1:SUM, CLOSE_MONTH,2)
+)/3</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA2</developerName>
+        <downGroupingContext>CLOSE_MONTH</downGroupingContext>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Rolling 3 Mo. AVG (SUM)</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>(
+(CDF1:SUM/Opportunity.ACV__c.CONVERT:SUM) +
+(PREVGROUPVAL(CDF1:SUM,CLOSE_MONTH,1)/PREVGROUPVAL(Opportunity.ACV__c.CONVERT:SUM, CLOSE_MONTH,1))  +
+(PREVGROUPVAL(CDF1:SUM,CLOSE_MONTH,2)/PREVGROUPVAL(Opportunity.ACV__c.CONVERT:SUM,CLOSE_MONTH,2))
+)/3</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA3</developerName>
+        <downGroupingContext>CLOSE_MONTH</downGroupingContext>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Rolling 3 Mo. AVG (%)</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>WON:SUM/CLOSED:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA4</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Conversion Rate (RC)</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <field>Opportunity.Opportunity_Region__c</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>Account.Vertical__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>WON</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SAL_Acceptance_Date__c</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Salesforce_AOV__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>AGE</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(text(STAGE_NAME)=&quot;Closed Won&quot;,
+    (IF(Opportunity.SAL_Acceptance_Date__c&lt;&gt;NULL,
+        (IF(CLOSE_DATE-Opportunity.SAL_Acceptance_Date__c&lt;=90,Opportunity.ACV__c.CONVERT,0)),
+        (IF(CLOSE_DATE-DATEVALUE(CREATED_DATE)&lt;=90,       Opportunity.ACV__c.CONVERT,0)))),0)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>$ Closed Won in &lt;= 90 Days</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>For Kevin and Anish</description>
+    <filter>
+        <criteriaItems>
+            <column>Account.Salesforce_AOV__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessThan</operator>
+            <value>1000000</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Salesforce_AOV__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.Opportunity_Region__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Summit,Select</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <field>CLOSE_MONTH</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>New Customer &lt;$1M AOV Analysis</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closed</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

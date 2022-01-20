@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>USERS.NAME</field>
+    </columns>
+    <columns>
+        <field>ADDRESS1_STATE</field>
+    </columns>
+    <columns>
+        <field>RATING</field>
+    </columns>
+    <crossFilters>
+        <criteriaItems>
+            <column>kuga_sub__Service__c</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Copado Data Deploy</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>kuga_sub__Active__c</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <operation>with</operation>
+        <primaryTableColumn>ACCOUNT_ID</primaryTableColumn>
+        <relatedTable>kuga_sub__Subscription__c</relatedTable>
+        <relatedTableJoinColumn>kuga_sub__Account__c</relatedTableJoinColumn>
+    </crossFilters>
+    <currency>USD</currency>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>TYPE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Accounts w/o KG Subs - Data Deployer</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>AccountList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,48 @@
+<apex:page sidebar="true" controller="JBCXM.GSCommonBroker">
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="/support/console/43.0/integration.js"/>
+    <script>
+        jQuery(".bPageHeader").hide();
+        var makeACall = function(msg) {
+            console.info(msg);
+            sendCTIMessage(msg);
+        }
+        
+        // To handle softphone layout in case of Collapsible Sidebar enabled.
+        var isSFConsole = sforce.console.isInConsole();
+        if(!isSFConsole) {
+            jQuery(".sidebarCollapsible, .sidebarCollapsed").show();
+            jQuery(".sidebarCollapsed #sidebarDiv").show();
+            jQuery(".sidebarCollapsed .handlebarContainer, .sidebarCollapsible .handlebarContainer").hide();
+            jQuery(".sidebarCollapsible").css({"padding" : "0px"});
+        }
+        
+    </script>
+    <style>
+        body {
+            max-height: 350px;
+            overflow-x:hidden;
+            padding:0px;
+            margin:0px;
+        }
+        .bodyDiv {
+           border-top: 0px;
+        }
+        #sidebarDiv{
+            padding:0px;
+        }
+        .hasMotif{
+            margin:0px
+        }
+        .recentItemModule,.recycleBinModule,.createNewModule {
+            display:none;
+        }
+        .sidebarModuleBody, .sidebarModuleHeader {
+            display:none;
+        }
+		#sidebarDiv{width:300px !important}
+		#contentWrapper{max-width: 300px; min-width: 300px;    overflow: hidden;    width: 300px;}  
+		.bPageFooter{display:none}
+    </style>
+</apex:page>

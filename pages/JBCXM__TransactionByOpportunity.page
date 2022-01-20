@@ -1,0 +1,43 @@
+<apex:page controller="JBCXM.OpportunityConnector"  extensions="JBCXM.GSCommonBroker" showHeader="false" standardStylesheets="true" sidebar="false">
+
+<script type="text/javascript">
+ function callBackAfterSave(){
+ 	afterSave();
+ }
+ function callBackAfterCancel(){
+ 	afterCancel();
+ }
+ function afterOppSaveHideOverlaySavingIcon() {
+ 	j$(".jbaraDummyOverLayFormForOpp").hide();	
+ }
+</script>
+<style>
+	.modal-sheet-contentMain{
+		max-height:260px;
+		overflow-y:auto;
+		overflow-x:hidden;
+	}
+</style>
+<apex:form > 
+	<apex:actionfunction name="afterSave" action="{!reloadAfterSave}" rerender="formPanel,messagePanel" oncomplete="afterOppSaveHideOverlaySavingIcon"/>
+	<apex:actionfunction name="afterCancel" action="{!reloadAfterSave}" rerender="formPanel"/>
+</apex:form>
+<apex:outputPanel id="messagePanel">
+	<apex:outputPanel rendered="{!renderValidationPanel}">
+		{!validationMessage}
+	</apex:outputPanel>
+</apex:outputPanel>
+<apex:outputPanel id="formPanel">
+
+	<apex:outputPanel rendered="{!renderTransactionFormPanel}">
+		<c:TransactionForm customerId="{!customerId}" 
+									 opportunityId="{!opportunityId}"
+									 transactionId="{!transactionId}" 
+	                               	 orderType=""
+	                    			 callBackAfterSave="callBackAfterSave"
+	                                 callBackAfterCancel="callBackAfterCancel"
+	                                 />
+		
+	</apex:outputPanel>
+ </apex:outputPanel>
+</apex:page>

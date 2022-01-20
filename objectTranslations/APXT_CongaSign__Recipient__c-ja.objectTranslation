@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Conga Sign 受信者</value>
+    </caseValues>
+    <fields>
+        <label><!-- Company --></label>
+        <name>APXT_CongaSign__Company__c</name>
+    </fields>
+    <fields>
+        <label><!-- Decline Reason --></label>
+        <name>APXT_CongaSign__DeclineReason__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email --></label>
+        <name>APXT_CongaSign__Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- Initials --></label>
+        <name>APXT_CongaSign__Initials__c</name>
+    </fields>
+    <fields>
+        <label><!-- Name --></label>
+        <name>APXT_CongaSign__RecipientName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Signed On --></label>
+        <name>APXT_CongaSign__SignedOn__c</name>
+    </fields>
+    <fields>
+        <label><!-- Signer Index --></label>
+        <name>APXT_CongaSign__SignerIndex__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>APXT_CongaSign__Status__c</name>
+        <picklistValues>
+            <masterLabel>CANCELLED</masterLabel>
+            <translation>キャンセル済み</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>COMPLETE</masterLabel>
+            <translation>完了済み</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DECLINED</masterLabel>
+            <translation>拒否済み</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>EXPIRED</masterLabel>
+            <translation>期限切れ済み</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PENDING</masterLabel>
+            <translation>保留中</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SENT</masterLabel>
+            <translation>送信済み</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Title --></label>
+        <name>APXT_CongaSign__Title__c</name>
+    </fields>
+    <fields>
+        <label><!-- Conga Sign Transaction --></label>
+        <name>APXT_CongaSign__Transaction__c</name>
+        <relationshipLabel><!-- Recipients --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- UUID --></label>
+        <name>APXT_CongaSign__UUID__c</name>
+    </fields>
+    <layouts>
+        <layout>Recipient Layout</layout>
+        <sections>
+            <label>カスタムリンク</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>理由セクション</label>
+            <section>Reason Section</section>
+        </sections>
+        <sections>
+            <label>受信者の詳細</label>
+            <section>Recipient Details</section>
+        </sections>
+        <sections>
+            <label>受信者の応答</label>
+            <section>Recipient Response</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>受信者名</nameFieldLabel>
+    <validationRules>
+        <errorMessage><!-- You cannot Reparent this record. --></errorMessage>
+        <name>APXT_CongaSign__Prevent_Reparent</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Reassign --></label>
+        <name>APXT_CongaSign__Reassign</name>
+    </webLinks>
+</CustomObjectTranslation>

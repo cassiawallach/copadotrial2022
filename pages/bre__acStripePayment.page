@@ -1,0 +1,131 @@
+<!--
+ - Created by mitfity on 11.10.2019.
+ -->
+
+<apex:page id="acStripePayment" controller="bre.brStripePaymentController" showHeader="false" sideBar="false">
+    <head>
+        <title>Payment</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    </head>
+
+    <apex:slds />
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <style>
+        .StripeElement {
+            box-sizing: border-box;
+            height: 40px;
+            padding: 10px 12px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background-color: white;
+            box-shadow: 0 1px 3px 0 #c6cbd1;
+            -webkit-transition: box-shadow 150ms ease;
+            transition: box-shadow 150ms ease;
+        }
+
+        .StripeElement--focus {
+            box-shadow: 0 1px 3px 0 #cfd7df;
+        }
+
+        .StripeElement--invalid {
+            border-color: #fa755a;
+        }
+
+        .StripeElement--webkit-autofill {
+            background-color: #fefde5 !important;
+        }
+
+        #card-errors {
+            padding: 4px 0;
+            color: #fa755a;
+        }
+
+        body {
+            overflow: hidden;
+            padding: 3px;
+        }
+    </style>
+
+    <div>
+        <div class='slds-form-element slds-p-bottom_small'>
+            <label class='slds-form-element__label' for='stripe-card'>Credit or Debit card</label>
+            <div class='slds-form-element__control'>
+                <div id='card-element'></div>
+            </div>
+        </div>
+        <!-- Used to display Element errors. -->
+        <div id='card-errors' role='alert'></div>
+    </div>
+
+    <script>
+        var stripe = Stripe('{!publicKey}');
+        var elements = stripe.elements();
+
+        var style = {
+            base: {
+                // Add your base input styles here. For example:
+                fontSize: '1.2rem',
+                color: "#32325d",
+                fontFamily: '\'Salesforce Sans\', Arial, sans-serif',
+                fontSmoothing: 'antialiased',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+
+        var card = elements.create('card', {style: style});
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+        card.addEventListener('change', function(event) {
+            var displayError = document.getElementById('card-errors');
+
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        window.addEventListener("message", function (event) {
+            var hostname = document.domain;
+            var protocol = document.location.protocol;
+            var vfOrigin = protocol + '//' + hostname;
+
+            if (event.origin !== vfOrigin || event.data == null || event.data.key !== 'acStripePayment:Submit') {
+                // Not the expected origin: reject message!
+                return;
+            }
+
+            var response;
+
+            stripe.createToken(card).then(function (result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+
+                    response = {
+                        isSuccess: false,
+                        message: result.error.message,
+                        key: 'acStripePayment:OnStripeResponse'
+                    };
+                    parent.postMessage(response, document.referrer);
+                } else {
+                    response = {
+                        isSuccess: true,
+                        token: result.token,
+                        key: 'acStripePayment:OnStripeResponse'
+                    };
+                    parent.postMessage(response, document.referrer);
+                }
+            });
+        }, false);
+    </script>
+</apex:page>

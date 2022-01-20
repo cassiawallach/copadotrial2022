@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_98068661</developerName>
+        <masterLabel>At Risk</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Salesforce_Org__c.Salesforce_Org_At_Risk_Status__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>_IM1_/img/samples/flag_yellow.gif_IM2_Salesforce Org At Risk Status_IM3_</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>_IM1_/img/samples/flag_red.gif_IM2_Salesforce Org At Risk Status_IM3_</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>_IM1_/s.gif_IM2_Salesforce Org At Risk Status_IM3_</sourceValue>
+            </sourceValues>
+            <value>Yes</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>_IM1_/img/samples/flag_green.gif_IM2_Salesforce Org At Risk Status_IM3_</sourceValue>
+            </sourceValues>
+            <value>No</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>BucketField_98068661</field>
+    </columns>
+    <columns>
+        <field>Salesforce_Org__c.Salesforce_Org_At_Risk_Status__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>Salesforce_Org__c.Org_Type__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Production</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Salesforce_Org__c.Type__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Salesforce_Org__c.Org_Edition__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Developer Edition</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Salesforce_Org__c.Account_Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Suspended,Trial</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Account at risk</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Salesforce_Org__c@Salesforce_Org__c.Parent_Account__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>BucketField_98068661</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Salesforce_Org__c.Installation_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

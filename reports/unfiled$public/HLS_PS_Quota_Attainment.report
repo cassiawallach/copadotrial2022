@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>ForecastingQuota.QuotaAmount.CONVERT:SUM-ForecastingItem.ForecastAmount.CONVERT:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Gap to Target</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>ForecastingItem.ForecastAmount.CONVERT:SUM/ForecastingQuota.QuotaAmount.CONVERT:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>%</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>ForecastingItem.ForecastAmount.CONVERT:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA3</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Attainment $</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota$QuotaAmount.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastAmount.CONVERT</field>
+    </columns>
+    <currency>USD</currency>
+    <description>HLS &amp; PLS Dasboard</description>
+    <filter>
+        <criteriaItems>
+            <column>ForecastingQuota$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Dan McDevitt,Kris Jacobs,Stephen Oliver,Zachary Bayer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota$Owner</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <field>ForecastingQuota$StartDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>HLS &amp; PS Quota Attainment</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>orecasting_Quotas_w_wo_Forecasting_Items__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>ForecastingQuota$StartDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

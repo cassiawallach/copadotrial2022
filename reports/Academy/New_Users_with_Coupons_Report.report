@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ltcomm__Learning_Order__c$Owner</field>
+    </columns>
+    <columns>
+        <field>ltcomm__Learning_Order__c$Name</field>
+    </columns>
+    <columns>
+        <field>ltcomm__Learning_Order__c$CreatedDate</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>ltcomm__Learning_Order__c$ltcomm__Coupon__c.ltcomm__Coupon_Code__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>WomeninDevOps-30-03-2021</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Elevating Women in DevOps</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Learning_Orders_and_Coupons__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>ltcomm__Learning_Order__c$ltcomm__Coupon__c.ltcomm__Valid_To__c</dateColumn>
+        <endDate>2021-06-05</endDate>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2021-03-30</startDate>
+    </timeFrameFilter>
+</Report>

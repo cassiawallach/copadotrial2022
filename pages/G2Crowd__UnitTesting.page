@@ -1,0 +1,77 @@
+<apex:page >
+  <c:G2_Base_Includes />
+  <link rel="shortcut icon" type="image/png" href="'{!$Resource.jasmine_favicon_png}'" />
+  <apex:stylesheet value="{!URLFOR($Resource.G2Crowd__jasmine_css)}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__jasmine_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__jasmine_html_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__jasmine_boot_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__angular_mocks_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__visiting_organizations_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__reviews_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__reference_builder_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__review_library_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__assets_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__asset_library_js}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__account_reviews_js}" />
+
+  <apex:includeScript value="{!$Resource.G2Crowd__visiting_organizations_js_spec}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__reviews_js_spec}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__reference_builder_js_spec}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__review_library_js_spec}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__assets_js_spec}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__asset_library_js_spec}" />
+  <apex:includeScript value="{!$Resource.G2Crowd__account_reviews_js_spec}" />
+
+  <script>
+    (function () {
+      G2.jasmine = jasmine;
+      G2Crowd = {};
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function () {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        htmlReporter.initialize();
+        window.jasmineEnv.execute();
+      };
+      Visualforce = {
+        remoting: {
+          Manager: {
+            invokeAction: function () {
+            }
+          }
+        }
+      }
+
+      describe("VisitingOrganizations", function () {
+        Spec.VisitingOrganizations();
+      });
+
+      describe("G2CrowdReviewAttribution", function () {
+        Spec.Reviews();
+      });
+      describe('ReferenceBuilder', function () {
+        Spec.ReferenceBuilder();
+      });
+
+      describe("G2ReviewLibrary", function () {
+        Spec.ReviewLibrary();
+      });
+
+      describe("G2CrowdLibrary", function () {
+        Spec.Assets();
+      });
+
+      describe("AssetLibrary", function () {
+        Spec.AssetLibrary();
+      });
+
+      describe("G2AccountReview", function () {
+        Spec.AccountReviews();
+      });
+    }());
+  </script>
+  <div class='G2Crowd' />
+</apex:page>

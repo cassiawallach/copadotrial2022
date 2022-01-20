@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>amc__MC_Expense_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>amc__MC_Expense_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>amc__Date__c</fields>
+        <fields>amc__Category__c</fields>
+        <fields>amc__Amount_Claimed__c</fields>
+        <fields>amc__Approval_Status__c</fields>
+        <label>MC Expense Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>This Object is used to record expenses relating to a particular Project.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>amc__Amount_Claimed__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(amc__Mileage_Amount__c &gt; 0, amc__Mileage_Amount__c, amc__Amount__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies the value of the Expense Claim</inlineHelpText>
+        <label>Amount Claimed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the amount being claimed (if not mileage)</inlineHelpText>
+        <label>Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Approval_Date_Stamp__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The date the Expense was approved.</inlineHelpText>
+        <label>Approval Date Stamp</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>amc__Approval_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL(amc__Approval_Status__c, &apos;Approved&apos;), IF( NOT(ISNULL(amc__Approval_Date_Stamp__c)),amc__Approval_Date_Stamp__c,amc__Date__c),null  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Approval date for this Time Log</inlineHelpText>
+        <label>Approval Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>amc__Approval_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the status of the Expense approval</inlineHelpText>
+        <label>Approval Status</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>true</default>
+                    <label>Pending</label>
+                </value>
+                <value>
+                    <fullName>Submitted</fullName>
+                    <default>false</default>
+                    <label>Submitted</label>
+                </value>
+                <value>
+                    <fullName>Approved</fullName>
+                    <default>false</default>
+                    <label>Approved</label>
+                </value>
+                <value>
+                    <fullName>Rejected</fullName>
+                    <default>false</default>
+                    <label>Rejected</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>amc__Approver_Current_User__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( amc__Incurred_By__r.amc__Expense_Approver__r.amc__User__r.Id = $User.Id, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies if the Current User is the User required to approve this Expense</inlineHelpText>
+        <label>Approver Current User</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Approver__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Incurred_By__r.amc__Expense_Approver__r.amc__First_Name__c + &quot; &quot; + amc__Incurred_By__r.amc__Expense_Approver__r.amc__Last_Name__c</formula>
+        <inlineHelpText>Identifies the Role responsible for approving the Expense</inlineHelpText>
+        <label>Approver</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Billing_Event_Item__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Links to the Billing Event Item record this Expense was invoiced on</inlineHelpText>
+        <label>Billing Event Item</label>
+        <referenceTo>amc__Billing_Event_Item__c</referenceTo>
+        <relationshipLabel>Expenses</relationshipLabel>
+        <relationshipName>Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Budget_Item__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Budget Item this record relates to</inlineHelpText>
+        <label>Budget Item</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>$Source.amc__Project__c</field>
+                <operation>equals</operation>
+                <valueField>amc__Budget_Item__c.amc__Project__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>amc__Budget_Item__c</referenceTo>
+        <relationshipLabel>Expenses</relationshipLabel>
+        <relationshipName>Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Category__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Category this Expense relates to</inlineHelpText>
+        <label>Category</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Accommodation</fullName>
+                    <default>false</default>
+                    <label>Accommodation</label>
+                </value>
+                <value>
+                    <fullName>Entertaining</fullName>
+                    <default>false</default>
+                    <label>Entertaining</label>
+                </value>
+                <value>
+                    <fullName>Equipment Fees</fullName>
+                    <default>false</default>
+                    <label>Equipment Fees</label>
+                </value>
+                <value>
+                    <fullName>Miscellaneous</fullName>
+                    <default>false</default>
+                    <label>Miscellaneous</label>
+                </value>
+                <value>
+                    <fullName>Postage</fullName>
+                    <default>false</default>
+                    <label>Postage</label>
+                </value>
+                <value>
+                    <fullName>Printing</fullName>
+                    <default>false</default>
+                    <label>Printing</label>
+                </value>
+                <value>
+                    <fullName>Professional Fees</fullName>
+                    <default>false</default>
+                    <label>Professional Fees</label>
+                </value>
+                <value>
+                    <fullName>Stationery</fullName>
+                    <default>false</default>
+                    <label>Stationery</label>
+                </value>
+                <value>
+                    <fullName>Subscriptions</fullName>
+                    <default>false</default>
+                    <label>Subscriptions</label>
+                </value>
+                <value>
+                    <fullName>Training</fullName>
+                    <default>false</default>
+                    <label>Training</label>
+                </value>
+                <value>
+                    <fullName>Travel</fullName>
+                    <default>false</default>
+                    <label>Travel</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>amc__Converted_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Project currency is different from the Expense currency, this field will contain the converted value.</inlineHelpText>
+        <label>Converted Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Converted_Cost_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Project currency is different from the Expense currency, this field will contain the converted value.</inlineHelpText>
+        <label>Converted Cost Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Converted_Cost_Tax_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Project currency is different from the Expense currency, this field will contain the converted value.</inlineHelpText>
+        <label>Converted Cost Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Converted_Cost_ex_Tax_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Project currency is different from the Expense currency, this field will contain the converted value.</inlineHelpText>
+        <label>Converted Cost ex-Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Converted_Currency__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The currency code associated with the Converted Amount.</inlineHelpText>
+        <label>Converted Currency</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Converted_Tax_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>If the Project currency is different from the Expense currency, this field will contain the converted Tax Amount value.</description>
+        <externalId>false</externalId>
+        <label>Converted Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Converted_ex_Tax_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>If the Project currency is different from the Expense currency, this field will contain the converted ex-Tax Amount value.</description>
+        <externalId>false</externalId>
+        <label>Converted ex-Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Cost_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the cost amount being claimed (if not mileage)</inlineHelpText>
+        <label>Cost Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Cost_Tax_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the cost tax amount of the Expense</inlineHelpText>
+        <label>Cost Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Cost_ex_Tax_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Cost_Amount__c -  amc__Cost_Tax_Amount__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula: Calculates the Cost ex-Tax Amount based on &apos;Cost Amount&apos; - &apos;Cost Tax Amount&apos;</inlineHelpText>
+        <label>Cost ex Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Custom_Mark_Up__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This Percent can be used to override the Project Mark Up %</inlineHelpText>
+        <label>Custom Mark Up %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>amc__Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the date the Expense was incurred</inlineHelpText>
+        <label>Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>amc__Distance_Km_Miles__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the number of Kilometres / Miles being claimed</inlineHelpText>
+        <label>Distance (Km / Miles)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Expense_Notes_RT__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Detailed Notes about the Expense</inlineHelpText>
+        <label>Expense Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>amc__Expense_Notes__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies any supporting notes as to why the Expense was incurred</inlineHelpText>
+        <label>Expense Notes</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>amc__Incurred_By_Current_User__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies if the Current User is the Person Who Incurred the Expense.</description>
+        <externalId>false</externalId>
+        <formula>IF( amc__Incurred_By__r.amc__User__r.Id = $User.Id, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies if the Current User is the Person Who Incurred the Expense.</inlineHelpText>
+        <label>Incurred By Current User</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>amc__Incurred_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Role who incurred the Expense</inlineHelpText>
+        <label>Incurred By</label>
+        <referenceTo>amc__Role__c</referenceTo>
+        <relationshipLabel>Expenses</relationshipLabel>
+        <relationshipName>Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Invoiced__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates if the Expense has been included in a Billing Event</inlineHelpText>
+        <label>Invoiced</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Mark_Up_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies if this Expense should have a Mark Up applied</inlineHelpText>
+        <label>Mark Up Required</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Mark_Up__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(
+  amc__Mark_Up_Required__c,
+  IF(
+    NOT(
+      ISNULL(amc__Custom_Mark_Up__c)
+    ), 
+    amc__Custom_Mark_Up__c,
+    amc__Project__r.amc__Expenses_Mark_Up__c
+  ),
+  null
+)</formula>
+        <inlineHelpText>Formula: Identifies the Mark Up % applied to this Expense</inlineHelpText>
+        <label>Mark Up %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>amc__Mileage_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>If(amc__Mark_Up_Required__c,
+ amc__Distance_Km_Miles__c * amc__Incurred_By__r.amc__Mileage_Rate__c + (( amc__Distance_Km_Miles__c * 
+ amc__Incurred_By__r.amc__Mileage_Rate__c) * amc__Project__r.amc__Expenses_Mark_Up__c), amc__Distance_Km_Miles__c * amc__Incurred_By__r.amc__Mileage_Rate__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies the amount being claimed for the Distance</inlineHelpText>
+        <label>Mileage Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__Milestone__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>The Milestone this Expense relates to.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Milestone this Expense relates to.</inlineHelpText>
+        <label>Milestone</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>amc__Milestone__c.amc__Project__c</field>
+                <operation>equals</operation>
+                <valueField>$Source.amc__Project__c</valueField>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>amc__Milestone__c</referenceTo>
+        <relationshipLabel>Expenses</relationshipLabel>
+        <relationshipName>Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Non_Billable__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Expenses marked as Non Billable will not be included in Billing Events/Items.</inlineHelpText>
+        <label>Non Billable</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Payment_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the Status of the Expense. Note: It is recommended you do not edit or remove these values</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Status of the Expense. Note: It is recommended you do not edit or remove these values</inlineHelpText>
+        <label>Payment Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Outstanding</fullName>
+                    <default>false</default>
+                    <label>Outstanding</label>
+                </value>
+                <value>
+                    <fullName>Paid</fullName>
+                    <default>false</default>
+                    <label>Paid</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Owner_Approval_Required__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Project__r.amc__Project_Owner_Expense_Approval_Reqd__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used by Expense Trigger. Identifies if Project Owner Approval is required for this Expense</inlineHelpText>
+        <label>Project Owner Approval Required</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Owner_Approval_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Approval Status of the Project Owner for this Expense</inlineHelpText>
+        <label>Project Owner Approval Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>amc__Approval_Values</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Owner_Approver__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Role record for the person that is the Project Owner responsible for approving this Expense</inlineHelpText>
+        <label>Project Owner Approver</label>
+        <referenceTo>amc__Role__c</referenceTo>
+        <relationshipLabel>Expenses (Project Owner Approver)</relationshipLabel>
+        <relationshipName>Approval_Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Owner_Current_User__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Project_Owner_Approver__r.amc__User__r.Id = $User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies if the Current User is the User required to approve this Expense as the Project Owner</inlineHelpText>
+        <label>Project Owner Current User</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project_Owner_Rejection_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the reason the Project Owner rejected the Expense</inlineHelpText>
+        <label>Project Owner Rejection Comments</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>amc__Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Project the Expense record relates to</inlineHelpText>
+        <label>Project</label>
+        <referenceTo>amc__Project__c</referenceTo>
+        <relationshipLabel>Expenses</relationshipLabel>
+        <relationshipName>Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Purchase_Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Identifies the Purchase Order this Expense relates to</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Purchase Order this Expense relates to</inlineHelpText>
+        <label>Purchase Order</label>
+        <referenceTo>amc__Purchase_Order__c</referenceTo>
+        <relationshipLabel>Expenses</relationshipLabel>
+        <relationshipName>Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Rejection_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the reason the Approver rejected the Expense</inlineHelpText>
+        <label>Rejection Comments</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>amc__Role_Manager_Approval_Required__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>OR(AND(NOT(ISBLANK(amc__Project__c)),  amc__Project__r.amc__Role_Manager_Expense_Approval_Reqd__c, NOT(ISBLANK(amc__Incurred_By__r.amc__Expense_Approver__c))),AND(ISBLANK(amc__Project__c), NOT(ISBLANK(amc__Incurred_By__r.amc__Expense_Approver__c))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used by Expense Trigger. Identifies if Role Manager Approval is required for this Expense</inlineHelpText>
+        <label>Role Manager Approval Required</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Role_Manager_Approval_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Role Manager Approval Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>amc__Approval_Values</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>amc__Role_Manager_Approver__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Role record for the person that is the Role Manager responsible for approving this Expense</inlineHelpText>
+        <label>Role Manager Approver</label>
+        <referenceTo>amc__Role__c</referenceTo>
+        <relationshipLabel>Expenses (Role Manager Approver)</relationshipLabel>
+        <relationshipName>Approver_Expenses</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>amc__Role_Manager_Current_User__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>amc__Role_Manager_Approver__r.amc__User__r.Id = $User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Identifies if the Current User is the User required to approve this Expense as the Role Manager</inlineHelpText>
+        <label>Role Manager Current User</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>amc__Role_Manager_Rejection_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the reason the Role Manager rejected the Expense</inlineHelpText>
+        <label>Role Manager Rejection Comments</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>amc__Source__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the payment source used to pay for this Expense</description>
+        <externalId>false</externalId>
+        <label>Source</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Credit Card - Personal</fullName>
+                    <default>false</default>
+                    <label>Credit Card - Personal</label>
+                </value>
+                <value>
+                    <fullName>Credit Card - Company</fullName>
+                    <default>false</default>
+                    <label>Credit Card - Company</label>
+                </value>
+                <value>
+                    <fullName>Cash</fullName>
+                    <default>false</default>
+                    <label>Cash</label>
+                </value>
+                <value>
+                    <fullName>Purchase Order</fullName>
+                    <default>false</default>
+                    <label>Purchase Order</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>amc__Tax_Amt__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Identifies the Tax Amount of the Expense</description>
+        <externalId>false</externalId>
+        <label>Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>amc__ex_Tax_Amt__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Formula: Calculates the ex-Tax Amount based on &apos;Amount&apos; - &apos;Tax Amount&apos;</description>
+        <externalId>false</externalId>
+        <formula>amc__Amount__c - amc__Tax_Amt__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ex-Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Expense</label>
+    <listViews>
+        <fullName>amc__All</fullName>
+        <columns>NAME</columns>
+        <columns>amc__Incurred_By__c</columns>
+        <columns>amc__Project__c</columns>
+        <columns>amc__Date__c</columns>
+        <columns>amc__Category__c</columns>
+        <columns>amc__Amount_Claimed__c</columns>
+        <columns>amc__Distance_Km_Miles__c</columns>
+        <columns>amc__Amount__c</columns>
+        <columns>amc__Approver__c</columns>
+        <columns>amc__Approval_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>amc__Expenses_Requiring_My_Approval</fullName>
+        <columns>NAME</columns>
+        <columns>amc__Incurred_By__c</columns>
+        <columns>amc__Project__c</columns>
+        <columns>amc__Date__c</columns>
+        <columns>amc__Category__c</columns>
+        <columns>amc__Amount_Claimed__c</columns>
+        <columns>amc__Approval_Status__c</columns>
+        <columns>amc__Distance_Km_Miles__c</columns>
+        <columns>amc__Amount__c</columns>
+        <columns>amc__Rejection_Comments__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>amc__Approver_Current_User__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>amc__Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Submitted</value>
+        </filters>
+        <label>Expenses Requiring My Approval</label>
+    </listViews>
+    <listViews>
+        <fullName>amc__My_Pending_Expenses</fullName>
+        <columns>NAME</columns>
+        <columns>amc__Project__c</columns>
+        <columns>amc__Category__c</columns>
+        <columns>amc__Date__c</columns>
+        <columns>amc__Amount__c</columns>
+        <columns>amc__Distance_Km_Miles__c</columns>
+        <columns>amc__Mileage_Amount__c</columns>
+        <columns>amc__Amount_Claimed__c</columns>
+        <columns>amc__Expense_Notes__c</columns>
+        <columns>amc__Approval_Status__c</columns>
+        <columns>amc__Approver__c</columns>
+        <columns>amc__Non_Billable__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>amc__Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Pending</value>
+        </filters>
+        <filters>
+            <field>amc__Incurred_By_Current_User__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>My Pending Expenses</label>
+    </listViews>
+    <nameField>
+        <displayFormat>EXP:{000000}</displayFormat>
+        <label>Expense ID</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Expenses</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>amc__Incurred_By__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Project__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Category__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Amount_Claimed__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Distance_Km_Miles__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Amount__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Approver__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>amc__Approval_Status__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Incurred_By__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Project__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Category__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>amc__Amount_Claimed__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Incurred_By__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Project__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Date__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Category__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>amc__Amount_Claimed__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>amc__Incurred_By__c</searchFilterFields>
+        <searchFilterFields>amc__Project__c</searchFilterFields>
+        <searchFilterFields>amc__Date__c</searchFilterFields>
+        <searchFilterFields>amc__Category__c</searchFilterFields>
+        <searchFilterFields>amc__Amount_Claimed__c</searchFilterFields>
+        <searchResultsAdditionalFields>amc__Incurred_By__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Project__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Category__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Amount_Claimed__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Distance_Km_Miles__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Amount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Approver__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>amc__Approval_Status__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>amc__Cannot_Approve_Own_Expenses</fullName>
+        <active>false</active>
+        <description>Prevents a User from approving their own expenses</description>
+        <errorConditionFormula>OR(
+AND(ISNEW(), ISPICKVAL(amc__Approval_Status__c, &quot;Approved&quot;) ,  amc__Incurred_By__r.amc__User__r.Id =  $User.Id )
+,
+AND(  ISCHANGED(amc__Approval_Status__c),  ISPICKVAL(amc__Approval_Status__c, &quot;Approved&quot;) ,  amc__Incurred_By__r.amc__User__r.Id =  $User.Id  )
+,
+AND(ISPICKVAL(amc__Approval_Status__c, &quot;Approved&quot;), ISCHANGED( amc__Incurred_By__c ), amc__Incurred_By__r.amc__User__r.Id =  $User.Id  )
+)</errorConditionFormula>
+        <errorMessage>You cannot approve your own expenses</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>amc__Enforce_Cost_Values</fullName>
+        <active>true</active>
+        <description>Ensures the Cost Amout and Cost Tax Amount fields contain values if Mark Up Required = TRUE</description>
+        <errorConditionFormula>AND(
+  amc__Mark_Up_Required__c, 
+ OR(
+  ISBLANK(amc__Cost_Amount__c),
+  ISBLANK(amc__Cost_Tax_Amount__c)
+ )
+)</errorConditionFormula>
+        <errorMessage>If Mark Up Required = TRUE, Cost Amount and Cost Tax Amount must contain values</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>amc__Only_Distance_or_Amount_can_be_entered</fullName>
+        <active>true</active>
+        <description>Only Distance (Km / Miles) or the Amount field can contain a value, not both.</description>
+        <errorConditionFormula>AND( NOT(ISBLANK( amc__Distance_Km_Miles__c )) ,NOT(ISBLANK( amc__Amount__c )) )</errorConditionFormula>
+        <errorMessage>You can only enter Distance (Km / Miles) OR Amount, not both.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>amc__Prevent_Mark_Up_Required</fullName>
+        <active>false</active>
+        <description>Prevent Mark Up Required being TRUE if Distance (Km / Miles) &gt; 0</description>
+        <errorConditionFormula>AND(amc__Mark_Up_Required__c,
+ amc__Distance_Km_Miles__c &gt;0
+)</errorConditionFormula>
+        <errorMessage>Mark Up Required cannot be TRUE if Distance (Km / Miles) is greather than 0</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

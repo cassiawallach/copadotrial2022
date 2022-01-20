@@ -1,0 +1,24 @@
+Dear {!kugo2p__KugamonInvoice__c.kugo2p__ContactBilling__c},
+
+Here is your {!$Organization.Name} invoice for {!kugo2p__KugamonInvoice__c.kugo2p__BalanceDueAmount__c}.
+
+INVOICE SUMMARY 
+- Invoice Number: {!kugo2p__KugamonInvoice__c.Name} 
+- Invoice Due Date: {!kugo2p__KugamonInvoice__c.kugo2p__InvoiceDueDate__c} 
+- Invoice Amount: {!kugo2p__KugamonInvoice__c.kugo2p__BalanceDueAmount__c} 
+
+VIEW INVOICE ONLINE 
+To view your invoice, or to download a PDF copy for your records, click the link below: 
+
+{!$Setup.kugo2p__Terminal_Settings__c.kugo2p__Sites_URL__c}/kugo2p__OnlineInvoice?id={!kugo2p__KugamonInvoice__c.Id}&key={!kugo2p__KugamonInvoice__c.kugo2p__OnlineApprovalKey__c}
+
+INVOICE TERMS 
+{!kugo2p__KugamonInvoice__c.kugo2p__InvoiceTextandTerms__c} 
+
+Feel free to contact me if you have any questions. 
+
+Regards, 
+
+{!$User.FirstName} {!$User.LastName} 
+{!$Organization.Name} 
+{!$User.City} | O: {!$User.Phone} | Email: {!$User.Email}

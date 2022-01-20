@@ -1,0 +1,97 @@
+<apex:page sidebar="false" title="GS Analyzer | Gainsight" controller="JBCXM.GSCommonBroker" extensions="JBCXM.NSRemoting,JBCXM.AdminBroker" tabStyle="Administration__tab">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+         <script>
+            installResources({});
+        </script>
+        <script>
+
+            var essentialsURL = "{!(EssentialsURL)}";
+
+            function addScript(src) {
+                var scrRef = document.createElement('script');
+                scrRef.setAttribute('src', src);
+                document.body.appendChild(scrRef);
+            }
+
+            function addCSS(src) {
+                var cssRef = document.createElement("link")
+                cssRef.setAttribute("rel", "stylesheet");
+                cssRef.setAttribute("type", "text/css");
+                cssRef.setAttribute("href", src);
+                document.getElementsByTagName("head")[0].appendChild(cssRef);
+            }
+
+            if(essentialsURL){
+                addCSSAndScriptFiles(essentialsURL);
+            }else {
+                if(document.URL.toLowerCase().indexOf("jbcxm") < 0) {
+                    addCSSAndScriptFiles("https://essentialsui.develgs.com/essentials/");
+                } else {
+                    addCSSAndScriptFiles("https://essentialsui.gainsightapp.net/essentials/");
+                }
+            }
+
+            function addCSSAndScriptFiles(url){
+                fetch(url+"manifest.json")
+                        .then(function(data) {
+                            return data.json()
+                        })
+                        .then(function(data) {
+                            addCSS(url + data["essentials"] + "/gsanalyzer/styles/gsanalyzer.css");
+                            addScript(url + data["essentials"] + "/gsanalyzer/scripts/gsanalyzer.bundle.js");
+                        })
+            }
+        </script>
+
+    </apex:outputpanel>
+
+
+    <script>
+        var GS = GS || {};
+        GS.remotingConfigEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.commonRemotingEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingEndPoint = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.remoting = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.sessionId = "{!NSSessionId}";
+        GS.NSSessionId = "{!(NSSessionId)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.customLookUpConfig   = fakeEval('{!JSINHTMLENCODE(customLookUpConfigMap)}');
+        GS.usageConfigInfo      = fakeEval('{!JSINHTMLENCODE(UsageConfigInfo)}');
+
+    </script>
+
+    <div id="gs-app-container">
+    </div>
+   <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=es6,Array.prototype.includes"></script>
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId  : "{!$User.Id}",
+            sessionId : "{!$Api.Session_ID}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('Onboarding - Rules Analyzer');
+    </script>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:7890/UI/gsanalyzer/scripts')}/gsanalyzer.bundle.js"></script>
+        <apex:stylesheet value="https://localhost:9091/UI/rulepreview/styles/rules.css" />
+        <script type="text/javascript" src="https://localhost:9091/UI/rulepreview/scripts/rules.bundle.js"></script>
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:7890/UI/gsanalyzer/styles')}/gsanalyzer.css" />
+
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="https://localhost:9092/UI/rulepreview/styles/rules.css" />
+        <script type="text/javascript" src="https://localhost:9092/UI/rulepreview/scripts/rules.bundle.js"></script>
+    </apex:outputpanel>
+</apex:page>

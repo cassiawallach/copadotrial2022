@@ -3,11 +3,11 @@
         <style>
             body { font-family: Arial,Helvetica,sans-serif; color:#222;font-size: 75%;}
         </style>
-        <img height="25px" width="25px" src="{!URLFOR($Resource.Statics,'img/icons/logo-icon.png')}"/>
+        <img src="http://www.copa.do/resource/1466181044000/WebsitePack/Images/CopadoLogo.png"/>
         <br/>
         Deployment: {!relatedTo.Name}<br />
-        Status: {!relatedTo.Status__c}<br />
-
+        Status: {!relatedTo.Status__c}<br /> 
+        
         <c:DeploymentEmail dpId="{!relatedTo.Id}"/>
     </messaging:htmlEmailBody>
 </messaging:emailTemplate>

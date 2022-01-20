@@ -1,0 +1,48 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c" recordSetVar="TRIMDA_MatchingResult__cs" extensions="TRIMDA.TRIMDA_DupeAlertMatchedRecord_Extension" action="{!RemoveResolvedList}">
+<!-- TRIMDA_RemoveResolved_ListButton --> 
+<script>
+    function navigateBack(Theme){
+        //alert(Theme);
+        if (Theme == 'Theme4d'){
+            sforce.one.back(true);
+        }else{
+            window.history.back();
+        }
+  }  
+</script>     
+    
+<apex:slds />   
+<apex:form >
+<div style="height: 24rem;">
+  <section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
+    <div class="slds-modal__container">
+      <header class="slds-modal__header {!if(DML_Initialized==true, 'slds-theme--alt-inverse',If(DML_Success==true,'slds-theme--success','slds-theme--error'))} slds-theme_alert-texture">
+         
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick="javascript:sforce.one.back(true);" title="Close" style="{!If($User.UIThemeDisplayed != 'Theme4d','display:none','')}">
+          <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.salesforcelightningdesignsystem, '/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+          </svg>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+		
+        <h2 class="slds-text-heading_medium" id="prompt-heading-id">
+            Remove Resolved Matched Records
+          </h2>
+      </header>
+      <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+        <apex:pageMessages escape="false" id="messagesPrompt" />
+      </div>
+      <footer class="slds-modal__footer slds-theme_default">
+        <button class="slds-button slds-button_neutral" onclick="navigateBack('{!$User.UIThemeDisplayed}');" style="{!If($User.UIThemeDisplayed != 'Theme4d','display:none','')}">{!IF(OR(DML_Initialized == false,DML_Success==true), 'Okay','Back')}</button>
+        <!--<button class="slds-button slds-button_neutral" onclick="navigateBack('{!$User.UIThemeDisplayed}');" style="{!If($User.UIThemeDisplayed == 'Theme4d','display:none','')}">{!IF(OR(DML_Initialized == false,DML_Success==true), 'OK','Cancel')}</button>-->
+        <apex:commandButton styleclass="slds-button slds-button_neutral" action="{!retUrl}" value="{!IF(OR(DML_Initialized == false,DML_Success==true), 'OK','Cancel')}" rendered="{!$User.UIThemeDisplayed !='Theme4d'}" />
+        <apex:commandButton action="{!RemoveResolvedList}" styleclass="slds-button slds-button_neutral" value="OK to Delete" rendered="{!and(DML_Initialized == true,DML_Success==false)}" />
+        
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</div>
+ </apex:form>      
+
+ </apex:page>

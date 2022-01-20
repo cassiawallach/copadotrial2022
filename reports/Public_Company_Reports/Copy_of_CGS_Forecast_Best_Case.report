@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>if(Account.Salesforce_AOV__c:AVG&gt;0,Account.Salesforce_AOV__c:AVG*(5/100),10000)</calculatedFormula>
+        <datatype>currency</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Target ASP - 5% of AOV (10k non-aov)</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>278725.00</calculatedFormula>
+        <datatype>currency</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Estimated Upper Limit ARR (10/1/20)</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>ACCOUNT_ID:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA3</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>if(Account.Salesforce_AOV__c:AVG&gt;0,
+(Account.Copado_AOV__c.CONVERT:AVG/(Account.Salesforce_AOV__c:AVG*(5/100))),(Account.Copado_AOV__c.CONVERT:AVG/10000))</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA4</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Current Attainment</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_90501953</developerName>
+        <masterLabel>AOV Group</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Account.AOV_Band__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>$1M-5M</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$5M-10M</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$10M-25M</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$25M+</sourceValue>
+            </sourceValues>
+            <value>$1M+</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>$600k-1M</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$200k-600k</sourceValue>
+            </sourceValues>
+            <value>&lt;$1M</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_65435592</developerName>
+        <masterLabel>Vertical</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>INDUSTRY</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Banking and Finance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Insurance</sourceValue>
+            </sourceValues>
+            <value>Financial Services (FINS)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Biotechnology, Pharmaceuticals and Medicine</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Healthcare</sourceValue>
+            </sourceValues>
+            <value>Health and Life Sciences (HLS)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Computers</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Electronics</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>High Tech</sourceValue>
+            </sourceValues>
+            <value>High Tech (HT)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Aerospace and Defense</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Automotive and Transportation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Education</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Public Sector and Government</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Telecommunications and Publishing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Utilities and Energy</sourceValue>
+            </sourceValues>
+            <value>Public &amp; Government (PG)</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>INDUSTRY</field>
+    </columns>
+    <columns>
+        <field>Account.Region__c</field>
+    </columns>
+    <columns>
+        <field>Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Salesforce_AOV__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.TCV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_OWNER</field>
+    </columns>
+    <columns>
+        <field>Account.Account_Manager__c</field>
+    </columns>
+    <columns>
+        <field>Account.Customer_Success_Manager__c</field>
+    </columns>
+    <columns>
+        <field>Account.Onboarded_Date__c</field>
+    </columns>
+    <columns>
+        <field>Account.Go_Live_Date__c</field>
+    </columns>
+    <columns>
+        <field>Account.Account_Health__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Old_pricing_model__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Licenses__c</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>if(Account.Salesforce_AOV__c&gt;0,
+(Opportunity.TCV__c.CONVERT/(Account.Salesforce_AOV__c*(5/100))),(Opportunity.TCV__c.CONVERT/10000))</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>TotACV / Target ASP</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <filter>
+        <criteriaItems>
+            <column>ACCOUNT_TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FORECAST_CATEGORY</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Best Case</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ACCOUNT_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>TYPE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CGS -- Forecast - Best Case</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

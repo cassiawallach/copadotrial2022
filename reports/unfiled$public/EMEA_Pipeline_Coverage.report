@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>ForecastingItem.ForecastAmount.CONVERT:SUM/PARENTGROUPVAL(ForecastingQuota.QuotaAmount.CONVERT:SUM,ForecastingQuota.Owner.Name)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA2</developerName>
+        <downGroupingContext>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Forecast Coverage</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota$QuotaAmount.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastAmount.CONVERT</field>
+    </columns>
+    <currency>USD</currency>
+    <description>FY22 EMEA Sales dashboard for AEs</description>
+    <filter>
+        <criteriaItems>
+            <column>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Pipeline,Best Case,Commit,Closed</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ForecastingQuota$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Arezki Abid,Berthold Edelmann,Francois Murat,Marcel Assaraf,Mayuran Yoghan,Michel-Gauthier Tshefu,Ronald Weber,Steve Harris,Thomas Ewald,Tobias Thorslund,Vinod Ghorpade,Alex Stoney,Julien Laluet,Matt Hill</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota$Owner</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>RoW - Forecast Coverage</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>orecasting_Quotas_w_wo_Forecasting_Items__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>ForecastingQuota$StartDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

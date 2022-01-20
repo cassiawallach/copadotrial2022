@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Campaign$Name</field>
+    </columns>
+    <columns>
+        <field>Campaign$Type</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Status</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$MemberLastModifiedDate</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$MemberCreatedDate</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$FirstRespondedDate</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Title</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Email</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Shows campaigns that Salesforce Architects have been associated with.</description>
+    <filter>
+        <criteriaItems>
+            <column>Campaign.CampaignMembers$Title</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Program Architect</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Campaign.CampaignMembers$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Program Architects Campaigns Report</name>
+    <params>
+        <name>scopeid</name>
+        <value></value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Campaign_Members_with_Campaigns__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Campaign$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

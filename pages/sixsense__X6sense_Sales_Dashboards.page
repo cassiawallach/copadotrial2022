@@ -1,0 +1,47 @@
+<!--
+ - Created by shilpi on 09/09/20.
+ -->
+<apex:page id="X6sense_Dashboards" standardController="User" extensions="sixsense.Dashboard_Indicator">
+    <apex:slds />
+    <apex:includeScript value="{!URLFOR($Resource.sixsense__jQuery, 'jquery.min.js')}"/>
+    <style>
+        div .sixsense-card {
+            border: 1px solid #E2E7EC;
+            border-radius: 2px;
+            height: 100vh;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            var form = document.getElementById("form_v2");
+            var origin = window.location.origin;
+            var input = document.getElementById("origin");
+            input.setAttribute("value", origin);
+            form.submit();
+        });
+    </script>
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <div class="slds">
+        <apex:outputPanel layout="none" rendered="{!!havePermission}">
+            <div>To access this page, please have your system administrator assign
+                6sense User or 6sense Admin permission set to your user profile.</div>
+        </apex:outputPanel>
+        <apex:outputPanel layout="none" rendered="{!havePermission}">
+            <div class="slds-scope">
+                <form id="form_v2" target="dashboard_iframe" action="https://abm.6sense.com/dashboard-sales/sfdc/" method="post" class="slds-hide">
+                    <input type="text" name="apikey" value="{!apiKey}"/>
+                    <input type="text" name="userid" value="{!userId}"/>
+                    <input type="text" name="email" value="{!userEmail}"/>
+                    <input type="text" name="username" value="{!userName}"/>
+                    <input type="text" name="isSandbox" value="{!isSandbox}"/>
+                    <input type="text" name="origin" id="origin"/>
+                    <input type="submit"/>
+                </form>
+                <div class="sixsense-card">
+                    <apex:iframe scrolling="true" id="dashboard_iframe" height="100%"/>
+                </div>
+            </div>
+        </apex:outputPanel>
+    </div>
+    </html>
+</apex:page>

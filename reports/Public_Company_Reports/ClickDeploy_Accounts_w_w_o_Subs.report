@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_58997290</developerName>
+        <masterLabel>Basic or Premium</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Subscription_Plan__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Essentials Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials Yearly</sourceValue>
+            </sourceValues>
+            <value>Basic</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy Essentials+ -- Annual License</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy Essentials+ - Monthly License</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Biannually</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Monthly - SunGage</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Yearly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Yearly - MSDF</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Yearly - UMUC</sourceValue>
+            </sourceValues>
+            <value>Premium</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_45811091</developerName>
+        <masterLabel>Monthly vs Yearly</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Subscription_Plan__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy Essentials+ - Monthly License</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Monthly - SunGage</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials Monthly</sourceValue>
+            </sourceValues>
+            <value>Monthly</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy Essentials+ -- Annual License</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Yearly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Yearly - MSDF</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials+ Yearly - UMUC</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Essentials Yearly</sourceValue>
+            </sourceValues>
+            <value>Yearly</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account$Active_Opportunity__c</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Subscription_Plan__c</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account$Type</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Current_Term_Start__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>Account$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>ClickDeploy</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>BRAD</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Subscription_status__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_45811091</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Month</dateGranularity>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Current_Term_End__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_58997290</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <name>Brad&apos;s ClickDeploy Accounts w/w/o Subs</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_or_w_o_CB_Subscriptions__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

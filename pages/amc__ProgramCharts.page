@@ -1,0 +1,35 @@
+<apex:page standardController="amc__Program__c" sidebar="false">
+<apex:includeLightning /> 
+    <style>
+        html, body{
+            margin:0;
+            padding:0;
+        }
+        table#bodyTable {
+            table-layout: fixed;
+        }
+    </style>
+    <div id="overview" style="width:100%; height:100%;">
+    </div>
+    <script>
+       var heightOffset = 0;
+        if('{!$User.UITheme}'==='Theme3'){
+            heightOffset = 65;
+        }
+        var programId = '{!amc__Program__c.Id}';
+        var tab = '{!JSENCODE($CurrentPage.parameters.tab)}';
+        $Lightning.use("amc:ProgramChartsApp", function() {
+          $Lightning.createComponent("amc:ProgramCharts",
+          {
+            'recordId':programId,
+            'heightOffset':heightOffset,
+            'isLightning':false,
+            'tab':tab
+          },
+          "overview",
+          function(cmp) {
+
+          });
+        });
+    </script>
+</apex:page>

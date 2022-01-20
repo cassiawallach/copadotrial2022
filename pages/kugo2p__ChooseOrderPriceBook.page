@@ -1,0 +1,23 @@
+<apex:page standardController="kugo2p__SalesOrder__c" title="Choose Price Book | Kugamon" applyBodyTag="false" sidebar="false" docType="html-5.0">
+
+    <apex:outputField value="kugo2p__SalesOrder__c.kugo2p__RecordStatus__c" rendered="false" />
+
+    <script>
+        //debugger;
+        const orderId = "{!JSENCODE(kugo2p__SalesOrder__c.Id)}";
+        const recordStatus = "{!JSENCODE(kugo2p__SalesOrder__c.kugo2p__RecordStatus__c)}";
+
+        const appName = 'ChoosePriceBookApp';
+        const cmpName = 'ChoosePriceBook';
+        const cmpParams = {
+                            recordId: orderId,
+                            objectType: 'Order',
+                            recordStatus: recordStatus,
+                            isModal: true,
+                            isLightningMode: {!$User.UIThemeDisplayed == 'Theme4d'}
+                        };
+    </script>
+
+    <c:BaseLightningOut />
+
+</apex:page>

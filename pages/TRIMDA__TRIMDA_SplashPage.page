@@ -1,0 +1,83 @@
+<apex:page standardController="TRIMDA__TRIMDA_DupeAlerts__c" extensions="TRIMDA.TRIMDA_DupeAlerts_Controller" >
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/> 
+<head>
+    <title>DataTrim Dupe Alerts - Splash Page</title>
+    <style type="text/css">
+    .showme
+    {
+        font-size:11px;
+        }
+    .myul
+    {
+         list-style-image: url({!URLFOR($Resource.DataTrimDupeAlerts, 'bullet.jpg')});
+         list-style-position: outside;
+        }
+    .back
+    {
+        background-image:url( {!URLFOR($Resource.DataTrimDupeAlerts, 'Washer7.png')});
+        background-repeat:no-repeat;
+        background-position:center;
+        background-position:top;
+        width:100%;
+        }
+        .DL
+        {
+            color: #3366FF;
+            font-size: 28px;
+            text-align: right;
+            font-weight: bold;
+        }
+        .DA
+        {
+            color: #3366FF; 
+            font-weight: bold;
+            font-size: 42px;
+        }
+
+    </style>
+</head>
+<body >
+
+<div class="slds">
+    <div class="back" >
+        <div class="slds-container--center slds-container--small">
+            <div class="slds-container--left DA">
+                DataTrim Dupe&nbsp;Alerts
+            </div>
+            <div class="slds-container--right DL">
+                From Your Data Laundry
+            </div>
+        </div>
+        <div class="slds-container--center slds-container--small " style="color:black;background-color:#ffffff;border-color: #3366FF;width:100%;cellpadding:2px; margin:10 0 10 0;box-shadow:5px 5px 50px 0 #333;border-radius:10px;overflow:hidden;">
+            <div class="slds-grid slds-wrap"> 
+                <div class="slds-col slds-size--1-of-2 slds-align-middle" style="text-align:center;">
+                    <br /><strong>Initialize and Setup Dupe Alerts</strong><br />
+                    <a href="/apex/trimda/trimda__TRIMDA_Initialize?retURL=/apex/trimda/trimda__TRIMDA_DupeAlerts" class="slds-button slds-button--brand">Do it Now!</a>
+                </div>
+                <div class="slds-col slds-size--1-of-2 " style="padding:0.5rem;font-size:0.8rem;">
+                    <strong>Setup and Activation</strong><br />
+                    Thank you for installing DataTrim Dupe Alerts<br />
+                    To finish the setup please performed the following 3 steps:<br />
+                    <ol class="slds-list--ordered">
+                        <li>Enter your License number.<br /><span class="showme">(You should have received this in the welcome email)</span></li>
+                        <li>Activate the Subscription by performing the OnBoarding process. <a class="showme" href="https://www.datatrim.com/datatrim-dupe-alerts-initialization-and-setup/" target="_blank" >[more...]</a></li>
+                        <li>Add the DataTrim IP addresses to you Network Access list. <a  class="showme" href="https://www.datatrim.com/add-the-datatrim-ip-addresses-to-your-network-access-list/" target="_blank">[more...]</a></li>
+                    </ol>
+                    
+                </div>
+                <div class="slds-col slds-size--1-of-1" style="margin:1rem;padding:0.5rem;background-color:lightgrey;border-radius:10px;">
+                    <div style="font-size:0.75rem;">
+                        <b>Support:</b>&nbsp;Contact us at <a  href="mailto:support@datatrim.com" target="_blank">support@datatrim.com</a> with any question or ideas <br />-We appreciate all the feedback we can get.<br />
+                        <strong>Follow product updates and news on our Blog:</strong> 
+                        <a href="https://www.datatrim.com/datatrim-quality-blog/"  target="_new"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'wordpress_32.png')}" width="24px" height="24px" alt="DataTrim Blog" title="Follow product updates and news on our Blog" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</apex:page>

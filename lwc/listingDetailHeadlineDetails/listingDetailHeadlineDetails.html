@@ -1,0 +1,48 @@
+<template>
+    <span>
+        <div class="appx-detail-section-pricing appx-detail-section-pricing-plus">
+            <div class="appx-detail-section-pricing-details">
+                <p class="appx-pricing-detail-header">
+                    <span>{pricingHeader}</span>
+                </p>
+            </div>
+        </div>
+        <div class="appx-detail-section appx-headline-details-metrics">
+            <!--<div class="appx-detail-section-rating">
+                <p class="appx-detail-subsection-header">Rating</p>
+                <c-listing-result-row-rating rating={record.fields.Rating__c.value} reviews={record.fields.Reviews__c.value}></c-listing-result-row-rating>
+            </div>-->
+            <div class="appx-detail-section-first-listed">
+                <p class="appx-detail-subsection-header">First Listed</p>
+                <p>{record.fields.First_Listed__c.value}</p>
+            </div>
+            <div class="appx-detail-section-last-update">
+                <p class="appx-detail-subsection-header">Latest Release</p>
+                <p>{record.fields.Latest_Release__c.value}</p>
+            </div>
+        </div>
+        <div class="appx-detail-section appx-headline-details-categories appx-headline-details-categories-plus">
+            <div class="appx-headline-details-categories-details">
+                <p class="appx-detail-subsection-header">Type</p>
+                <a href="#" data-event="listing-categories" class="slds-scope"><strong>{record.fields.Type__c.value}</strong></a>
+            </div>
+            <div class="appx-headline-details-categories-actions" style="display:none !important;">
+                <!-- <div class="slds-button-group" role="group">
+                    <button class="slds-button slds-button_brand appx-btn appx-btn-watchdemo" data-event="appx-btn-watchdemo-header" data-position="Header">
+                        <span class="appx-only-s">Demo</span>
+                    </button>
+                    <span id="appxListingDetailPageId:AppxLayout:j_id822" style="display: none;"></span>
+                </div> -->
+            </div>
+        </div>
+        <div class="appx-detail-section-pricing-action">
+            <button class="slds-button slds-button_brand appx-btn appx-btn-getitnow" data-event="appx-btn-getitnow-header" data-position="Header" onclick={handleGetItNowClick} >Get It Now</button>
+        </div>
+        <!-- <div class="appx-detail-section-description appx-multi-line-to-fix appx-multi-line-fixed" style="display:none !important;">
+            <div class="appx-headline-details-tagline"></div>
+        </div> -->
+    </span>
+    
+    <c-get-it-now-modal communityname={communityname} listing={record} action={record.fields.Get_It_Now_Action__c.value}></c-get-it-now-modal>
+
+</template>

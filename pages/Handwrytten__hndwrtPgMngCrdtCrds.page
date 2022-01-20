@@ -1,0 +1,49 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten manage credit cards page
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjAccount__c" Extensions="Handwrytten.hndwrtClsMngCrdtCrds" title="Manage Handwrytten Account Credit Cards" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theform">  
+    <div class="slds">
+    
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+          
+        <apex:pageMessages />
+        
+        <apex:sectionHeader title="Handwrytten" subtitle="Manage Credit Cards" help="/apex/hndwrtPgHelp" />
+        
+        <apex:pageBlock title="Manage Credit Cards">
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Add Credit Card" action="{!newCard}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockTable value="{!lstCreditCards}" var="cc">
+
+                    <apex:column headervalue="Action">  
+                        <apex:commandlink value="Delete" action="{!deleteCard}"
+                            onclick="return window.confirm('Are you sure you want to delete card?');">
+                            <apex:param name="ccId" value="{!cc.id}" assignTo="{!ccId}"/> 
+                        </apex:commandlink> 
+                    </apex:column> 
+                    
+                    <!-- <apex:column headerValue="Auth.Net Profile Id" value="{!cc.anet_profile_id}" /> -->
+                    <apex:column headerValue="Card Number" value="{!cc.card_number}" />
+                    <!-- <apex:column headerValue="Expiration Date" value="{!cc.expiration_date}" /> -->
+
+        </apex:pageBlockTable>
+            
+    </apex:pageBlock>
+    </div>
+    </apex:form>
+</apex:page>

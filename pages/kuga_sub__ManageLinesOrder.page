@@ -1,0 +1,39 @@
+<!-- *****************************************************************************************************************************************
+*    Name:        		ManageLinesOrder
+*    
+*    Description:       This page is used to add/edit Order Product/Service Line items 
+*
+*   Page History:       Created by Kiran Kurella July 22nd 2014
+*
+*   Copyright 2016 Kugamon.  All rights reserved.    
+***************************************************************************************************************************************** -->
+
+<apex:page standardController="kugo2p__SalesOrder__c" extensions="kuga_sub.ManageLinesOrderExt" sidebar="false" action="{!calculateTotal}" id="thePage">
+
+	<style>
+		.tertiaryPaletteNew {
+		    background-color: #b4c374 !important;
+		    border-color: #b4c374 !important;
+		}
+	</style>
+
+	<apex:outputPanel rendered="false" >
+		<apex:outputField value="{!kugo2p__SalesOrder__c.kugo2p__PriceBookName__c}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.kugo2p__DiscountPercent__c}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.Name}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.kugo2p__Account__r.Name}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.kugo2p__RecordStatus__c}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.RecordType.Name}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.kuga_sub__ContractNumber__c}" />
+	    <!--<apex:outputField value="{!kugo2p__SalesOrder__c.kugo2p__Opportunity__r.ContractId}" />--> 
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.ContractNumber__r.EndDate}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.ContractNumber__r.StartDate}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.ContractNumber__r.kuga_sub__Pricebook2Id__c}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.ContractNumber__r.Pricebook2Id__r.Name}" />
+
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.RenewalOpportunity__r.Pricebook2Id}" />
+	    <apex:outputField value="{!kugo2p__SalesOrder__c.RenewalOpportunity__r.Pricebook2.Name}" />
+    </apex:outputPanel>
+
+	<c:ManageLines lineType="Order" manageLinesOrderCon="{!manageLinesOrderCon}" id="pageComp"/>
+</apex:page>

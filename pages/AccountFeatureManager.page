@@ -1,0 +1,84 @@
+<apex:page id="thePage" standardController="Salesforce_Org__c" extensions="AccountFeatureManagerController" showHeader="true" sidebar="true">
+	<script>
+		var ids = [];
+        function setOtherDates(table, row){
+        	var tbody = document.getElementById([id=table]);
+			var thisValue = document.getElementById([id=row+':dEndDate']);
+            var es = tbody.getElementsByTagName("input");                    
+			for(var i=0; i<es.length; i++){             
+	        	if(es[i].id.indexOf('dEndDate')!=-1){                                        
+                    es[i].value = thisValue.value;
+                }
+			}
+			for(var i=0; i<ids.length; i++){
+				calculateDaysBetween(ids[i], document.getElementsByClassName("js-"+ids[i]+"-endDate")[0]);
+			}
+        }
+		function fillDate(table, fields){
+			if({!ISNULL(contractForOrg)} == true)return;
+			var tbody = document.getElementById([id=table]);
+			var es = tbody.getElementsByTagName("input");                    
+			for(var i=0; i<es.length; i++){             
+	        	if(es[i].id.indexOf(fields)!=-1){                                        
+                    es[i].value = '{!DAY(contractForOrg.EndDate)}/{!MONTH(contractForOrg.EndDate)}/{!YEAR(contractForOrg.EndDate)}';
+                }
+			}
+		}
+	</script>
+	
+	<apex:form id="theForm">
+		<apex:pageMessages id="theMessages" />
+
+        <apex:pageBlock id="pb" rendered="{!contractForOrg!=null}">
+            <apex:pageBlockSection id="pbs" columns="2">
+                <apex:outputField value="{!contractForOrg.ContractNumber}" />
+                <apex:outputField value="{!contractForOrg.StartDate}" />
+                <apex:outputField value="{!contractForOrg.Status}" />
+                <apex:outputField id="ced" value="{!contractForOrg.EndDate}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+		<apex:pageBlock id="pb2">
+			<apex:pageBlockButtons id="pbButtons" location="bottom">
+				<apex:commandButton status="status" reRender="theForm" value="Save and Sync" action="{!updateorgFeatures}" />
+				<apex:actionStatus id="status">
+					<apex:facet name="start"><img src="/img/loading.gif" /></apex:facet>
+				</apex:actionStatus>
+			</apex:pageBlockButtons>			
+			
+			
+				<apex:pageBlockTable id="pbTable" value="{!orgFeatures}" var="of">
+					<apex:column rendered="false">
+						<apex:facet name="header">{!$ObjectType.sfFma__FeatureParameterInteger__c.Fields.Name.Label}</apex:facet>
+						<apex:outputField value="{!of.Name}" />
+					</apex:column>
+					<apex:column >
+						<apex:facet name="header">{!$ObjectType.sfFma__FeatureParameterInteger__c.Fields.sfFma__FullName__c.Label}</apex:facet>
+						<apex:outputField value="{!of.sfFma__FullName__c}" />
+					</apex:column>
+					<apex:column style="width:50px;">
+						<apex:outputPanel >
+							<input type="hidden" id="{!of.Id}_endDate" value="{!YEAR(of.Expiration_Date__c)}/{!MONTH(of.Expiration_Date__c)}/{!DAY(of.Expiration_Date__c)}" />
+							<script>ids.push('{!of.Id}');</script>
+						</apex:outputPanel>
+					</apex:column>
+					<apex:column style="width:50px;">
+						<apex:facet name="header">{!$ObjectType.sfFma__FeatureParameterInteger__c.Fields.sfFma__Value__c.Label}</apex:facet>
+                        <apex:inputField id="qty" value="{!of.sfFma__Value__c}" style="width:50px;"/>
+					</apex:column>
+					<apex:column >
+						<apex:facet name="header">
+							<apex:outputPanel >
+								{!$ObjectType.sfFma__FeatureParameterInteger__c.Fields.Expiration_Date__c.Label}&nbsp;
+							(<a href="" onclick="fillDate('{!$Component.theForm.pb2.pbTable}','dEndDate')" style="text-decoration:underline !important;" >Set to contract End Date</a>)
+							</apex:outputPanel>
+						</apex:facet>
+                        <apex:outputPanel >
+                        	<apex:inputField id="dEndDate" value="{!of.Expiration_Date__c}" styleClass="js-{!of.Id}-endDate" onchange="calculateDaysBetween('{!of.Id}', this);"  />
+                            &nbsp; <a href="#" onclick="setOtherDates('thePage:theForm:pb2:pbTable','{!$Component.pbTable}')">Set other dates</a>
+                        </apex:outputPanel>
+					</apex:column>
+				</apex:pageBlockTable>			
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

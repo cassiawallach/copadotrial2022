@@ -1,0 +1,8 @@
+<apex:page standardController="Loopio__Loopio_Project__c" extensions="Loopio.LoopioDetailController">
+    <apex:outputPanel rendered="{!permitted}">
+    <iframe src='{!detailUrl}' width='100%' height='1000' frameBorder='0' />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!notPermitted}">
+        <h1>Sorry, you do not have access to this Loopio Project</h1>
+    </apex:outputPanel>
+</apex:page>

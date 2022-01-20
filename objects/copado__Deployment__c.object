@@ -147,7 +147,7 @@
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableEnhancedLookup>false</enableEnhancedLookup>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -563,12 +563,12 @@
             <isRequired>false</isRequired>
         </availableFields>
         <availableFields>
-            <field>copado__Promotion__r.copado__Source_Environment__c</field>
+            <field>copado__Source_Environment__c</field>
             <isFieldManaged>false</isFieldManaged>
             <isRequired>false</isRequired>
         </availableFields>
         <availableFields>
-            <field>copado__Source_Environment__c</field>
+            <field>copado__Promotion__r.copado__Source_Environment__c</field>
             <isFieldManaged>false</isFieldManaged>
             <isRequired>false</isRequired>
         </availableFields>
@@ -616,44 +616,13 @@
         <label>Pipeline Deployment Modal</label>
     </fieldSets>
     <fields>
-        <fullName>Completed_Time__c</fullName>
-        <externalId>false</externalId>
-        <label>Completed Time</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Deployment_Time_Minutes__c</fullName>
-        <externalId>false</externalId>
-        <formula>(Completed_Time__c  -  Start_Time__c) * 1440</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Deployment Time (Minutes)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>1</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Start_Time__c</fullName>
-        <externalId>false</externalId>
-        <label>Start Time</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
         <fullName>copado__Active__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>Only Active Templates are available when searching for them, for example in deployment steps</inlineHelpText>
         <label>Active</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -667,6 +636,7 @@
         <label>Api Name</label>
         <length>80</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -678,6 +648,7 @@
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Attach Deployment File</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -692,6 +663,7 @@
         <relationshipLabel>Deployments</relationshipLabel>
         <relationshipName>Deployments</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -720,6 +692,7 @@ copado__Count_Completed__c /  copado__Deployment_Jobs_Count__c,
         <label>Compliance Status</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -744,6 +717,7 @@ copado__Count_Completed__c /  copado__Deployment_Jobs_Count__c,
         <inlineHelpText>When this need to be deployed</inlineHelpText>
         <label>Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
@@ -772,6 +746,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <description>This field is updated when the Deployment Completed email has been sent to prevent subsequent notifications until this marker has been reset.</description>
         <externalId>false</externalId>
         <label>Deployment Completed email sent</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -795,6 +770,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <label>Deployment Last Step</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -807,6 +783,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <label>Deployment Source Type</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -819,6 +796,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <label>Deployment Type</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -830,6 +808,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <externalId>false</externalId>
         <label>Deployment command sent</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
@@ -841,6 +820,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <label>Description</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -852,6 +832,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Do Not Update Promotion</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -862,6 +843,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <externalId>false</externalId>
         <label>Execution Context</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -931,6 +913,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <relationshipLabel>Deployments (From Credential)</relationshipLabel>
         <relationshipName>Deployments_From_Org</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -953,6 +936,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <externalId>false</externalId>
         <label>Last Compliance Scan Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
@@ -964,6 +948,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <label>Last Deployment Execution Id</label>
         <length>18</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -979,6 +964,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <relationshipLabel>Deployments (Parent Deployment)</relationshipLabel>
         <relationshipName>Deployments</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -991,6 +977,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <externalId>false</externalId>
         <inlineHelpText>This field is auto populated when a manual task is pending on deployment.</inlineHelpText>
         <label>Paused</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -1005,6 +992,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <relationshipLabel>Deployments</relationshipLabel>
         <relationshipName>Deployments</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -1021,6 +1009,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <relationshipLabel>Deployments (Rolled back Deployment)</relationshipLabel>
         <relationshipName>RolledBackDeployments</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -1043,6 +1032,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <externalId>false</externalId>
         <label>Schedule</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -1069,6 +1059,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <externalId>false</externalId>
         <inlineHelpText>When the deployment completes an email will be sent to the owner of the deployment informing them of the status. Uncheck this checkbox to not receive such an email.</inlineHelpText>
         <label>Send Deployment Complete email</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -1105,7 +1096,8 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
-        <trackHistory>true</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -1141,11 +1133,6 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
                     <default>false</default>
                     <label>Completed with Errors</label>
                 </value>
-                <value>
-                    <fullName>Merge Conflict</fullName>
-                    <default>false</default>
-                    <label>Merge Conflict</label>
-                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -1160,13 +1147,33 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <relationshipLabel>Template Execution</relationshipLabel>
         <relationshipName>Templates</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <label>Deployment</label>
     <listViews>
+        <fullName>Draft_Deployments</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Date__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Deployed__c</columns>
+        <columns>copado__Completed__c</columns>
+        <columns>copado__From_Org__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>equals</operation>
+            <value>Draft</value>
+        </filters>
+        <label>Draft_Deployments</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
         <fullName>copado__All</fullName>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <columns>NAME</columns>
         <columns>RECORDTYPE</columns>
         <columns>copado__Date__c</columns>
@@ -1175,15 +1182,34 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <columns>copado__Completed__c</columns>
         <columns>copado__From_Org__c</columns>
         <columns>CREATED_DATE</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>OBJECT_ID</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Date__c</field>
+            <operation>lessThan</operation>
+            <value>10/31/2020 12:00 AM</value>
+        </filters>
+        <filters>
+            <field>copado__Date__c</field>
+            <operation>greaterThan</operation>
+            <value>9/30/2020 12:00 AM</value>
+        </filters>
+        <filters>
+            <field>OWNER.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>Ferhat</value>
+        </filters>
         <label>All</label>
     </listViews>
     <nameField>
         <label>Deployment Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Deployments</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <recordTypes>
         <fullName>copado__Advanced_multi_step</fullName>
@@ -1232,10 +1258,6 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
             </values>
             <values>
                 <fullName>In progress</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Merge Conflict</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1294,10 +1316,6 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
                 <default>false</default>
             </values>
             <values>
-                <fullName>Merge Conflict</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Scheduled</fullName>
                 <default>false</default>
             </values>
@@ -1350,10 +1368,6 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
             </values>
             <values>
                 <fullName>In progress</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Merge Conflict</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1412,28 +1426,17 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
                 <default>false</default>
             </values>
             <values>
-                <fullName>Merge Conflict</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Scheduled</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
     </recordTypes>
     <searchLayouts>
-        <customTabListAdditionalFields>RECORDTYPE</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Date__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__From_Org__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Completed__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Status__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Schedule__c</customTabListAdditionalFields>
-        <excludedStandardButtons>OpenListInQuip</excludedStandardButtons>
-        <excludedStandardButtons>Accept</excludedStandardButtons>
-        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
-        <excludedStandardButtons>MassChangeOwner</excludedStandardButtons>
-        <excludedStandardButtons>PrintableListView</excludedStandardButtons>
-        <excludedStandardButtons>IsotopeSubscription</excludedStandardButtons>
         <listViewButtons>copado__Import_Template</listViewButtons>
         <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__Date__c</lookupDialogsAdditionalFields>
@@ -1447,6 +1450,7 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <searchResultsAdditionalFields>copado__Completed__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Schedule__c</searchResultsAdditionalFields>
+        <searchResultsCustomButtons>copado__Import_Template</searchResultsCustomButtons>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>

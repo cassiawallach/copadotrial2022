@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldSets>
+        <label><!-- Column Headers --></label>
+        <name>CCMI__column_headers</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Site --></label>
+        <name>CCMI__external</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Phase View --></label>
+        <name>CCMI__gantt</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- New Task --></label>
+        <name>CCMI__new_task</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Side Panel --></label>
+        <name>CCMI__sidepanel</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- Timelines - List --></label>
+        <name>CCMI__timelines_list</name>
+    </fieldSets>
+    <fields>
+        <help><!-- List of Users/Contacts/Queues assigned to this task. --></help>
+        <label><!-- Assignments --></label>
+        <name>CCMI__Assignments__c</name>
+    </fields>
+    <fields>
+        <help><!-- The length of the Task when weekend days are taken into account. --></help>
+        <label><!-- Calculated Duration --></label>
+        <name>CCMI__Calculated_Duration__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date that the Task is marked as completed. --></help>
+        <label><!-- Completed Date --></label>
+        <name>CCMI__Completed_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Completion Percent --></label>
+        <name>CCMI__Completion_Percent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Completion Status --></label>
+        <name>CCMI__Completion_Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>CCMI__Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- The desired start date for the Task. May be overridden if the parent task ends after the desired start date. --></help>
+        <label><!-- Desired Start Date --></label>
+        <name>CCMI__Desired_Start__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of days the Task is expected to take. (excluding weekends) --></help>
+        <label><!-- Duration --></label>
+        <name>CCMI__Duration__c</name>
+    </fields>
+    <fields>
+        <help><!-- The calculated end date of the Task, derived from the calculated start date and the calculated duration. If this Task has a completed date, it supersedes this value. --></help>
+        <label><!-- End Date (Calculated) --></label>
+        <name>CCMI__End__c</name>
+    </fields>
+    <fields>
+        <label><!-- Estimated Hours --></label>
+        <name>CCMI__Estimated_Hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hourly Rate --></label>
+        <name>CCMI__Hourly_Rate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Late --></label>
+        <name>CCMI__IsLate__c</name>
+    </fields>
+    <fields>
+        <help><!-- The Phase that the current Task is a part of. --></help>
+        <label><!-- Phase --></label>
+        <name>CCMI__Milestone_Phase__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The milestone project that this task is related to --></help>
+        <label><!-- Project --></label>
+        <name>CCMI__Milestone_Project__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The calculated end date of this Task&apos;s parent. --></help>
+        <label><!-- Parent End Date --></label>
+        <name>CCMI__Parent_End__c</name>
+    </fields>
+    <fields>
+        <help><!-- The Task that the current Task is dependent on. --></help>
+        <label><!-- Parent Task --></label>
+        <lookupFilter>
+            <errorMessage><!-- Parent tasks must be from the same project --></errorMessage>
+        </lookupFilter>
+        <name>CCMI__Parent__c</name>
+        <relationshipLabel><!-- Milestone Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Show in External View --></label>
+        <name>CCMI__Show_External__c</name>
+    </fields>
+    <fields>
+        <help><!-- The calculated start date of the Task, derived from the Desired Start Date and, if there is a parent Task, the parent Task&apos;s calculated end date. --></help>
+        <label><!-- Start Date (Calculated) --></label>
+        <name>CCMI__Start__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status Enum --></label>
+        <name>CCMI__Status_Enum__c</name>
+    </fields>
+    <fields>
+        <help><!-- The status of the Task. This field is manually set. --></help>
+        <label><!-- Status --></label>
+        <name>CCMI__Status__c</name>
+        <picklistValues>
+            <masterLabel>Completed</masterLabel>
+            <translation><!-- Completed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>In Progress</masterLabel>
+            <translation><!-- In Progress --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Started</masterLabel>
+            <translation><!-- Not Started --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>On Hold</masterLabel>
+            <translation><!-- On Hold --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The reason for the current Timeline Health status. --></help>
+        <label><!-- Timeline Health Reason --></label>
+        <name>CCMI__Timeline_Health_Reason__c</name>
+    </fields>
+    <fields>
+        <help><!-- The health of the Task as determined by the Status, Start Date, and End Date of the Task. See the &apos;Timeline Health Reason&apos; for more information. --></help>
+        <label><!-- Timeline Health --></label>
+        <name>CCMI__Timeline_Health__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Completed Sub Tasks --></label>
+        <name>CCMI__Total_Completed_Sub_Tasks__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Sub Tasks --></label>
+        <name>CCMI__Total_Sub_Tasks__c</name>
+    </fields>
+    <fields>
+        <help><!-- The type of the Task --></help>
+        <label><!-- Type --></label>
+        <name>CCMI__Type__c</name>
+        <picklistValues>
+            <masterLabel>Legals</masterLabel>
+            <translation><!-- Legals --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Marketing</masterLabel>
+            <translation><!-- Marketing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Operations</masterLabel>
+            <translation><!-- Operations --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sales</masterLabel>
+            <translation><!-- Sales --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Entered Hours --></label>
+        <name>CCMI__Worked_Hours__c</name>
+    </fields>
+    <layouts>
+        <layout>Milestone Task Layout</layout>
+        <sections>
+            <label><!-- Dates and Duration --></label>
+            <section>Dates and Duration</section>
+        </sections>
+        <sections>
+            <label><!-- Dependency Details --></label>
+            <section>Dependency Details</section>
+        </sections>
+        <sections>
+            <label><!-- Work --></label>
+            <section>Work</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Tasks must start on a weekday --></errorMessage>
+        <name>CCMI__Cannot_Start_on_Weekend</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Tasks must have a duration of at least 1 day --></errorMessage>
+        <name>CCMI__Must_have_Duration</name>
+    </validationRules>
+</CustomObjectTranslation>

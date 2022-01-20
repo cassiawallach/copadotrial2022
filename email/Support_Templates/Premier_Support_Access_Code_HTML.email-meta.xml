@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>For Premier Support On Boarding use.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Support_Emails_Letterhead</letterhead>
+    <name>Premier Support Access Code provisioning</name>
+    <style>freeForm</style>
+    <subject>Premier Support Access Code</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+Welcome to Copado Premier Support.
+
+Here is your Premier Access Code: {!Entitlement.Access_Code__c}
+
+Valid from {!Entitlement.StartDate} to {!Entitlement.EndDate}.
+
+Please make a note of it as Copado users will need to enter the Premier Access Code in order to be routed to Premier Support. Cases received without an Access Code will be routed through the Standard Support process.
+
+
+This is the process to log a Case with Copado Support:
+
+1. Users have to go to http://copa.do/support
+2. Search for existing Solutions (find a solution faster if available)
+3. Log a case and make sure the Premier Access Code field is filled with the provided Access Code above.
+
+
+Please find the Premier Support terms and conditions for your reference here:
+
+https://copado.my.salesforce.com/sfc/p/b0000000YN5R/a/b0000000GxD1/6LKpd6eOEWWQcywLrk3D3dUKbLACJPS6D_ct4kVziOQ
+
+Have a great day.
+
+Copado Premier Support Team</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

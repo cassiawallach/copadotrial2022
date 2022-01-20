@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sending out Plan Expiration email.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Copado_default</letterhead>
+    <name>Multi Year Opportunity</name>
+    <style>freeForm</style>
+    <subject>Plan Expiring soon.</subject>
+    <textOnly>{!Opportunity.Account} invoice is due as per the renewal period of {!Opportunity.CloseDate}
+
+Please create the Proforma invoice of the multi-year opportunity {!Opportunity.Name} {!Opportunity.Link}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

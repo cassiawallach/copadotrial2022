@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <customButtons>copado__Manage_Metadata</customButtons>
     <customButtons>copado__Generate_New_Version</customButtons>
-    <customButtons>copado__Manage_Org_Definition_Dependencies</customButtons>
+    <customButtons>copado__Manage_Metadata</customButtons>
+    <customButtons>copado__Manage_Package_Selection</customButtons>
     <customButtons>copado__Generate_Project_Definition_File</customButtons>
+    <customButtons>copado__Manage_Org_Definition_Dependencies</customButtons>
+    <excludeButtons>Clone</excludeButtons>
+    <excludeButtons>PrintableView</excludeButtons>
+    <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -16,15 +20,9 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>copado__Artifact_Version__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>copado__Description__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>RecordTypeId</field>
@@ -34,6 +32,20 @@
                 <field>copado__Package_Type__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Package_Namespace__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Target_Dev_Hub_Org__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Sfdc_Login_Url__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
                 <behavior>Required</behavior>
                 <field>copado__Org_Credential__c</field>
             </layoutItems>
@@ -42,8 +54,20 @@
                 <field>copado__Artifact_Repository__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>copado__Target_Dev_Hub_Org__c</field>
+                <behavior>Edit</behavior>
+                <field>copado__No_Namespace__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Package_Id__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Artifact_Version__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Source_Api_Version__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -52,41 +76,10 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Package Details</label>
+        <label>Metadata</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>copado__Package_Id__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__No_Namespace__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__Package_Namespace__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__Sfdc_Login_Url__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>copado__Source_Api_Version__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Package Metadata Content</label>
-        <layoutColumns>
-            <layoutItems>
-                <height>350</height>
+                <height>400</height>
                 <page>copado__ArtifactMetadata</page>
                 <showLabel>false</showLabel>
                 <showScrollbars>true</showScrollbars>
@@ -97,16 +90,22 @@
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>false</editHeading>
+        <detailHeading>false</detailHeading>
+        <editHeading>true</editHeading>
         <label>System Information</label>
         <layoutColumns>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>CreatedById</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>LastModifiedById</field>
@@ -125,24 +124,18 @@
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
-        <excludeButtons>New</excludeButtons>
+        <excludeButtons>MassChangeOwner</excludeButtons>
         <fields>NAME</fields>
-        <fields>copado__Version_number__c</fields>
-        <fields>copado__Branch__c</fields>
-        <fields>copado__Tag__c</fields>
         <fields>copado__Is_released__c</fields>
+        <fields>copado__Package_Version_Id__c</fields>
+        <fields>copado__Tag__c</fields>
+        <fields>copado__Version__c</fields>
         <relatedList>copado__Artifact_Version__c.copado__Artifact__c</relatedList>
+        <sortField>copado__Version__c</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>copado__Artifact_Dependency__c.copado__Dependent_Artifact__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>copado__Artifact_Dependency__c.copado__Depending_Artifact__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
@@ -150,7 +143,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0Y000005Vd9D</masterLabel>
+        <masterLabel>00h0N00000Xa012</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

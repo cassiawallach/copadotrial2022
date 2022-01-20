@@ -1,0 +1,19 @@
+Dear {!Contact.FirstName},
+
+We have evaluated your case request and determined that the issue raised is not related to Copado.  Deployment support is not offered by our team and we would encourage you to contact Salesforce.com Premier Support for such queries.  We will be closing this case, however, if you have any other issues relating to Copado we would be more than happy to help you.
+
+Whilst we are unable to help you with this support request, we hope that the below sources of information will be useful to you.
+http://salesforce.stackexchange.com/
+https://help.salesforce.com/home
+https://developer.salesforce.com/en/
+
+
+Case Number: {!Case.CaseNumber} 
+Case Subject: {!Case.Subject} 
+
+
+Kind regards, 
+
+{! IF(User.Username=='support_team@copa.do', '', User.Name) } 
+
+{!Case.Thread_Id}

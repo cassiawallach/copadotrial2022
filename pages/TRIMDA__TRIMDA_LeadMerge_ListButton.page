@@ -1,0 +1,40 @@
+<apex:page standardController="Lead" recordSetVar="leads" extensions="TRIMDA.TRIMDA_LeadMergeBtn_Controller" action="{!MergeSelected}">
+<!-- TRIMDA_LeadMerge_ListButton -->    
+<!--<apex:page standardController="Lead" recordSetVar="contacts" extensions="TRIMDA.TRIMDA_LeadMergeBtn_Controller" action="{!MergeSelected}">-->
+<apex:slds />   
+<apex:form >
+<div style="height: 24rem;">
+  <section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
+    <div class="slds-modal__container">
+      <header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
+         
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick="javascript:sforce.one.back(true);" title="Close">
+          <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.salesforcelightningdesignsystem, '/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+          </svg>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+		
+        <h2 class="slds-text-heading_medium" id="prompt-heading-id">
+            Merge Leads
+          </h2>
+      </header>
+      <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+        <apex:pageMessages escape="false" id="messagesPrompt" />
+          <!--
+		  Mode: {!mode}<br />
+          myLeads.size: {!myLeads.size}  <br />
+          myLead.id: {!myLead.id}  
+		 -->
+      </div>
+      <footer class="slds-modal__footer slds-theme_default">
+        <button class="slds-button slds-button_neutral"  onclick="javascript:sforce.one.back(true);" style="{!If($User.UIThemeDisplayed != 'Theme4d','display:none','')}">Okay</button>
+        <apex:commandButton action="{!retURL}" styleclass="slds-button slds-button_neutral" value="OK" rendered="{!$User.UIThemeDisplayed !='Theme4d'}" />
+        <!--<apex:commandButton action="{!MergeSelected}" styleclass="slds-button slds-button_neutral" value="merge"  />-->
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</div>
+ </apex:form>
+</apex:page>

@@ -147,7 +147,7 @@
     <description>Overall object for capturing the project details.</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -156,16 +156,28 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Objective__c</fullName>
+        <externalId>false</externalId>
+        <label>Objective</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__Deployment_Flow__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>If working with Copado Change Management, the Project must be linked to a Pipeline.</inlineHelpText>
         <label>Pipeline</label>
         <referenceTo>copado__Deployment_Flow__c</referenceTo>
         <relationshipLabel>Projects</relationshipLabel>
         <relationshipName>Projects</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -176,6 +188,7 @@
         <externalId>false</externalId>
         <label>Description</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
@@ -187,6 +200,7 @@
         <externalId>false</externalId>
         <label>End Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -197,6 +211,7 @@
         <externalId>false</externalId>
         <label>Exclude Tabs from Promotion Page</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MultiselectPicklist</type>
@@ -230,6 +245,7 @@
         <externalId>false</externalId>
         <inlineHelpText>When this field is checked, Copado will index the metadata selected against the user stories into the User Story Metadata custom object. Indexed metadata can be used for reporting and compliance, and it&apos;s also used by Copado overlap awareness feature.</inlineHelpText>
         <label>Index Metadata</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -240,6 +256,7 @@
         <externalId>false</externalId>
         <label>Start Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -250,6 +267,7 @@
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -279,110 +297,77 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
-    <fields>
-        <fullName>copadoccmint__Copado_Integration_Setting__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Copado Integration Setting</label>
-        <referenceTo>copadoccmint__Copado_Integration_Setting__c</referenceTo>
-        <relationshipLabel>Projects</relationshipLabel>
-        <relationshipName>Projects</relationshipName>
-        <required>true</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>copadoccmint__Enable_Community_User__c</fullName>
-        <defaultValue>false</defaultValue>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <inlineHelpText>Enable to sync User Stories assigned to community users.</inlineHelpText>
-        <label>Enable Community Users</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>copadoccmint__Enable_Logs__c</fullName>
-        <defaultValue>false</defaultValue>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <inlineHelpText>If you are fetching more then 500 records from the third party platform, we recommend you to disable this checkbox to be able to prevent heap size too large issue.</inlineHelpText>
-        <label>Enable Logs</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>copadoccmint__JQL_Extended_Filter__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <inlineHelpText>If you want to add an additional filter to your JIRA callout, you can just modify this field.
-Usage exp: issueType=Story and resolution=Duplicate</inlineHelpText>
-        <label>JQL Extended Filter</label>
-        <length>255</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>copadoccmint__Project_External_Id__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Project External Id</label>
-        <length>255</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>copadoccmint__Sprint_Per_Batch_Chunk_Size__c</fullName>
-        <defaultValue>50</defaultValue>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <inlineHelpText>If in case, you are getting too many callout issue due to more number of User Stories per Sprint or due to more number of sprint.
-    You can reduce the batch size in this field.</inlineHelpText>
-        <label>Sprint Per Batch Chunk Size</label>
-        <precision>3</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>copadoccmint__Team_Info__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <inlineHelpText>Comma separated Team Name/Id to fetch Team sprints. Exp: Frontend Team,Backend Team,QA Team</inlineHelpText>
-        <label>Team Info</label>
-        <length>255</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>copadoccmint__Workspace_Id__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Workspace Id</label>
-        <length>255</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
     <label>Project</label>
+    <listViews>
+        <fullName>APO_Projects</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Description__c</columns>
+        <columns>copado__Deployment_Flow__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>copado__End_Date__c</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <columns>copado__Index_Metadata__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>APO -</value>
+        </filters>
+        <label>APO Projects</label>
+        <sharedTo>
+            <group>APO_Release_Team</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>All_IT_Ops_Projects</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>copado__End_Date__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>copado__Project__c.IT_Operations</value>
+        </filters>
+        <label>All IT Ops Projects</label>
+        <sharedTo>
+            <role>Director_IT_Ops</role>
+            <role>IT_Ops_Team_Member</role>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Copado_Work_Management_Project</fullName>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>copado__Project__c.Copado_Work_Management_Project</value>
+        </filters>
+        <label>Copado Work Management Projects</label>
+    </listViews>
+    <listViews>
+        <fullName>Dev_QA_Open_Projects</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Description__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Deployment_Flow__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>equals</operation>
+            <value>Draft,Planned,In progress</value>
+        </filters>
+        <label>Dev/QA Open Projects</label>
+    </listViews>
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
@@ -390,16 +375,144 @@ Usage exp: issueType=Story and resolution=Duplicate</inlineHelpText>
         <columns>copado__End_Date__c</columns>
         <columns>copado__Status__c</columns>
         <columns>copado__Deployment_Flow__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>equals</operation>
+            <value>Planned,In progress</value>
+        </filters>
         <label>All</label>
-        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Project Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Projects</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Copado_Work_Management_Project</fullName>
+        <active>true</active>
+        <label>Copado Work Management Project</label>
+        <picklistValues>
+            <picklist>copado__Exclude_Tabs_from_Promotion_Page__c</picklist>
+            <values>
+                <fullName>Promotion User Story Metadata</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selenium Test</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Static Code Analysis Summary</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>copado__Status__c</picklist>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>In progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Default</fullName>
+        <active>true</active>
+        <description>Default Project Record Type based on Master</description>
+        <label>Default</label>
+        <picklistValues>
+            <picklist>copado__Exclude_Tabs_from_Promotion_Page__c</picklist>
+            <values>
+                <fullName>Promotion User Story Metadata</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selenium Test</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Static Code Analysis Summary</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>copado__Status__c</picklist>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>In progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>IT_Operations</fullName>
+        <active>true</active>
+        <description>Projects Exclusive to IT Operations</description>
+        <label>IT Operations</label>
+        <picklistValues>
+            <picklist>copado__Exclude_Tabs_from_Promotion_Page__c</picklist>
+            <values>
+                <fullName>Promotion User Story Metadata</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selenium Test</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Static Code Analysis Summary</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>copado__Status__c</picklist>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>In progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
     <searchLayouts>
         <customTabListAdditionalFields>copado__Start_Date__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__End_Date__c</customTabListAdditionalFields>
@@ -419,28 +532,6 @@ Usage exp: issueType=Story and resolution=Duplicate</inlineHelpText>
         <searchResultsAdditionalFields>copado__Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Deployment_Flow__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
-    <webLinks>
-        <fullName>copadoccmint__Sync_External_User_Stories</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <linkType>url</linkType>
-        <masterLabel>Sync External User Stories</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <url>/apex/copadoccmint__SyncUserStories?pid={!copado__Project__c.Id}&amp;isSprint=false</url>
-    </webLinks>
-    <webLinks>
-        <fullName>copadoccmint__Sync_External_User_Stories_With_Sprint</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <linkType>url</linkType>
-        <masterLabel>Sync External User Stories With Sprint</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <url>/apex/copadoccmint__SyncUserStories?pid={!copado__Project__c.Id}&amp;isSprint=true</url>
-    </webLinks>
 </CustomObject>

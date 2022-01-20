@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_STAGE_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_CREATED_DATE</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_OWNER_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_DESCRIPTION</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_NEXT_STEP</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>FK_$Opportunity.ACV__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <column>CUST_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>veeva,ncino,ownbackup,digitsec,clayton,elements.cloud</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_OPP_STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Signed Contract Received,Closed Won,Fully Paid</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Partner_Opportunity__c.Partner_Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Technology Partner CW FY 21</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Partner_Opportunity__c@Partner_Opportunity__c.Partner_Opportunity__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>FK_OPP_CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_PREVFY</interval>
+    </timeFrameFilter>
+</Report>

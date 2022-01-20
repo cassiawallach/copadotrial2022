@@ -9,6 +9,15 @@
         <name>copado__OutputFields</name>
     </fieldSets>
     <fields>
+        <label><!-- Release --></label>
+        <name>Release__c</name>
+        <relationshipLabel><!-- Test Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Test Script Title --></label>
+        <name>Test_Script_Title__c</name>
+    </fields>
+    <fields>
         <label><!-- Environment --></label>
         <name>copado__Environment__c</name>
         <relationshipLabel><!-- Test Runs --></relationshipLabel>
@@ -34,6 +43,14 @@
     <fields>
         <label><!-- Status --></label>
         <name>copado__Status__c</name>
+        <picklistValues>
+            <masterLabel>Blocked</masterLabel>
+            <translation><!-- Blocked --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Cancelled</masterLabel>
+            <translation><!-- Cancelled --></translation>
+        </picklistValues>
         <picklistValues>
             <masterLabel>Failed</masterLabel>
             <translation><!-- Failed --></translation>
@@ -83,6 +100,10 @@
             <translation><!-- Production --></translation>
         </picklistValues>
         <picklistValues>
+            <masterLabel>QA</masterLabel>
+            <translation><!-- QA --></translation>
+        </picklistValues>
+        <picklistValues>
             <masterLabel>User Acceptance</masterLabel>
             <translation><!-- User Acceptance --></translation>
         </picklistValues>
@@ -113,6 +134,10 @@
             <translation><!-- Performance --></translation>
         </picklistValues>
         <picklistValues>
+            <masterLabel>QA</masterLabel>
+            <translation><!-- QA --></translation>
+        </picklistValues>
+        <picklistValues>
             <masterLabel>Regression</masterLabel>
             <translation><!-- Regression --></translation>
         </picklistValues>
@@ -134,6 +159,25 @@
         <name>copado__User_Story__c</name>
         <relationshipLabel><!-- Test Runs --></relationshipLabel>
     </fields>
+    <layouts>
+        <layout>Test Execution Layout</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Test Run Results --></label>
+            <section>Test Run Results</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Test script should have steps --></errorMessage>
+        <name>Test_Script_Without_Steps</name>
+    </validationRules>
     <webLinks>
         <label><!-- Copado_DX --></label>
         <name>copado__Copado_DX</name>

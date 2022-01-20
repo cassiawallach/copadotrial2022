@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>トレーニングリソース</value>
+    </caseValues>
+    <fields>
+        <help>このオプションを有効にすると、コンテキストパラメータがリソースURLに渡されます。(例: https://someurl.com/?aid=ASSIGNMENT_ID&amp;tid=TPLAN_ID)</help>
+        <label><!-- Add training parameters to URL --></label>
+        <name>redwing__Add_training_parameters_to_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>redwing__Description__c</name>
+    </fields>
+    <fields>
+        <help>このオプションを有効にすると、リソースURLが、新しいウィンドウではなくIフレーム内にロードされます</help>
+        <label><!-- Display in Iframe --></label>
+        <name>redwing__Display_in_Iframe__c</name>
+    </fields>
+    <fields>
+        <label><!-- Learning --></label>
+        <name>redwing__Learning__c</name>
+        <relationshipLabel><!-- Training Resources --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>タイプが「リソース」の学習オブジェクトは、起動時にデフォルトで「完了済み」とマークされます。完了をリソースURLに委任する場合は、このオプションを有効にします</help>
+        <label><!-- Delegate assignment completion --></label>
+        <name>redwing__Prevent_completion_on_launch__c</name>
+    </fields>
+    <fields>
+        <help>この学習に使用する学習リソースのURL (例: https://someurl.com)</help>
+        <label><!-- Resource URL --></label>
+        <name>redwing__Resource_URL__c</name>
+    </fields>
+    <layouts>
+        <layout>Training Resource Layout</layout>
+        <sections>
+            <label>カスタムリンク</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>オプション情報</label>
+            <section>Optional Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>トレーニングリソースタイトル</nameFieldLabel>
+</CustomObjectTranslation>

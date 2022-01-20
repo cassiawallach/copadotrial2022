@@ -1,0 +1,24 @@
+<apex:page showHeader="false" sidebar="false" controller="sixsense.PostInstallFormVFC">
+    <apex:stylesheet value="{!URLFOR($Resource.sixsense__SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:pageMessages />
+    <div class="slds">
+        <apex:form styleClass="slds-form--horizontal">
+
+
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="{!$Component.APIKey}">6sense API Key</label>
+                <div class="slds-form-element__control">
+                    <apex:inputText id="APIKey" styleClass="slds-input" value="{!apiKey}" html-placeholder="Please Enter API Key Here" />
+                </div>
+            </div>
+
+            <div class="slds-form-element">
+                <apex:commandLink styleClass="slds-button slds-button--brand" value="Save" action="{!save}" />
+            </div>
+            
+        </apex:form>
+        
+        <a class="slds-button slds-button--brand" href="/0PS?setupid=PermSets">Set up Permission Sets</a>
+    </div>
+
+</apex:page>

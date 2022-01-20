@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>CDF1:SUM
+/
+QUANTITY:SUM</calculatedFormula>
+        <datatype>currency</datatype>
+        <description>The weighted average Sales Price value by product family</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Product Family Weighted Average</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <acrossGroupingContext>FAMILY</acrossGroupingContext>
+        <calculatedFormula>QUANTITY:SUM / PARENTGROUPVAL(QUANTITY:SUM,FISCAL_YEAR,Opportunity.Fiscal_Quarter__c)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA2</developerName>
+        <downGroupingContext>FISCAL_YEAR</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>SUM Product Quantity as % of Fiscal Qrtr</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>QUANTITY:SUM/OPPORTUNITY_ID:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA5</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Licenses/Deal</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_2659346</developerName>
+        <masterLabel>Account Sales Group</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>ACCOUNT_OWNER</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Maci Hansen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <value>Select</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <value>Summit</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <value>Europe</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_65290566</developerName>
+        <masterLabel>Deal Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>TYPE</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Auto-recharge</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Recurly order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Existing Business</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <value>Renewals</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Multi-year</sourceValue>
+            </sourceValues>
+            <value>Renewals (Multi-year)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>Expansion (new contract)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Credit Order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free credits</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Partner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Growth</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Basic - Annual</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Premium - Annual</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Basic - Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Premium - Monthly</sourceValue>
+            </sourceValues>
+            <value>New Business</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <value>Add-on (existing contract)</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_67370833</developerName>
+        <masterLabel>Macro Industry</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>INDUSTRY</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Banking and Finance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Insurance</sourceValue>
+            </sourceValues>
+            <value>Financial Services (FINS)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Biotechnology, Pharmaceuticals and Medicine</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Healthcare</sourceValue>
+            </sourceValues>
+            <value>Health and Life Sciences (HLS)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Computers</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Electronics</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>High Tech</sourceValue>
+            </sourceValues>
+            <value>High Tech (HT)</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Public Sector and Government</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Automotive and Transportation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Telecommunications and Publishing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Education</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Aerospace and Defense</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Utilities and Energy</sourceValue>
+            </sourceValues>
+            <value>Public &amp; Government (PG)</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_56793434</developerName>
+        <masterLabel>Opportunity Sales Group</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>FULL_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Maci Hansen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Simon Bishop</sourceValue>
+            </sourceValues>
+            <value>Select</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>LeRoy Brown</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matthew Maiuri</sourceValue>
+            </sourceValues>
+            <value>Summit</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Phil Lelliott</sourceValue>
+            </sourceValues>
+            <value>Europe</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Jenna Greenfield</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Martin Ryder</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Victoria Murillo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Galina Knop</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Rachel Wong</sourceValue>
+            </sourceValues>
+            <value>Account Managers</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_7689976</developerName>
+        <masterLabel>Product Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>PRODUCT_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Advanced Data Deployer</sourceValue>
+            </sourceValues>
+            <value>ADD</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>DevOps360</sourceValue>
+            </sourceValues>
+            <value>DevOps 360</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado User</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Admin</sourceValue>
+            </sourceValues>
+            <value>User &amp; Admin</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA1</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Unique</aggregate>
+            <axisBinding>y2</axisBinding>
+            <column>OPPORTUNITY_ID</column>
+        </chartSummaries>
+        <chartType>VerticalColumnGroupedLine</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>FISCAL_YEAR</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>FAMILY</secondaryGroupingColumn>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>true</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Are product family prices decreasing?</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <aggregateTypes>Unique</aggregateTypes>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>QUANTITY</field>
+    </columns>
+    <columns>
+        <field>UNIT_PRICE.CONVERT</field>
+    </columns>
+    <columns>
+        <field>TOTAL_PRICE.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Unique</aggregateTypes>
+        <field>OPPORTUNITY_ID</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>BucketField_65290566</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_OWNER</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_TYPE</field>
+    </columns>
+    <columns>
+        <field>Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <field>INDUSTRY</field>
+    </columns>
+    <columns>
+        <field>PRODUCT_NAME</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>UNIT_PRICE.CONVERT*QUANTITY</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>CSF</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>A look at weighted average prices by product family</description>
+    <filter>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer,Add-on,New Business Add-on</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>OPPORTUNITY_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Informa - OwnBackup 2250 Licences</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.Fiscal_Quarter__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>FAMILY</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_56793434</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FISCAL_YEAR</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>QoQ: CW Breakdowns by Oppty Team v2</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closedwon</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>OpportunityProduct</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_PREVCURFY</interval>
+    </timeFrameFilter>
+</Report>

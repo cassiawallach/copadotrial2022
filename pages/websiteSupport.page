@@ -1,0 +1,190 @@
+<apex:page id="AboutUs" showHeader="false" sidebar="false" standardStylesheets="false">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+		<head>
+			<title>Copado Solutions Support</title>
+			<meta name="description" content="" />
+			<meta name="keywords" content="" />
+            <c:websiteHeadTag />          
+        </head>
+		<body class="homepage">
+			<style>
+            	.solutionSearchText{
+                	width:50%;
+                }
+            </style>
+            <div id="header-wrapper">
+                <c:websiteHeader />
+                <script>setActiveTab('Support');</script>
+    
+                <div id="banner">
+                    <div class="container">
+                        <header>
+                        	<span class="byline">Learn all about Copado's capabilities<br /><br /><br />
+                        		<input type="text" id="searchBox" placeholder="Search for a solution" class="solutionSearchText"/>
+                            	<a href="#" onclick="doSearch();">
+                            		<i class="fa fa-search" aria-hidden="true" style="font-size:4px;padding-left:5px;"></i>
+                            	</a>
+                            </span>
+                        </header>
+                        <a href="http://docs.copa.do" class="button medium" target="_blank">Documentation</a>
+                    </div>
+                    <script>
+                        function doSearch(){
+                            var s = document.getElementById('searchBox').value;
+                            window.location = '/SelfServiceSupport?q='+s; 
+                        }
+                        document.getElementById('searchBox').addEventListener('keydown', function(e) {
+                            if (!e){ var e = window.event; }
+                        
+                            // Enter is pressed
+                            if(e.keyCode == 13){ doSearch(); }
+                        }, false);
+                    </script>
+                </div>
+            </div>
+         
+			<div id="main">
+                <div class="container">
+                    <section>
+                        <header>
+                            <h2>Support</h2>
+                        </header>
+                    </section>
+                    <div style="text-align:left; width:100%;">
+                        <h2>Get in touch with us for support</h2>
+                        <p>For any technical queries please use the below resources or quickly get the answer you are looking for or log a case with 
+                                        our friendly support team.</p>
+                        <div class="divider"></div>
+
+                        <h2>Frequently Asked Questions</h2>
+                        <div class="row">
+                        	<section class="6u">
+                            	<div class="faq-item">
+                                    <h5>Will you store my metadata or data?</h5>
+                                    <p>We will NOT store your metadata or data. All your metadata and data resides on your Salesforce orgs and/or your git repositories. Copado will connect to these on the fly to perform the requested jobs and dispose of any temporary files.</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>Will you store my username and password?</h5>
+                                    <p>We will NOT store your username, password or token. Copado uses industry standard OAuth2 to securely manage the connection to your Salesforce orgs.</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>Where do I need to install Copado, in a sandbox or production Org?</h5>
+                                    <p>Just like you would do it with other AppExchange applications, for evaluation purposes sandboxes are OK. For production usage, you will need to install Copado on a Production instance.  Remember that there are limitations to sandboxes like storage space or api usage limits.  In addition, any data created in a sandbox will not be transferred to production once you go live.</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>Will installing Copado on my production Org interfere with my existing setup?</h5>
+                                    <p>No. We have architected Copado in such a way to be 100% scalable and handle Salesforce.com’s biggest customers.  We don’t consume your existing batch processes, etc.. so you can safely install this within your production Org.</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>Do I need to install Copado on multiple Orgs?</h5>
+                                    <p>No, you don’t have to install Copado on all the Orgs that you need to connect to. Copado is installed ONLY once, and from that single installation you will be able to handle unlimited amount of environments.</p>
+                                 </div>
+                            </section>
+                            <section class="6u">
+                            	<div class="faq-item">
+                                    <h5>Where can I find the full documentation of Copado?</h5>
+                            <p>Please visit the following site: <a href="http://docs.copa.do">docs.copa.do</a>
+</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>Where can I find pricing information?</h5>
+                            <p>Please visit the following site: <a href="Pricing">www.copa.do/Pricing</a>
+</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>Is Copado compliant with the latest European data protection laws?</h5>
+                                    <p>Yes. Even though Salesforce (and Heroku.com, a salesforce.com company) has updated their license agreement with an Addendum that is compatible with the latest European laws, Copado has replicated their entire infrastructure in european heroku instances. By default, all customers go to the US instance, however please contact us to make the switch to EU.</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>What are Copado IP addresses?</h5>
+                                    <p>If you have IP restrictions on your Salesforce orgs, you will need to whitelist these IP addresses
+									<ul>
+                                        <li><code>54.88.136.216</code></li>
+                                        <li style="padding-top:5px;"><code>54.84.188.199</code></li>
+                                    </ul>
+								</p>
+                                 </div>
+                                 <div class="faq-item">
+                                    <h5>What are EU Copado IP Addresses</h5>
+                                    <p>
+                                    <ul>
+                						<li><code>52.16.121.13</code></li>
+                                        <li style="padding-top:5px;"><code>54.154.218.66</code></li>
+                                    </ul>
+				                </p>
+                                 </div>
+                            </section>
+                        </div>
+                        <div class="row">
+                        	<form id="f_w2c" action="https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8" method="POST" class="contactForm" onsubmit="addH()">
+                                <input type="hidden" name="orgid" value="" id="orgid"/>
+                                <input type="hidden" name="retURL" value="" id="retURL"/>
+    
+                                <div class="slds-form--horizontal">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="name">Name</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="name" maxlength="40" name="name" size="20" type="text" class="slds-input" placeholder="Name" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="company">Company</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="company" maxlength="40" name="company" size="20" type="text" class="slds-input" placeholder="Company" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="email">Email</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="email" maxlength="40" name="email" size="20" type="email" class="slds-input" placeholder="Email" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="00Nb000000ASfoK">Premier Access Code</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="00Nb000000ASfoK" maxlength="16" name="00Nb000000ASfoK" size="20" type="number" class="slds-input" placeholder="Premier Access Code" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="phone">Phone</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="phone" maxlength="40" name="phone" size="20" type="phone" class="slds-input" placeholder="Phone" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="subject">Subject</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="subject" maxlength="40" name="subject" size="20" type="text" class="slds-input" placeholder="Subject" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="description">Description</label>
+                                        <div class="slds-form-element__control">
+                                            <textarea id="description" name="description" class="slds-textarea"></textarea>
+                                        </div>
+                                    </div>
+                					<div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="submit">&nbsp;</label>
+                                        <div class="slds-form-element__control">
+                                            <input type="submit" name="submit" class="slds-button slds-button--brand" style="width:100%;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <script>
+                                function addH() {
+                                    if('{!$Organization.Id}' !== '00Db0000000YN5REAW'){
+                                    	document.getElementById('f_w2c').action = "https://test.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8";
+                                    }
+                                    document.getElementById('orgid').value='{!$Organization.Id}';
+                                    document.getElementById('retURL').value='http://www.copa.do/ThankYou?kw=support';
+                                }
+                            </script>
+                        </div>
+					</div>
+				</div>
+			</div>
+            <c:websiteFooter />
+		</body>
+	</html>
+</apex:page>

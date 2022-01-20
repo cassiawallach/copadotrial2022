@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>LMSプラグイン</value>
+    </caseValues>
+    <fields>
+        <label><!-- Description --></label>
+        <name>redwing__Description__c</name>
+    </fields>
+    <fields>
+        <help>このプラグインが実行される順序</help>
+        <label><!-- Order --></label>
+        <name>redwing__Order__c</name>
+    </fields>
+    <fields>
+        <label><!-- Plugin Name --></label>
+        <name>redwing__Plugin_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Plugin Type --></label>
+        <name>redwing__Plugin_Type__c</name>
+        <picklistValues>
+            <masterLabel>Learning</masterLabel>
+            <translation>学習</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>このプラグインが実行される学習記録タイプ名</help>
+        <label><!-- Record Type --></label>
+        <name>redwing__Record_Type__c</name>
+    </fields>
+    <layouts>
+        <layout>LMS Plugin Layout</layout>
+        <sections>
+            <label>カスタムリンク</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>学習プラグイン情報</label>
+            <section>Learning Plugin Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>LMSプラグインID</nameFieldLabel>
+    <validationRules>
+        <errorMessage><!-- Record Type must be defined for Learning Plugins --></errorMessage>
+        <name>redwing__RecordType_Required</name>
+    </validationRules>
+</CustomObjectTranslation>

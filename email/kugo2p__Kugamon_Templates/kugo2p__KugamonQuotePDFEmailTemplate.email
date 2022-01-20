@@ -1,0 +1,22 @@
+<messaging:emailTemplate subject="Your Quote: {!relatedTo.Name}" recipientType="Contact" relatedToType="kugo2p__SalesQuote__c">
+
+    <messaging:plainTextEmailBody >
+Dear  {!relatedTo.ContactBuying__r.Name},                
+        
+Thank you for your interest in our offering. Please review the attached quote.
+        
+Feel free to contact me if you have any questions.
+        
+Regards,
+        
+{!$User.FirstName} {!$User.LastName} 
+{!$Organization.Name} 
+{!$User.City} | O: {!$User.Phone} | Email: {!$User.Email}
+    </messaging:plainTextEmailBody>
+    
+    <messaging:attachment renderAs="pdf" filename="{!relatedTo.Name}">    
+        <c:QuotePDF quoteId="{!relatedTo.Id}" />                           
+    </messaging:attachment>
+    
+
+</messaging:emailTemplate>

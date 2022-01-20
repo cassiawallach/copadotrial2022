@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_CNTC_FIRST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_CNTC_EMAIL</field>
+    </columns>
+    <columns>
+        <field>redwing__Training_Plan_Assignment__c.redwing__Status__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>This is the report used to send communication to the Implementation I Certification holders or those signed up, informing them of the new name change to Consultant Certification.  Email was sent to users on 8/26/20.</description>
+    <filter>
+        <criteriaItems>
+            <column>redwing__Training_Plan_Assignment__c.redwing__Training_Plan__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Consultant Certification</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Learning Plan Consultant Contacts</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$redwing__Training_Plan_Assignment__c@redwing__Training_Plan_Assignment__c.redwing__Contact__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>CUST_NAME</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>redwing__Training_Plan_Assignment__c.redwing__Completed_On__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

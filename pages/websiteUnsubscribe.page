@@ -1,0 +1,37 @@
+<apex:page id="thankYou" showHeader="false" sidebar="false" standardStylesheets="false" controller="websiteUnsubscribeController" action="{!unsubscribe}">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+		<head>
+			<title>Copado Solutions - Unsubscribe</title>
+			<meta name="description" content="" />
+			<meta name="keywords" content="" />
+            <c:websiteHeadTag />          
+        </head>
+        
+		<body class="homepage">
+
+            <div id="header-wrapper">
+                <c:websiteHeader />
+    
+                <div id="banner">
+                    <div class="container">
+                        <section>
+                            <apex:outputPanel rendered="{!unsubscribeOk}">
+                            <header>
+                                <h2>You have been successfully unsubscribed</h2>
+                                <span class="byline">You will not receive further emails</span>
+                            </header>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!!unsubscribeOk}">
+                            <header>
+                                <h2>Invalid unsubscribe request</h2>
+                                <span class="byline">Make sure you click the unsubscribe link directly from our email</span>
+                            </header>
+                            </apex:outputPanel>
+                        </section>	
+                    </div>
+                </div>
+            </div>
+            <c:websiteFooter />
+		</body>
+	</html>
+</apex:page>

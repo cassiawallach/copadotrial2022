@@ -1,0 +1,21 @@
+<aura:component>
+  <aura:attribute name="id" type="String" />
+  <aura:attribute name="link" type="String" required="true" />
+  <aura:attribute name="ready" type="Boolean" />
+
+  <div>
+    <a id="{! v.id }" class="{! v.ready ? 'no-hover' : '' }" href="{! v.link }">
+      <img src="{! $Resource.cps_assets + '/Assets/salesforce_logo.png' }" />
+
+      <aura:if isTrue="{! !v.ready }">
+        <p>{! $Label.c.CPS_Connect_Link }</p>
+      </aura:if>
+      <aura:if isTrue="{! v.ready }">
+        <c:cps_wizard_listActionItem
+          text="{! $Label.c.CPS_Connect_Salesforce_Success }"
+          checked="true"
+        />
+      </aura:if>
+    </a>
+  </div>
+</aura:component>

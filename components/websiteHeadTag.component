@@ -1,0 +1,28 @@
+<apex:component id="headTag">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Copado Solutions" />
+    
+    	<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,900italic,400,700,900" rel="stylesheet" type="text/css" />
+        <script>
+        	var staticResourceUrl = '{!URLFOR($Resource.WebsiteCSSTheme, '')}';
+        </script>
+        <!--[if lte IE 8]><script src="{!URLFOR($Resource.WebsiteCSSTheme, 'js/html5shiv.js')}"></script><![endif]-->
+    	<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
+        <apex:includeScript value="{!URLFOR($Resource.WebsiteCSSTheme, 'js/skel.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebsiteCSSTheme, 'js/skel-panels.min.js')}"/>
+       	<script src="{!URLFOR($Resource.WebsiteCSSTheme, 'js/init.js')}"></script>
+        <apex:includeScript value="{!URLFOR($Resource.WebsiteCSSTheme, 'js/owl.carousel.min.js')}"/>
+
+    	<noscript>
+    		<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebsiteCSSTheme, 'css/skel-noscript.css')}" />
+        	<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebsiteCSSTheme, 'css/style.css')}" />
+            <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebsiteCSSTheme, 'css/style-desktop.css')}" />
+        	<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebsiteCSSTheme, 'css/style-mobile.css')}" />
+			<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebsiteCSSTheme, 'css/font-awesome.css')}" />
+        
+        </noscript>  
+</apex:component>

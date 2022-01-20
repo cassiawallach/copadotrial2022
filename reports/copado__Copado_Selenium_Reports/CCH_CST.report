@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.Module__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Theme__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Priority__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>CUST_CREATED_NAME</field>
+    </columns>
+    <columns>
+        <field>CUST_CREATED_DATE</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <booleanFilter>(1 OR (2 AND (4 OR 5 OR 6))) AND 3</booleanFilter>
+        <criteriaItems>
+            <column>FK_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Selenium Testing</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Application</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Rejected,Ready for Testing,Completed,Tested in Base Package,Released,Cancelled,Beta</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.Module__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Selenium Testing</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.Module__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>CCH</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.Module__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Compliance Hub</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CUST_RECORDTYPE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CCH &amp; CST Pending</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Project__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>copado__User_Story__c.copado__Priority__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <fields>
-        <label><!-- Is Org Dependent --></label>
-        <name>cmcSf__IsOrgDependent__c</name>
-    </fields>
-    <fields>
         <help><!-- This is Repository where the Artifact can be stored, in the master branch --></help>
         <label><!-- Package Repository --></label>
         <name>copado__Artifact_Repository__c</name>
@@ -30,7 +26,6 @@
         <name>copado__DefaultPath__c</name>
     </fields>
     <fields>
-        <help><!-- The description of the package --></help>
         <label><!-- Description --></label>
         <name>copado__Description__c</name>
     </fields>
@@ -44,8 +39,7 @@
         <name>copado__No_Namespace__c</name>
     </fields>
     <fields>
-        <help><!-- The credential where the metadata of the Artifact is going to be retrieved from, for unlocked packages and 2GP.
-The credential where the unmanaged package is created from. --></help>
+        <help><!-- Org Credential where the metadata of the Artifact is going to be retrieved from --></help>
         <label><!-- Source Credential --></label>
         <name>copado__Org_Credential__c</name>
         <relationshipLabel><!-- Artifacts --></relationshipLabel>
@@ -65,16 +59,16 @@ The credential where the unmanaged package is created from. --></help>
         <label><!-- Package Type --></label>
         <name>copado__Package_Type__c</name>
         <picklistValues>
-            <masterLabel>First-Generation Package</masterLabel>
-            <translation><!-- First-Generation Package --></translation>
-        </picklistValues>
-        <picklistValues>
             <masterLabel>Second-Generation Package</masterLabel>
             <translation><!-- Second-Generation Package --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Unlocked</masterLabel>
             <translation><!-- Unlocked --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unmanaged</masterLabel>
+            <translation><!-- Unmanaged --></translation>
         </picklistValues>
     </fields>
     <fields>
@@ -252,6 +246,10 @@ The credential where the unmanaged package is created from. --></help>
             <translation><!-- 45.0 --></translation>
         </picklistValues>
         <picklistValues>
+            <masterLabel>46.0</masterLabel>
+            <translation><!-- 46.0 --></translation>
+        </picklistValues>
+        <picklistValues>
             <masterLabel>5.0</masterLabel>
             <translation><!-- 5.0 --></translation>
         </picklistValues>
@@ -281,6 +279,62 @@ The credential where the unmanaged package is created from. --></help>
         <name>copado__Target_Dev_Hub_Org__c</name>
         <relationshipLabel><!-- Packages (Target Dev Hub Org) --></relationshipLabel>
     </fields>
+    <layouts>
+        <layout>Artifact Layout</layout>
+        <sections>
+            <label><!-- Content --></label>
+            <section>Content</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Package Artifact Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Metadata --></label>
+            <section>Metadata</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Package Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Package Details --></label>
+            <section>Package Details</section>
+        </sections>
+        <sections>
+            <label><!-- Package Metadata Content --></label>
+            <section>Package Metadata Content</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>User Story Bundle</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Create Package Version --></label>
+        <name>copado__CreatePackageVersion</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Edit Configuration --></label>
+        <name>copado__EditConfiguration</name>
+    </quickActions>
     <recordTypes>
         <description><!-- Version Control System centric package --></description>
         <label><!-- Git Package --></label>

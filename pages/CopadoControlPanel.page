@@ -1,0 +1,26 @@
+<apex:page id="thePage" controller="CopadoControlPanel">
+
+	<apex:sectionHeader id="header" subtitle="Copado Control Panel" title="Copado Solutions" />
+	<apex:pageMessages id="pageMessages" />
+	<apex:form id="theForm" >
+		<apex:pageBlock id="pb" title="Copado Control Panel">
+			<apex:pageBlockSection id="pbs" columns="1" collapsible="false">
+				<apex:commandButton id="btn_leadconvert" value="Run lead convert batch" action="{!runLeadConvertBatch}" />
+				<apex:commandButton id="btn_syncfeatures" value="Run sync features" action="{!runSyncFeatures}" />
+                <apex:commandButton id="btn_synctips" value="Run sync tips" action="{!runSyncTips}" />
+			</apex:pageBlockSection>
+            <apex:pageBlockSection id="pbs_15-18Converter" columns="1" title="Convert from 15 to 18 characters">
+            	<apex:pageBlockSectionItem >
+                	<apex:outputLabel >Enter 15 Character ID</apex:outputLabel>
+                    <apex:outputPanel >
+                    	<apex:inputText value="{!string15}" />&nbsp;<apex:commandButton value="Convert" action="{!convert15To18}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                	<apex:outputLabel >18 Character ID</apex:outputLabel>
+                    <apex:outputText value="{!string18}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

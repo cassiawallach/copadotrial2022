@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>(SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT:SUM/SBQQ__Quote__c.PS_CPQ_Term_in_Months__c:MAX)*12</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <downGroupingContext>CUST_NAME</downGroupingContext>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Calculated ACV</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_60320600</developerName>
+        <masterLabel>Incl Products</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>SBQQ__QuoteLine__c.SBQQ__Product__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Implementation - Jump Start</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New Customer Credit</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Professional Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Service Hours</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Custom</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Do it For Me</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Enterprise</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Guide Me</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Premier</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Relay Tunnel</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Standard</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Services Package: 10 hours</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Services Package: 25</sourceValue>
+            </sourceValues>
+            <value>Remove</value>
+        </values>
+    </buckets>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>SBQQ__Quote__c.SBQQ__Primary__c</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Quote__c.SBQQ__Opportunity2__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>SBQQ__Quote__c.PS_CPQ_Term_in_Months__c</field>
+    </columns>
+    <columns>
+        <field>CHILD_NAME</field>
+    </columns>
+    <columns>
+        <field>SBQQ__QuoteLine__c.SBQQ__Product__c</field>
+    </columns>
+    <columns>
+        <field>SBQQ__QuoteLine__c.SBQQ__EffectiveStartDate__c</field>
+    </columns>
+    <columns>
+        <field>SBQQ__QuoteLine__c.SBQQ__EffectiveEndDate__c</field>
+    </columns>
+    <columns>
+        <field>SBQQ__QuoteLine__c.SBQQ__Quantity__c</field>
+    </columns>
+    <columns>
+        <field>SBQQ__QuoteLine__c.PS_CPQ_Term_in_Months__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>SBQQ__QuoteLine__c.SBQQ__NetTotal__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>SBQQ__QuoteLine__c.SBQQ__TotalDiscountAmount__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>SBQQ__QuoteLine__c.SBQQ__TotalDiscountRate__c</field>
+    </columns>
+    <crossFilters>
+        <criteriaItems>
+            <column>IsClosed</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <operation>with</operation>
+        <primaryTableColumn>CUST_ID</primaryTableColumn>
+        <relatedTable>Opportunity</relatedTable>
+        <relatedTableJoinColumn>SBQQ__PrimaryQuote__c</relatedTableJoinColumn>
+    </crossFilters>
+    <currency>USD</currency>
+    <description>For Deal Desk</description>
+    <filter>
+        <criteriaItems>
+            <column>SBQQ__Quote__c.SBQQ__Account__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>,Test Account</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>SBQQ__Quote__c.SBQQ__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>In Review</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Month</dateGranularity>
+        <field>SBQQ__Quote__c.SBQQ__StartDate__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>SBQQ__Quote__c.SBQQ__Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CUST_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Quotes - In Review</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>CustomEntityCustomEntity$SBQQ__Quote__c$SBQQ__QuoteLine__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>SBQQ__Quote__c.SBQQ__EndDate__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

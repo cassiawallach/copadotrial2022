@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_90163337</developerName>
+        <masterLabel>Main Theme</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Theme__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Technical Debt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Clean Code</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tango</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Security Issue</sourceValue>
+            </sourceValues>
+            <value>Technical Debt</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Feature - Customer Commitment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Enhancement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - GA MVP</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Internal findings</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Meet Competition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Usability (UX)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Research</sourceValue>
+            </sourceValues>
+            <value>Features</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Bugs</sourceValue>
+            </sourceValues>
+            <value>Bugs</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>HorizontalBarStacked</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>FK_$copado__Sprint__c.copado__Start_Date__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_90163337</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_$copado__Sprint__c.copado__Start_Date__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>2/1/2020</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$copado__Sprint__c.copado__Project__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Application</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Theme__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>release,quality,development,governance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Theme__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>FK_$copado__Sprint__c.copado__Start_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FK_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_90163337</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>FY21/22 - Themes per Quarter</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Sprint__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

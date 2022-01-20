@@ -1,0 +1,251 @@
+<apex:page controller="G2Crowd.G2ReferenceBuilder" tabStyle="G2_Reference_Builder__tab" sidebar="false">
+  <apex:slds />
+  <c:G2_Base_Includes />
+  <c:Segment seg_pageName="Reference Builder"></c:Segment>
+
+  <apex:includeScript value="{!$Resource.G2Crowd__reference_builder_js}" />
+
+  <script type="text/javascript">
+    (function () {
+      if (G2 && G2.app && G2.$) {
+        G2.ReferenceBuilder = {};
+        G2.ReferenceBuilder.vars = {
+          ReferencePages: '{!JSENCODE(ReferencePages)}',
+          ProductList: '{!JSENCODE(ProductList)}',
+          APIToken: '{!APIToken}',
+          isClassic: '{!$User.UIThemeDisplayed == 'Theme3'}',
+          fullAccess: '{!fullAccess }'
+        }
+
+        var event = new Event('readyReferenceBuilder');
+        document.dispatchEvent(event);
+      }
+    })()
+  </script>
+
+  <div class="slds-scope">
+    <div ng-app="G2Crowd" class='G2Crowd'>
+      <div ng-controller="ReferenceBuilder">
+        <div ng-cloak='true' ng-if='HasAccess'>
+          <c:G2Notice />
+          <div ng-cloak='true'>
+            <div style='height: 30px; position: relative;'>
+              <a target='_blank' href='https://www.g2crowd.com' style='position: absolute; top: -10px; right: 36px; z-index: 1;'>
+                <img src='{!$Resource.G2Logo}' style='height: 30px;' />
+              </a>
+            </div>
+            <div class='list-page slds-border_top slds-border_left slds-border_right slds-border_bottom'>
+              <div style='clear: both;'>
+                <div class='headerBar'>
+                  <div class='search-bar' style='margin: 0 0 8px 0'>
+                    <div class='search-icon'>
+                      <svg viewBox="0 0 24 24" id="search" width="100%" height="100%">
+                        <title></title>
+                        <path d="M22.9 20.9l-6.2-6.1c1.3-1.8 1.9-4 1.6-6.4-.6-3.9-3.8-7.1-7.8-7.4C5 .4.4 5 1 10.5c.3 4 3.5 7.3 7.4 7.8 2.4.3 4.6-.3 6.4-1.5l6.1 6.1c.3.3.7.3 1 0l.9-1c.3-.3.3-.7.1-1zM3.7 9.6c0-3.2 2.7-5.9 5.9-5.9 3.3 0 6 2.7 6 5.9 0 3.3-2.7 6-6 6-3.2 0-5.9-2.6-5.9-6z"></path>
+                      </svg>
+                    </div>
+                    <div class='search-input-wrapper'>
+                      <input class='search-input' ng-model="searchText" placeholder='Search G2 References' />
+                    </div>
+                  </div>
+                  <span class='flex-end'>
+                    <button ng-click='startNew()' class="slds-button slds-button_brand">
+                      <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#add')}"></use>
+                      </svg>
+                      Create New Reference
+                    </button>
+                    <div class="slds-form-element" ng-if='renderProduct' style='display: inline-block; margin-left: 16px;'>
+                      <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                          <select ng-model="search.ProductName" class="slds-select" ng-options="p.Name as p.Name for p in SelectProductList">
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-text-body_regular">
+                  <thead>
+                    <tr class="slds-text-title_caps">
+                      <th scope="col">
+                        <div class="slds-truncate" title="Product">Product</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="Title">Title</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="Actions">Actions</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="asset in data.ReferenceList | filter:searchText | customFilter:search">
+                      <td data-label="Product Name">
+                        <div class="slds-truncate" title="{{asset.ProductName}}">{{asset.ProductName}}</div>
+                      </td>
+                      <td data-label="Title">
+                        <div class="slds-truncate" title="{{asset.G2Crowd__Title__c}}">
+                          <a target='_blank' href="{{asset.G2Crowd__URL__c}}">{{asset.G2Crowd__Title__c}}</a>
+                        </div>
+                      </td>
+                      <td data-label="Actions">
+                        <button ng-click='editReference(asset.G2Crowd__G2_ID__c)' class='slds-button'>
+                          <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#edit')}"></use>
+                          </svg>
+                          Edit Reference
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class='edit-page' style='display: none;'>
+              <div class='folder-tabs' style='padding-bottom: 50px;'>
+                <div class='show-on-xsmall no-focus' ng-click='sidenavShow = !sidenavShow' style='padding-right: 8px;'>
+                  <svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#rows')}"></use>
+                  </svg>
+                </div>
+
+                <div style="background: white;" class='sidenav slds-border_right slds-border_left slds-border_top slds-border_bottom' ng-class='{ "sidenav-shown" : sidenavShow === true }'
+                  ng-click='sidenavShow = !sidenavShow'>
+                  <nav class="slds-nav-vertical" aria-label="Sub page">
+                    <div class="slds-nav-vertical__section">
+                      <h2 id="entity-header" class="slds-nav-vertical__title slds-text-title_caps">
+                        <span ng-if='!isEditing'>Create New Reference</span>
+                        <span ng-if='isEditing'>Edit Reference</span>
+                      </h2>
+                      <ul>
+                        <li class="slds-nav-vertical__item" ng-class="{ 'slds-is-active' : steps.selected === 1 }" ng-click='steps.selected = 1'>
+                          <a href="#" class="slds-nav-vertical__action" aria-describedby="entity-header">1. Select Reviews</a>
+                        </li>
+                        <li class="slds-nav-vertical__item" ng-class="{ 'slds-is-active' : steps.selected === 2 }" ng-click='steps.selected = 2'>
+                          <a href="#" class="slds-nav-vertical__action" aria-describedby="entity-header">2. Add Details</a>
+                        </li>
+                        <li class="slds-nav-vertical__item" ng-click='showList()'>
+                          <a href="#" class="slds-nav-vertical__action" aria-describedby="entity-header">Return to List</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </nav>
+                </div>
+                <div style='position: relative; width: 100%;'>
+                  <div class="offcanvas-overlay no-focus" ng-if='sidenavShow == true' ng-click='toggleNav()'></div>
+                  <uib-tabset class='folder-tabs library-styles full-width-tabs slds-border_top slds-border_left slds-border_right slds-border_bottom'
+                    active="steps.selected" vertical="true" type="pills" style="margin-left: 16px;">
+                    <uib-tab index="1" heading="1. Select Reviews">
+                      <c:G2ReviewLibrary pType="Builder" /> </uib-tab>
+                    <uib-tab index="2" heading="2. Add Details">
+                      <form enctype="multipart/form-data" id='uploadForm'>
+                        <div class="slds-form slds-form_stacked" style="margin: 16px; padding-bottom: 50px;">
+                          <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="input-id-01">Reference Page Name</label>
+                            <div class="slds-form-element__control">
+                              <input ng-model='referencePage.type' type="text" class="slds-input" placeholder="Name" />
+                            </div>
+                          </div>
+                          <hr style='margin: 16px 0;' />
+                          <span class="slds-form-element__label" id="file-selector-id">Banner Image
+                          </span>
+                          <div class="slds-form-element__control">
+                            <div class="slds-file-selector slds-file-selector_files" style='display: block;'>
+                              <div class="slds-file-selector__dropzone">
+                                <label class="slds-file-selector__body" for="banner">
+                                  <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#upload')}"></use>
+                                    </svg>Upload Files
+                                  </span>
+                                </label>
+                              </div>
+                              <div class='slds-m-top_medium'>
+                                The banner image should be 1500px by 400px.
+                                <a target='_blank' href="{!$Resource.banner_template}">Download template
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          <input class='hidden' name='banner' id='banner' ng-file-model='referencePage.banner' type='file' />
+                          <div ng-if="referencePage.banner !== undefined || referencePage.banner_url !== undefined">
+                            <br /> Current Banner:
+                            <br />
+                            <img id='banner_image' src='{{referencePage.banner_url}}' width='100%' />
+                          </div>
+                          <hr style='margin: 16px 0' />
+                          <button ng-click="addInput(referencePage.videos)" class="slds-button slds-button_neutral">Add Video Url
+                          </button>
+                          <div class='space-above' ng-repeat='i in getNumber(referencePage.videos.length) track by $index'>
+                            <a href="#" class='slds-m-right_x-small' ng-click="removeInput(referencePage.videos, $index)">X</a>
+                            <input ng-model='referencePage.videos[$index]' type='text' value='' />
+                          </div>
+                          <hr style='margin: 16px 0' />
+                          <button ng-click="addInput(referencePage.uploads)" class="slds-button slds-button_neutral">Add Download
+                          </button>
+                          <div class='space-above' ng-repeat='i in getNumber(referencePage.uploads.length) track by $index' ng-if='referencePage.uploads[$index]._destroy !== true'>
+                            <a href="#" class='slds-m-right_x-small' ng-click="removeInput(referencePage.uploads, $index)">X</a>
+                            <span class="slds-form-element__control">
+                              <div class="slds-file-selector slds-file-selector_files">
+                                <div class="slds-file-selector__dropzone">
+                                  <label class="slds-file-selector__body" for="upload_{{$index}}">
+                                    <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                      <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#upload')}"></use>
+                                      </svg> Upload File
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </span>
+                            <input class='hidden' ng-file-model='referencePage.uploads[$index].file' type='file' id='upload_{{$index}}' name='upload_{{$index}}'
+                            />
+                            <input ng-model='referencePage.uploads[$index].label' type='text' value='' placeholder='Upload Title' />
+                            <a target='_blank' ng-if='referencePage.uploads[$index].url !== undefined' href='{{referencePage.uploads[$index].url}}'>{{referencePage.uploads[$index].label}}</a>
+                            <div ng-if="referencePage.uploads[$index].file.error === undefined">
+                              <span ng-if='uploadMissing(referencePage.uploads[$index])' class='errorNotice'> An upload is required. </span>
+                              <span ng-if='titleMissing(referencePage.uploads[$index])' class='errorNotice'> A title is required. </span>
+                            </div>
+                            <div ng-if="referencePage.uploads[$index].file.error">
+                              <span class='errorNotice'> {{referencePage.uploads[$index].file.error}} </span>
+                            </div>
+
+                            <div>{{referencePage.uploads[$index].file.name}}</div>
+                          </div>
+                        </div>
+                      </form>
+                    </uib-tab>
+                  </uib-tabset>
+                  <div class="slds-docked-form-footer" ng-if='!isClassic'>
+                    <button ng-click='showList()' type="button" class="slds-button slds-button_neutral">Cancel</button>
+                    <button ng-click='setSteps(2)' type="button" class="slds-button slds-button_brand" ng-if='steps.selected === 1'>Next</button>
+                    <button ng-click='save()' type="button" class="slds-button slds-button_brand" ng-disabled='!referenceSavable()'>Save</button>
+                  </div>
+                  <div class="slds-docked-form-footer" ng-if='isClassic' style='position: absolute; bottom: -90px;'>
+                    <button ng-click='showList()' type="button" class="slds-button slds-button_neutral">Cancel</button>
+                    <button ng-click='setSteps(2)' type="button" class="slds-button slds-button_brand" ng-if='steps.selected === 1'>Next</button>
+                    <button ng-click='save()' type="button" class="slds-button slds-button_brand" ng-disabled='!referenceSavable()'>Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-if='isLoading' class='loading-mask'>
+              <div class="demo-only" style="height: 6rem;">
+                <div class="slds-spinner_container slds-is-fixed">
+                  <div role="status" class="slds-spinner slds-spinner_large">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <c:NoAccessMessage />
+      </div>
+    </div>
+  </div>
+</apex:page>

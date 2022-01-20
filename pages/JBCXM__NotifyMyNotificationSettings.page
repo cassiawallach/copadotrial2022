@@ -1,0 +1,421 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose                    : Exports MRR composition table in Transaction analytics tab to MS-Excel.
+---- Other comments (optional)  : This page gets called from AllTransactions Page.
+-->
+
+<apex:page sideBar="false" showHeader="false"
+           controller="JBCXM.NotifyMyNotificationSettingsController" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker" tabStyle="CustomerSuccess360__tab" >
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/backbone-min.js"/>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/css/buttons-icons.css" />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/css/CS360/gsApps-new.css"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/core/gsCore.css" />
+
+    <!-- Styles Below -->
+    <style>
+        .notiTypeLabel,.notiLabel,.disMsgDiv {
+        font-size: 14px;
+        }
+        .disMsgDiv {
+        font-size: 13px;
+        }
+        .NotificationSettingsTab {
+        margin: 0px;
+        font-family: 'HelveticaNeueRegular';
+        font-size: 14px;
+        }
+
+        .gsMainContainer {
+        width: 100%;
+        background-color: #ffffff;
+        }
+
+        .apexp,.bPageBlock,.pbHeader,.pbBody {
+        background-color: #ffffff !important;
+        font-family: 'HelveticaNeueRegular';
+        font-size: 14px;
+        }
+
+        .notiTypeLabel {
+        width: 298px;
+
+        }
+
+        .notiLabel {
+        font-family: 'HelveticaNeueRegular';
+        width: 311px;
+
+        }
+        td.notiLabel {
+        width: 268px;
+        height: 32px;
+        }
+
+        .emailNotifContainer {
+        background-color: #ffffff;
+        }
+
+        .emailFreqTable,.emailTypeTable {
+
+        }
+        .emailTypeTable {
+        margin-top: 10px;
+        }
+        .emailTypeTable td {
+        text-align: left;
+        padding-left: 50px;
+        line-height: 33px;
+        }
+        .notiHeader {
+        font-size: 15px;
+        font-family: 'HelveticaNeueRegular';
+        padding: 10px;
+        }
+
+        .btn-apply {
+        font-family: 'HelveticaNeueRegular';
+        font-size: 13px;
+        cursor: pointer;
+        }
+
+        .subheaderNotiType td {
+        padding-left: 65px;
+        margin-bottom: 25px;
+        font-weight: bold;
+        font-family: 'HelveticaNeueRegular';
+        font-size: 14px;
+        }
+
+        .workmodeBtn {
+        display: none;
+        }
+
+        .disMsgDiv {
+        margin-left: 4px;
+        }
+
+        .bPageBlock {
+        border: none !important;
+        }
+
+        .pbTitle h2,.mainTitle {
+        font-family: 'HelveticaNeueRegular';
+        font-size: 14px !important;
+        }
+
+        .emailTypeTable-nonActBased {
+        margin-left: 0px;
+        }
+
+        .emailTypeTable-nonActBased .notiTypeRow .notiTypeLabel {
+        width: 348px;
+        height: 32px;
+        }
+
+        .notiTypeContainer,.emailfreq{
+        margin-left: 25px;
+        margin-top: -5px;
+        }
+        td.notiLabel {
+        width: 348px;
+        height: 32px;
+        }
+        .pbHeader .pbTitle{
+        width:40% !important;
+        height:40px;
+        }
+        body .bPageBlock{
+        margin-bottom: 0px !important;}
+        .pbHeader{
+        height:50px;
+        }
+        .modal_footer{
+        border:0px;
+        }
+        .editBtn{
+        float:right;
+        }
+    </style>
+    <!-- HTML below -->
+    <!-- <a class = "goBackBtn" href="#" onClick="history.go(-1);return false;" style="text-decoration:none;">&nbsp;«&nbsp;Back</a> -->
+    <script>
+        var j$ = jQuery.noConflict();
+        var nsParams                   = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        var timeSuffex;
+        var weekDayMap = {"SUN" : 'Sunday',"MON" : 'Monday',"TUE" : 'Tuesday',"WED" : 'Wednesday',"THU" : 'Thursday',"FRI" : 'Friday',"SAT" : 'Saturday',};
+        var dummySubsDataArray, subFreqObj, appEventObj, userSubPrefObj, notiTrackerObj, userTZ;
+        var GS = GS || {};
+        GS.packageNS            = "{!JSINHTMLENCODE(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.NSSessionId                 = "{!JSINHTMLENCODE(NSSessionId)}";
+        GS.orgId                       = "{!JSINHTMLENCODE($Organization.Id)}";
+        GS.userConfig      =  {userId : "{!JSINHTMLENCODE($User.Id)}"};
+        GS.commonRemotingEndPoint     = '{!JSINHTMLENCODE($RemoteAction.GSCommonBroker.gsCommonRequestBroker)}';
+        GS.remotingEndPoint           = '{!JSINHTMLENCODE($RemoteAction.GSCommonBroker.gsCommonRequestBroker)}';
+        GS.remoting                 = "{!JSINHTMLENCODE($RemoteAction.NSRemoting.apinsinvoke)}";
+        GS.sessionId                = "{!JSINHTMLENCODE(NSSessionId)}";
+
+        function saveSubscription() {
+            j$(".workmodeBtn").attr("disabled", true);
+            j$(".workmodeBtn").removeClass("btn-save btn-cancel").addClass("btnDisabled");
+            var notiTypeArr = [];
+            var notiEmailFreq = [];
+            var emailFreq
+            j$(".notiTypeChk").each(function() {
+                if(j$(this).is(":checked")) {
+                    notiTypeArr.push(j$(this).attr("id"));
+                }
+            });
+
+            if(j$("#Never__c").is(":checked") == true) {
+                notiEmailFreq = [];
+            }
+            else {
+                j$(".emailFreqCheck").each(function() {
+                    if(j$(this).is(":checked")) {
+                        notiEmailFreq.push(j$(this).attr("id"));
+                    }
+                });
+            }
+            j$(".disabledChk").attr("disabled","disabled");
+            j$(".workmodeBtn").hide();
+            j$(".editmodeBtn").show();
+            saveCompleteNotiPref(JSON.stringify(notiTypeArr), JSON.stringify(notiEmailFreq));
+            j$(".editmodeBtn").removeAttr("disabled");
+            j$(".editmodeBtn").removeClass("btnDisabled").addClass("editBtn");
+        }
+
+        function convert24to12 (hours) {
+            timeSuffex = (hours >= 12)? 'PM' : 'AM';
+            var hours = (hours > 12)? hours -12 : hours;
+            hours = (hours == '00')? 12 : hours;
+            return hours;
+        }
+        function notiTypeBuilder(appEventsList) {
+
+            for(var i = 0 ; i < appEventsList.length; i++){
+
+                var event = appEventsList[i];
+                var strHTML = "";
+                    strHTML += '<tr class = "notiTypeRow">';
+                    strHTML += '<td class = "notiTypeLabel"><span class = "innerLabel">'+event.Name+'</span></td>';
+                    strHTML += '<td><input type = "checkbox" class = "gs-checkbox disabledChk notiTypeChk" id = "'+event.Id+'" /><label for="'+event.Id+'"></label></td>';
+                    strHTML += '</tr>';
+                const dummyHTML = sanitizeHtml(`<table>${strHTML}</table>`);
+                const tBody = j$(dummyHTML).find("tBody").html();
+                if(event.IsAccountBased__c == true){
+                    j$(".emailTypeTable").append(tBody);
+                }else
+                {
+                    j$(".emailTypeTable-nonActBased").append(tBody);
+                }
+
+            }
+
+            j$(".disabledChk").attr("disabled","disabled");
+        }
+        function notiFreqSetter(notiFreqData) {
+            if(notiFreqData) {
+                 j$("#emailFreqTable").find("input").removeAttr("checked");
+                 j$("#Never__c").attr("checked",(notiFreqData.Never__c == true) ? true : false);
+                 j$("#Weekly__c").attr("checked",(notiFreqData.Weekly__c == true) ? true : false);
+                 j$("#Daily__c").attr("checked",(notiFreqData.Daily__c == true) ? true : false);
+                 j$("#Real_Time__c").attr("checked",(notiFreqData.Real_Time__c == true) ? true: false);
+            }
+            else {
+                j$("#Never__c").attr("checked", true);
+            }
+        }
+        function notiUserPrefSetter(userSubPrefList) {
+            j$(".notiTypeChk").removeAttr("checked");
+            j$.each(userSubPrefList, function(key, val) {
+                j$("#"+val.AppEvents__c+"").attr("checked", "checked");
+            });
+        }
+
+        function displayMsgIfDisabled(notiTracker) {
+            if(notiTracker) {
+                j$(".weeklyEnabledMsg").html((notiTracker.Weekly__c == false) ? '(Disabled by admin)' : '(Every '+weekDayMap[notiTracker.Day__c]+' at '+convert24to12(notiTracker.Hours__c)+':'+notiTracker.Minutes__c+' '+timeSuffex+' '+userTZ+')');
+                j$(".dailyEnabledMsg").html((notiTracker.Daily__c == false) ? '(Disabled by admin)' : '(At '+convert24to12(notiTracker.Hours__c)+':'+notiTracker.Minutes__c+' '+timeSuffex+' '+userTZ+')');
+                j$(".rtEnabledMsg").html((notiTracker.Real_Time__c == false) ? '(Disabled by admin)' : '(Every '+notiTracker.RealTimeMinutes__c+' Minutes)');
+            }
+        }
+
+        //saveNotiSettings
+        function configureSubscription(thisObj) {
+            j$(thisObj).attr("disabled", true);
+            j$(thisObj).removeClass("editBtn").addClass("btnDisabled");
+            j$(thisObj).hide();
+            j$(".workmodeBtn").show();
+            j$(".workmodeBtn").removeAttr("disabled");
+            j$(".workmodeBtn").removeClass("btnDisabled");
+            j$(".workmodeBtn").first().addClass("btn-save");
+            j$(".workmodeBtn").last().addClass("btn-cancel");
+            j$(".disabledChk").removeAttr("disabled");
+        }
+
+        function cancelSubscription() {
+            j$(".workmodeBtn").attr("disabled", true);
+            j$(".workmodeBtn").hide();
+            rerenderAfterCancel();
+            //j$(".disabledChk").attr("disabled","disabled");
+            //j$(".editmodeBtn").removeAttr("disabled");
+            //j$(".editmodeBtn").removeClass("btnDisabled").addClass("editBtn");
+        }
+
+        function someEventAttachmentAfterDOMRender() {
+            j$(".neverChk").live("click", function(){
+                if(j$(this).is(":checked")) {
+                    j$(".emailFreqCheck").removeAttr("checked");
+                }
+                if(j$(".emailFreqCheck:checked").length == 0) {
+                    j$(this).attr("checked","checked");
+                }
+            });
+
+            j$(".emailFreqCheck").live("click", function() {
+                if(j$(".emailFreqCheck:checked").length > 0) {
+                    j$(".neverChk").removeAttr("checked");
+                }
+
+            });
+        }
+
+        //Disable the button when new or save buttons clicked.
+        function disableBtn(obj) {
+            j$(obj).attr("disabled", true);
+            j$(obj).removeClass("btn").addClass("btnDisabled");
+        }
+    </script>
+    <div class="gsMainContainer">
+        <apex:outputPanel id="entireDisplayPageSubs">
+            <apex:pageblock id="MainPB" mode="detail" title="Email Notifications">
+
+                <div class="emailNotifContainer">
+                    <div class="emailNotificationLabel"
+                         style="margin-bottom: 10px; padding: 10px;font-weight:600;">Send
+                        an email notification when:</div>
+                    <div class="notiTypeContainer">
+
+
+                        <div>For the customers I am following:</div>
+                        <table class="emailTypeTable">
+                            <tr class="subheaderNotiType Alert">
+                                <td></td>
+                            </tr>
+
+                        </table>
+                        <table class="emailTypeTable-nonActBased">
+                            <tr class="subheaderNotiType Alert">
+                                <td></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="notiHeader"
+                         style="padding: 10px; font-weight:600; margin: 10px 0;">
+                        Email frequency:</div>
+                    <div class="emailfreq">
+
+                        <table class="emailFreqTable">
+                            <tr>
+                                <td class="notiLabel">Never</td>
+                                <td><input type="checkbox" id="Never__c"
+                                           class="gs-checkbox disabledChk neverChk" /><label for="Never__c"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="notiLabel">Daily <span
+                                        class="disMsgDiv dailyEnabledMsg"></span></td>
+                                <td><input type="checkbox" id="Daily__c"
+                                           class="gs-checkbox disabledChk emailFreqCheck" /><label for="Daily__c"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="notiLabel">Real Time <span
+                                        class="disMsgDiv rtEnabledMsg"></span></td>
+                                <td><input type="checkbox" id="Real_Time__c"
+                                           class="gs-checkbox disabledChk emailFreqCheck" /><label for="Real_Time__c"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="notiLabel">Weekly <span
+                                        class="disMsgDiv weeklyEnabledMsg"></span></td>
+                                <td><input type="checkbox" id="Weekly__c"
+                                           class="gs-checkbox disabledChk emailFreqCheck" /><label for="Weekly__c"></label></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <apex:pageBlockButtons location="top">
+                    <input
+                            type="button" value="EDIT"
+                            onClick="configureSubscription(this);"
+                            class="editBtn editmodeBtn gs-popover-btn btn-apply" />
+                </apex:pageBlockButtons>
+                <apex:pageBlockButtons location="bottom">
+                    <div class="btnSection gs-rb-applycancel" style="width: 200px;">
+                        <input type="button" value="SAVE" onClick="saveSubscription();"
+                               class="btn-save btn-apply workmodeBtn saveNotiSettings" /> <input
+                            type="button" value="CANCEL" onClick="cancelSubscription();"
+                            class="btn-cancel btn-cancel workmodeBtn cancelNotiSettings" />
+                    </div>
+                </apex:pageBlockButtons>
+
+            </apex:pageblock>
+            <script>
+
+            j$(document).ready(function() {
+                j$(".disabledChk").attr("disabled","disabled");
+                j$(".workmodeBtn").hide();
+            });
+            dummySubsDataArray  = fakeEval('{!JSINHTMLENCODE(NotificationSettingsDetailsJSON)}');
+            subFreqObj          = fakeEval('{!JSINHTMLENCODE(freqSettingJson)}');
+            appEventObj         = fakeEval('{!JSINHTMLENCODE(notiTypeJson)}');
+            userSubPrefObj      = fakeEval('{!JSINHTMLENCODE(userSubPrefJson)}');
+            notiTrackerObj      = fakeEval('{!JSINHTMLENCODE(notiTrackerJson)}');
+
+            //Convert minutes less than 10 to be prefixed with 0 (eg: 09 minutes)
+            if(notiTrackerObj[0] &&
+                (typeof notiTrackerObj[0].Minutes__c != "undefined") &&
+                    !isNaN(parseInt(notiTrackerObj[0].Minutes__c,10)) &&
+                        (parseInt(notiTrackerObj[0].Minutes__c,10) < 10) ){
+
+                notiTrackerObj[0].Minutes__c = "0"+notiTrackerObj[0].Minutes__c;
+
+            }
+
+            userTZ              = '{!JSINHTMLENCODE(userTimeZone)}';
+
+            someEventAttachmentAfterDOMRender();
+
+            displayMsgIfDisabled(notiTrackerObj[0])
+            notiTypeBuilder(appEventObj);
+            notiFreqSetter(subFreqObj[0]);
+            notiUserPrefSetter(userSubPrefObj);
+        </script>
+        </apex:outputPanel>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null, true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["custom_notification_settings/scripts/custom_notification_settings.bundle.js"]});
+        </script>
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev", true, false)}">
+            <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "https://127.0.0.1:9091/UI")}/custom_notification_settings/scripts/custom_notification_settings.bundle.js"></script>
+    </apex:outputpanel>
+
+    <apex:form >
+        <apex:actionFunction name="saveCompleteNotiPref"
+                             action="{!saveSubsPrefernces}" oncomplete="return null;">
+            <apex:param name="notiTypeSub" value="" />
+            <apex:param name="notiFreqPref" value="" />
+        </apex:actionFunction>
+        <apex:actionFunction name="rerenderAfterCancel"
+                             action="{!virtualMethodToCancel}"
+                             rerender="entireDisplayPageSubs" />
+    </apex:form>
+</apex:page>

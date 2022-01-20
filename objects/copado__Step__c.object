@@ -669,11 +669,6 @@ copado__SUM_Deployed__c / copado__Org_Count__c,
                     <label>Full Profiles</label>
                 </value>
                 <value>
-                    <fullName>Full Permission Sets</fullName>
-                    <default>false</default>
-                    <label>Full Permission Sets</label>
-                </value>
-                <value>
                     <fullName>Users</fullName>
                     <default>false</default>
                     <label>Users</label>
@@ -694,49 +689,14 @@ copado__SUM_Deployed__c / copado__Org_Count__c,
                     <label>Bulk Data</label>
                 </value>
                 <value>
-                    <fullName>Data Template</fullName>
-                    <default>false</default>
-                    <label>Data Template</label>
-                </value>
-                <value>
                     <fullName>Delete MetaData</fullName>
                     <default>false</default>
                     <label>Delete MetaData</label>
                 </value>
                 <value>
-                    <fullName>Custom Settings</fullName>
+                    <fullName>Salesforce Flow</fullName>
                     <default>false</default>
-                    <label>Custom Settings</label>
-                </value>
-                <value>
-                    <fullName>Apex</fullName>
-                    <default>false</default>
-                    <label>Apex</label>
-                </value>
-                <value>
-                    <fullName>Git MetaData</fullName>
-                    <default>false</default>
-                    <label>Git MetaData</label>
-                </value>
-                <value>
-                    <fullName>URL Callout</fullName>
-                    <default>false</default>
-                    <label>URL Callout</label>
-                </value>
-                <value>
-                    <fullName>Automation</fullName>
-                    <default>false</default>
-                    <label>Automation</label>
-                </value>
-                <value>
-                    <fullName>Function</fullName>
-                    <default>false</default>
-                    <label>Function</label>
-                </value>
-                <value>
-                    <fullName>Test</fullName>
-                    <default>false</default>
-                    <label>Test</label>
+                    <label>Salesforce Flow</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -771,17 +731,25 @@ In production this field should be HIDDEN</description>
         <visibleLines>5</visibleLines>
     </fields>
     <label>Step</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Deployment__c</columns>
+        <columns>copado__Type__c</columns>
+        <columns>copado__Order__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
     <nameField>
         <label>Step Name</label>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Steps</pluralLabel>
-    <searchLayouts>
-        <lookupDialogsAdditionalFields>copado__Deployment__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Status__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__CheckOnly__c</lookupDialogsAdditionalFields>
-    </searchLayouts>
+    <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

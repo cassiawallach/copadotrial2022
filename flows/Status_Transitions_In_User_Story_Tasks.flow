@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <description>Set Not Started Guard to true.</description>
+        <name>Set_Not_Started_Guard</name>
+        <label>Set Not Started Guard</label>
+        <locationX>417</locationX>
+        <locationY>110</locationY>
+        <assignmentItems>
+            <assignToReference>Not_Started_Guard</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_User_Story_Task</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Set Process Blocked Guard to true.</description>
+        <name>Set_Process_Blocked_Guard</name>
+        <label>Set Process Blocked Guard</label>
+        <locationX>546</locationX>
+        <locationY>164</locationY>
+        <assignmentItems>
+            <assignToReference>Process_Blocked_Guard</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_User_Story_Task</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Check which guards is set as true.</description>
+        <name>Check_Guard</name>
+        <label>Check Guard</label>
+        <locationX>877</locationX>
+        <locationY>332</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Started_Guard_Selected</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Not_Started_Guard</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_User_Story_Not_Started</targetReference>
+            </connector>
+            <label>Not Started Guard Selected</label>
+        </rules>
+        <rules>
+            <name>Process_Blocked_Guard_Selected</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Process_Blocked_Guard</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_User_Story_Work_Blocked</targetReference>
+            </connector>
+            <label>Process Blocked Guard Selected</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Related User Story Record Type have to be &quot;Copado Work Item&quot;.</description>
+        <name>Check_Related_User_Story</name>
+        <label>Check Related User Story</label>
+        <locationX>168</locationX>
+        <locationY>319</locationY>
+        <defaultConnectorLabel>Incorrect Record Type</defaultConnectorLabel>
+        <rules>
+            <name>Correct_Record_Type</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.copado__User_Story__r.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>0120N0000001XJZQA2</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>User_Story_Task_Status</targetReference>
+            </connector>
+            <label>Correct Record Type</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_User_Story_Task_Status</name>
+        <label>Check User Story Task Status</label>
+        <locationX>1127</locationX>
+        <locationY>120</locationY>
+        <defaultConnector>
+            <targetReference>Check_Each_User_Story_Task</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Status Is Not In Progress</defaultConnectorLabel>
+        <rules>
+            <name>Status_Is_In_Progress</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Check_Each_User_Story_Task.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Progress</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Status Is In Progress</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>User_Story_Task_Status</name>
+        <label>User Story Task Status</label>
+        <locationX>410</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_New_Or_Not_Started</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Not Started</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Not_Started_Guard</targetReference>
+            </connector>
+            <label>Is New Or Not Started</label>
+        </rules>
+        <rules>
+            <name>Status_Change_To_In_Progress</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Progress</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_User_Story_Work_In_Progress</targetReference>
+            </connector>
+            <label>In Progress</label>
+        </rules>
+        <rules>
+            <name>Status_Change_To_Progress_Blocked</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Progress Blocked</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Process_Blocked_Guard</targetReference>
+            </connector>
+            <label>Progress Blocked</label>
+        </rules>
+    </decisions>
+    <description>For US-0022963. Automate status transitions for User Story, when User Story Task status change.</description>
+    <interviewLabel>Status Transitions In User Story Tasks {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Status Transitions In User Story Tasks</label>
+    <loops>
+        <description>Check all User Story Tasks if status is &quot;In progress&quot;</description>
+        <name>Check_Each_User_Story_Task</name>
+        <label>Check Each User Story Task</label>
+        <locationX>886</locationX>
+        <locationY>118</locationY>
+        <collectionReference>Get_User_Story_Task</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_User_Story_Task_Status</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Check_Guard</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get User Story Task related to User Story which is assigned to current User Story Task</description>
+        <name>Get_User_Story_Task</name>
+        <label>Get User Story Task</label>
+        <locationX>689</locationX>
+        <locationY>118</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Each_User_Story_Task</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>copado__User_Story__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.copado__User_Story__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>copado__User_Story_Task__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update related User Story status to &quot;Ready for Work&quot;</description>
+        <name>Update_User_Story_Not_Started</name>
+        <label>Update User Story Not Started</label>
+        <locationX>710</locationX>
+        <locationY>563</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.copado__User_Story__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>copado__Status__c</field>
+            <value>
+                <stringValue>Ready for Work</stringValue>
+            </value>
+        </inputAssignments>
+        <object>copado__User_Story__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update related User Story status to &quot;Work Blocked&quot;</description>
+        <name>Update_User_Story_Work_Blocked</name>
+        <label>Update User Story Work Blocked</label>
+        <locationX>1052</locationX>
+        <locationY>574</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.copado__User_Story__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>copado__Status__c</field>
+            <value>
+                <stringValue>Work Blocked</stringValue>
+            </value>
+        </inputAssignments>
+        <object>copado__User_Story__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update related User Story status to &quot;Work in progress&quot;</description>
+        <name>Update_User_Story_Work_In_Progress</name>
+        <label>Update User Story Work In Progress</label>
+        <locationX>420</locationX>
+        <locationY>559</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.copado__User_Story__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>copado__Status__c</field>
+            <value>
+                <stringValue>Work in Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <object>copado__User_Story__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Check_Related_User_Story</targetReference>
+        </connector>
+        <object>copado__User_Story_Task__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Used to distinguish update status to correct form.</description>
+        <name>Not_Started_Guard</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Used to distinguish update status to correct form.</description>
+        <name>Process_Blocked_Guard</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+</Flow>

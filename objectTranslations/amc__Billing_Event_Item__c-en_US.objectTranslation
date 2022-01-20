@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies the net amount for this line item --></help>
+        <label><!-- Amount --></label>
+        <name>amc__Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the parent Billing Event record this item relates to --></help>
+        <label><!-- Billing Event --></label>
+        <name>amc__Billing_Event__c</name>
+        <relationshipLabel><!-- Billing Event Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the line item description --></help>
+        <label><!-- Description --></label>
+        <name>amc__Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Ledger Code relating to the items being charged on this record --></help>
+        <label><!-- Ledger Code --></label>
+        <name>amc__Ledger_Code__c</name>
+        <picklistValues>
+            <masterLabel>TBC</masterLabel>
+            <translation><!-- TBC --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies the value of the tax to be applied for this line item. Will display 0.00 unless Tax Applicable = TRUE, then it will be auto-populated with Amount * Billing Event.Tax Rate --></help>
+        <label><!-- Tax Amount --></label>
+        <name>amc__Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if Tax is applicable to be applied to this line item --></help>
+        <label><!-- Tax Applicable --></label>
+        <name>amc__Tax_Applicable__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Rate --></label>
+        <name>amc__Tax_Rate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the gross amount for this line item (Amount + Tax Amount) --></help>
+        <label><!-- Total Amount --></label>
+        <name>amc__Total_Amount__c</name>
+    </fields>
+    <layouts>
+        <layout>Billing Event Item Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+</CustomObjectTranslation>

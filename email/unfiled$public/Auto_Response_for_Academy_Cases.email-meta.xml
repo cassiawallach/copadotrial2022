@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Enhanced template for the autoresponse to Standard Support customers.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Auto-Response for Academy Cases</name>
+    <style>none</style>
+    <subject>[Copado] Case # {!Case.CaseNumber}: &quot;{!Case.Subject}&quot; has been created.</subject>
+    <textOnly>Copado Support
+Thanks for contacting Copado support.
+Case # {!Case.CaseNumber}:
+&quot;{!Case.Subject}&quot; has been created.
+Issue definition:
+{!Case.Description_Rich__c}
+Communication:
+Copado support will review your case but bear in mind that we cannot guarantee a response time or resolution for Academy cases.
+
+In the meantime, we encourage you to Ask a Question or visit the Collaboration Groups at the Copado Success Community.
+
+You can visit our documentation site, where you will find useful information about Copado.
+
+If you have questions related to our Certification Program, check out the Certification Guides for more information.
+
+Copado Solutions will never ask for your account password. For your own privacy and security NEVER send your credentials by email.
+
+Thank you.
+Copado Support Team
+
+Case tracking Id: {!Case.Thread_Id}   Copado Solutions S.L.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

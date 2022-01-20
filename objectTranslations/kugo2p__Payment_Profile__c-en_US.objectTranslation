@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Account Name --></label>
+        <name>kugo2p__Account__c</name>
+        <relationshipLabel><!-- Recurring Charges --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- If checked, allows payments to be missed on a Scheduled Payment Profile without suspending the profile. --></help>
+        <label><!-- Allow Missed Payments --></label>
+        <name>kugo2p__Allow_Missed_Payments__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recurring Amount --></label>
+        <name>kugo2p__Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Assigned by Authorize.net when an ARB profile is created. --></help>
+        <label><!-- AuthNet Subscription ID --></label>
+        <name>kugo2p__AuthNet_Subscription_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Card Type --></label>
+        <name>kugo2p__Card_Type__c</name>
+        <picklistValues>
+            <masterLabel>Amex</masterLabel>
+            <translation><!-- Amex --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Discover</masterLabel>
+            <translation><!-- Discover --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mastercard</masterLabel>
+            <translation><!-- Mastercard --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Visa</masterLabel>
+            <translation><!-- Visa --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Contact Billing --></label>
+        <name>kugo2p__Contact__c</name>
+        <relationshipLabel><!-- Recurring Charges --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Currency ISO Code --></label>
+        <name>kugo2p__Currency_ISO_Code__c</name>
+        <picklistValues>
+            <masterLabel>AUD</masterLabel>
+            <translation><!-- AUD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CAD</masterLabel>
+            <translation><!-- CAD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CHF</masterLabel>
+            <translation><!-- CHF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CZK</masterLabel>
+            <translation><!-- CZK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DKK</masterLabel>
+            <translation><!-- DKK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>EUR</masterLabel>
+            <translation><!-- EUR --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>GBP</masterLabel>
+            <translation><!-- GBP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>HKD</masterLabel>
+            <translation><!-- HKD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>HUF</masterLabel>
+            <translation><!-- HUF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ILS</masterLabel>
+            <translation><!-- ILS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>JPY</masterLabel>
+            <translation><!-- JPY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>MXN</masterLabel>
+            <translation><!-- MXN --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>NOK</masterLabel>
+            <translation><!-- NOK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>NZD</masterLabel>
+            <translation><!-- NZD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PLN</masterLabel>
+            <translation><!-- PLN --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SEK</masterLabel>
+            <translation><!-- SEK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SGD</masterLabel>
+            <translation><!-- SGD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>USD</masterLabel>
+            <translation><!-- USD --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Used to flag the customer&apos;s default (or preferred) credit card profile. --></help>
+        <label><!-- Default --></label>
+        <name>kugo2p__Default__c</name>
+    </fields>
+    <fields>
+        <help><!-- Details about the payment profile. --></help>
+        <label><!-- Description --></label>
+        <name>kugo2p__Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- Frequency of charges (e.g. every X months) for a subscription. --></help>
+        <label><!-- Frequency --></label>
+        <name>kugo2p__Frequency__c</name>
+    </fields>
+    <fields>
+        <help><!-- WorldPay recurring payment (FuturePay) Id. --></help>
+        <label><!-- WorldPay Recurring Payment ID --></label>
+        <name>kugo2p__FuturePay_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Initial amount to charge at the beginning of the subscription. --></help>
+        <label><!-- Initial Amount --></label>
+        <name>kugo2p__Initial_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Number to use as a root invoice number for each payment when creating recurring payments in Salesforce. --></help>
+        <label><!-- Invoice Number --></label>
+        <name>kugo2p__Invoice_Number__c</name>
+    </fields>
+    <fields>
+        <help><!-- Last four digits of credit card used. --></help>
+        <label><!-- Last 4 Digits --></label>
+        <name>kugo2p__Last_4_Digits__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date of next scheduled payment.   This field is automatically updated when PayPal notifications are received containing a &quot;next payment date&quot; value. --></help>
+        <label><!-- Next Payment Date --></label>
+        <name>kugo2p__Next_Payment_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- &quot;On Payment Completed&quot; tag(s) to copy to each payment record that is auto-attached to this profile.  Multiple tags should be delimited using semi-colons. --></help>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__On_Payment_Completed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__Opportunity__c</name>
+        <relationshipLabel><!-- Recurring Charges --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Recurring payment profile Id assigned by PayPal --></help>
+        <label><!-- PayPal Recurring Payment ID --></label>
+        <name>kugo2p__PayPal_Recurring_Payment_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- ID assigned by PayPal --></help>
+        <label><!-- PayPal Subscription ID --></label>
+        <name>kugo2p__PayPal_Subscription_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Payment method to use when processing scheduled payments. --></help>
+        <label><!-- Payment Method --></label>
+        <name>kugo2p__Payment_Method__c</name>
+        <relationshipLabel><!-- Recurring Charges --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Combined with frequency to determine the time period between each subscription payment. --></help>
+        <label><!-- Period --></label>
+        <name>kugo2p__Period__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SemiMonth</masterLabel>
+            <translation><!-- SemiMonth --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Number of days before the scheduled payment date for each Payment to perform the scheduled processing action (e.g. Send payment request). --></help>
+        <label><!-- Processing Action Lead Time --></label>
+        <name>kugo2p__Processing_Action_Lead_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Processor Connection --></label>
+        <name>kugo2p__Processor_Connection__c</name>
+        <relationshipLabel><!-- Recurring Charges --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Charge Type --></label>
+        <name>kugo2p__Profile_Type__c</name>
+        <picklistValues>
+            <masterLabel>AuthNet Subscription</masterLabel>
+            <translation><!-- AuthNet Subscription --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Credit Card</masterLabel>
+            <translation><!-- Credit Card --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PayPal Recurring Payment</masterLabel>
+            <translation><!-- PayPal Recurring Payment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PayPal Subscription</masterLabel>
+            <translation><!-- PayPal Subscription --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Scheduled Payment</masterLabel>
+            <translation><!-- Scheduled Payment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>WorldPay Recurring Payment</masterLabel>
+            <translation><!-- WorldPay Recurring Payment --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__SalesOrderServiceLine__c</name>
+        <relationshipLabel><!-- Recurring Charges --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Order Number --></label>
+        <name>kugo2p__SalesOrder__c</name>
+        <relationshipLabel><!-- Recurring Charges --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Method to use when processing scheduled payments under this profile. --></help>
+        <label><!-- Scheduled Processing Action --></label>
+        <name>kugo2p__Scheduled_Processing_Action__c</name>
+        <picklistValues>
+            <masterLabel>Process using assigned Payment Method</masterLabel>
+            <translation><!-- Process using assigned Payment Method --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Process using default Payment Method on Contact</masterLabel>
+            <translation><!-- Process using default Payment Method on Contact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Send payment request</masterLabel>
+            <translation><!-- Send payment request --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Ship To City --></label>
+        <name>kugo2p__Ship_To_City__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ship To Name --></label>
+        <name>kugo2p__Ship_To_Company__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ship To Country --></label>
+        <name>kugo2p__Ship_To_Country__c</name>
+    </fields>
+    <fields>
+        <label><!-- Contact Shipping Name --></label>
+        <name>kugo2p__Ship_To_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ship To Phone --></label>
+        <name>kugo2p__Ship_To_Phone__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ship To Zip/Postal Code --></label>
+        <name>kugo2p__Ship_To_Postal_Code__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ship To State --></label>
+        <name>kugo2p__Ship_To_State__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ship To Street --></label>
+        <name>kugo2p__Ship_To_Street__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Method --></label>
+        <name>kugo2p__Shipping_Method__c</name>
+        <picklistValues>
+            <masterLabel>FedEx</masterLabel>
+            <translation><!-- FedEx --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Standard Shipping</masterLabel>
+            <translation><!-- Standard Shipping --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>UPS</masterLabel>
+            <translation><!-- UPS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>USPS</masterLabel>
+            <translation><!-- USPS --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Recurring payment shipping amount --></help>
+        <label><!-- Shipping --></label>
+        <name>kugo2p__Shipping__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date that subscription billing is to commence. --></help>
+        <label><!-- Subscription Start Date --></label>
+        <name>kugo2p__Subscription_Start_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Subscription Status --></label>
+        <name>kugo2p__Subscription_Status__c</name>
+        <picklistValues>
+            <masterLabel>Active</masterLabel>
+            <translation><!-- Active --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Cancelled</masterLabel>
+            <translation><!-- Cancelled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Ended</masterLabel>
+            <translation><!-- Ended --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Failed</masterLabel>
+            <translation><!-- Failed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Activated</masterLabel>
+            <translation><!-- Not Activated --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Suspended</masterLabel>
+            <translation><!-- Suspended --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Date of profile suspension.  Used to calculate next payment date and then cleared when profile is resumed. --></help>
+        <label><!-- Suspended Date --></label>
+        <name>kugo2p__Suspended_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Recurring payment tax amount --></help>
+        <label><!-- Tax --></label>
+        <name>kugo2p__Tax__c</name>
+    </fields>
+    <fields>
+        <help><!-- Total recurring payment Amount --></help>
+        <label><!-- Total Amount --></label>
+        <name>kugo2p__Total_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Total number of billing occurrences or payments for the subscription. --></help>
+        <label><!-- Total Occurrences --></label>
+        <name>kugo2p__Total_Occurrences__c</name>
+    </fields>
+    <fields>
+        <help><!-- First Charge Amount that may be different from the Recurring Amount --></help>
+        <label><!-- First Charge Amount --></label>
+        <name>kugo2p__Trial_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Frequency of charges during the trial period of a subscription (e.g. every X Months) --></help>
+        <label><!-- First Charge Frequency --></label>
+        <name>kugo2p__Trial_Frequency__c</name>
+    </fields>
+    <fields>
+        <help><!-- Number of cycles to bill during trial period. --></help>
+        <label><!-- First Charge Occurrences --></label>
+        <name>kugo2p__Trial_Occurrences__c</name>
+    </fields>
+    <fields>
+        <help><!-- Combined with trial frequency to determine the time period between each trial subscription payment. --></help>
+        <label><!-- First Charge Period --></label>
+        <name>kugo2p__Trial_Period__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SemiMonth</masterLabel>
+            <translation><!-- SemiMonth --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>AuthNet Subscription</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Description --></label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Information --></label>
+            <section>Payment Information</section>
+        </sections>
+        <sections>
+            <label><!-- Recurring Payment Setup Values --></label>
+            <section>Recurring Payment Setup Values</section>
+        </sections>
+        <sections>
+            <label><!-- Subscription Management --></label>
+            <section>Subscription Management</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Credit Card</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Description --></label>
+            <section>Description</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>PayPal Recurring Payment</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Description --></label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Information --></label>
+            <section>Payment Information</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Profile Management --></label>
+            <section>Payment Profile Management</section>
+        </sections>
+        <sections>
+            <label><!-- Recurring Payment Setup Values --></label>
+            <section>Recurring Payment Setup Values</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Payment Profile Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Processor Recurring Payment Information --></label>
+            <section>Processor Recurring Payment Information</section>
+        </sections>
+        <sections>
+            <label><!-- Recurring Payment Information --></label>
+            <section>Recurring Payment Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>WorldPay Recurring Payment</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Description --></label>
+            <section>Description</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <description><!-- Stores information about an Authorize.Net subscription (ARB). --></description>
+        <label><!-- AuthNet Subscription --></label>
+        <name>kugo2p__AuthNet_Subscription</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Credit Card profile information --></description>
+        <label><!-- Credit Card --></label>
+        <name>kugo2p__Credit_Card</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Generic Payment Profile record type --></description>
+        <label><!-- Generic Profile --></label>
+        <name>kugo2p__Generic_Profile</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Stores information about a PayPal Recurring Payment profile. --></description>
+        <label><!-- PayPal Recurring Payment --></label>
+        <name>kugo2p__PayPal_Recurring_Payment</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Stores information about a PayPal subscription. --></description>
+        <label><!-- PayPal Subscription --></label>
+        <name>kugo2p__PayPal_Subscription</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Native scheduled payment profile. --></description>
+        <label><!-- Native Subscription --></label>
+        <name>kugo2p__Scheduled_Payment</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Stores information about a WorldPay recurring payment profile. --></description>
+        <label><!-- WorldPay Recurring Payment --></label>
+        <name>kugo2p__WorldPay_Recurring_Payment</name>
+    </recordTypes>
+    <webLinks>
+        <label><!-- Cancel_Schedule --></label>
+        <name>kugo2p__Cancel_Schedule</name>
+    </webLinks>
+</CustomObjectTranslation>

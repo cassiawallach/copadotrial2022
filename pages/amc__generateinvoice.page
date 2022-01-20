@@ -1,0 +1,11 @@
+<apex:page standardController="amc__Billing_Event__c" extensions="amc.GenerateInvoiceExt" showHeader="false" action="{!redirect}">
+  <apex:pageMessages />
+  <apex:pageBlock title="Invoice Generation">
+      <apex:outputText >
+          The PDF requested requires generation.  Click button to generate a new version of the PDF.
+      </apex:outputText>
+      <apex:form >
+          <apex:commandButton value="Generate PDF" action="{!generateInvoice}"/>
+      </apex:form>
+  </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,65 @@
+<style>
+table {
+    width: 800px;
+    font: sans-serif;
+    font-size: 20px;
+    border: 1px solid black;
+}
+.signature {
+    width: 800px;
+    font: sans-serif;
+    font-size: 20px;
+    background-color: #575757;
+    font-weight: bold;
+    color: white;
+    border: 0px;
+}
+td {
+    padding: 10px;
+}
+.black-background-hidden-text {
+    color: #575757;
+}
+.blue-background {
+    background-color: #2497D3;
+    font: 20px;
+    font-weight: bold;
+    color: white;
+}
+.grey-background {
+    background-color: #E8E8E8;
+}
+</style>
+<table align="left">
+    <tr><td>
+<img src="https://copado--c.documentforce.com/servlet/servlet.ImageServer?id=015b0000000J9SG&oid=00Db0000000YN5R&lastMod=1550750920000" style="width: auto;  height: 90%"/>
+    <br/><br/><br/>
+  <tr><td>
+Hello {!Receiving_User.FirstName},
+<br/><br/>
+The {!redwing__Training_Plan__c.Name} module is now available. 
+<br/><br/>
+Remember that you will need to complete the exam by the required due date to be able to maintain your credentials. You can find the Maintenance Certification Module under your profile in <a href = "https://success.copa.do/s/my-learning">Academy</a>.
+<br/><br/>
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td colspan="1" rowspan="1"><strong>Maintenance Certification Module</strong></td>
+			<td colspan="1" rowspan="1">{!redwing__Training_Plan__c.Name}</td>
+		</tr>
+		<tr>
+			<td colspan="1" rowspan="1"><strong>Registration URL</strong></td>
+			<td colspan="1" rowspan="1">{!redwing__Training_Plan__c.Module_Community_URL__c}</td>
+		<tr>
+			<td colspan="1" rowspan="1"><strong>Due Date</strong></td>
+			<td colspan="1" rowspan="1">{!redwing__Training_Plan__c.Maintenance_Expiration_Date__c}</td>
+		</tr>
+	</tbody>
+</table>
+<br/><br/>
+Don't let your certification expire!<br/><br/><br/>
+Best regards,
+<br/>
+The Academy Team
+    </td></tr>
+</table>

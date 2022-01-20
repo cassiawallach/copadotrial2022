@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- The CPQ Product Option this record was created from --></help>
+        <label><!-- ProductOptionId --></label>
+        <name>ProductOptionId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Configuration Group --></label>
+        <name>kugo2p__ConfigurationGroup__c</name>
+        <relationshipLabel><!-- Configuration Options --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Configure Product --></label>
+        <name>kugo2p__ConfigureProduct__c</name>
+        <relationshipLabel><!-- Configuration Options --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Override Option Product&apos;s Default Quantity value. Sets the initial Quantity value in Quote and Order configurator page. If blank, the Default Quantity is 1 --></help>
+        <label><!-- Quantity --></label>
+        <name>kugo2p__DefaultQuantity__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Option Product&apos;s Default Line Discount value. Sets the Line Discount value in Quote and Order configurator page. Applicable when Price Behavior is set to Discounted --></help>
+        <label><!-- Line Discount --></label>
+        <name>kugo2p__LineDiscount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Option Product&apos;s Lock Line Discount value. Prevents Line Discount to be editable in Quote and Order configurator page. Does not lock the Line Discount at the record level. --></help>
+        <label><!-- Lock Line Discount --></label>
+        <name>kugo2p__LockLineDiscount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Option Product&apos;s Lock Quantity value. Prevents Quantity to be editable in Quote and Order configurator page --></help>
+        <label><!-- Lock Quantity --></label>
+        <name>kugo2p__LockQuantity__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Option Product&apos;s Lock Sales Price value. Prevents Sales Price to be editable in Quote and Order configurator page. Does not lock the Sales Price at the record level. --></help>
+        <label><!-- Lock Sales Price --></label>
+        <name>kugo2p__LockSalesPrice__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Option Product&apos;s Maximum Quantity value. Sets the maximum Quantity value limit in Quote and Order configurator page. Not applicable to Bundled and Defined Quantity Behavior --></help>
+        <label><!-- Maximum Quantity --></label>
+        <name>kugo2p__MaximumQuantity__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Option Product&apos;s Minimum Quantity value. Sets the minimum Quantity value limit in Quote and Order configurator page. Not applicable to Bundled and Defined Quantity Behavior --></help>
+        <label><!-- Minimum Quantity --></label>
+        <name>kugo2p__MinimumQuantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Option Product --></label>
+        <name>kugo2p__OptionProduct__c</name>
+        <relationshipLabel><!-- Member of Configurations --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- In Quote and Order Configurator page, Included will Lock Sales Price, Lock Line Discount, and set Sales Price to Zero. Related or, if blank, will allow edits to Line Discount, and set Sales Price --></help>
+        <label><!-- Price Behavior --></label>
+        <name>kugo2p__PriceBehavior__c</name>
+        <picklistValues>
+            <masterLabel>Included</masterLabel>
+            <translation><!-- Included --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Related</masterLabel>
+            <translation><!-- Related --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Applies a Discount Amount to the List Price to become the Sales Price value in Quote and Order configurator page. Applicable when Price Behavior is set to Discounted --></help>
+        <label><!-- Price Discount --></label>
+        <name>kugo2p__PriceDiscount__c</name>
+    </fields>
+    <fields>
+        <help><!-- In Quote and Order Configurator page, Bundled will Lock Quantity and multiply the Default Quantity by the Configured Product quantity. Defined will Lock Quantity and maintain Default Quantity. Related or, if blank, will allow edits of Default Quantity --></help>
+        <label><!-- Quantity Behavior --></label>
+        <name>kugo2p__QuantityBehavior__c</name>
+        <picklistValues>
+            <masterLabel>Bundled</masterLabel>
+            <translation><!-- Bundled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Defined</masterLabel>
+            <translation><!-- Defined --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Related</masterLabel>
+            <translation><!-- Related --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Option Product is included in Configured Product. Cannot be removed. Requires Quantity Behavior as Bundled or Defined --></help>
+        <label><!-- Required --></label>
+        <name>kugo2p__Required__c</name>
+    </fields>
+    <fields>
+        <help><!-- Option Product is suggested as part of Configured Product. Can be removed. --></help>
+        <label><!-- Selected --></label>
+        <name>kugo2p__Selected__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sort Order --></label>
+        <name>kugo2p__SortOrder__c</name>
+    </fields>
+    <layouts>
+        <layout>Configuration Option Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Option Product Configuration Override Information --></label>
+            <section>Option Product Configuration Override Information</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You must enter either Line Discount or Price Discount --></errorMessage>
+        <name>kugo2p__DiscountCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Maximum Quantity must be greater than or equal to Default Quantity --></errorMessage>
+        <name>kugo2p__MaximumQuantityDefaultCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Maximum Quantity must be greater than or equal to Minimum Quantity --></errorMessage>
+        <name>kugo2p__MaximumQuantityMinimumCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Maximum Quantity must be greater than Zero --></errorMessage>
+        <name>kugo2p__MaximumQuantityZeroCheck</name>
+    </validationRules>
+</CustomObjectTranslation>

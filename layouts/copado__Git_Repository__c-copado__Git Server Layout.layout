@@ -16,8 +16,12 @@
                 <field>copado__URI__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__Source_Format__c</field>
+                <behavior>Required</behavior>
+                <field>copado__Username__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>copado__Password__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -67,26 +71,17 @@
         <relatedList>copado__Git_Backup__c.copado__Git_Repository__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
-        <fields>copado__Active__c</fields>
+        <fields>copado__Commit_Message__c</fields>
+        <fields>copado__Commit_Id__c</fields>
+        <fields>copado__Commit_Date__c</fields>
+        <fields>copado__Changes__c</fields>
         <fields>copado__Branch__c</fields>
-        <fields>copado__Destination_Org_Credential__c</fields>
-        <fields>copado__Status__c</fields>
-        <relatedList>copado__Continuous_Integration__c.copado__Git_Repository__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>copado__Active__c</fields>
-        <fields>CREATED_DATE</fields>
-        <fields>LAST_UPDATE</fields>
-        <relatedList>copado__Deployment_Flow__c.copado__Git_Repository__c</relatedList>
+        <relatedList>copado__Git_Commit__c.copado__Git_Repository__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>copado__AuxiliaryObject__c.copado__Git_Repository__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
@@ -94,7 +89,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0Y000000l6Vy</masterLabel>
+        <masterLabel>00hb0000000cQse</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

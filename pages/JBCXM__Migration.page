@@ -1,0 +1,86 @@
+<apex:page sidebar="false" title="Migration" controller="JBCXM.VaultBroker" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gainsight-app" style="width:100%">
+                <gs-root></gs-root>
+            </div>
+        </div>
+    </div>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var hc= fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+        var apiEndPoint = hc.gatewayURL;
+        var authorization= "";
+        var app = 'xorg';
+
+        var appSessionId = hc.appSessionId;
+        var appUserId = hc.appUserId;
+        var appOrgId = hc.appOrgId;
+        var GS = GS || {};
+        GS.gainsightTabs = fakeEval('{!JSINHTMLENCODE(GainsightTabs)}');
+
+        GS.remotingCommonBulkEndPoint  ='{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        var host = "SALESFORCE";
+        GS.appName = "xorg";
+
+        var nsParams                = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.sessionId                = "{!(NSSessionId)}";
+        GS.nsURL                    = nsParams.url;
+        GS.isNSEnabled = (nsParams.nsenabled == "true" || nsParams.nsenabled == true);
+        GS.vaultRemotingEndPoint   = '{!$RemoteAction.VaultBroker.vaultRequestBroker}';
+        GS.commonRemotingEndPoint  = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.tenantGSVersion      = "{!(tenantGSVersion)}";
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.permissionObj = {!(permissionObj)};
+        GS.disableGlobalSearch = true;
+        GS.userConfig = {
+            userLocale        : {!(dateTimeFormatByLocale)},
+        userName          : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId            : "{!$User.Id}",
+            emailId           : "{!$User.Email}",
+            profilePhoto      : "{!(profilePhoto)}",
+            userDisplayName   : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs     : fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+        isLightningEnabled: {!(isLightningEnabled)}
+        };
+
+    </script>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:Features360 />
+        <script>
+            installResources({
+                scripts: ["gainsight-ng-ui/" + window["app"] + "/runtime", "gainsight-ng-ui/" + window["app"] + "/polyfills", "gainsight-ng-ui/" + window["app"] + "/main"],
+                styles: ["gainsight-ng-ui/" + window["app"] + "/styles"]
+            });
+        </script>
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+    <script>
+        GS.cdnUrl ="https://localhost:4200/";
+    </script>
+    <script type="text/javascript" src="https://localhost:4200/runtime.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/polyfills.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/styles.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/vendor.js"></script>
+    <script type="text/javascript" src="https://localhost:4200/main.js"></script>
+    </apex:outputpanel>
+    <script>
+        var GSGA = {
+            orgId: "{!$Organization.Id}",
+            orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('Migrator');
+    </script>
+
+</apex:page>

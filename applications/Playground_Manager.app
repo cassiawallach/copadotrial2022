@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Playground_1_Column_Layout</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Playground__c</pageOrSobjectType>
+    </actionOverrides>
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>Playground Manager</label>
+    <navType>Console</navType>
+    <tabs>copado1p__Platform_Job__c</tabs>
+    <tabs>copado__Org__c</tabs>
+    <tabs>Playground__c</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Playground_Manager_UtilityBar</utilityBar>
+    <workspaceConfig>
+        <mappings>
+            <tab>Playground__c</tab>
+        </mappings>
+        <mappings>
+            <tab>copado1p__Platform_Job__c</tab>
+        </mappings>
+        <mappings>
+            <tab>copado__Org__c</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Contact</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Dashboard</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-report</tab>
+        </mappings>
+    </workspaceConfig>
+</CustomApplication>

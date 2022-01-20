@@ -1,0 +1,26 @@
+<apex:page id="CriterionTask" standardController="redwing__Criterion_Task__c" extensions="redwing.CriterionTaskCtrl">
+    <style type="text/css">
+        html{
+            height: 100%;
+        }
+        html body{
+            height: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <apex:includeLightning />
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("{!ns}:TaskOutApp", function() {
+            $Lightning.createComponent("{!ns}:CriterionTask",
+                {
+                    "recordId" : '{!Criterion_Task__c.Id}',
+                    "taskId" : '{!JSENCODE(Criterion_Task__c.Learning__c)}'
+                },
+                "lightning",
+                function(cmp) {});
+        });
+    </script>
+</apex:page>

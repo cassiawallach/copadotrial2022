@@ -197,10 +197,130 @@
         <type>Default</type>
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>ACV__c</fullName>
+        <externalId>false</externalId>
+        <label>ACV</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__AvaTaxMessage__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Displays AvaTax responses or messages.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Displays AvaTax responses or messages.</inlineHelpText>
+        <label>AvaTax Message</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Entity_Use_Code__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Entity use codes indicate the reason for exemption.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Entity use codes indicate the reason for exemption.</inlineHelpText>
+        <label>Entity/Use Code</label>
+        <referenceTo>AVA_MAPPER__Entity_Use_code__c</referenceTo>
+        <relationshipLabel>Orders</relationshipLabel>
+        <relationshipName>Orders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Invoice_Message__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Invoice messaging returned by the AvaTax service.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Invoice messaging returned by the AvaTax service.</inlineHelpText>
+        <label>Invoice Message</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Is_Seller_Importer_Of_Record__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Enable / Disable seller importer of records.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enable / Disable seller importer of records.</inlineHelpText>
+        <label>Is Seller Importer Of Record</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Order_Calculate_Tax__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Triggers AvaTax to show the calculated tax.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Triggers AvaTax to show the calculated tax.</inlineHelpText>
+        <label>Calculate Tax</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Sales_Tax_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Displays the tax amount calculated by AvaTax.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Displays the tax amount calculated by AvaTax.</inlineHelpText>
+        <label>Sales Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>AVA_SFCPQ__Tax_Calculation_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Displays the status of the tax.</description>
+        <externalId>false</externalId>
+        <formula>IMAGE( 
+
+CASE(      AVA_SFCPQ__AvaTaxMessage__c      , 
+
+&quot;Tax Amount Is Up To Date&quot;, &quot;/img/msg_icons/confirm24.png&quot;, 
+
+&quot;Automated Tax Calculation Triggered, Please Refresh Your Browser&quot;, &quot;/img/loading24.gif&quot;, 
+
+&quot;Tax Amount is Outdated&quot;, &quot;/img/msg_icons/warning24.png&quot;, 
+&quot;&quot;,&quot;&quot;,
+
+&quot;/img/msg_icons/error24.png&quot;), 
+
+&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Displays the status of the tax.</inlineHelpText>
+        <label>Tax Calculation Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>AccountId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
@@ -209,29 +329,65 @@
     </fields>
     <fields>
         <fullName>ActivatedById</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ActivatedDate</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>BillToContactId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>BillingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>COA_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>COA Status</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>false</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>Submitted</fullName>
+                    <default>false</default>
+                    <label>Submitted</label>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                    <label>Cancelled</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>CompanyAuthorizedById</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>CompanyAuthorizedDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
@@ -239,6 +395,7 @@
     </fields>
     <fields>
         <fullName>ContractId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
@@ -246,24 +403,57 @@
         <fullName>ContractName</fullName>
     </fields>
     <fields>
+        <fullName>Contract_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>ContractId</formula>
+        <label>Contract ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CurrencyIsoCode</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Custom_Salesforce_Org__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Salesforce Org</label>
+        <referenceTo>Salesforce_Org__c</referenceTo>
+        <relationshipLabel>Orders</relationshipLabel>
+        <relationshipName>Orders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>CustomerAuthorizedById</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>CustomerAuthorizedDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>EffectiveDate</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>EndDate</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
@@ -271,15 +461,42 @@
     </fields>
     <fields>
         <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Opp_ACV__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity.ACV__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opp ACV</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Opp_TCV__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity.TCV__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opp TCV</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>OpportunityId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>OrderReferenceNumber</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
@@ -288,52 +505,289 @@
     </fields>
     <fields>
         <fullName>OwnerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>PoDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>PoNumber</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>Pricebook2Id</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>QuoteId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Remaining_Order_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+  AND(
+    TotalAmount &gt; 0,
+    AND(EffectiveDate&lt;=TODAY(), Contract.EndDate&gt;TODAY())
+  ),
+  ((TotalAmount/((Contract.EndDate+1)-EffectiveDate))*((Contract.EndDate+1)-TODAY())),
+  0
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Remaining Order Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__BillingFrequency__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the billing frequency.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the billing frequency.</inlineHelpText>
+        <label>Billing Frequency</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>SBQQ__BillingFrequency</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SBQQ__Contracted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates if the order is contracted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates if the order is contracted.</inlineHelpText>
+        <label>Contracted</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__ContractingMethod__c</fullName>
+        <deprecated>false</deprecated>
+        <description>&quot;By Subscription End Date&quot; creates a separate Contract for each unique Subscription End Date, containing only those Subscriptions. &quot;Single Contract&quot; creates one Contract containing all Subscriptions, regardless of their End Dates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>&quot;By Subscription End Date&quot; creates a separate Contract for each unique Subscription End Date, containing only those Subscriptions. &quot;Single Contract&quot; creates one Contract containing all Subscriptions, regardless of their End Dates.</inlineHelpText>
+        <label>Contracting Method</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>SBQQ__ContractingMethod</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SBQQ__FirstContractedOrder__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>If Contracting Method is set to &quot;Single Contract&quot;, this field references the original contracted order, where the single contract is created from. All subsequent contracted subscriptions and assets will be added to the single contract associated to the original contracted order.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If Contracting Method is set to &quot;Single Contract&quot;, this field references the original contracted order, where the single contract is created from. The field value is set by the system.</inlineHelpText>
+        <label>First Contracted Order</label>
+        <referenceTo>Order</referenceTo>
+        <relationshipLabel>Single Contracted Orders</relationshipLabel>
+        <relationshipName>FirstContractedOrders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__OrderBookings__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total amount of all order product bookings.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total amount of all order product bookings.</inlineHelpText>
+        <label>Order Bookings</label>
+        <summarizedField>OrderItem.SBQQ__OrderProductBookings__c</summarizedField>
+        <summaryForeignKey>OrderItem.OrderId</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__PaymentTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The payment term for this order.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The payment term for this order.</inlineHelpText>
+        <label>Payment Term</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>SBQQ__PaymentTerm</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SBQQ__PriceCalcStatusMessage__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The price calculation status message.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The price calculation status message</inlineHelpText>
+        <label>Price Calculation Status Message</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SBQQ__PriceCalcStatus__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The order price calculation  job status.  It is set by the system.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates the order price calculation job status.  It is set by the system.</inlineHelpText>
+        <label>Price Calculation Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>SBQQ__JobStatus</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SBQQ__Quote__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>The quote where the order is created from.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The quote where the order is created from.</inlineHelpText>
+        <label>Quote</label>
+        <referenceTo>SBQQ__Quote__c</referenceTo>
+        <relationshipLabel>Orders</relationshipLabel>
+        <relationshipName>Orders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__RenewalTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specify the term of the renewal. By default, it matches the original contract term.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specify the term of the renewal. By default, it matches the original contract term.</inlineHelpText>
+        <label>Renewal Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SBQQ__RenewalUpliftRate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Rate of renewal price increases.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rate of renewal price increases.</inlineHelpText>
+        <label>Renewal Uplift (%)</label>
+        <precision>11</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__TaxAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The estimated tax amount</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The estimated tax amount</inlineHelpText>
+        <label>Estimated Tax</label>
+        <summarizedField>OrderItem.SBQQ__TaxAmount__c</summarizedField>
+        <summaryForeignKey>OrderItem.OrderId</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__TotalAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The total order amount with tax included</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The total order amount with tax included</inlineHelpText>
+        <label>Total Amount (With Tax)</label>
+        <summarizedField>OrderItem.SBQQ__TotalAmount__c</summarizedField>
+        <summaryForeignKey>OrderItem.OrderId</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>ShipToContactId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ShippingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>Status</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>TCV__c</fullName>
+        <externalId>false</externalId>
+        <label>TCV</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>TotalAmount</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>Type</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Picklist</type>
     </fields>
     <listViews>
         <fullName>AllActivatedOrders</fullName>
+        <columns>ORDERS.ORDER_NUMBER</columns>
+        <columns>SALES.ACCOUNT.NAME</columns>
+        <columns>ORDERS.TOTAL_AMOUNT</columns>
+        <columns>ORDERS.EFFECTIVE_DATE</columns>
+        <columns>ORDERS.STATUS</columns>
+        <columns>COA_Status__c</columns>
+        <columns>CONTRACT.CONTRACT_NUMBER</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>ORDERS.STATUS_CODE</field>
@@ -341,6 +795,7 @@
             <value>A</value>
         </filters>
         <label>All Activated Orders</label>
+        <language>en_US</language>
     </listViews>
     <listViews>
         <fullName>AllDraftOrders</fullName>
@@ -354,6 +809,12 @@
     </listViews>
     <listViews>
         <fullName>AllOrders</fullName>
+        <columns>ORDERS.ORDER_NUMBER</columns>
+        <columns>SALES.ACCOUNT.NAME</columns>
+        <columns>ORDERS.TOTAL_AMOUNT</columns>
+        <columns>ORDERS.EFFECTIVE_DATE</columns>
+        <columns>ORDERS.STATUS</columns>
+        <columns>CONTRACT.CONTRACT_NUMBER</columns>
         <filterScope>Everything</filterScope>
         <label>All Orders</label>
     </listViews>
@@ -374,4 +835,110 @@
         <searchResultsAdditionalFields>CONTRACT.CONTRACT_NUMBER</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>SBQQ__Cannot_Contract_New_Order</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(ISNEW(), SBQQ__Contracted__c)</errorConditionFormula>
+        <errorDisplayField>SBQQ__Contracted__c</errorDisplayField>
+        <errorMessage>Can&apos;t contract the order. Activate the order and try again.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>AVA_SFCPQ__Calculate_Tax</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Calculate Tax</masterLabel>
+        <openType>noSidebar</openType>
+        <page>AVA_SFCPQ__CalculateOrderTax</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>AVA_SFCPQ__ValidateOrderAddress</fullName>
+        <availability>online</availability>
+        <description>AvaTax Billing Address Validation Button for Order</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Validate Billing Address</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>/apex/AVA_MAPPER__addressValidation?id={!Order.Id}&amp;sType=CPQConfig&amp;adrType=Billing</url>
+    </webLinks>
+    <webLinks>
+        <fullName>AVA_SFCPQ__Validate_Shipping_Address</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Validate Shipping Address</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>/apex/AVA_MAPPER__addressValidation?id={!Order.Id}&amp;sType=CPQConfig&amp;adrType=Shipping</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_Renewal_Opportunity</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Create Renewal Opportunity</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/CreateRenewalOpportunity?id={!Order.OpportunityId}&amp;contractId={!Order.Contract_ID__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Create_SFDC_Order</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Create SFDC Order</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/ContractOrder?id={!Order.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Import_Line_Items</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Import Line Items</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/OrderItemImporter?id={!Order.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Provision_Org</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Provision Org</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/ProvisionOrder?id={!Order.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>SBQQ__EditOrderProducts</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Edit Order Products</masterLabel>
+        <openType>noSidebar</openType>
+        <page>SBQQ__OrderLineSelector</page>
+        <protected>false</protected>
+    </webLinks>
 </CustomObject>

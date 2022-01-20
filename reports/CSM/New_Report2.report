@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>IF(
+    RowCount=0,1,
+    
+    IF(RowCount=1,3,
+    
+    5))</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Certifications Rank</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <field>Account.Contacts$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Contacts.Academy_Certifications__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Contacts.Academy_Certifications__r.Academy_Certifications__r$Certification_Program__c</field>
+    </columns>
+    <columns>
+        <field>Account.Contacts.Academy_Certifications__r.Academy_Certifications__r$Status__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Test - Engagement - # of Certifications</description>
+    <filter>
+        <criteriaItems>
+            <column>Account$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Linde,Sandvik</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Customer</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Test - Engagement</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_Contacts_with_Academy_Certifications__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

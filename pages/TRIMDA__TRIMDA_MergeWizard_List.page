@@ -1,0 +1,714 @@
+<apex:page id="MergeWizard" standardController="TRIMDA__TRIMDA_MatchingResult__c" recordSetVar="TRIMDA_MatchingResult__cs" extensions="TRIMDA.TRIMDA_MergeWizard_List" tabStyle="TRIMDA__TRIMDA_MatchingResult__c"  sidebar="false" Showheader="true" >
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+   <!-- <apex:stylesheet value="{!URLFOR($Resource.DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/>-->
+
+
+   <style>
+       .slds .slds-table th, .slds .slds-table td {
+        padding-top:0.1rem;
+        padding-bottom:0.1rem;
+      }
+       
+      .slds .slds-table tr > td:first-child{
+       padding-left:0rem;
+      }
+      .trimdmr_header{
+        width:100%;
+        border-radius: 0.25rem 0.25rem 0 0;
+       <!--
+        background-color:#5b77cc;
+        background: linear-gradient(#a8b7e4, #5b77cc);  
+		-->
+       	background-color:#9bb1d9;
+        background: linear-gradient(#9bb1d9,#ddecf9);  
+        padding:0.5rem;
+    }
+
+    .dt_pbs{
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+    
+    .dt_highlight{
+        font-weight:bold;
+    }
+    
+    .slds-scope .slds-brand-band:before{
+        z-index:0;
+     } 
+  
+</style>
+    
+    
+    <script>
+  function go(loc) {
+      document.getElementById('theDetailIframe').src = loc;
+  }
+  </script>
+    
+<script>
+    //var curSelButtonId = 'MergeWizard:listform:List:theList:0:SelectButton';
+var curSelMergeButtonId = 'MergeWizard:listform:List:theList:0:SelectMergeButton';
+var curSelConvertButtonId = 'MergeWizard:listform:List:theList:0:SelectConvertButton';
+var SelectedId='';
+
+function setSelectButton(NewButId) {
+    //alert(curSelMergeButtonId);
+    //alert(NewButId);
+    
+    //Reset Buttons
+    var btns = document.getElementsByClassName("selectbutton");
+    for(var i = 0; i < btns.length; i++)
+	{
+   		btns[i].style.color='';
+        btns[i].style.fontWeight ='';
+    	btns[i].innerHTML='Review';
+	}
+    
+    //Select Both Buttons
+    var lineId = NewButId;
+    lineId = lineId.substring(0,lineId.lastIndexOf(':'));  
+      
+	curSelMergeButtonId = lineId+':SelectMergeButton';
+    var SelconvButton = document.getElementById(curSelMergeButtonId);
+    if (SelconvButton != null){
+    	SelconvButton.style.fontWeight ='bold';
+        SelconvButton.style.color='red';
+    	SelconvButton.innerHTML='Selected'; 
+    }
+      
+    curSelConvertButtonId = lineId+':SelectConvertButton';
+    var SelmergeButton = document.getElementById(curSelConvertButtonId);
+    if (SelmergeButton != null){
+    	SelmergeButton.style.fontWeight ='bold';
+        SelmergeButton.style.color='red';
+    	SelmergeButton.innerHTML='Selected'; 
+    }
+      
+    var IdColumnElem = document.getElementById(lineId + ':IdColumn');
+    if (IdColumnElem != null){
+        //alert(IdColumnElem.innerText); 
+        SelectedId = IdColumnElem.innerText.trim();
+        //alert(lineId);
+    }
+}
+
+function setSelected(ElemId){
+      
+      var lineId = ElemId;
+      lineId = lineId.substring(0,lineId.lastIndexOf(':'));
+      //then mark the current row Selected, by identifying Id of Id MergeWizard:listform:List:theList:10:SelectButton from MergeWizard:listform:List:theList:10:imgFalseYes/ImgFalseNo
+      //setSelectButton(lineId+':SelectButton');
+      setSelectButton(lineId+':SelectMergeButton');
+      setSelectButton(lineId+':SelectConvertButton');
+      
+}
+
+function setCurMR(MrId){
+     SelectedId= MrId;
+  } 
+
+function myscrollIntoView() {
+       //run though rows and find the linie with the selected Id, if not found, choose row 0
+    //alert('myscrollIntoView - ' + SelectedId); 
+	   var RowNo = 0;        
+       for (i = 0; i < 100; i++) { 
+           var IdColumnElem = document.getElementById('MergeWizard:listform:List:theList:' + i +':IdColumn');
+           if (IdColumnElem !=null){
+               if (IdColumnElem.innerText.trim() == SelectedId){
+                   RowNo = i; //found
+                   break;
+               }
+           }else{
+               break; //Break loop - end of rows
+           }
+               
+       }
+        
+    //alert(RowNo);   
+      var  element =document.getElementById('MergeWizard:listform:List:theList:' + RowNo + ':selectcolumn');
+        //alert(lineId);  
+      var container = document.getElementById('MergeWizard:listform:List:TotalList');
+         
+      var containerTop = $(container).scrollTop(); 
+      var containerBottom = containerTop + $(container).height(); 
+      var elemTop = element.offsetTop;
+      var elemBottom = elemTop + $(element).height();
+
+      if (elemTop < containerTop) {
+          $(container).scrollTop(elemTop);
+      } else if (elemBottom > containerBottom) {
+           $(container).scrollTop(elemTop);
+          //$(container).scrollTop(elemBottom - $(container).height());
+          //$(container).scrollTop(elemBottom - $(container).height()+$(element).height());
+       }
+    }
+
+function toggleSummary(){ //hide/Show Summary section on page
+        var summaryelem = document.getElementById('summarydiv');
+        var btnhide = document.getElementById('hideSummaryButton');
+        var btnshow = document.getElementById('showSummaryButton');
+        if (summaryelem.style.display == 'none'){
+            summaryelem.style.display = 'block';
+            btnhide.style.display = 'block';            
+            btnshow.style.display = 'none';
+        }else{
+            summaryelem.style.display = 'none';
+            btnhide.style.display = 'none';            
+            btnshow.style.display = 'block';  
+        }
+    }
+    
+function toggleFalseDupe(ElemId){
+    //alert(ElemId);
+      var lineId = ElemId;
+      lineId = lineId.substring(0,lineId.lastIndexOf(':'));
+    //alert(lineId);
+      
+      //Toggle the on/off images
+      //alert(lineId + ':imgFalseYes');
+      var imgYes = document.getElementById(lineId + ':imgFalseYes');
+      if (imgYes != null){
+          //alert('imgYes.style.Display: '+imgYes.style.display);
+      	if (imgYes.style.display == 'none'){imgYes.style.display = 'block';}else{imgYes.style.display = 'none';}
+      }
+	  
+      //alert(lineId + ':imgFalseYes2');
+      var imgYes2 = document.getElementById(lineId + ':imgFalseYes2');
+      if (imgYes2 != null){
+          //alert('imgYes2.style.Display: '+imgYes2.style.display);
+      	if (imgYes2.style.display == 'none'){imgYes2.style.display = 'block';}else{imgYes2.style.display = 'none';}
+      }
+      
+      //alert(lineId + ':imgFalseNo');
+      var imgNo = document.getElementById(lineId + ':imgFalseNo');
+      if (imgNo != null){
+          //alert('imgNo.style.Display: '+imgNo.style.display);
+      	if (imgNo.style.display == 'none'){imgNo.style.display = 'block';}else{imgNo.style.display = 'none';}
+      }
+      //alert(lineId + ':imgFalseNo2');
+      var imgNo2 = document.getElementById(lineId + ':imgFalseNo2');
+      if (imgNo2 != null){
+          //alert('imgNo2.style.Display: '+imgNo2.style.display);
+      	if (imgNo2.style.display == 'none'){imgNo2.style.display = 'block';}else{imgNo2.style.display = 'none';}
+      }    
+      
+        //setSelected(ElemId);
+       
+  }  
+    
+</script>
+    
+<apex:slds />
+<apex:variable value="{!OR($User.UIThemeDisplayed == 'Theme4d',CONTAINS($CurrentPage.URL, 'Theme4d'))}" var="isLightningMode"/>   
+<div class="slds-scope" style="{!IF($User.UIThemeDisplayed == 'Theme4d','background-color:#b2c5e0;','')}">    
+<div class="{!IF($User.UIThemeDisplayed == 'Theme4d','slds-brand-band slds-brand-band_large','')}" >
+    <div  style="{!IF($User.UIThemeDisplayed == 'Theme4d','z-index:1;margin:0.75rem;','')}">
+        
+ <!-- NO MATCHED RECORDS FOUND -->   
+<apex:outputPanel styleclass="slds" id="nolistform" >
+<apex:form rendered="{!TRIMDA_MatchedRecordList.size =0}" style="height:0rem;">
+
+<div style="height: 24rem;">
+  <section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">
+    <div class="slds-modal__container">
+      <header class="slds-modal__header slds-theme_success slds-theme_alert-texture">
+         
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick="javascript:sforce.one.back(true);" title="Close">
+          <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close" />
+          </svg>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+		
+        <h2 class="slds-text-heading_medium" id="prompt-heading-id">
+            Merge/Convert Wizard <br />
+          </h2>
+      </header>
+      <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+          <!--No duplicates found!<br />-->
+          <apex:pageMessages /> 
+      </div>
+      <footer class="slds-modal__footer slds-theme_default">
+        <button class="slds-button slds-button_neutral"  onclick="javascript:sforce.one.back(true);" style="{!If($User.UIThemeDisplayed != 'Theme4d','display:none','')}">Okay</button>
+        <apex:commandButton action="{!getReturnURL}" styleclass="slds-button slds-button_neutral" value="OK" rendered="{!$User.UIThemeDisplayed !='Theme4d'}" />
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</div>
+</apex:form>
+</apex:outputPanel>    
+
+
+<apex:outputPanel id="listform">   
+<apex:form rendered="{!TRIMDA_MatchedRecordList.size >0}" >
+<div >
+    <div class="slds-grid slds-wrap"> 
+        
+        <!--HEADER -->
+        <div class="slds-col slds-size--1-of-1 trimdmr_header"  >
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'MatchedRecords48x40_NL.png')}" style="height:2.5rem;" title="DataTrim Matched Records" />
+                    </div>
+                    <div class="slds-media__body">
+                         <p class="slds-text-heading--label" style="color:black;">DataTrim</p>
+                        <div class="slds-grid">
+                            <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Mass Merge"><strong>Review Wizard</strong></h1>
+                        </div>
+                    </div>
+                    <span style="{!IF(review='1','display:none;','')}">
+                    <a href='#' onclick="go('/apex/trimda/TRIMDA_MergeWizard_List_Splash')" style="font-size:0.9rem;font-weight:bold;">How it Works!</a>&nbsp;
+                    <a href="https://www.datatrim.com/downloads/DataTrimDupeAlertsUserGuide.pdf#zoom=80" target="_blank"  title="User Guide" ><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'userguide.png')}" style="height:1.5rem;" title="User Guide" /></a>
+                    <a href="https://www.datatrim.com/d2b.php?mode=DupeAlerts#demo" target="_blank"  title="Tutorials" ><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'tutorials.png')}" style="height:1.5rem;" title="Tutorials" /></a>
+                    <a href="/apex/TRIMDA__TRIMDA_DupeAlertsSetup?display=merge" target="_blank" class="ClassicOnly" title="DataTrim setup/customization etc."  style="{!If(isLightningMode,'display:none','')}" ><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'setup.png')}" style="height:1.5rem;" title="Setup" /></a>
+                    <a onclick="javascript:sforce.one.navigateToURL('/apex/TRIMDA__TRIMDA_DupeAlertsSetup?display=merge');" target="_blank" class="LightningOnly" style="{!If(isLightningMode,'','display:none')}" title="DataTrim setup/customization etc." ><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'setup.png')}" style="height:1.5rem;" title="Setup" /></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+   
+<!-- LIST -->
+        <div class="slds-col slds-size--1-of-1 " >
+            <apex:outputPanel id="topList" layout="block" > 
+              <apex:pageBlock id="List" tabstyle="TRIMDA_MatchingResult__c" >
+                <apex:facet name="header" >
+                    <apex:panelGroup id="topheader">
+                        <div class="slds-grid" style="border:1px;margin-top:0.25rem;padding-left:0.8rem;">
+                            <div class="slds-col slds-size--4-of-12 " style="text-align:left;font-size:1.3rem;">
+                                 &nbsp;Remaining Records to Review [{!IF(Remaing2Merge>=50,'50+', TEXT(Remaing2Merge))}]&nbsp;
+                            </div>
+                            <div class="slds-col slds-size--8-of-12 " >
+                                 <apex:panelGroup >
+                                    <apex:commandButton action="{!refresh}" oncomplete="myscrollIntoView();" value="Refresh" reRender="listform, summary, detail2, log" styleclass="slds-button slds-button--neutral slds-button--small" status="ProgressStatus"/>
+                                    <apex:commandButton action="{!hide}" value="{!IF(displayMode='All','Hide','Show')}" title="{!IF(displayMode='All','Hide','Show')} Resolved and False Dupes" reRender="listform,  summary, detail2, log"  styleclass="slds-button slds-button--neutral slds-button--small" status="ProgressStatus"/>
+                                    <apex:commandButton action="{!deleteResolved}" value="Remove Resolved" title="Remove Resolved Dupes (Matched Records)" reRender="listform, summary, detail2, log" styleclass="slds-button slds-button--neutral slds-button--small" rendered="{!AND(MatchedRecordWrapped.size>0, review='0')}" status="ProgressStatus"/>
+                                </apex:panelGroup>
+                            </div>
+       
+                        </div> 
+                    </apex:panelGroup>
+                </apex:facet>
+                                  
+                <div class="slds-grid slds-wrap">
+                     <div class="slds-col slds-size--1-of-1 " >
+                        <apex:outputPanel id="NoList" layout="block" style="overflow:auto;height:{!IF(MatchedRecordWrapped.size>7,'140',TEXT((MatchedRecordWrapped.size+1)*17.5))}px" rendered="{!MatchedRecordWrapped.size==0}">
+                            No Records to Review
+                        </apex:outputPanel> 
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " >
+                        
+                        <apex:outputPanel id="TotalList" layout="block" style="overflow:auto;{!IF(MatchedRecordWrapped.size>7,'height:168px;','')}" rendered="{!MatchedRecordWrapped.size>0}"> 
+                            <!-- ACTION POLLER - disabled on purpose, works badly when listis too long/scroll etc. 
+                            <apex:actionPoller action="{!refresh}"  oncomplete="myscrollIntoView();" rerender="listform, nolistform, summary, detail2, log" interval="9"/>
+                            -->
+                            
+                            <div class="slds-form-element__control">
+                            <apex:dataTable border="0" width="97%" styleClass="slds-table slds-table--bordered" style="font-size:90%;" columns="8" value="{!MatchedRecordWrapped}" var="mr" id="theList"   >
+                            
+                                <apex:column id="selectcolumn" styleClass="mycolumn" style="text-align:center;padding-top:0.3rem;padding-bottom:0.3rem;" width="60px">
+                                <apex:facet name="header"><strong>Select {!UseDTWizard}</strong></apex:facet>
+
+                                <button id="SelectButton" class="slds-button slds-button--neutral " style="line-height:1.5rem;">
+                                    <apex:commandLink styleclass="selectbutton" id="SelectMergeButton" action="{!setSelect}" rendered="{!NOT OR(mr.mr.TRIMDA__ObjectName__c ='Lead-Contact',mr.mr.TRIMDA__ObjectName__c ='Lead-Account')}" style="text-decoration:none;padding-top:0rem;padding-bottom:0rem;{!IF(selectedId=mr.Id,'color:red;','')}" value="{!IF(selectedId=mr.Id,'Selected','Review')}" onclick="setSelectButton(this.id);setCurMR('{!mr.id}');go('{!MergeWizardURL}?id={!mr.id}&inline=1&review={!review}')" title="Review Matched Pair" status="ProgressStatus" rerender="summary, log" >
+                                        <apex:param name="selectedId" value="{!mr.id}" assignTo="{!selectedId}"/>   
+                                    </apex:commandLink>
+                                    <apex:commandLink styleclass="selectbutton" id="SelectConvertButton" action="{!setSelect}" rendered="{!OR(mr.mr.TRIMDA__ObjectName__c ='Lead-Contact',mr.mr.TRIMDA__ObjectName__c ='Lead-Account')}" style="text-decoration:none;padding-top:0rem;padding-bottom:0rem;{!IF(selectedId=mr.Id,'color:red;','')}" value="{!IF(selectedId=mr.Id,'Selected','Review')}" onclick="setSelectButton(this.id);setCurMR('{!mr.id}');go('/apex/trimda/TRIMDA_QuickConvert?id={!mr.id}&inline=1&review={!review}')" title="Review Lead to Convert" status="ProgressStatus" rerender="summary,log" >
+                                        <apex:param name="selectedId" value="{!mr.id}" assignTo="{!selectedId}"/>   
+                                    </apex:commandLink>
+                                </button>
+                            </apex:column>
+                           
+                            <apex:column styleClass="mycolumn" width="80px"> 
+                                <apex:facet name="header" ><strong>Match Class</strong></apex:facet>
+                                <apex:image id="MatchClass5" value="/img/samples/stars_500.gif" width="80" height="16" rendered="{!mr.mr.TRIMDA__Match_Level__c='Exact'}" title="{!mr.mr.TRIMDA__Match_Level__c}"/> 
+                                <apex:image id="MatchClass4" value="/img/samples/stars_400.gif" width="80" height="16" rendered="{!mr.mr.TRIMDA__Match_Level__c='SuperTight'}" title="{!mr.mr.TRIMDA__Match_Level__c}"/> 
+                                <apex:image id="MatchClass3" value="/img/samples/stars_300.gif" width="80" height="16" rendered="{!mr.mr.TRIMDA__Match_Level__c='Tight'}" title="{!mr.mr.TRIMDA__Match_Level__c}"/> 
+                                <apex:image id="MatchClass2" value="/img/samples/stars_200.gif" width="80" height="16" rendered="{!mr.mr.TRIMDA__Match_Level__c='Medium'}" title="{!mr.mr.TRIMDA__Match_Level__c}"/> 
+                                <apex:image id="MatchClass1" value="/img/samples/stars_100.gif" width="80" height="16" rendered="{!mr.mr.TRIMDA__Match_Level__c='Loose'}" title="{!mr.mr.TRIMDA__Match_Level__c}"/> 
+                                <apex:image id="MatchClass0" url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'Class_No.png')}" width="16" height="16" rendered="{!or(mr.mr.TRIMDA__Match_Level__c='',mr.mr.TRIMDA__Match_Level__c='None')}" title="Identified by User"/>
+                                &nbsp;<apex:outputText rendered="{!or(mr.mr.TRIMDA__Match_Level__c='',mr.mr.TRIMDA__Match_Level__c='None')}">None</apex:outputText>
+                            </apex:column>
+                                
+                            <apex:column styleClass="mycolumn" >
+                                <apex:facet name="header"><strong>Suvivor</strong></apex:facet>
+                                <!-- <apex:outputText value="{!mr.Account1__r.Name}" rendered="{!mr.ObjectName__c = 'Account-Account'}"/> -->
+                                 <a href="/{!mr.mr.Account1__c}" target="_blank" style="{!IF(OR(mr.mr.ObjectName__c = 'Account-Account', mr.mr.ObjectName__c = 'Lead-Account'),'','display:none')}" >{!mr.mr.Account1__r.Name}</a>
+                                <a href="/{!mr.mr.Contact1__c}" target="_blank" style="{!IF(OR(mr.mr.ObjectName__c = 'Contact-Contact', mr.mr.ObjectName__c = 'Acc+Contact-Acc+Contact', mr.mr.ObjectName__c = 'Lead-Contact'),'','display:none')}" >{!mr.mr.Contact1__r.Name}</a>
+                                <a href="/{!mr.mr.Lead1__c}" target="_blank" style="{!IF(mr.mr.ObjectName__c = 'Lead-Lead','','display:none')}" >{!mr.mr.Lead1__r.Name}</a>
+                                <!-- Lightning style, but does not open in new window
+                                <a onclick="sforce.one.navigateToSObject('{!mr.mr.Account1__c}');" target="_blank" style="{!IF(OR(mr.mr.ObjectName__c = 'Account-Account', mr.mr.ObjectName__c = 'Lead-Account'),'','display:none')}" >{!mr.mr.Account1__r.Name}</a>
+                                <a onclick="sforce.one.navigateToSObject('{!mr.mr.Account1__c}');" target="_blank" style="{!IF(OR(mr.mr.ObjectName__c = 'Contact-Contact', mr.mr.ObjectName__c = 'Acc+Contact-Acc+Contact', mr.mr.ObjectName__c = 'Lead-Contact'),'','display:none')}"  >{!mr.mr.Contact1__r.Name}</a>
+                                <a onclick="sforce.one.navigateToSObject('{!mr.mr.Lead1__c}');" target="_blank" style="{!IF(mr.mr.ObjectName__c = 'Lead-Lead','','display:none')}" >{!mr.mr.Lead1__r.Name}</a>
+                                -->
+                                <!--OLD
+                                <apex:outputLink value="/{!mr.Account1__c}" target="_blank" rendered="{!mr.ObjectName__c = 'Account-Account' || mr.ObjectName__c = 'Lead-Account'}" >{!mr.Account1__r.Name}</apex:outputLink>
+                                <apex:outputLink value="/{!mr.Contact1__c}" target="_blank" rendered="{!mr.ObjectName__c = 'Contact-Contact' || mr.ObjectName__c = 'Acc+Contact-Acc+Contact' || mr.ObjectName__c = 'Lead-Contact'}" >{!mr.Contact1__r.Name}</apex:outputLink>
+                                <apex:outputLink value="/{!mr.Lead1__c}" target="_blank" rendered="{!mr.ObjectName__c = 'Lead-Lead'}" >{!mr.Lead1__r.Name}</apex:outputLink>
+								-->
+                            </apex:column>
+                            <apex:column styleClass="mycolumn" >
+                                <apex:facet name="header"><strong>Dupe</strong></apex:facet>
+                                <!-- <apex:outputText value="{!mr.Account2__r.Name}" rendered="{!mr.ObjectName__c = 'Account-Account'}"/> -->
+                                <a href="/{!mr.mr.Account2__c}" target="_blank" style="{!IF(mr.mr.ObjectName__c = 'Account-Account', '','display:none')}" >{!mr.mr.Account2__r.Name}</a>
+                                <a href="/{!mr.mr.Contact2__c}" target="_blank" style="{!IF(OR(mr.mr.ObjectName__c = 'Contact-Contact', mr.mr.ObjectName__c = 'Acc+Contact-Acc+Contact'),'','display:none')}" >{!mr.mr.Contact2__r.Name}</a>
+                                <a href="/{!mr.mr.Lead2__c}" target="_blank" style="{!IF(OR(mr.mr.ObjectName__c = 'Lead-Lead', mr.mr.ObjectName__c = 'Lead-Contact', mr.mr.ObjectName__c = 'Lead-Account' ),'','display:none')}" >{!mr.mr.Lead2__r.Name}</a>
+                                <!--OLD
+                                <apex:outputLink value="/{!mr.Account2__c}" target="_blank" rendered="{!mr.ObjectName__c = 'Account-Account'}" >{!mr.Account2__r.Name}</apex:outputLink>
+                                <apex:outputLink value="/{!mr.Contact2__c}" target="_blank" rendered="{!mr.ObjectName__c = 'Contact-Contact' || mr.ObjectName__c = 'Acc+Contact-Acc+Contact' }" >{!mr.Contact2__r.Name}</apex:outputLink>
+                                <apex:outputLink value="/{!mr.Lead2__c}" target="_blank" rendered="{!mr.ObjectName__c = 'Lead-Lead' || mr.ObjectName__c = 'Lead-Contact' || mr.ObjectName__c = 'Lead-Account'}" >{!mr.Lead2__r.Name}</apex:outputLink>
+								-->
+                            </apex:column>
+                               
+                            <apex:column styleClass="mycolumn" >
+                                <apex:facet name="header"><strong>Matching Detail Name</strong></apex:facet>
+                                <a href="/{!mr.id}" target="_blank"  title="View Matching Detail for this {!mr.mr.ObjectName__c} Pair" >{!mr.mr.name}</a>
+                                <!--
+                                <apex:commandLink action="{!setSelect}" value="{!mr.mr.name}" onclick="setSelected(this.id);setCurMR('{!mr.id}');go('/apex/trimda/TRIMDA_MatchedRecordDetail?id={!mr.id}&inline=1&review={!review}');" title="View Matching Detail for this {!mr.mr.ObjectName__c} Pair" status="ProgressStatus" rerender="summary, TotalList" >
+                                    <apex:param name="selectedId" value="{!mr.id}" assignTo="{!selectedId}"/>   
+                                </apex:commandLink>
+								-->
+                                
+                            </apex:column>
+                            
+                            <apex:column style="text-align:center" styleClass="mycolumn" width="80px" rendered="{!review='1'}">
+                                <apex:facet name="header" ><strong>Review Feedback</strong></apex:facet>
+                                <apex:outputField value="{!mr.mr.TRIMDA__Review_Outcome__c}"/>
+                            </apex:column>  
+                                
+                            <apex:column style="text-align:center" styleClass="mycolumn" width="80px">
+                                <apex:facet name="header" ><strong>Resolved</strong></apex:facet>
+                                <apex:outputField value="{!mr.mr.TRIMDA__Resolved__c}"/>
+                            </apex:column>  
+                                
+                            <apex:column style="text-align:center" styleClass="mycolumn" width="80px">
+                                <apex:facet name="header" ><strong>False Dupe</strong></apex:facet>
+                                <apex:commandlink action="{!setFalseDupe}" value="" rendered="{!NOT OR(mr.mr.TRIMDA__ObjectName__c ='Lead-Contact',mr.mr.TRIMDA__ObjectName__c ='Lead-Account')}" onclick="setSelected(this.id);setCurMR('{!mr.id}');toggleFalseDupe(this.id);go('/apex/trimda/TRIMDA_QuickMerge?id={!mr.id}&inline=1&review={!review}')" rerender="detail2, summary, TotalList, topheader" status="ProgressStatus">
+                                    <apex:param name="selectedId" value="{!mr.id}" assignTo="{!selectedId}"/>   
+                                    <apex:image id="imgFalseYes" url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'SelYes.png')}" style="height:1.2rem;{!if(mr.mr.TRIMDA__False_Dupe__c == true,'display:block','display:none')}" title="Click to remove False Dupe flag"/><apex:image id="imgFalseNo" url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'selNo.png')}" style="height:1.2rem;{!if(mr.mr.TRIMDA__False_Dupe__c == false,'display:block','display:none')}"  title="Click to set as False Dupe"/>
+                                </apex:commandlink>
+                                <apex:commandlink action="{!setFalseDupe}" value="" rendered="{!OR(mr.mr.TRIMDA__ObjectName__c ='Lead-Contact',mr.mr.TRIMDA__ObjectName__c ='Lead-Account')}" onclick="setSelected(this.id);setCurMR('{!mr.id}');toggleFalseDupe(this.id);go('/apex/trimda/TRIMDA_QuickConvert?id={!mr.id}&inline=1&review={!review}')" rerender="detail2, summary, TotalList, topheader" status="ProgressStatus">
+                                    <apex:param name="selectedId" value="{!mr.id}" assignTo="{!selectedId}"/>   
+                                    <apex:image id="imgFalseYes2" url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'SelYes.png')}" style="height:1.2rem;{!if(mr.mr.TRIMDA__False_Dupe__c == true,'display:block','display:none')}" title="Click to remove False Dupe flag"/><apex:image id="imgFalseNo2" url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'selNo.png')}" style="height:1.2rem;{!if(mr.mr.TRIMDA__False_Dupe__c == false,'display:block','display:none')}"  title="Click to set as False Dupe"/>
+                                </apex:commandlink>
+                            </apex:column>  
+                                
+                            
+                            <!-- ACTION BUTTON (Do not show in lightning mode )-->
+                            <apex:column style="text-align:right;width:1px;padding:0rem;padding-top:0rem;"  rendered="{!and(review='0',disableSFDCWizard == false)}">
+                                <apex:facet name="header" ><div style="text-align:center;"><b>Actions&nbsp;</b></div></apex:facet> 
+                                <button class="slds-button slds-button--neutral " style="line-height:1.5rem;">
+                                    <!-- Lightning -- NEW 2018-11-21 -->
+                                   <!-- <apex:outputLink styleclass="LightningOnly" onclick="javascript:sforce.one.navigateToURL('/apex/trimda/TRIMDA_MergeWizard?id={!mr.id}');return false;" title="Open Merge Wizard" rendered="{!AND(review='0', mr.mr.ObjectName__c != 'Lead-Contact' ,mr.mr.ObjectName__c != 'Lead-Account')}" >Merge</apex:outputLink>-->
+                                    <a onclick="sforce.one.navigateToURL('/apex/trimda/TRIMDA__TRIMDA_QuickMerge?id={!mr.id}');"  title="Open Quick Merge Wizard" style="{!IF(AND($User.UIThemeDisplayed =='Theme4d', UseDTWizard=true, review='0', mr.mr.ObjectName__c != 'Lead-Contact' ,mr.mr.ObjectName__c != 'Lead-Account'),'','display:none')}" >Merge</a>
+                                    <a onclick="sforce.one.navigateToURL('/apex/trimda/TRIMDA__TRIMDA_MergeWizard?id={!mr.id}');"  title="Open Merge Wizard" style="{!IF(AND($User.UIThemeDisplayed =='Theme4d', UseDTWizard=false, review='0', mr.mr.ObjectName__c != 'Lead-Contact' ,mr.mr.ObjectName__c != 'Lead-Account'),'','display:none')}" >Merge</a>
+                                    <!-- Lightning -- 2018-01-31 No longer shown in lighting
+                                    <apex:outputLink styleclass="LightningOnly" value="javascript:sforce.one.navigateToURL('/merge/conmergewizard.jsp?id={!mr.mr.Contact1__c}&cid={!mr.mr.Contact1__c}&cid={!mr.mr.Contact2__c}&goNext=1&isdtp=vw&retURL={!mr.mr.Contact1__c}');" title="Open SFDC Merge Wizard" target="_blank" rendered="{!AND(review='0',  OR(mr.mr.ObjectName__c ='Contact-Contact',mr.mr.ObjectName__c ='Acc+Contact-Acc+Contact'))}" >Merge</apex:outputLink>
+                                    <apex:outputLink styleclass="LightningOnly" value="javascript:sforce.one.navigateToURL('/merge/accmergewizard.jsp?id={!mr.mr.Account1__c}&cid={!mr.mr.Account1__c}&cid={!mr.mr.Account2__c}&goNext=1&isdtp=vw&retURL={!mr.mr.Account1__c}');" title="Open SFDC Merge Wizard" target="_blank" rendered="{!AND(review='0', mr.mr.ObjectName__c ='Account-Account')}" >Merge</apex:outputLink>
+                                    <apex:outputLink styleclass="LightningOnly" value="javascript:sforce.one.navigateToURL('/lead/leadmergewizard.jsp?id={!mr.mr.Lead1__c}&cid={!mr.mr.Lead1__c}&cid={!mr.mr.Lead2__c}&goNext=1&isdtp=vw&retURL={!mr.mr.Lead1__c}');" title="Open SFDC Merge Wizard" target="_blank" rendered="{!AND(review='0', mr.mr.ObjectName__c ='Lead-Lead')}" >Merge</apex:outputLink>
+									-->
+                                    <!--Classic-->
+                                    <apex:outputLink styleclass="ClassicOnly" value="/apex/trimda/TRIMDA_MergeThisPair?id={!mr.id}" title="Open SFDC Merge Wizard" target="_blank" rendered="{!AND(review='0', $User.UIThemeDisplayed !='Theme4d', NOT OR(mr.mr.TRIMDA__ObjectName__c ='Lead-Contact',mr.mr.TRIMDA__ObjectName__c ='Lead-Account'))}" >Merge</apex:outputLink>
+                                    <apex:outputLink styleclass="ClassicOnly"  value="/apex/trimda/TRIMDA_ConvertLead?id={!mr.id}" title="Open SFDC Convert Wizard" target="_blank" rendered="{!AND(review='0', $User.UIThemeDisplayed !='Theme4d', OR(mr.mr.TRIMDA__ObjectName__c ='Lead-Contact',mr.mr.TRIMDA__ObjectName__c ='Lead-Account'))}" >Convert&nbsp;Wizard</apex:outputLink>
+                                </button>
+                            </apex:column>
+                                
+                            <!-- LAST COLUMN for Navigation/Scroll-->
+                            <apex:column id="IdColumn" styleClass="mycolumn" style="display:none;">
+                                <apex:facet name="header" ><span style="display:none;"><strong>Id</strong></span></apex:facet>
+                                {!Mr.Id}
+                            </apex:column>  
+                               
+                        </apex:dataTable>
+                            </div>
+                            
+                             <script type="text/javascript">
+                                function isLightningExperienceOrSalesforce1() {
+                                    return((typeof sforce != 'undefined') && sforce && (!!sforce.one));
+                                }
+                            </script>
+                            
+                            <script type="text/javascript">
+                                    if(isLightningExperienceOrSalesforce1() ) {
+                                        //alert('lightning');
+                                        // Do something for Lightning Experience
+                                        //document.getElementById("ltngView").style.display = "initial";
+                                        //document.getElementById("classicView").style.display = "none"; 
+                                        jQuery(".ClassicOnly").css("display", "none");
+                            			jQuery(".LightningOnly").css("display", "initial");
+                                    }
+                                    else {
+                                        // Use classic Visualforce
+                                        //document.getElementById("classicView").style.display = "initial";
+                                        //document.getElementById("ltngView").style.display = "none"; 
+                                        jQuery(".ClassicOnly").css("display", "initial");
+                            			jQuery(".LightningOnly").css("display", "none");
+                                    }
+                            		
+                            		
+                            </script>
+                        </apex:outputPanel>
+                  </div>
+                  
+               </div>
+                
+            </apex:pageBlock>
+            </apex:outputPanel>
+        </div>
+        
+    </div>
+</div>
+
+
+    
+   
+ <!-- SUMMARY -->    
+    <apex:outputPanel id="summary"  style="{!IF(curMR.id == null,'display:none;','display:block;')}" rendered="{!MatchedRecordWrapped.size >0}">
+      <div class="slds-card" >
+      <div class="slds-card__header slds-grid" style="margin-top:0.25rem;margin-bottom:0.1rem;padding-top:0.1rem;padding-bottom:0.1rem;">
+         
+        <header class=" slds-has-flexi-truncate" >
+          <div class="slds-media__body">
+            <h2>
+                 <span class="slds-text-heading_small">Summary</span>
+            </h2>
+          </div>
+        </header>
+        <div class="slds-no-flex">
+      		<button id="hideSummaryButton" onclick="toggleSummary()" class="slds-button slds-button_neutral" style="line-height:1.5rem">Hide</button>
+      		<button id="showSummaryButton" onclick="toggleSummary()" class="slds-button slds-button_neutral" style="line-height:1.5rem;display:none;">Show</button>
+    	</div>
+	
+      </div>
+      <div class="slds-card__body" id="summarydiv" style="margin-bottom: 0.25rem;">
+        <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
+          <thead>
+            <tr class="slds-text-title_caps">
+               <th scope="col">
+                  <div class="slds-truncate" title="Survivor/Dupe">&nbsp;</div>
+              </th>
+              <th scope="col" style="{!IF(curMR.mr.ObjectName__c='Account-Account','display:none;','')}">
+                  <div class="slds-truncate" title="Survivor/Dupe">Name</div>
+              </th>
+              <th scope="col" style="{!IF(curMR.mr.ObjectName__c='Account-Account','display:none;','')}">
+                  <div class="slds-truncate" title="Email" >Email</div>
+              </th>  
+              <th scope="col" style="{!IF(AND(curMR.mr.Account1__r.Name='Candidates',curMR.mr.Account2__r.Name='Candidates'),'display:none;','')}">
+                <div class="slds-truncate" title="Name">{!$ObjectType.Account.fields.Name.Label}</div>
+              </th>
+               
+              <th scope="col" style="{!IF(AND(curMR.mr.Review_Field_1__c=null,curMR.mr.Review_Field_2__c=null),'display:none;','')}">
+                <div class="slds-truncate" title="Review Field">Review Field</div>
+              </th>
+              
+              <!-- SCORE -->  
+              <th scope="col" title="Score Overall" style="{!IF(OR(curMR.mr.ObjectName__c='Account-Account',curMR.mr.ObjectName__c='Lead-Account'),'','display:none;')}" >
+                <div class="slds-truncate slds-align_absolute-center"  >Score</div>
+              </th>
+              <th scope="col" style="{!IF(OR(curMR.mr.ObjectName__c='Account-Account',curMR.mr.ObjectName__c='Lead-Account'),'display:none;','')}">
+                <div class="slds-truncate slds-align_absolute-center" title="Score Name"  >Name</div>
+              </th>
+              <th scope="col" style="{!IF(AND(curMR.mr.Account1__r.Name='Candidates',curMR.mr.Account2__r.Name='Candidates'),'display:none;','')}">
+                <div class="slds-truncate slds-align_absolute-center" title="Score {!$ObjectType.Account.fields.Name.Label}" >Company</div>
+              </th>
+              <th scope="col" style="{!IF(OR(curMR.mr.ObjectName__c='Account-Account',curMR.mr.ObjectName__c='Lead-Account'),'display:none;','')}">
+                <div class="slds-truncate slds-align_absolute-center" title="Score Email" >Email</div>
+              </th>
+              <th scope="col" style="{!IF(OR(curMR.mr.Account1__r.Name='Candidates',curMR.mr.Account2__r.Name='Candidates'),'','display:none;')}">
+                <div class="slds-truncate slds-align_absolute-center" title="Score Phone" >Phone</div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate slds-align_absolute-center" title="Score Location">Location</div>
+              </th>
+              <th scope="col"  style="{!IF(AND(curMR.mr.ObjectName__c!='Contact-Contact',curMR.mr.ObjectName__c!='Acc+Contact-Acc+Contact'),'display:none;','')}" >
+                <div class="slds-truncate slds-align_absolute-center" title="Portal User">Portal User</div>
+              </th>
+              <th scope="col" style="{!IF(curMR.mr.ObjectName__c!='Account-Account','display:none;','')}">
+                  <div class="slds-truncate" title="Parent/Child Relation">Parent/Child Relation</div>
+              </th>
+              <th scope="col">
+                <div class="slds-truncate" title="Owner">Owner</div>
+              </th>   
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="slds-hint-parent">
+              <td>
+                  Survivor:&nbsp;<br />
+                  Dupe:&nbsp;
+              </td>
+              <td style="{!IF(curMR.mr.ObjectName__c=='Account-Account','display:none;','')}"> 
+                  <div >
+                      <!--<apex:outputLink value="/{!curMR.mr.Account1__c}" target="_blank"   rendered="{!curMR.mr.ObjectName__c = 'Account-Account' || curMR.mr.ObjectName__c = 'Lead-Account'}" >{!curMR.mr.Account1__r.Name}</apex:outputLink>-->
+                      <a href="/{!curMR.mr.Contact1__c}" target="_blank"   style="{!IF(OR(curMR.mr.ObjectName__c = 'Contact-Contact', curMR.mr.ObjectName__c = 'Acc+Contact-Acc+Contact', curMR.mr.ObjectName__c = 'Lead-Contact'),'','display:none;')}" >{!curMR.mr.Contact1__r.Name}</a>
+                      <a href="/{!curMR.mr.Lead1__c}" target="_blank"  style="{!IF(curMR.mr.ObjectName__c = 'Lead-Lead','','display:none;')}" >{!curMR.mr.Lead1__r.Name}</a>
+                  </div>
+                  <div >
+                      <!--<apex:outputLink value="/{!curMR.mr.Account2__c}" target="_blank"   rendered="{!curMR.mr.ObjectName__c = 'Account-Account'}" >{!curMR.mr.Account2__r.Name}</apex:outputLink>-->
+                      <a href="/{!curMR.mr.Contact2__c}" target="_blank" style="{!IF(OR(curMR.mr.ObjectName__c = 'Contact-Contact', curMR.mr.ObjectName__c = 'Acc+Contact-Acc+Contact'),'','display:none;')}" >{!curMR.mr.Contact2__r.Name}</a>
+                      <a href="/{!curMR.mr.Lead2__c}" target="_blank" renderstyleed="{!IF(OR(curMR.mr.ObjectName__c = 'Lead-Lead', curMR.mr.ObjectName__c = 'Lead-Contact', curMR.mr.ObjectName__c = 'Lead-Account'),'','display:none;')}" >{!curMR.mr.Lead2__r.Name}</a>
+                  </div>
+              </td>
+                
+              <td style="{!IF(curMR.mr.ObjectName__c=='Account-Account','display:none;','')}" >
+                  {!curMR.mr.Contact1__r.Email}&nbsp;<br />
+                  {!curMR.mr.Contact2__r.Email}&nbsp; 
+              </td>
+                
+              <td style="{!IF(AND(curMR.mr.Account1__r.Name='Candidates',curMR.mr.Account2__r.Name='Candidates'),'display:none;','')}"> 
+                  <div class="" title="{!$ObjectType.Account.fields.Name.Label}">
+                  <a href="/{!curMR.mr.Account1__c}" target="_blank"  >{!curMR.mr.Account1__r.Name}</a><a value="/{!curMR.mr.Lead2__c}" target="_blank"  style="{!IF(curMR.mr.ObjectName__c = 'Lead-Lead','','display:none;')}">{!curMR.mr.Lead1__r.Company}</a> <br />
+                  <a href="/{!curMR.mr.Account2__c}" target="_blank"  >{!curMR.mr.Account2__r.Name}</a><a value="/{!curMR.mr.Lead2__c}" target="_blank"  style="{!IF(OR(curMR.mr.ObjectName__c = 'Lead-Lead', curMR.mr.ObjectName__c = 'Lead-Contact', curMR.mr.ObjectName__c = 'Lead-Account'),'','display:none;')}">{!curMR.mr.Lead2__r.Company}</a> 
+                  </div>
+              </td>  
+
+              <td style="{!IF(AND(curMR.mr.Review_Field_1__c=null,curMR.mr.Review_Field_2__c=null),'display:none;','')}"> 
+                  <div class="" title="Additional Review Field">
+                  {!curMR.mr.Review_Field_1__c}&nbsp;<br />
+                  {!curMR.mr.Review_Field_2__c}&nbsp;
+                  </div>
+              </td>
+              
+              
+              <td style="{!IF(OR(curMR.mr.ObjectName__c='Account-Account',curMR.mr.ObjectName__c='Lead-Account'),'','display:none;')}" >
+                <div class="slds-align_absolute-center" title="Score All">{!curMR.mr.Score__c}</div>
+              </td>
+              <td style="{!IF(OR(curMR.mr.ObjectName__c='Account-Account',curMR.mr.ObjectName__c='Lead-Account'),'display:none;','')}" >
+                <div class="slds-align_absolute-center" title="Score Name">{!curMR.mr.Score_Name__c}</div>
+              </td>
+              <td style="{!IF(OR(curMR.mr.Account1__r.Name='Candidates',curMR.mr.Account1__r.Name='Candidates'),'display:none;','')}" >
+                <div class="slds-align_absolute-center" title="Score Company">{!curMR.mr.Score_Company__c}</div>
+              </td>
+              <td style="{!IF(OR(curMR.mr.ObjectName__c='Account-Account',curMR.mr.ObjectName__c='Lead-Account'),'display:none;','')}" >
+                <div class="slds-align_absolute-center" title="Score Email">{!curMR.mr.Score_E_mail__c}</div>
+              </td>
+              <td style="{!IF(OR(curMR.mr.Account1__r.Name='Candidates',curMR.mr.Account1__r.Name='Candidates'),'','display:none;')}">
+                <div class="slds-align_absolute-center" title="Score Phone">{!curMR.mr.Score_Phone__c}</div>
+              </td>
+              <td>
+                <div class="slds-align_absolute-center" title="Score Location">{!curMR.mr.Score_Location__c}</div>
+              </td>
+              <td style="{!IF(AND(curMR.mr.ObjectName__c!='Contact-Contact',curMR.mr.ObjectName__c!='Acc+Contact-Acc+Contact'),'display:none;','')}" >
+                <div class="" title="Portal User" > 
+                    <div class="slds-align_absolute-center">
+                        <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'bullet.jpg')}"  rendered="{!curMR.Contact1_IsPortalUser == true}" title="This contact is also a Portal user"/>
+                        <apex:outputText rendered="{!curMR.Contact1_IsPortalUser !=true}" >No</apex:outputText>
+                    </div>
+                    <div class="slds-align_absolute-center" >
+                        <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'bullet.jpg')}"  rendered="{!curMR.Contact2_IsPortalUser == true}" title="This contact is also a Portal user"/>
+                        <apex:outputText rendered="{!curMR.Contact2_IsPortalUser !=true}" >No</apex:outputText>
+                    </div>
+                  </div>
+              </td>
+              <td style="{!IF(curMR.mr.ObjectName__c!='Account-Account','display:none;','')}">
+                  <div class="slds-truncate" title="Parent/Child Relationshipe">{!curMR.mr.Parent_Relationship__c}</div>
+              </td>
+              <td> 
+                  {!curMR.mr.Owner_1__r.alias}&nbsp;<br />
+                  {!curMR.mr.Owner_2__r.alias}&nbsp; 
+              </td>  
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Review Section -->
+      <div class="slds-card__footer" style="text-align:left;padding-bottom: 0rem;margin-top: 0.25rem;">
+             <div class="slds-grid slds-wrap" style="margin-top:-0.2rem;">
+                <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;">
+                      <div style="{!IF(AND(curMR.mr.Review_Outcome__c=null,curMR.mr.Review_Note__c=null),'','display:none;')}">
+                        No Feedback provided!&nbsp;
+                      </div> 
+                    
+                        <div class="slds-container--large " style="{!IF(AND(curMR.mr.Review_Outcome__c=null,curMR.mr.Review_Note__c=null),'display:none;','')}">
+                            <div class="slds-grid slds-wrap" style="padding-top:0.2rem;"> 
+                                <div class="slds-col slds-size--3-of-12 " style="font-size:1.1rem;text-align:left;vertical-align:middle;">
+                                    Feedback provided:&nbsp;
+                                </div>
+                                <div class="slds-col slds-size--3-of-12 " style="font-size:0.8rem;text-align:left;">
+                                    <div  style="font-size:0.75rem;line-height:0.75rem;" >Review Outcome:</div>
+                                    <span style="font-weight: bold;">{!curMR.mr.Review_Outcome__c}</span>
+                                </div>
+                                <div class="slds-col slds-size--6-of-12 " style="font-size:0.8rem;text-align:left;">
+                                    <div  style="font-size:0.75rem;line-height:0.75rem;" >Note:</div>
+                                    {!curMR.mr.Review_Note__c}
+                                </div>
+                            </div>
+                        </div>
+                </div>
+              </div>
+         </div>
+    </div>
+    </apex:outputPanel>  
+
+ </apex:form> 
+</apex:outputPanel>
+    
+<!-- Spacer -->    
+    <div id="spacer" style="height:0.5rem;" >
+    </div>
+    
+ <!-- DETAIL IFRAME -->  
+
+    <apex:outputPanel id="detail2" layout="block" rendered="{!Enable_clickjack_protection_visualforce == False}">  
+        <apex:pageMessages rendered="{!TRIMDA_MatchedRecordList.size >0}" /> 
+        <apex:panelgroup id="detail3" rendered="{!URL4QuickReview != ''}" > 
+            <apex:iframe src="{!URL4QuickReview}&IFrameTheme={!$User.UIThemeDisplayed}" scrolling="true" id="theDetailIframe" height="1200" />
+        </apex:panelgroup>
+    </apex:outputPanel>
+   
+    
+<div>
+    <apex:form id="clickjack">
+    <div style="font-size:0.6rem;margin-top:2rem;" align="center">
+        NOTE: If the wizard doesn't automatically show above, you have most likely enabled clickjack protection (auto enabled from salesforce Spring '14 and forward) which prevent us from showing the merge wizards in an iframe.<br />
+        Contact salesforce to disable clickjack protection for non-setup Salesforce pages and clickjack protection for customer Visualforce pages (in the Session Settings of the <apex:outputLink value="../_ui/system/security/SessionSettings" target="_blank" >Admin Setup</apex:outputLink>), or<br />
+        Enable clickjack protection for DataTrim Dupe Alerts to get the wizards to open in a new window/tab (<apex:outputLink value="TRIMDA_DupeAlerts?display=setup" target="_blank">Setup from the DataTrim Dupe Alert Tab</apex:outputLink>)<br />
+    </div>
+    </apex:form>
+</div>
+    
+    <apex:actionStatus id="ProgressStatus">
+        <apex:facet name="start">
+            <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Updating..." messageStyle="color:#5090ea;font-size:1.1rem;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+
+<!--COPYRIGHT-->
+<div id="copyright">
+   <div class="slds-grid slds-wrap">	
+       <div class="slds-col slds-size--1-of-1" >
+           <div style="text-align:center;font-size:xx-small;font-family:Arial;margin-top:2rem;">Copyright © 2007-<span id="year">201X</span> DataTrim Dupe Alerts by d2b International ApS, All rights reserved.
+           </div>
+       </div>
+    </div>
+    <script>
+    	var elem = document.getElementById('year');
+    	//alert(new Date().getFullYear());
+    	elem.innerText = new Date().getFullYear();
+    </script>
+</div>
+    
+ <div>   
+    <br />
+    <apex:outputPanel id="log" >
+    <div style="font-size:0.5rem; color:grey;text-align:center" >
+            <!-- Removed 1Q16 detail2Show: {!detail2Show}<br /> -->
+            <!-- Removed 1Q16 WizardDetailURL: {!WizardDetailURL}<br /> -->
+            <!-- Removed 1Q16 SFDC Wizard: {!URL2SFWizard}<br /> -->
+            <!-- Removed 1Q16 Quick Merge: {!URL4QMerge}<br /> -->
+            URL4QuickReview: {!URL4QuickReview}<br />
+            Detail Id: {!selectedId}<br />
+        	ClickJack protection (salesforce): {!Enable_clickjack_protection}<br />
+            ClickJack protection (visualforce): {!Enable_clickjack_protection_visualforce}<br />
+            
+    </div>
+    </apex:outputPanel>
+ </div>
+    
+        
+    </div>
+</div>
+</div>
+</apex:page>

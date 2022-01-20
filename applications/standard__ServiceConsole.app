@@ -180,10 +180,10 @@
     <tabs>standard-Opportunity</tabs>
     <tabs>standard-Lead</tabs>
     <tabs>standard-Knowledge</tabs>
-    <tabs>MobileLanding</tabs>
+    <tabs>Competitor__c</tabs>
     <workspaceConfig>
         <mappings>
-            <tab>MobileLanding</tab>
+            <tab>Competitor__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_49040460</developerName>
+        <masterLabel>EBQ_PURSUIT REPS</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Contact.EBQ_Rep2__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Andre Scott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Fields</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Daniel Davis</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jacob Smith</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Max Lakavage</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ryan Osborn</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Samantha Griffin</sourceValue>
+            </sourceValues>
+            <value>EBQ</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Carmen Cardona</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Faycal Bakkioui</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Felix Goebel</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>James Hudson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Lindsay Hannah</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Sabrina Martinez</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Sean Linton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andreas Gilmore</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jesus Gaviria</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Judy Trinh</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Rebecca Soriano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Lawrence Thomas</sourceValue>
+            </sourceValues>
+            <value>Pursuit</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Contact.EBQ_Touches__c</field>
+    </columns>
+    <columns>
+        <field>Contact.EBQ_Next_Step__c</field>
+    </columns>
+    <columns>
+        <field>Contact.EBQ_Completed__c</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>FIRST_NAME</field>
+    </columns>
+    <columns>
+        <field>LAST_NAME</field>
+    </columns>
+    <columns>
+        <field>TITLE</field>
+    </columns>
+    <columns>
+        <field>ADDRESS2_COUNTRY</field>
+    </columns>
+    <columns>
+        <field>PHONE3</field>
+    </columns>
+    <columns>
+        <field>EMAIL</field>
+    </columns>
+    <columns>
+        <field>Contact.EBQ_Comments__c</field>
+    </columns>
+    <columns>
+        <field>Contact.Lead_Source_Detail__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>Contact.Lead_Source_Detail__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>partner outbound</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_49040460</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <name>BDR Outbound</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ContactList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Contact.EBQ_Set__c</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,106 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Card Selection Page
+ -->
+<apex:page id="thePage" controller="Handwrytten.hndwrtClsCardSelection" title="Handwrytten Card Selection Page" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theForm" > 
+    <div class="slds">
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+        
+        <apex:sectionHeader title="Handwrytten" subtitle="Select Handwrytten Card" help="/apex/hndwrtPgHelp" />
+        
+        <!-- Place holder for error messages -->
+        <apex:pageMessages />
+        
+        <apex:pageBlock id="thePageBlock">
+        
+        	 <apex:pageBlockSection title="Handwrytten Account Information" columns="2" rendered="{!hasBudget}">
+                <apex:outputText value="{0,number,$#,###,###.00}" label="Monthly Budget">
+                	<apex:param value="{!monthlyBudget}" />
+                </apex:outputText>
+                
+                <apex:outputText value="{0,number,$#,###,###.00}" label="Monthly Spend">
+                	<apex:param value="{!monthlySpend}" />
+                </apex:outputText>
+            </apex:pageBlockSection>
+            
+            <apex:pageMessage summary="There is a monthly budget set for this Handwrytten Account. You have either reached or exceeded monthly budget set for this Handwrytten Account. You will not be able to complete the order using the selected Handwrytten Account." severity="warning" strength="3" rendered="{!showBudgetMsg}"/>
+            <apex:pageMessage summary="Before creating a Handwrytten Note, please set Default Address Type by accessing the Handwrytten Settings Page" severity="error" strength="3" rendered="{!showMsg}"/>
+            
+            
+            <apex:pageBlockSection columns="1">
+                
+                <apex:outputPanel id="opMsg" rendered="{!NOT(cardSelected)}">
+                    <table style="width:600px;"> 
+                        <tr> <td>
+                            <apex:pageMessage summary="Select a card category from the drop down list to browse cards." severity="info" strength="3" />
+                        </td> </tr> 
+                    </table> 
+               </apex:outputPanel>
+               
+                <apex:selectList value="{!selectedCategory}" size="1" id="slCardCategories" label="Category" rendered="{!NOT(cardSelected)}">
+                    <apex:actionSupport event="onchange" action="{!categoryChanged}" reRender="dtCards" status="loadstatus2" />
+                    <apex:selectOptions value="{!categories}"/>
+                </apex:selectList>
+                <apex:actionStatus id="loadstatus2">
+                	<apex:facet name="start">
+                    	<img src="{!$Resource.hndwrtLoading}"/> &nbsp;Retrieving cards, please wait...    
+                	</apex:facet>                               
+                </apex:actionStatus>
+              
+                
+                <apex:dataTable value="{!cardsLst}" var="c" align="center" rules="rows" cellpadding="10" id="dtCards" rendered="{!NOT(cardSelected)}">
+                    
+                    <apex:column style="text-align:right;">
+                       <apex:image value="{!c.cover}" style="max-width:400px;max-height:400px;"/>
+                    </apex:column>
+                    
+                    <apex:column >
+                        <b>Card Name: </b><apex:outputText >{!c.name}</apex:outputText>
+                        <br/>   
+                        <b>Card Description: </b><apex:outputText >{!c.description}</apex:outputText>  
+                        <br/>
+                        <b>Card Price: </b>
+                        <apex:outputText value="{0,number,$#,###,###.00}">
+                            <apex:param value="{!c.price}" />
+                        </apex:outputText>
+                        <br/>
+                        <br/> 
+                        
+                        <apex:commandLink value="Choose this card" action="{!next}" status="loadstatus" rerender="thePageBlock" styleClass="btn" style="padding: 4px; text-decoration: none; background:#e6f9ff;"> 
+                            <apex:param name="selectedCard" value="{!c.id}" assignTo="{!selectedCard}"/>
+                        </apex:commandLink>  
+                        <br/>
+                        <br/>
+                        
+                        <apex:actionStatus id="loadstatus">
+                            <apex:facet name="start">
+                                <img src="{!$Resource.hndwrtLoading}"/> &nbsp;Loading, please wait...    
+                            </apex:facet>                               
+                        </apex:actionStatus>
+                        
+                    </apex:column>
+                    
+                </apex:dataTable>
+
+                <apex:outputPanel id="opCmdButtons">
+                    <apex:commandButton value="Cancel" action="{!cancel}"/>
+                    <apex:commandButton value="Continue to Note" action="{!next}" rendered="{!cardSelected}" styleClass="btn" style="padding: 4px; text-decoration: none; background:#e6f9ff;"/>
+                </apex:outputPanel>
+
+           </apex:pageBlockSection> 
+        </apex:pageBlock> 
+    </div>
+    </apex:form> 
+    
+    
+</apex:page>

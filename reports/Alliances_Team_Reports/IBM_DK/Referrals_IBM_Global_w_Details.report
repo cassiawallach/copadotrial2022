@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_28177075</developerName>
+        <masterLabel>Pipeline Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>STAGE_NAME</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Prospecting</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Proposition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation/Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Best Case</sourceValue>
+            </sourceValues>
+            <value>SALs</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <value>SQL</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <value>Closed Won</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <value>Closed Lost</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Opportunity.Partner_Account__c</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Implementation_Partner__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Alliances_Owner__c</field>
+    </columns>
+    <columns>
+        <field>LEAD_SOURCE</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_TYPE</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SQL_Transfer_Date__c</field>
+    </columns>
+    <columns>
+        <field>Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.TCV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Account.OA__Next_Step_Date__c</field>
+    </columns>
+    <columns>
+        <field>NEXT_STEP</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>FISCAL_QUARTER</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <field>CREATED</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_ID</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Partner referral opportunities created Current Quarter by Ultimate Partner Parent.</description>
+    <filter>
+        <criteriaItems>
+            <column>OPPORTUNITY_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>partner agreement,referral agreement</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,New Customer,Credit Order,Auto-recharge,Recurly order,Existing Business,Free credits,Free minutes,Add-on,New Business Add-on,Partner,Growth,ClickDeploy - Basic - Annual,ClickDeploy - Premium - Annual,ClickDeploy - Basic - Monthly,ClickDeploy - Premium - Monthly</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.Partner_Ultimate_Parent__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>IBM</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Marketing Qualification,Pipeline,Discovery,Prospecting,Solution Alignment,Trial,Solution Validation,Value Proposition,Demo,Formal Proposal,Negotiation/Review,Procurement,Negotiation,Signed Contract Received,Closed Won,Closed Suspend,Closed Lost,Partially Paid,Fully Paid,Best Case,Negotiation CS,Commit</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>FORECAST_CATEGORY</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.Region__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>STAGE_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Referrals IBM Global w/ Details</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>open</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity.SAL_Acceptance_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

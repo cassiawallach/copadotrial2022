@@ -1,0 +1,943 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose					: Included as a tab in JBara NPS summary page.
+----							  Displays NPS Survey Feed based on the user submission in descending order.				
+---- Other comments (optional)	: None
+-->
+<apex:page sidebar="false" controller="JBCXM.NPSExtension" extensions="JBCXM.GSCommonBroker" title="NPS® Feed"
+	tabStyle="NPS__tab">
+
+	<!-- Jquery Min, JqueryUI, Jquery theme include -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"/>
+	<apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/js/jquery-ui-1.8.13.custom.min.js" />
+	<apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/date.format.js" />
+	<apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css" />
+	<apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+	<apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/multiple-select/jquery.multiple.select.js" />
+	<apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/module/nps/NPSFeed.css"/>
+  <apex:includeScript value="/support/console/43.0/integration.js"/>
+    
+    <script>
+    	var GS = {};
+       	GS.packageNS            = "{!(pkgNS)}";
+       	GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+       	GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+       	GS.userConfig = {
+           userLocale  : {!(userLocaleDateFormatMap)},
+           userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+           userId      : "{!$User.Id}",
+           emailId     : "{!$User.Email}",
+           profilePhoto : "{!(profilePhoto)}",
+           userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+         	gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+           isLightningEnabled: {!(isLightningEnabled)}
+       	};
+       	GS.isSFConsole = sforce.console.isInConsole();
+        var j$ = jQuery.noConflict();  
+        GS.appContainerDeferred = j$.Deferred();
+        GS.appContainerReady = GS.appContainerDeferred.promise();
+    </script>
+    
+     <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>  
+    
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+    	<script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+    
+    <style>
+		.gainsightLoadingIcon{
+			background : url({!URLFOR($Resource.GSAppCSS)}/images/64x64.gif) no-repeat;
+			width: 70px;
+			height: 70px;
+			position:relative;
+			margin : auto;
+			left: 0px;
+			right : 0px;
+			bottom :0px;
+			top : 0px;
+		}
+		.gs-feature-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .gs-feature-error {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            justify-content: center;
+         }
+        .gs-module-content-wrapper {
+            height: 100%;
+         }
+		.gs-feature-disabled.gs-deprecated-error .gs-feature-content {
+          display: none;
+        }
+        .gs-feature-disabled.gs-deprecated-error .gs-feature-error {
+          display: block;
+        }
+	</style>
+
+	<script type="text/javascript" language="javascript">
+     	var userLocaleDateFormatMap = fakeEval('{!(JSINHTMLENCODE(userLocaleDateFormatMap))}');
+
+     	function setFocusOnLoad() {} //To disable caleder pop by default.
+     	
+     	window.jLatest = j$;   	 
+	    var NPSTabSelected;
+	    var sfDomainName;
+	    sfDomainName = document.domain;
+	    var resultTextHtml = '';
+	    
+	    var serverCurDate, fromDate, toDate, npsAOIDV; //Here npsAOIDV represents the NPS Associative Object Item Display Value.
+	 	var numOfRecordCount, isNPSAssociatedAnyObject, npsScoreBGColor, npsResponseJsonData;
+	 	var sforceBaseURL, currentDateTime, npsAssociativeItemURL;	
+	 	var month_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+	    var week_names  = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+	    
+	    //User state preservation.
+	    var statePreservString        = fakeEval('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+
+		var isSameUserSessionExists = '{!(isSameUserSessionNPS)}';
+		var clientSideFltDetails = (statePreservString.ClientSideFilter__c) ? j$.parseJSON(statePreservString.ClientSideFilter__c) : {};
+		var triggerOnComplete = false;
+		var isPackagedVersion = "{!(isPkgInstance)}";
+		  var hc= eval({!(headerConfig)});
+		
+        var statePreservString = fakeEval('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+
+          var firstRender = false;
+          var defaultTabloadDetails = (statePreservString.SubSection__c) ? j$.parseJSON(statePreservString.SubSection__c) : {};
+      	var tabIndexToSelect = j$.isEmptyObject(defaultTabloadDetails) ? 0 : parseInt(defaultTabloadDetails.index);
+
+      	 /* API call for NPS deprecate */
+                        function npsDeprecate() {
+                            var headers = {
+                                            'Content-Type':'application/json',
+                                            'appOrgId':hc.appOrgId,
+                                            'appUserId':hc.appUserId,
+                                            'appSessionId':hc.appSessionId
+                                          };
+                            j$.ajax({
+                                              type: 'GET',
+                                              url: hc.gatewayURL + '/v1/surveys/featureFlag/SURVEY_V1_DEPRECATED',
+                                              headers: headers,
+                                              success: function(res) {
+                                                j$('.gs-module-content-wrapper').show();
+                                                j$('.gs-feature-disabled').removeClass('gs-deprecated-error');
+                                                  if(res.data) {
+                                                    j$('#NPSSummaryTabs').hide();
+                                                    j$('.gs-feature-disabled').show();
+                                                  } else {
+                                                      j$('#NPSSummaryTabs').show();
+                                                      j$('.gs-feature-disabled').hide();
+                                                  }
+                                              },
+                                                error: function(err) {
+                                                     j$('.gs-module-content-wrapper').hide();
+                                                     j$('#NPSSummaryTabs').hide();
+                                                      j$('.gs-feature-disabled').show();
+                                                      j$('.gs-feature-disabled').addClass('gs-deprecated-error');
+                                                      j$('.gs-feature-error').show().text(err.responseJSON.message);
+                                              }
+                                            });
+                        }
+
+                      npsDeprecate();
+
+                        var npsV2URL;
+                         if(hc.isLightningEnabled) {
+                            npsV2URL = '/lightning/n/'+ (GS.packageNS || '') +'NPSV2';
+                         } else {
+                            npsV2URL = '/apex/'+  (GS.packageNS || '') +'SurveyInsights';
+                         }
+
+                        function redirectFeature() {
+                           window.open(npsV2URL, '_blank');
+                        }
+      	
+      	function moduleNavRenderer(appContainer) {
+          var moduleNavInterface = {
+            getNavMenuOptions: function() {
+                return [{
+                    label: 'NPS<sup>&reg;</sup>',
+                    "clickable": false,
+                    metadata: {
+                        "menuItem": "LIST"
+                    },
+                    children: [{
+                        label: 'Summary',
+                        selected: tabIndexToSelect === 0 ? true : false, //Default tab should be loaded
+                        disabled: true, //based on permission, should be shown
+                        metadata: {
+                            "tabIndex" : 0
+                        }
+                    	}, 
+                    	{
+                        label: 'Feed',
+                        selected: tabIndexToSelect === 1 ? true : false, //based on permission, should be shown
+                        metadata: {
+                            "tabIndex" : 1
+                        }
+                       },
+                       {
+                        label: 'By Survey',
+                        selected: tabIndexToSelect === 2 ? true : false, //based on permission, should be shown
+                        metadata: {
+                            "tabIndex" : 2
+                        }
+                       },
+                       {
+                        label: 'By Customer',
+                        selected: tabIndexToSelect === 3 ? true : false, //based on permission, should be shown
+                        metadata: {
+                            "tabIndex" : 3
+                        }
+                    }]
+                }];
+            },
+            triggerNavClick: function(obj) {
+                if (obj.tabIndex === 0) {
+                    j$("a[href='#NPSSummary']").click();
+                }else if (obj.tabIndex === 1) {
+                    j$("a[href='#NPSFeed']").click();
+                }else if (obj.tabIndex === 2) {
+                    j$("a[href='#NPSBySurvey']").click();
+                }else if (obj.tabIndex === 3) {
+                    j$("a[href='#NPSByCustomer']").click();
+                }
+            }
+          };
+          if ( !firstRender ) {
+            if ( tabIndexToSelect === 0 ) {
+                appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "Summary");
+                firstRender = true; 
+            }
+          }
+          if ( tabIndexToSelect === 1 ) {
+            appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "Feed");
+          }else if ( tabIndexToSelect === 2 ) {
+            appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Survey");
+          }else if ( tabIndexToSelect === 3 ) {
+            if(GS.relationshipEnabled){
+                appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Customer or Relationship");
+            }else{
+                appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Customer");
+            }
+          }
+        }
+		
+		/***
+		*This function reset the State preservation string and page redirect based on the tab selection.
+		*/
+		function redirectPageByTabSelection() {
+			if(triggerOnComplete) {
+				var NPSTabSelected = tabClickHref; //j$(".HeaderNPSTabs").find("a").attr('href');
+        var href = j$('#'+(NPSTabSelected.substr(1))+'').attr('href');
+        if(GS.isSFConsole === true){
+          var url = window.location.href;
+          var rem = (url.indexOf('NPSFeed?') !== -1) ? 'NPSFeed?' : 'NPSFeed';
+          url = getSideNavUrl(rem, href, window.location.href);
+          url = removeParam('relType', url);
+          window.location.href = url;
+        }else{
+          window.location.href = '/apex/'+href;
+        }
+			 }   
+		} 	
+	 	function getSideNavUrl(host, appendURL, sourceURL){
+      var url = sourceURL.substring(0,sourceURL.indexOf(host))+appendURL;
+      url += (url.indexOf('?') === -1) ? '?' : '&';
+      return url+sourceURL.substring(sourceURL.indexOf(host)+host.length);
+    }
+    function removeParam(key, sourceURL) {
+        var rtn = sourceURL.split("?")[0],
+            param,
+            params_arr = [],
+            queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+        if (queryString !== "") {
+            params_arr = queryString.split("&");
+            for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                param = params_arr[i].split("=")[0];
+                if (param === key) {
+                    params_arr.splice(i, 1);
+                }
+            }
+            rtn = rtn + "?" + params_arr.join("&");
+        }
+        return rtn;
+    }
+	 	/**
+         *This function is used to save the user state.
+         */
+        var actionTimer;
+        function processEntireState(relChange) {
+			clearTimeout(actionTimer);
+			statePreservString.Name = 'NPS';
+		 	statePreservString.ClientSideFilter__c = (statePreservString.ClientSideFilter__c) ? ((typeof statePreservString.ClientSideFilter__c == "string") ? statePreservString.ClientSideFilter__c : JSON.stringify(statePreservString.ClientSideFilter__c)) :  JSON.stringify({});
+		 	statePreservString.SortColumns__c = (statePreservString.SortColumns__c) ? ((typeof statePreservString.SortColumns__c == "string") ?  statePreservString.SortColumns__c : JSON.stringify(statePreservString.SortColumns__c)) :  JSON.stringify({});
+		 	statePreservString.ReportParams__c = (statePreservString.ReportParams__c) ? ((typeof statePreservString.ReportParams__c == "string") ? statePreservString.ReportParams__c : JSON.stringify(statePreservString.ReportParams__c)) :  JSON.stringify({});
+		 	statePreservString.UIViewId__c = (statePreservString.UIViewId__c) ? ((typeof statePreservString.UIViewId__c == "string") ? statePreservString.UIViewId__c : JSON.stringify(statePreservString.UIViewId__c)) :  JSON.stringify({});
+		 	statePreservString.ServerSideFilters__c = ((statePreservString.ServerSideFilters__c) ? ((typeof statePreservString.ServerSideFilters__c == "string") ? (statePreservString.ServerSideFilters__c) : JSON.stringify(statePreservString.ServerSideFilters__c)) : JSON.stringify({}));
+            if(relChange){
+               var dmyStr = (isPackagedVersion == 'true') ? JSON.stringify(pushStatePreservationJbaraNameSpace(statePreservString)) : JSON.stringify(statePreservString);
+               actionUpdateStatePreservation(dmyStr);
+               actionTimer = setTimeout(function() {
+                    redirectUrl();
+               }, 1000); 
+            }else{
+		 	actionTimer = setTimeout(function() {
+		 		var dmyStr = (isPackagedVersion == 'true') ? JSON.stringify(pushStatePreservationJbaraNameSpace(statePreservString)) : JSON.stringify(statePreservString);
+				actionUpdateStatePreservation(dmyStr);
+			}, 4000);
+		 }
+         }
+         
+         function redirectUrl(){
+             var relType = j$(".RelationshipTypeSelector").val();
+             var oldURL = window.location.href;
+                if(oldURL.indexOf('relType')>0){
+                    oldURL = oldURL.substring(0,oldURL.indexOf('relType')-1);
+                }
+                if(relType == ""){
+                    window.location.href=oldURL;
+                }else{
+                    if(oldURL.indexOf('?')>0){
+                        oldURL += '&';
+                    }else{
+                        oldURL += '?';
+                    }
+                    window.location.href=oldURL+'relType='+relType;
+                }
+         }
+         
+         var urlParam = function(name){
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results==null){
+               return null;
+            }else{
+               return results[1] || 0;
+            }
+        }
+        this._relType = urlParam('relType');
+         
+		function setGoBtnaddingForMozilla(){
+			if(j$.browser.mozilla){
+				j$( ".styleCustomGo").find(".btn-apply").css("cssText", "padding: 2px 11px !important;" );
+			}
+		}
+		var tabClickHref = "";
+	    var isRelationshipEnabled = {!(isRelationshipEnabled)};
+	    var self = this;
+
+	    GS.appContainerReady.then(function() {
+            if(isRelationshipEnabled){
+                    new AjaxCommand({
+                    }).excecute({
+                       "action":"admin.getRelationshipTypes"
+                    },false,false,false,{remotingEndPoint:GS.commonRemotingEndPoint}).done(function(result){
+                       GS.relationshipTypes = result.dataObj.data || [];
+                       var relationshipTypes = '<option value="">Customer</option>';
+                       self._isRel = false;
+                        for(var j=0; j<GS.relationshipTypes.length; j++){
+                            if(self._relType==GS.relationshipTypes[j].Id){
+                                relationshipTypes += '<option value="'+GS.relationshipTypes[j].Id+'" selected>'+GS.relationshipTypes[j].Name+'</option>';
+                                self._isRel = true;
+                            }else{
+                                relationshipTypes += '<option value="'+GS.relationshipTypes[j].Id+'">'+GS.relationshipTypes[j].Name+'</option>';   
+                            }
+                        }
+                        j$('.RelationshipTypeSelector').html(sanitizeHtml(relationshipTypes));
+                        if(GS.relationshipTypes.length){
+                            j$('.RelationshipTypeSelector').show();
+                        }
+                    });
+             }
+        
+	    	//j$('#NPSSummaryTabs').tabs({ selected: 1});
+	    	
+	    	//j$('NPS_container').hide();
+	    	//j$('NPS_container').eq(1).show();
+	    	setGoBtnaddingForMozilla();
+            var summaryDetails = (clientSideFltDetails['NPSSummary']) ? clientSideFltDetails['NPSSummary'] : {};
+            if(!j$.isEmptyObject(summaryDetails)) {
+                var url = 'NPSSummary';
+                if(summaryDetails['relType'] && summaryDetails['relType'] != ''){
+                    url += url.indexOf('?')>=0 ? '&' : '?';
+                    url += 'relType='+summaryDetails['relType'];
+                }
+                j$('#NPSSummary').attr('href', encodeURI(url));
+            }
+            else {
+	    	j$('#NPSSummary').attr('href', encodeURI('NPSSummary'));
+            }
+	    	var surOverviewDetails = (clientSideFltDetails['NPSBySurvey']) ? clientSideFltDetails['NPSBySurvey'] : {};
+            if(!j$.isEmptyObject(surOverviewDetails)) {
+                var url = 'NPSOverview';
+                if(surOverviewDetails['SurveyCode']){
+                    url += '?SurveyCode='+surOverviewDetails['SurveyCode']+'';
+                }
+                if(surOverviewDetails['relType'] && surOverviewDetails['relType'] != ''){
+                    url += url.indexOf('?')>=0 ? '&' : '?';
+                    url += 'relType='+surOverviewDetails['relType'];
+                }
+                j$('#NPSBySurvey').attr('href', encodeURI(url));
+  			}
+  			else {
+  				j$('#NPSBySurvey').attr('href', encodeURI('NPSOverview'));
+  			}
+	    	j$('#NPSByCustomer').attr('href', encodeURI('NPSOverviewByCustomer'));
+	    	
+	    	/*
+	    	j$("#NPSSummaryTabs").bind('tabsselect', function(event, ui) {
+	    		statePreservString.ClientSideFilter__c   = (statePreservString.ClientSideFilter__c) ? statePreservString.ClientSideFilter__c : {};
+				statePreservString.SubSection__c   = '{"name" : "'+(j$(ui.tab).attr('href')).substr(1)+'", "index" : '+ui.index+'}';
+				triggerOnComplete = true;
+                processEntireState(false);
+			});
+			*/
+			
+			j$("#NPSSummaryTabs").delegate('a.tab', 'click', function(event){
+				
+				var currentElmnt = j$(event.currentTarget);
+				var tabIndex = j$(currentElmnt).attr('_ind');
+				if(tabIndex!=1){
+					tabClickHref = j$(currentElmnt).attr('href');
+					event.preventDefault();
+					j$("#ajaxRedirectingIcon").show();
+					j$("#NPSFeed").hide();
+					statePreservString.ClientSideFilter__c   = (statePreservString.ClientSideFilter__c) ? statePreservString.ClientSideFilter__c : {};
+					statePreservString.SubSection__c   = '{"name" : "'+(j$(currentElmnt).attr('href')).substr(1)+'", "index" : '+ tabIndex +'}';
+					triggerOnComplete = true;
+                    processEntireState(false);
+					j$("#NPSSummaryTabs").find('li').removeClass('active');
+					j$(currentElmnt).parent().addClass('active');
+				}
+			});
+			
+            //Filter data based on relationshipType
+            j$('.RelationshipTypeSelector').unbind().bind("change",function() {
+                self._relType = j$(".RelationshipTypeSelector").val();
+                statePreservString.ClientSideFilter__c   = (statePreservString.ClientSideFilter__c) ? statePreservString.ClientSideFilter__c : {};
+                var clientSideFilters = j$.parseJSON(statePreservString.ClientSideFilter__c);
+                if(isRelationshipEnabled && self._relType && self._relType != ""){
+                    clientSideFilters['NPSFeed'] = {};
+                    clientSideFilters['NPSFeed']['relType'] = self._relType;
+                    }else{
+                    delete clientSideFilters['NPSFeed']['relType'];
+                }
+                statePreservString.ClientSideFilter__c = JSON.stringify(clientSideFilters);
+                processEntireState(true);
+            });
+			
+			//This event will fire when you change the date range on drop-down list. 
+			j$(".jbaraDummyDatePeriodSelectControl").unbind().bind('change', function() {
+				resultTextHtml = "";
+	    		serverCurDate = currentDateTime.split(","); 				
+				fromDate = new Date(serverCurDate[0], serverCurDate[1]-1, serverCurDate[2], serverCurDate[3], serverCurDate[4], serverCurDate[5]);
+				toDate 	 = new Date(serverCurDate[0], serverCurDate[1]-1, serverCurDate[2], serverCurDate[3], serverCurDate[4], serverCurDate[5]);
+				
+				if(j$(this).val() == "Custom") {
+					j$("span.CustomDateSelection").show();
+				}
+				else {
+					j$("span.CustomDateSelection").hide();
+					if( isNaN(j$(this).val()) ) {
+						setFromAndToDateBySelection(j$.trim(j$(this).val()));
+					}
+					else {
+						fromDate.setDate(fromDate.getDate()-parseInt(j$(this).val()));
+					}					
+					
+	    			
+	    			j$(".jbaraDummyNPSFeedEndDateInput").val(JBARAformatDate(toDate, userLocaleDateFormatMap.DateFormat));
+	    			j$(".jbaraDummyNPSFeedStartDateInput").val(JBARAformatDate(fromDate, userLocaleDateFormatMap.DateFormat));
+	    			
+	    			j$(".countOfRecords").val(0); //To reset the records limit to 10.
+	    			rerenderSurveyResponsesList();					
+				}
+	    	});
+	    	
+	    	//This event will fire when you click on the View More... button.
+	    	j$(".viewMoreSurveyResponses").unbind().bind('click', function() {
+	    		j$(this).parent().hide();
+	    		j$(".ajaxLoadingButton").show();
+		    	j$(".countOfRecords").val((numOfRecordCount+100));
+	    		rerenderSurveyResponsesList();
+	    	});
+	    	
+	    	/*j$('.jbaraDummyDatePeriodSelectControl').multiselect({
+						multiple: false,
+						header:false,
+						selectedList: 1,
+						minWidth:150,
+						height: 'auto'
+					});*/
+			
+	    });
+		
+		function showSurveyResponsesByDateRange() {	
+			
+			resultTextHtml = '';    	
+			if(!isNaN(j$.trim(j$(".jbaraDummyNPSFeedStartDateInput").val()))) {
+    			alert("Invalid date. Please enter the correct From-Date!!");
+    			return false;
+    		}
+			
+			if(!isNaN(j$.trim(j$(".jbaraDummyNPSFeedEndDateInput").val()))) {
+    			alert("Invalid date. Please enter the correct To-Date!");
+    			return false;
+    		}
+			
+			
+			var stDate,edDate;
+			stDate	= j$.trim(j$(".jbaraDummyNPSFeedStartDateInput").val());
+   			stDate = JBARAgetValidDateFormat(stDate, userLocaleDateFormatMap.DateFormat);
+   			
+    		if(!JBARAisDate(stDate, userLocaleDateFormatMap.DateFormat)) {
+    			alert("Invalid date. Please enter the correct From-Date!");
+    			return false;
+    		}
+    		j$(".jbaraDummyNPSFeedStartDateInput").val(stDate);    		
+    		
+    		
+    		edDate	= j$.trim(j$(".jbaraDummyNPSFeedEndDateInput").val());
+   			edDate = JBARAgetValidDateFormat(edDate, userLocaleDateFormatMap.DateFormat);
+   			
+    		
+    		if(!JBARAisDate(edDate, userLocaleDateFormatMap.DateFormat)) {
+    			alert("Invalid date. Please select the correct To-Date!");
+    			return false;
+    		}
+			
+			j$(".jbaraDummyNPSFeedEndDateInput").val(edDate);    		
+			
+			stDate = JBARAformatDate(new Date(JBARA_getDateFromFormat(stDate, userLocaleDateFormatMap.DateFormat)), 'M/d/yyyy');
+			edDate = JBARAformatDate(new Date(JBARA_getDateFromFormat(edDate, userLocaleDateFormatMap.DateFormat)), 'M/d/yyyy');
+			if(Date.parse(stDate) > Date.parse(edDate)) {
+				alert("From-Date should less than To-Date!");
+    			return false	
+			}	
+			
+			j$(".countOfRecords").val(0); //To reset the records limit to 0.
+			j$(".dummyNPSResponsesDetail").hide();
+			j$(".ajaxLoadingButton").show();
+			rerenderSurveyResponsesList();
+	    }
+		
+		function getTimeLineBasedOnDate(dateString) {
+			var timeLineString = "";
+			var actionDay, presentYear;
+			var dateDetails = dateString.split("T")[0].split("-");
+			var timeDetails = (dateString.split("T")[1].split(".")[0]).split(":");		
+			var curDate = currentDateTime.split(","); 
+			var actionDate = new Date(dateDetails[0], dateDetails[1]-1, dateDetails[2], timeDetails[0], timeDetails[1], timeDetails[2]).getTime();
+			var currentDate = new Date(curDate[0], curDate[1]-1, curDate[2], curDate[3], curDate[4], curDate[5]).getTime();
+			var dateDifference = (currentDate-actionDate)/1000;
+			if(parseInt(dateDifference) <= 59 )  {
+				timeLineString += (parseInt(dateDifference) > 1) ? ""+dateDifference+" seconds ago" : ""+dateDifference+" second ago";	
+			}
+			else { 
+				dateDifference = dateDifference/60;
+				if(parseInt(dateDifference) < 60) {
+					timeLineString += (parseInt(dateDifference) > 1) ? ""+parseInt(dateDifference)+" minutes and" : "1 minute and";
+					timeLineString += (parseInt((dateDifference-parseInt(dateDifference))*60) > 1) ? " "+parseInt((dateDifference-parseInt(dateDifference))*60)+" seconds ago" : "1 second ago";	
+				}
+				else {
+					dateDifference = dateDifference/60;
+					if(parseInt(dateDifference) <= 24) {
+						timeLineString += (parseInt(dateDifference) > 1) ? ""+parseInt(dateDifference)+" hours and <br/>" : "1 hour and <br/>"
+						timeLineString += (parseInt((dateDifference-parseInt(dateDifference))*60) > 1) ? ""+parseInt((dateDifference-parseInt(dateDifference))*60)+" minutes ago" : "1 minute ago"; 
+					}
+					else {
+						actionDay = new Date(dateDetails[0], dateDetails[1]-1, dateDetails[2], timeDetails[0], timeDetails[1], timeDetails[2]).getDay();
+						presentYear = new Date().getFullYear();
+						if(presentYear == parseInt(dateDetails[0])) {
+							timeLineString += ''+week_names[actionDay]+', '+month_names[dateDetails[1]-1]+' '+dateDetails[2]+'<br/> @ '+timeDetails[0]+':'+timeDetails[1]+':'+timeDetails[2]+' (UTC)';
+						} 
+						else {
+							timeLineString += ''+week_names[actionDay]+', '+month_names[dateDetails[1]-1]+' '+dateDetails[2]+','+dateDetails[0]+'<br/> @ '+timeDetails[0]+':'+timeDetails[1]+':'+timeDetails[2]+' (UTC)';
+						}
+					}
+				}				
+			}
+			return timeLineString;			
+		}
+
+    function openGSConsolePTab(ele) {
+        if ( GS.isSFConsole === true ) {
+          var _console = window.sforce.console || window.parent.sforce.console;
+          if(_console && _console.openPrimaryTab) {
+            _console.openPrimaryTab(null, ele.href, true, ele.innerHTML, function () {}, ele.innerHTML);
+          }
+        } else {
+            window.open(ele.href,'_blank');
+        }
+      }
+
+		function setFromAndToDateBySelection(selectedVal) {
+	    	var dayInWeek;
+	    	switch (selectedVal) {
+				case "TW":				  			
+				  			dayInWeek = fromDate.getDay();
+				  			fromDate.setDate(fromDate.getDate()-parseInt(dayInWeek));
+				  			break;
+				case "LW":
+				  			dayInWeek = fromDate.getDay();
+				  			fromDate.setDate(fromDate.getDate()-(parseInt(dayInWeek)+7));
+				  			toDate.setDate(toDate.getDate()-(parseInt(dayInWeek)+1));
+				  			break;
+				case "TM":				  			
+				  			fromDate.setDate(1);
+				  			break;
+				case "LM":
+				  			toDate.setDate(0);
+				  			fromDate.setDate(0);
+				  			fromDate.setDate(1);				  			
+				  			break;
+	  			case "SL":
+				  			fromDate.setFullYear((new Date()).getFullYear()-5);			  			
+				  			break;   			
+			}
+	    }
+		 
+		//Popup the date picker to display on form.
+		function jbaraNPSDateInputControl(id) {
+		    j$("#datePicker").css({'z-index': '5001'});
+		    DatePicker.pickDate(true, id, false);
+		}   
+	 </script>
+	<script type="text/javascript" language="javascript">
+		var i = 0 ;
+		var initialCount;
+		var totallen = 0;
+		var resultTextHeaderHtml = '';
+		var surveyType = null;
+        function buildNpsFeedHtmlList(npsResponseJsonData, isNPSAssociatedAnyObject) {
+		    if (npsResponseJsonData.length > 0) {
+		        //code to apending the header. this header should be appended only first time.
+				j$("#surveyResponsesListContainerHeader").show();
+                    var isRelationshipEnabled = {!(isRelationshipEnabled)};
+                if (i == 0) {
+		            initialCount = npsResponseJsonData.length;
+		            //resultTextHeaderHtml += '<table class="container" width="100%" style="border-collapse:collapse;"> <tbody>';
+                resultTextHeaderHtml = '';
+		            resultTextHeaderHtml += '<tr class="ui-state-default">';
+                    resultTextHeaderHtml += '<td colspan="1" width="17%" class="thNPSFeed" >Customer</td>';
+                    if(isRelationshipEnabled && this._relType){
+                        resultTextHeaderHtml += '<td colspan="1" width="17%" class="thNPSFeed" >Relationship</td>';
+                    }
+		            resultTextHeaderHtml += '<td colspan="1" width="58%" class="thNPSFeed" >Score & Comments </td>';
+		            if (isNPSAssociatedAnyObject == "true") {
+		                resultTextHeaderHtml += ' <td colspan="1" width="13%" class="thNPSFeed" >{!JSENCODE(surveyAssociatedObjectName)}</td>';
+		            }
+		            resultTextHeaderHtml += '<td colspan="1" width="12%" class="thNPSFeed" >Date</td>';
+		            resultTextHeaderHtml += '</tr>'
+		            //resultTextHeaderHtml += '</tbody></table><br/>';
+
+		            // to avoid losing `tr` due to strict sanitization, need to wrap around table.
+		            const dummyHTMLWithTable=  sanitizeHtml(`<table>${resultTextHeaderHtml}</table>`);
+                    const tBody = j$(dummyHTMLWithTable).find("tbody");
+                    j$("#surveyResponsesListContainerHeader").html(tBody.html());
+		        }
+		        
+		        //code to apending actual responses if exit.
+		        //resultTextHtml += '<div class = "dummyNPSFeed">';
+		        //resultTextHtml += '<table class="rounded-corner surveyResponsesListTable" width="100%"><tbody>';
+		        
+		        for (var indx = 0; indx < npsResponseJsonData.length; indx++) {
+		        	if(typeof npsResponseJsonData[indx].SurveyCode__r != "undefined" && typeof npsResponseJsonData[indx].SurveyCode__r.SurveyId__r != "undefined"){
+		        		surveyType = npsResponseJsonData[indx].SurveyCode__r.SurveyId__r.AnonymousType__c;
+		        	}
+		            resultTextHtml += '<tr><td width="17%" colspan="1">';
+					if(surveyType === 'Complete'){
+						resultTextHtml += '<div class="custNoLink">Anonymous</div></td>';
+		           	}else{
+                      var CSPage = GS.packageNS+'CustomerSuccess360';
+                      var accountUrl = (GS.isSFConsole === true) ?
+            "apex/"+ CSPage +"?cid="+npsResponseJsonData[indx].Account__r.Id :
+            CSPage+"?cid="+npsResponseJsonData[indx].Account__r.Id;
+
+                        resultTextHtml += '<a onclick="openGSConsolePTab(this); return false;" class="custNameLink" href="' + accountUrl + '" target="_blank">';
+		            	resultTextHtml += '' + npsResponseJsonData[indx].Account__r.Name + '</a></td>';
+		            }
+		
+		            npsScoreBGColor = (parseInt(npsResponseJsonData[indx].NPSScore__c) >= 9) ? '#44b798' : ((parseInt(npsResponseJsonData[indx].NPSScore__c) < 7) ? '#ed5f5e' : '#ff8448');
+                    if(isRelationshipEnabled && this._relType){
+                        resultTextHtml += '<td width="17%" colspan="1">';
+                        if(surveyType === 'Complete'){
+                            resultTextHtml += '<div class="custNoLink">Anonymous</div></td>';
+                        }else{
+                            var relPage = GS.packageNS+'Relationship360';
+                            var relUrl = (GS.isSFConsole === true) ?
+            "apex/"+ relPage +"?rId="+npsResponseJsonData[indx].Relationship__r.Id :
+            relPage+"?rId="+npsResponseJsonData[indx].Relationship__r.Id;
+                            resultTextHtml += '<a onclick="openGSConsolePTab(this); return false;" class="custNameLink" href="' + relUrl + '" target="_blank">';
+                            resultTextHtml += '' + npsResponseJsonData[indx].Relationship__r.Name + '</a></td>';
+                        }
+                    }
+                    resultTextHtml += '<td width="58%" valign="top"><div class="individualNPSScore" style="';
+		            resultTextHtml += ' background-color:' + npsScoreBGColor + '">';
+		            resultTextHtml += '<span>' + parseInt(npsResponseJsonData[indx].NPSScore__c) + '</span></div>';
+		            resultTextHtml += '<div class="individualNPSScore-data"><div class="nps-comments">';
+		            resultTextHtml += (npsResponseJsonData[indx].NPSComment__c == null || npsResponseJsonData[indx].NPSComment__c.length < 0) ? 'No Comments' : '' + npsResponseJsonData[indx].NPSComment__c + '';
+		            resultTextHtml += '</div><div class="submissionDetails">';
+		          //  resultTextHtml += '<span class="ui-icon ui-icon-person" style="display:inline;width:15px;padding-top: 2px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;';
+		            resultTextHtml += '<span>' + npsResponseJsonData[indx].UserName__c + '';
+		            resultTextHtml += ((npsResponseJsonData[indx].UserEmail__c).toLowerCase() == ("invalidEmail@JBaraCSM.com").toLowerCase()) ? '</span>' : '(' + npsResponseJsonData[indx].UserEmail__c + ')</span>';
+		           // resultTextHtml += '<span class="ui-icon ui-icon-tag" style="display:inline;width:15px;padding-top: 2px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;';
+		            resultTextHtml += '<span>';
+		            resultTextHtml += (npsResponseJsonData[indx].SurveyCode__r != null) ? npsResponseJsonData[indx].SurveyCode__r.SurveyName__c + '</span></div></td>' : '</span></div></div></td>';
+
+		            if (isNPSAssociatedAnyObject == "true") {
+		                npsAOIDV = (npsResponseJsonData[indx].AssociatedObjectDisplayValue__c != null) ? npsResponseJsonData[indx].AssociatedObjectDisplayValue__c : "";
+		                npsAssociativeItemURL = (npsResponseJsonData[indx].AssociatedObjectDisplayValue__c != null) ? "" + sforceBaseURL + "/" + npsResponseJsonData[indx].AssociatedObjectRecordID__c + "" : "#";
+		                resultTextHtml += '<td width="13%" colspan="1"><a class="associateObjectItemLink" href="' + npsAssociativeItemURL + '" target="_top">';
+		                resultTextHtml += '' + npsAOIDV + '</a></td>';
+		            }
+		            resultTextHtml += '<td width="10%" colspan="1" id= "timeDummy">' + JBARAgetDateTimeByUserLocal(npsResponseJsonData[indx].ResponseDate__c,userLocaleDateFormatMap) + '</td>';
+		            resultTextHtml += '</tr>';
+		        }
+		        
+		        //resultTextHtml += '</tbody></table></div>';
+		        
+		        if (npsResponseJsonData.length < initialCount) {		        	
+		        	j$(".ViewMoreButton").show();	
+		        } else {
+		            j$(".ViewMoreButton").show();
+		        }
+		    }
+		
+		    j$(".ajaxLoadingButton").hide(); //To hide the Ajaxloader button.
+
+            // to avoid losing `tr` due to strict sanitization, need to wrap around table.
+		    const dummyHTMLWithTable=  sanitizeHtml(`<table>${resultTextHtml}</table>`);
+            const tBody = j$(dummyHTMLWithTable).find("tbody");
+            j$("#surveyResponsesListContainer").html(tBody.html());
+
+		    /*
+		    j$("table.surveyResponsesListTable tr").css({
+		        "border-bottom": "1px dashed #A6C9E2",
+		        "margin-top": "4px"
+		    });
+		    j$("table.surveyResponsesListTable tr:last").css("border-bottom", "none");
+		    */
+		    
+		    i++;
+		}  
+	</script>
+
+	 <div id="gs-app-container"> 
+         <div class="gs-module-container">
+        <div class="gs-module-content-wrapper" style="display: none">
+          <div class="gs-feature-disabled" style="display: none">
+          <div class="gs-feature-content">
+                 <div class="gs-feature-image"></div>
+                 <h1>Page no longer exists</h1>
+                 <p>NPS 1.0 is retired and is no longer available. Gainsight offers NPS 2.0 to address all of your needs</p>
+                 <a href="javascript:;" target="_blank" onclick="redirectFeature()"  class="gs-btn-raised gs-feature-redirect">Go to NPS 2.0</a>
+                 </div>
+           </div>
+			<div id="NPSSummaryTabs" class="ui-corner-top"
+				style="padding: 0px !important; border: none;margin-top:-1px;margin-left:-1px;">
+		
+				<div class="row HeaderNPSTabs customerAnalytics" style="display:none;">
+					<ul class="nav nav-tabs adp_tabs">
+						<li class="gs-user-img"><img alt="user image" src="{!profilePhoto}" /></li>
+						<li><span class="gs-tab-name">{!userDisplayName}</span><span
+							class="gs-arrow">&nbsp;</span></li>
+		
+						<li><a href="#NPSSummary" target="_top" _ind='0' class='tab'>Summary</a></li>
+						<li class="active"><a target="_top" _ind='1' class='tab' >Feed</a></li>
+						<li><a href="#NPSBySurvey" target="_top" _ind='2' class='tab'>By Survey</a></li>
+						<li><a href="#NPSByCustomer" target="_top" _ind='3' class='tab'>By
+								Customer</a></li>
+					</ul>
+				</div>
+		
+				<!-- NPS Summary Tab Starts Here -->
+				<div id="NPSSummary" style="align: center;" class='NPS_container'>
+		
+				</div>
+				<!-- NPS Summary Tab Ends Here -->
+		
+				<!-- NPS Feed Tab Starts Here -->
+				<div id="NPSFeed" style="align: center;" class='NPS_container'>
+					<apex:form >
+						<div class="NPSSurveyResposesByQuarter">
+		
+							<!-- Action functions -->
+							<apex:actionFunction name="rerenderSurveyResponsesList"
+								reRender="RerenderSurveyResponsesList" />
+							<apex:inputText value="{!countOfRecords}" size="10" maxlength="10"
+								StyleClass="countOfRecords" style="display:none;" />
+		
+							<div class="dateSelectionOptionscontainer">
+								<apex:selectList value="{!selectedNumOfDays}" size="1"
+									StyleClass="jbaraDummyDatePeriodSelectControl">
+									<apex:selectOptions value="{!DatefilterItemsList}" />
+								</apex:selectList>
+								&nbsp; &nbsp; <span class="CustomDateSelection"
+									style="display: none;"> <span class="displayText"><b>From:&nbsp;</b></span>
+									<apex:inputText value="{!startDate}" maxlength="10"
+										id="jbaraDummyNPSFeedStartDateInput" Size="10"
+										styleClass="jbaraDummyNPSFeedStartDateInput gs-calendar"
+										onfocus="jbaraNPSDateInputControl('{!$Component.jbaraDummyNPSFeedStartDateInput}')" />
+									<span class="displayText"><b>To:&nbsp;</b></span> <apex:inputText value="{!endDate}" maxlength="10"
+										id="jbaraDummyNPSFeedEndDateInput" Size="10"
+										styleClass="jbaraDummyNPSFeedEndDateInput gs-calendar"
+										onfocus="jbaraNPSDateInputControl('{!$Component.jbaraDummyNPSFeedEndDateInput}')" />
+									&nbsp;&nbsp;<span class="styleCustomGo"
+									style="position: relative;"><input
+										type="button" value="Go" class="btn-apply"
+										onClick="showSurveyResponsesByDateRange()" /></span>
+								</span>
+                                <div style="float:right;display:inline;padding-right:15px;z-index: 10; font-size:14px;">
+                                    <div style="float:left;"><select class="RelationshipTypeSelector" style="width:230px;display:none"></select></div>
+                                </div>
+							</div>
+		
+		
+							<div class='nps-feed-ctn'>
+								 
+								<div class="pbBody" style="overflow: auto;">
+									<div class="dummyNPSResponsesDetail">
+										<table width="100%" cellspacing="0" cellpadding="0" >
+											<thead id="surveyResponsesListContainerHeader">
+											</thead>
+											
+											<tbody id="surveyResponsesListContainer">
+											</tbody>
+										</table>
+										
+									 
+										 
+										<div class="ViewMoreButton" align="center"
+											style="display: none; margin-top: 10px;">
+											<div class="viewMoreSurveyResponses"
+												style="font-size: 15px; border-radius: 4px 4px 4px 4px; min-width: 100px;line-height:35px; max-width: 131px; min-height: 35px;">
+												<span style="text-align: center; display: block; margin: 4px;">
+													View more... </span>
+											</div>
+										</div>
+		
+										<div class="ajaxLoadingButton" align="center"
+											style="display: none;">
+											<div class="waitingHolder" style="width: 74px; top: 25.8px;">
+												<span class="waitingDescription gainsightLoadingIcon"></span>
+											</div>
+										</div>
+										<div class="message infoM4" id="moreResultsFoundMessage"
+											style="display: none;">
+											<img src="/s.gif" alt="Information" class="msgIcon"
+												title="Information" style="vertical-align: text-bottom;" /> <span
+												class="msgTextId">Cannot show records more than
+												2000.Plase use filters in the select list to see results in a
+												time period.</span>
+										</div>
+										<div class="dummyNPSFeedForSpace"
+											style='clear: both; padding: 4px'></div>
+		
+									</div>
+								</div>
+							</div>
+
+					<!-- This section handle render usage Tracking List -->
+					<apex:outputPanel id="RerenderSurveyResponsesList">
+						<script type="text/javascript" language="javascript">
+							j$(".ajaxLoadingButton").hide();
+						    npsResponseJsonData        = fakeEval('{!(JSINHTMLENCODE(AllNPSResponsesOrderByDate))}');
+		                    sforceBaseURL 				= "{!JSENCODE(sfdcBaseURL)}";
+		                    isNPSAssociatedAnyObject 	= "{!(isSurveyAssociatedToObject)}";
+		                    numOfRecordCount 			= parseInt("{!JSENCODE(countOfRecords)}");
+		                    currentDateTime 			= "{!JSENCODE(currentDate)}";		               
+		                    buildNpsFeedHtmlList(npsResponseJsonData,isNPSAssociatedAnyObject);
+		                    j$("table").css("border-left","solid #dbdbdb 1px");
+		        			j$("table").css("border-top","solid #dbdbdb 1px");
+		                    if(j$(".countOfRecords").val() >= 1900){
+		                    	j$('.ViewMoreButton,.noResponsesFound').hide();
+		                    	j$('#moreResultsFoundMessage').show();	
+		                    }
+		                    
+		                    if((npsResponseJsonData.length)%100 != 0 ){		                    
+		                    	j$('.ViewMoreButton').hide();
+		                    }
+		                    if(npsResponseJsonData.length == 0 ){
+		                    	j$("#surveyResponsesListContainerHeader").hide();
+		                   		j$('.ViewMoreButton').hide();
+		        				j$("#surveyResponsesListContainer").append("<div align='center' class='noResponsesFound'>No responses found</div>");
+		        				j$("table").css("border-left","0");
+		        				j$("table").css("border-top","0"); 
+		                    }
+							j$(".dummyNPSResponsesDetail").show();
+		                </script>
+					</apex:outputPanel>
+
+				</div>
+
+
+			</apex:form>
+
+		</div>
+		<!-- NPS Feed Tab Ends Here -->
+
+		<!-- NPS By Survey Tab Starts Here -->
+		<div id="NPSBySurvey" style="align: center;" class='NPS_container'>
+
+		</div>
+		<!-- NPS By Survey Tab Ends Here -->
+
+		<!-- NPS By Customer Starts Here -->
+		<div id="NPSByCustomer" style="align: center;" class='NPS_container'>
+
+		</div>
+		<!-- NPS By Customer Tab Ends Here -->
+	</div>
+	</div>
+    <div class="gs-feature-error" style="display: none"></div>
+ </div>
+
+		<apex:outputPanel id="UserStatePanel">
+			<script type="text/javascript">
+                statePreservString        = fakeEval('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+				isSameUserSessionExists = '{!(isSameUserSessionNPS)}';
+			</script>
+		</apex:outputPanel>
+		<apex:form >
+			<apex:actionFunction name="actionUpdateStatePreservation"
+				action="{!saveExistingNPSUserState}" reRender="UserStatePanel"
+				oncomplete="redirectPageByTabSelection();">
+				<apex:param name="stateJSON" value="" />
+			</apex:actionFunction>
+		</apex:form>
+	</div>
+	<script>
+    	var GSGA = {
+			orgId: "{!$Organization.Id}",
+			orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+			userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+		};
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');		
+	</script>
+	<script
+		src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+	<script>
+		gainsightTrackEvents.pushPageViews('NPS - Feed');
+	</script>
+<div id="ajaxRedirectingIcon" align="center" style="margin:1px 0px 1px 0px; display:none;">
+	   		<div class="waitingHolder gainsightLoadingIcon" style="width: 254px; top: 25.8px;">
+	      		<br/><span class="waitingDescription"></span>
+	    	</div> 
+	    </div>
+</apex:page>

@@ -1,0 +1,7 @@
+<messaging:emailTemplate subject="{!relatedTo.Name} Session starts in one hour" recipientType="User" relatedToType="redwing__ILT_Session__c"  language="{!recipient.LanguageLocaleKey}">
+<messaging:htmlEmailBody >
+<p>{!relatedTo.Name} session starts in an hour at {!relatedTo.Start_Time__c}&nbsp;<apex:outputText rendered="{!relatedTo.ILT_Class__r.redwing__Timezone__c != null}" value="(Timezone: " />
+<apex:outputField rendered="{!relatedTo.ILT_Class__r.redwing__Timezone__c != null}" value="{!relatedTo.ILT_Class__r.redwing__Timezone__c}"/>
+<apex:outputText value=")" rendered="{!relatedTo.ILT_Class__r.redwing__Timezone__c != null}" /></p>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -1,0 +1,732 @@
+<apex:page sidebar="false" controller="Bread_Winner.BreadwinnerAccountSyncController" action="{!displayAccountsForSelectedPageNumber}" tabStyle="Breadwinner__tab" title="Breadwinner Account Match">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <apex:slds />
+            <meta charset="utf-8" />
+            <style>
+                .matchFound {
+                background: #f4f6f9;
+                display: block;
+                line-height: 22px;
+                padding: 10px;
+                }
+                .XeroAccountMatch {
+                background: #f4f6f9;
+                line-height: 22px;
+                padding: 10px;
+                text-align: left;
+                word-wrap: break-word;
+                }
+                .arrow {
+                font-size: 37px;
+                color: #42B7F4;
+                }
+                .tdCell {
+                background: #fff;
+                border: 1px solid #ddd;
+                box-shadow: 1px 1px 2px -2px #ccc;
+                }
+                .arrowCell {
+                text-align: center;
+                vertical-align: middle!important;
+                }
+                .lookupInput .slds-input {
+                width: 50%;
+                }
+                .lookup {
+                padding: 5px 0 5px 0!important;
+                margin-left: 20px;
+                }
+                .msgIcon{
+                display:none;
+                }
+                .message .messageText {
+                margin: 0px;
+                }
+                .message .messageText h4 {
+                font-weight: inherit;
+                display: initial;
+                }
+                .slds-scope .slds-spinner_container{
+                position: fixed;
+                z-index: 9999;
+                }
+                .slds-scope .slds-radio .slds-form-element__label {
+                display: inherit;
+                }
+                .noSidebarCell, .sidebarCell .fixed{
+                    padding: 0px !important;
+                }
+                .sfdcBody{
+                    padding: 0px !important;
+                }
+            </style>
+            <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/jquery-1.11.3.js')}" type="text/javascript"></script>
+            <script>
+            if(document.getElementsByTagName("title") && document.getElementsByTagName("title")[0]){
+                document.getElementsByTagName("title")[0].innerHTML="Breadwinner Account Match";
+            }
+            // var j$ = jQuery.noConflict();
+            function HideStyleSheet() {
+                $("link.user[href$='elements.css']").each(function() {
+                    $(this).removeAttr("href");
+                });
+            }               
+            function message()
+            {
+                $(".infoM6, .infoM4, .infoM3, .infoM2, .infoS1").addClass("slds-notify slds-notify_alert slds-theme_inverse-text  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px"} );
+                $(".errorM6, .errorM4, .errorM3, .errorM2, .errorS1").addClass("slds-notify slds-notify_alert slds-theme_error  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css({"font-weight":"500","line-height":"1.4","word-spacing":"1px","display":"block","border-radius":"5px"});
+                $(".warningM6, .warningM4, .warningM3, .warningM2, .warningS1").addClass("slds-notify slds-notify_alert slds-theme_warning  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px"} ) ;
+                $(".confirmM6, .confirmM4, .confirmM3, .confirmM2, .confirmS1").addClass("slds-notify slds-notify_alert slds-theme_success slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px"} ) ;
+                
+                $("div .messageText h4").css( "color", "white" );
+                $("div[class*='warning'] div.messageText h4").css( "color", "black" );
+                $("table.messageTable td").css({"color" : "white"});
+                $("div[class*='warning'] table.messageTable td").css( "color", "black" );
+            }
+            function setLookupPicklist(){
+                //$("select[id$='accountLookup_lkid']").parent().parent().css("margin-left","2.75rem");
+                $("select[id$='accountLookup_lkid']").addClass("slds-select").css("width","50%");
+                $("select[id$='accountLookup_lkid'] option").removeAttr("selected");
+                
+                $('form').keypress(function(event) { 
+                    return event.keyCode != 13;
+                }); 
+            }
+            function addallfuncs(){
+                HideStyleSheet();
+                message();
+                $(".lookupInput input").addClass("slds-input");
+            }
+            $(function(){
+                addallfuncs();
+                setLookupPicklist();
+            });
+             $(document).keydown (
+                    function(event){
+                    var code = event.keyCode || event.which;
+                    if (code == 27) {
+                            if($('#showModalAftercompletion').hasClass('slds-fade-in-open')){                            
+                            redirectToBWPage();                           
+                        }
+                    }
+                });
+            </script>
+            <apex:outputPanel id="mapInitDefaultActionScript">
+                <script type="text/javascript">
+                var mapXeroAcctIdAndAction = new Object();   
+                </script>
+            </apex:outputPanel>
+            <script type="text/javascript">
+            var __sfdcSessionId = '{!GETSESSIONID()}';
+            </script>
+            <script src="../../soap/ajax/31.0/connection.js" type="text/javascript"></script>
+            <script src="../../soap/ajax/31.0/apex.js" type="text/javascript"></script>
+            <script>
+            function checkErrorMsg(){
+                console.log('$$$$Within CheckErrorMsg Method'+'+++'+$('.errorMsg'));
+                var errorDiv = $('.errorMsg');
+                if(typeof errorDiv != "undefined" && typeof $('.errorMsg')[0] != "undefined"){
+                    console.log('$$$$$Error Meggase==>'+$('.errorMsg')[0].innerHTML);
+                    
+                    var position = $('.errorMsg').position();
+                    window.scroll(position.left,position.top) ;
+                }else{
+                    console.log('Error Not Found everything is OK');
+                    submitAndNextJS();
+                    finalSubmitANDNext();
+                }
+            }
+            function removeAltAttribute()
+            {
+                var lookUpIcons = document.getElementsByClassName('lookupIcon');
+                for(var i = 0; i < lookUpIcons.length; i++)
+                {          
+                    lookUpIcons[i].removeAttribute("alt"); 
+                    lookUpIcons[i].removeAttribute("title"); 
+                    lookUpIcons[i].parentNode.removeAttribute("title"); 
+                }
+            }
+            function submitAndNextJS()
+            {
+                var jsonActions = JSON.stringify(mapXeroAcctIdAndAction);
+                console.log('######'+jsonActions);
+                document.getElementById('{!JSENCODE($Component.formId.jsonOfActionsId)}').value = jsonActions;
+                //console.log('value  : ' + document.getElementById('{!JSENCODE($Component.formId.jsonOfActionsId)}').value);
+                //return false;
+            }            
+            function pushToMapXeroAcctIdAndAction(key, value)
+            {
+                mapXeroAcctIdAndAction[key] = value; 
+                console.log(''+value);
+                UpdateInfo();
+            }
+            function checkRadioButtonForManualMatch(manualMatchRadioButtonId)
+            {
+                document.getElementById(manualMatchRadioButtonId).checked = true;
+            }
+            function clearManualMatchOnSelectingOther(key) {
+                var mappingSpanId = key+'-mm-lookup';
+                try{
+                    var mappingSpanEle = document.getElementById(mappingSpanId);
+                    if(mapXeroAcctIdAndAction[key]==='manualMatch' || mappingSpanEle.getElementsByClassName("errorMsg").length > 0){
+                        console.log(mappingSpanEle.getElementsByClassName("lookupInput")[0].children[0].value);
+                        if(mappingSpanEle.getElementsByClassName("lookupInput")[0].children[0].value){
+                            mappingSpanEle.getElementsByClassName("lookupInput")[0].children[0].value = '';
+                        }
+                            
+                        try{
+                            mappingSpanEle.getElementsByClassName("errorMsg")[0].remove();
+                            console.log('mappingSpanId :::'+ mappingSpanId);
+                            console.log(document.getElementById(mappingSpanId).parentElement.id);
+                            var parentId = document.getElementById(mappingSpanId).parentElement.id;
+                            console.log('parentId :::'+ parentId);
+                            var accLKP = parentId.replace("lookupPanel", "accountLookup");
+                            var accLKPLKOLD = parentId.replace("lookupPanel", "accountLookup_lkold");
+                            document.getElementById(accLKP).value = '';
+                            document.getElementById(accLKPLKOLD).value = '';
+                        }
+                        catch(Error){
+                        }
+                    }
+                }
+                catch(Error){
+                    console.log(Error);
+                }
+            }
+            function scrollWin()
+            {
+                window.scrollTo(0,0);
+            }
+            window.onload=removeAltAttribute;
+            </script>
+        </head>
+        <body>
+            <div class="slds-scope slds-p-around_x-small">
+                <apex:pagemessages rendered="{!NOT(initialized)}"/>
+                <apex:pagemessage rendered="{!AND(validSynSupplierContacts, NOT(isAccountsPayableEnabled))}" summary="You must be on a higher plan to Match Suppliers" detail="" severity="error" strength="3" />
+                <apex:pagemessage rendered="{!AND(validSynPurchaseContacts, NOT(isAccountsPayableEnabled))}" summary="You must be on a higher plan to Match Purchase Order Contacts" detail="" severity="error" strength="3" />
+                
+                <apex:form id="formId" rendered="{!initialized}">
+                    <apex:actionStatus id="assign-action-status" layout="block">
+                        <apex:facet name="start">
+                            <div class="slds-spinner_container">
+                                <div class="slds-spinner_brand slds-spinner slds-spinner_medium" aria-hidden="false" role="alert">
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>
+                            </div>
+                        </apex:facet>
+                    </apex:actionStatus>
+                    <div id="accountSyncText">
+                        <!-- ..........................Page Header Start ........................... -->
+                        <div id="thePageHeader" class="slds-page-header slds-m-bottom_medium" role="banner">
+                            <div class="slds-media slds-media_center">
+                                <div class="slds-media__figure">
+                                    <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                                        <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#rotate')}"></use>
+                                    </svg>
+                                </div>
+                                <div class="slds-media__body">
+                                    <p class="slds-page-header__title slds-truncate">Breadwinner<apex:outputtext > Account Match for&nbsp;{!if(AND(validSynPurchaseContacts, appConfigWrapper.Sync_POs) ,'Purchase Order Contacts',if(AND(validSynSupplierContacts, appConfigWrapper.Sync_Suppliers_Bills),'Suppliers','Customers'))}</apex:outputtext></p>
+                                    <p class="slds-text-body_small">Breadwinner • Xero </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ............................. Page Header END ............................. -->
+                        <apex:pagemessages rendered="{!NOT(OR(noSuccessWithPagingAPI, noRecordsPresentInXero))}" id="pm" /> 
+                        <apex:outputPanel layout="block" rendered="{!AND(NOT(isAccountFetchComplete),XeroAcctIdList.size > 0)}">
+                            <p class="slds-m-bottom_medium slds-m-horizontal_medium">
+                                Each Xero Contact has to be matched with one Salesforce Account. 
+                                Based on the Company's name, phone, and address, we have tried to auto-match some Xero Contacts. 
+                                If we have not been able to match it, you can select a Salesforce Account through the lookup box. 
+                                You can also create a new Account in Salesforce based on the Xero Contact. 
+                            </p>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel layout="block" style="-webkit-border-radius: 4px;border-radius: 4px;display: block;" styleClass="warningM4 slds-m-bottom_medium " rendered="{!isStateAndCountryPicklistsEnabled}">
+                            <b> Warning - State and Country Picklists are Enabled </b>
+                            <p>Salesforce's 'State and Country Picklists' are enabled, so Salesforce will prevent you from creating Accounts with a State or Country that is not in it's list of possible States / Countries. </p>  
+                            <p>If you are only matching Xero Contacts to Salesforce Accounts, through Suggested Match or Manual Match, this is not a problem. However, if you are creating new Salesforce Accounts, then Salesforce will prevent your creation if State / Country is not Correct.</p>
+                            <p>There are two possible solutions:</p>
+                            <p>1)&nbsp;<apex:outputLink value="/i18n/AddressCleanerOverview.apexp?setupid=AddressCleanerOverview" style="color:black" target="_blank" rendered="{!NOT(OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t'))}">Disable State and Country Picklists </apex:outputLink><apex:outputLink value="/i18n/AddressCleanerOverview.apexp?setupid=AddressCleanerOverview" style="color:black" rendered="{!OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t')}">Disable State and Country Picklists </apex:outputLink> in Salesforce Setup. You can re-enable this later, or leave it disabled. </p>
+                            2) For any Xero Company that you wish to create in Salesforce, manually change all of the addresses of your Xero Companies to a &nbsp;<apex:outputLink style="color:black" value="https://help.salesforce.com/htviewhelpdoc?id=admin_state_country_picklists_overview.htm" target="_blank" rendered="{!NOT(OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t'))}">State/ Country that Salesforce accepts</apex:outputLink><apex:outputLink style="color:black" value="https://help.salesforce.com/htviewhelpdoc?id=admin_state_country_picklists_overview.htm" rendered="{!OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t')}">State/ Country that Salesforce accepts</apex:outputLink>. Once they are changed, refresh this page. This option may be very time consuming, so we recommend option number 1.
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel layout="block" style="-webkit-border-radius: 4px;border-radius: 4px;display: block;" styleClass="warningM4 slds-m-bottom_medium" rendered="{!isThereDataQualityIssue}">
+                            <b> Warning - Data Quality Issue </b>
+                            <p>Salesforce Address fields have limited field lengths, and some of your addresses in Xero exceed those field lengths.</p>  
+                            <p>If you are only matching Xero Contacts to Salesforce Accounts, through Suggested Match or Manual Match, this is not a problem. However, if you are creating Salesforce Accounts, then some of your address fields will be truncated when we create new Accounts in Salesforce.</p>
+                            <p>You may wish to review which records and fields are over the maximum lengths below. If you wish to change them in Xero, you can do so, and then refresh this page.</p>
+                            <p>Or, accept them as they are, and any Accounts created in this process will have their values truncated to maximum Salesforce field length.</p>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!AppUnauthorized}">
+                            <apex:pageMessage severity="ERROR" strength="2" summary="<b>There was a problem establishing a connection to Xero.</b>" escape="false">
+                                There was a problem establishing a connection to Xero. If you are a Xero Admin please reconnect to Xero now, or ask someone who is a Salesforce Admin and Xero Admin to click&nbsp; 
+                                <apex:outputLink value="{!breadwinnerEndPointURL}/api/xero/auth/{!$Organization.Id}?callbackurl={!URLENCODE(URLFOR($Page.Bread_Winner__CompleteAuth))}" style="color:white" target="_blank" rendered="{!NOT(OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t'))}">Reconnect to Xero</apex:outputLink><apex:outputLink value="{!breadwinnerEndPointURL}/api/xero/auth/{!$Organization.Id}?callbackurl={!URLENCODE(URLFOR($Page.Bread_Winner__CompleteAuth))}" style="color:white" rendered="{!OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t')}">Reconnect to Xero</apex:outputLink>&nbsp;from the Breadwinner tab.
+                            </apex:pageMessage>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!AND(noSuccessWithPagingAPI, NOT(AppUnauthorized))}">
+                            <apex:pagemessage severity="ERROR" strength="2" summary="<b>Error while fetching Xero Contacts</b>" escape="false">
+                                We were unable to connect to Xero. This could be a temporary issue on the part of Xero's servers, so please try again in a minute. If this persists, please contact&nbsp; 
+                                <apex:outputLink value="{!BW_SupportPortalURL}/support/tickets/new" style="color:white"  target="_blank" rendered="{!NOT(OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t'))}">Breadwinner Support
+                                </apex:outputLink><apex:outputLink value="{!BW_SupportPortalURL}/support/tickets/new" style="color:white" rendered="{!OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t')}">Breadwinner Support
+                                </apex:outputLink>.
+                                <div><apex:variable value="{!($Page.Bread_Winner__BreadwinnerAccountSync)}?page={!selectedPageNumber}{!if(validSynSupplierContacts, '&supplier=true', if(validSynPurchaseContacts, '&PurchaseOrder=true', ''))}" var="url"/>
+                                    You may wish to try again, please&nbsp;<a href="{!url}">click here</a>&nbsp;to request Xero one more time.
+                                </div>
+                            </apex:pagemessage>
+                            <apex:pageMessages rendered="{!NOT(ServiceUnavailable)}"></apex:pageMessages>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!isBackgroundjobRunning}">
+                            <apex:pageMessage severity="INFO" strength="2" summary="<b>Xero Contacts import is in progress<b/>" escape="false" >
+                                <p>
+                                    <apex:outputPanel rendered="{!NOT(appConfigWrapper.Is_Account_Sync_Completed)}">
+                                        It appears that you have just connected Breadwinner with your Xero organization.
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!AND(appConfigWrapper.Is_Account_Sync_Completed,NOT(appConfigWrapper.Is_Supplier_Sync_Completed),OR(appConfigWrapper.Sync_Suppliers_Bills,appConfigWrapper.Sync_POs), isAccountsPayableEnabled)}">
+                                        It appears that you have just Enabled Bill/PO.
+                                    </apex:outputPanel>                         
+                                    A background job to import your Xero Contacts is in progress, please try again later.
+                                </p>
+                                <p class="slds-text-body_small slds-m-top_medium">If you see this message for more than 10 minutes, please&nbsp;<apex:commandLink action="{!restartHistoricalAccountSync}" status="assign-action-status" oncomplete="CustomerMatchpopup();">restart the Xero Contacts import</apex:commandLink>.</p> 
+                            </apex:pageMessage>
+                            <apex:pageMessages rendered="{!NOT(ServiceUnavailable || AppUnauthorized)}"></apex:pageMessages>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel rendered="{!noRecordsPresentInXero }">
+                            <apex:pageMessage severity="INFO" strength="2" summary="<b>No Xero Contacts or already associated with the Salesforce Accounts<b/>" escape="false" >
+                                It appears that you have not setup Xero with any contacts / {!if(AND(validSynPurchaseContacts, appConfigWrapper.Sync_POs) ,' purchase order contacts',if(AND(validSynSupplierContacts, appConfigWrapper.Sync_Suppliers_Bills),' suppliers',' customers'))} or Xero Contacts has already been associated with the Salesforce Accounts during the previous matches.
+                                <br/>
+                                This is fine - you can create Xero Contacts from Salesforce Accounts. To do so, once Breadwinner is fully setup, click "New {!invoiceType}" from the {!invoiceType&'s'} related list on an Account or Opportunity. That will create a Xero Contact associated with the relevant Account.
+                            </apex:pageMessage>
+                            <apex:pageMessages rendered="{!NOT(ServiceUnavailable || AppUnauthorized)}"></apex:pageMessages>
+                        </apex:outputPanel>
+                    </div>
+                    
+                    <apex:outputPanel layout="block" id="AccountListPanel">
+                        <apex:pageMessage summary="" detail="{!exceptionMessage}" rendered="{!AND(NOT(ISBLANK(exceptionMessage)), LEN(exceptionMessage)>5, NOT(AppUnauthorized))}"  severity="ERROR" strength="3"/>
+
+                        <div class="slds-m-horizontal_medium">
+                            <apex:outputPanel rendered="{!AND(NOT(isAccountFetchComplete),XeroAcctIdList.size > 0)}" >
+                                <div class="slds-grid slds-wrap ">
+                                    <div class="slds-m-top_large slds-size_1-of-1 slds-medium-size_3-of-7 slds-large-size_6-of-13" style="text-align: center;"> 
+                                        <div class="slds-text-heading_medium">Company Details in Xero</div>
+                                    </div>
+                                    <div class="slds-m-top_large slds-siz_1-of-1 slds-medium-size_1-of-7 slds-large-size_1-of-13">
+                                        <div style="visibility: hidden;">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="slds-m-top_large slds-size_1-of-1 slds-medium-size_3-of-7 slds-large-size_6-of-13" style="text-align: center;"> 
+                                        <div class="slds-text-heading_medium">Company Details in Salesforce</div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                            <div class="slds-grid slds-wrap slds-m-top_small">
+                                <table width="100%" style="border-collapse: separate;">
+                                    <apex:repeat value="{!XeroAcctIdList}" var="refId" rendered="{!AND(NOT(isAccountFetchComplete),XeroAcctIdList.size > 0)}">
+                                        <apex:variable var="xeroContact" value="{!mapXeroAcctIdAndAccount[refId]}"/>
+                                        <apex:variable var="actionByDefault" value="{!mapXeroAcctIdAndDefaultAction[refId]}"/>
+                                        <apex:variable var="sfAccount" value="{!mapXeroRefIdAndSfAccount[refId]}"/>
+                                        
+                                        <tr>
+                                            <td valign="top" style="border-bottom:0px;" class=" slds-box slds-m-top_large slds-size_1-of-1 slds-medium-size_3-of-7 slds-large-size_6-of-13">
+                                                <div class="slds-m-horizontal_medium">
+                                                    <ul class="slds-has-dividers_bottom-space slds-m-top_x-small">
+                                                        <li class="slds-item"><span class="slds-text-heading_medium">{!xeroContact.Name}</span> </li>
+                                                    </ul>
+                                                    <apex:outputPanel layout="block">
+                                                        <div class="XeroAccountMatch">
+                                                            <table style="width:100%;">
+                                                                <tr><td style="width:15%;"><label class="slds-form-element__label" >Name:</label></td><td style="width:85%;">{!xeroContact.Name}</td></tr>
+                                                                
+                                                                <tr><td><label class="slds-form-element__label" >Phone:</label></td><td>{!xeroContact.Phone}</td></tr>
+                                                                
+                                                                <tr><td><label class="slds-form-element__label" >Website:</label></td><td>{!xeroContact.Website}</td></tr>
+                                                                
+                                                                <tr><td><label class="slds-form-element__label" >Email:</label></td><td>{!xeroContact.EmailAddress}</td></tr>
+                                                                
+                                                                <tr>
+                                                                    <td style="vertical-align: top;">
+                                                                        <label class="slds-form-element__label" >Address:</label>
+                                                                    </td>
+                                                                    <td valign="top">
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(xeroContact.BillingStreet))}">{!SUBSTITUTE(xeroContact.BillingStreet,'%%',', ')} </apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(xeroContact.BillingCity))}">{!xeroContact.BillingCity} </apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(xeroContact.BillingState))}">{!xeroContact.BillingState} </apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(xeroContact.BillingCountry))}">{!xeroContact.BillingCountry} </apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(xeroContact.BillingPostalCode))}">{!xeroContact.BillingPostalCode} </apex:outputPanel>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </td>
+                                            <td class="slds-m-top_large slds-size_1-of-1 slds-medium-size_1-of-7 slds-large-size_1-of-13">
+                                                <div class="arrowCell" width="10%">
+                                                    <span class="arrow">&#10140;</span>
+                                                </div>
+                                            </td>
+                                            <td valign="top" style="border-bottom:0px;" class="slds-box slds-m-top_large slds-size_1-of-1 slds-medium-size_3-of-7 slds-large-size_6-of-13">
+                                                <div class="slds-m-horizontal_medium">
+                                                    <apex:outputPanel layout="block" rendered="{!IF(actionByDefault == 'hardMatch', true, false)}">  
+                                                        <span class="slds-text-heading_label-normal">
+                                                            Previously Matched - No Action Needed
+                                                        </span>
+                                                        <ul class="slds-has-dividers_bottom-space">
+                                                            <li class="slds-item"><span class="slds-text-heading_medium">{!sfAccount.Name}</span></li>
+                                                        </ul>
+                                                        <apex:outputPanel styleClass="matchFound">
+                                                            <table style="width:100%;">
+                                                                <tr><td style="width:15%;"><label class="slds-form-element__label" >Name:</label></td><td style="width:85%;"> {!sfAccount.Name}</td></tr>
+                                                                <tr><td><label class="slds-form-element__label" >Phone:</label></td><td>{!sfAccount.Phone}</td></tr>
+                                                                <tr><td><label class="slds-form-element__label" >Website:</label></td><td>{!sfAccount.Website}</td></tr>
+                                                                <tr>
+                                                                    <td style="vertical-align: top;">
+                                                                        <label class="slds-form-element__label" >Address:</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(sfAccount.BillingStreet))}">{!sfAccount.BillingStreet}</apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(sfAccount.BillingCity))}">{!sfAccount.BillingCity}</apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(sfAccount.BillingState))}">{!sfAccount.BillingState}</apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(sfAccount.BillingCountry))}">{!sfAccount.BillingCountry}</apex:outputPanel>
+                                                                        <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(sfAccount.BillingPostalCode))}">{!sfAccount.BillingPostalCode}</apex:outputPanel>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    
+                                                    <!-- Other options -->
+                                                    <apex:outputPanel layout="block" rendered="{!IF(actionByDefault == 'hardMatch', false, true)}">
+                                                        
+                                                        <!-- Suggested Match -->
+                                                        <apex:outputPanel rendered="{!IF(actionByDefault == 'suggestedMatch', true, false)}">
+                                                            <div class="slds-m-top_xx-small">
+                                                                <table style="width: 100%;">
+                                                                    <tr>
+                                                                        <td style="width: 3%;padding-right: 10px;">
+                                                                            <input type="radio" name="{!refId}" id="{!refId}-sm" onChange="clearManualMatchOnSelectingOther('{!JSENCODE(refId)}'); pushToMapXeroAcctIdAndAction('{!JSENCODE(refId)}', 'suggestedMatch');"/>
+                                                                        </td>
+                                                                        <td style="width: 97%;">
+                                                                            <span class="slds-radio">
+                                                                                <span class=" slds-form-element__label" >Suggested Match to Existing Salesforce Account</span>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td>
+                                                                            <div class="slds-m-left_medium">
+                                                                                <apex:variable var="list" value="{!''}{!ContactsList2}" />
+                                                                                <!-- if Xero contact email is matched with any Account related contact -->
+                                                                                <apex:variable var="isContactEmailmatched" value="{!if(contains(list, refId),true,false)}" >
+                                                                                    <apex:variable var="list2" value="{!''}{!ContactsList2[refId][0]}" rendered="{!isContactEmailmatched}" />
+                                                                                    
+                                                                                    <ul class="slds-has-dividers_bottom-space" >
+                                                                                        <li class="slds-item"><span class="slds-text-heading_medium">{!if(isContactEmailmatched,AccountsNameInfo[list2].account.name,sfAccount.Name)}</span>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                    
+                                                                                    <apex:outputPanel styleClass="matchFound">
+                                                                                        <table style="width:100%;">
+                                                                                            <tr><td style="width:15%;"><label class="slds-form-element__label" >Name:</label></td><td style="width:85%;">{!if(isContactEmailmatched,AccountsNameInfo[list2].account.name,sfAccount.Name)}</td></tr>
+                                                                                            <tr><td><label class="slds-form-element__label" >Phone:</label></td><td>{!if(isContactEmailmatched,AccountsNameInfo[list2].account.phone,sfAccount.phone)}</td></tr>
+                                                                                            
+                                                                                            <tr><td><label class="slds-form-element__label" >Website:</label></td><td>{!if(isContactEmailmatched,AccountsNameInfo[list2].account.website,sfAccount.website)}</td></tr>
+                                                                                            
+                                                                                            <tr>
+                                                                                                <td style="vertical-align: top;">
+                                                                                                    <label class="slds-form-element__label" >Address:</label>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <apex:outputPanel layout="block" rendered="{!if(isContactEmailmatched,NOT(ISBLANK(AccountsNameInfo[list2].account.BillingStreet)),NOT(ISBLANK(sfAccount.BillingStreet)))}">{!if(isContactEmailmatched,AccountsNameInfo[list2].account.BillingStreet,sfAccount.BillingStreet)} </apex:outputPanel>
+                                                                                                    <apex:outputPanel layout="block" rendered="{!if(isContactEmailmatched,NOT(ISBLANK(AccountsNameInfo[list2].account.BillingCity)),NOT(ISBLANK(sfAccount.BillingCity)))}">{!if(isContactEmailmatched,AccountsNameInfo[list2].account.BillingCity,sfAccount.BillingCity)} </apex:outputPanel>
+                                                                                                    <apex:outputPanel layout="block" rendered="{!if(isContactEmailmatched,NOT(ISBLANK(AccountsNameInfo[list2].account.BillingState)),NOT(ISBLANK(sfAccount.BillingState)))}">{!if(isContactEmailmatched,AccountsNameInfo[list2].account.BillingState,sfAccount.BillingState)} </apex:outputPanel>
+                                                                                                    <apex:outputPanel layout="block" rendered="{!if(isContactEmailmatched,NOT(ISBLANK(AccountsNameInfo[list2].account.BillingCountry)),NOT(ISBLANK(sfAccount.BillingCountry)))}">{!if(isContactEmailmatched,AccountsNameInfo[list2].account.BillingCountry,sfAccount.BillingCountry)} </apex:outputPanel>
+                                                                                                    <apex:outputPanel layout="block" rendered="{!if(isContactEmailmatched,NOT(ISBLANK(AccountsNameInfo[list2].account.BillingPostalCode)),NOT(ISBLANK(sfAccount.BillingPostalCode)))}">{!if(isContactEmailmatched,AccountsNameInfo[list2].account.BillingPostalCode,sfAccount.BillingPostalCode)} </apex:outputPanel>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                        
+                                                                                        <!-- Mapping based on contact Email-->
+                                                                                        <apex:outputpanel styleclass="slds-m-top_medium" style="background-color: ivory;padding: 15px;"  layout="block" rendered="{!isContactEmailmatched}">
+                                                                                            <div class="slds-text-heading_small "> Matched SF Contacts</div>
+                                                                                            <apex:repeat value="{!ContactsList2[refId]}" var="sfContact2">
+                                                                                                <apex:variable var="tt" value="{!sfContact2}"/>
+                                                                                                <table class="slds-m-top_small">
+                                                                                                    <tr><td ><label class="slds-form-element__label" >Contact Name:</label></td><td> {!tt.Name}</td></tr>
+                                                                                                    <tr><td ><label class="slds-form-element__label" >Contact Email:</label></td><td> {!tt.Email}</td></tr>
+                                                                                                </table>
+                                                                                            </apex:repeat>
+                                                                                        </apex:outputpanel>
+                                                                                    </apex:outputPanel>
+                                                                                </apex:variable>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        
+                                                        <!-- Create New -->
+                                                        <div class="slds-m-top_xx-small">
+                                                            <div class="slds-clearfix" style="display: inline-flex">
+                                                                <div class="slds-float_left" style="margin-top: 3px">
+                                                                    <input type="radio" name="{!refId}" id="{!refId}-cn" onChange="clearManualMatchOnSelectingOther('{!JSENCODE(refId)}'); pushToMapXeroAcctIdAndAction('{!JSENCODE(refId)}', 'createNew');"/>
+                                                                </div>
+                                                                <div class="slds-float_left">
+                                                                    <span class="slds-radio">
+                                                                        <span class=" slds-form-element__label slds-m-left_small" >Create New Salesforce Account with details from Xero Contact</span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <apex:outputPanel id="recordTypePanel" rendered="{!areRecordTypesEnabled}">
+                                                            <div class="lookup">
+                                                                <div class="slds-form-element slds-m-left_medium">
+                                                                    <label class="slds-form-element__label" >Choose a Record Type</label>
+                                                                    <div class="slds-form-element__control">
+                                                                        <div class="slds-select_container" style="width:50%">
+                                                                            <apex:selectList value="{!mapXeroRefIdManualMatchLookupSelector[refId].Currency_Code__c}" size="1" styleClass="slds-select">
+                                                                                <apex:selectOptions value="{!recordTypesAvailable}"/>
+                                                                            </apex:selectList>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> 
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        
+                                                        <!-- Manual Match -->
+                                                        <div class="slds-m-top_xx-small">
+                                                            <div class="slds-clearfix" style="display: inline-flex">
+                                                                <div class="slds-float_left" style="margin-top: 3px">
+                                                                    <input type="radio" name="{!refId}" id="{!refId}-mm" onChange="pushToMapXeroAcctIdAndAction('{!JSENCODE(refId)}', 'manualMatch');"/>
+                                                                </div>
+                                                                <div class="slds-float_left">
+                                                                    <span class="slds-radio">
+                                                                        <span class=" slds-form-element__label slds-m-left_small" >Manual Match to an existing Salesforce Account you select</span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <apex:outputPanel id="lookupPanel">
+                                                            <apex:actionRegion >
+                                                                <div class="lookup" id="{!refId}-mm-lookup" style="margin-left: 2.25rem;">
+                                                                    <apex:inputField value="{!mapXeroRefIdManualMatchLookupSelector[refId].Account__c}" id="accountLookup">
+                                                                        <apex:actionSupport event="onchange" oncomplete="setLookupPicklist();addallfuncs();checkRadioButtonForManualMatch('{!JSENCODE(refId)}-mm'); pushToMapXeroAcctIdAndAction('{!JSENCODE(refId)}', 'manualMatch');" reRender="lookupPanel"/>
+                                                                    </apex:inputField>
+                                                                </div>
+                                                            </apex:actionRegion>
+                                                        </apex:outputPanel>
+                                                        
+                                                        <!-- Do Not Import this Xero Contact -->
+                                                        <div class="slds-m-top_xx-small">
+                                                            <div class="slds-clearfix" style="display: inline-flex">
+                                                                <div class="slds-float_left" style="margin-top: 3px">
+                                                                    <input type="radio" name="{!refId}" id="{!refId}-dn" onChange="clearManualMatchOnSelectingOther('{!JSENCODE(refId)}'); pushToMapXeroAcctIdAndAction('{!JSENCODE(refId)}', 'doNotImport');"/>
+                                                                </div>
+                                                                <div class="slds-float_left">
+                                                                    <span class="slds-radio">
+                                                                        <span class=" slds-form-element__label slds-m-left_small" >Do Not Import {!invoiceType}s for this Xero Contact</span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <apex:outputPanel layout="block" styleClass="slds-m-horizontal_medium errorM3" rendered="{!xeroContact.isUnableToCreateAccount}">
+                                                            <p>Breadwinner was unable to create this Account </p>
+                                                            <p>{!xeroContact.errorMessage} </p>  
+                                                        </apex:outputPanel>
+                                                        
+                                                    </apex:outputPanel>
+                                                    <!-- Other options END-->
+                                                    
+                                                    <script>
+                                                    if('{!JSENCODE(actionByDefault)}' == 'createNew')
+                                                    {
+                                                        mapXeroAcctIdAndAction['{!JSENCODE(refId)}'] =  'createNew';
+                                                        document.getElementById('{!JSENCODE(refId)}-cn').checked = true;
+                                                    }
+                                                    else if('{!JSENCODE(actionByDefault)}' == 'suggestedMatch')
+                                                    {
+                                                        mapXeroAcctIdAndAction['{!JSENCODE(refId)}'] =  'suggestedMatch';
+                                                        document.getElementById('{!JSENCODE(refId)}-sm').checked = true;
+                                                    }
+                                                    else if('{!JSENCODE(actionByDefault)}' == 'doNotImport')
+                                                    {
+                                                        mapXeroAcctIdAndAction['{!JSENCODE(refId)}'] =  'doNotImport';
+                                                        document.getElementById('{!JSENCODE(refId)}-dn').checked = true;
+                                                        
+                                                    }
+                                                    else if('{!JSENCODE(actionByDefault)}' == 'hardMatch')
+                                                    {
+                                                        mapXeroAcctIdAndAction['{!JSENCODE(refId)}'] = 'hardMatch';
+                                                    }
+                                                    //console.log('hi : ' + mapXeroAcctIdAndAction['{!JSENCODE(refId)}']);
+                                                    </script>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="slds-box" style="border-top:0px;">
+                                                <div class="slds-m-top_small">
+                                                    <img src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/xero_logo_30px.png')}"/> &nbsp; Xero Contact
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                            <td class="slds-box" style="border-top:0px;">
+                                                <div class="slds-m-top_small">
+                                                    <img src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/Images/sf_logo_30px.png')}"/> &nbsp; Salesforce Account
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="slds-m-top_medium slds-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1">
+                                                    <apex:outputPanel styleClass="slds-m-horizontal_medium" layout="block">
+                                                        <apex:outputPanel style="font-size:14px;" rendered="{!AND(isThereDataQualityIssue, IF(actionByDefault == 'hardMatch', false, true), OR(AND(NOT(ISBLANK(xeroContact.BillingStreet)),LEN(xeroContact.BillingStreet)>255),AND(NOT(ISBLANK(xeroContact.BillingCity)),LEN(xeroContact.BillingCity)>40),AND(NOT(ISBLANK(xeroContact.BillingState)),LEN(xeroContact.BillingState)>20),AND(NOT(ISBLANK(xeroContact.BillingPostalCode)),LEN(xeroContact.BillingPostalCode)>20),AND(NOT(ISBLANK(xeroContact.BillingCountry)),LEN(xeroContact.BillingCountry)>40)))}">
+                                                            <div class="warningM3" style="display: block;">
+                                                                <b> Warning - Potential Data Quality Issue </b>
+                                                                <p>Salesforce Address Fields have field length limitations, and this address exceeds them. If you are Matching this Xero Company to a Salesforce Account, either by suggested match or manual match, then this is not an issue. However, if you are creating a Salesforce Account from this Xero record, please be aware that one or more values are too long, and when being imported into Salesforce, those fields will be truncated.
+                                                                    <br/>Alternatively, you may edit the record in Xero and reduce the field length, and then refresh this page.</p>
+                                                                <p>
+                                                                    <apex:outputLabel rendered="{!AND(NOT(ISBLANK(xeroContact.BillingStreet)),LEN(xeroContact.BillingStreet)>255)}"> <b>Street:</b> "{!xeroContact.BillingStreet}" is {!LEN(xeroContact.BillingStreet)} characters long, but Salesforce Street fields are only 255 characters long.<br/> If you create this record, the Street field will be imported as "{!LEFT(xeroContact.BillingStreet , 255)}".<br/><br/> </apex:outputLabel>
+                                                                    <apex:outputLabel rendered="{!AND(NOT(ISBLANK(xeroContact.BillingCity)),LEN(xeroContact.BillingCity)>40)}" > <b>City: </b>"{!xeroContact.BillingCity}" is {!LEN(xeroContact.BillingCity)} characters long, but Salesforce City fields are only 40 characters long.<br/> If you create this record, the City field will be imported as "{!LEFT(xeroContact.BillingCity, 40)}".<br/> <br/></apex:outputLabel>
+                                                                    <apex:outputLabel rendered="{!AND(NOT(ISBLANK(xeroContact.BillingState)),LEN(xeroContact.BillingState)>20)}"> <b>State:</b> "{!xeroContact.BillingState}" is {!LEN(xeroContact.BillingState)} characters long, but Salesforce State fields are only 20 characters long.<br/> If you create this record, the State field will be imported as "{!LEFT(xeroContact.BillingState , 20)}". <br/><br/></apex:outputLabel>
+                                                                    <apex:outputLabel rendered="{!AND(NOT(ISBLANK(xeroContact.BillingPostalCode)),LEN(xeroContact.BillingPostalCode)>20)}"> <b>PostalCode:</b> "{!xeroContact.BillingPostalCode}" is {!LEN(xeroContact.BillingPostalCode)} characters long, but Salesforce PostalCode fields are only 20 characters long. <br/>If you create this record, the PostalCode field will be imported as "{!LEFT(xeroContact.BillingPostalCode, 20)}". <br/><br/></apex:outputLabel>
+                                                                    <apex:outputLabel rendered="{!AND(NOT(ISBLANK(xeroContact.BillingCountry)),LEN(xeroContact.BillingCountry)>40)}"> <b>Country:</b> "{!xeroContact.BillingCountry}" is {!LEN(xeroContact.BillingCountry)} characters long, but Salesforce Country fields are only 20 characters long. <br/>If you create this record, the Country field will be imported as "{!LEFT(xeroContact.BillingCountry, 40)}". <br/></apex:outputLabel>
+                                                                </p>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </apex:repeat>
+                                </table>
+                            </div>
+                            <!-- Adding SLDS Modal for popup box -->
+                                <div >
+                                    <div class="slds-modal slds-modal_small" aria-hidden="false" role="dialog" id="showModalAftercompletion">
+                                        <div class="slds-modal__container">
+                                            <div class="slds-modal__header">
+                                                <h2 class="slds-text-heading_medium">Account match completed successfully</h2>
+                                            </div>
+                                            <div class="slds-modal__content slds-p-around_medium">
+                                                <p>Breadwinner has successfully matched all of your Xero {!if(AND(validSynPurchaseContacts, appConfigWrapper.Sync_POs) ,'Purchase Order Contacts',if(AND(validSynSupplierContacts, appConfigWrapper.Sync_Suppliers_Bills),'Suppliers','Customers'))} with Salesforce Accounts.</p>
+                                                <div align="right" style="margin-top: 1rem;">
+                                                    <apex:commandLink id="okaybutton" styleClass="btns slds-button slds-button_brand" value="OK" onclick="redirectToBWPage();" rendered="{!NOT(isBackgroundjobRunning)}" reRender="nothing"/>
+                                                    <apex:commandLink id="okaybutton1" styleClass="btns slds-button slds-button_brand" value="OK" onclick="cancelDisc();" rendered="{!isBackgroundjobRunning}" reRender="nothing"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-backdrop" id="backdrop"></div>
+                                </div>
+                            <apex:actionFunction name="redirectToBWPage" action="{!redirectToBreadwinnerPage}" reRender="nothing" oncomplete=""/>    
+                            <!-- End of Modal -->
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel id="infoblock" layout="block" style="font-size:14px; text-align:center;" rendered="{!NOT(OR(isAccountFetchComplete, NOT(canRunAccountMatch),XeroAcctIdList.size == 0))}">
+                        <div id="info" style="color:red;"></div><br/>
+                    </apex:outputPanel>
+                    <script type="text/javascript">
+                    function UpdateInfo(){
+                        try {
+                            console.log('UpdateInfo');
+                            var newAccounts = 0;
+                            var matchAccounts = 0;
+                            var doNotImportAccounts = 0;
+                            for(key in mapXeroAcctIdAndAction){
+                                var type = mapXeroAcctIdAndAction[key];
+                                if(type=='createNew'){
+                                    newAccounts++;
+                                }
+                                else if(type=='doNotImport'){
+                                    doNotImportAccounts++;
+                                }
+                                else if(type!='hardMatch'){
+                                    matchAccounts++;
+                                }
+                            }
+                            var infoMessage = document.getElementById('info');
+                            if(newAccounts>0 || matchAccounts >0 || doNotImportAccounts >0){
+                                var infoMessageText = 'Clicking Next will create '+newAccounts+' new Salesforce '+(newAccounts >1 ? 'Accounts from Xero Contacts' : 'Account from Xero Contact') +', and will match '+matchAccounts+(matchAccounts >1 ?  ' Xero Contacts to existing Salesforce Accounts' : ' Xero Contact to existing Salesforce Account');
+                                if(doNotImportAccounts > 0){
+                                    infoMessageText = infoMessageText+', and will not associate '+doNotImportAccounts+(doNotImportAccounts >1 ? ' Xero Contacts to Salesforce Accounts' : ' Xero Contact to any Salesforce Account');
+                                }
+                                infoMessage.innerHTML = infoMessageText+'.';
+                            }
+                            else{
+                                if({!Not(AppUnauthorized||noSuccessWithPagingAPI || noRecordsPresentInXero || isBackgroundjobRunning)})
+                                    infoMessage.innerHTML  = 'All of the Xero Contacts on this page are already matched to Salesforce Accounts. Please click Next.';
+                            }
+                        }
+                        catch(err) {
+                            console.log('UpdateInfo Error:'+err.message);
+                        }
+                    }
+                    UpdateInfo();
+                    </script>
+                    <div align="center" class="slds-m-bottom_large">
+                        <apex:commandButton id="theNextButton" value="Next" status="assign-action-status" styleClass="slds-button slds-button_brand" disabled="{!OR( noSuccessWithPagingAPI, isAccountFetchComplete, NOT(canRunAccountMatch))}" oncomplete="reRenderLookUp();addallfuncs();" rendered="{!AND(NOT(AppUnauthorized),NOT(isBackgroundjobRunning))}"/>
+                        <apex:commandButton id="theRefreshButton" value="Refresh" styleClass="slds-button slds-button_brand" rendered="{!isBackgroundjobRunning}" action="{!refreshThisPage}"/>
+                        <apex:inputHidden id="jsonOfActionsId" value="{!jsonUserSelectedActions}"/>
+                        
+                        <apex:actionFunction name="finalSubmitANDNext" action="{!submitAndNext}" reRender="AccountListPanel,AccountFetchCompleteScript, mapInitDefaultActionScript, pageMessagesId,accountSyncText,pm" status="assign-action-status" oncomplete="accountFetchComplete();UpdateInfo();addallfuncs();"/>
+                        <apex:actionFunction name="reRenderLookUp" status="assign-action-status" oncomplete="checkErrorMsg();addallfuncs();"/> 
+                    </div>
+                </apex:form>
+            </div>
+            <apex:outputPanel id="AccountFetchCompleteScript">
+                <script>   
+                function cancelDisc(){
+                    $('#backdrop').removeClass('slds-backdrop_open');
+                    $('#showModalAftercompletion').removeClass('slds-fade-in-open');
+                } 
+                function CustomerMatchpopup(){
+                    $("#showModalAftercompletion h2").text('Restart Xero Contact import ');
+                    $("#showModalAftercompletion p").text('A background job to import your Xero Contacts was successfully restarted, please refresh this page after a while.');
+                    $('#backdrop').addClass('slds-backdrop_open');
+                    $('#showModalAftercompletion').addClass('slds-fade-in-open');
+                }    
+                function accountFetchComplete()
+                {
+                    scrollWin();
+                    if({!isAccountFetchComplete} || {!noRecordsPresentInXero})
+                    {
+                        var elementHeaderText = document.getElementById('accountSyncText');
+                        elementHeaderText.style.display = 'none';
+
+                        var elementPageHeader = document.getElementById('thePageHeader');
+                        elementPageHeader.style.display = 'none';
+
+                        var elementInfo = document.getElementById('info');
+                        if(elementInfo){elementInfo.style.display = 'none';}
+
+                        var elementNextButton = document.getElementById('{!JSENCODE($Component.formId.theNextButton)}');
+                        elementNextButton.style.display = 'none';
+
+                        //alert('Breadwinner will now import all of your {!invoiceType&"s"} from Xero.\n\nIt imports all {!invoiceType&"s"} already created, and checks every 15 minutes for new or modified {!invoiceType&"s"}.');
+                        $('#backdrop').addClass('slds-backdrop_open');
+                        $('#showModalAftercompletion').addClass('slds-fade-in-open');
+
+                        //window.location.href = '{!URLFOR($Page.Breadwinner)}';
+                    }
+                    else
+                        removeAltAttribute();
+                }
+
+                 
+                </script>
+            </apex:outputPanel>
+        </body>
+    </html>
+</apex:page>

@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <fields>
+        <label><!-- Module --></label>
+        <name>Module__c</name>
+        <relationshipLabel><!-- Epics --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Parent Epic Name --></label>
+        <name>Parent_Epic_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent Epic --></label>
+        <name>Parent_Epic__c</name>
+        <relationshipLabel><!-- Epics --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Priority --></label>
+        <name>Priority__c</name>
+    </fields>
+    <fields>
+        <label><!-- Project Execution Order --></label>
+        <name>Project_Execution_Order__c</name>
+    </fields>
+    <fields>
+        <help><!-- Small 1 week or less /
+Medium 2 weeks or less /
+Large 4 weeks or less /
+XLarge +4 weeks /
+XXL +12 weeks (?) --></help>
+        <label><!-- Size --></label>
+        <name>Size__c</name>
+        <picklistValues>
+            <masterLabel>L</masterLabel>
+            <translation><!-- L --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>M</masterLabel>
+            <translation><!-- M --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>S</masterLabel>
+            <translation><!-- S --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>XL</masterLabel>
+            <translation><!-- XL --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>XXL</masterLabel>
+            <translation><!-- XXL --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Status Notes --></label>
+        <name>Status_Notes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Theme --></label>
+        <name>Theme__c</name>
+        <relationshipLabel><!-- Epics --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Time Spent (hours) --></label>
+        <name>Time_Spent_hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- Vendor Contact Name --></label>
+        <name>Vendor_Contact_Name__c</name>
+        <relationshipLabel><!-- Epics --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Application --></label>
         <name>copado__Application__c</name>
         <relationshipLabel><!-- Epics --></relationshipLabel>
@@ -54,4 +127,50 @@
         <label><!-- Technical Assumptions --></label>
         <name>copado__Technical_Assumptions__c</name>
     </fields>
+    <fields>
+        <label><!-- Completion % --></label>
+        <name>copadometrics__Completion__c</name>
+    </fields>
+    <layouts>
+        <layout>Copado Work Management Epic</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Epic Details --></label>
+            <section>Epic Details</section>
+        </sections>
+        <sections>
+            <label><!-- Epic details --></label>
+            <section>Epic details</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Epic Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Epic Details --></label>
+            <section>Epic Details</section>
+        </sections>
+        <sections>
+            <label><!-- Epic details --></label>
+            <section>Epic details</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Send to Slack --></label>
+        <name>Send_to_Slack</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Slack Alerts --></label>
+        <name>Slack_Alerts</name>
+    </quickActions>
+    <recordTypes>
+        <label><!-- Copado Work Management Epic --></label>
+        <name>Copado_Work_Management_Epic</name>
+    </recordTypes>
 </CustomObjectTranslation>

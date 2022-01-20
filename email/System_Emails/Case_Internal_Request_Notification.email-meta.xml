@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>This email template will be used to notify internal users of a new request</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Copado_Letterhead</letterhead>
+    <name>Case Internal Request Notification</name>
+    <style>freeForm</style>
+    <subject>New Case Request Has Been Created</subject>
+    <textOnly>Case Number: {!Case.CaseNumber}
+Case Record Type: {!Case.RecordType}
+Case Owner: {!Case.OwnerFullName}
+Case Type: {!Case.Type}
+Priority: {!Case.Priority}
+
+{!Case.Subject}
+
+{!Case.Description}
+
+Link: {!Case.Link}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

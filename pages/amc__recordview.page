@@ -1,0 +1,15 @@
+<apex:page showHeader="false">
+<apex:includeLightning />
+    <div id="lightning"/>
+    <script>
+        $Lightning.use("amc:RecordView", function() {
+          $Lightning.createComponent("force:recordView",
+          {
+          'recordId' : '{!$CurrentPage.parameters.id}'
+          },
+          "lightning",
+          function(cmp) {
+          });
+        });
+    </script>
+</apex:page>

@@ -1,0 +1,117 @@
+<apex:page showHeader="true" standardStylesheets="true" sidebar="false">
+	<style type="text/css">
+	body #AppBodyHeader {
+	display: none;
+	}
+	</style>
+  <apex:outputPanel rendered="{!IF(JSINHTMLENCODE($CurrentPage.parameters.isCS360)=='true',true,false)}">
+	<style type="text/css">
+		
+		/*.modal-header {
+			background: #f0f1f5 !important;
+			border: 0 none !important;
+			border-radius: 0 !important;
+			color: #000000;
+			position: relative;
+			height: auto !important;
+			text-align: left !important;
+		}
+		.modal-header h2 {
+			color: #333333 !important;
+			padding: 0 !important;
+			font-size: 12px !important;
+		}
+		.modal-footer {
+			padding: 10px 0px 5px 0px;
+			text-align: center !important;
+			background: #FFFFFF !important;
+			border-bottom-left-radius: 0px !important;
+			border-bottom-right-radius: 0px !important;
+			border-top: 0px solid #DDDDDD !important;
+		}
+		.modal-dialog-view div.modal div.modal-inner {
+			background: #FFFFFF !important;
+			border-radius: 0px !important;
+		}
+		a.buttonClass {
+			border-radius: 3px !important;
+			box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+			display: inline-block;
+			outline: medium none;
+			text-align: center;
+			text-decoration: none;
+			padding: 5px 16px !important;
+			font-size: 14px;
+			font-weight: normal;
+			line-height: 1.428571429;
+			white-space: nowrap;
+			vertical-align: middle;
+			border: 1px solid rgba(0, 0, 0, 0) !important;
+			margin-right: 7px;
+			color: #FFFFFF !important;
+		}
+		.jBaraTransactionCompSaveBtn {
+		background-color: #46b789 !important;
+		border: 1px solid #46b789 !important;
+	}
+	.jBaraTransactionCompSaveBtn:hover {
+		color: #fff;
+		background-color: #34a474 !important;
+		border: 1px solid #34a474 !important;
+		text-decoration: none !important;
+	}
+	.jBaraTransactionCompCancelBtn {
+		background-color: #acacac !important;
+		border: 1px solid #acacac !important;
+	}
+	.jBaraTransactionCompCancelBtn:hover {
+		color: #333333;
+	    background-color: #bfbdbe !important;
+		border: 1px solid #bfbdbe !important;
+		text-decoration: none !important;
+	}*/
+		
+	</style>  		
+  </apex:outputPanel>
+  <script type="text/javascript">
+		function callBackAfterTransactionFormSave(){
+			var parent = '{!JSINHTMLENCODE($CurrentPage.parameters.parent)}';
+			var is360 = '{!JSINHTMLENCODE($CurrentPage.parameters.isCS360)}';
+			
+			if(is360 === 'false') {
+				window.parent.postMessage({
+					callback:'{!JSENCODE($CurrentPage.parameters.callbackAfterSave)}',
+					message:"callBackAfterSave"
+				},parent);
+			}
+			else {
+				window.parent.{!JSENCODE($CurrentPage.parameters.callbackAfterSave)}();
+			}
+		}
+		function callBackAfterTransactionFormCancel()	{
+			var parent = '{!JSINHTMLENCODE($CurrentPage.parameters.parent)}';
+			var is360 = '{!JSINHTMLENCODE($CurrentPage.parameters.isCS360)}';
+			if(is360 === 'false') {
+				window.parent.postMessage({
+					callback:'{!JSENCODE($CurrentPage.parameters.callBackAfterCancel)}',
+					message:"callBackAfterCancel"
+				},parent);
+			}
+			else {
+				window.parent.{!JSENCODE($CurrentPage.parameters.callBackAfterCancel)}();
+			} 
+		}
+	</script>
+	
+	<c:TransactionForm customerId="{!JSINHTMLENCODE($CurrentPage.parameters.customerId)}"
+								 opportunityId=""
+								 transactionId="{!JSINHTMLENCODE($CurrentPage.parameters.transactionId)}"
+                               	 orderType="{!JSINHTMLENCODE($CurrentPage.parameters.orderType)}"
+                    			 callBackAfterSave="callBackAfterTransactionFormSave"
+                                 callBackAfterCancel="callBackAfterTransactionFormCancel"
+                                 />
+	
+
+	
+</apex:page>

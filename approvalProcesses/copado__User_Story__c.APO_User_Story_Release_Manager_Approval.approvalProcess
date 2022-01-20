@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>copado__User_Story_Title__c</field>
+        <field>Owner</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>pfernandez@copa.do</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <label>Approval to Release Manager</label>
+        <name>Approval_to_Release_Manager</name>
+    </approvalStep>
+    <emailTemplate>Change_Management/US_Approval_Request</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <criteriaItems>
+            <field>copado__User_Story__c.RecordType</field>
+            <operation>equals</operation>
+            <value>APO User Story</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>copado__User_Story__c.copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>New</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Set_Promote_and_Deploy_to_TRUE</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>User_Story_Approved_Alert</name>
+            <type>Alert</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>User_Story_Rejected_Alert</name>
+            <type>Alert</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Update_Status_to_QA_DEV_Completed</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>APO User Story Release Manager Approval</label>
+    <processOrder>3</processOrder>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>false</showApprovalHistory>
+</ApprovalProcess>

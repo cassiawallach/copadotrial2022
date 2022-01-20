@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>false</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Owner</field>
+        <field>SBQQ__Account__c</field>
+        <field>SBQQ__Opportunity2__c</field>
+        <field>SBQQ__CustomerDiscount__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <type>userHierarchyField</type>
+            </approver>
+        </assignedApprover>
+        <description>New Quotes would be approved by DealDesk</description>
+        <entryCriteria>
+            <formula>Text(SBQQ__Opportunity2__r.Opportunity_Region__c) = &apos;Select&apos;</formula>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Deal Desk approval if Opp Region is Select</label>
+        <name>Deal_Desk_approval_if_Opp_Region_is_Select</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>mhill@copa.do</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <description>New Quotes would be approved by DealDesk</description>
+        <entryCriteria>
+            <formula>Text(SBQQ__Opportunity2__r.Opportunity_Region__c) = &apos;EMEA&apos;</formula>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Deal Desk approval if Opp Region is EMEA</label>
+        <name>Deal_Desk_approval_if_Opp_Region_is_EMEA</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>krobinson@copa.do</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <description>New Quotes would be approved by DealDesk</description>
+        <entryCriteria>
+            <formula>Text(SBQQ__Opportunity2__r.Opportunity_Region__c) = &apos;Summit&apos;</formula>
+        </entryCriteria>
+        <label>Deal Desk approval if Opp Region is Summit</label>
+        <name>Deal_Desk_approval_if_Opp_Region_is_Summit</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>This is a multi step approval process and based on Opportunity Region, it will be routed to submitter&apos;s for approval</description>
+    <emailTemplate>unfiled$public/Confirmation_of_sending_a_quote_to_approve</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <criteriaItems>
+            <field>SBQQ__Quote__c.SBQQ__Type__c</field>
+            <operation>contains</operation>
+            <value>Quote</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Approval_Status_to_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Request_Approved</name>
+            <type>Alert</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Approval_Status_to_Draft</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Request_Rejected</name>
+            <type>Alert</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Approval_Status_In_Review</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>New Quote Approval Process</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>3</processOrder>
+    <recallActions>
+        <action>
+            <name>Back_to_Draft</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

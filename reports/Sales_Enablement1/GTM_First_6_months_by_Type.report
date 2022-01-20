@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>if(and(Opportunity.ARR__c.CONVERT:SUM&gt;=100000,Opportunity.ARR__c.CONVERT:SUM&lt;100001),CDF1:SUM,null)</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Time to 100k</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Opportunity.ARR__c.CONVERT:SUM
+
++
+
+if(not ISBLANK(prevgroupval(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,1)),PREVGROUPVAL(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,1),0)
+
++
+
+if(not ISBLANK(prevgroupval(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,2)),PREVGROUPVAL(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,2),0)
+
++
+
+if(not ISBLANK(prevgroupval(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,3)),PREVGROUPVAL(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,3),0)
+
++
+
+if(not ISBLANK(prevgroupval(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,4)),PREVGROUPVAL(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,4),0)
+
++
+
+if(not ISBLANK(prevgroupval(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,5)),PREVGROUPVAL(Opportunity.ARR__c.CONVERT:SUM,Opportunity.Id,5),0)</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA2</developerName>
+        <downGroupingContext>Opportunity$Id</downGroupingContext>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Cumulative Opportunity Amount</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_57884985</developerName>
+        <masterLabel>Opp Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity$StageName</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Pipeline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Prospecting</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trial</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Proposition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Demo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation/Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Procurement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Best Case</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation CS</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Commit</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Work at Risk</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Scope Validation</sourceValue>
+            </sourceValues>
+            <value>Open</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <value>Lost</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Partially Paid</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <value>Won</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>Opportunity$ARR__c.CONVERT</column>
+        </chartSummaries>
+        <chartType>VerticalColumnStacked</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>Opportunity$Owner</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>Opportunity$Type</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>ARR after 6 months</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner.CreatedDate</field>
+    </columns>
+    <columns>
+        <field>Opportunity$CreatedDate</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner.Manager</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Opportunity$ARR__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity$IsWon</field>
+    </columns>
+    <columns>
+        <field>Opportunity$StageName</field>
+    </columns>
+    <columns>
+        <field>Opportunity$CloseDate</field>
+    </columns>
+    <columns>
+        <field>BucketField_57884985</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>(datevalue(Opportunity.CreatedDate)-datevalue(Opportunity.Owner.CreatedDate))/30.417</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Time to Open (months)</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Time to Open New Customer &amp; Add-on Opps</description>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity$Owner.Manager</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Kevin Robinson,Anish Patel,Matt Hill,Russell,Zachary,Stan,Phil</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer,Add-on</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$StageName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Marketing Qualification,Pipeline,Discovery,Prospecting,Solution Alignment,Trial,Solution Validation,Value Proposition,Demo,Formal Proposal,Negotiation/Review,Procurement,Negotiation,Signed Contract Received,Closed Won,Closed Suspend,Closed Lost,Partially Paid,Fully Paid,Best Case,Negotiation CS,Commit,Work at Risk,Scope Validation</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessOrEqual</operator>
+            <value>6</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Chris Lansing,Bruce Glenn,Chris O&apos;Connor,Matt Doerfler,Steve Harris,Jonathan Shaw,Josh Hobbs,Thomas O&apos;Malley</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity$Owner</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity$Id</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity$Type</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>GTM - First 6 months - by Type</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunities_with_User_Data__c</reportType>
+    <roleHierarchyFilter>System_Administrator</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$Owner.CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

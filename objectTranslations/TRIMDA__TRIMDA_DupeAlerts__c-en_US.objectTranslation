@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Advanced and Custom Setting, -is only to be used for Custom Matching Processes, where you have specific instructions from DataTrim. --></help>
+        <label><!-- Advanced Parameters --></label>
+        <name>TRIMDA__ADVConfiguration__c</name>
+    </fields>
+    <fields>
+        <label><!-- Active --></label>
+        <name>TRIMDA__Active__c</name>
+    </fields>
+    <fields>
+        <label><!-- Alert Status --></label>
+        <name>TRIMDA__Alert_Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Dupe Alert Type --></label>
+        <name>TRIMDA__Dupe_Alert_Type__c</name>
+        <picklistValues>
+            <masterLabel>Acc+Contact-Acc+Contact</masterLabel>
+            <translation><!-- Acc+Contact-Acc+Contact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Account-Account</masterLabel>
+            <translation><!-- Account-Account --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contact-Contact</masterLabel>
+            <translation><!-- Contact-Contact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lead-Account</masterLabel>
+            <translation><!-- Lead-Account --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lead-Contact</masterLabel>
+            <translation><!-- Lead-Contact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lead-Lead</masterLabel>
+            <translation><!-- Lead-Lead --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Leave Blank to match against ALL records.
+Filter statement excluding the  &quot;WHERE&quot; e.g. &quot;BillingCountry = &apos;United Kingdom&apos; and Phone &lt;&gt; &apos;&apos;&quot; or &quot;Region__c = &apos;EMEA&apos;&quot; or &quot;LastModifiedDate = LAST_N_DAYS:15&quot; or &quot;LastModifiedDate = LAST_90_DAYS&quot; --></help>
+        <label><!-- Filter: Master Data Set --></label>
+        <name>TRIMDA__FilterMaster__c</name>
+    </fields>
+    <fields>
+        <help><!-- Filter statement excluding the  &quot;WHERE&quot; e.g. &quot;BillingCountry = &apos;United Kingdom&apos; and Phone &lt;&gt; &apos;&apos;&quot; or &quot;Region__c = &apos;EMEA&apos;&quot; or &quot;LastModifiedDate = LAST_N_DAYS:15&quot; or &quot;LastModifiedDate = LAST_90_DAYS&quot; --></help>
+        <label><!-- Filter: Secondary Data Set --></label>
+        <name>TRIMDA__FilterSecondary__c</name>
+    </fields>
+    <fields>
+        <label><!-- Include New and Changed data since --></label>
+        <name>TRIMDA__Last_Run_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Run Result --></label>
+        <name>TRIMDA__Last_Run_Result__c</name>
+    </fields>
+    <fields>
+        <label><!-- License No --></label>
+        <name>TRIMDA__LicenseNo__c</name>
+    </fields>
+    <fields>
+        <label><!-- License Type --></label>
+        <name>TRIMDA__License_Type__c</name>
+        <picklistValues>
+            <masterLabel>Basic</masterLabel>
+            <translation><!-- Basic --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Custom</masterLabel>
+            <translation><!-- Custom --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enterprise</masterLabel>
+            <translation><!-- Enterprise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Standard</masterLabel>
+            <translation><!-- Standard --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Trial</masterLabel>
+            <translation><!-- Trial --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Run deduplication on secondary dataset only --></help>
+        <label><!-- Master = Secondary --></label>
+        <name>TRIMDA__MasterEqualsSecondary__c</name>
+    </fields>
+    <fields>
+        <label><!-- Match Level --></label>
+        <name>TRIMDA__Match_Binding__c</name>
+        <picklistValues>
+            <masterLabel>Exact</masterLabel>
+            <translation><!-- Exact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Loose</masterLabel>
+            <translation><!-- Loose --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SuperTight</masterLabel>
+            <translation><!-- SuperTight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tight</masterLabel>
+            <translation><!-- Tight --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Match Custom Code --></label>
+        <name>TRIMDA__Match_Custom_Code__c</name>
+    </fields>
+    <fields>
+        <help><!-- The contents of this field will be displayed on the review screen, for Lead-Contact and Leac-Account Alerts, remember to select the corresponding Lead field in the ReviewField (Lead) field --></help>
+        <label><!-- Add. Review Field --></label>
+        <name>TRIMDA__ReviewField1__c</name>
+        <picklistValues>
+            <masterLabel>a.BillingState</masterLabel>
+            <translation><!-- a.BillingState --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.Rating</masterLabel>
+            <translation><!-- a.Rating --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.RecordTypeId</masterLabel>
+            <translation><!-- a.RecordTypeId --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.Site</masterLabel>
+            <translation><!-- a.Site --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.Type</masterLabel>
+            <translation><!-- a.Type --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>c.Email</masterLabel>
+            <translation><!-- c.Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>c.LeadSource</masterLabel>
+            <translation><!-- c.LeadSource --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>c.MailingState</masterLabel>
+            <translation><!-- c.MailingState --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.Email</masterLabel>
+            <translation><!-- l.Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.LeadSource</masterLabel>
+            <translation><!-- l.LeadSource --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.Rating</masterLabel>
+            <translation><!-- l.Rating --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.RecordTypeId</masterLabel>
+            <translation><!-- l.RecordTypeId --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.State</masterLabel>
+            <translation><!-- l.State --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.Status</masterLabel>
+            <translation><!-- l.Status --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- For Lead-Contact and Leac-Account Alerts he contents of this field will be displayed on the review screen --></help>
+        <label><!-- Add. Review Field (Lead) --></label>
+        <name>TRIMDA__ReviewFieldX__c</name>
+        <picklistValues>
+            <masterLabel>a.AccountNumber</masterLabel>
+            <translation><!-- a.AccountNumber --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.BillingState</masterLabel>
+            <translation><!-- a.BillingState --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.Ownership</masterLabel>
+            <translation><!-- a.Ownership --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.Rating</masterLabel>
+            <translation><!-- a.Rating --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>a.Type</masterLabel>
+            <translation><!-- a.Type --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>c.Email</masterLabel>
+            <translation><!-- c.Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>c.LeadSource</masterLabel>
+            <translation><!-- c.LeadSource --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>c.MailingState</masterLabel>
+            <translation><!-- c.MailingState --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.Email</masterLabel>
+            <translation><!-- l.Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.LeadSource</masterLabel>
+            <translation><!-- l.LeadSource --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.Rating</masterLabel>
+            <translation><!-- l.Rating --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.State</masterLabel>
+            <translation><!-- l.State --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>l.Status</masterLabel>
+            <translation><!-- l.Status --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Run --></label>
+        <name>TRIMDA__Run_Frequency__c</name>
+        <picklistValues>
+            <masterLabel>Daily</masterLabel>
+            <translation><!-- Daily --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Every Friday</masterLabel>
+            <translation><!-- Every Friday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Every Monday</masterLabel>
+            <translation><!-- Every Monday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Every Saturday</masterLabel>
+            <translation><!-- Every Saturday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Every Sunday</masterLabel>
+            <translation><!-- Every Sunday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Every Thursday</masterLabel>
+            <translation><!-- Every Thursday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Every Tuesday</masterLabel>
+            <translation><!-- Every Tuesday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Every Wednesday</masterLabel>
+            <translation><!-- Every Wednesday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Monthly</masterLabel>
+            <translation><!-- Monthly --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Once</masterLabel>
+            <translation><!-- Once --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This field is being used by the DataTrim Matching process to report progress back on an active matching. --></help>
+        <label><!-- Run Status --></label>
+        <name>TRIMDA__Run_Status__c</name>
+        <picklistValues>
+            <masterLabel>Completed</masterLabel>
+            <translation><!-- Completed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Ready</masterLabel>
+            <translation><!-- Ready --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Survivorship Rule --></label>
+        <name>TRIMDA__Survivorship_Rule__c</name>
+        <picklistValues>
+            <masterLabel>Most Recent Record Survives</masterLabel>
+            <translation><!-- Most Recent Record Survives --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Most Recently Updated Record Survives</masterLabel>
+            <translation><!-- Most Recently Updated Record Survives --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Oldest Record Survives</masterLabel>
+            <translation><!-- Oldest Record Survives --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Record from Master Data Set Survives</masterLabel>
+            <translation><!-- Record from Master Data Set Survives --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Record from Secondary Data Set Survives</masterLabel>
+            <translation><!-- Record from Secondary Data Set Survives --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Record with Most Recently Activity Survives</masterLabel>
+            <translation><!-- Record with Most Recently Activity Survives --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- EMEA: 0:00-06:00 / 10pm-6am GMT
+Americas: 12am-6am Pacific Standard Time (GMT-8)
+APAC: 12am-6am China Standard Time, Shanghai (GMT+8) --></help>
+        <label><!-- When (Time Slot) --></label>
+        <name>TRIMDA__TimeSlot__c</name>
+        <picklistValues>
+            <masterLabel>APAC</masterLabel>
+            <translation><!-- APAC --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Americas</masterLabel>
+            <translation><!-- Americas --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>EMEA</masterLabel>
+            <translation><!-- EMEA --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Next</masterLabel>
+            <translation><!-- Next --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Enable to perform matching on Facebook, twitter, LinkedIn and Google+ references --></help>
+        <label><!-- Use Social CRM --></label>
+        <name>TRIMDA__UseSocialCRM__c</name>
+    </fields>
+    <layouts>
+        <layout>DataTrim Dupe Alert Layout, Advanced v4</layout>
+        <sections>
+            <label><!-- Advanced Parameters --></label>
+            <section>Advanced Parameters</section>
+        </sections>
+        <sections>
+            <label><!-- Advanced Settings --></label>
+            <section>Advanced Settings</section>
+        </sections>
+        <sections>
+            <label><!-- Alert Settings (what, when and how) --></label>
+            <section>Alert Settings (what, when and how)</section>
+        </sections>
+        <sections>
+            <label><!-- Alert Status --></label>
+            <section>Alert Status</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Data Filter - Matching Secondary subset of data against Master subset --></label>
+            <section>Data Filter - Matching Secondary subset of data against Master subset</section>
+        </sections>
+        <sections>
+            <label><!-- Information --></label>
+            <section>Information</section>
+        </sections>
+        <sections>
+            <label><!-- Last Run Details --></label>
+            <section>Last Run Details</section>
+        </sections>
+        <sections>
+            <label><!-- Last Run Result --></label>
+            <section>Last Run Result</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Activate --></label>
+        <name>TRIMDA__Activate</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Check Filter --></label>
+        <name>TRIMDA__Check_Me</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Reset --></label>
+        <name>TRIMDA__Reset_Me</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Run Now --></label>
+        <name>TRIMDA__Run_Me</name>
+    </quickActions>
+    <validationRules>
+        <errorMessage><!-- Invalid License Number, enter your License number, or contact Datatrim to get registered (http://www.datatrim.com) --></errorMessage>
+        <name>TRIMDA__Invalid_License_Number</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This License Type value is not allowed for the current License, Contact d2b International to upgrade your license. --></errorMessage>
+        <name>TRIMDA__License_Type_Validation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You cannot select the Master=Secondary check box for Lead-Account or Lead-Contact deduplications. For these Alert Types the Leads are the secondary data and the Account/Contact are the Master data --></errorMessage>
+        <name>TRIMDA__Master_equalsSecondary_not_valid</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Activate_Me --></label>
+        <name>TRIMDA__Activate_Me</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Activate_Selected --></label>
+        <name>TRIMDA__Activate_Selected</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Check_Me --></label>
+        <name>TRIMDA__Check_Me</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- ProcessDupesUsingBatch --></label>
+        <name>TRIMDA__ProcessDupesUsingBatch</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Reset_Me --></label>
+        <name>TRIMDA__Reset_Me</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Reset_Selected --></label>
+        <name>TRIMDA__Reset_Selected</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Review_Dupes --></label>
+        <name>TRIMDA__Review_Dupes</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Run_Me --></label>
+        <name>TRIMDA__Run_Me</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Setup --></label>
+        <name>TRIMDA__Setup</name>
+    </webLinks>
+</CustomObjectTranslation>

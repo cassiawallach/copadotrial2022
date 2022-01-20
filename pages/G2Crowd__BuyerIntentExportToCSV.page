@@ -1,0 +1,7 @@
+<apex:page controller="G2Crowd.BuyerIntentExportToCSV" cache="true" contentType="application/octet-stream#Visitors.csv" language="en-US">Company Name, Website, City, State, Country, Employee Count, Annual Revenue, LinkedIn, ID, Account ID, Account Name, Total Pageviews, Profile Pageviews, Category Pageviews, Comparisons Pageviewed, Competitor Pageviews, First Visit, Last Visit
+  <apex:repeat value="{!listOfRows}" var="rows">
+    <apex:repeat value="{!rows}" var="data">
+{!data.companyName},{!data.website},{!data.city},{!data.state},{!data.country},{!data.employeeCount},{!data.annualRevenue},{!data.linkedIn},{!data.OrgId},{!data.accountID},{!data.accountName},{!data.totalPageviews},{!data.productProfilePageviews},{!data.categoryPageviews},{!data.comparisonPageviews},{!data.competitorPageviews},{!data.firstVisit},{!data.lastVisit}
+    </apex:repeat>
+  </apex:repeat>
+</apex:page>

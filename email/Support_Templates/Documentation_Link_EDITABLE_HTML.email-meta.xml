@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Instructions so the customers check a Doc Article out.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Support_Emails_Letterhead</letterhead>
+    <name>Documentation Link</name>
+    <style>freeForm</style>
+    <subject>Case #{!Case.CaseNumber}: {!Case.Subject}</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+We have found the following article on our documentation site that might help you to solve this case.
+
+Please click here: &gt;&gt;paste-url-from-copado-website-here&lt;&lt;
+
+
+
+Case Number:
+#{!Case.CaseNumber}
+
+Case Subject:
+{!Case.Subject}
+
+Link to the Case:
+https://copado.secure.force.com/support/PublicCase?cn={!Case.CaseNumber}&amp;ce={!Contact.Email}
+
+
+Kind regards,
+{! IF(User.Username==&apos;support_team@copa.do&apos;, &apos;&apos;, User.Name) }
+{!Case.Thread_Id}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

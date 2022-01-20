@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Ready_for_Release_on_Monday</name>
+        <label>Ready for Release on Monday</label>
+        <locationX>314</locationX>
+        <locationY>791</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>This user story is ready for Release and will be deployed to Production on next Monday. @[{!$Record.Business_Owner__c}] @[{!$Record.copado__Business_Analyst__c}]</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Ready_for_Testing_in_UAT</name>
+        <label>Ready for Testing in UAT</label>
+        <locationX>50</locationX>
+        <locationY>671</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>This user story is ready for Testing in UAT. @[{!$Record.copado__Business_Analyst__c}]</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Released_in_Production</name>
+        <label>Released in Production</label>
+        <locationX>578</locationX>
+        <locationY>911</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>This User Story is in Production    @[{!$Record.Business_Owner__c}]   @[{!$Record.copado__Business_Analyst__c}]   @[{!$Record.Module__r.Product_Manager__c}]</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>51.0</apiVersion>
+    <decisions>
+        <name>Is_Recordtype_APO_UserStory</name>
+        <label>Is Record type APO User Story</label>
+        <locationX>693</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_US_Record_Type.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_Status_Ready_forTesting</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Status_Ready_for_Release</name>
+        <label>Is Status Ready for Release</label>
+        <locationX>512</locationX>
+        <locationY>671</locationY>
+        <defaultConnector>
+            <targetReference>Is_Status_Released</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Ready_for_Release</name>
+            <conditionLogic>1 AND 2 AND 3 AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ready for Release</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.copado__Environment__r.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>APOUAT</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.copado__Environment__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.copado__Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ready for Release</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Ready_for_Release_on_Monday</targetReference>
+            </connector>
+            <label>Ready for Release</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Status_Ready_forTesting</name>
+        <label>Is Status Ready for Testing</label>
+        <locationX>281</locationX>
+        <locationY>551</locationY>
+        <defaultConnector>
+            <targetReference>Is_Status_Ready_for_Release</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Ready_for_Testing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ready for Testing</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.copado__Environment__r.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>APOUAT</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.copado__Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ready for Testing</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Ready_for_Testing_in_UAT</targetReference>
+            </connector>
+            <label>Ready for Testing</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Status_Released</name>
+        <label>Is Status Released</label>
+        <locationX>710</locationX>
+        <locationY>791</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Status_Released</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Released</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.copado__Environment__r.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>APO_Production</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.copado__Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Released</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Released_in_Production</targetReference>
+            </connector>
+            <label>Status Released</label>
+        </rules>
+    </decisions>
+    <interviewLabel>APO User Story Notifications {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>APO User Story Notifications</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_US_Record_Type</name>
+        <label>Get APO User Story RecordType</label>
+        <locationX>693</locationX>
+        <locationY>311</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Recordtype_APO_UserStory</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>APO User Story</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>567</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_US_Record_Type</targetReference>
+        </connector>
+        <object>copado__User_Story__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

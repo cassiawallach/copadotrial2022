@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_29951221</developerName>
+        <masterLabel>Team</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Account$Owner.Manager</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Kevin Robinson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Hill</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Anish Patel</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Simon Bishop</sourceValue>
+            </sourceValues>
+            <value>Sales</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Cameron Tyler</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andrew Leigh</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Mike McDaid</sourceValue>
+            </sourceValues>
+            <value>Marketing</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>David Belove</sourceValue>
+            </sourceValues>
+            <value>Partner</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Account$Region__c</field>
+    </columns>
+    <columns>
+        <field>Account$Owner.Manager</field>
+    </columns>
+    <columns>
+        <field>BucketField_29951221</field>
+    </columns>
+    <columns>
+        <field>Account$Owner</field>
+    </columns>
+    <columns>
+        <field>Account$Vertical__c</field>
+    </columns>
+    <columns>
+        <field>Account$Type</field>
+    </columns>
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <field>Account$fcio1__UltimateParent__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account$Greenfield__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account$Active_Opportunity__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account$All_Opportunities_are_Lost__c</field>
+    </columns>
+    <columns>
+        <field>Account$Rating</field>
+    </columns>
+    <columns>
+        <field>Account$BillingCountry</field>
+    </columns>
+    <columns>
+        <field>Account$Id</field>
+    </columns>
+    <currency>USD</currency>
+    <description>&quot;Greenfield&quot; = no previous wins / losses and no open opportunities | &quot;All Opportunities are Lost&quot; = only previous losses and no open opportunities</description>
+    <filter>
+        <criteriaItems>
+            <column>Account$Owner.IsActive</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Prospect,Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>TEST</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Copado - Books of Business</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_Additional_Account_Owner_Info__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Account$Region__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Account$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

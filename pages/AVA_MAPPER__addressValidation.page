@@ -1,0 +1,63 @@
+<apex:page controller="AVA_MAPPER.AddressValidationController" action="{!validate}" sidebar="false" lightningStylesheets="true">
+<style>
+   table.list tr.headerRow th:first-child, body .pbBody table.list tr.dataRow td:first-child {
+       border: 0px;
+   }
+
+</style>
+
+   <apex:form >
+       <apex:pageBlock title="Validate Address/es">
+           <apex:pageBlockButtons >
+               <apex:commandButton value="Back" action="{!RedirectPage}" style="float:right;" />
+           </apex:pageBlockButtons>
+
+           <apex:pageblockSection >
+               <apex:pageblockTable value="{!addressPageBindingModel}" var="apbm">
+                   <apex:column >
+                       <apex:pageBlock title="Original">
+
+                   <apex:outputpanel style="overflow:scroll;height:200px;overflow-x:hidden;" layout="block">
+                         
+                           <apex:pageBlockTable value="{!apbm.originalAddress}" var="original" frame="none;" style="border: 2px;">
+                               <apex:column >
+                                   <b>{!original.Title}</b>
+                                   {!original.Value}
+                               </apex:column>
+                           </apex:pageBlockTable>
+
+                   </apex:outputpanel>
+
+                       </apex:pageBlock>
+                   </apex:column>
+               </apex:pageblockTable>
+
+               <apex:pageblockTable value="{!addressPageBindingModel}" var="apbm">
+                   <apex:column >
+                       <apex:pageBlock title="Validated">
+
+                   <apex:outputpanel style="overflow:scroll;height:200px;overflow-x:hidden;" layout="block">
+                           <apex:pageBlockTable value="{!apbm.validatedAddress}" var="validated" >
+                               <apex:column >
+                                   <b style ="color:{!validated.textcolor}">{!validated.Title} </b>
+                                       {!validated.Value}
+                               </apex:column>
+                           </apex:pageBlockTable>
+
+                   </apex:outputpanel>
+					<apex:commandLink action="{!UpdateAddress}" rendered="{!BEGINS(apbm.validatedAddress[0].value,'Error')}" value="Update Validated Address" style="float:right;" styleClass="btn">
+                   <!--<apex:commandLink action="{!UpdateAddress}" value="Update Validated Address" style="float:right;" styleClass="btn">-->
+                   <!--<apex:commandLink action="{!UpdateAddress}" disabled="{!UpdateAddressDisabled}" value="Update Validated Address" style="float:right;" styleClass="btn"> -->
+                               
+                               <apex:param name="actionParam"
+                                           value="{!apbm.header}"
+                                           assignTo="{!actionParam}"/>  
+                           </apex:commandLink>
+                       </apex:pageBlock>
+                   </apex:column>
+               </apex:pageblockTable>
+
+           </apex:pageblockSection>
+       </apex:pageBlock>  
+   </apex:form>        
+</apex:page>

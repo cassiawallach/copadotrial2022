@@ -1,0 +1,2693 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose                    :Included as a tab in JBara Customer Experience App.
+                                 Displays NPS data for all customers of a given Survey.
+----
+---- Other comments (optional)  :
+-->
+<apex:page sidebar="false" controller="JBCXM.NPSExtension" extensions="JBCXM.GSCommonBroker" tabStyle="NPS__tab" title="NPS® Overview">
+    <!-- Jquery Min,jgGrid Plugin, JqueryUI, Jquery theme include -->
+
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/NS/NS/newStack/js/restclient/restClient.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/js/jquery-ui-1.8.13.custom.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/jqGridLatest/js/i18n/grid.locale-en.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/jqGridLatest/js/jquery.jqGrid.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/js/jqgrid.Custom.Utility.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/miscscripts/jquery.limit-1.2.source.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/date.format.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/multiple-select/jquery.multiple.select.js" />
+     <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/css/ui.jqgrid.css"/>
+     <apex:includeScript value="/support/console/43.0/integration.js"/>
+    <!-- Static Resource Includes: Highcharts libraries  -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/highcharts.src.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/themes/gray.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/modules/stock.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/module/nps/NPSOverview.css"/>
+
+    <script>
+
+        var GS = {};
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.userConfig = {
+            userLocale  : {!(userLocaleDateFormatMap)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        };
+        GS.isSFConsole = sforce.console.isInConsole();
+        var j$ = jQuery.noConflict();
+        GS.appContainerDeferred = j$.Deferred();
+        GS.appContainerReady = GS.appContainerDeferred.promise();
+    </script>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>
+
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+
+    <apex:form >
+         <!--div style="height: 70px; width: 99%;">
+            <div style='width:40%'>
+                 <apex:sectionHeader title="NPS"/>
+            </div>
+            <div align="center" style="margin-top: -35px;" >
+
+
+            </div>
+        </div-->
+
+        <!-- page level css  for time being -->
+        <style>
+
+        /*css for Alert operations*/
+        .customerAlertIcon {
+            background-image: url("/img/icon/custom51_100/bell32.png");
+        }
+        .gs-feature-content {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+            }
+            .gs-feature-error {
+                display: flex;
+                align-items: center;
+                height: 100%;
+                justify-content: center;
+            }
+            .gs-module-content-wrapper {
+                height: 100%;
+             }
+        	.gs-feature-disabled.gs-deprecated-error .gs-feature-content {
+              display: none;
+            }
+            .gs-feature-disabled.gs-deprecated-error .gs-feature-error {
+              display: block;
+            }
+        </style>
+
+        <!-- Script for displaying tabs -->
+        <!-- To Include the Google Visualization JavaScript API. -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" language="javascript">
+            window.jLatest = j$;
+            j$.jgrid.no_legacy_api = true;
+            j$.jgrid.useJSON = true;
+            var surveyType = "{!(surveyType)}";
+             var hc= eval({!(headerConfig)});
+
+
+            var statePreservString = fakeEval('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+            var firstRender = false;
+            var defaultTabloadDetails = (statePreservString.SubSection__c) ? j$.parseJSON(statePreservString.SubSection__c) : {};
+            var tabIndexToSelect = j$.isEmptyObject(defaultTabloadDetails) ? 0 : parseInt(defaultTabloadDetails.index);
+
+    /* API call for NPS deprecate */
+        function npsDeprecate() {
+            var headers = {
+                            'Content-Type':'application/json',
+                            'appOrgId':hc.appOrgId,
+                            'appUserId':hc.appUserId,
+                            'appSessionId':hc.appSessionId
+                          };
+            j$.ajax({
+                              type: 'GET',
+                              url: hc.gatewayURL + '/v1/surveys/featureFlag/SURVEY_V1_DEPRECATED',
+                              headers: headers,
+                              success: function(res) {
+                             j$('.gs-module-content-wrapper').show();
+                             j$('.gs-feature-disabled').removeClass('gs-deprecated-error');
+                                if(res.data) {
+                                  j$('#NPSSummaryTabs').hide();
+                                  j$('.gs-feature-disabled').show();
+                                } else {
+                                    j$('#NPSSummaryTabs').show();
+                                    j$('.gs-feature-disabled').hide();
+                                }
+                            },
+                              error: function(err) {
+                                  j$('.gs-module-content-wrapper').hide();
+                                  j$('#NPSSummaryTabs').hide();
+                                  j$('.gs-feature-disabled').show();
+                                   j$('.gs-feature-disabled').addClass('gs-deprecated-error');
+                                   j$('.gs-feature-error').show().text(err.responseJSON.message);
+                            }
+                            });
+        }
+
+      npsDeprecate();
+
+       var npsV2URL;
+        if(hc.isLightningEnabled) {
+           npsV2URL = '/lightning/n/'+ (GS.packageNS || '') +'NPSV2';
+        } else {
+           npsV2URL = '/apex/'+  (GS.packageNS || '') +'SurveyInsights';
+        }
+
+        function redirectFeature() {
+           window.open(npsV2URL, '_blank');
+        }
+
+        function moduleNavRenderer(appContainer) {
+                var moduleNavInterface = {
+                    getNavMenuOptions: function() {
+                        return [{
+                            label: 'NPS<sup>&reg;</sup>',
+                            "clickable": false,
+                            metadata: {
+                                "menuItem": "LIST"
+                            },
+                            children: [{
+                                label: 'Summary',
+                                selected: tabIndexToSelect === 0 ? true : false, //Default tab should be loaded
+                                disabled: true, //based on permission, should be shown
+                                metadata: {
+                                    "tabIndex" : 0
+                                }
+                                },
+                                {
+                                label: 'Feed',
+                                selected: tabIndexToSelect === 1 ? true : false, //based on permission, should be shown
+                                metadata: {
+                                    "tabIndex" : 1
+                                }
+                                },
+                                {
+                                label: 'By Survey',
+                                selected: tabIndexToSelect === 2 ? true : false, //based on permission, should be shown
+                                metadata: {
+                                    "tabIndex" : 2
+                                }
+                                },
+                                {
+                                label: 'By Customer',
+                                selected: tabIndexToSelect === 3 ? true : false, //based on permission, should be shown
+                                metadata: {
+                                    "tabIndex" : 3
+                                }
+                            }]
+                        }];
+
+                    },
+                    triggerNavClick: function(obj) {
+                        if (obj.tabIndex === 0) {
+                            j$("a[href='#NPSSummary']").click();
+                        }else if (obj.tabIndex === 1) {
+                            j$("a[href='#NPSFeed']").click();
+                        }else if (obj.tabIndex === 2) {
+                            j$("a[href='#NPSBySurvey']").click();
+                        }else if (obj.tabIndex === 3) {
+                            j$("a[href='#NPSByCustomer']").click();
+                        }
+                    }
+                };
+
+                if (!firstRender) {
+                    if (tabIndexToSelect === 0) {
+                        appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "Summary");
+                        firstRender = true;
+                    }
+                }
+                if (tabIndexToSelect === 1) {
+                    appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "Feed");
+                } else if (tabIndexToSelect === 2) {
+                    appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Survey");
+                } else if (tabIndexToSelect === 3) {
+                    if (GS.relationshipEnabled) {
+                        appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Customer or Relationship");
+                    } else {
+                        appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Customer");
+                    }
+                }
+            }
+              function openGSConsolePTab(ele) {
+                if ( GS.isSFConsole === true ) {
+                  var _console = window.sforce.console || window.parent.sforce.console;
+                  if(_console && _console.openPrimaryTab) {
+                    _console.openPrimaryTab(null, ele.href, true, ele.innerHTML, function () {}, ele.innerHTML);
+                  }
+                } else {
+                    window.open(ele.href,'_blank');
+                }
+              }
+
+             function urlParam(name){
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results==null){
+                   return null;
+                }else{
+                   return results[1] || 0;
+                }
+            }
+
+
+             function filterResponseOptions(){
+                 var responseTypes = '<option id="FilterNPSvsMRRScatterChartByUser" value="2" selected>By User</option>';
+                if(this._isRel == true){
+                    responseTypes += '<option id="FilterNPSvsMRRScatterChartByCust" value="1">Relationship Averages</option>';
+                }else{
+                    responseTypes += '<option id="FilterNPSvsMRRScatterChartByCust" value="1">Customer Averages</option>';
+                }
+                j$('.rbtFilterNPSvsMRRScatterChart').html(sanitizeHtml(responseTypes));
+             }
+
+             var isRelationshipEnabled = {!(isRelationshipEnabled)};
+             var self = this;
+             GS.appContainerReady.then(function () {
+                 if(isRelationshipEnabled){
+
+                        new AjaxCommand({
+                        }).excecute({
+                           "action":"admin.getRelationshipTypes"
+                        },false,false,false,{remotingEndPoint:GS.commonRemotingEndPoint}).done(function(result){
+                           GS.relationshipTypes = result.dataObj.data || [];
+                           var relationshipTypes = '<option value="">Customer</option>';
+                           self._isRel = false;
+                           self._relType = urlParam('relType');
+                            for(var i=0; i<GS.relationshipTypes.length; i++){
+                                if(self._relType==GS.relationshipTypes[i].Id){
+                                    relationshipTypes += '<option value="'+GS.relationshipTypes[i].Id+'" selected>'+GS.relationshipTypes[i].Name+'</option>';
+                                    self._isRel = true;
+                                    self.filterResponseOptions();
+                                    j$('.dummyNPSDistributionDetail').hide();
+                                }else{
+                                    relationshipTypes += '<option value="'+GS.relationshipTypes[i].Id+'">'+GS.relationshipTypes[i].Name+'</option>';
+                                }
+                            }
+                            j$('.RelationshipTypeSelector').html(sanitizeHtml(relationshipTypes));
+                            if(GS.relationshipTypes.length){
+                                j$('.RelationshipTypeSelector').show();
+                            }
+                            self.buildUserStatePreservationString();
+                        });
+
+                }
+
+                 //Filter data based on relationshipType
+                j$('.RelationshipTypeSelector').unbind().bind("change",function() {
+                    self._relType = j$(".RelationshipTypeSelector").val();
+                    self.getSurveysByRelationshipType();
+                });
+                filterResponseOptions();
+             });
+
+            var npsGuageData, npsGuageObject; //data table and visualization objects to render the NPS Gauge Chart.
+            var userLocaleDateFormatMap,jqGridDateFormat,jqGridDateTimeFormat,customersInformationList, surveyMasterList, npsMRROverviewChart, allNPSOverviewJsonData, npsOverviewDetailsByCust, npsAggregationDetails, accountDetailsBySurvey, commentsDataByResponse, npsUIViewColumnsList;
+            var npsReportByUser;
+            var surveyMasterSelectionOptions = '';
+            //var arrayOfColors = new Array('#FF0000', '#FFA500', '#37EA40');   //Detractors, Passives, Promoters colors.
+            var arrayOfColors = new Array('#ed5f5e', '#ff8448', '#44b798');
+            var isSurveyResponseAssociatedToObject, surveyResponseAssociatedObjectName;
+            var salesforceOrgBaseURL, isCustomNPSUIView;
+            isCustomNPSView = false;
+
+
+            var isSameUserSessionExists = '{!(isSameUserSessionNPS)}';
+            var clientSideFltDetails = (statePreservString.ClientSideFilter__c) ? j$.parseJSON(statePreservString.ClientSideFilter__c) : {};
+            var triggerOnComplete = false;
+
+            //field map.
+            var mappingArray = {'CreatedBy.Name' : 'cbn', 'CreatedDate' : 'cd', 'LastModifiedBy.Name' : 'lmn', 'LastModifiedDate' : 'lmd', 'Account__r.Industry' : 'Industry',
+                                    'NextRenewalDate__c' : 'nrt', 'MRR__c' : 'custMRR', 'Users__c' : 'custUsers', 'ASV__c' : 'custASV', 'OneTimeRevenue__c' : 'custOneTime','RevenueBand__c' :'revenueBand'};
+            var npsCustomUIViewColumnModel, npsCustomUIViewColumnList, npsCustomUIViewSelFields;
+            npsCustomUIViewSelFields = ['custMRR', 'custUsers', 'custInd', 'nrt'];
+
+            var userResponsesByCust;
+            var dummyCountTorenderAggregationDetails = 0;
+
+            userLocaleDateFormatMap = fakeEval('{!(JSINHTMLENCODE(userLocaleDateFormatMap))}');
+
+            jqGridDateFormat        =JBARAjqGridDateFormat(userLocaleDateFormatMap);
+            jqGridDateTimeFormat    =JBARAjqGridDateTimeFormat(userLocaleDateFormatMap);
+            var isPackagedVersion = "{!(isPkgInstance)}";    //Clienside
+
+            //To handle the currency symbol.
+            var currencyConfigObject = fakeEval('{!(JSINHTMLENCODE(currencyConfigJSON))}');
+            /***
+            *This function reset the State preservation string and page redirect based on the tab selection.
+            */
+            function redirectPageByTabSelection(latestUsrStateJSON, latestUsrSessionFlag) {
+                statePreservString = latestUsrStateJSON;
+                isSameUserSessionExists = latestUsrSessionFlag;
+                if(triggerOnComplete) {
+                    var NPSTabSelected = tabClickHref;  //j$(".HeaderNPSTabs .ui-tabs-selected").find("a").attr('href');
+                    var href = j$('#'+(NPSTabSelected.substr(1))+'').attr('href');
+                    if(GS.isSFConsole === true){
+                      var url = window.location.href;
+                      var rem = (url.indexOf('NPSOverview?') !== -1) ? 'NPSOverview?' : 'NPSOverview';
+                      url = getSideNavUrl(rem, href, window.location.href);
+                      url = removeParam('SurveyCode', url);
+                      url = removeParam('relType', url);
+                      window.location.href = url;
+                    }else{
+                      window.location.href = '/apex/'+href;
+                    }
+                 }
+            }
+
+
+        function getSurveysByRelationshipType(){
+              var self = this;
+              j$('.JBaraDummySurveySelector').attr("disabled", true);
+              new AjaxCommand({
+              }).excecute({
+                 "action":"survey.getSurveysByRelationshipTypes",
+                 "data":{
+                    "relType":self._relType
+                  }
+              },false,false,false,{remotingEndPoint:GS.commonRemotingEndPoint}).done(function(result){
+                var surveyMasterSelectionOptions = '<option value="0">Select Survey</option>';
+                if(result.surveyList && result.surveyList.length > 0){
+                  for(var i = 0; i < result.surveyList.length; i++) {
+                      surveyMasterSelectionOptions += '<option value="'+result.surveyList[i].id+'">'+result.surveyList[i].title+'</option>';
+                  }
+                }
+                j$('.JBaraDummySurveySelector').html(sanitizeHtml(surveyMasterSelectionOptions));
+                j$('.JBaraDummySurveySelector').removeAttr("disabled");
+              }).fail(function(){
+                j$('.JBaraDummySurveySelector').removeAttr("disabled");
+              });
+
+        }
+
+        /**
+         *This function is used to save the user state.
+         */
+        var actionTimer;
+        function processEntireState() {
+            clearTimeout(actionTimer);
+            statePreservString.Name = 'NPS';
+            statePreservString.ClientSideFilter__c = (statePreservString.ClientSideFilter__c) ? ((typeof statePreservString.ClientSideFilter__c == "string") ? statePreservString.ClientSideFilter__c : JSON.stringify(statePreservString.ClientSideFilter__c)) :  JSON.stringify({});
+            statePreservString.SortColumns__c = (statePreservString.SortColumns__c) ? ((typeof statePreservString.SortColumns__c == "string") ?  statePreservString.SortColumns__c : JSON.stringify(statePreservString.SortColumns__c)) :  JSON.stringify({});
+            statePreservString.ReportParams__c = (statePreservString.ReportParams__c) ? ((typeof statePreservString.ReportParams__c == "string") ? statePreservString.ReportParams__c : JSON.stringify(statePreservString.ReportParams__c)) :  JSON.stringify({});
+            statePreservString.UIViewId__c = (statePreservString.UIViewId__c) ? ((typeof statePreservString.UIViewId__c == "string") ? statePreservString.UIViewId__c : JSON.stringify(statePreservString.UIViewId__c)) :  JSON.stringify({});
+            statePreservString.ServerSideFilters__c = ((statePreservString.ServerSideFilters__c) ? ((typeof statePreservString.ServerSideFilters__c == "string") ? (statePreservString.ServerSideFilters__c) : JSON.stringify(statePreservString.ServerSideFilters__c)) : JSON.stringify({}));
+            actionTimer = setTimeout(function() {
+                var dmyStr = (isPackagedVersion == "true") ? JSON.stringify(pushStatePreservationJbaraNameSpace(statePreservString)) : JSON.stringify(statePreservString);
+                if(GS.isSFConsole === true){
+                  actionUpdateStatePreservation(dmyStr);
+                }else{
+                  var dmlFrame = document.getElementById("childDMLOperationIframe");
+                  dmlFrame.contentWindow.loadUserStateByTab(dmyStr, "{!(userSessionIdStr)}", "NPS");
+                }
+            }, 4000);
+         }
+
+        </script>
+        <apex:outputPanel id="checkSurveyCodeExistOrNot1" rendered="{!isThisSurveyCodeExist == true}">
+            <script type="text/javascript" language="javascript">
+
+                function onCustomerChange(custName,custId){
+                    reRenderNPSAssociatedDropDown(custId);
+                    j$(".theHiddenCustomerId").val(custId);
+                }
+                /*
+                *This function handles only "&".
+                */
+                function jbaraCustomJSEncode(str) {
+                    str = str.split(' ').join('+');
+                    str = str.replace("&","%26");
+                    return str;
+                }
+
+                /**
+                *Script for Alert operations Start.
+                */
+
+                var selCustName, selCustAlertId, isAlertLinkedToNPS, selCustSFId, selCustASV, selNPSComment, selUserName, custResponseDate;
+                selCustName = "";
+                var CustomerDataBYName = new Array();
+
+                //Displays form for entering Alert details when clicked on new button.
+                function jbaraShowNewAlertForm() {
+                    j$(".NPSResponseDetailsBYUser").hide();
+                    j$("#alertContainer").css({
+                        width:'1024px',
+                        height:'800px',
+                       'top': '30px',
+                       'position': 'relative',
+                       'visibility': 'visible'
+                    }).show();
+                }
+
+                /**
+                *This method will fire after saved the alert, cancel.
+                */
+                function jbaraCloseAlertInputForm() {
+                    j$(".addAndShowAlertButtons").show();
+                    j$("#alertContainer").hide();
+                    j$(".NPSResponseDetailsBYUser").show(); //To show grid.
+                    j$(".dummyAllAlertNewBtn").removeAttr("disabled");
+                    j$(".dummyAllAlertNewBtn").removeClass("btnDisabled");
+                    j$(".jbaraDummyAlertInputForm").hide();
+                }
+
+                /**
+                *This method will fire after saved the alert.
+                */
+                function jbaraCallBackAfterAlertSave(alertIdAfterUpdateOrCreate) {
+                    j$(".addAndShowAlertButtons").show();
+                    j$(".dummyAllAlertNewBtn").hide();
+                    j$(".AlertIconLInk").show();
+                    if(alertIdAfterUpdateOrCreate !== undefined) {
+                        updateNPSOverviewGridData(alertIdAfterUpdateOrCreate);
+                    }
+                    //dummyAllAlertNewBtn, AlertIconLInk
+                    j$(".dummyAllAlertNewBtn").hide();
+                    j$(".AlertIconLInk").show();
+                    j$('.AlertIconLInk a').attr('href', ('CustomerSuccess360?fromType=Alert&cid='+selCustSFId+''));
+                    //jbaraCloseAlertInputForm();
+                }
+                var is360 = '';
+                function callBack360AlertAfterSave(alertId, mode){}
+                /**
+                *This method will fire after cancel.
+                */
+                function jbaraCallBackAfterAlertCancel(){
+                    jbaraCloseAlertInputForm();
+                    j$(".addAndShowAlertButtons").show();
+                }
+
+                //Adds z-index on mouseover on help text in overlay form.
+                function setAlertHelpZindex() {
+                    j$(".helpText").css({'z-index': '5001'});
+                }
+
+                //Popup the date picker to display on form.
+                function jbaraAlertDateInputControl(id) {
+                    j$("#datePicker").css({'z-index': '5001'});
+                    DatePicker.pickDate(true, id, false);
+                }
+
+                /**
+                *This function is fired when you click on the Associate button.
+                */
+                function getItAssociateToNPS() {
+                    if (!j$("input[name='ActiveAlertsListRadio']:checked").val()) {
+                       j$("tr.npsAssociateError").show();
+                    }
+                    else {
+                      newClicked(selCustSFId, j$.trim(j$("input[name='ActiveAlertsListRadio']:checked").val()));
+                      j$("#confirmAssociateNPSToNPS").html('');
+                      return false; //Calling Edit.
+                    }
+                }
+
+                /**
+                *This function is fired when you click on the create new alert button.
+                */
+                function getCreateNewAlertToNPS() {
+                    j$("#confirmAssociateNPSToNPS").html('');
+                    newClicked(selCustSFId, ''); //Adding new alert;
+
+                }
+                /**
+                *This function is fired when you click on the cancel button.
+                */
+                function jbaraCloseAlertConfirmForm() {
+                    j$("#confirmAssociateNPSToNPS").html('');
+                    jbaraCloseAlertInputForm();
+                }
+
+                /**
+                *This function is fired after save the alert from NPS overview page.
+                */
+                function updateNPSOverviewGridData(updatedOrAddedAlertId) {
+                    for(var indx = 0; indx < NPSOverviewJsonData.length; indx++) {
+                        if(NPSOverviewJsonData[indx].custName == selCustName) {
+                            NPSOverviewJsonData[indx].Customer_Alert_Id    = updatedOrAddedAlertId;
+                            NPSOverviewJsonData[indx].Is_Alert_LinkedToNPS = "true";
+                        }
+                    }
+                }
+
+                /**
+                *Script for Alert operations End.
+                */
+
+                /**
+                *Attach click event to toggle wrapping in NPS Overveiw By Customer grid.
+                */
+                function setNPSOverviewByCustomerGridWrapping(blnAddClass) {
+
+                    var npsGridIdToExport = (parseInt(j$.trim(j$(".rbtFilterNPSvsMRRScatterChart").val())) == 1) ? 'NPSOverviewListByCustomer' : 'NPSOverviewListByUser';
+                    if (j$("#NPSOverviewByCustomerChkWrapText").hasClass("gs-wrap-lines")) {
+                        j$("#"+npsGridIdToExport+"").find("td").css({
+                            "overflow": "hidden",
+                            "white-space": "pre-line"
+                        });
+                        if(blnAddClass){
+                            j$("#NPSOverviewByCustomerChkWrapText").addClass("gs-wrap-active").removeClass("gs-wrap-lines");
+                        }
+                    } else {
+                        j$("#"+npsGridIdToExport+"").find("td").css({
+                            "overflow": "hidden",
+                            "white-space": "nowrap"
+                        });
+                        if(blnAddClass){
+                            j$("#NPSOverviewByCustomerChkWrapText").addClass("gs-wrap-lines").removeClass("gs-wrap-active");
+                        }
+                    }
+                }
+
+                /**
+                *Attach click event to toggle wrapping in NPS Overveiw By User grid.
+                */
+                function setNPSOverviewGridWrapping(blnAddClass) {
+                    if (j$("#NPSOverviewChkWrapText").hasClass("gs-wrap-lines")) {
+                        j$("#NPSOverviewList").find("td").css({
+                            "overflow": "hidden",
+                            "white-space": "pre-line"
+                        });
+                        if(blnAddClass){
+                            j$("#NPSOverviewChkWrapText").addClass("gs-wrap-active").removeClass("gs-wrap-lines");
+                        }
+                    } else {
+                        j$("#NPSOverviewList").find("td").css({
+                            "overflow": "hidden",
+                            "white-space": "nowrap"
+                        });
+                        if(blnAddClass){
+                            j$("#NPSOverviewChkWrapText").addClass("gs-wrap-lines").removeClass("gs-wrap-active");
+                        }
+                    }
+                }
+
+                /**
+                *Construct class to set properties to npsDataBasedOnCustomer data array.
+                */
+                function npsDataBasedOnCustomerClass(data) {
+                    this.npsScore   = data.npsScore;
+                    this.custLink  = data.custLink;
+                    this.customer       = data.customer;
+                    this.responsedUsers = data.responsedUsers;
+                    this.MRR            = data.MRR;
+                    this.licencedUsers  = data.licencedUsers;
+                    this.industry       = data.industry;
+                    this.renewalDate    = data.renewalDate;
+                }
+
+                /**
+                *Construct class to set properties to userDataArrayForScatterChart data array.
+                */
+                function userDataArrayForScatterChartClass(data) {
+                    this.name   = data.name;
+                    this.color  = data.color;
+                    this.role   = data.role;
+                    this.data   = data.data;
+                    this.marker = data.marker;
+                }
+
+                /**
+                *Construct class to set properties to CustomerDataArrayForScatterChart data array.
+                */
+                function customerDataArrayForScatterChartClass(data) {
+                    this.name   = data.name;
+                    this.color  = data.color;
+                    this.role   = data.role;
+                    this.data   = data.data;
+                    this.marker = data.marker;
+                }
+
+                //Variables to build the data arrays.
+                var NPSOverviewJsonData, dummyCustomerName, dummyCustomerLink, dummyUserDataArrayForScatterChart, dummyCustomerDataArrayForScatterChart, dummyNPSDataBasedOnCustomer;
+                //var dummyUserCount, sumOfNPS;
+                var npsDataBasedOnCustomer, customerDataArrayForScatterChart, userDataArrayForScatterChart;
+                //var avgNPSByUser, avgNPSByCustomer, totNPSByUser, totNPSByCustomer;
+                //var maxMRRByuser, maxMRRByCustomer;
+                var surveyInfoByUser, surveyInfoByCustomer;
+                var npsOverviewByCustomerType = 'Promoters'; //By default
+                var surveyInformationProperties = new Array('promoters', 'passives', 'detracters');
+                var scatterChartsymbols = new Array ('triangle', 'diamond', 'triangle-down', 'circle')
+                var userRoles; //Array variable to store the Unique User roles based on the Survey.
+                var filteredNPSOverviewJsonData;
+                var scfo = ['MRR', 'ASV', 'Users']; //scfo = scatter Chart Filter Options.
+                var scdk = {'MRR' : 'custMRR', 'ASV' : 'custASV', 'Users' : 'custUsers'}; //scdk = scatter Chart Data Keys.
+                var isCustOneTimeSelected = false;
+
+
+                /**
+                *This function render the All grids, Charts for a single survey you selected.
+                *@param "surveyUniqueCode" represents the Survey code.
+                */
+                function renderNPSAnalysisChartsBasedOnSurvyerCode(surveyUniqueCode, groupByValue, filterByRole) {
+                    surveyInfoByUser                    = new Array();
+                    surveyInfoByCustomer                = new Array();
+
+
+                    //To initialize below variables by default Zero(0).
+                    /*dummyUserCount = 0; sumOfNPS =  0; totNPSByCustomer = 0;
+                    totNPSByUser = 0; maxMRRByCustomer = 0; maxMRRByuser = 0;*/
+                    var custMRR, custIndustry;
+
+                    //To render the NPS Gauge Chart.
+                    //To get the survey information based on User, Customer.
+                    var returnData = j$.grep(surveyMasterList, function (dt) {
+                                        return dt.SurveyId == surveyUniqueCode;
+                                     });
+                    //To populate the NPS Aggregation details from survey master.
+                    var dummyNPSDetailsByUser = npsAggregationDetails['ByUser'];
+                    var dummyNPSDetailsByCust = npsAggregationDetails['ByAccount'];
+
+                    dummyNPSDetailsByUser =  [JSON.parse(gsEncodeHtml(dummyNPSDetailsByUser))];
+
+                    dummyNPSDetailsByUser = dummyNPSDetailsByUser[0];
+                    var selUserRole = (filterByRole == "All") ? 'All Roles' : filterByRole;
+                    dummyNPSDetailsByUser = (dummyNPSDetailsByUser[selUserRole]) ? dummyNPSDetailsByUser[selUserRole] : {pro:0, pas:0, det:0};
+
+                    dummyNPSDetailsByCust =  [JSON.parse(gsEncodeHtml(dummyNPSDetailsByCust))];
+
+                    dummyNPSDetailsByCust = dummyNPSDetailsByCust[0];
+                    var selUserRole = (filterByRole == "All") ? 'All Roles' : filterByRole;
+                    dummyNPSDetailsByCust = (dummyNPSDetailsByCust[selUserRole]) ? dummyNPSDetailsByCust[selUserRole] : {pro:0, pas:0, det:0};
+
+
+                    //To render the survey participation information.
+                    var tableData  = '<table class="NPSStatsTable container" style="height: 155px; width:98%; margin:10px;border-collapse:collapse">';
+                        tableData  += '<tr><th class="ui-state-default gs-nps-table-head" style="width: 50%;">Participation Statistics</th>';
+                        tableData  += '<th class="ui-state-default gs-nps-table-head" style="width: 25%;">';
+                        this._relType = urlParam('relType');
+                        tableData += (this._relType != null && this._relType != '') ? 'Relationships' : 'Customers';
+                        tableData += '</th>';
+                        tableData  += '<th class="ui-state-default gs-nps-table-head" style="width: 25%;">Users</th> </tr>';
+
+                        tableData  += '<tr><td class="gs-nps-table-cell">Responses</td><td class = "NPSStatsTD gs-nps-table-cell">'+(dummyNPSDetailsByCust.pro+dummyNPSDetailsByCust.det+dummyNPSDetailsByCust.pas)+'</td><td class = "NPSStatsTD gs-nps-table-cell">'+(dummyNPSDetailsByUser.pro+dummyNPSDetailsByUser.det+dummyNPSDetailsByUser.pas)+'</td></tr>';
+                        tableData  += '<tr><td class="gs-nps-table-cell">Promoters</td><td class = "NPSStatsTD gs-nps-table-cell">'+dummyNPSDetailsByCust.pro+'</td><td class = "NPSStatsTD gs-nps-table-cell">'+dummyNPSDetailsByUser.pro+'</td></tr>';
+                        tableData  += '<tr><td class="gs-nps-table-cell">Passives</td><td class = "NPSStatsTD gs-nps-table-cell">'+dummyNPSDetailsByCust.pas+'</td><td class = "NPSStatsTD gs-nps-table-cell">'+dummyNPSDetailsByUser.pas+'</td></tr>';
+                        tableData  += '<tr><td class="gs-nps-table-cell">Detractors</td><td class = "NPSStatsTD gs-nps-table-cell">'+dummyNPSDetailsByCust.det+'</td><td class = "NPSStatsTD gs-nps-table-cell">'+dummyNPSDetailsByUser.det+'</td></tr></table>';
+
+                    j$('.npsParticipation').html(sanitizeHtml(tableData));
+
+                    var totalrecordCountsByFilter = (groupByValue == 1) ? (dummyNPSDetailsByCust.pro+dummyNPSDetailsByCust.det+dummyNPSDetailsByCust.pas) : (dummyNPSDetailsByUser.pro+dummyNPSDetailsByUser.det+dummyNPSDetailsByUser.pas);
+                    j$("span.ActualRecordsCount").html(sanitizeHtml(totalrecordCountsByFilter));
+
+                    //Hover UI class for the table below the dail.
+                    j$(".NPSStatsTable").delegate('td','mouseover mouseleave', function(e) {
+                        if (e.type == 'mouseover') {
+                            j$(this).parent().addClass("ui-state-hover");
+                        }
+                        else {
+                            j$(this).parent().removeClass("ui-state-hover");
+                        }
+                    });
+
+                     //To display HTML in the Jquery UI tabs
+                     var totalPromoters = (parseInt(groupByValue) == 2) ? dummyNPSDetailsByUser.pro : dummyNPSDetailsByCust.pro;
+                     var totalPassives = (parseInt(groupByValue) == 2) ? dummyNPSDetailsByUser.pas : dummyNPSDetailsByCust.pas;
+                     var totalDetractors = (parseInt(groupByValue) == 2) ? dummyNPSDetailsByUser.det : dummyNPSDetailsByCust.det;
+                     j$("#totalPromoters").text(totalPromoters);
+                     j$("#totalPassives").text(totalPassives);
+                     j$("#totalDetractors").text(totalDetractors);
+
+
+                    //To render the Gauge chart to represent the Overall NPS percentage of the survey.
+                    if(parseInt(groupByValue) == 2) {
+                        var overallNPSPercent = Math.round((((dummyNPSDetailsByUser.pro - dummyNPSDetailsByUser.det)/(dummyNPSDetailsByUser.pro+dummyNPSDetailsByUser.det+dummyNPSDetailsByUser.pas))*100)*10)/10;
+                    }
+                    else {
+                        var overallNPSPercent = Math.round((((dummyNPSDetailsByCust.pro - dummyNPSDetailsByCust.det)/(dummyNPSDetailsByCust.pro+dummyNPSDetailsByCust.det+dummyNPSDetailsByCust.pas))*100)*10)/10;
+                    }
+                    overallNPSPercent = isNaN(overallNPSPercent) ? 0 : overallNPSPercent; //To check whether it returns numaric values or not.
+                    overallNPSGaugeChart(overallNPSPercent);
+                    j$('div.overallNPSPercentage').text(overallNPSPercent);
+
+
+                    //to display the analytics and hide loading image.
+                    j$(".ajaxLoadingButtonToLoadSurvey").hide();
+                    j$(".NPSOverviewBySurvey").show();
+                }
+
+                function renderNPSOverViewGridNChartByUserAndCustomer(groupByValue) {
+                    customerDataArrayForScatterChart    = new Array();
+                    userDataArrayForScatterChart        = new Array();
+                    filteredNPSOverviewJsonData         = new Array();
+                    NPSOverviewJsonData                 = new Array();
+                    npsDataBasedOnCustomer              = new Array();
+                    //To build the data for scatter chart based on MRR, Users and ASV.
+                    //To add the Onetime revenue to the toggle list.
+                    if(isCustOneTimeSelected) {
+                        scfo.push('OneTime');
+                        scdk['OneTime'] = 'custOneTime';
+                        j$("option.OneTimeRevenueOptionClass").remove();
+                        j$('.NPSScatterChartFilterOptionsSelectCtrl').append('<option value="OneTime" class="OneTimeRevenueOptionClass">{!(npsCustomLabelsMap["OneTime"])}</option>');
+                    }
+
+                    for(var s = 0; s < scfo.length; s++) {
+                        customerDataArrayForScatterChart[scfo[s]]               = new Array();
+                        customerDataArrayForScatterChart[scfo[s]]['data']       = new Array();
+                        customerDataArrayForScatterChart[scfo[s]]['totNPS']     = 0;
+                        customerDataArrayForScatterChart[scfo[s]]['maxValue']   = 0;
+
+                        userDataArrayForScatterChart[scfo[s]]               = new Array();
+                        userDataArrayForScatterChart[scfo[s]]['data']       = new Array();
+                        userDataArrayForScatterChart[scfo[s]]['totNPS']     = 0;
+                        userDataArrayForScatterChart[scfo[s]]['maxValue']   = 0;
+                    }
+
+                    NPSOverviewJsonData = allNPSOverviewJsonData;
+                    getDataArraysToAnalysis(groupByValue);
+                    //To render the NPS Overview Grid by customer and also filtering grid data based on the customer type(Promoters, Detractors, passives).
+                    if(parseInt(groupByValue) == 2) {
+                        bindNPSOverviewGridByCustomer(getPDPJsonArray(filteredNPSOverviewJsonData, npsOverviewByCustomerType), groupByValue);
+                        NPSvsMRRChatterOverviewChart(userDataArrayForScatterChart[j$.trim(j$(".NPSScatterChartFilterOptionsSelectCtrl").val())], j$.trim(j$(".NPSScatterChartFilterOptionsSelectCtrl option:selected").text()), 2);
+
+                    }
+                    else {
+                        bindNPSOverviewGridByCustomer(getPDPJsonArray(npsDataBasedOnCustomer, npsOverviewByCustomerType), groupByValue);
+                        NPSvsMRRChatterOverviewChart(customerDataArrayForScatterChart[j$.trim(j$(".NPSScatterChartFilterOptionsSelectCtrl").val())],j$.trim(j$(".NPSScatterChartFilterOptionsSelectCtrl option:selected").text()), 1);
+                    }
+
+                    //To filter grid data based on the tab selection.
+                    j$('.NPSOverviewByCustomerTitle').text(npsOverviewByCustomerType);
+                    j$('a.filteringCustomerNPSDataByPDP').bind('click', function() {
+                        npsOverviewByCustomerType = j$.trim(j$(this).text());
+                        if(parseInt(groupByValue) == 2) {
+                            makeActiveSubTab(npsOverviewByCustomerType);
+                            bindNPSOverviewGridByCustomer(getPDPJsonArray(filteredNPSOverviewJsonData, j$.trim(j$(this).text())), 2);
+                        }
+                        else {
+                            makeActiveSubTab(npsOverviewByCustomerType);
+                            bindNPSOverviewGridByCustomer(getPDPJsonArray(npsDataBasedOnCustomer, j$.trim(j$(this).text())), 1);
+                        }
+
+                        j$('.NPSOverviewByCustomerTitle').text(npsOverviewByCustomerType);
+                    });
+
+                    if(groupByValue == 2) {
+                        //To render the NPS Overview Grid by user.
+                        bindNPSOverviewGrid(NPSOverviewJsonData);
+                    }
+
+                    hideOverLayForm(); //To hide the search overlay.
+                    j$("span.dummygrdAdvancedSearchNRecordsInfo").css({'z-index': '10'});
+                }
+
+
+                function makeActiveSubTab(tabName)
+                {
+                        if( tabName == 'Promoters' )
+                        {
+                            j$('.promoters').addClass('active');
+                            j$('.passives').removeClass('active');
+                            j$('.detractors').removeClass('active');
+                        }
+                        else if( tabName == 'Passives' )
+                        {
+                            j$('.passives').addClass('active');
+                            j$('.promoters').removeClass('active');
+                            j$('.detractors').removeClass('active');
+                        }
+                        else if( tabName == 'Detractors' )
+                        {
+                            j$('.detractors').addClass('active');
+                            j$('.passives').removeClass('active');
+                            j$('.promoters').removeClass('active');
+                        }
+                }
+
+                /**
+                *This fucntion fitlers NPS data based on the UserRole.
+                *@param "roleFilter" representst the User role.
+                */
+                function getDataArraysToAnalysis(groupByValue) {
+                    filteredNPSOverviewJsonData = NPSOverviewJsonData;
+                    if(groupByValue == 2) {
+                        for(var indx = 0; indx < filteredNPSOverviewJsonData.length; indx++) {
+                            //To build the dummyUserDataArrayForScatterChart data array.
+                            for(var s = 0; s < scfo.length; s++) {
+                                dummyUserDataArrayForScatterChart = new userDataArrayForScatterChartClass({
+                                    name : filteredNPSOverviewJsonData[indx].custName, color : getColorBasedOnNPSScore(parseInt(filteredNPSOverviewJsonData[indx].npsScore)),
+                                    role : filteredNPSOverviewJsonData[indx].userRole,
+                                    data: [ {   name: filteredNPSOverviewJsonData[indx].userName,
+                                                x: parseInt(filteredNPSOverviewJsonData[indx].npsScore),
+                                                y: parseInt(filteredNPSOverviewJsonData[indx][scdk[scfo[s]]])} ],
+                                    marker: {symbol: getSymbolBasedOnNPSScore(parseInt(filteredNPSOverviewJsonData[indx].npsScore))}
+                                });
+                                userDataArrayForScatterChart[scfo[s]]['data'].push(dummyUserDataArrayForScatterChart); //Data Pushing.
+                                //To calculate the sum of the NPS Scores and Maximum MRR value by user.
+                                userDataArrayForScatterChart[scfo[s]]['totNPS'] += parseInt(filteredNPSOverviewJsonData[indx].npsScore);
+                                userDataArrayForScatterChart[scfo[s]]['maxValue'] = ( userDataArrayForScatterChart[scfo[s]]['maxValue'] < parseInt(filteredNPSOverviewJsonData[indx][scdk[scfo[s]]]) ) ? parseInt(filteredNPSOverviewJsonData[indx][scdk[scfo[s]]]) : userDataArrayForScatterChart[scfo[s]]['maxValue'];
+
+                            }
+                        }
+                    }
+                    else {
+                        //we have to build customer data.
+                        for(var indx = 0; indx < filteredNPSOverviewJsonData.length; indx++) {
+                            dummyNPSDataBasedOnCustomer = new Object();
+                            dummyNPSDataBasedOnCustomer['npsScore']         = Math.round((filteredNPSOverviewJsonData[indx].avgScore)*100)/100;
+                            dummyNPSDataBasedOnCustomer['custLink']         = filteredNPSOverviewJsonData[indx].custLink;
+                            dummyNPSDataBasedOnCustomer['customer']         = filteredNPSOverviewJsonData[indx].custName;
+                            dummyNPSDataBasedOnCustomer['responsedUsers']   = parseInt(filteredNPSOverviewJsonData[indx].userCount);
+                            dummyNPSDataBasedOnCustomer['relName']         = (groupByValue == 2) ? ((filteredNPSOverviewJsonData[indx].Relationship__r != null) ? ((filteredNPSOverviewJsonData[indx]['Relationship__r']['Name'] != null) ? filteredNPSOverviewJsonData[indx]['Relationship__r']['Name'] : '') : '') : '';
+                            dummyNPSDataBasedOnCustomer['relId']           = filteredNPSOverviewJsonData[indx].relId;
+                            var relPage = GS.packageNS+'Relationship360';
+                            var relUrl = (GS.isSFConsole === true) ?
+                              "/apex/"+relPage+"?rid="+filteredNPSOverviewJsonData[indx]['relId'] :
+                              relPage+"?rid="+filteredNPSOverviewJsonData[indx]['relId'];
+                            dummyNPSDataBasedOnCustomer['relationship']    = (surveyType === "Complete") ? "Anonymous" : '<a onclick="openGSConsolePTab(this); return false;" href="'+relUrl+'" target=\'_blank\' class=\'dummyCustomerNameLink\'>'+filteredNPSOverviewJsonData[indx]['relName']+'</a>';
+                            for(var c = 0; c < npsCustomUIViewSelFields.length; c++) {
+                                dummyNPSDataBasedOnCustomer[npsCustomUIViewSelFields[c]] = (filteredNPSOverviewJsonData[indx][npsCustomUIViewSelFields[c]]) ? (filteredNPSOverviewJsonData[indx][npsCustomUIViewSelFields[c]]) : '';
+                            }
+                            npsDataBasedOnCustomer.push(dummyNPSDataBasedOnCustomer); //Data Pushing.
+
+                            for(var s = 0; s < scfo.length; s++) {
+                                dummyCustomerDataArrayForScatterChart = new customerDataArrayForScatterChartClass({
+                                    name : filteredNPSOverviewJsonData[indx].custName, color : getColorBasedOnNPSScore(dummyNPSDataBasedOnCustomer['npsScore']),
+                                    data : [[dummyNPSDataBasedOnCustomer['npsScore'], parseInt(filteredNPSOverviewJsonData[indx][scdk[scfo[s]]])]],
+                                    marker: {symbol: getSymbolBasedOnNPSScore(dummyNPSDataBasedOnCustomer['npsScore'])}
+                                });
+
+                                customerDataArrayForScatterChart[scfo[s]]['totNPS']     += parseFloat(dummyNPSDataBasedOnCustomer['npsScore']);
+                                customerDataArrayForScatterChart[scfo[s]]['maxValue']   = (customerDataArrayForScatterChart[scfo[s]]['maxValue'] < parseInt(filteredNPSOverviewJsonData[indx][scdk[scfo[s]]])) ? parseInt(filteredNPSOverviewJsonData[indx][scdk[scfo[s]]]) : customerDataArrayForScatterChart[scfo[s]]['maxValue'];
+                                customerDataArrayForScatterChart[scfo[s]]['data'].push(dummyCustomerDataArrayForScatterChart);
+                            }
+                        }
+                    }
+
+                }
+
+                /**
+                *Function to build the UserRoles array based on the Survey.
+                */
+                function buildUserRolesArray() {
+                    //To build the userRoles array.
+                    var someDummyUserRolesArray = new Array();
+                    for(var index in npsAggregationDetails) {
+                        if(index.indexOf("ByUser") >= 0) {
+
+                           someDummyUserRolesArray =  [JSON.parse(gsEncodeHtml(npsAggregationDetails[index]))];
+                            someDummyUserRolesArray = someDummyUserRolesArray[0];
+                            for(var idx in someDummyUserRolesArray) {
+                                if(j$.inArray(idx, userRoles) == -1 && (idx != 'All Roles')) {
+                                    userRoles.push(idx);
+                                }
+                            }
+                        }
+                    }
+                    userRoles.sort();
+                }
+
+                /*
+                *This function returns the count of Promoters, Detractors, Passives.
+                *@Param "jsonDataArray" represent the Data array.
+                *@Param "category" represents the Promoters, Detractors or Passives.
+                */
+                function getPDPcount(jsonDataArray, category) {
+                    var returnData;
+                    switch(category) {
+                        case 'promoters' :  returnData = j$.grep(jsonDataArray, function (dt) {
+                                                return parseFloat(dt.npsScore) > 8;
+                                            });
+                                            break;
+                        case 'passives' :   returnData = j$.grep(jsonDataArray, function (dt) {
+                                                return (parseFloat(dt.npsScore) > 6 && parseFloat(dt.npsScore) <= 8);
+                                            });
+                                            break;
+                        case 'detractors' : returnData = j$.grep(jsonDataArray, function (dt) {
+                                                return parseFloat(dt.npsScore) <= 6;
+                                            });
+                                            break;
+                    }
+                    return returnData.length;
+                }
+
+                /*
+                *This function returns the count of Promoters, Detractors, Passives.
+                *@Param "jsonDataArray" represent the Data array.
+                *@Param "category" represents the Promoters, Detractors or Passives.
+                */
+                function getPDPJsonArray(jsonDataArray, category) {
+                    var returnData;
+                    switch(category) {
+                        case 'Promoters'  : returnData = j$.grep(jsonDataArray, function (dt) {
+                                                return parseFloat(dt.npsScore) > 8;
+                                            });
+                                            break;
+                        case 'Passives'   : returnData = j$.grep(jsonDataArray, function (dt) {
+                                                return (parseFloat(dt.npsScore) > 6 && parseFloat(dt.npsScore) <= 8);
+                                            });
+                                            break;
+                        case 'Detractors' : returnData = j$.grep(jsonDataArray, function (dt) {
+                                                return parseFloat(dt.npsScore) <= 6;
+                                            });
+                                            break;
+                    }
+                    return returnData;
+                }
+
+                /**
+                *This function returns the Color based on the NPS value.
+                *@param "npsValue" represents the NPS Score.
+                */
+                function getColorBasedOnNPSScore(npsValue) {
+                    var returnColor;
+                    returnColor = testv = (npsValue <= 6) ? arrayOfColors[0] : (npsValue > 6 && npsValue <= 8) ? arrayOfColors[1] : arrayOfColors[2];
+                    return returnColor;
+                }
+
+                /**
+                *This function returns the Color based on the NPS value.
+                *@param "npsValue" represents the NPS Score.
+                */
+                function getSymbolBasedOnNPSScore(npsValue) {
+                    var returnSymbol;
+                    returnSymbol = testv = (npsValue <= 6) ? scatterChartsymbols[2] : (npsValue > 6 && npsValue <= 8) ? scatterChartsymbols[1] : scatterChartsymbols[0];
+                    return returnSymbol;
+                }
+
+                /**
+                *This function renders  the scatter chart.
+                *@param "dataToRenderScatterChart" represents series data to render the Chart. This data array contains three values ("data, totNPS, maxValue").
+                *@param "selectedMeasureName" represents the measure name ex:- MRR, ASV, Users..
+                *@param "flag" represents NPS calculation by User or Customer.
+                */
+                function NPSvsMRRChatterOverviewChart(dataToRenderScatterChart, selectedMeasureName, flag) {
+                    var avgNPS = Math.round((dataToRenderScatterChart['totNPS']/dataToRenderScatterChart['data'].length)*10)/10;
+                    var linedraw = {"name": 'AVG NPS', "color": getColorBasedOnNPSScore(avgNPS), "type": 'scatter', "lineWidth": 2,
+                             "data": [ [avgNPS, 0], [avgNPS, dataToRenderScatterChart['maxValue']] ], marker: {symbol: scatterChartsymbols[3]} };
+                    dataToRenderScatterChart['data'].push(linedraw);
+                    npsMRROverviewChart = new Highcharts.Chart({
+                        chart       : { renderTo: 'NPSOverviewContainer', defaultSeriesType: 'scatter', zoomType: 'xy',  width: screen.width - 120.5,   backgroundColor: 'rgba(255, 255, 255, 0)', fontFamily: 'Proxima Nova Rg !important' },
+                        title       : { text: 'NPS® vs '+selectedMeasureName+'', style: {color: '#333',fontFamily: 'Proxima Nova Rg !important'} },
+                        legend      : { enabled: false },
+                        xAxis       : { min: -0.1, max: 10.2, labels: { style: { color: '#333',fontFamily: 'Proxima Nova Rg !important'}}, title: { enabled: true, text: 'NPS®', style:{color: '#333',fontFamily: 'Proxima Nova Rg !important'} },
+                                        plotLines: [{ color: getColorBasedOnNPSScore(avgNPS), width: 2, value: avgNPS }] },
+
+                        yAxis       : { min: 0, max: dataToRenderScatterChart['maxValue'], labels: { style: { color: '#333',fontFamily: 'Proxima Nova Rg !important'}}, title: { text: selectedMeasureName, style:{color: '#333',fontFamily: 'Proxima Nova Rg !important'} } },
+                        credits     : { enabled: false },
+
+                        tooltip     : { backgroundColor: '#f4f4f4',
+                                        style: { fontFamily: 'Proxima Nova Rg', padding: 10,color:'#374351'},
+                                        shadow: false,
+                                        borderRadius: 3,
+                                        borderWidth : 1,
+                                        borderColor: '#dbdbdb',
+                                        formatter : function() {
+                                            if (this.series.name != 'AVG NPS') {
+                                                var uName = ''
+                                                if(flag == 2) {
+                                                    uName = 'User: '+this.series.data[0].name+'<br/>';
+                                                    var nScore = 'NPS®: ' + this.x + '<br/>';
+                                                }
+                                                else { var nScore = 'Avg NPS®: ' + this.x + '<br/>'; }
+                                                var yAxisFrmt = formatNumber(this.y, '', 'K');
+                                                return 'Customer: ' + this.series.name + '<br/>'+uName+''+nScore+''+selectedMeasureName + (selectedMeasureName == 'Users' ? ' : ' : ' : '+currencyConfigObject.symbol+' ') + yAxisFrmt;
+                                            }
+                                            else {  return '' + 'Avg NPS® :' + avgNPS; }
+                                        }
+                                    },
+
+                        plotOptions : {scatter : {marker: { radius: 6, states: { hover: { enabled: true, lineColor: 'rgb(100,100,100)' } } },
+                                                    states: { hover: { marker: { enabled: false } } }
+                                                }
+                                    },
+                        symbols: [
+                                    'circle',
+                                    'diamond',
+                                    'square',
+                                    'triangle',
+                                    'triangle-down'
+                                ],
+
+
+                        series      : dataToRenderScatterChart['data']
+                    });
+                    dataToRenderScatterChart['data'].pop(); //You must address this issue. linedraw was adding to "userDataArrayForScatterChart" array.
+                    j$('#NPSOverviewContainer').resize(); //JB-17983 This fix has to be removed when we upgrade HighCharts version
+                }
+
+                /**
+                *This function renders the Gauge chart based Total NPS Score.
+                *@param "overallNPS" represents the overall NPS percentage of the specific Survey.
+                */
+                function overallNPSGaugeChart(overallNPS) {
+                    if(!google.visualization) {
+                        return;
+                    }
+                    // Create and populate the data table.
+                    npsGuageData = new google.visualization.DataTable();
+                    npsGuageData.addColumn('string', 'Label');
+                    npsGuageData.addColumn('number', 'Value');
+                    npsGuageData.addRows(1);
+                    npsGuageData.setValue(0, 0, 'NPS®');
+                    npsGuageData.setValue(0, 1, overallNPS);
+
+                    // To draw the Visualization Gauge Chart.
+                    var formatter2 =  new google.visualization.NumberFormat({fractionDigits: 1});
+                    formatter2.format(npsGuageData,  1); //for put % symbol after the value.
+                    npsGuageObject =  new google.visualization.Gauge(document.getElementById("chart_nps"));
+                    npsGuageObject. draw(npsGuageData, {
+                                greenColor : "#44b798",
+                                yellowColor : "#ff8448",
+                                redColor : "#ed5f5e",
+                                min:0,max:100,
+                                redFrom: 0,
+                                redTo: 5,
+                                yellowFrom: 5,
+                                yellowTo: 10,
+                                greenFrom: 10,
+                                greenTo: 100,
+                                height:180,
+                                width:((screen.width/10)+40) });
+                }
+
+                /**
+                *This function render the NPS Overview grid by user.
+                *@param "data" represents the JSON data to render the grid.
+                */
+                function bindNPSOverviewGrid(data) {
+                    var listData = data;
+                    var arrCols = getNPSOverviewColumns();
+                    var screenWidth = screen.width - 75;
+                    var gridParam = {
+                        'Id': 'NPSOverviewList',
+                        'colnames': arrCols[0],
+                        'colmodel': arrCols[1],
+                        'data': listData,
+                        'pagerId': 'plistNPSOverviewList',
+                        'sort': {
+                            'name': arrCols[2].name,
+                            'order': arrCols[2].order
+                        },
+                        'width': screenWidth-40,
+                        'height': 250,
+                        'userLocaleDateFormatMap' : userLocaleDateFormatMap
+                    }
+                    j$("#NPSOverviewList").html("");
+
+                    j$(".ajaxLoadingButtonToLoadGridByUser").hide();
+                    j$(".npsOverViewByUserGridTitle").show();
+                    buildjqGrid('containerNPSOverviewList', gridParam);
+                    //To enable the add alert button.
+                    j$(".dummyAllAlertNewBtn").removeAttr("disabled");
+                    j$(".dummyAllAlertNewBtn").removeClass("btnDisabled");
+
+                    j$(".ui-pg-div").hide();
+                    j$("#NPSOverviewList").find("td").css({
+                        "overflow": "hidden",
+                        "white-space": "nowrap"
+                    });
+                    j$("#NPSOverviewList").setGridParam({
+                        'gridComplete': function() {
+                            setNPSOverviewGridWrapping();
+                        }
+                    });
+                    j$("#NPSOverviewList").setGridParam({'onSelectRow': function(id) {
+                            j$(".dummyAllAlertNewBtn").show();
+                            j$(".AlertIconLInk").hide();
+                            selCustName = j$("#NPSOverviewList").jqGrid('getCell', id, 'custName');
+                            CustomerDataBYName  = j$.grep(NPSOverviewJsonData, function (SelCustData) {
+                                                     return SelCustData.custName == selCustName;
+                                                  });
+                            selCustAlertId      = j$.trim(CustomerDataBYName[0].Customer_Alert_Id);
+                            isAlertLinkedToNPS  = j$.trim(CustomerDataBYName[0].Is_Alert_LinkedToNPS);
+                            selCustSFId         = j$.trim(CustomerDataBYName[0].accId);
+
+                            if(selCustAlertId.length > 0 && isAlertLinkedToNPS == "true") {
+                                //dummyAllAlertNewBtn, AlertIconLInk
+                                j$(".dummyAllAlertNewBtn").hide();
+                                j$(".AlertIconLInk").show();
+                                j$('.AlertIconLInk a').attr('href', ('CustomerSuccess360?fromType=Alert&cid='+selCustSFId+''));
+
+                            }
+                        }
+                    });
+
+
+                    j$("#gbox_NPSOverviewList").removeClass("ui-corner-all").addClass("ui-corner-bottom");
+                    j$(".dummyGridTitleBar").css({
+                        "width": parseInt(screenWidth) - 48
+                    });
+                    j$('#containerNPSOverviewList div.ui-widget-content').css('border', '1px solid #A6C9E2'); //To show the content border.
+
+                }
+
+                /**
+                *This function render the NPS Overview grid by customer.
+                *@param "data" represents the JSON data to render the grid.
+                */
+                function bindNPSOverviewGridByCustomer(data, groupByValue) {
+                    var listData = data;
+                    var arrCols = (parseInt(groupByValue) == 1) ? getNPSOverviewColumnsByCustomer() : getNPSOverviewColumnsByUser();
+                    var npsOverViewGridId= (parseInt(groupByValue) == 1) ? 'NPSOverviewListByCustomer' : 'NPSOverviewListByUser';
+                    var screenWidth = Math.round((screen.width - 75)*(69/100)) - 25;
+                    var gridParam = {
+                        'Id': npsOverViewGridId,
+                        'colnames': arrCols[0],
+                        'colmodel': arrCols[1],
+                        'data': listData,
+                        'pagerId': 'plistNPSOverviewListByCustomer',
+                        'sort': {
+                            'name': arrCols[2].name,
+                            'order': arrCols[2].order
+                        },
+                        'width': screenWidth-45,
+                        'height': 200,
+                        'userLocaleDateFormatMap' : userLocaleDateFormatMap
+                    }
+                    j$("#"+ npsOverViewGridId).html("");
+
+                    j$(".ajaxLoadingButtonToLoadGridByPDP").hide();
+                    j$(".dummyGridTitleBarForPDP").show();
+                    buildjqGrid('containerNPSOverviewListByCustomer', gridParam);
+
+                    j$(".ui-pg-div").hide();
+                    j$("#"+ npsOverViewGridId).find("td").css({
+                        "overflow": "hidden",
+                        //"white-space": ((j$('#NPSOverviewByCustomerChkWrapText').attr("checked") == true) ? "pre-line" : "nowrap")
+                        "white-space": "nowrap"
+                    });
+
+                    j$("#"+ npsOverViewGridId).setGridParam({
+                        'gridComplete': function() {
+                            j$("td#plistNPSOverviewListByCustomer_right .ui-paging-info").text(''); //to remove the paging information.
+                            setNPSOverviewByCustomerGridWrapping();
+                        }
+                    });
+
+                    if(npsReportByUser == "false") {
+                        j$("#"+ npsOverViewGridId).setGridParam({'onSelectRow': function(id) {
+                                var selCustName = j$("#"+ npsOverViewGridId).jqGrid('getCell', id, 'custLink');
+                                actFunToshowUserSurveyResponsesBYCust((selCustName.split('?cid='))[1].split('"')[0], j$(selCustName).text());
+                            }
+                        });
+                    }
+
+
+                    j$("#gbox_"+ npsOverViewGridId).removeClass("ui-corner-all").addClass("ui-corner-bottom");
+                    j$(".dummyGridTitleBarForPDP").css({
+                        "width": parseInt(screenWidth) - 43
+                    });
+                    j$('#containerNPSOverviewListByCustomer div.ui-widget-content').css('border', '1px solid #A6C9E2'); //To show the content border.
+
+                    j$("td#plistNPSOverviewListByCustomer_right .ui-paging-info").text(''); //to remove the paging information.
+                }
+
+                function addRelationshipColumn(colNames, colModel) {
+                  var isRelationshipEnabled = {!(isRelationshipEnabled)};
+                  this._relType = urlParam('relType');
+                  if(isRelationshipEnabled && this._relType){
+                      colNames.splice(1,0,'Relationship');
+                      var relObj = {name:'relationship',index:'relationship', width:120,searchoptions :{sopt:['cn']}};
+                      colModel.splice(1,0,relObj);
+                      var remColNames = ['{!JSENCODE(npsCustomLabelsMap['MRR'])}', '{!JSENCODE(npsCustomLabelsMap['Users'])}','{!JSENCODE(npsCustomLabelsMap['RenewalDate'])}' , 'Industry'];
+                      var remColModel = ['custMRR', 'custUsers', 'nrt', 'custInd'];
+                      var colModelNames = colModel.map(function(c) {
+                          return c.name;
+                      });
+                      var colIndex = -1;
+                      for(var i=0; i<remColNames.length; i++){
+                          colNames.splice(colNames.indexOf(remColNames[i]),1);
+                          colIndex = colModelNames.indexOf(remColModel[i]);
+                          colModel.splice(colIndex,1);
+                          colModelNames.splice(colIndex,1);
+                      }
+                  }
+                }
+
+                /**
+                *This function returns the columns to render NPS Overview grid by user.
+                */
+                function getNPSOverviewColumns() {
+
+                    var colArray=new Array();
+                    var  colNames,colModel;
+                    if(isCustomNPSUIView == "false") {
+
+                        colNames=['Customer', 'User Name', 'User Email', 'Score','Role', '{!JSENCODE(npsCustomLabelsMap['MRR'])}', '{!JSENCODE(npsCustomLabelsMap['Users'])}','{!JSENCODE(npsCustomLabelsMap['RenewalDate'])}' , 'Industry','Comments', 'Responded Date', 'Code', 'Created By','Created Date','Modified By','Modified Date', 'Customer Name', 'AccId'];
+                        colModel=[
+                                  {name:'custLink',index:'custLink', width:150,searchoptions :{sopt:['cn']}},
+                                  {name:'userName',index:'userName', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'userMail',index:'userMail', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'npsScore',index:'npsScore', width:60,align:'right',sorttype:'number'},
+                                  {name:'userRole',index:'userRole', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'custMRR',index:'custMRR', width:110,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                                               thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                                  {name:'custUsers',index:'custUsers', width:90,align:'right',sorttype:'number',formatoptions:{
+                                               thousandsSeparator: ",", decimalPlaces: 0}},
+                                  {name:'nrt', width:90,sorttype:'date',formatter:'date',"datefmt":"ISO8601Long", align:'center',
+                                        formatoptions:{srcformat: "ISO8601Long", newformat: jqGridDateFormat}},
+                                  {name:'custInd',index:'custInd', width:100,searchoptions :{sopt:['cn']}},
+                                  {name:'npsCmnt',index:'npsCmnt', width:320,searchoptions :{sopt:['cn']}},
+                                  {name:'rsd', width:150, sorttype:'datetime', datefmt:"ISO8601Long", "formatter":"date","formatoptions":{"srcformat": "ISO8601Long", "newformat":jqGridDateTimeFormat},searchoptions :{sopt:['cn']}},
+                                  {name:'surveyCode',index:'surveyCode', width:120,searchoptions :{sopt:['cn']},  hidden:true, classes:"hideInColChooser"},
+                                  {name:'cbn', index:'cbn', hidden:true, width:90,searchoptions :{sopt:['cn']}},
+                                  {name:'crd', width:150, sorttype:'datetime', datefmt:'m/d/Y h:i A', searchoptions :{sopt:['cn']}, hidden:true},
+                                  {name:'lmn',hidden:true,index:'lmn', width:90,searchoptions :{sopt:['cn']}},
+                                  {name:'lmd', width:150, sorttype:'datetime', datefmt:"ISO8601Long", "formatter":"date","formatoptions":{"srcformat": "ISO8601Long", "newformat":jqGridDateTimeFormat},searchoptions :{sopt:['cn']}, hidden:true},
+                                  {name:'custName',index:'custName', width:150,searchoptions :{sopt:['cn']}, hidden:true,classes:'hideInColChooser'},
+                                  {name:'accId', index:'accId', width:100, searchoptions :{sopt:['cn']}, hidden:true, classes:'hideInColChooser'}
+                        ];
+                        addRelationshipColumn(colNames, colModel);
+                    }
+                    else {
+                        colNames = ['Customer', 'User Name', 'User Email', 'Score','Role', 'Comments', 'Responded Date', 'Customer Name', 'AccId'];
+                        colModel=[
+                                  {name:'custLink',index:'custLink', width:150,searchoptions :{sopt:['cn']}},
+                                  {name:'userName',index:'userName', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'userMail',index:'userMail', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'npsScore',index:'npsScore', width:60,align:'right',sorttype:'number'},
+                                  {name:'userRole',index:'userRole', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'npsCmnt',index:'npsCmnt', width:320,searchoptions :{sopt:['cn']}},
+                                  {name:'rsd', width:150, sorttype:'datetime', datefmt:"ISO8601Long", "formatter":"date","formatoptions":{"srcformat": "ISO8601Long", "newformat":jqGridDateTimeFormat},searchoptions :{sopt:['cn']}},
+                                  {name:'custName',index:'custName', width:150,searchoptions :{sopt:['cn']}, hidden:true,classes:'hideInColChooser'},
+                                  {name:'accId', index:'accId', width:100, searchoptions :{sopt:['cn']}, hidden:true, classes:'hideInColChooser'}
+                        ];
+                        addRelationshipColumn(colNames, colModel);
+                        colModel    = colModel.concat(npsCustomUIViewColumnModel);
+                        colNames    = colNames.concat(npsCustomUIViewColumnList);
+                    }
+                    //alert(JSON.stringify(colModel));
+                    sort={'name':'npsScore','order':'desc'};
+
+                    if(isSurveyResponseAssociatedToObject == "true") {
+                        colNames.splice(2, 0, surveyResponseAssociatedObjectName);
+                        colModel.splice(2, 0, {'name':'asstObjDVL','index':'asstObjDVL', 'width':120, 'searchoptions' :"{sopt:['cn']}"});
+                    }
+
+                    colArray.push(colNames);
+                    colArray.push(colModel);
+                    colArray.push(sort);
+                    return colArray;
+                }
+
+                /**
+                *This function populate's the grid columns based on the NPS Customer UI View.
+                */
+                function populateColumnsListByNPSCustomUIView() {
+                    npsCustomUIViewColumnModel = new Array();
+                    npsCustomUIViewColumnList = new Array();
+                    npsCustomUIViewSelFields = new Array();
+                    //To Build the Dynamic grid columns if the custom UI View was configured.
+                    if(npsUIViewColumnsList.length > 0) {
+                        var colHidden, isNRTSelected, colDataType, colPrefix, selFieldName;
+                        isNRTSelected = false;
+                        var viewColumnList = npsUIViewColumnsList;
+                        viewColumnList.sort(function(a,b) { return parseFloat(a.displayOrder) - parseFloat(b.displayOrder) } );
+
+                        for(var c = 0; c < viewColumnList.length; c++) {
+                            colHidden = (viewColumnList[c].visibilityMode) ? false : true;
+
+                            colDataType = viewColumnList[c].fieldType.toLowerCase();
+                            colDataType = (colDataType == "double" || colDataType == "integer") ? "number" : colDataType;
+                            selFieldName =  (viewColumnList[c].objectName == "Account") ? 'ac_'+viewColumnList[c].name+'' : ((viewColumnList[c].objectName == "CustomerInfo__c") ? mappingArray[viewColumnList[c].name] : viewColumnList[c].name);
+
+                            //To get the selected field names.
+                            if(viewColumnList[c].objectName != "SurveyResponse__c" || npsReportByUser != "false") {
+                                npsCustomUIViewColumnList.push(viewColumnList[c].label); //To populate the column labels array.
+                                npsCustomUIViewSelFields.push(selFieldName);
+
+                                if(colDataType == 'string' || colDataType == 'picklist') {
+                                    npsCustomUIViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "width":100, "searchoptions" : {sopt:["cn"]}, hidden:'+colHidden+'}');
+                                }
+                                else if(colDataType == 'number' || colDataType == 'currency') {
+                                    colPrefix = (colDataType == 'currency') ? currencyConfigObject.symbol+' ' : '';
+                                    npsCustomUIViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "sorttype":"number", "align":"right", "width":65, "formatter":"'+colDataType+'", "formatoptions":{"decimalPlaces":0, "thousandsSeparator":",",  "prefix": "'+colPrefix+'" }, hidden:'+colHidden+'}');
+                                }
+                                else if(colDataType == 'date') {
+                                    npsCustomUIViewColumnModel.push('{"name":"'+selFieldName+'", "width":90, "sorttype":"date","datefmt":"ISO8601Long", "formatter":"date", "formatoptions":{"srcformat": "ISO8601Long", "newformat":jqGridDateFormat }, hidden:'+colHidden+'}');
+                                }
+                                else if(colDataType == 'datetime') {
+                                    npsCustomUIViewColumnModel.push('{"name":"'+selFieldName+'", "width":150, "sorttype":"datetime", "datefmt":"ISO8601Long","formatter":"date","formatoptions":{"srcformat": "ISO8601Long", "newformat":jqGridDateTimeFormat}, hidden:'+colHidden+'}');
+                                }
+                                else {
+                                    npsCustomUIViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "width":100, "searchoptions" : {sopt:["cn"]}, hidden:'+colHidden+'}');
+                                }
+                            }
+                        }
+                        npsCustomUIViewColumnModel = ''+npsCustomUIViewColumnModel.join(",")+'';
+                       npsCustomUIViewColumnModel =  [JSON.parse(gsEncodeHtml(npsCustomUIViewColumnModel))];
+                    }
+                }
+
+                /**
+                *This function returns the columns to render NPS Overview grid by customer.
+                */
+                function getNPSOverviewColumnsByUser() {
+                    var colArray=new Array();
+                    var  colNames,colModel;
+                    if(isCustomNPSUIView == "false") {
+                        colNames=['Customer', 'User Name', 'Score', 'Role', '{!JSENCODE(npsCustomLabelsMap['MRR'])}', '{!JSENCODE(npsCustomLabelsMap['Users'])}', '{!JSENCODE(npsCustomLabelsMap['RenewalDate'])}', 'Industry'];
+                        colModel=[
+                                  {name:'custLink',index:'custLink', width:100,searchoptions :{sopt:['cn']}},
+                                  {name:'userName',index:'userName', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'npsScore',index:'npsScore', width:50,align:'right',sorttype:'number'},
+                                  {name:'userRole',index:'userRole', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'custMRR',index:'custMRR', width:110,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                                               thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                                  {name:'custUsers',index:'custUsers', width:90,align:'right',sorttype:'number',formatoptions:{
+                                               thousandsSeparator: ",", decimalPlaces: 0}},
+                                  {name:'nrt', width:90,sorttype:'date',formatter:'date',"datefmt":"ISO8601Long",align:'center',
+                                        formatoptions:{srcformat: "ISO8601Long", newformat: jqGridDateFormat}},
+                                  {name:'custInd',index:'custInd', width:100,searchoptions :{sopt:['cn']}}
+                        ];
+                        addRelationshipColumn(colNames, colModel);
+                    }
+                    else {
+                        colNames=['Customer', 'User Name', 'Score', 'Role'];
+                        colModel=[
+                                  {name:'custLink',index:'custLink', width:100,searchoptions :{sopt:['cn']}},
+                                  {name:'userName',index:'userName', width:120,searchoptions :{sopt:['cn']}},
+                                  {name:'npsScore',index:'npsScore', width:50,align:'right',sorttype:'number'},
+                                  {name:'userRole',index:'userRole', width:120,searchoptions :{sopt:['cn']}}
+                        ];
+                        addRelationshipColumn(colNames, colModel);
+                        colModel    = colModel.concat(npsCustomUIViewColumnModel);
+                        colNames    = colNames.concat(npsCustomUIViewColumnList);
+                    }
+
+                    if(isSurveyResponseAssociatedToObject == "true") {
+                        colNames.splice(2, 0, surveyResponseAssociatedObjectName);
+                        colModel.splice(2, 0, {'name':'asstObjDVL','index':'asstObjDVL', 'width':120, 'searchoptions' :"{sopt:['cn']}"});
+                    }
+                    sort={'name':'npsScore','order':'desc'};
+                    colArray.push(colNames);
+                    colArray.push(colModel);
+                    colArray.push(sort);
+                    return colArray;
+                }
+
+                /**
+                *This function returns the columns to render NPS Overview grid by User.
+                */
+                function getNPSOverviewColumnsByCustomer() {
+                    var colArray=new Array();
+                    var  colNames,colModel;
+                    if(isCustomNPSUIView == "false") {
+                        colNames=['Customer', 'Score', '# Responses', '{!JSENCODE(npsCustomLabelsMap['MRR'])}', '{!JSENCODE(npsCustomLabelsMap['Users'])}', '{!JSENCODE(npsCustomLabelsMap['RenewalDate'])}', 'Industry'];
+                        colModel=[
+                                  {name:'custLink',index:'custLink', width:100,searchoptions :{sopt:['cn']}},
+                                  {name:'npsScore',index:'npsScore', width:50,align:'right',sorttype:'number'},
+                                  {name:'responsedUsers',index:'responsedUsers', width:100,align:'right',sorttype:'number'},
+                                  {name:'custMRR',index:'MRR', width:110,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                                               thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                                  {name:'custUsers',index:'custUsers', width:50,align:'right',sorttype:'number',formatoptions:{
+                                               thousandsSeparator: ",", decimalPlaces: 0}},
+                                  {name:'nrt', width:90,sorttype:'date',formatter:'date',"datefmt":"ISO8601Long",align:'center',
+                                        formatoptions:{srcformat: "ISO8601Long", newformat: jqGridDateFormat}},
+                                  {name:'custInd',index:'custInd', width:100,searchoptions :{sopt:['cn']}}
+                        ];
+                        addRelationshipColumn(colNames, colModel);
+                    }
+                    else {
+                        colNames=['Customer', 'Score', '# Responses'];
+                        colModel=[
+                                  {name:'custLink',index:'custLink', width:100,searchoptions :{sopt:['cn']}},
+                                  {name:'npsScore',index:'npsScore', width:50,align:'right',sorttype:'number'},
+                                  {name:'responsedUsers',index:'responsedUsers', width:100,align:'right',sorttype:'number'}
+                        ];
+                        addRelationshipColumn(colNames, colModel);
+                        colModel    = colModel.concat(npsCustomUIViewColumnModel);
+                        colNames    = colNames.concat(npsCustomUIViewColumnList);
+                    }
+
+                    sort={'name':'npsScore','order':'desc'};
+                    colArray.push(colNames);
+                    colArray.push(colModel);
+                    colArray.push(sort);
+                    return colArray;
+                }
+
+                /**
+                *The below two function are used to initialize the export.
+                */
+                function exportNPSOverviewByUser() {
+                    actionToExportSurveyResponses('ByUser');
+                }
+
+                function exportNPSOverviewByCustomer() {
+                    var paramVal = (parseInt(j$.trim(j$(".rbtFilterNPSvsMRRScatterChart").val())) == 1) ? 'ByCustomer' : 'ByUser';
+                    actionToExportSurveyResponses(paramVal);
+                }
+
+                function setHelpZindex() {
+                   j$(".helpText").css({
+                       'z-index': '6000',
+                       'position': 'fixed'
+                   })
+                }
+
+                function disableBtn(obj) {
+                    j$(obj).attr("disabled", true);
+                    j$(obj).removeClass("btn").addClass("btnDisabled");
+                }
+
+                /**
+                *This funciton will fire when you change the MRR, ASV.
+                */
+                function reRenderScatterChartBySelectin(thisPointer) {
+                    if(parseInt(j$.trim(j$(".rbtFilterNPSvsMRRScatterChart").val())) == 2) {
+                        NPSvsMRRChatterOverviewChart(userDataArrayForScatterChart[j$.trim(j$(thisPointer).val())], j$.trim(j$(thisPointer).find("option:selected").text()), 2);
+                    }
+                    else {
+
+                        NPSvsMRRChatterOverviewChart(customerDataArrayForScatterChart[j$.trim(j$(thisPointer).val())], j$.trim(j$(thisPointer).find("option:selected").text()), 1);
+                    }
+                }
+
+                /**
+                *This method builds the final data based on the Standard view or custom ui view.
+                **/
+                var npsDataArray, npsDataObjArray;
+
+                function buildNPSDataForGridByAccountAndNPSObj(custInfo, npsRawData, npsRawDataByCust, accRawData, customUICols, groupByValue) {
+                    var isCustHasActiveAlerts;
+                    var selCustActiveAlertsList;
+                    npsDataObjArray = new Array();
+                    var npsRawData = (groupByValue == 2) ? npsRawData : npsRawDataByCust;
+                    for(var i = 0; i< npsRawData.length; i++) {
+                        npsDataArray = new Object();
+                        if(groupByValue == 2) {
+                            npsDataArray['npsScore']        = (npsRawData[i].NPSScore__c != null) ? npsRawData[i].NPSScore__c : 0;
+                            npsDataArray['userRole']        = (npsRawData[i].UserRole__c != null) ? npsRawData[i].UserRole__c : 'User';
+                            npsDataArray['surveyCode']      = (npsRawData[i].SurveyCode__c != null) ? npsRawData[i].SurveyCode__c : '';
+                            npsDataArray['surveymId']       = (npsRawData[i].SurveyCode__c != null) ? npsRawData[i].SurveyCode__c : '';
+                            npsDataArray['userName']        = (npsRawData[i].UserName__c != null) ? npsRawData[i].UserName__c : 'User';
+                            npsDataArray['userMail']        = (npsRawData[i].UserEmail__c != null) ? npsRawData[i].UserEmail__c : 'User';
+
+                            //Associate object mapping details.
+                            npsDataArray['asstObjRId']      = (npsRawData[i].AssociatedObjectRecordID__c != null) ? npsRawData[i].AssociatedObjectRecordID__c : ''; //Associated Object Record id.
+                            npsDataArray['asstObjDV']       =  (npsRawData[i].AssociatedObjectDisplayValue__c != null) ? npsRawData[i].AssociatedObjectDisplayValue__c : '';    //Associated Object display value.
+                            npsDataArray['asstObjDVL']      = '<a href=\''+salesforceOrgBaseURL+'/'+npsDataArray['asstObjRId']+'\' target=\'_top\'>'+npsDataArray['asstObjDV']+'</a>';;   //Associated Object display value link.
+                            npsDataArray['asstObjRV']       = (npsRawData[i].AssociatedObjectRecordValue__c != null) ? npsRawData[i].AssociatedObjectRecordValue__c : '';   //Associated Object Record value.
+                            npsDataArray['relName']         = (groupByValue == 2) ? ((npsRawData[i].Relationship__r != null) ? ((npsRawData[i]['Relationship__r']['Name'] != null) ? npsRawData[i]['Relationship__r']['Name'] : '') : '') : '';
+                            npsDataArray['relId']           = npsRawData[i].Relationship__c;
+
+                            var relPage = GS.packageNS+'Relationship360';
+                            var relUrl = (GS.isSFConsole === true) ?
+                              "/apex/"+relPage+"?rId="+npsDataArray['relId'] :
+                              relPage+"?rid="+npsDataArray['relId'];
+                            npsDataArray['relationship']    = (surveyType === "Complete") ? "Anonymous" : '<a onclick="openGSConsolePTab(this); return false;" href="'+relUrl+'" target=\'_blank\' class=\'dummyCustomerNameLink\'>'+npsDataArray['relName']+'</a>';
+                        }
+
+                        //Cust and Account Info
+                        if(groupByValue == 1) {
+                            npsDataArray['avgScore']    =  (npsRawData[i].nps != null) ? parseFloat(npsRawData[i].nps) : 0;
+                            npsDataArray['userCount']   =  (npsRawData[i].cnt != null) ? parseInt(npsRawData[i].cnt) : 0;
+                            npsDataArray['relName']     =  npsRawData[i].relName ? npsRawData[i].relName : '';
+                            npsDataArray['relId']       = npsRawData[i].Relationship__c;
+                            var relPage = GS.packageNS+'Relationship360';
+                            var relUrl = (GS.isSFConsole === true) ?
+                              "/apex/"+relPage+"?rId="+npsDataArray['relId'] :
+                              relPage+"?rid="+npsDataArray['relId'];
+                            npsDataArray['relationship']    = (surveyType === "Complete") ? "Anonymous" : '<a onclick="openGSConsolePTab(this); return false;" href="'+relUrl+'" target=\'_blank\' class=\'dummyCustomerNameLink\'>'+npsDataArray['relName']+'</a>';
+                        }
+
+                        npsDataArray['custName']        = (groupByValue == 2) ? ((npsRawData[i].Account__r != null) ? ((npsRawData[i]['Account__r']['Name'] != null) ? npsRawData[i]['Account__r']['Name'] : '') : '') : ((npsRawData[i].Name != null) ? npsRawData[i].Name : ''); //For alert validations
+                        npsDataArray['accId']           = npsRawData[i].Account__c; //For alert validations
+                        var CSPage = GS.packageNS+'CustomerSuccess360';
+                        var accountUrl = (GS.isSFConsole === true) ?
+                          "/apex/"+CSPage+"?cid="+npsDataArray['accId'] :
+                          CSPage+"?cid="+npsDataArray['accId'];
+                        npsDataArray['custLink']        = (surveyType === "Complete") ? "Anonymous" : '<a onclick="openGSConsolePTab(this); return false;" href="'+accountUrl+'" target=\'_blank\' class=\'dummyCustomerNameLink\'>'+npsDataArray['custName']+'</a>';
+                        npsDataArray['custUsers']       = (custInfo[npsRawData[i].Account__c]) ? ((custInfo[npsRawData[i].Account__c].custUsers == null) ? 0 : custInfo[npsRawData[i].Account__c].custUsers) : 0;
+                        npsDataArray['custMRR']         = (custInfo[npsRawData[i].Account__c]) ? ((custInfo[npsRawData[i].Account__c].custMRR == null) ? 0 : custInfo[npsRawData[i].Account__c].custMRR) : 0;
+                        npsDataArray['custASV']         = (custInfo[npsRawData[i].Account__c]) ? ((custInfo[npsRawData[i].Account__c].custASV == null) ? 0 : custInfo[npsRawData[i].Account__c].custASV) : 0;
+                        npsDataArray['custOneTime']     = (custInfo[npsRawData[i].Account__c]) ? ((custInfo[npsRawData[i].Account__c].custOneTime == null) ? 0 : custInfo[npsRawData[i].Account__c].custOneTime) : 0;
+                        npsDataArray['revenueBand']     = (custInfo[npsRawData[i].Account__c]) ? ((custInfo[npsRawData[i].Account__c].revenueBand == null) ? 0 : custInfo[npsRawData[i].Account__c].revenueBand) : '';
+                        if(groupByValue == 2) {
+                            npsDataArray['npsCmnt']         = (npsRawData[i].NPSComment__c != null) ? npsRawData[i].NPSComment__c : '';
+                            npsDataArray['rsd']             = (npsRawData[i].ResponseDate__c != null) ? JBARAAddOffSetTime(npsRawData[i].ResponseDate__c,userLocaleDateFormatMap) : '';
+                        }
+                        if(isCustomNPSUIView == "true") {
+                            for(var c = 0; c < customUICols.length; c++) {
+                                var colFieldName, colDataType;
+                                colDataType = customUICols[c].fieldType.toLowerCase();
+                                colDataType = (colDataType == "double" || colDataType == "integer") ? "number" : colDataType;
+
+                                if(customUICols[c].objectName == 'Account') {
+                                    colFieldName = customUICols[c].name;
+                                    if(colDataType == 'date') {
+                                        npsDataArray["ac_"+colFieldName+""] = (groupByValue == 2) ? ((npsRawData[i].Account__r != null) ? ((npsRawData[i]['Account__r'][colFieldName] != null) ?npsRawData[i]['Account__r'][colFieldName] : '') : '')
+                                                                                : ((accRawData[npsRawData[i].Account__c]) ? ((accRawData[npsRawData[i].Account__c][colFieldName] != null) ? accRawData[npsRawData[i].Account__c][colFieldName] : '') : '');
+                                    }
+                                    else if(colDataType == 'datetime') {
+                                        npsDataArray["ac_"+colFieldName+""] = (groupByValue == 2) ? ((npsRawData[i].Account__r != null) ? ((npsRawData[i]['Account__r'][colFieldName] != null) ? ((npsRawData[i]['Account__r'][colFieldName].indexOf("M") > 0) ? npsRawData[i]['Account__r'][colFieldName] : JBARAAddOffSetTime(npsRawData[i]['Account__r'][colFieldName],userLocaleDateFormatMap)) : '') : '')
+                                                                                : ((accRawData[npsRawData[i].Account__c]) ? ((accRawData[npsRawData[i].Account__c][colFieldName] != null) ? ((accRawData[npsRawData[i].Account__c][colFieldName].indexOf("M") > 0) ? accRawData[npsRawData[i].Account__c][colFieldName] : JBARAAddOffSetTime(accRawData[npsRawData[i].Account__c][colFieldName],userLocaleDateFormatMap)) : '') : '');
+                                    }
+                                    else {
+                                        if(groupByValue == 1) {
+                                            if(colFieldName == "Name" || colFieldName == "Industry") {
+                                                npsDataArray["ac_"+colFieldName+""] = (npsRawData[i][colFieldName] != null) ? npsRawData[i][colFieldName] : ((colFieldName == "Industry") ? 'Other' : '');
+                                            }
+                                            else {
+                                                if(colFieldName.indexOf('.')>0){
+                                                    splitColName = colFieldName.split('.');
+                                                    npsDataArray["ac_"+colFieldName+""]= ((accRawData[npsRawData[i].Account__c]) ? ((accRawData[npsRawData[i].Account__c][splitColName[0]] != null) ? (accRawData[npsRawData[i].Account__c][splitColName[0]][splitColName[1]] != null ? accRawData[npsRawData[i].Account__c][splitColName[0]][splitColName[1]] : '') : '') : '');
+                                                }
+                                                else {
+                                                    npsDataArray["ac_"+colFieldName+""] = ((accRawData[npsRawData[i].Account__c]) ? ((accRawData[npsRawData[i].Account__c][colFieldName] != null) ? accRawData[npsRawData[i].Account__c][colFieldName] : ((colDataType == "number" || colDataType == "currency") ? '0' : '')) : ((colDataType == "number" || colDataType == "currency") ? '0' : ''));
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            if(colFieldName.indexOf('.') > 0) {
+                                                splitColName = colFieldName.split('.');
+                                                npsDataArray["ac_"+colFieldName+""]= ((npsRawData[i].Account__r != null) ? ((npsRawData[i]['Account__r'][splitColName[0]] != null) ? (npsRawData[i]['Account__r'][splitColName[0]][splitColName[1]] != null ? npsRawData[i]['Account__r'][splitColName[0]][splitColName[1]] : '') : '') : '');
+                                            }
+                                            else {
+                                                npsDataArray["ac_"+colFieldName+""] = ((npsRawData[i].Account__r != null) ? ((npsRawData[i]['Account__r'][colFieldName] != null) ? npsRawData[i]['Account__r'][colFieldName] : ((colDataType == "number" || colDataType == "currency") ? '0' : '')) : ((colDataType == "number" || colDataType == "currency") ? '0' : ''));
+                                            }
+                                        }
+                                    }
+                                }
+                                else if(customUICols[c].objectName == 'SurveyResponse__c') {
+                                    colFieldName = customUICols[c].name //mappingArray[customUICols[c].name];
+                                    if(colDataType == 'date') {
+                                        if(groupByValue == 2) {
+                                            npsDataArray[colFieldName] = (npsRawData[i][colFieldName] != null) ? npsRawData[i][colFieldName] : '';
+                                        }
+                                    }
+                                    else if(colDataType == 'datetime') {
+                                        if(groupByValue == 2) {
+                                            npsDataArray[colFieldName] = (npsRawData[i][colFieldName] != null) ? JBARAAddOffSetTime(npsRawData[i][colFieldName],userLocaleDateFormatMap) : '';
+                                        }
+                                    }
+                                    else {
+                                        if(groupByValue == 2) {
+                                            if(colFieldName.indexOf('.') > 0) {
+                                                splitColName = colFieldName.split('.');
+                                                npsDataArray[colFieldName] = (npsRawData[i][splitColName[0]] != null) ? ((npsRawData[i][splitColName[0]][splitColName[1]] != null) ? npsRawData[i][splitColName[0]][splitColName[1]] : '') : '';
+                                            }
+                                            else {
+                                                npsDataArray[colFieldName] = (npsRawData[i][colFieldName] != null) ? npsRawData[i][colFieldName] : '';
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    colFieldName = mappingArray[customUICols[c].name];
+                                    isCustOneTimeSelected = (customUICols[c].name == "OneTimeRevenue__c" && customUICols[c].objectName == 'CustomerInfo__c') ? true : false;
+                                    if(colFieldName == "nrt" && customUICols[c].objectName == 'CustomerInfo__c') {
+                                        npsDataArray[colFieldName] = (custInfo[npsRawData[i].Account__c]) ? ((custInfo[npsRawData[i].Account__c][colFieldName] == null) ? ((colDataType == "number" || colDataType == "currency") ? '0' : '') : custInfo[npsRawData[i].Account__c][colFieldName]) : ((colDataType == "number" || colDataType == "currency") ? '0' : '');
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            if(groupByValue == 2) {
+                                npsDataArray['lmn']             = (npsRawData[i].LastModifiedBy != null) ? ((npsRawData[i]['LastModifiedBy']['Name'] != null) ? npsRawData[i]['LastModifiedBy']['Name'] : '') : '';     //Last Modified By Name
+                                npsDataArray['cbn']             = (npsRawData[i].CreatedBy != null) ? ((npsRawData[i]['CreatedBy']['Name'] != null) ? npsRawData[i]['CreatedBy']['Name'] : '') : '';    //created By Name
+                                npsDataArray['crd']             = (npsRawData[i].CreatedDate != null) ? JBARAAddOffSetTime(npsRawData[i].CreatedDate,userLocaleDateFormatMap) : '';     //Created Date
+                                npsDataArray['lmd']             = (npsRawData[i].LastModifiedDate != null) ? JBARAAddOffSetTime(npsRawData[i].LastModifiedDate,userLocaleDateFormatMap) : '';   //Last Modified Date
+                            }
+                            npsDataArray['custInd']         = (groupByValue == 2) ? ((npsRawData[i].Account__r != null) ? ((npsRawData[i]['Account__r']['Industry'] != null) ? npsRawData[i]['Account__r']['Industry'] : 'Other') : 'Other')
+                                                                                    :((npsRawData[i].Industry != null) ? npsRawData[i].Industry : 'Other');
+                            npsDataArray['nrt']             = (custInfo[npsRawData[i].Account__c]) ? ((custInfo[npsRawData[i].Account__c].nrt == null) ? '' : custInfo[npsRawData[i].Account__c].nrt) : '';
+                        }
+
+
+                        //To get the alert information.
+                        //Code to check if customer has any active alert associated to NPS.
+                        //If customer has even one active alerts, we will make isCustHasActiveAlerts = true.
+                        if(groupByValue == 2) {
+                            if(custInfo[npsRawData[i].Account__c]) {
+                                selCustActiveAlertsList = custInfo[npsRawData[i].Account__c].custAAL || [];
+                                if(selCustActiveAlertsList.length <= 0) {
+                                     npsDataArray['Customer_Alert_Id']      = '';
+                                     npsDataArray['Is_Alert_LinkedToNPS']   = 'false';
+                                }
+                                else {
+                                    isCustHasActiveAlerts = false;
+                                    for(var j = 0; j < selCustActiveAlertsList.length; j++) {
+                                        if(selCustActiveAlertsList[j].isLinked == true) {
+                                            isCustHasActiveAlerts = true;
+                                            break;
+                                        }
+                                    }
+                                     npsDataArray['Is_Alert_LinkedToNPS']   = (!isCustHasActiveAlerts) ? 'false' : 'true';
+                                     npsDataArray['Customer_Alert_Id']      = selCustActiveAlertsList[0].alertId;
+                                }
+                            }
+                        }
+                        npsDataObjArray.push(npsDataArray);
+                    }
+
+                    return npsDataObjArray;
+                }
+
+
+                /**
+                *Function to reload the survey details by filter.
+                */
+                function loadNPSOverviewDetailsBySelection(filteredUR, reportByUserOrCust) {
+                    j$("#containerNPSOverviewListByCustomer, #containerNPSOverviewList").html('');
+                    j$(".dummyGridTitleBarForPDP, .npsOverViewByUserGridTitle").hide(); //To hide the grid title bars.
+
+                    //To handle the drill down grid.
+                    j$(".ajaxLoadingButtonToLoadUserResponsesByCustGrid").hide();
+                    j$(".dummyGridCustomerNPSResponsesTitleBar").hide();
+                    j$("#containerCustomerNPSResponsesList").html('');
+
+                    if(reportByUserOrCust == 2) {
+                        j$(".detailResponsesViewByUser").show();
+                        j$(".ajaxLoadingButtonToLoadGridByPDP, .ajaxLoadingButtonToLoadGridByUser").show(); //To show the loading.
+                    }
+                    else {
+                        j$(".ajaxLoadingButtonToLoadGridByPDP").show(); //To show the loading.
+                        j$(".detailResponsesViewByUser").hide();
+                    }
+                    //alert('GroupByVal: '+reportByUserOrCust+' UR: '+filteredUR);
+                    renderGridNChartByFilter(reportByUserOrCust, filteredUR, this._relType);
+                }
+
+                /**
+                *Function to reload the survey user responses by customer seletion.
+                */
+                var customerSelectedName='';
+                function actFunToshowUserSurveyResponsesBYCust(selCustId, selCustName) {
+                    j$(".ajaxLoadingButtonToLoadUserResponsesByCustGrid").show();
+                    j$(".dummyGridCustomerNPSResponsesTitleBar").hide();
+                    j$("#containerCustomerNPSResponsesList").html('');
+                    customerSelectedName = selCustName;
+                    renderUserSurveyResponsesByCust(selCustId);
+                }
+
+                /**
+                *Code to build the user responses drill-down grid.
+                */
+                function bindSurveyListGrid(data) {
+                j$(".dummyGridCustomerNPSResponsesTitleBar").hide();
+                var listData = data;
+                var arrCols = getSurveyListColumns();
+                var screenWidth = screen.width - 150;
+                var gridParam = {
+                    'Id': 'CustomerNPSResponsesList',
+                    'colnames': arrCols[0],
+                    'colmodel': arrCols[1],
+                    'data': listData,
+                    'pagerId': 'plistCustomerNPSResponsesList',
+                    'sort': {
+                        'name': arrCols[2].name,
+                        'order': arrCols[2].order
+                    },
+                    'width': screenWidth,
+                    'height': 150,
+                    'gridComplete':gridCompleteCustomerList,
+                     'userLocaleDateFormatMap' : userLocaleDateFormatMap
+                }
+                j$("#CustomerNPSResponsesList").html("");
+
+                j$(".ajaxLoadingButtonToLoadUserResponsesByCustGrid").hide();
+                j$(".dummyGridCustomerNPSResponsesTitleBar").show();
+
+                buildjqGrid('containerCustomerNPSResponsesList', gridParam);
+                j$(".ui-pg-div").hide();
+                j$(".ui-jqgrid tr.ui-row-ltr td").css({
+                    "overflow": "hidden",
+                    "white-space": "nowrap"
+                });
+                //j$("#gbox_CustomerNPSResponsesList").removeClass("ui-corner-all").addClass("ui-corner-bottom");
+                j$(".dummyGridCustomerNPSResponsesTitleBar").css({
+                    "width": parseInt(screenWidth) - 8.5
+                })
+                j$(".dummyGridCustomerNPSResponsesTitleBar").show();
+                j$(".dummyGridCustomerNPSResponsesTitleBar").html(sanitizeHtml('<span style="font-weight:bold;font-size:1em;">'+customerSelectedName+'</span>'));
+            }
+
+             //Grid complete functions for calcluating footers.
+            function gridCompleteCustomerList() {
+                setGridWrapping();
+            }
+
+            //Toggle grid wrapping when user clicks on wrap checkbox.
+            function setGridWrapping() {
+                if (j$("#chkWrapText").attr("checked") == 'checked') {
+                    j$(".ui-jqgrid tr.ui-row-ltr td").css({
+                        "overflow": "hidden",
+                        "white-space": "pre-line"
+                    });
+                } else {
+                    j$(".ui-jqgrid tr.ui-row-ltr td").css({
+                        "overflow": "hidden",
+                        "white-space": "nowrap"
+                    });
+                }
+            }
+            /**
+            *Javascript Object to store the survey paricipant details properties.
+            */
+            function ResponsedSurveyParticipantPropertiesClass(data) {
+                this.CustomerLink                       = data.CustomerLink;
+                this.Participant                        = data.Participant;
+                this.Email                              = data.Email;
+                this.NPSScore                           = data.NPSScore;
+                this.Role                               = data.Role;
+                this.RespondedDate                      = data.RespondedDate;
+                this.Comments                           = data.Comments;
+            }
+
+            function getResponsedSurveyParticipantCommentsList(rawData) {
+                responsedSurveyParticipantPropertiesList = new Array();
+                for(var p = 0; p < rawData.length; p++) {
+                    responsedSurveyParticipantPropertiesObj = new ResponsedSurveyParticipantPropertiesClass({
+                        Participant     : rawData[p].UserName__c,
+                        Email           : rawData[p].UserEmail__c,
+                        Role            : rawData[p].UserRole__c,
+                        NPSScore        : rawData[p].NPSScore__c,
+                        CustomerLink    : (rawData[p].Account__r.Name == null) ? '' : ('<a href=\'CustomerSuccess360?cid='+ rawData[p].Account__c +'\' target=\'_top\'>'+ (rawData[p].Account__r.Name) +'</a>'),
+                        RespondedDate   : (rawData[p].ResponseDate__c != null) ? JBARAAddOffSetTime(rawData[p].ResponseDate__c,userLocaleDateFormatMap) : '',
+                        Comments        : rawData[p].NPSComment__c
+
+                    });
+                    responsedSurveyParticipantPropertiesList.push(responsedSurveyParticipantPropertiesObj);
+                }
+                return responsedSurveyParticipantPropertiesList;
+            }
+
+            //Construct all grid columns as an array
+            function getSurveyListColumns() {
+                var colArray=new Array();
+                var  colNames,colModel;
+                colNames=['Participant','Role','Email','NPS Score','Customer','Responded Date','Comments'];
+                colModel=[
+                          {name:'Participant',index:'Participant',width:100,searchoptions :{sopt:['cn']}},
+                          {name:'Role',index:'Role',width:100,searchoptions :{sopt:['cn']}},
+                          {name:'Email',index:'Email',width:100,searchoptions :{sopt:['cn']}},
+                          {name:'NPSScore',index:'NPSScore',width:100,searchoptions :{sopt:['cn']}},
+                          {name:'CustomerLink',index:'CustomerLink',width:100,searchoptions :{sopt:['cn']}},
+                          {name:'RespondedDate', width:150, sorttype:'datetime', datefmt:"ISO8601Long", "formatter":"date","formatoptions":{"srcformat": "ISO8601Long", "newformat":jqGridDateTimeFormat},searchoptions :{sopt:['cn']}},
+                          {name:'Comments',index:'Comments',width:500,searchoptions :{sopt:['cn']}}
+                ];
+                sort={'name':'Participant','order':'asc'};
+                colArray.push(colNames);
+                colArray.push(colModel);
+                colArray.push(sort);
+                return colArray;
+            }
+
+            </script>
+       </apex:outputPanel>
+
+       <!-- Code for search -->
+        <script type="text/javascript">
+            function showOverLayForm() {
+                var overLayHeight = j$(document).height();
+                var left = (screen.width - overLayWidth) / 2;
+                var top = (screen.height - overLayHeight) / 2;
+                var overLayWidth = j$(window).width()
+                j$(".jbaraDummyOverLayForm").css({
+                    'z-index': '4999',
+                    'left': 0,
+                    'position': 'fixed',
+                    'width': overLayWidth,
+                    'height': overLayHeight + 350
+                }).show();
+                j$(".dummygrdAdvancedSearch").hide();
+            }
+
+            function hideOverLayForm() {
+                j$(".jbaraDummyOverLayForm").hide();
+                j$(".dummygrdAdvancedSearch").show();
+            }
+
+            var refreshAdvanceSearchPanel = true;
+
+            function gridAdvanceSearchCallBackAfterSearch(strConditions) {
+                if (strConditions.length == 0) {
+                    j$(".searchingIndicator").hide();
+                }
+                else {
+                    j$(".searchingIndicator").show();
+                }
+                j$(".hdnAdvanceSearchFilterJson").val(JSON.stringify(strConditions));
+                j$("#grdAdvanceSearchDialog").dialog("close");
+                showOverLayForm();
+                actRefreshAfterAdvanceSearch();
+            }
+
+            function advancedSearchIconClicked() {
+                j$("span.dummygrdAdvancedSearchNRecordsInfo").css({'z-index': '1000'});
+                if (refreshAdvanceSearchPanel) {
+                    actShowAdvanceSearchForm();
+                    j$(".searchingIndicator").hide();
+                }
+                else {
+                    showAdvanceSearchDailog();
+                }
+
+            }
+
+            function showAdvanceSearchDailog() {
+                j$("#grdAdvanceSearchDialog").dialog({
+                    title: 'Search NPS Responses',
+                    modal: true,
+                    minWidth: 775,
+                    minHeight: 120,
+                    resizable: false,
+                    dialogClass: "advance-search-dialog",
+                    close: function() {
+                        j$("span.dummygrdAdvancedSearchNRecordsInfo").css({'z-index': '5000'});
+                    }
+                });
+                j$(".ui-dialog-titlebar").css({'border-radius': '5px 5px 0 0'});
+                j$(".ui-dialog-content").css({'border': '1px solid #A6C9E2'});
+                j$("#grdAdvanceSearchDialog").show();
+                refreshAdvanceSearchPanel = false;
+            }
+
+
+            function changeAdvanceSearchFrameStyles(param) {
+                j$("#frmAdvanceSearch").height(param);
+            }
+
+
+            function buildGridAfterAdvanceSearch() {
+                j$("#grdAdvanceSearchDialog").dialog("close");
+            }
+
+            function gridAdvanceSearchCallBackAfterClose() {
+                j$("#grdAdvanceSearchDialog").dialog("close");
+                j$("span.dummygrdAdvancedSearchNRecordsInfo").css({'z-index': '5000'});
+            }
+
+            function gridAdvanceSearchCallBackAfterReset() {
+                j$("#grdAdvanceSearchDialog").dialog("close");
+            }
+
+            function buildUserStatePreservationString() {
+                var sumCFD = (statePreservString.ClientSideFilter__c) ? j$.parseJSON(statePreservString.ClientSideFilter__c) : {};
+                sumCFD['NPSBySurvey'] = (sumCFD['NPSBySurvey']) ? sumCFD['NPSBySurvey'] : {};
+                sumCFD['NPSBySurvey']['SurveyCode'] = (j$(".JBaraDummySurveySelector").val() == 0 || j$(".JBaraDummySurveySelector").val() == null) ? '' : j$(".JBaraDummySurveySelector").val();
+                sumCFD['NPSBySurvey']['relType'] = (j$(".RelationshipTypeSelector").val() == null) ? '' : j$(".RelationshipTypeSelector").val();
+                statePreservString.ClientSideFilter__c = sumCFD;
+                statePreservString.SubSection__c   = '{"name" : "NPSBySurvey", "index" : 2}';
+                triggerOnComplete = false;
+                processEntireState();
+            }
+
+            function getSideNavUrl(host, appendURL, sourceURL){
+              var url = sourceURL.substring(0,sourceURL.indexOf(host))+appendURL;
+              url += (url.indexOf('?') === -1) ? '?' : '&';
+              return url+sourceURL.substring(sourceURL.indexOf(host)+host.length);
+            }
+            function removeParam(key, sourceURL) {
+                var rtn = sourceURL.split("?")[0],
+                    param,
+                    params_arr = [],
+                    queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+                if (queryString !== "") {
+                    params_arr = queryString.split("&");
+                    for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                        param = params_arr[i].split("=")[0];
+                        if (param === key) {
+                            params_arr.splice(i, 1);
+                        }
+                    }
+                    rtn = rtn + "?" + params_arr.join("&");
+                }
+                return rtn;
+            }
+        </script>
+
+        <apex:outputPanel id="defaultPanelToRender">
+            <script type="text/javascript">
+                google.charts.load('current', {packages: ['gauge']}); //To load the Google Visualization  Gauge Chart package.
+                var IsSurveyCodeExistInURL = "false";
+                j$(document).ready(function() {
+                    if(j$.browser.msie && j$.browser.version == '7.0') {
+                        j$('.dummyIEFilterDisplay').css({'float':'left'});
+                    }
+
+                    //Code to build the Survey selection options.
+                    surveyMasterList        = fakeEval('{!(JSINHTMLENCODE(AllSurveySelectionList))}');
+
+                    IsSurveyCodeExistInURL = "{!(isThisSurveyCodeExist)}";
+                    var postedSurveyCode       = "{! JSENCODE($CurrentPage.parameters.SurveyCode)}";
+                    surveyMasterSelectionOptions = '<option value="0">Select Survey</option>';
+                    for(var i = 0; i < surveyMasterList.length; i++) {
+                        surveyMasterSelectionOptions += '<option value="'+surveyMasterList[i].SurveyId+'">'+surveyMasterList[i].SurveyName+'</option>';
+                    }
+                    j$('.JBaraDummySurveySelector').html(sanitizeHtml(surveyMasterSelectionOptions));
+
+                    //The below code returns the Post parameter value of name SurveyCode.
+                    j$('.JBaraDummySurveySelector').val(postedSurveyCode);
+                    var isRelationshipEnabled = {!(isRelationshipEnabled)};
+                    if(!isRelationshipEnabled){
+                    buildUserStatePreservationString();
+                    }
+                    //Code to handle the change event on Survey Selection.
+                    j$('.JBaraDummySurveySelector').unbind().bind("change",function() {
+                        isDefaultSurveyChanged = true;
+                        var queryStringParam = encodeURIComponent(j$(this).val());
+                         if(parseInt(j$('.JBaraDummySurveySelector').val()) == 0) {
+                                j$(".NPSOverviewBySurvey").hide();
+                                return false;
+                         }
+                          var oldURL = removeParam('SurveyCode', window.location.href);
+                          oldURL = removeParam('relType', oldURL);
+
+                          if(oldURL.indexOf('?')>0){
+                              oldURL += '&';
+                          }else{
+                              oldURL += '?';
+                          }
+                         var url = oldURL+'SurveyCode='+queryStringParam+'';
+                         if(self._relType != null && self._relType != ''){
+                             url = url+'&relType='+self._relType;
+                         }
+                         window.location.href = url;
+                                });
+
+                    /*j$(".JBaraDummySurveySelector").multiselect({
+                                    multiple: false,
+                                    header:false,
+                                    selectedList: 1,
+                                    minWidth: 150,
+                                    height: 'auto'
+                    });
+
+                    j$(".NPSScatterChartFilterOptionsSelectCtrl").multiselect({
+                                    multiple: false,
+                                    header:false,
+                                    selectedList: 1,
+                                    height: 'auto'
+                    });*/
+
+                    var IsSurveyCodeExistInOurSurveyList="false";
+                    //The below code will execute when the survey code your entered that not existed actual surveys list.
+                    if(IsSurveyCodeExistInURL == "true") {
+                        for(var i = 0; i < surveyMasterList.length; i++) {
+                            if((surveyMasterList[i].SurveyId).toLowerCase() == postedSurveyCode.toLowerCase()) {
+                                IsSurveyCodeExistInOurSurveyList = "true";
+                                break;
+                            }
+                        }
+                        if(IsSurveyCodeExistInOurSurveyList == "false") {
+                            j$(".noresponseData").show();
+                            j$(".NPSOverviewBySurvey").hide();
+                            j$('.JBaraDummySurveySelector').val("0");
+                            return false;
+                        }
+                    }
+                    else {
+                        j$(".NPSOverviewBySurvey").hide();
+                        j$('.JBaraDummySurveySelector').val("0");
+                        return false;
+                    }
+
+                 j$(".npsScoreDetailHeader").click(function() {
+                        var scoreDetail = j$(".dummyNPSScoreDetail");
+                        if(scoreDetail.is(':visible')) {
+                        scoreDetail.hide();
+                        j$(".npsScoreDetailHeader").find('h3').attr('class','h_hide');
+                    }
+                    else {
+                        scoreDetail.show();
+                        j$(".npsScoreDetailHeader").find('h3').attr('class','h_show');
+                    }
+                    });
+
+
+                    /*j$(".dummyNPSNewButton").click(function() {
+                        var scoreDetail = j$(".dummyNPSScoreDetail");
+                        if(scoreDetail.is(':visible')) {
+                        scoreDetail.hide();
+                        j$(".npsScoreDetailHeader").find('h3').attr('class','h_hide');
+                    }
+                    else {
+                        scoreDetail.show();
+                        j$(".npsScoreDetailHeader").find('h3').attr('class','h_show');
+                    }
+                    });*/
+
+                    j$(".npsOverviewDetailHeader").click(function() {
+                        var overviewDetail = j$(".dummyNPSOverviewDetail");
+                        if(overviewDetail.is(':visible')) {
+                        overviewDetail.hide();
+                        j$(".npsOverviewDetailHeader").find('h3').attr('class','h_hide');
+                    }
+                    else {
+                        overviewDetail.show();
+                        j$(".npsOverviewDetailHeader").find('h3').attr('class','h_show');
+                    }
+                    });
+
+                    //hide the exoprt and other options on outside click
+                    j$(document).click(function() {
+                        j$(".gs-moreopt-cnt").hide();
+                    });
+
+                    j$(".btnShowActions").show();   //dot dot dot
+
+                    //for nps dot dot dot click
+                    j$(".gs-nps-ShowActions").unbind("click").bind("click",function(event){
+                        if(j$(".gs-nps-moreopt").filter(":hidden")){
+                            event.stopPropagation();
+                            j$(".gs-nps-moreopt").show();
+                        }
+                    });
+
+                    //for customer dot dot dot click
+                    j$(".gs-customer-ShowActions").unbind("click").bind("click",function(event){
+                        if(j$(".gs-customer-moreopt").filter(":hidden")){
+                            event.stopPropagation();
+                            j$(".gs-customer-moreopt").show();
+                        }
+                    });
+
+                });
+            </script>
+        </apex:outputPanel>
+
+
+        <apex:outputPanel rendered="{!renderNPSOverviewDetailsBySurvey}">
+            <apex:outputPanel id="jsPanel" >
+                <script type="text/javascript">
+
+                    isCustomNPSUIView = "false";
+                    isCustomNPSUIView   = "{!(isCustomNPSView)}";
+
+                    //Associated Object details.
+                    isSurveyResponseAssociatedToObject = "{! (isSurveyAssociatedToObject)}";
+                    surveyResponseAssociatedObjectName = "{! JSENCODE(surveyAssociatedObjectName)}";
+                    salesforceOrgBaseURL  = "{!(sfdcBaseURL)}"; //To get the Org base url.
+
+                    j$(document).ready(function() {
+                        //To Build the NPSOverview Analysis Based on the Survey Code.
+                        //To build the UsersArray and role selection drop down.
+                        userRoles                           = new Array();
+                        buildUserRolesArray();
+                        var userRoleOptions = '<option value="All">All Roles</option>';
+                        for(var r = 0; r < userRoles.length; r++) {
+                            userRoleOptions += '<option value="'+userRoles[r]+'">'+userRoles[r]+'</option>';
+                        }
+                        j$('.dropDownFilterByUserRole').html(sanitizeHtml(userRoleOptions));
+                        j$('.dropDownFilterByUserRole').val('All');
+
+                       /* j$(".dropDownFilterByUserRole").multiselect({
+                                    multiple: false,
+                                    header:false,
+                                    selectedList: 1,
+                                    minWidth: 125,
+                                    height: 'auto'
+                        });*/
+
+                        //The below setTimeout code added due problems while browsing using back button.
+                        if(j$.browser.opera) {
+                            setTimeout(function() {
+                              j$(".dropDownFilterByUserRole").val('All');
+                            }, 1000);
+                        }
+                        else {
+                            j$(".dropDownFilterByUserRole").val('All');
+                        }
+
+                        /*if((isSameUserSessionExists == "true") && !j$.isEmptyObject(clientSideFltDetails) && !isDefaultSurveyChanged) {
+                            var summaryCFD = (clientSideFltDetails['NPSBySurvey']) ? clientSideFltDetails['NPSBySurvey'] : {};
+                            j$.each(((summaryCFD['OtherFilters']) ? summaryCFD['OtherFilters'] : []), function(indx, valObj) {
+                                if(valObj.name == 'ByCustOrUsr') {
+                                    j$(".rbtFilterNPSvsMRRScatterChart).val(valObj.value);
+                                }
+                                else {
+                                     j$(".dropDownFilterByUserRole").val(valObj.value);
+                                }
+                            });
+                        }*/
+
+                        google.charts.setOnLoadCallback(renderNPSAnalysisChartsBasedOnSurvyerCode.bind(this, j$('.JBaraDummySurveySelector').val(), 2, 'All'));
+                        //Attach click event for the radio buttons.
+                        j$('.rbtFilterNPSvsMRRScatterChart').unbind().bind('change', function() {
+                            renderNPSAnalysisChartsBasedOnSurvyerCode(j$('.JBaraDummySurveySelector').val(), parseInt(j$(this).val()), j$('.dropDownFilterByUserRole').val());
+                            loadNPSOverviewDetailsBySelection(j$('.dropDownFilterByUserRole').val(), parseInt(j$(this).val()));
+                        });
+
+                        //Filter the data based on user role.
+                        j$('.dropDownFilterByUserRole').unbind().bind("change",function() {
+                            if(j$(".rbtFilterNPSvsMRRScatterChart").val() !== undefined) {
+                                renderNPSAnalysisChartsBasedOnSurvyerCode(j$('.JBaraDummySurveySelector').val(), parseInt(j$(".rbtFilterNPSvsMRRScatterChart").val()), j$(this).val());
+                                loadNPSOverviewDetailsBySelection(j$(this).val(), parseInt(j$(".rbtFilterNPSvsMRRScatterChart").val()));
+                            }
+                        });
+
+                        j$('.dropDownFilterByUserRole').click(function(e) {
+                            e.stopPropagation();
+                        });
+                        j$('.userType').click(function(e) {
+                            e.stopPropagation();
+                        });
+
+                        //code to handle the Wraptext in Grid.
+                        j$("#NPSOverviewChkWrapText").bind("click", function() {
+                            setNPSOverviewGridWrapping(true);
+                        });
+
+                        //code to handle the Wraptext in Grid.
+                        j$("#NPSOverviewByCustomerChkWrapText").bind("click", function() {
+                            setNPSOverviewByCustomerGridWrapping(true);
+                        });
+
+                    });
+
+                </script>
+            </apex:outputPanel>
+
+            <apex:outputPanel id="rerenderNPSOverViewreportsBySelection">
+                <script type="text/javascript">
+                        //The below code was called only
+                        npsReportByUser = "{!(runReportByUser)}";
+
+                        allNPSOverviewJsonData        = sanitizeHtml('{!(JSINHTMLENCODE(AllSurveyResponsesJsonBySurvey))}');
+                        allNPSOverviewJsonData        =  j$("<\div>").html(allNPSOverviewJsonData).text();
+                        allNPSOverviewJsonData        =  processObjectForXss(JSON.parse(gsRemoveNameSpace(allNPSOverviewJsonData)));
+
+
+
+                        customersInformationList      = fakeEval('{!(JSINHTMLENCODE(CustomerDetailsJson))}');
+
+
+                        accountDetailsBySurvey        = sanitizeHtml('{!(JSINHTMLENCODE(UnGroupableAccountDetailsBySurvey))}');
+                        accountDetailsBySurvey        =  j$("<\div>").html(accountDetailsBySurvey).text();
+                        accountDetailsBySurvey        =  JSON.parse(gsRemoveNameSpace(gsEncodeHtml(accountDetailsBySurvey)));
+
+
+
+                        npsOverviewDetailsByCust      = sanitizeHtml('{!(JSINHTMLENCODE(NPSResponsedOnCategoryByCustomer))}');
+                        npsOverviewDetailsByCust      =  j$("<\div>").html(npsOverviewDetailsByCust).text();
+                        npsOverviewDetailsByCust      =  JSON.parse(gsEncodeHtml(npsOverviewDetailsByCust));
+
+                        npsUIViewColumnsList        = sanitizeHtml('{!(JSINHTMLENCODE(npsUIViewColumnsStr))}'); //selected UI view columns.
+                        npsUIViewColumnsList        =  j$("<\div>").html(npsUIViewColumnsList).text();
+                        npsUIViewColumnsList        =  JSON.parse(gsEncodeHtml(npsUIViewColumnsList));
+
+                        npsAggregationDetails        = sanitizeHtml('{!(JSINHTMLENCODE(npsAggregationDetailsBySurvey))}'); //To get the aggregation details.
+                        npsAggregationDetails        =  j$("<\div>").html(npsAggregationDetails).text();
+                        npsAggregationDetails        =  JSON.parse(gsEncodeHtml(npsAggregationDetails));
+
+                        //To populate the column model based on the Custom VI View.
+                        if(isCustomNPSUIView == "true") {
+                            populateColumnsListByNPSCustomUIView();
+                        }
+
+                        allNPSOverviewJsonData = buildNPSDataForGridByAccountAndNPSObj(customersInformationList, allNPSOverviewJsonData, npsOverviewDetailsByCust, accountDetailsBySurvey, npsUIViewColumnsList, (npsReportByUser == "true" ? 2 : 1));
+
+                        j$(document).ready(function() {
+                            j$("span.recordsCountWeAreShowing").text(allNPSOverviewJsonData.length);
+
+                            //To update the Aggregation details.
+                            if(dummyCountTorenderAggregationDetails == 2) {
+                                renderNPSAnalysisChartsBasedOnSurvyerCode(j$('.JBaraDummySurveySelector').val(), parseInt(j$(".rbtFilterNPSvsMRRScatterChart").val()), j$('.dropDownFilterByUserRole').val());
+                            }
+                            dummyCountTorenderAggregationDetails = 2;
+
+                            renderNPSOverViewGridNChartByUserAndCustomer((npsReportByUser == "true" ? 2 : 1));
+
+                        });
+                </script>
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+        <!-- Code to render the user responses grid by customer -->
+        <apex:outputPanel id="reRenderUserSurveyResponsesGridByCust">
+            <apex:outputPanel rendered="{!renderSurveyResponsesByCust}">
+                <script type="text/javascript">
+
+                    userResponsesByCust        = sanitizeHtml('{!(JSINHTMLENCODE(UserSurveyResponsesByCust))}');
+                    userResponsesByCust        =  j$("<\div>").html(userResponsesByCust).text();
+                    userResponsesByCust        =  JSON.parse(gsRemoveNameSpace(gsEncodeHtml(userResponsesByCust)));
+
+                    //getResponsedSurveyParticipantCommentsList(userResponsesByCust);
+                    bindSurveyListGrid(getResponsedSurveyParticipantCommentsList(userResponsesByCust));
+                </script>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <div id="gs-app-container">
+            <div class="gs-module-container">
+            <div class="gs-module-content-wrapper" style="display: none">
+             <div class="gs-feature-disabled" style="display: none">
+              <div class="gs-feature-content">
+                <div class="gs-feature-image"></div>
+                <h1>Page no longer exists</h1>
+                <p>NPS 1.0 is retired and is no longer available. Gainsight offers NPS 2.0 to address all of your needs</p>
+                <a href="javascript:;" target="_blank" onclick="redirectFeature()"  class="gs-btn-raised gs-feature-redirect">Go to NPS 2.0</a>
+                </div>
+             </div>
+
+
+                <div id="NPSSummaryTabs" class ="ui-corner-top" style="padding: 0px !important; border:none;">
+                    <!--ul class="HeaderNPSTabs">
+                        <li><a href="#NPSSummary">Summary</a></li>
+                        <li><a href="#NPSFeed">Feed</a></li>
+                        <li><a href="#NPSBySurvey">By Survey</a></li>
+                        <li><a href="#NPSByCustomer">By Customer</a></li>
+                    </ul-->
+                    <div class="HeaderNPSTabs row customer_tabs customerAnalytics" style="display:none;">
+                        <ul class="nav nav-tabs adp_tabs">
+                          <li class="gs-user-img"><img alt="user image" src="{!profilePhoto}" /></li>
+                                <li><span class="gs-tab-name">{!userDisplayName}</span><span
+                                    class="gs-arrow">&nbsp;</span></li>
+                          <li><a href="#NPSSummary" target="_top" class="tab" _ind="0">Summary</a></li>
+                          <li><a href="#NPSFeed" target="_top" class="tab" _ind="1">Feed</a></li>
+                          <li class="active"><a href="" target="_top" class="tab" _ind="2">By Survey</a></li>
+                          <li><a href="#NPSByCustomer" target="_top" class="tab" _ind="3">By Customer</a></li>
+                        </ul>
+                    </div>
+                    <!-- NPS Summary Tab Starts Here -->
+                    <div id="NPSSummary" style="align:center;">
+                    </div>
+                    <!-- NPS Summary Tab Ends Here -->
+
+                    <!-- NPS Feed Tab Starts Here -->
+                    <div id="NPSFeed" style="align:center;clear: both;">
+                    </div>
+                    <!-- NPS Feed Tab Ends Here -->
+
+                    <!-- NPS By Survey Tab Starts Here -->
+                    <div id="NPSBySurvey" style="align:center;clear: both;">
+                        <!-- To display the export batch initialization details -->
+                        <apex:outputPanel id="reRenderExportInitializationMessage" style="clear:both;">
+                            <div id="exportApexMsgId"><apex:pageMessages rendered="{!showExportInitializeMsg}"/></div>
+                        </apex:outputPanel>
+                         <div class="nps-header">
+                            <div style="float:left;display:inline; z-index: 10; font-size:14px;padding-left: 15px;">
+                                <div style="float:left;"><select class="RelationshipTypeSelector" style="width:230px;display:none"></select></div>
+                            </div>
+                            <div class="SurveySelectionOptionscontainer" style="text-align:left;padding-left: 20px;float:left">
+                                <div style="display:inline-block;"><select class="JBaraDummySurveySelector"></select></div>
+                             </div>
+                        </div>
+                        <div class='noresponseData' style='text-align:center;display:none;font-weight:bold;'>The Survey you are trying to access does not exit. Please select a survey from the drop down.</div>
+                        <!-- Ajax loading -->
+
+                        <apex:outputPanel rendered="{!renderNPSOverviewDetailsBySurvey}">
+                        <div class="ajaxLoadingButtonToLoadSurvey" align="center" style="margin:100px 0px 100px 0px;">
+                            <div class="preloader-wrapper big active">
+                 <div class="spinner-layer spinner-blue-only">
+                   <div class="circle-clipper left">
+                     <div class="circle"></div>
+                   </div><div class="gap-patch">
+                     <div class="circle"></div>
+                   </div><div class="circle-clipper right">
+                     <div class="circle"></div>
+                   </div>
+                 </div>
+               </div>
+                        </div>
+                        <div class="NPSOverviewBySurvey" style="display:none;">
+                        <div class="bPageBlock bEditBlock secondaryPalette">
+                            <div class="pbHeader npsScoreDetailHeader" style="position:relative;">
+                                <div class="h_show" style="display:inline-block; float:left;">
+                                    NPS<sup>&reg;</sup> and Distribution
+                                </div>
+                                <div align="center" class="dummyNPSNewButton">
+                                    <div class="userType">
+                                         <div class="left"><select class="rbtFilterNPSvsMRRScatterChart"></select></div>
+                                    </div>
+                                    <div style="display:inline-block; float:right">
+                                       <div style="float:left; margin-top: 5px;">&nbsp;&nbsp;|&nbsp;&nbsp;Filter Responses :&nbsp;&nbsp;</div>
+                                        <div style="float:left;"><select class="dropDownFilterByUserRole"></select></div>
+                                    </div>
+
+                                    <!-- Action function to export the data code start. -->
+                                    <apex:actionFunction name="actionToExportSurveyResponses" action="{!initiateBatchProcessToExportNPSSurveyResponsesData}" reRender="reRenderExportInitializationMessage" oncomplete="return hideApexPageMessageWithDelay('exportApexMsgId', 7500)">
+                                         <apex:param name="isByUserOrCustomer" value="" />
+                                    </apex:actionFunction>
+
+                                    <!-- Action to filter -->
+                                    <apex:actionFunction name="renderGridNChartByFilter" action="{!resetFilters}" reRender="rerenderNPSOverViewreportsBySelection">
+                                         <apex:param name="selectedByUser" value="" />
+                                         <apex:param name="selectedUserRole" value="" />
+                                         <apex:param name="relType" value="" />
+                                    </apex:actionFunction>
+                                    <!-- Action function to show the user survey response by Customer -->
+                                    <apex:actionFunction name="renderUserSurveyResponsesByCust" action="{!resetCustomerId}" reRender="reRenderUserSurveyResponsesGridByCust">
+                                         <apex:param name="selectedCustomerId" value="" />
+                                    </apex:actionFunction>
+
+                                </div>
+                            </div>
+                            <div class="pbBody dummyNPSScoreDetail" style="min-height:400px;">
+                                <div>
+                                        <div class="container" style="clear:both;width:100%;min-height:390px;height:auto;">
+                                            <!-- div class="header ui-jqgrid-titlebar ui-widget-header ui-corner-top">
+
+                                            </div-->
+                                            <!-- Graph and List Containers -->
+                                            <div style="display: inline; width: 98%">
+                                                <div style="padding:0px 4px 4px 10px; position : relative;">
+
+                                                <span class="dummygrdAdvancedSearchNRecordsInfo"  style="float:right; position:absolute;font-size:13px; right:71px;top:15px; z-index:10;" >
+                                                    <span><span style="font-size:15px;">Showing:</span> <span class="recordsCountWeAreShowing" style="font-size:15px;"></span> &nbsp; <span style="font-size:15px;">of</span> &nbsp; <span class="ActualRecordsCount" style="font-size:15px;"></span></span>&nbsp;&nbsp;
+                                                    <!--span class="dummygrdAdvancedSearch" style="cursor:pointer; display:inline-block;">
+                                                        <apex:image url="{!URLFOR($Resource.appStyles, 'img/search-4.png')}" width="24" height="24" onclick="advancedSearchIconClicked()" style="margin-bottom:5px;" title="Advanced Search"/>
+                                                    </span-->
+                                                </span>
+                                                <div style="display: inline ;float:left;width: 32%; height: 370px;">
+                                                  <div class="NPSTabs" >
+                                                    <div id="tabNPS" class ="ui-corner-top" style="height: 369px;min-height: 369px;max-height: 369px; padding:0px !important">
+
+                                                        <div id="tabNPS-Score">
+                                                            <div class="npsWidget" style="height:180px;display: inline;" >
+
+                                                                <div id="chart_nps" style="display: inline ;float:left;width:49%; height: 180px;"></div>
+                                                                <div style="display: inline ;float:left;width:48%; height: 90px;margin-top:50px" class="container">
+                                                                    <div class="ui-state-default ui-corner-top no-bor" style="height:25px;text-align:center;font-size:1.2em; font-family: 'Proxima Nova Semibold', sans-serif, arial; padding-top:5px;">
+                                                                        NPS<sup>&reg;</sup>
+                                                                    </div>
+                                                                    <div class="overallNPSPercentage" style="font-size:2.5em; text-align:center; margin-top:10px; font-family:'Proxima Nova Semibold', sans-serif, arial;"></div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="npsParticipation" style=" clear:both;padding:0px 4px 4px 4px ;height: 150px; width:99%" >
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="" style="display: inline ;float:left;width: 1%; height: 370px;">
+                                                </div>
+
+                                                <div class="NPSTabs" style="display: inline ;float:left;width:66.9%; height: 370px;min-height: 370px;max-height: 370px;">
+                                                    <div id="tabs" class ="ui-corner-top gs-subtabs-cont">
+                                                        <ul>
+                                                            <li class="gs-border-left promoters active"><a href="#tabs-Promoters" class="filteringCustomerNPSDataByPDP">Promoters</a><span style="background:#44b798;" class = "dummyResponses" id="totalPromoters"></span></li>
+                                                            <li class="passives"><a href="#tabs-Promoters" class="filteringCustomerNPSDataByPDP">Passives</a><span  style="background:#ff8448;" class = "dummyResponses" id="totalPassives"></span></li>
+                                                            <li class="detractors"><a href="#tabs-Promoters" class="filteringCustomerNPSDataByPDP">Detractors</a><span style="background:#ed5f5e;" class = "dummyResponses" id="totalDetractors"></span></li>
+                                                            <li class="gs-advanced-cnt">
+                                                              <!-- <span class="dummygrdAdvancedSearchNRecordsInfo">
+                                                                 <span class="dummygrdAdvancedSearch" style="cursor:pointer; display:inline-block;margin-top:3px;background-color:none;" onclick="advancedSearchIconClicked()" ></span>
+                                                              </span>  -->
+                                                               <div class="gs-moreactions-drop gs-customer-moreaction">
+                                                                    <div class="gs-moreopt-btn gs-customer-ShowActions btnShowActions" title="More..." style="display:none;"></div>
+                                                                     <div class="gs-moreopt-cnt gs-customer-moreopt" style="display: none;">
+                                                                      <div class="gs-arowblue"></div>
+                                                                        <ul>
+                                                                            <li><a id="NPSOverviewByCustomerChkWrapText" class="gs-wrap-lines" href="javascript:void(0)" >Wrap lines</a></li>
+                                                                            <li><a class="gs-export-new" href="javascript:void(0)" onclick="exportNPSOverviewByCustomer()">Export</a></li>
+                                                                            <li><a class="gs-adv-search" href="javascript:void(0)" onclick="advancedSearchIconClicked()">Advanced Search</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                               </div>
+                                                            </li>
+                                                        </ul>
+
+                                                        <div id="tabs-Promoters subtabs-content" style="margin:10px 20px 10px 20px;">
+                                                           <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top dummyGridTitleBarForPDP" style="padding: 5px 0 10px 5px; font-size:16px; background:#fff !important; font-family: 'Proxima Nova Semibold', sans-serif, arial; font-weight: 600; font-style: normal; display:none;" >
+                                                                <span class = "searchingIndicator" style = "float:left; margin-top: 3px; margin-left: 4px;display:none;"><img src = "/img/icon/forecasts16.png" /> Search Results &nbsp; : &nbsp;</span>
+                                                                <div style="display: inline-block;" class="NPSOverviewByCustomerTitle dummyIEFilterDisplay">
+                                                                    Promotors
+                                                                </div>
+                                                            </div>
+
+                                                                 <div class="ajaxLoadingButtonToLoadGridByPDP" align="center" style="margin:135px 0px 135px 0px; display:none;">
+                                                                    <div class="waitingHolder" style="width: 74px; top: 25.8px;">
+                                                                        <span class="waitingDescription"></span>
+                                                                    </div>
+                                                                </div>
+
+                                                            <div id='containerNPSOverviewListByCustomer'></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <!-- Container to render the Chatter Chart -->
+                                                <div class="dummyContainerForSpace" style="clear:both;width:99%"></div>
+                                                <br/>
+
+                                                <div class="showCustomerResponsesDiv" >
+                                                    <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top dummyGridCustomerNPSResponsesTitleBar" style="height:20px;padding: 5px;font-size:0.9em;margin-left: 19px; display:none;">
+                                                        <div style="right:20px;display: inline;float:right;">
+
+                                                         </div>
+                                                    </div>
+                                                    <div class="ajaxLoadingButtonToLoadUserResponsesByCustGrid" align="center" style="margin:75px 0px 75px 0px; display:none;">
+                                                        <div class="preloader-wrapper big active">
+                               <div class="spinner-layer spinner-blue-only">
+                                 <div class="circle-clipper left">
+                                   <div class="circle"></div>
+                                 </div><div class="gap-patch">
+                                   <div class="circle"></div>
+                                 </div><div class="circle-clipper right">
+                                   <div class="circle"></div>
+                                 </div>
+                               </div>
+                             </div>
+                                                    </div>
+                                                    <div id='containerCustomerNPSResponsesList' style="border:1px solid #000 inportant;margin-left: 19px;"></div>
+                                                </div>
+
+                                                <div class="dummyContainerForSpace" style="clear:both;width:99%"></div>
+                                                <!-- Container to render the Chatter Chart -->
+                                                <br/>
+                                                <!-- Container to render the Chatter Chart -->
+                                                <div class="dummyContainerForSpace" style="clear:both;width:99%"></div>
+                                                <div class="dummyContainerForSpace" style="clear:both;width:99%"></div>
+                                                <div class="dummyNPSDistributionDetail" style='padding:5px; border-top:1px solid #ececec;'>
+                                                    <div class="scatterChartToggleOptions" style="top:2px;float:left; right:-12px; position:relative; height:20px;clear:both;">
+                                                        <select onchange="reRenderScatterChartBySelectin(this)" class="NPSScatterChartFilterOptionsSelectCtrl" >
+                                                            <option value="MRR">{!(npsCustomLabelsMap['MRR'])}</option>
+                                                            <option value="ASV">{!(npsCustomLabelsMap['ASV'])}</option>
+                                                            <option value="Users">{!(npsCustomLabelsMap['Users'])}</option>
+                                                        </select>
+                                                   </div>
+                                                    <div id="NPSOverviewContainer" style="height: 320px; margin:30px 10px 10px auto ;padding:0px"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dummyContainerForSpace" style="clear:both;width:100%"></div>
+
+                        <div class="bPageBlock bEditBlock secondaryPalette detailResponsesViewByUser">
+                            <div class="pbHeader npsOverviewDetailHeader">
+                                <h2 class="h_show">
+                                    Detailed Responses
+                                </h2>
+                            </div>
+                            <div class="pbBody">
+                                <div class="dummyNPSOverviewDetail " style="padding:0px 4px 5px 4px;" >
+
+                                    <!--Checkbox to filter the customer types-->
+                                    <div style=" padding: 5px;font-size:0.9em;"></div>
+                                    <div class="addAndShowAlertButtons" style="height:30px; margin-right:10px;">
+                                        <div class="AlertIconLInk" style="float:right; position:relative; right:10px; top:-10px; display:none;">
+                                        <a title="Goto Customer 360 View" href="#" target="_top"><img class="customerAlertIcon" src="/s.gif" /></a>
+                                         </div>
+                                         <div class="gs-moreactions-drop gs-nps-moreaction">
+                                                <div class="gs-moreopt-btn gs-nps-ShowActions btnShowActions" title="More..." style="display:none;"></div>
+                                                 <div class="gs-moreopt-cnt gs-nps-moreopt" style="display: none;">
+                                                  <div class="gs-arowblue"></div>
+                                                    <ul>
+                                                        <li><a id="NPSOverviewChkWrapText" class="gs-wrap-lines" href="javascript:void(0)" >Wrap lines</a></li>
+                                                        <li><a class="gs-export-new" href="javascript:void(0)" onclick="exportNPSOverviewByUser()">Export</a></li>
+
+                                                    </ul>
+                                                </div>
+                                           </div>
+
+                                    </div>
+
+                                    <div class="NPSResponseDetailsBYUser" style="clear:both; margin:10px;">
+                                        <div class="ajaxLoadingButtonToLoadGridByUser" align="center" style="margin:135px 0px 135px 0px; display:none;">
+                                            <div class="preloader-wrapper big active">
+                         <div class="spinner-layer spinner-blue-only">
+                           <div class="circle-clipper left">
+                             <div class="circle"></div>
+                           </div><div class="gap-patch">
+                             <div class="circle"></div>
+                           </div><div class="circle-clipper right">
+                             <div class="circle"></div>
+                           </div>
+                         </div>
+                       </div>
+                                        </div>
+
+                                        <div id='containerNPSOverviewList'></div>
+                                    </div>
+
+                                    <div id="confirmAssociateNPSToNPS" align="center"></div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="dummyDivForSpace" style='clear: both; padding: 4px'></div>
+                        </div>
+                        </apex:outputPanel>
+                    </div>
+
+                    <!-- NPS By Survey Tab Ends Here -->
+
+                    <!-- NPS By Customer Starts Here -->
+                    <div id="NPSByCustomer" style="align:center;clear: both;">
+                    </div>
+                    <!-- NPS By Customer Tab Ends Here -->
+
+                </div>
+                </div>
+                 <div class="gs-feature-error" style="display: none"></div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //Script to displaying tabs.
+            //j$( "#tabs" ).tabs();
+            //j$( "#tabNPS" ).tabs();
+            //j$('#NPSSummaryTabs').tabs({ selected: 2});
+
+            var summaryDetails = (clientSideFltDetails['NPSSummary']) ? clientSideFltDetails['NPSSummary'] : {};
+            if(!j$.isEmptyObject(summaryDetails)) {
+                var url = 'NPSSummary';
+                if(summaryDetails['relType'] && summaryDetails['relType'] != ''){
+                    url += url.indexOf('?')>=0 ? '&' : '?';
+                    url += 'relType='+summaryDetails['relType'];
+                }
+                j$('#NPSSummary').attr('href', encodeURI(url));
+            }
+            else {
+            j$('#NPSSummary').attr('href', encodeURI('NPSSummary'));
+            }
+            var feedDetails = (clientSideFltDetails['NPSFeed']) ? clientSideFltDetails['NPSFeed'] : {};
+            if(!j$.isEmptyObject(feedDetails)) {
+                var url = 'NPSFeed';
+                if(feedDetails['relType'] && feedDetails['relType'] != ''){
+                    url += url.indexOf('?')>=0 ? '&' : '?';
+                    url += 'relType='+feedDetails['relType'];
+                }
+                j$('#NPSFeed').attr('href', encodeURI(url));
+            }
+            else {
+            j$('#NPSFeed').attr('href', encodeURI('NPSFeed'));
+            }
+            j$('#NPSByCustomer').attr('href', encodeURI('NPSOverviewByCustomer'));
+
+            /*j$("#NPSSummaryTabs").bind('tabsselect', function(event, ui) {
+                if((j$(ui.tab).attr('href')).indexOf('NPS') >= 0) {
+                    statePreservString.SubSection__c   = '{"name" : "'+(j$(ui.tab).attr('href')).substr(1)+'", "index" : '+ui.index+'}';
+                    triggerOnComplete = true;
+                    processEntireState();
+                }*/
+
+            var tabClickHref;
+            j$("#NPSSummaryTabs").delegate('a.tab', 'click', function(event) {
+                var currentElmnt = j$(event.currentTarget);
+                var tabIndex = j$(currentElmnt).attr('_ind');
+                if(tabIndex!=2){
+                    tabClickHref = j$(currentElmnt).attr('href');
+                    event.preventDefault();
+                    j$("#ajaxRedirectingIcon").show();
+                    j$("#NPSBySurvey").hide();
+                    if((j$(currentElmnt).attr('href')).indexOf('NPS') >= 0) {
+                        if(typeof statePreservString == 'undefined'){
+                          statePreservString        = sanitizeHtml('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+                          statePreservString        =  j$("<\div>").html(statePreservString).text();
+                          statePreservString        =  JSON.parse(gsEncodeHtml(statePreservString)) || {};
+                        }
+                        statePreservString.SubSection__c   = '{"name" : "'+(j$(currentElmnt).attr('href')).substr(1)+'", "index" : '+tabIndex+'}';
+                        triggerOnComplete = true;
+                        processEntireState();
+                        j$("#NPSSummaryTabs").find('li').removeClass('active');
+                        j$(currentElmnt).parent().addClass('active');
+
+                    }
+                }
+            });
+
+        </script>
+
+        <apex:InputText StyleClass="hdnAdvanceSearchFilterJson" value="{!advanceSearchFilterJsonString}" style="display:none;"/>
+        <apex:actionFunction action="{!refreshAfterAdvanceSearch}" name="actRefreshAfterAdvanceSearch" reRender="rerenderNPSOverViewreportsBySelection">
+        </apex:actionFunction>
+        <apex:actionFunction action="{!showAdvanceSearch}" name="actShowAdvanceSearchForm" reRender="grdAdvanceSearchPanelContainer" onComplete="showAdvanceSearchDailog();" >
+        </apex:actionFunction>
+        <iframe src="apex/FramePageForDML?callAfterStateSave=redirectPageByTabSelection"
+            width="0" height="0" frameborder="0" id="childDMLOperationIframe"></iframe>
+
+        <apex:actionFunction name="actionUpdateStatePreservation" action="{!saveExistingNPSUserState}" reRender="UserStatePanel" oncomplete="redirectPageByTabSelection();" >
+             <apex:param name="stateJSON" value="" />
+        </apex:actionFunction>
+
+        <div id="grdAdvanceSearchDialog">
+            <apex:outputPanel id="grdAdvanceSearchPanelContainer">
+                <apex:outputpanel rendered="{!renderAdvanceSearchPanel}">
+                    <iframe id="frmAdvanceSearch" src="apex/AdvanceSearchIFrame?inline=1&SearchtabName=NPSSEARCH&externalObjectName=&externalObjectLookupFieldName=&callbackAfterSearch=gridAdvanceSearchCallBackAfterSearch&callbackAfterReset=gridAdvanceSearchCallBackAfterReset&callbackAfterClose=gridAdvanceSearchCallBackAfterClose&flagToLoadOnDefault=true&sendRelationshipFields={!isRelationship}" width="735" height="120" frameborder="0"></iframe>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </div>
+
+        <div class="overlayBackground jbaraDummyOverLayForm" style="position: absolute; display: none;" align="center">
+            <div class="preloader-wrapper big active">
+         <div class="spinner-layer spinner-blue-only">
+           <div class="circle-clipper left">
+             <div class="circle"></div>
+           </div><div class="gap-patch">
+             <div class="circle"></div>
+           </div><div class="circle-clipper right">
+             <div class="circle"></div>
+           </div>
+         </div>
+       </div>
+        </div>
+
+
+
+        <!-- NPS Entry Form Container Starts Here-->
+
+        <!-- NPS Entry Form Container Ends Here-->
+
+
+        <!-- Overlay Container Starts Here-->
+        <div class="overlayBackground jbaraDummyOverLayForm" style="position: absolute; display: none;">
+        </div>
+    </apex:form>
+    <apex:outputPanel id="UserStatePanel">
+        <script type="text/javascript">
+            statePreservString = sanitizeHtml('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+            statePreservString =  j$("<\div>").html(statePreservString).text();
+            statePreservString =  JSON.parse(gsEncodeHtml(statePreservString));
+            isSameUserSessionExists = '{!(isSameUserSessionNPS)}';
+        </script>
+     </apex:outputPanel>
+     <script>
+        var GSGA = {
+            orgId: "{!$Organization.Id}",
+            orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('NPS - By Survey');
+    </script>
+    <div id="ajaxRedirectingIcon" align="center" style="margin:1px 0px 1px 0px; display:none;">
+            <div class="preloader-wrapper big active">
+         <div class="spinner-layer spinner-blue-only">
+           <div class="circle-clipper left">
+             <div class="circle"></div>
+           </div><div class="gap-patch">
+             <div class="circle"></div>
+           </div><div class="circle-clipper right">
+             <div class="circle"></div>
+           </div>
+         </div>
+       </div>
+        </div>
+</apex:page>

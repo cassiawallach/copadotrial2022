@@ -1,0 +1,83 @@
+<apex:page docType="html-5.0" sidebar="false" title="Integrations" controller="JBCXM.AdminBroker" tabStyle="Administration__tab" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+
+    <div id="gs-app-container">
+            <div class="workflow-wrapper gs-module-container">
+                <div class="workflow-ctn">
+                    <div class="content">
+                        <div class="fluid">
+                            <div class="listContainer"></div>
+                            <div class="inte_container">
+                                <div id="integration-loading-spinner">
+                                    <div class="preloader-wrapper active">
+                                        <div class="spinner-layer spinner-blue-only">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <div class="gap-patch">
+                                                <div class="circle"> </div>
+                                            </div>
+                                            <div class="circle-clipper right">
+                                                <div class="circle"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+
+        var GS = GS || {};
+
+        GS.userConfig = {
+            userLocale  : {!(dateTimeFormatByLocale)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        };
+
+        GS.remotingEndPoint = "{!$RemoteAction.NSRemoting.integrationRequestBroker}";
+        GS.commonRemotingEndPoint  = "{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}";
+        GS.adminRemotingEndPoint = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.remoting = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.sessionId = "{!NSSessionId}";
+        GS.orgId = "{!$Organization.Id}";
+        GS.dateFormatMap = fakeEval('{!JSINHTMLENCODE(dateTimeFormatByLocale)}');
+        GS.apiVersion = "V5_0";
+    </script>
+
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+            <c:AlertForm />
+            <script>
+                installResources({scripts: ["integrations/scripts/integrations.bundle.js"], styles:["integrations/styles/integrations.css"]});
+            </script>
+        </apex:outputpanel>
+        <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),JSINHTMLENCODE($CurrentPage.parameters.apppath))}/integrations/styles/integrations.css" />
+            <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), JSINHTMLENCODE($CurrentPage.parameters.apppath))}/integrations/scripts/integrations.bundle.js"></script>
+        </apex:outputpanel>
+
+    <script>
+        var GSGA = {
+            orgId: "{!$Organization.Id}",
+            orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('Integrations');
+    </script>
+
+</apex:page>

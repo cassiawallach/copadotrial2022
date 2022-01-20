@@ -1,0 +1,196 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.  
+---- Purpose                    : Displays all customers by Feature.
+---- Other comments (optional)  :
+----
+-->
+<apex:page sidebar="false" tabStyle="Insights__tab" Controller="JBCXM.CustomerFeatures" extensions="JBCXM.GSCommonBroker">
+	 <!-- Static Resource Includes: Jquery and css files  -->
+    <!-- Jquery Min,jgGrid Plugin, JqueryUI, Jquery theme include -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/js/jquery-ui-1.8.13.custom.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/js/i18n/grid.locale-en.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/js/jquery.jqGrid.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/js/jqgrid.Custom.Utility.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/css/ui.jqgrid.css"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css"/>
+	<script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <style>
+	  body #AppBodyHeader {  
+	            display: none;  
+	        } 
+	</style>    
+	
+	
+	<apex:form >
+		<div align="center">
+			<b>Select Feature : &nbsp;&nbsp;</b> <apex:actionFunction name="onchangeCustomerFeatures" action="{!virtualRerenderFeatures}" reRender="customerFeaturesPanel" oncomplete="return buildCustomerFeaturesGrid();" />
+			<apex:selectList value="{!productFeatureId}" multiselect="false" size="1"  StyleClass="jbaraDummySelectCtrl" onchange="refreshCustomerFeaturesGrid()">
+		        <apex:selectOptions value="{!CustomerFeaturesOptions}" />
+		    </apex:selectList>
+	    </div>
+    </apex:form>
+    
+    <script type="text/javascript">
+     	var j$ = jQuery.noConflict();
+	    j$.jgrid.no_legacy_api = true;
+	    j$.jgrid.useJSON = true;
+	     
+	    //To handle the currency config.
+		var currencyConfigObject = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+	    
+	    // We use a document ready jquery function.
+		j$(document).ready(function(){	
+			buildCustomerFeaturesGrid();
+			j$("#CustomerFeaturesChkWrapText").bind("click", function() {
+	            setCustomerFeaturesGridWrapping();
+	        });	
+		});
+		function refreshCustomerFeaturesGrid(){
+			j$('.headerFeatureByCustomer').hide();
+			j$('#containerCustomerFeaturesList').hide();
+			j$('.analyticsAjaxLoadingButton').show(); 
+			onchangeCustomerFeatures();
+		}
+		function bindCustomerFeaturesGrid(data) {
+			var customDateFrmt = 'm/d/Y';
+			var listData = data;
+			var arrCols = getCustomerFeaturesColumns();
+			var screenWidth = screen.width - 60;
+			var gridParam = {
+			    'Id': 'CustomerFeaturesList',
+			    'colnames': arrCols[0],
+			    'colmodel': arrCols[1],
+			    'data': listData,
+			    'pagerId': 'plistCustomerFeaturesList',
+			    'sort': {
+			        'name': arrCols[2].name,
+			        'order': arrCols[2].order
+			    },
+			    'width': screenWidth-40,
+			    'height': 300,
+			    'gridComplete':funToCallAfterGridComplete
+			}
+			j$('#containerCustomerFeaturesList').show();
+			buildjqGrid('containerCustomerFeaturesList', gridParam);
+			j$(".ui-pg-div").hide();
+			j$("#CustomerFeaturesList").find("td").css({
+			    "overflow": "hidden",
+			    "white-space": "pre"
+			});
+			               
+			j$("#gbox_CustomerFeaturesList").removeClass("ui-corner-all").addClass("ui-corner-bottom");
+			j$(".dummyGridTitleBar").css({
+			    "width": parseInt(screenWidth) - 50
+			}); 
+			j$('.analyticsAjaxLoadingButton').hide();        
+		}	
+	
+		function funToCallAfterGridComplete() {
+			setCustomerFeaturesGridWrapping();
+            j$('.analyticsAjaxLoadingButton').hide();
+            
+            //To update or format the nps data.
+            var formattedValue;
+            j$("#CustomerFeaturesList").find("tr.jqgrow  td.NPScoreCls").each(function() { 
+             	if(j$.trim(j$(this).text()).length > 0) {
+             		if(parseInt(j$(this).text().split(".")[1]) <= 0) {
+	             		j$(this).text(j$(this).text().split(".")[0]);
+	             		formattedValue = parseFloat(j$(this).text());
+	             		if ( formattedValue <= 6) {
+	                            j$(this).css("background","#FF3737");
+	                    }
+	                    else if(formattedValue > 6 && formattedValue <= 8){
+	                            j$(this).css("background","#FFBC41");
+	                    }
+	                    else{
+	                        j$(this).css("background","#66CC00");
+	                    }
+             		}	
+            	} 
+            });
+              
+		}	
+	
+	//Attach click event to toggle wrapping in grid.
+	function setCustomerFeaturesGridWrapping() {
+	    if (j$("#CustomerFeaturesChkWrapText").attr("checked") == true) {
+	        j$("#CustomerFeaturesList").find("td").css({
+	            "overflow": "auto",
+	            "white-space": "normal"
+	        });
+	    } else {
+	        j$("#CustomerFeaturesList").find("td").css({
+	            "overflow": "hidden",
+	            "white-space": "pre"
+	        });
+	    }
+	}	
+	
+	//Construct all grid columns as an array
+	function getCustomerFeaturesColumns() {
+		var colArray=new Array();
+		var  colNames,colModel;
+		colNames=['Customer','Inudstry','Original Contract Date','Lifetime','MRR','ASV','Users','Alerts','NPS']; 
+		colModel=[
+				  {name:'customerLink',index:'customerLink', width:150,searchoptions :{sopt:['cn']}},
+				  {name:'industry',index:'industry', width:140,searchoptions :{sopt:['cn']}},
+				  {name:'OCD', width:120,sorttype:'date',formatter:'date',
+                            formatoptions:{srcformat: 'm/d/Y', newformat: 'm/d/Y'}},	
+				  {name:'lifetime',index:'LifeTime',sorttype:'number',width:80,align:'right',formatter:'integer',formatoptions:{thousandsSeparator: ","}},                  
+                  {name:'MRR',index:'MRR', width:80,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                           thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                  {name:'ASV',index:'ASV', width:120,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                           thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                  {name:'users',index:'users',sorttype:'number',width:80,align:'right',formatter:'integer',formatoptions:{thousandsSeparator: ","}},
+                  {name:'actAlertCount',index:'actAlertCount',sorttype:'number',width:80,align:'right'},
+                  {name:'NPS',index:'NPS',sorttype:'number',width:80,align:'right', classes:"NPScoreCls"},
+		];
+		sort={'name':'Date','order':'desc'};
+		colArray.push(colNames);
+		colArray.push(colModel);
+		colArray.push(sort);
+		return colArray;
+	}
+	</script>
+	
+	
+	 <apex:outputPanel id="customerFeaturesPanel" >
+	 	<script type='text/javascript'>
+			//Builds featuress grid.
+		    function buildCustomerFeaturesGrid() {
+		        var customersByFeatureData = fakeEval('{!JSINHTMLENCODE(CustomersByFeature)}');
+				CustomerFeaturesJsonData = customersByFeatureData;
+		        bindCustomerFeaturesGrid(CustomerFeaturesJsonData);		      
+		        j$(".headerName").html('Customers By Feature : '+j$('.jbaraDummySelectCtrl option:selected').text() );
+		        j$('.headerFeatureByCustomer').show();		        
+				
+		    }
+		</script>
+	 
+	 
+		<!--Checkbox to filter the customer types-->
+		 
+		
+					<div style=" padding: 5px;font-size:0.9em;"></div>
+					<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top dummyGridTitleBar headerFeatureByCustomer" style="padding: 5px;font-size:0.9em;display:none;">
+						<span style="width: 80%;" class="headerName">
+						    
+						</span>
+						<div style="right: 20px; display: inline; float: right; color:#FFF;">
+			            	<input type="checkbox" id="chkWrapText" />
+			           	 	Wrap Lines&nbsp;&nbsp;
+			        	</div>
+					</div>
+					<div id='containerCustomerFeaturesList'></div>		
+				
+				
+				<div class="analyticsAjaxLoadingButton" align="center" style="padding:100px 0px 100px 0px; display:none;">
+			        <div class="waitingHolder" style="width: 74px; top: 25.8px;"><img src="/img/loading.gif" class="waitingImage" title="Please Wait..." />
+			        	<span class="waitingDescription">Loading...</span>
+			        </div>
+			    </div>
+		    
+		    		
+        </apex:outputPanel>
+</apex:page>

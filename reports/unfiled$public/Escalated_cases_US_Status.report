@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_82978420</developerName>
+        <masterLabel>US Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>FK_$copado__User_Story__c.copado__Status__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Beta</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Completed</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Released</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tested in Base Package</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Waiting for customer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Development Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Tech. Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Investigation Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Regression</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Release</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Done</sourceValue>
+            </sourceValues>
+            <value>US Completed - Blocked</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Draft</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Backlog</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Backburner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Awaiting Approval</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Approved</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Rejected</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Cancelled</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Development In Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Development</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Planning</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Investigation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Investigation in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Planning in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Design In Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New</sourceValue>
+            </sourceValues>
+            <value>US In Progress</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>HorizontalBar</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_82978420</groupingColumn>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CASE_NUMBER</field>
+    </columns>
+    <columns>
+        <field>SUBJECT</field>
+    </columns>
+    <columns>
+        <field>CONTACT.NAME</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <field>STATUS</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_$copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>FK_$copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <columns>
+        <field>FK_$copado__User_Story__c.copado__Priority__c</field>
+    </columns>
+    <columns>
+        <field>FK_$copado__User_Story__c.copado__Release__c</field>
+    </columns>
+    <columns>
+        <field>FK_$copado__User_Story__c.copado__Sprint__c</field>
+    </columns>
+    <columns>
+        <field>FK_CUST_RECORDTYPE</field>
+    </columns>
+    <columns>
+        <field>OWNER</field>
+    </columns>
+    <columns>
+        <field>FK_$copado__User_Story__c.copado__Cancellation_Reason__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>STATUS</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Escalated</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Case.Support_Case</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_82978420</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <name>Escalated cases - US Status</name>
+    <params>
+        <name>units</name>
+        <value>d</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CaseList@Case.User_Story__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>FK_$copado__User_Story__c.copado__Status__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATEONLY</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

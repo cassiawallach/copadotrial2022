@@ -1,0 +1,49 @@
+<apex:page controller="TRIMDA.TRIMDA_DupeAlerts_Controller" action="{!ShowWhat}">
+<style>
+    .DTaction {
+        color:#000000;
+        font-weight: bold;
+    }
+    .DTNews {
+        color:#6666FF;
+        font-weight: bold;
+    }
+    .OBOpt{
+        margin: 0px auto;
+        width: 100%;
+    }
+    .OBOpt.td{
+        width: 50%;
+    }
+    .OBOpt input, .OBOpt label{
+        float:none;
+        display:inline;
+        width: 30px;
+    }
+    
+</style>
+<slds />
+ 
+<table border="0" width="100%" style="background-color:white;" >
+    <tr><td>
+         <apex:outputPanel rendered="{!showSplash}">
+            <apex:panelgroup id="splash"  > 
+                <apex:include pagename="TRIMDA__TRIMDA_SplashPage" id="thesplashpage"  /> 
+            </apex:panelgroup>
+         </apex:outputPanel>
+    </td></tr>
+    <tr><td>
+         <apex:outputPanel rendered="{!showMyFirstAlert}">
+            <apex:panelgroup id="splash2"  > 
+                <apex:include pagename="TRIMDA__TRIMDA_MyFirstAlertPage" id="theMyFirstAlert"  /> 
+            </apex:panelgroup>
+         </apex:outputPanel>
+    </td></tr>
+    </table>
+
+<apex:outputPanel id="myConsole"  >
+    <apex:include pagename="TRIMDA__TRIMDA_Home" id="theconsole" rendered="{!showConsole}" />
+</apex:outputPanel> 
+
+
+</apex:page>

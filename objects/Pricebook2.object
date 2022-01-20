@@ -134,6 +134,18 @@
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>External_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Generic External Id for data migration purposes</description>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>IsActive</fullName>
         <trackHistory>false</trackHistory>
     </fields>
@@ -145,14 +157,27 @@
         <fullName>Name</fullName>
         <trackHistory>false</trackHistory>
     </fields>
+    <fields>
+        <fullName>chargebeeapps__CB_Site__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>CB Site</label>
+        <referenceTo>chargebeeapps__CB_Sites__c</referenceTo>
+        <relationshipLabel>Price Books</relationshipLabel>
+        <relationshipName>Price_Books</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
     <listViews>
-        <fullName>All_Price_Books</fullName>
+        <fullName>All_price_Books1</fullName>
         <columns>PRICEBOOK2.NAME</columns>
+        <columns>PRICEBOOK2.IS_ACTIVE</columns>
         <columns>PRICEBOOK2.DESCRIPTION</columns>
         <columns>PRICEBOOK2.LAST_UPDATE</columns>
-        <columns>PRICEBOOK2.IS_ACTIVE</columns>
         <filterScope>Everything</filterScope>
-        <label>All Price Books</label>
+        <label>All price Books</label>
     </listViews>
     <searchLayouts>
         <customTabListAdditionalFields>PRICEBOOK2.NAME</customTabListAdditionalFields>

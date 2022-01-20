@@ -1,0 +1,33 @@
+<template>
+    <div class={containerClass}>
+        <lightning-input type="file"
+                    name={name}
+                    label={label}
+                    required={isRequired}
+                    multiple={isMultiple}
+                    onchange={handleFileUploaded}>
+        </lightning-input>
+        <template if:true={files}>
+            <lightning-layout class="slds-wrap">
+                <template for:each={files} for:item="fileData" for:index="index">
+                    <lightning-layout-item key={fileData.Title} size="12">
+                        <div class="custom-box slds-box_xx-small slds-grid">
+                            <div class="slds-size_6-of-12">{fileData.Title}</div>
+                            <div class="slds-size_6-of-12">
+                                <lightning-icon class="curpoint" 
+                                            icon-name="utility:delete" 
+                                            variant="error" 
+                                            data-id={index} 
+                                            size="xx-small" 
+                                            alternative-text="Delete" 
+                                            title="Delete" 
+                                            onclick={removeFile}>
+                                </lightning-icon>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </template>
+    </div>
+</template>

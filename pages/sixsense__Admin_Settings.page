@@ -1,0 +1,811 @@
+<apex:page id="thePage" docType="html-5.0" showHeader="true" sidebar="false" controller="sixsense.Admin_SettingsVFC" title="6sense Admin Settings" >
+   <script src="{!URLFOR($Resource.sixsense__jQuery, 'jquery.min.js')}">
+   </script>
+   <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+   <apex:slds />
+
+   <div class="slds" >
+       <apex:outputPanel layout="none" rendered="{!havePermission}">
+          <div class="slds-scope slds-hide">
+            <form id="form_config" target="configuration_iframe" class="slds-hide" action="https://abm.6sense.com/external/sfdc/sfdc-config" method="post" >
+                <input type="text" name="apikey" value="{!apiKey}"/>
+                <input type="text" name="userid" value="{!userId}"/>
+                <input type="text" name="email" value="{!userEmail}"/>
+                <input type="text" name="username" value="{!userName}"/>
+                <input type="text" name="isSandbox" value="{!isSandbox}"/>
+                <input type="text" name="origin" id="origin"/>
+                <input type="submit"/>
+            </form>
+          </div>
+       </apex:outputPanel>
+   </div>
+
+   <apex:form styleClass="slds-m-around_small">
+     <!-- actionfunction to refresh the page when resetting the transaction count -->
+     <apex:actionFunction name="resetTransactionCount" action="{!resetTransaction}" reRender="blah"
+         oncomplete="window.location = window.location.href;">
+       <apex:param name="settingKey" assignTo="{!batchClassName}" value="" />
+     </apex:actionFunction>
+     <apex:actionFunction action="{!editApiKey}" name="enableEditApiKey" />
+     <apex:actionFunction action="{!disableEditApiKey}" name="cancelApiKeyEdit" />
+       <apex:inputHidden value="{!isExportOrg}" id="isExportOrg"/>
+
+       <style>
+       .rotate {
+         -ms-transform: rotate(180deg);
+         /* IE 9 */
+         -webkit-transform: rotate(180deg);
+         /* Chrome, Safari, Opera */
+         transform: rotate(180deg);
+       }
+
+       .animate {
+         -webkit-transition-duration: .5s;
+         /* Safari */
+         transition-duration: .5s;
+       }
+
+       .slds h3 {
+         margin-bottom: 5px;
+       }
+
+       .slds p {
+         margin-bottom: 1rem;
+       }
+
+       .slds-dropdown__item {
+         padding: .5rem;
+         text-align: left;
+       }
+
+       .slds .slds-page-header {
+         border: 1px solid #d8dde6;
+         padding: 12px;
+       }
+
+       .slds svg.super-special-list-item {
+         /*I dont know why we have to do this*/
+         margin-right: 8px;
+       }
+
+       .slds-button-group .slds-toggle-visibility:not([disabled]) {
+         background-color: red;
+       }
+
+       .slds button.slds-dropdown-trigger:hover {
+         color: #0070d2;
+       }
+
+       .slds input.tenREM {
+         width: 10rem;
+       }
+
+       .card {
+         width: 100%;
+        background-color: #FAFAF9;
+        min-height: 200px;
+        border-radius: 5px;
+        border: 1px solid #dedede;
+
+       }
+
+       .sync-disabled-wrapper {
+           display: flex;
+           align-items: center;
+       }
+
+       #sync-disabled {
+         margin: auto;
+         text-align: center;
+       }
+
+       #sync-disabled p {
+         max-width: 500px;
+       }
+
+       .sync-item {
+           width: 400px;
+          margin-top: 1rem;
+          display:inline-block !important;
+          margin-right: 2rem;
+       }
+
+       .sync-link {
+         height: 100%;
+        display:flex;
+        align-items: center;
+       }
+
+        .edit-icon svg {
+          fill: #005fb2 !important;
+        }
+
+        .pad-top {
+            padding-top: 0.75rem;
+        }
+
+        .width-export-grid {
+            width: 50%;
+        }
+
+     </style>
+
+       <div class="slds">
+       <!-- Header Section-->
+       <div class="slds-page-header">
+          <div class="slds-media">
+              <img src="{!URLFOR($Resource.logos_6sense, '6-favicon@1x.png')}" style="height:37px; margin-right: 10px;"/>
+            <div class="slds-media__body">
+              <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Admin Settings">Admin Settings</h1>
+              <p class="slds-text-body_small slds-line-height_reset">6sense Settings</p>
+            </div>
+          </div>
+        </div>
+        <div class="slds-col slds-no-flex slds-align-bottom">
+          <apex:pageMessages id="pagemessages" />
+        </div>
+
+      <apex:outputPanel layout="none" rendered="{!havePermission}">
+
+      <div id="export-org-div" style="display:none">
+              <!--<div class="slds-card">-->
+              <div class="slds-card__body">
+                  <div class="slds-grid width-export-grid">
+                      <div class="slds-col">
+                          <apex:outputPanel rendered="{! !hasApiKey || editingApiKey}">
+                              <div class="slds-grid slds-col--padded slds-m-bottom_x-small pad-top">
+                                  <div class="slds-col slds-align-bottom">
+                                      <div class="slds-form-element">
+                                          <label class="slds-text-heading_small" for="sample1-export">API Key</label>
+                                          <div class="slds-form-element__control slds-m-top_xx-small">
+                                              <apex:inputText styleClass="slds-input" value="{!apiKeyInExportMode}" html-placeholder="Enter 6sense API Key" />
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="slds-col--padded slds-align-bottom slds-no-flex">
+                                      <div class="slds-form-element">
+                                          <apex:commandButton styleClass="slds-button slds-button--brand" value="Save API Key" action="{!save}" rerender="pagemessages" oncomplete="cancelApiKeyEdit();return false;" />
+                                      </div>
+                                  </div>
+                              </div>
+                              <apex:outputPanel rendered="{!hasApiKey}">
+                                  <a onclick="cancelApiKeyEdit();return false;" class="slds-m-around_medium">Cancel</a>
+                              </apex:outputPanel>
+                          </apex:outputPanel>
+                          <apex:outputPanel rendered="{! hasApiKey && !editingApiKey }">
+                              <div class="slds-grid slds-col--padded">
+                                  <div class="slds-col slds-align-bottom">
+                                      <div class="slds-form-element">
+                                          <label class="slds-text-heading_small" for="sample1-export">API Key</label>
+                                          <div>
+                                              <span class="slds-text-body_regular slds-m-right_small">Your 6sense API Key has been captured</span>
+                                              <a href="#" onclick="enableEditApiKey();return false;">
+                                                  Edit
+                                                  <span class="slds-media__figure edit-icon slds-p-left_xx-small">
+                                                 <svg aria-hidden="true" class="slds-icon_xx-small">
+                                                     <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/utility-sprite/svg/symbols.svg#edit')}"></use>
+                                                 </svg>
+                                             </span>
+                                              </a>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </apex:outputPanel>
+                      </div>
+                  </div>
+              </div>
+      </div>
+
+       <div id="non-export-org-div" style="display:none" class="slds-tabs_default">
+          <ul class="slds-tabs_default__nav" role="tablist">
+            <li class="slds-tabs_default__item slds-is-active" title="Item One" role="presentation"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="summary-tab" onclick="changeTab(this,'summary');">Summary</a></li>
+            <li class="slds-tabs_default__item" title="Item Two" role="presentation"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="config-tab" onclick="changeTab(this,'config');">Configuration</a></li>
+            <li class="slds-tabs_default__item" title="Item Three" role="presentation"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="chatter-tab" onclick="changeTab(this,'chatter');">Chatter Settings</a></li>
+            <li class="slds-tabs_default__item" title="Item Four" role="presentation"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-4" id="batch-settings-tab" onclick="changeTab(this,'batch-settings');">Batch Settings</a></li>
+            <li class="slds-tabs_default__item" title="Item Five" role="presentation"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-5" id="batch-logs-tab" onclick="changeTab(this,'batch-logs');">Batch Logs</a></li>
+            <li class="slds-tabs_default__item" title="Item Seven" role="presentation"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-7" id="advanced-ops-tab" onclick="changeTab(this,'advanced-ops');">Advanced Operations</a></li>
+          </ul>
+
+                  <!-- Summary Section-->
+          <div id="summary" class="slds-tabs_default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
+              <!--<div class="slds-card">-->
+                <div class="slds-card__body">
+                  <div class="slds-grid">
+                    <div class="slds-col">
+                     <apex:outputPanel rendered="{! !hasApiKey || editingApiKey}">
+                         <div class="slds-grid slds-col--padded slds-m-bottom_x-small">
+                             <div class="slds-col slds-align-bottom">
+                                 <div class="slds-form-element">
+                                     <label class="slds-text-heading_small" for="sample1">API Key</label>
+                                     <div class="slds-form-element__control slds-m-top_xx-small">
+                                         <apex:inputText styleClass="slds-input" value="{!apiKeyIn}" html-placeholder="Enter 6sense API Key" />
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="slds-col--padded slds-align-bottom slds-no-flex">
+                                 <div class="slds-form-element">
+                                     <!--API Key:-->
+                                     <!--<apex:inputText value="{!apiKey}" />-->
+                                     <apex:commandButton styleClass="slds-button slds-button--brand" value="Save API Key" action="{!save}" rerender="jobDetails, pagemessages, schedule" oncomplete="cancelApiKeyEdit();return false;" />
+                                     <!--<button class="slds-button slds-button--brand" type="button">Submit</button>-->
+                                 </div>
+                             </div>
+                         </div>
+                           <apex:outputPanel rendered="{!hasApiKey}">
+                             <a onclick="cancelApiKeyEdit();return false;" class="slds-m-around_medium">Cancel</a>
+                           </apex:outputPanel>
+                     </apex:outputPanel>
+                     <apex:outputPanel rendered="{! hasApiKey && !editingApiKey }">
+                         <div class="slds-grid slds-col--padded">
+                             <div class="slds-col slds-align-bottom">
+                                 <div class="slds-form-element">
+                                     <label class="slds-text-heading_small" for="sample1">API Key</label>
+                                     <div>
+                                         <span class="slds-text-body_regular slds-m-right_small">Your 6sense API Key has been captured</span>
+                                         <a href="#" onclick="enableEditApiKey();return false;">
+                                             Edit
+                                             <span class="slds-media__figure edit-icon slds-p-left_xx-small">
+                                                 <svg aria-hidden="true" class="slds-icon_xx-small">
+                                                     <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/utility-sprite/svg/symbols.svg#edit')}"></use>
+                                                 </svg>
+                                             </span>
+                                         </a>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </apex:outputPanel>
+                    </div>
+                   <div class="slds-col" style="text-align:right;">
+
+                     <apex:outputPanel id="syncControl">
+                       <apex:commandButton id="schedule" styleClass="slds-button slds-button--neutral" value="Schedule Hourly Sync Execution" action="{!scheduleHourlyExecution}" rendered="{!NOT(syncEnabled) && hasApiKey}" rerender="syncControl, pagemessages"/>
+                       <apex:commandButton id="disable" styleClass="slds-button slds-button--brand" value="Disable Hourly Sync Execution" action="{!disableHourlyExecution}" rendered="{!syncEnabled}" rerender="syncControl, pagemessages"/>
+                       <apex:outputPanel rendered="{!syncEnabled}">
+                         <div class="slds-text-body_regular" style="margin: 7px 10px;">
+                           <i>{!cronOwner} enabled batch jobs on &nbsp;<apex:outputField value="{!cron.CreatedDate}" id="create-date"/></i>
+                         </div>
+                       </apex:outputPanel>
+                     </apex:outputPanel>
+
+                   </div>
+                  </div>
+                 <apex:outputPanel id="jobDetails">
+                     <apex:outputPanel rendered="{!NOT(hasApiKey)}">
+                      <div class="card sync-disabled-wrapper">
+                          <div id="sync-disabled">
+                             <p>You haven't scheduled hourly sync execution yet. Click the Schedule Hourly Sync Execution button to enable data syncing and access your summary report.</p>
+                          </div>
+                      </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!hasApiKey}">
+                      <div class="card slds-m-top_medium">
+                          <div id="sync-enabled" class="slds-p-horizontal_medium">
+
+                             <div class="slds-m-top_medium">
+                               <div class="slds-text-title">Last data sync attempt:</div>
+
+                               <apex:outputPanel rendered="{!NOT(ISNULL(cron.PreviousFireTime))}">
+                                  <div class="slds-text-body_regular"><apex:outputField value="{!cron.PreviousFireTime}" id="previous-ran"/></div>
+                               </apex:outputPanel>
+                               <apex:outputPanel rendered="{!ISNULL(cron.PreviousFireTime)}">
+                                  <div class="slds-text-body_regular">Sync has not yet ran.</div>
+                               </apex:outputPanel>
+
+
+                             </div>
+
+                             <div class="slds-m-top_medium">
+                               <div class="slds-text-title slds-m-bottom_small">Error:</div>
+                               <c:Error_Log_Summary />
+                             </div>
+
+                          </div>
+                      </div>
+                    </apex:outputPanel>
+
+                 </apex:outputPanel>
+                </div>
+              <!--/div>-->
+
+          </div>
+
+          <!-- Configuration Section-->
+          <div id="config" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-2__item">
+              <div class="slds-card__body ">
+                <div class="slds-scope">
+                    <div class="sixsense-card">
+                        <apex:iframe scrolling="true" id="configuration_iframe" height="1000px"/>
+                    </div>
+                </div>
+              </div>
+          </div>
+
+          <!-- Chatter Settings Section -->
+          <div id="chatter" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-3__item">
+                <c:Chatter_Setting />
+          </div>
+
+          <!-- Batch Settings Section -->
+          <div id="batch-settings" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-4__item">
+            <!--<div class="slds-card">-->
+              <div class="slds-grid slds-p-around_medium">
+                <div class="slds-col">
+                  <h3 class="slds-text-heading_small slds-truncate">Configuration Options</h3>
+                    <p>Use these controls to manipulate the individual batch execution settings. The checkboxes for each batch setting control the writing of data to the Batch Log objects to assist with monitoring
+                      and troubleshooting. Batch Summary is the overall Apex Batch Job, the Batch Detail is the summary of each individual batch being processed by the Job,
+                      the Batch Errors detail any problems which were encountered during processing. Preferably modify only with assistance from a member of the 6sense Customer Success team.</p>
+                    <div class="slds-card__footer" style="text-align:left;padding:0;">
+                      <p><b><em>Note: Ensure that the user executing the batch has permission to write to the selected Batch Log objects and fields.</em></b></p>
+                      <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                          <!-- <div class="slds-select_container"> -->
+                            <label class="slds-form-element__label">Delete Logs Older Than</label>
+                            <apex:selectList value="{!errorLogTTL}" size="1">
+                              <apex:selectOptions value="{!ErrorLogTTLOptions}"/>
+                            </apex:selectList>
+                            <label class="slds-form-element__label" style="margin-left:12px">Days</label>
+                          <!-- </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="slds-col">
+                  <div class="slds-button-group slds-grid_align-end" role="group" style="width: 130px;">
+                    <apex:commandButton styleClass="slds-button slds-button--neutral" value="Save Settings" action="{!saveBatchSettings}" rerender="pagemessages" />
+                  </div>
+                </div>
+              </div>
+              <div class="slds-card__body">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded">
+                    <table class="slds-table slds-table--bordered">
+                      <tr class="slds-text-heading--label">
+                        <th class="slds-truncate">Batch Class Name</th>
+                        <th class="slds-truncate">Records per API Page</th>
+                        <th class="slds-truncate">Latest Transaction</th>
+                        <th class="slds-truncate">Finished Pages</th>
+                        <th class="slds-truncate">Batch Summary</th>
+                        <th class="slds-truncate">Batch Detail</th>
+                        <th class="slds-truncate">Batch Errors</th>
+                        <th class="slds-truncate" title="Use checkbox to override 'in progress' status.">In Progress</th>
+                      </tr>
+                      <apex:repeat value="{!SyncSettingsMap}" var="settingName">
+                      <tr>
+                        <td>
+                          <apex:outputText value="{!settingName}" />
+                        </td>
+                        <td>
+                          <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                              <apex:inputText styleClass="slds-input tenREM" value="{!SyncSettingsMap[settingName].recordLimit}" />
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                              <apex:inputText styleClass="slds-input tenREM" value="{!SyncSettingsMap[settingName].sinceTransactionId}" />
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="slds-form-element">
+                              <div class="slds-form-element__control">
+                                  <apex:inputText styleClass="slds-input tenREM" value="{!SyncSettingsMap[settingName].startApiPage}" />
+                              </div>
+                          </div>
+                      </td>
+                        <td>
+                          <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                              <label class="slds-checkbox">
+                              <apex:inputCheckbox value="{!SyncSettingsMap[settingName].logBatchSummary}" />
+                              <span class="slds-checkbox--faux"></span>
+                              <span class="slds-form-element__label">Write Summary</span>
+                              </label>
+                            </div>
+                            </div>
+                        </td>
+                        <td>
+                          <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                              <label class="slds-checkbox">
+                              <apex:inputCheckbox value="{!SyncSettingsMap[settingName].logBatchChunks}" />
+                              <span class="slds-checkbox--faux"></span>
+                              <span class="slds-form-element__label">Write Details</span>
+                              </label>
+                            </div>
+                            </div>
+                        </td>
+                        <td>
+                          <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                              <label class="slds-checkbox">
+                              <apex:inputCheckbox value="{!SyncSettingsMap[settingName].logBatchErrors}" />
+                              <span class="slds-checkbox--faux"></span>
+                              <span class="slds-form-element__label">Write Errors</span>
+                              </label>
+                            </div>
+                            </div>
+                        </td>
+                        <td>
+                          <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                              <label class="slds-checkbox">
+                              <apex:inputCheckbox value="{!SyncSettingsMap[settingName].inProgress}" />
+                              <span class="slds-checkbox--faux"></span>
+                              </label>
+                            </div>
+                            </div>
+                        </td>
+                      </tr>
+                      </apex:repeat>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            <!--</div>-->
+          </div>
+
+          <!-- Batch Logs Section-->
+          <div id="batch-logs" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-5__item">
+            <c:Batch_Logs />
+          </div>
+
+          <!-- Advanced Operations Section -->
+          <div id="advanced-ops" class="slds-tabs_default__content slds-hide slds-p-horizontal_small" role="tabpanel" aria-labelledby="tab-default-7__item">
+
+
+            <apex:outputPanel rendered="{!apiSettings.Key != null}" layout="none">
+
+              <div class="slds-text-body_regular slds-m-bottom_small">Advanced Operations should only be executed under the guidance of 6sense customer success.</div>
+
+              <div class="slds-text-heading_small">6sense Data Sync Operations</div>
+              <div class="slds-grid slds-wrap slds-m-bottom--large">
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                          <svg aria-hidden="true" class="slds-icon super-special-list-item slds-icon--medium slds-icon-standard-record slds-m-right--small">
+                            <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#record')}"></use>
+                          </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                          <div class="slds-text-body_regular">New Company Records</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!syncNewCompanyRecords}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-campaign slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/utility-sprite/svg/symbols.svg#company')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Company Product Scores</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!syncCompanyProductScores}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-account slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#account')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                          <div class="slds-text-body_regular">Account Product Scores</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!syncAccountProductScores}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-contact slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#contact')}"></use>
+                        </svg>
+
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Contact Product Scores</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!syncContactProductScores}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-lead slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#lead')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Lead Product Scores</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!syncLeadProductScores}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-account slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#account')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Account</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!mapAccountProductScores}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-contact slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#contact')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Contact</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!mapContactProductScores}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-lead slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#lead')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Lead</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Sync" action="{!mapLeadProductScores}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+
+              </div>
+            </apex:outputPanel>
+
+              <div class="slds-text-heading_small">6sense Data Clean Up Operations</div>
+              <div class="slds-wrap slds-m-bottom--large">
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-account slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#account')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Data Cleanup</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Run" action="{!deleteOrphanRecords}" rerender="pagemessages">
+                          <apex:param name="bypassScheduleCheck" value="false" assignTo="{!bypassScheduleCheck}" />
+                      </apex:commandButton>
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-account slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#account')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">Delete Batch Error Logs</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Run" action="{!deleteBatchErrorLogs}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-campaign slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/utility-sprite/svg/symbols.svg#company')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">New Company Cleanup</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" value="Run" action="{!newCompanyCleanup}" rerender="pagemessages" onclick="if (!confirm('You are about to delete records in the 6sense New Company object. All older records that have not been dispositioned will be deleted. To proceed with this clean-up operation click OK below.')) {return false;}"/>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="slds-text-heading_small">Data Sync</div>
+              <div class="slds-wrap">
+                <article class="slds-card sync-item">
+                  <div class="slds-grid slds-p-around--medium">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                      <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--medium slds-icon-standard-account slds-m-right--small">
+                          <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/standard-sprite/svg/symbols.svg#link')}"></use>
+                        </svg>
+                      </div>
+                      <div class="slds-media__body sync-link">
+                        <div class="slds-text-body_regular">One Time Full Data Sync</div>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" disabled="{! IF(apiSettings.Key == null, true, false) }" value="Sync" action="{!runSync}" rerender="pagemessages" />
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+         </div>
+       </apex:outputPanel>
+
+
+       <apex:outputPanel layout="none" rendered="{!NOT(havePermission)}">
+         <div class="slds-notify_container">
+           <div class="slds-notify slds-notify--toast slds-theme--error" role="alert">
+             <span class="slds-assistive-text">Error</span>
+             <div class="slds-notify__content slds-grid">
+               <svg class="slds-icon slds-icon--small slds-m-right--small slds-col slds-no-flex" aria-hidden="true">
+                 <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/utility-sprite/svg/symbols.svg#warning')}"></use>
+               </svg>
+               <div class="slds-col slds-align-middle">
+                 <h2 class="slds-text-heading--small">To access this page and modify configurations, please have your system administrator assign the 6sense Admin permission set to your user profile.</h2>
+               </div>
+             </div>
+           </div>
+         </div>
+       </apex:outputPanel>
+     </div>
+   </apex:form>
+
+   <script type="text/Javascript">
+
+   const baseURL = "https://abm.6sense.com/";
+   const host = "abm.6sense.com";
+   var tabOnLoad = '{!$CurrentPage.parameters.t}';
+   console.log('Tab in URL:' + tabOnLoad);
+   if(tabOnLoad != null && tabOnLoad != ''){
+     console.log('tabOnLoad: ' + tabOnLoad);
+     document.getElementById(tabOnLoad+'-tab').click();
+   }
+
+   function changeTab(tab, tabName) {
+      $('.slds-is-active').removeClass('slds-is-active');
+      $(tab).parent().addClass('slds-is-active');
+      $('.slds-show').removeClass('slds-show').addClass('slds-hide');
+      $('#'+tabName).removeClass('slds-hide').addClass('slds-show');
+    }
+
+    $(document).ready(function(){
+          postAPIKeyAndShowDiv();
+          var form = document.getElementById("form_config");
+          var origin = window.location.origin;
+          var input = document.getElementById("origin");
+          input.setAttribute("value", origin);
+          form.submit();
+          console.log("form submitted");
+      });
+
+    function postAPIKeyAndShowDiv() {
+        var postHeaders = new Headers();
+        postHeaders.append("Host", host);
+        postHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        var sApiKey = '{!apiKey}';
+        if(!sApiKey) {
+            //API key not set yet, show the new UI contents
+            document.getElementById('non-export-org-div').style.display = 'none';
+            document.getElementById('export-org-div').style.display = 'block';
+            return;
+        }
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("apikey", sApiKey);
+        postHeaders.append("Content-Length", sApiKey.length);
+
+        var requestOptions = {
+        method: 'POST',
+        headers: postHeaders,
+        body: urlencoded
+        };
+
+        fetch(baseURL+"external/sfdc/sfdc-config", requestOptions)
+        .then(response => response.text())
+        .then(result => fetchOrgDetailsAndShowDiv(parseOrgName(result)))
+        .catch(error => console.log('error', error));
+    }
+
+    function parseOrgName(response) {
+        //refer banyan.html
+        var indexString = "var org = typeof \"";
+        var splittedResponse = response.split(indexString);
+        var orgNameArray = splittedResponse[1].split("\"");
+        var sOrgName = orgNameArray[0];
+        return sOrgName;
+    }
+
+    function fetchOrgDetailsAndShowDiv(orgName) {
+        var orgDetailsURL = baseURL + 'organization/name/' + orgName + '/details/?flags=true';
+        var getHeaders = new Headers();
+        getHeaders.append('authorization','{!apiKey}');
+        getHeaders.append('accept','application/json');
+        var requestOptions = {
+            method: 'GET',
+            headers: getHeaders
+        };
+        fetch(orgDetailsURL, requestOptions)
+        .then(response => response.text())
+        .then(result => getFlagValueAndShowDiv(result))
+        .catch(error => console.log('error',error));
+    }
+
+    function getFlagValueAndShowDiv(orgDetailsJSON) {
+        var jsonObj = JSON.parse(orgDetailsJSON);
+        var orgId = jsonObj.id;
+        var flags = jsonObj.flags;
+        var flagName = 'is_orc_sfdc_expts';
+        var isExportOrg = true;
+        if (flagName in flags) {
+            isExportOrg = flags[flagName];
+            // set the value to controller class so that the relevant API key variable is picked up
+            // to be saved
+            jQuery('[id$=isExportOrg]').val(isExportOrg);
+        }
+        if (isExportOrg) {
+            document.getElementById('non-export-org-div').style.display = 'none';
+            document.getElementById('export-org-div').style.display = 'block';
+        } else {
+            document.getElementById('export-org-div').style.display = 'none';
+            document.getElementById('non-export-org-div').style.display = 'block';
+        }
+    }
+   </script>
+
+   </html>
+ </apex:page>

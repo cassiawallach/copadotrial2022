@@ -155,6 +155,30 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Child_User_Story_Title__c</fullName>
+        <externalId>false</externalId>
+        <formula>copado__Dependent_User_Story__r.copado__User_Story_Title__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Child User Story Title</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parent_User_Story_Title__c</fullName>
+        <externalId>false</externalId>
+        <formula>copado__Provider_User_Story__r.copado__User_Story_Title__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Parent User Story Title</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__Child_User_Story_Status__c</fullName>
         <deprecated>false</deprecated>
         <description>The Status of the child user story</description>
@@ -255,7 +279,7 @@
         <deprecated>false</deprecated>
         <description>The User Story that is dependent on the completion of the parent user story.</description>
         <externalId>false</externalId>
-        <inlineHelpText>The User Story that is dependent on the completion of the parent user story.</inlineHelpText>
+        <inlineHelpText>The User Story that is dependent on the completion of the specified deliverable.</inlineHelpText>
         <label>Child User Story</label>
         <referenceTo>copado__User_Story__c</referenceTo>
         <relationshipLabel>Parent User Stories</relationshipLabel>
@@ -361,13 +385,13 @@
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
-        <columns>copado__Provider_User_Story__c</columns>
-        <columns>copado__Parent_User_Story_Status__c</columns>
-        <columns>copado__Dependent_User_Story__c</columns>
-        <columns>copado__Child_User_Story_Status__c</columns>
+        <columns>copado__Deliverable__c</columns>
         <columns>copado__Dependency_Status__c</columns>
+        <columns>copado__Needed_by_Date__c</columns>
         <columns>copado__Dependent_Team__c</columns>
         <columns>copado__Provider_Team__c</columns>
+        <columns>copado__Dependent_User_Story__c</columns>
+        <columns>copado__Provider_User_Story__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
         <language>en_US</language>
@@ -380,40 +404,30 @@
     </nameField>
     <pluralLabel>User Story Dependencies</pluralLabel>
     <searchLayouts>
-        <customTabListAdditionalFields>copado__Provider_User_Story__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Parent_User_Story_Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Dependent_User_Story__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Child_User_Story_Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>copado__Deliverable__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Dependency_Status__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Dependent_Team__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Provider_Team__c</customTabListAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Provider_User_Story__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Parent_User_Story_Status__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Dependent_User_Story__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Child_User_Story_Status__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Provider_Team__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Dependent_Team__c</lookupDialogsAdditionalFields>
+        <customTabListAdditionalFields>copado__Dependent_User_Story__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>copado__Provider_User_Story__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>copado__Deliverable__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__Dependency_Status__c</lookupDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Provider_User_Story__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Parent_User_Story_Status__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Dependent_User_Story__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Child_User_Story_Status__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Provider_Team__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Dependent_Team__c</lookupPhoneDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>copado__Dependent_Team__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>copado__Provider_Team__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>copado__Dependent_User_Story__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>copado__Provider_User_Story__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>copado__Deliverable__c</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>copado__Dependency_Status__c</lookupPhoneDialogsAdditionalFields>
-        <searchFilterFields>copado__Provider_User_Story__c</searchFilterFields>
-        <searchFilterFields>copado__Dependent_User_Story__c</searchFilterFields>
-        <searchFilterFields>copado__Provider_Team__c</searchFilterFields>
-        <searchFilterFields>copado__Dependent_Team__c</searchFilterFields>
-        <searchFilterFields>copado__Dependency_Status__c</searchFilterFields>
-        <searchFilterFields>copado__Release__c</searchFilterFields>
-        <searchResultsAdditionalFields>copado__Provider_User_Story__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__Parent_User_Story_Status__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__Dependent_User_Story__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__Child_User_Story_Status__c</searchResultsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>copado__Dependent_Team__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>copado__Provider_Team__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>copado__Dependent_User_Story__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>copado__Provider_User_Story__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>copado__Deliverable__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Dependency_Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Dependent_Team__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Provider_Team__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>copado__Dependent_User_Story__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>copado__Provider_User_Story__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

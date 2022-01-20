@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies if this Stakeholder (Users Only) should be added as a Chatter Follower to the Project --></help>
+        <label><!-- Add to Chatter Followers --></label>
+        <name>amc__Add_to_Chatter_Followers__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Contact this Project Stakeholder record relates to --></help>
+        <label><!-- Contact --></label>
+        <name>amc__Contact__c</name>
+        <relationshipLabel><!-- Project Stakeholders --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Formula: References the Email of the User or Contact --></help>
+        <label><!-- Email --></label>
+        <name>amc__Email__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: References the First Name of the User or Contact --></help>
+        <label><!-- First Name --></label>
+        <name>amc__First_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: References the Last Name of the User or Contact --></help>
+        <label><!-- Last Name --></label>
+        <name>amc__Last_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Project this Project Stakeholder record relates to --></help>
+        <label><!-- Project --></label>
+        <name>amc__Project__c</name>
+        <relationshipLabel><!-- Project Stakeholders --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Stakeholder receives a copy of the Project Status Report PDF --></help>
+        <label><!-- Receives Project Status Report --></label>
+        <name>amc__Receives_Project_Status_Report__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Role this Project Stakeholder record relates to --></help>
+        <label><!-- Role --></label>
+        <name>amc__Role__c</name>
+        <relationshipLabel><!-- Project Stakeholders --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the person&apos;s position as a Stakeholder on the Project --></help>
+        <label><!-- Stakeholder Position --></label>
+        <name>amc__Stakeholder_Position__c</name>
+        <picklistValues>
+            <masterLabel>Client</masterLabel>
+            <translation><!-- Client --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>External</masterLabel>
+            <translation><!-- External --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Internal</masterLabel>
+            <translation><!-- Internal --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies the User this Project Stakeholder record relates to --></help>
+        <label><!-- User --></label>
+        <name>amc__User__c</name>
+        <relationshipLabel><!-- Project Stakeholders --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Project Stakeholder Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You can only populate one of the following fields: User, Contact, Role. --></errorMessage>
+        <name>amc__Populate_Related_Field</name>
+    </validationRules>
+</CustomObjectTranslation>

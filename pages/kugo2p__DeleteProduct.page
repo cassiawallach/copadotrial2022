@@ -1,0 +1,36 @@
+<apex:page id="pageId" standardcontroller="Product2" extensions="kugo2p.DeleteRecordController">   <!-- action="{!deleteRecord}" -->
+
+<apex:form id="formId">
+    <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+    <apex:outputField value="{!Product2.Name}" rendered="false"/>
+    <apex:outputField value="{!Product2.Id}" rendered="false"/>
+
+    <apex:outputPanel id="outerOPId">
+        <c:DeleteRecord deleteRecordCon="{!deleteRecordCon}" rendered="{!showComponent}"/>
+
+        <apex:actionStatus id="busyStatus" >
+            <apex:facet name="start">
+                <div class="kugamon">
+                    <div class="slds-spinner_container">
+                        <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                            <span class="slds-assistive-text">Processing...</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionStatus>
+    </apex:outputPanel>
+
+    <apex:commandButton id="initBtn" value="Init" action="{!deleteRecord}" style="display: none;" status="busyStatus" rerender="outerOPId" />
+</apex:form>
+
+    <script>
+        window.onload=function()
+        {
+            document.getElementById("{!$Component.pageId:formId:initBtn}").click();
+        };
+    </script>
+</apex:page>

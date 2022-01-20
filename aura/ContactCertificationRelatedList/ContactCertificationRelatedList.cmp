@@ -1,0 +1,59 @@
+<aura:component controller="ContactCertificationListController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="AcademyCertification" type="Academy_Certification__c[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                        <lightning:icon iconName="standard:account" alternativeText="Account" title="Account" />
+                        <span class="slds-assistive-text">account</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        
+                        <span>Certification Details</span>
+                    </h2>
+                </div>
+            </header>
+        </div>
+    </article>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Certification Program">Certification Program</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Status">Status</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Expiration Date">Expiration Date</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:if isTrue="{!v.AcademyCertification.length > 0}"><aura:iteration items="{!v.AcademyCertification}" var="obj" >
+                <tr class="slds-hint-parent">
+                    <td data-label="Certification Program">
+                        <div class="slds-truncate" title="Cloudhub">{!obj.Certification_Program__r.Name}</div>
+                    </td>
+                    <td data-label="Status">
+                        <div class="slds-truncate" title="Cloudhub">{!obj.Status__c}</div>
+                    </td>
+                    <td data-label="Expiration Date">
+                        <div class="slds-truncate" title="Cloudhub">{!obj.Expiration_Date__c}</div>
+                    </td>
+                </tr>
+                </aura:iteration> 
+                <aura:set attribute="else">
+                    <div class="slds-m-left_large"><b>No Certification Available</b></div>
+                </aura:set>
+            </aura:if> 
+            
+        </tbody>
+    </table>
+</aura:component>

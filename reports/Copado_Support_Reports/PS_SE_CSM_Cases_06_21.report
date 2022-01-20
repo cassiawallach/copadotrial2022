@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CASE_NUMBER</field>
+    </columns>
+    <columns>
+        <field>CREATED</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>SUBJECT</field>
+    </columns>
+    <columns>
+        <field>CREATED_DATE</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>CREATED</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Austin Rose,Balaji Ramachandran,Brendan Hopkins,Danielle Nameth,David Klapman,EJ Sherman,Galina Knop,Jeff Bourassa,Jen Nelson,Joe Imperato,Kristine Stateler,Matt Spehlmann,Morgan Schulz,Rob Canfield,Robert Zimmermann,Sean Kahovec,Victor Cuarental Bolet,AJ Barr,Andrew Durrans,Dan Kellogg,Dustin Fairbanks,Joe Dias,Mike Franz,Rohit Boggarapu,Taylor Patterson,Alex Zarowny,Ellen Herr,Eric Varela,Ewen Clark,Graham Posey,Hussain Shaikh,James LeBlanc,Jeremy Lee,John Kane,Julia Gätjens,Juliette Saniard,Kevin Blessum,Marcus Jimenez,Nick Casalbore,Nolan Larrabee,Tyler LeBlanc,Tyler Walker,Caity Stark,Carree Todd,David Gutiérrez Arcones,Disa DiBuono-Simpson,Hutch Rowe,Jenna Greenfield,Jessica Ford,Katie Garratt,Kristin Graham,Laurie Tanner,Martina Burton,Michelle Reynolds,Phil Cromack,Sabine Gillert,Victoria Murillo</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Case.Support_Case</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>PS SE CSM Cases 06/21</name>
+    <params>
+        <name>units</name>
+        <value>h</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CaseList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATEONLY</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

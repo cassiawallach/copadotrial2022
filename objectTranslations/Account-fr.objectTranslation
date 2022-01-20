@@ -1,0 +1,2945 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldSets>
+        <label><!-- Account Exemption Fields --></label>
+        <name>AVA_SFCPQ__AccountExemptionFields</name>
+    </fieldSets>
+    <fieldSets>
+        <label><!-- AccountsMassEditFieldSet --></label>
+        <name>MassManager__AccountsMassEditFieldSet</name>
+    </fieldSets>
+    <fields>
+        <label><!-- ACV --></label>
+        <name>ACV__c</name>
+    </fields>
+    <fields>
+        <label><!-- AOV Band --></label>
+        <name>AOV_Band__c</name>
+        <picklistValues>
+            <masterLabel>$10M-25M</masterLabel>
+            <translation><!-- $10M-25M --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>$1M-5M</masterLabel>
+            <translation><!-- $1M-5M --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>$200k-600k</masterLabel>
+            <translation><!-- $200k-600k --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>$25M+</masterLabel>
+            <translation><!-- $25M+ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>$5M-10M</masterLabel>
+            <translation><!-- $5M-10M --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>$600k-1M</masterLabel>
+            <translation><!-- $600k-1M --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Please enter your Business Identification / VAT Number. This will be used for reverse charge VAT calculations. --></help>
+        <label><!-- Business Identification Number --></label>
+        <name>AVA_MAPPER__Business_Identification_Number__c</name>
+    </fields>
+    <fields>
+        <help><!-- Entity use codes indicate the reason for exemption. --></help>
+        <label><!-- Entity/Use code --></label>
+        <name>AVA_MAPPER__Entity_Use_code__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- If you enter any data into this field their sales transactions will be exempt from sales tax. --></help>
+        <label><!-- Exemption Number --></label>
+        <name>AVA_MAPPER__Exemption_Number__c</name>
+    </fields>
+    <fields>
+        <help><!-- If checked, Seller is responsible for any import taxes and fees. --></help>
+        <label><!-- Is Seller Importer Of Record --></label>
+        <name>AVA_MAPPER__Is_Seller_Importer_Of_Record__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the AvaTax Exemption customer status. --></help>
+        <label><!-- AvaTax Customer Status --></label>
+        <name>AVA_SFCPQ__AvaTaxCustomerStatus__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the AvaTax responses or messages. --></help>
+        <label><!-- AvaTax Message --></label>
+        <name>AVA_SFCPQ__AvaTaxMessage__c</name>
+    </fields>
+    <fields>
+        <help><!-- A unique ID used by AvaTax to apply exemptions. Please do not enter new value or edit this field. --></help>
+        <label><!-- AvaTax Exemption Customer ID --></label>
+        <name>AVA_SFCPQ__AvaTax_Exemption_Customer_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Business Identification No(Deprecated) --></label>
+        <name>AVA_SFCPQ__Business_Identification_Number__c</name>
+    </fields>
+    <fields>
+        <help><!-- Primary email for the account. --></help>
+        <label><!-- Email --></label>
+        <name>AVA_SFCPQ__Email__c</name>
+    </fields>
+    <fields>
+        <help><!-- Type of Entity/Use Code, if any, associated with this Account. Optional Field. --></help>
+        <label><!-- Entity/Use Code(Deprecated) --></label>
+        <name>AVA_SFCPQ__ExemptEntityType__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Is Seller Importer Of Record(Deprecated) --></label>
+        <name>AVA_SFCPQ__Is_Seller_Importer_Of_Record__c</name>
+    </fields>
+    <fields>
+        <help><!-- Please enter exemption certification number, if any. --></help>
+        <label><!-- Exemption Number(Deprecated) --></label>
+        <name>AVA_SFCPQ__TaxExemptionCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Salesforce Account Executive --></label>
+        <name>Account_Executive__c</name>
+        <relationshipLabel><!-- Accounts (Account Executive) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Account Health Code Summary --></label>
+        <name>Account_Health_Code_Summary__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account Health (Color) --></label>
+        <name>Account_Health_Color__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account Health Next Steps Field --></label>
+        <name>Account_Health_Next_Steps_Field__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account Health --></label>
+        <name>Account_Health__c</name>
+    </fields>
+    <fields>
+        <label><!-- Renewals Manager --></label>
+        <name>Account_Manager__c</name>
+        <relationshipLabel><!-- Accounts (Renewals Manager) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Account Owner Manager Role --></label>
+        <name>Account_Owner_Manager_Role__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account Owner Manager --></label>
+        <name>Account_Owner_Manager__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account Owner Name --></label>
+        <name>Account_Owner_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account Owner Role --></label>
+        <name>Account_Owner_Role__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account Owner --></label>
+        <name>Account_Owner__c</name>
+    </fields>
+    <fields>
+        <help><!-- Link to Account Plan. --></help>
+        <label><!-- Account Plan --></label>
+        <name>Account_Plan__c</name>
+    </fields>
+    <fields>
+        <help><!-- Please enter here the instructions or requirements that must be followed in cases related to this account. This instructions will be visible in all the cases linked to this account. --></help>
+        <label><!-- Account SHI --></label>
+        <name>Account_SHI__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account score --></label>
+        <name>Account_score__c</name>
+    </fields>
+    <fields>
+        <label><!-- Active Opportunity --></label>
+        <name>Active_Opportunity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Active Products --></label>
+        <name>Active_Products__c</name>
+        <picklistValues>
+            <masterLabel>Branch Management</masterLabel>
+            <translation><!-- Branch Management --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Change Management</masterLabel>
+            <translation><!-- Change Management --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Compliance Hub</masterLabel>
+            <translation><!-- Compliance Hub --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enterprise Edition</masterLabel>
+            <translation><!-- Enterprise Edition --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Selenium Testing</masterLabel>
+            <translation><!-- Selenium Testing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unlimited Edition</masterLabel>
+            <translation><!-- Unlimited Edition --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Checked when Probability% is greater than 0. --></help>
+        <label><!-- All Opportunities are Lost --></label>
+        <name>All_Opportunities_are_Lost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow_Lead_Convert --></label>
+        <name>Allow_Lead_Convert__c</name>
+    </fields>
+    <fields>
+        <label><!-- April_External_ID --></label>
+        <name>April_External_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Associated Deals --></label>
+        <name>Associated_Deals__c</name>
+    </fields>
+    <fields>
+        <label><!-- Best Relationship Score --></label>
+        <name>Best_Relationship_Score__c</name>
+    </fields>
+    <fields>
+        <label><!-- Best Relationship --></label>
+        <name>Best_Relationship__c</name>
+        <relationshipLabel><!-- Accounts (Best Relationship) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Billing Contact --></label>
+        <name>Billing_Contact__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Billing Name --></label>
+        <name>Billing_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- BW Account Status --></label>
+        <name>Bread_Winner__BW_Account_Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Amount Credited --></label>
+        <name>Bread_Winner__Total_Amount_Credit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Amount Due --></label>
+        <name>Bread_Winner__Total_Amount_Due__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Amount Invoiced --></label>
+        <name>Bread_Winner__Total_Amount_Invoiced__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Amount Overdue --></label>
+        <name>Bread_Winner__Total_Amount_Overdue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Amount Paid --></label>
+        <name>Bread_Winner__Total_Amount_Paid__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Draft Amount --></label>
+        <name>Bread_Winner__Total_Draft_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Unallocated Credit --></label>
+        <name>Bread_Winner__Total_Unallocated_Credit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Business Review Cadence --></label>
+        <name>Business_Review_Cadence__c</name>
+        <picklistValues>
+            <masterLabel>Annual</masterLabel>
+            <translation><!-- Annual --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Monthly</masterLabel>
+            <translation><!-- Monthly --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quarterly</masterLabel>
+            <translation><!-- Quarterly --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Semi-Annual</masterLabel>
+            <translation><!-- Semi-Annual --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- CE - Account Owner --></label>
+        <name>CE_Account_Owner__c</name>
+    </fields>
+    <fields>
+        <label><!-- CE - CSM Email Subdomain --></label>
+        <name>CE_CSM_Email_Subdomain__c</name>
+    </fields>
+    <fields>
+        <label><!-- CE - CSM Email --></label>
+        <name>CE_CSM_Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- CE - CSM Name --></label>
+        <name>CE_CSM_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- CE - CSM Phone --></label>
+        <name>CE_CSM_Phone__c</name>
+    </fields>
+    <fields>
+        <label><!-- CE - Executive Sponsor --></label>
+        <name>CE_Executive_Sponsor__c</name>
+    </fields>
+    <fields>
+        <label><!-- CE - Renewals Manager --></label>
+        <name>CE_Renewals_Manager__c</name>
+    </fields>
+    <fields>
+        <label><!-- CS Handover Date --></label>
+        <name>CS_Handover_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- CS Tiering to better track accounts/customer portfolio --></help>
+        <label><!-- CS Tier --></label>
+        <name>CS_Tier__c</name>
+        <picklistValues>
+            <masterLabel>Low</masterLabel>
+            <translation><!-- Low --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mid</masterLabel>
+            <translation><!-- Mid --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tech Touch</masterLabel>
+            <translation><!-- Tech Touch --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Top</masterLabel>
+            <translation><!-- Top --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- ClickDeploy Salesforce Org Id --></label>
+        <name>ClickDeploy_Salesforce_Org_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- ClickDeploy Team Subscription ID --></label>
+        <name>ClickDeploy_Team_Subscription_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Last login date for any user under the account. --></help>
+        <label><!-- Community Login --></label>
+        <name>Community_Login__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company Domain Name --></label>
+        <name>Company_Domain_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company Email --></label>
+        <name>Company_Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company ID --></label>
+        <name>Company_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company Size --></label>
+        <name>Company_Size__c</name>
+        <picklistValues>
+            <masterLabel>1-2,500</masterLabel>
+            <translation><!-- 1-2,500 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>10,001+</masterLabel>
+            <translation><!-- 10,001+ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2,501-5,000</masterLabel>
+            <translation><!-- 2,501-5,000 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5,001-7,500</masterLabel>
+            <translation><!-- 5,001-7,500 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>7,501-10,000</masterLabel>
+            <translation><!-- 7,501-10,000 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Contract Expiration Date --></label>
+        <name>Contract_Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Copado TCV --></label>
+        <name>Copado_AOV__c</name>
+    </fields>
+    <fields>
+        <help><!-- This is the vendor ID that we may receive from the customer --></help>
+        <label><!-- Copado Solutions Vendor ID --></label>
+        <name>Copado_Solutions_Vendor_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Customer Executive Sponsor --></label>
+        <name>Customer_Executive_Sponsor__c</name>
+        <relationshipLabel><!-- Accounts (Customer Executive Sponsor) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Can the customer be referenced? --></help>
+        <label><!-- Customer Refenceable --></label>
+        <name>Customer_Refenceable__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Customer Success Last Created Date --></label>
+        <name>Customer_Success_Last_Created_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Customer Success Manager --></label>
+        <name>Customer_Success_Manager__c</name>
+        <relationshipLabel><!-- Accounts (Customer Success Manager) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Customer Success --></label>
+        <name>Customer_Success__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- DUNS --></label>
+        <name>DL_VC__DUNS__c</name>
+    </fields>
+    <fields>
+        <label><!-- Value Cloud Jamaica Validated --></label>
+        <name>DL_VC__JAM_Value_Cloud_Validated__c</name>
+    </fields>
+    <fields>
+        <label><!-- Value Cloud Company Id --></label>
+        <name>DL_VC__VC_Company_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Value Cloud Validated --></label>
+        <name>DL_VC__VC_Validated_Lookup__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Value Cloud Validated --></label>
+        <name>DL_VC__VC_Validated__c</name>
+    </fields>
+    <fields>
+        <label><!-- Delivery Team Size --></label>
+        <name>Delivery_Team_Size__c</name>
+    </fields>
+    <fields>
+        <label><!-- DevOps Maturity Level --></label>
+        <name>DevOps__c</name>
+    </fields>
+    <fields>
+        <label><!-- EBQ Added --></label>
+        <name>EBQ_Added__c</name>
+    </fields>
+    <fields>
+        <label><!-- EBQ Cadence --></label>
+        <name>EBQ_Cadence__c</name>
+        <picklistValues>
+            <masterLabel>A1</masterLabel>
+            <translation><!-- A1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>A2</masterLabel>
+            <translation><!-- A2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>A3</masterLabel>
+            <translation><!-- A3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>A4</masterLabel>
+            <translation><!-- A4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>A5</masterLabel>
+            <translation><!-- A5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>B1</masterLabel>
+            <translation><!-- B1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>B2</masterLabel>
+            <translation><!-- B2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>B3</masterLabel>
+            <translation><!-- B3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>B4</masterLabel>
+            <translation><!-- B4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>B5</masterLabel>
+            <translation><!-- B5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>C1</masterLabel>
+            <translation><!-- C1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>C2</masterLabel>
+            <translation><!-- C2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>C3</masterLabel>
+            <translation><!-- C3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>C4</masterLabel>
+            <translation><!-- C4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>C5</masterLabel>
+            <translation><!-- C5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>D1</masterLabel>
+            <translation><!-- D1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>D2</masterLabel>
+            <translation><!-- D2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>D3</masterLabel>
+            <translation><!-- D3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>D4</masterLabel>
+            <translation><!-- D4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>D5</masterLabel>
+            <translation><!-- D5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>E1</masterLabel>
+            <translation><!-- E1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>E2</masterLabel>
+            <translation><!-- E2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>E3</masterLabel>
+            <translation><!-- E3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>E4</masterLabel>
+            <translation><!-- E4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>E5</masterLabel>
+            <translation><!-- E5 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- EBQ Cycle --></label>
+        <name>EBQ_Cycle__c</name>
+    </fields>
+    <fields>
+        <label><!-- EBQ Rep --></label>
+        <name>EBQ_Rep2__c</name>
+        <relationshipLabel><!-- Accounts (EBQ Rep) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Entity --></label>
+        <name>Entity__c</name>
+        <picklistValues>
+            <masterLabel>Spain</masterLabel>
+            <translation><!-- Spain --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>UK</masterLabel>
+            <translation><!-- UK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>USA</masterLabel>
+            <translation><!-- USA --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Executive Sponsor --></label>
+        <name>Executive_Sponsor1__c</name>
+        <relationshipLabel><!-- Accounts (Executive Sponsor) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Executive Sponsor --></label>
+        <name>Executive_Sponsor__c</name>
+        <picklistValues>
+            <masterLabel>Andrew Leigh</masterLabel>
+            <translation><!-- Andrew Leigh --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Arwa Kaddoura</masterLabel>
+            <translation><!-- Arwa Kaddoura --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>David Brooks</masterLabel>
+            <translation><!-- David Brooks --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Federico Larson</masterLabel>
+            <translation><!-- Federico Larson --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Philipp Rackwitz</masterLabel>
+            <translation><!-- Philipp Rackwitz --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sanjay Gidwani</masterLabel>
+            <translation><!-- Sanjay Gidwani --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Ted Elliott</masterLabel>
+            <translation><!-- Ted Elliott --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Exhausted Reason --></label>
+        <name>Exhausted_Reason__c</name>
+    </fields>
+    <fields>
+        <label><!-- Exhausted Until --></label>
+        <name>Exhausted_Until__c</name>
+    </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- FB Company Key --></label>
+        <name>FB_Company_Key__c</name>
+    </fields>
+    <fields>
+        <label><!-- FC Territory Path --></label>
+        <name>FC_Territory_Path__c</name>
+    </fields>
+    <fields>
+        <label><!-- Feature --></label>
+        <name>Feature__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- First Email Received --></label>
+        <name>First_Email_Received__c</name>
+    </fields>
+    <fields>
+        <label><!-- First Email Sent --></label>
+        <name>First_Email_Sent__c</name>
+    </fields>
+    <fields>
+        <label><!-- FunnelBeam Enrichment Done --></label>
+        <name>FunnelBeam_Enrichment_Done__c</name>
+    </fields>
+    <fields>
+        <label><!-- FunnelBeam Enrichment Status --></label>
+        <name>FunnelBeam_Enrichment_Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- FunnelBeam Posting Tag --></label>
+        <name>FunnelBeam_Posting_Tag__c</name>
+    </fields>
+    <fields>
+        <label><!-- Active --></label>
+        <name>G2Crowd__Active__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Customer Priority --></label>
+        <name>G2Crowd__CustomerPriority__c</name>
+        <picklistValues>
+            <masterLabel>High</masterLabel>
+            <translation><!-- High --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Low</masterLabel>
+            <translation><!-- Low --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Number of Locations --></label>
+        <name>G2Crowd__NumberofLocations__c</name>
+    </fields>
+    <fields>
+        <label><!-- SLA Expiration Date --></label>
+        <name>G2Crowd__SLAExpirationDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- SLA Serial Number --></label>
+        <name>G2Crowd__SLASerialNumber__c</name>
+    </fields>
+    <fields>
+        <label><!-- SLA --></label>
+        <name>G2Crowd__SLA__c</name>
+        <picklistValues>
+            <masterLabel>Bronze</masterLabel>
+            <translation><!-- Bronze --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Gold</masterLabel>
+            <translation><!-- Gold --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Platinum</masterLabel>
+            <translation><!-- Platinum --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Silver</masterLabel>
+            <translation><!-- Silver --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Upsell Opportunity --></label>
+        <name>G2Crowd__UpsellOpportunity__c</name>
+        <picklistValues>
+            <masterLabel>Maybe</masterLabel>
+            <translation><!-- Maybe --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Global Company FT Global 500 Rank --></label>
+        <name>Global_Company_FT_Global_500_Rank__c</name>
+    </fields>
+    <fields>
+        <label><!-- Global Company Fortune 1000 Rank --></label>
+        <name>Global_Company_Fortune_1000_Rank__c</name>
+    </fields>
+    <fields>
+        <label><!-- Global Company Name --></label>
+        <name>Global_Company_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Global Company Success Champion --></label>
+        <name>Global_Company_Success_Champion__c</name>
+    </fields>
+    <fields>
+        <label><!-- Global Company Success Lead --></label>
+        <name>Global_Company_Success_Lead__c</name>
+    </fields>
+    <fields>
+        <label><!-- Go Live Date --></label>
+        <name>Go_Live_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Gong Count --></label>
+        <name>Gong__Gong_Count__c</name>
+    </fields>
+    <fields>
+        <help><!-- This account has never had an opportunity. --></help>
+        <label><!-- Greenfield --></label>
+        <name>Greenfield__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number of Locations --></label>
+        <name>Handwrytten__NumberofLocations__c</name>
+    </fields>
+    <fields>
+        <label><!-- Has Premier Support --></label>
+        <name>Has_Premier_Support__c</name>
+    </fields>
+    <fields>
+        <label><!-- Has Used Copado --></label>
+        <name>Has_Used_Copado__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hours Consumed --></label>
+        <name>Hours_Consumed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hours Purchased --></label>
+        <name>Hours_Purchased__c</name>
+    </fields>
+    <fields>
+        <label><!-- ID --></label>
+        <name>ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Implemented Checkbox --></label>
+        <name>Implemented_Checkbox__c</name>
+    </fields>
+    <fields>
+        <label><!-- Industry Services Supported --></label>
+        <name>Industry_Services_Supported__c</name>
+        <picklistValues>
+            <masterLabel>CPG Retail</masterLabel>
+            <translation><!-- CPG Retail --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Comms Media</masterLabel>
+            <translation><!-- Comms Media --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>FINS</masterLabel>
+            <translation><!-- FINS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>HLS</masterLabel>
+            <translation><!-- HLS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>High Tech</masterLabel>
+            <translation><!-- High Tech --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Manufacturing</masterLabel>
+            <translation><!-- Manufacturing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PubSec</masterLabel>
+            <translation><!-- PubSec --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Travel Hospitality</masterLabel>
+            <translation><!-- Travel Hospitality --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Interested in Beta Programs --></label>
+        <name>Interested_in_Beta_Programs__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use __PO_NUMBER__ to add PO number dynamically when sending emails --></help>
+        <label><!-- Invoice Email Subject --></label>
+        <name>Invoice_Email_Subject__c</name>
+    </fields>
+    <fields>
+        <label><!-- Customer Info --></label>
+        <name>JBCXM__CustomerInfo__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Key Platforms Serviced --></label>
+        <name>Key_Platforms_Serviced__c</name>
+        <picklistValues>
+            <masterLabel>AWS</masterLabel>
+            <translation><!-- AWS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Google Cloud Platform</masterLabel>
+            <translation><!-- Google Cloud Platform --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Microsoft</masterLabel>
+            <translation><!-- Microsoft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SAP</masterLabel>
+            <translation><!-- SAP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - CPQ</masterLabel>
+            <translation><!-- Salesforce - CPQ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Commerce Cloud</masterLabel>
+            <translation><!-- Salesforce - Commerce Cloud --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Heroku</masterLabel>
+            <translation><!-- Salesforce - Heroku --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Industries</masterLabel>
+            <translation><!-- Salesforce - Industries --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Marketing Cloud</masterLabel>
+            <translation><!-- Salesforce - Marketing Cloud --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Mulesoft</masterLabel>
+            <translation><!-- Salesforce - Mulesoft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Sales</masterLabel>
+            <translation><!-- Salesforce - Sales --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Service</masterLabel>
+            <translation><!-- Salesforce - Service --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Salesforce - Vlocity</masterLabel>
+            <translation><!-- Salesforce - Vlocity --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ServiceNow</masterLabel>
+            <translation><!-- ServiceNow --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Veeva</masterLabel>
+            <translation><!-- Veeva --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Workday</masterLabel>
+            <translation><!-- Workday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>nCino</masterLabel>
+            <translation><!-- nCino --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- LinkedIn Company Id --></label>
+        <name>LID__LinkedIn_Company_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Business Review Date --></label>
+        <name>Last_Business_Review_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Call In --></label>
+        <name>Last_Call_In__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Call Out --></label>
+        <name>Last_Call_Out__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Email Received --></label>
+        <name>Last_Email_Received__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Email Sent --></label>
+        <name>Last_Email_Sent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Meeting --></label>
+        <name>Last_Meeting__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Missing Contact Found --></label>
+        <name>Last_Missing_Contact_Found__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lead Lookup (deprecated) --></label>
+        <name>Lead_Lookup__c</name>
+        <relationshipLabel><!-- Lead Lookup --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Lead Source Detail --></label>
+        <name>Lead_Source_Detail__c</name>
+    </fields>
+    <fields>
+        <label><!-- Legacy Data --></label>
+        <name>Legacy_Data__c</name>
+        <picklistValues>
+            <masterLabel>New Context</masterLabel>
+            <translation><!-- New Context --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Qentinel</masterLabel>
+            <translation><!-- Qentinel --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Number of Salesforce licenses --></help>
+        <label><!-- # SF Licenses --></label>
+        <name>Licenses__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lunch Completed --></label>
+        <name>Lunch_Completed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Missing Contacts --></label>
+        <name>Missing_Contacts__c</name>
+    </fields>
+    <fields>
+        <label><!-- Mulesoft AE --></label>
+        <name>Mulesoft_AE__c</name>
+        <relationshipLabel><!-- Accounts (Mulesoft AE) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- NPS --></label>
+        <name>NPS__c</name>
+    </fields>
+    <fields>
+        <label><!-- Named --></label>
+        <name>Named__c</name>
+    </fields>
+    <fields>
+        <label><!-- Next Account Owner --></label>
+        <name>Next_Account_Owner__c</name>
+        <relationshipLabel><!-- Accounts (Next Account Owner) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Next Meeting --></label>
+        <name>Next_Meeting__c</name>
+    </fields>
+    <fields>
+        <label><!-- Next business review date --></label>
+        <name>Next_business_review_date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Count of open opportunities --></help>
+        <label><!-- No. Open opportunities --></label>
+        <name>No_Open_opportunities__c</name>
+    </fields>
+    <fields>
+        <help><!-- Number of orgs in the production environment. --></help>
+        <label><!-- No. of Orgs --></label>
+        <name>No_of_Orgs__c</name>
+    </fields>
+    <fields>
+        <help><!-- This counts the number of invoices to determine if account is customer or prospect. --></help>
+        <label><!-- Number of Invoices --></label>
+        <name>Number_of_Invoices__c</name>
+    </fields>
+    <fields>
+        <label><!-- # of Users --></label>
+        <name>Number_of_Users__c</name>
+    </fields>
+    <fields>
+        <label><!-- Closed Activities --></label>
+        <name>OA__CLOSED_ACTIVITIES__c</name>
+    </fields>
+    <fields>
+        <label><!-- Next Step Date --></label>
+        <name>OA__Next_Step_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Next Step --></label>
+        <name>OA__Next_Step__c</name>
+    </fields>
+    <fields>
+        <label><!-- Open Activities --></label>
+        <name>OA__OPEN_ACTIVITIES__c</name>
+    </fields>
+    <fields>
+        <label><!-- Old pricing model --></label>
+        <name>Old_pricing_model__c</name>
+    </fields>
+    <fields>
+        <label><!-- Onboarded Date --></label>
+        <name>Onboarded_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Count of related opportunity. --></help>
+        <label><!-- Opportunity Count --></label>
+        <name>Opportunity_Count__c</name>
+    </fields>
+    <fields>
+        <label><!-- OrgId --></label>
+        <name>OrgId__c</name>
+    </fields>
+    <fields>
+        <label><!-- PO Required --></label>
+        <name>PO_Required__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- PS Remaining Hours --></label>
+        <name>PS_Available_Hours__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates that the Account has a contract requiring existing Discount Matrix-based pricing. --></help>
+        <label><!-- Discount Matrix Required --></label>
+        <name>PS_CPQ_Discount_Matrix_Required__c</name>
+    </fields>
+    <fields>
+        <label><!-- Copado Billing Entity --></label>
+        <name>PS_Copado_Billing_Entity__c</name>
+        <picklistValues>
+            <masterLabel>Copado Ltd.</masterLabel>
+            <translation><!-- Copado Ltd. --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Copado Netherlands B.V.</masterLabel>
+            <translation><!-- Copado Netherlands B.V. --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Copado Solutions, S.L.</masterLabel>
+            <translation><!-- Copado Solutions, S.L. --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Copado, Inc.</masterLabel>
+            <translation><!-- Copado, Inc. --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Partner Lead --></label>
+        <name>Partner_Lead__c</name>
+        <relationshipLabel><!-- Accounts (Partner Lead) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Program Level --></label>
+        <name>Partner_Level__c</name>
+        <picklistValues>
+            <masterLabel>Global</masterLabel>
+            <translation><!-- Global --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>N/A</masterLabel>
+            <translation><!-- N/A --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Premier</masterLabel>
+            <translation><!-- Premier --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Select</masterLabel>
+            <translation><!-- Select --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Partner Success Manager --></label>
+        <name>Partner_Success_Manager__c</name>
+        <relationshipLabel><!-- Accounts (Partner Success Manager) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Select one or more of the following partner types. --></help>
+        <label><!-- Partner Types --></label>
+        <name>Partner_Types__c</name>
+        <picklistValues>
+            <masterLabel>Consulting Partner</masterLabel>
+            <translation><!-- Consulting Partner --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Copado Implementation Partner</masterLabel>
+            <translation><!-- Copado Implementation Partner --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Managed Services Provider</masterLabel>
+            <translation><!-- Managed Services Provider --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Referral Partner</masterLabel>
+            <translation><!-- Referral Partner --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Reseller</masterLabel>
+            <translation><!-- Reseller --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Technology Partner</masterLabel>
+            <translation><!-- Technology Partner --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Training Partner</masterLabel>
+            <translation><!-- Training Partner --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Partner --></label>
+        <name>Partner__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Payment Health --></label>
+        <name>Payment_Health__c</name>
+        <picklistValues>
+            <masterLabel>On-time</masterLabel>
+            <translation><!-- On-time --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Overdue</masterLabel>
+            <translation><!-- Overdue --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Payment Portal Information --></label>
+        <name>Payment_Portal_Information__c</name>
+        <picklistValues>
+            <masterLabel>Ariba</masterLabel>
+            <translation><!-- Ariba --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Company Specific Portal</masterLabel>
+            <translation><!-- Company Specific Portal --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Coupa</masterLabel>
+            <translation><!-- Coupa --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>FIS Integrated Payables</masterLabel>
+            <translation><!-- FIS Integrated Payables --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Global Procurement Enel</masterLabel>
+            <translation><!-- Global Procurement Enel --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>None</masterLabel>
+            <translation><!-- None --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Oracle</masterLabel>
+            <translation><!-- Oracle --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paymode-X</masterLabel>
+            <translation><!-- Paymode-X --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tungsten Network</masterLabel>
+            <translation><!-- Tungsten Network --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>eInvoicing</masterLabel>
+            <translation><!-- eInvoicing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>iSupplier</masterLabel>
+            <translation><!-- iSupplier --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>uSupplier</masterLabel>
+            <translation><!-- uSupplier --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Primary Partner --></label>
+        <name>Primary_SI__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Professional Services Hours Consumed --></label>
+        <name>Professional_Services_Hours_Consumed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Region --></label>
+        <name>Region__c</name>
+    </fields>
+    <fields>
+        <label><!-- Renewal Rep --></label>
+        <name>Renewal_Rep__c</name>
+        <relationshipLabel><!-- Accounts (Renewal Rep) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Option qui permet de combiner les quantités de plusieurs ressources d&apos;un même produit sur une seule ligne lors de la génération du devis de renouvellement.</help>
+        <label><!-- Combine Asset Quantities --></label>
+        <name>SBQQ__AssetQuantitiesCombined__c</name>
+    </fields>
+    <fields>
+        <help>Activez pour combiner les ressources et les abonnements de plusieurs contrats à durée identique. Par défaut, chaque contrat à durée identique génère un groupe séparé dans un devis de renouvellement.</help>
+        <label><!-- Combine Co-Termed Contracts --></label>
+        <name>SBQQ__CoTermedContractsCombined__c</name>
+    </fields>
+    <fields>
+        <help>Détermine des contrats à durée identique.</help>
+        <label><!-- Co-Termination Event --></label>
+        <name>SBQQ__CoTerminationEvent__c</name>
+        <picklistValues>
+            <masterLabel>Add-on</masterLabel>
+            <translation>Complément</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Renewal</masterLabel>
+            <translation>Renouvellement</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Détermine comment les contrats de service et d&apos;abonnement de ce client sont définis avec des durées identiques.</help>
+        <label><!-- Contract Co-Termination --></label>
+        <name>SBQQ__ContractCoTermination__c</name>
+        <picklistValues>
+            <masterLabel>Always</masterLabel>
+            <translation>Toujours</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Never</masterLabel>
+            <translation>Jamais</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Prompt</masterLabel>
+            <translation>Demander</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Opportunité par défaut de ce compte utilisée dans un module e-Commerce pour obtenir le prix catalogue du client et associer aux devis « panier d&apos;achat ».</help>
+        <label><!-- Default Opportunity --></label>
+        <name>SBQQ__DefaultOpportunity__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Sélectionnez si les prix contractés doivent être hérités du compte parent.</help>
+        <label><!-- Ignore Parent Contracted Prices --></label>
+        <name>SBQQ__IgnoreParentContractedPrices__c</name>
+    </fields>
+    <fields>
+        <help>Sélectionnez cette case pour préserver la hiérarchie des offres groupées dans les devis de renouvellement et les amendements.</help>
+        <label><!-- Preserve Bundle Structure --></label>
+        <name>SBQQ__PreserveBundle__c</name>
+    </fields>
+    <fields>
+        <help>Saisissez la date limite de maintien des prix.</help>
+        <label><!-- Price Hold End --></label>
+        <name>SBQQ__PriceHoldEnd__c</name>
+    </fields>
+    <fields>
+        <help>Sélectionnez Basé sur les ressources pour générer les renouvellements en fonction des ressources d&apos;un compte ou Basé sur le contrat pour générer les renouvellements en fonction du contrat créé à partir d&apos;un devis.</help>
+        <label><!-- Renewal Model --></label>
+        <name>SBQQ__RenewalModel__c</name>
+        <picklistValues>
+            <masterLabel>Asset Based</masterLabel>
+            <translation>Basé sur les ressources</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contract Based</masterLabel>
+            <translation>Basé sur le contrat</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Utilisez « Identique » pour conserver le dernier prix payé, « Catalogue » pour utiliser le prix catalogue actuel ou « Augmentation » pour utiliser le dernier prix payé avec une augmentation.</help>
+        <label><!-- Renewal Pricing Method --></label>
+        <name>SBQQ__RenewalPricingMethod__c</name>
+        <picklistValues>
+            <masterLabel>List</masterLabel>
+            <translation>Catalogue</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Same</masterLabel>
+            <translation>Identique</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Uplift</masterLabel>
+            <translation>Augmentation</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Sélectionner si ce compte a des certificats actifs</help>
+        <label><!-- Tax-Exempt --></label>
+        <name>SBQQ__TaxExempt__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation>Non</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation>Oui</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This is the account number of the customer with salesforce.com --></help>
+        <label><!-- SFDC Account Number --></label>
+        <name>SFDC_Account_Number__c</name>
+    </fields>
+    <fields>
+        <label><!-- R Score --></label>
+        <name>SIGSTR__R_Score__c</name>
+    </fields>
+    <fields>
+        <label><!-- SigstrSync --></label>
+        <name>SIGSTR__SigstrSync__c</name>
+    </fields>
+    <fields>
+        <label><!-- SI Primary Contact --></label>
+        <name>SI_Primary_Contact__c</name>
+        <relationshipLabel><!-- Accounts (SI Primary Contact) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- SIs Involved --></label>
+        <name>SIs_Involved__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sales Engineer --></label>
+        <name>Sales_Engineer__c</name>
+        <relationshipLabel><!-- Accounts (Sales Engineer) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Salesforce AE --></label>
+        <name>Salesforce_AE__c</name>
+        <relationshipLabel><!-- Accounts (Salesforce AE) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Salesforce AOV Account --></label>
+        <name>Salesforce_AOV_Account__c</name>
+    </fields>
+    <fields>
+        <label><!-- Salesforce AOV --></label>
+        <name>Salesforce_AOV__c</name>
+    </fields>
+    <fields>
+        <label><!-- Salesforce AVP --></label>
+        <name>Salesforce_AVP__c</name>
+        <relationshipLabel><!-- Accounts (Salesforce AVP) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Salesforce CSM --></label>
+        <name>Salesforce_CSM__c</name>
+        <relationshipLabel><!-- Accounts (Salesforce CSM) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Salesforce ECS --></label>
+        <name>Salesforce_ECS__c</name>
+        <relationshipLabel><!-- Accounts (Salesforce ECS) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Salesforce Engaged --></label>
+        <name>Salesforce_Engaged__c</name>
+    </fields>
+    <fields>
+        <label><!-- Salesforce PA --></label>
+        <name>Salesforce_PA__c</name>
+        <relationshipLabel><!-- Accounts (Salesforce PA) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Salesforce Platform AE --></label>
+        <name>Salesforce_Platform_AE__c</name>
+        <relationshipLabel><!-- Accounts (Salesforce Platform AE) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Salesforce RVP --></label>
+        <name>Salesforce_RVP__c</name>
+        <relationshipLabel><!-- Accounts (Salesforce RVP) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Segment --></label>
+        <name>Segment__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Closed Lost</masterLabel>
+            <translation><!-- Closed Lost --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Closed Won</masterLabel>
+            <translation><!-- Closed Won --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Discovery</masterLabel>
+            <translation><!-- Discovery --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Formal Proposal</masterLabel>
+            <translation><!-- Formal Proposal --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fully Paid</masterLabel>
+            <translation><!-- Fully Paid --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Marketing Qualification</masterLabel>
+            <translation><!-- Marketing Qualification --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Negotiation</masterLabel>
+            <translation><!-- Negotiation --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Signed Contract Received</masterLabel>
+            <translation><!-- Signed Contract Received --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Solution Alignment</masterLabel>
+            <translation><!-- Solution Alignment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Solution Validation</masterLabel>
+            <translation><!-- Solution Validation --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Sum of Probability% --></label>
+        <name>Sum_of_Probability__c</name>
+    </fields>
+    <fields>
+        <label><!-- TAM --></label>
+        <name>TAM__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tech Architect --></label>
+        <name>Tech_Architect__c</name>
+    </fields>
+    <fields>
+        <label><!-- Territory Country --></label>
+        <name>Territory_Country__c</name>
+    </fields>
+    <fields>
+        <label><!-- Territory Name --></label>
+        <name>Territory_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Territory State --></label>
+        <name>Territory_State__c</name>
+    </fields>
+    <fields>
+        <help><!-- Account NPS for the latest Onboarding or Relationship questionnaire wave. --></help>
+        <label><!-- TopBox - Account NPS --></label>
+        <name>TopBoxWG__Account_NPS__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox Account X-Ray --></label>
+        <name>TopBoxWG__Account_TopBox_X_Ray__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox CSM --></label>
+        <name>TopBoxWG__CSM__c</name>
+        <relationshipLabel><!-- Accounts (TopBox CSM) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Checked if the account met the Invitation Guidelines for the latest Onboarding or Relationship questionnaire wave. --></help>
+        <label><!-- TopBox - Invitation Guidelines Met --></label>
+        <name>TopBoxWG__Invitation_Guidelines_Met__c</name>
+    </fields>
+    <fields>
+        <help><!-- Account NPS Trend (No Trend, Declined, Improved) across all Onboarding and Relationship questionnaire Waves. --></help>
+        <label><!-- TopBox - NPS Trend --></label>
+        <name>TopBoxWG__NPS_Trend__c</name>
+    </fields>
+    <fields>
+        <help><!-- Checked if the account met the Response Guidelines for the latest Onboarding or Relationship questionnaire wave. --></help>
+        <label><!-- TopBox - Response Guidelines Met --></label>
+        <name>TopBoxWG__Response_Guidelines_Met__c</name>
+    </fields>
+    <fields>
+        <help><!-- Account Response Rate for the latest Onboarding or Relationship questionnaire wave. --></help>
+        <label><!-- TopBox - Account Response Rate --></label>
+        <name>TopBoxWG__Response_Rate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Test DateTime --></label>
+        <name>TopBoxWG__Test_DateTime__c</name>
+    </fields>
+    <fields>
+        <label><!-- Test Date --></label>
+        <name>TopBoxWG__Test_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Test Tier --></label>
+        <name>TopBoxWG__Test_Tier__c</name>
+        <picklistValues>
+            <masterLabel>Tier 1</masterLabel>
+            <translation><!-- Tier 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tier 2</masterLabel>
+            <translation><!-- Tier 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tier 3</masterLabel>
+            <translation><!-- Tier 3 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Tier --></label>
+        <name>TopBoxWG__Tier__c</name>
+        <picklistValues>
+            <masterLabel>Growth</masterLabel>
+            <translation><!-- Growth --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Strategic</masterLabel>
+            <translation><!-- Strategic --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Valued</masterLabel>
+            <translation><!-- Valued --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- TopBox ARR --></label>
+        <name>TopBoxWG__TopBox_ARR__c</name>
+    </fields>
+    <fields>
+        <help><!-- Account Age - number of months since Initial Go-Live Date --></help>
+        <label><!-- TopBox - Account Age (months) --></label>
+        <name>TopBoxWG__TopBox_Account_Age__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox - Account Health Risk --></label>
+        <name>TopBoxWG__TopBox_Account_Health_Risk__c</name>
+    </fields>
+    <fields>
+        <help><!-- Latest scheduled Account Renewal date - for informational purposes. --></help>
+        <label><!-- TopBox - Account Renewal Date --></label>
+        <name>TopBoxWG__TopBox_Account_Renewal_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox CSM Email --></label>
+        <name>TopBoxWG__TopBox_CSM_Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox CSM Name --></label>
+        <name>TopBoxWG__TopBox_CSM_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Engagement Rate = % of Response Guidelines Met is multiplied by the overall Response Rate for the Account --></help>
+        <label><!-- TopBox - Engagement Rate --></label>
+        <name>TopBoxWG__TopBox_Engagement_Rate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Required field to enable Onboarding or Relationship questionnaire scheduling.
+The Onboarding questionnaire will be skipped if the Initial Go-Live Date is populated with a date that is more than 2 months old. --></help>
+        <label><!-- TopBox - Initial Go-Live  Date --></label>
+        <name>TopBoxWG__TopBox_Initial_Go_Live_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the Initial Relationship questionnaire is scheduled to be sent out to the selected contacts (Contact: Send Onboarding/Relationship = True). --></help>
+        <label><!-- TopBox - Initial Relationship Send Date --></label>
+        <name>TopBoxWG__TopBox_Initial_Send_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox - Invitation Guidelines Met (%) --></label>
+        <name>TopBoxWG__TopBox_Invitation_Guidelines_Met_Percent__c</name>
+    </fields>
+    <fields>
+        <help><!-- End date of latest Onboarding or Relationship questionnaire wave in which the account was included. --></help>
+        <label><!-- TopBox - Latest Wave End Date --></label>
+        <name>TopBoxWG__TopBox_Latest_Wave_End_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox - Latest Wave Start Date --></label>
+        <name>TopBoxWG__TopBox_Latest_Wave_Start_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override automatically scheduled Relationship send dates that are still in the future. --></help>
+        <label><!-- TopBox - Set Relationship Month --></label>
+        <name>TopBoxWG__TopBox_Next_Questionnaire_Month__c</name>
+        <picklistValues>
+            <masterLabel>April</masterLabel>
+            <translation><!-- April --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>August</masterLabel>
+            <translation><!-- August --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>December</masterLabel>
+            <translation><!-- December --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>February</masterLabel>
+            <translation><!-- February --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>January</masterLabel>
+            <translation><!-- January --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>July</masterLabel>
+            <translation><!-- July --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>June</masterLabel>
+            <translation><!-- June --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>March</masterLabel>
+            <translation><!-- March --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>May</masterLabel>
+            <translation><!-- May --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>November</masterLabel>
+            <translation><!-- November --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>October</masterLabel>
+            <translation><!-- October --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>September</masterLabel>
+            <translation><!-- September --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Date on which the next questionnaire is scheduled to be sent out to the selected contacts - for informational purposes. Once the upcoming Onboarding/Initial/Renewal Send Date has passed, the field automatically updates to reflect the next send date. --></help>
+        <label><!-- TopBox - Next Questionnaire Send Date --></label>
+        <name>TopBoxWG__TopBox_Next_Questionnaire_Send_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Next questionnaire type (Onboarding or Initial/Renewal Relationship) - for informational purposes.Two weeks after the Onboarding Send Date has passed, the field automatically updates to show that the next questionnaire type is Initial. --></help>
+        <label><!-- TopBox - Next Questionnaire Type --></label>
+        <name>TopBoxWG__TopBox_Next_Questionnaire_Type__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the Renewal Relationship questionnaire is scheduled to be sent out to the selected contacts (Contact: Send Onboarding/Relationship = True). --></help>
+        <label><!-- TopBox - Renewal Relationship Send Date --></label>
+        <name>TopBoxWG__TopBox_Next_Renewal_Send_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the Onboarding assessment is scheduled to be sent out to the selected contacts (Contact: Send Onboarding/Relationship = True). Field may be blank for accounts that have completed the onboarding process more than 1 month ago. --></help>
+        <label><!-- TopBox - Onboarding Send Date --></label>
+        <name>TopBoxWG__TopBox_Onboarding_Send_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the next Ongoing questionnaire is scheduled to be sent out to the selected contacts (Contact: Send Onboarding/Relationship = True). Once the most current Ongoing date has passed, the field automatically updates to reflect the next send date. --></help>
+        <label><!-- TopBox - Ongoing Relationship Send Date --></label>
+        <name>TopBoxWG__TopBox_Ongoing_Relationship_Send_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox - Response Guidelines Met (%) --></label>
+        <name>TopBoxWG__TopBox_Response_Guidelines_Met_Percent__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox - Sentiment --></label>
+        <name>TopBoxWG__TopBox_Sentiment__c</name>
+    </fields>
+    <fields>
+        <label><!-- TopBox - Value Net Score --></label>
+        <name>TopBoxWG__TopBox_Value_Net_Score__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the Adoption assessment is scheduled to be sent out to the selected contacts (Contact: Send Onboarding/Relationship = True). --></help>
+        <label><!-- TopBox - Adoption Send Date --></label>
+        <name>TopBox_Adoption_Send_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select the Onboarding implementation partner in order to show the correct set of questions as part of the Copado Engage onboarding assessment. --></help>
+        <label><!-- TopBox - Onboarding Imp Partner --></label>
+        <name>TopBox_Onboarding_Imp_Partner__c</name>
+        <picklistValues>
+            <masterLabel>Arcsona</masterLabel>
+            <translation><!-- Arcsona --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Blue5green</masterLabel>
+            <translation><!-- Blue5green --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Cloudfulcrum</masterLabel>
+            <translation><!-- Cloudfulcrum --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Cloudqnect</masterLabel>
+            <translation><!-- Cloudqnect --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Copado</masterLabel>
+            <translation><!-- Copado --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IBM</masterLabel>
+            <translation><!-- IBM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>NextView</masterLabel>
+            <translation><!-- NextView --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Polsource</masterLabel>
+            <translation><!-- Polsource --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Thunder</masterLabel>
+            <translation><!-- Thunder --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Date on which the Pre-Renewal assessment is scheduled to be sent out to the selected contacts (Contact: Send Onboarding/Relationship = True). --></help>
+        <label><!-- TopBox - Pre-Renewal Send Date --></label>
+        <name>TopBox_Pre_Renewal_Send_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the Steady State assessment is scheduled to be sent out to the selected contacts (Contact: Send Onboarding/Relationship = True). Once the current feedback wave has passed, the field automatically updates to reflect the next send date. --></help>
+        <label><!-- TopBox - Steady State Send Date --></label>
+        <name>TopBox_Steady_State_Send_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Account Value EUR --></label>
+        <name>Total_Account_Value_EUR__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Weighted Opportunity Value --></label>
+        <name>Total_Weighted_Opportunity_Value__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ultimate Parent --></label>
+        <name>Ultimate_Parent__c</name>
+    </fields>
+    <fields>
+        <help><!-- Updated from Last Overall Activity on the Production Org --></help>
+        <label><!-- Usage --></label>
+        <name>Usage__c</name>
+    </fields>
+    <fields>
+        <label><!-- VAT Number --></label>
+        <name>VAT_Number__c</name>
+    </fields>
+    <fields>
+        <label><!-- Vertical --></label>
+        <name>Vertical__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set as TRUE if Salesforce AOV field is not Blank --></help>
+        <label><!-- Within AOV Band --></label>
+        <name>Within_AOV_Band__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select the working business hours for this company. The value must be different than &quot;Default - 24/7&quot;. --></help>
+        <label><!-- Working Business Hours --></label>
+        <name>Working_Business_Hours__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- 6s City --></label>
+        <name>X6s_City__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s Country --></label>
+        <name>X6s_Country__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s Industry --></label>
+        <name>X6s_Industry__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s NAICS Code --></label>
+        <name>X6s_NAICS_Code__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s NAICS Description --></label>
+        <name>X6s_NAICS_Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s Revenue Range --></label>
+        <name>X6s_Revenue_Range__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s SIC Code --></label>
+        <name>X6s_SIC_Code__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s SIC Description --></label>
+        <name>X6s_SIC_Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s Segments --></label>
+        <name>X6s_Segments__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s State --></label>
+        <name>X6s_State__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6s Updated --></label>
+        <name>X6s_Updated__c</name>
+    </fields>
+    <fields>
+        <label><!-- Y-tunnus --></label>
+        <name>Y_tunnus__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6sense Account Buying Stage Copado --></label>
+        <name>accountBuyingStage6sense_Copado__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6sense Account Intent Score Copado --></label>
+        <name>accountIntentScore6sense_Copado__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6sense Account Profile Fit Copado --></label>
+        <name>accountProfileFit6sense_Copado__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6sense Account Profile Score Copado --></label>
+        <name>accountProfileScore6sense_Copado__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6sense Account Reach Score Copado --></label>
+        <name>accountReachScore6sense_Copado__c</name>
+    </fields>
+    <fields>
+        <label><!-- 6sense Account Update Date Copado --></label>
+        <name>accountUpdateDate6sense_Copado__c</name>
+    </fields>
+    <fields>
+        <label><!-- Auto Collection --></label>
+        <name>chargebeeapps__Auto_Collection__c</name>
+        <picklistValues>
+            <masterLabel>off</masterLabel>
+            <translation><!-- off --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>on</masterLabel>
+            <translation><!-- on --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Chargebee Id --></label>
+        <name>chargebeeapps__CB_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Chargebee Site --></label>
+        <name>chargebeeapps__CB_Site__c</name>
+        <relationshipLabel><!-- CB Customers --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Chargebee Email --></label>
+        <name>chargebeeapps__Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- Chargebee First Name --></label>
+        <name>chargebeeapps__First_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Synced --></label>
+        <name>chargebeeapps__Is_Synced__c</name>
+    </fields>
+    <fields>
+        <label><!-- Chargebee Last Name --></label>
+        <name>chargebeeapps__Last_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Locale --></label>
+        <name>chargebeeapps__Locale__c</name>
+        <picklistValues>
+            <masterLabel>English</masterLabel>
+            <translation><!-- English --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (Australia)</masterLabel>
+            <translation><!-- English (Australia) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (Canada)</masterLabel>
+            <translation><!-- English (Canada) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (India)</masterLabel>
+            <translation><!-- English (India) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (Ireland)</masterLabel>
+            <translation><!-- English (Ireland) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (Malta)</masterLabel>
+            <translation><!-- English (Malta) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (New Zealand)</masterLabel>
+            <translation><!-- English (New Zealand) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (Philippines)</masterLabel>
+            <translation><!-- English (Philippines) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (Singapore)</masterLabel>
+            <translation><!-- English (Singapore) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (South Africa)</masterLabel>
+            <translation><!-- English (South Africa) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (United Kingdom)</masterLabel>
+            <translation><!-- English (United Kingdom) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>English (United States)</masterLabel>
+            <translation><!-- English (United States) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>French</masterLabel>
+            <translation><!-- French --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>French (Belgium)</masterLabel>
+            <translation><!-- French (Belgium) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>French (Canada)</masterLabel>
+            <translation><!-- French (Canada) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>French (France)</masterLabel>
+            <translation><!-- French (France) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>French (Luxembourg)</masterLabel>
+            <translation><!-- French (Luxembourg) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>French (Switzerland)</masterLabel>
+            <translation><!-- French (Switzerland) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>German</masterLabel>
+            <translation><!-- German --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>German (Austria)</masterLabel>
+            <translation><!-- German (Austria) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>German (Germany)</masterLabel>
+            <translation><!-- German (Germany) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>German (Greece)</masterLabel>
+            <translation><!-- German (Greece) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>German (Luxembourg)</masterLabel>
+            <translation><!-- German (Luxembourg) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>German (Switzerland)</masterLabel>
+            <translation><!-- German (Switzerland) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Italian</masterLabel>
+            <translation><!-- Italian --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Italian (Italy)</masterLabel>
+            <translation><!-- Italian (Italy) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Italian (Switzerland)</masterLabel>
+            <translation><!-- Italian (Switzerland) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Portuguese</masterLabel>
+            <translation><!-- Portuguese --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Portuguese (Brazil)</masterLabel>
+            <translation><!-- Portuguese (Brazil) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Portuguese (Portugal)</masterLabel>
+            <translation><!-- Portuguese (Portugal) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish</masterLabel>
+            <translation><!-- Spanish --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Argentina)</masterLabel>
+            <translation><!-- Spanish (Argentina) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Bolivia)</masterLabel>
+            <translation><!-- Spanish (Bolivia) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Chile)</masterLabel>
+            <translation><!-- Spanish (Chile) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Colombia)</masterLabel>
+            <translation><!-- Spanish (Colombia) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Costa Rica)</masterLabel>
+            <translation><!-- Spanish (Costa Rica) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Cuba)</masterLabel>
+            <translation><!-- Spanish (Cuba) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Dominican Republic)</masterLabel>
+            <translation><!-- Spanish (Dominican Republic) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Ecuador)</masterLabel>
+            <translation><!-- Spanish (Ecuador) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (El Salvador)</masterLabel>
+            <translation><!-- Spanish (El Salvador) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Guatemala)</masterLabel>
+            <translation><!-- Spanish (Guatemala) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Honduras)</masterLabel>
+            <translation><!-- Spanish (Honduras) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Mexico)</masterLabel>
+            <translation><!-- Spanish (Mexico) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Nicaragua)</masterLabel>
+            <translation><!-- Spanish (Nicaragua) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Panama)</masterLabel>
+            <translation><!-- Spanish (Panama) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Paraguay)</masterLabel>
+            <translation><!-- Spanish (Paraguay) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Peru)</masterLabel>
+            <translation><!-- Spanish (Peru) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Puerto Rico)</masterLabel>
+            <translation><!-- Spanish (Puerto Rico) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Spain)</masterLabel>
+            <translation><!-- Spanish (Spain) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (United States)</masterLabel>
+            <translation><!-- Spanish (United States) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Uruguay)</masterLabel>
+            <translation><!-- Spanish (Uruguay) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Spanish (Venezuela)</masterLabel>
+            <translation><!-- Spanish (Venezuela) --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Net Term Days --></label>
+        <name>chargebeeapps__Net_Term_Days__c</name>
+    </fields>
+    <fields>
+        <label><!-- Payment Method Status --></label>
+        <name>chargebeeapps__Payment_Method_Status__c</name>
+        <picklistValues>
+            <masterLabel>EXPIRED</masterLabel>
+            <translation><!-- EXPIRED --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>EXPIRING</masterLabel>
+            <translation><!-- EXPIRING --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>INVALID</masterLabel>
+            <translation><!-- INVALID --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PENDING_VERIFICATION</masterLabel>
+            <translation><!-- PENDING_VERIFICATION --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>VALID</masterLabel>
+            <translation><!-- VALID --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Payment Method Type --></label>
+        <name>chargebeeapps__Payment_Method_Type__c</name>
+        <picklistValues>
+            <masterLabel>ALIPAY</masterLabel>
+            <translation><!-- ALIPAY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AMAZON_PAYMENTS</masterLabel>
+            <translation><!-- AMAZON_PAYMENTS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>APPLE_PAY</masterLabel>
+            <translation><!-- APPLE_PAY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CARD</masterLabel>
+            <translation><!-- CARD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DIRECT_DEBIT</masterLabel>
+            <translation><!-- DIRECT_DEBIT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>GENERIC</masterLabel>
+            <translation><!-- GENERIC --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PAYPAL_EXPRESS_CHECKOUT</masterLabel>
+            <translation><!-- PAYPAL_EXPRESS_CHECKOUT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>UNIONPAY</masterLabel>
+            <translation><!-- UNIONPAY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>WECHAT_PAY</masterLabel>
+            <translation><!-- WECHAT_PAY --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Sync with Chargebee --></label>
+        <name>chargebeeapps__Sync_with_Chargebee__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxability --></label>
+        <name>chargebeeapps__Taxability__c</name>
+        <picklistValues>
+            <masterLabel>EXEMPT</masterLabel>
+            <translation><!-- EXEMPT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>TAXABLE</masterLabel>
+            <translation><!-- TAXABLE --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- VAT Number --></label>
+        <name>chargebeeapps__VAT_Number__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ebsta Score Trend Last 30 Days --></label>
+        <name>ebsta1__Ebsta_Score_Trend_Last_30_Days__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ebsta Score Trend Last 7 Days --></label>
+        <name>ebsta1__Ebsta_Score_Trend_Last_7_Days__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ebsta Score Trend Last 90 Days --></label>
+        <name>ebsta1__Ebsta_Score_Trend_Last_90_Days__c</name>
+    </fields>
+    <fields>
+        <label><!-- Ebsta Score --></label>
+        <name>ebsta1__Ebsta_Score__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Ebsta Stats Update --></label>
+        <name>ebsta1__Last_Ebsta_Stats_Update__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last month emails exchanged inbound --></label>
+        <name>ebsta1__Last_month_emails_exchanged_inbound__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last month emails exchanged outbound --></label>
+        <name>ebsta1__Last_month_emails_exchanged_outbound__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last week emails exchanged inbound --></label>
+        <name>ebsta1__Last_week_emails_exchanged_inbound__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last week emails exchanged outbound --></label>
+        <name>ebsta1__Last_week_emails_exchanged_outbound__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total emails exchanged inbound --></label>
+        <name>ebsta1__Total_emails_exchanged_inbound__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total emails exchanged outbound --></label>
+        <name>ebsta1__Total_emails_exchanged_outbound__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Email Activity Date --></label>
+        <name>ebsta1__ebstaLast_Activity_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Domain In Sync? --></label>
+        <name>fcio1__Domain_In_Sync__c</name>
+    </fields>
+    <fields>
+        <label><!-- Clean Domain --></label>
+        <name>fcio1__Domain_Key__c</name>
+    </fields>
+    <fields>
+        <label><!-- Domain Last Updated At --></label>
+        <name>fcio1__Domain_Last_Updated_At__c</name>
+    </fields>
+    <fields>
+        <label><!-- Domain --></label>
+        <name>fcio1__Domain__c</name>
+    </fields>
+    <fields>
+        <label><!-- Industry Code --></label>
+        <name>fcio1__Industry_Code__c</name>
+    </fields>
+    <fields>
+        <label><!-- Industry Taxonomy --></label>
+        <name>fcio1__Industry_Taxonomy__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Routing Rule --></label>
+        <name>fcio1__RoutingRule__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Territory --></label>
+        <name>fcio1__Territory__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- UltimateParentKey --></label>
+        <name>fcio1__UltimateParentKey__c</name>
+    </fields>
+    <fields>
+        <label><!-- UltimateParent --></label>
+        <name>fcio1__UltimateParent__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Ultimate ParentId --></label>
+        <name>fcio1__Ultimate_ParentId__c</name>
+    </fields>
+    <fields>
+        <help><!-- If checked, the automatic sync function is disabled with the Billing Address and Shipping Address fields. 
+
+If unchecked, the Shipping Address fields are automatically updated when the Billing Address has been updated and was previously in sync. --></help>
+        <label><!-- Disable Billing/Shipping Address Sync --></label>
+        <name>kugadd__DisableBillingShippingAddressSync__c</name>
+    </fields>
+    <fields>
+        <help><!-- PaymentConnect checks this box when auto-creating a Contact and an &apos;Individual Account&apos; that should be converted to a PersonAccount using a batch converter. --></help>
+        <label><!-- Convert To Person Account --></label>
+        <name>kugo2p__Convert_To_Person_Account__c</name>
+    </fields>
+    <fields>
+        <label><!-- Gift Budget Counter --></label>
+        <name>lnt__Budget_Counter__c</name>
+    </fields>
+    <fields>
+        <label><!-- Gift Budget Limit --></label>
+        <name>lnt__Budget_Limit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Gift Counter --></label>
+        <name>lnt__Gift_Counter__c</name>
+    </fields>
+    <fields>
+        <label><!-- Gift Number Limit --></label>
+        <name>lnt__Gift_Number_Limit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Price Book --></label>
+        <name>ltcomm__Price_Book__c</name>
+        <relationshipLabel><!-- Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- MK Customer Fit --></label>
+        <name>mk_customer_fit__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Customer Fit Score --></label>
+        <name>mk_customer_fit_score__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Customer Fit Segment --></label>
+        <name>mk_customer_fit_segment__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Customer Fit Signals --></label>
+        <name>mk_customer_fit_signals__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Lead Grade Score --></label>
+        <name>mk_lead_grade_score__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Lead Grade Segment --></label>
+        <name>mk_lead_grade_segment__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Likelihood To Buy Score --></label>
+        <name>mk_likelihood_to_buy_score__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Likelihood To Buy --></label>
+        <name>mk_likelihood_to_buy_segment__c</name>
+    </fields>
+    <fields>
+        <label><!-- MK Recent Activity --></label>
+        <name>mk_recent_activity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Currency Test --></label>
+        <name>rh2__testCurrency__c</name>
+    </fields>
+    <layouts>
+        <layout>ABM</layout>
+        <sections>
+            <label><!-- Breadwinner - Xero Invoices --></label>
+            <section>Breadwinner - Xero Invoices</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner Chart --></label>
+            <section>Breadwinner Chart</section>
+        </sections>
+        <sections>
+            <label><!-- CPQ Information --></label>
+            <section>CPQ Information</section>
+        </sections>
+        <sections>
+            <label><!-- Click Deploy --></label>
+            <section>Click Deploy</section>
+        </sections>
+        <sections>
+            <label><!-- Copado Engage --></label>
+            <section>Copado Engage</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Customer Success --></label>
+            <section>Customer Success</section>
+        </sections>
+        <sections>
+            <label><!-- Finance --></label>
+            <section>Finance</section>
+        </sections>
+        <sections>
+            <label><!-- Latest Opportunity --></label>
+            <section>Latest Opportunity</section>
+        </sections>
+        <sections>
+            <label><!-- Partner --></label>
+            <section>Partner</section>
+        </sections>
+        <sections>
+            <label><!-- Related Individuals --></label>
+            <section>Related Individuals</section>
+        </sections>
+        <sections>
+            <label><!-- Slack Messages --></label>
+            <section>Slack Messages</section>
+        </sections>
+        <sections>
+            <label><!-- Value Cloud Validation --></label>
+            <section>Value Cloud Validation</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Account (Community) Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Account Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>CPQ Account Layout</layout>
+        <sections>
+            <label>Informations supplémentaires</label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label>Liens personnalisés</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Informations sur les renouvellements/durées identiques</label>
+            <section>Renewal/Co-Term Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Corporate Entity</layout>
+        <sections>
+            <label><!-- Account Special Pricing --></label>
+            <section>Account Special Pricing</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner --></label>
+            <section>Breadwinner</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner - Xero Invoices --></label>
+            <section>Breadwinner - Xero Invoices</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner Chart --></label>
+            <section>Breadwinner Chart</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner Charts --></label>
+            <section>Breadwinner Charts</section>
+        </sections>
+        <sections>
+            <label><!-- CPQ Information --></label>
+            <section>CPQ Information</section>
+        </sections>
+        <sections>
+            <label><!-- ClickDeploy --></label>
+            <section>ClickDeploy</section>
+        </sections>
+        <sections>
+            <label><!-- Copado Engage --></label>
+            <section>Copado Engage</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Customer Success --></label>
+            <section>Customer Success</section>
+        </sections>
+        <sections>
+            <label><!-- Ebsta --></label>
+            <section>Ebsta</section>
+        </sections>
+        <sections>
+            <label><!-- Finance --></label>
+            <section>Finance</section>
+        </sections>
+        <sections>
+            <label><!-- Financial Information --></label>
+            <section>Financial Information</section>
+        </sections>
+        <sections>
+            <label><!-- Latest Opportunity Information --></label>
+            <section>Latest Opportunity Information</section>
+        </sections>
+        <sections>
+            <label><!-- Partner --></label>
+            <section>Partner</section>
+        </sections>
+        <sections>
+            <label><!-- Related Individuals --></label>
+            <section>Related Individuals</section>
+        </sections>
+        <sections>
+            <label><!-- Slack Messages --></label>
+            <section>Slack Messages</section>
+        </sections>
+        <sections>
+            <label><!-- Value Cloud Validation --></label>
+            <section>Value Cloud Validation</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Corporate Entity (Sales User)</layout>
+        <sections>
+            <label><!-- Account Special Pricing --></label>
+            <section>Account Special Pricing</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner --></label>
+            <section>Breadwinner</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner - Xero Invoices --></label>
+            <section>Breadwinner - Xero Invoices</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner Chart --></label>
+            <section>Breadwinner Chart</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner Charts --></label>
+            <section>Breadwinner Charts</section>
+        </sections>
+        <sections>
+            <label><!-- CPQ Information --></label>
+            <section>CPQ Information</section>
+        </sections>
+        <sections>
+            <label><!-- ClickDeploy --></label>
+            <section>ClickDeploy</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Customer Success --></label>
+            <section>Customer Success</section>
+        </sections>
+        <sections>
+            <label><!-- Ebsta --></label>
+            <section>Ebsta</section>
+        </sections>
+        <sections>
+            <label><!-- Finance --></label>
+            <section>Finance</section>
+        </sections>
+        <sections>
+            <label><!-- Latest Opportunity Information --></label>
+            <section>Latest Opportunity Information</section>
+        </sections>
+        <sections>
+            <label><!-- Related Individuals --></label>
+            <section>Related Individuals</section>
+        </sections>
+        <sections>
+            <label><!-- Slack Messages --></label>
+            <section>Slack Messages</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Corporate Entity - 2020</layout>
+        <sections>
+            <label><!-- Account Special Pricing --></label>
+            <section>Account Special Pricing</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner --></label>
+            <section>Breadwinner</section>
+        </sections>
+        <sections>
+            <label><!-- Breadwinner Charts --></label>
+            <section>Breadwinner Charts</section>
+        </sections>
+        <sections>
+            <label><!-- CPQ Information --></label>
+            <section>CPQ Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Customer Success --></label>
+            <section>Customer Success</section>
+        </sections>
+        <sections>
+            <label><!-- Ebsta --></label>
+            <section>Ebsta</section>
+        </sections>
+        <sections>
+            <label><!-- Finance --></label>
+            <section>Finance</section>
+        </sections>
+        <sections>
+            <label><!-- Slack Messages --></label>
+            <section>Slack Messages</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Support User Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Customer Success --></label>
+            <section>Customer Success</section>
+        </sections>
+        <sections>
+            <label><!-- Description Information --></label>
+            <section>Description Information</section>
+        </sections>
+        <sections>
+            <label><!-- Related Individuals --></label>
+            <section>Related Individuals</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>VC Account Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Value Cloud Validation --></label>
+            <section>Value Cloud Validation</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Add Feature --></label>
+        <name>Add_Feature</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Create Opportunity --></label>
+        <name>Create_Opportunity</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Quick Opportunity --></label>
+        <name>Quick_Opportunity</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Update Account --></label>
+        <name>Update_Account</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Create/Update Chargebee Customer --></label>
+        <name>chargebeeapps__Create_Update_Customer</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Set/View Chargebee Hierarchy --></label>
+        <name>chargebeeapps__Set_View_Hierarchy</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Add to Nurture List --></label>
+        <name>pi__Add_to_Nurture_List</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Send to Slack --></label>
+        <name>slackv2__Send_to_Slack</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Slack Alerts --></label>
+        <name>slackv2__Slack_Alerts</name>
+    </quickActions>
+    <recordTypes>
+        <description><!-- This is used for Companies (NOT ORGS) --></description>
+        <label><!-- Corporate Entity --></label>
+        <name>Corporate_Entity</name>
+    </recordTypes>
+    <validationRules>
+        <errorMessage><!-- AE are not allowed to create account. Please contact your system administrator for further details. --></errorMessage>
+        <name>AE_ABM_SalesUser_Not_AllowedTo_Create</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please do not edit this field value --></errorMessage>
+        <name>AVA_SFCPQ__Validate_AvaTax_Exemption_Customer_ID</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You dont have permission to update the Billing Entity --></errorMessage>
+        <name>Cannot_Edit_Billing_Entity</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Exhausted reason and Exhausted until fields must be filled when rating is Tier 3. --></errorMessage>
+        <name>Exhausted_fields_should_be_filled</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- CompanyId should be a numeric value --></errorMessage>
+        <name>LID__Check_CompanyId_Value</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can not change the ownership if you do not own. --></errorMessage>
+        <name>Prevents_AEs_from_changing_ownership</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Conga_Composer_OAuth --></label>
+        <name>APXTConga4__Conga_Composer_OAuth</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Conga_Mail_Merge --></label>
+        <name>APXTConga4__Conga_Mail_Merge</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Add_Customer_s_to_AvaTax_Exemption --></label>
+        <name>AVA_SFCPQ__Add_Customer_s_to_AvaTax_Exemption</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Save_to_Avalara --></label>
+        <name>AVA_SFCPQ__Save_to_Avalara</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- ValidateAccountsAddress --></label>
+        <name>AVA_SFCPQ__ValidateAccountsAddress</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Validate_Shipping_Address --></label>
+        <name>AVA_SFCPQ__Validate_Shipping_Address</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- AltavistaNews --></label>
+        <name>AltavistaNews</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Billing --></label>
+        <name>Billing</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- View_Account_in_Gong --></label>
+        <name>Gong__View_Account_in_Gong</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- GoogleMaps --></label>
+        <name>GoogleMaps</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- GoogleNews --></label>
+        <name>GoogleNews</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- GoogleSearch --></label>
+        <name>GoogleSearch</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- hndwrtBtnSendNoteAcnt --></label>
+        <name>Handwrytten__hndwrtBtnSendNoteAcnt</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- hndwrtBtnSendNoteBulkAcnt --></label>
+        <name>Handwrytten__hndwrtBtnSendNoteBulkAcnt</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- HooversProfile --></label>
+        <name>HooversProfile</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Mass_Delete --></label>
+        <name>MassManager__Mass_Delete</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Mass_Edit_Standard_Fields --></label>
+        <name>MassManager__Mass_Edit_Standard_Fields</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Mass_Update --></label>
+        <name>MassManager__Mass_Update</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Merge_Accounts --></label>
+        <name>Merge_Accounts</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Quick_SB_Quote --></label>
+        <name>Quick_SB_Quote</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Amend_Assets --></label>
+        <name>SBQQ__Amend_Assets</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Renew_Assets --></label>
+        <name>SBQQ__Renew_Assets</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_New_Customer_Request_Form --></label>
+        <name>Send_New_Customer_Request_Form</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Merge --></label>
+        <name>TRIMDA__Merge</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- TopBox_Account_X_Ray --></label>
+        <name>TopBoxWG__TopBox_Account_X_Ray</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- View_Accout_in_Stripe --></label>
+        <name>View_Accout_in_Stripe</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- YahooMaps --></label>
+        <name>YahooMaps</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Create_Subscription --></label>
+        <name>chargebeeapps__Create_Subscription</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Create_Update_Customer --></label>
+        <name>chargebeeapps__Create_Update_Customer</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Invoice_Unbilled_Charges --></label>
+        <name>chargebeeapps__Invoice_Unbilled_Charges</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Set_View_Hierarchy --></label>
+        <name>chargebeeapps__Set_View_Hierarchy</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Update_Payment_Method --></label>
+        <name>chargebeeapps__Update_Payment_Method</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Update_Payment_Method_Email --></label>
+        <name>chargebeeapps__Update_Payment_Method_Email</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- ContactAddress_Manager --></label>
+        <name>kugadd__ContactAddress_Manager</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Contact_Address_Manager --></label>
+        <name>kugadd__Contact_Address_Manager</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- New_Order --></label>
+        <name>kugo2p__New_Order</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- New_Payment --></label>
+        <name>kugo2p__New_Payment</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- New_Quote --></label>
+        <name>kugo2p__New_Quote</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_Gift --></label>
+        <name>lnt__Send_Gift</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_Pardot_Emails --></label>
+        <name>pi__Send_Pardot_Emails</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_Single_Pardot_Email --></label>
+        <name>pi__Send_Single_Pardot_Email</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_To_Prospect_Insight --></label>
+        <name>pi__Send_To_Prospect_Insight</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_to_Slack --></label>
+        <name>slackv2__Send_to_Slack</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Slack_Alerts --></label>
+        <name>slackv2__Slack_Alerts</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>kugo2p__SalesOrder__c.kugo2p__OrderDate__c</field>
+    </columns>
+    <columns>
+        <field>kugo2p__SalesOrder__c.kugo2p__DateRequired__c</field>
+    </columns>
+    <columns>
+        <field>kugo2p__SalesOrder__c.kugo2p__NetAmount__c</field>
+    </columns>
+    <columns>
+        <field>kugo2p__SalesOrder__c.kugo2p__PaymentStatus2__c</field>
+    </columns>
+    <columns>
+        <field>kugo2p__SalesOrder__c.kugo2p__BalanceDueAmount__c</field>
+    </columns>
+    <description>All Orders Approved this month</description>
+    <filter>
+        <criteriaItems>
+            <column>kugo2p__SalesOrder__c.kugo2p__RecordStatus__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Approved</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>kugo2p__SalesOrder__c.kugo2p__Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Orders Approved This Month</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$kugo2p__SalesOrder__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>kugo2p__SalesOrder__c.kugo2p__DateApproved__c</dateColumn>
+        <interval>INTERVAL_THISMONTH</interval>
+    </timeFrameFilter>
+</Report>

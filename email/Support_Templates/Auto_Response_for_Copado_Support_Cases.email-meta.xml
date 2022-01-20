@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Enhanced template for the autoresponse to Copado Support cases.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Auto-Response for Copado Support Cases</name>
+    <style>none</style>
+    <subject>[Copado] Case # {!Case.CaseNumber}: &quot;{!Case.Subject}&quot; has been created.</subject>
+    <textOnly>Copado Support
+Thanks for contacting Copado support.
+Case # {!Case.CaseNumber}:
+&quot;{!Case.Subject}&quot; has been created.
+Issue definition:
+{!Case.Description_Rich__c}
+Communication:
+Initial response time for new cases for Standard support customers is 2 business days. Initial response time for Premier Success customers is 8 hours.
+Copado Solutions will never ask for your account password. For your own privacy and security NEVER send your credentials by email.
+You can visit our documentation site, where you will find useful information about Copado.
+
+Thank you.
+Copado Support Team
+
+Case tracking Id: {!Case.Thread_Id}   Copado Solutions S.L.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

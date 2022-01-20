@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>TopBoxWG__Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Date_Offset__c</fullName>
+        <defaultValue>-1</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The number of days before or after the send date that the email should be sent.  Negative values ok</inlineHelpText>
+        <label>Date Offset</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Email_Template_API_Name__c</fullName>
+        <defaultValue>&apos;TopBox_PreNote&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This is the Template Unique Name on the classic email templates</inlineHelpText>
+        <label>Email Template API Name</label>
+        <length>18</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Ok_to_Send_PreNote_Field_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This is the api name for the checkbox field that indicates the contact should be sent pre note emails.</inlineHelpText>
+        <label>Ok to Send PreNote Field Name</label>
+        <length>200</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Org_Wide_Email__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Leaving this field blank will default to the Sender Field Name and the From email of the User selecting the contact. Populate with a verified org-wide email address to use that instead as the sender name and email.</inlineHelpText>
+        <label>Org Wide Email</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Sender_Field_Name__c</fullName>
+        <defaultValue>&apos;OwnerId&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This should be the API name of the User or Contact field used to define the sender. Example: OwnerId  OR CSM__c</inlineHelpText>
+        <label>Sender Field Name</label>
+        <length>200</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TopBoxWG__Triggering_Date_Field_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The API name of the datetime field used to trigger the email.  Example: Ongoing_Send_Date__c
+** This must be a DATETIME field type</inlineHelpText>
+        <label>Triggering Date Field Name</label>
+        <length>200</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>TopBox PreNote Email</label>
+    <listViews>
+        <fullName>TopBoxWG__TopBox_PreNote_Emails_Detail_View</fullName>
+        <columns>TopBoxWG__Active__c</columns>
+        <columns>DeveloperName</columns>
+        <columns>MasterLabel</columns>
+        <columns>TopBoxWG__Triggering_Date_Field_Name__c</columns>
+        <columns>TopBoxWG__Date_Offset__c</columns>
+        <columns>TopBoxWG__Sender_Field_Name__c</columns>
+        <columns>TopBoxWG__Ok_to_Send_PreNote_Field_Name__c</columns>
+        <columns>TopBoxWG__Org_Wide_Email__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>TopBox PreNote Emails Detail View</label>
+    </listViews>
+    <pluralLabel>TopBox PreNote Emails</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

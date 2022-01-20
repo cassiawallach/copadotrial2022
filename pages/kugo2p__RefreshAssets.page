@@ -1,0 +1,16 @@
+<apex:page standardController="kugo2p__SalesOrder__c" extensions="kugo2p.RefreshAssetsExt" recordSetVar="refreshAssetsOrders" title="Refresh Assets" tabStyle="kugo2p__SalesOrder__c">
+
+    <apex:pageMessages escape="false"/>
+
+    <apex:form >
+        <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" >
+            <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+            <br></br>
+
+            <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+            <apex:commandButton value="Refresh Assets" action="{!refreshAssets}" rendered="{!showRefreshAssets}" styleClass="slds-button slds-button--brand" />
+        </apex:outputPanel>
+        
+    </apex:form>
+
+</apex:page>

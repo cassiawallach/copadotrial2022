@@ -1,0 +1,95 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account Share page
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjAccountAccess__c" extensions="Handwrytten.hndwrtClsAcntShare" title="Share Handwrytten Account" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form >
+    <div class="slds">
+    
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+        
+        <apex:sectionHeader title="Handwrytten" subtitle="Share Handwrytten Account" help="/apex/hndwrtPgHelp" />
+        
+        <apex:outputPanel id="opMsg">
+                    <table style="width:700px;"> 
+                        <tr> <td>
+                            <apex:pageMessage summary="Sharing a handwrytten account with another user grants that 
+                            	user access to account functions such as: using the account to process orders and 
+                            	modifying account templates. Please use caution when leveraging the account share feature." 
+                            	severity="info" strength="3" rendered="{!!orgWideAccount}" />
+                            
+                            <apex:pageMessage summary="Org Wide Handwrytten Accounts are shared with all users in the 
+                            	Salesforce.com Org. Sharing cannot be applied to individual users. To apply individual 
+                            	user sharing settings for the handwrytten account remove the Org Wide Account setting." 
+                            	severity="info" strength="3" rendered="{!orgWideAccount}" />
+                        </td> </tr> 
+                    </table> 
+       </apex:outputPanel>
+        
+        <apex:pageBlock title="Account Share" mode="Edit">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!save}" value="Save" disabled="{!orgWideAccount}"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+                
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Handwrytten Account Share" columns="2" rendered="{!!orgWideAccount}" >
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Handwrytten_Account__c}" required="true"/>
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__User__c}"/>
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Maximum_Monthly_Budget__c}"/>
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Allow_Gift_Cards__c}"/>
+            </apex:pageBlockSection> 
+        </apex:pageBlock> 
+        
+        <apex:pageBlock id="pbSharedusers" title="Handwrytten account is shared with the following users" rendered="{!!orgWideAccount}" >
+                <apex:pageBlockTable value="{!acntAccessLst}" var="u" id="pbtSharedUsers">
+                    <apex:column headervalue=""> 
+                    	
+                    	<apex:commandlink value="Edit Sharing" action="{!editShare}">
+                            <apex:param name="recordId" value="{!u.id}"/> 
+                        </apex:commandlink>
+                        <apex:outputpanel rendered="{!u.Handwrytten__Sort__c==9}">
+                        &nbsp;|&nbsp;
+                        </apex:outputpanel>
+                        <apex:commandlink value="Remove Sharing" action="{!deleteUser}" rendered="{!u.Handwrytten__Sort__c==9}"> 
+                            <apex:param name="recordId" value="{!u.id}"/> 
+                        </apex:commandlink>      
+                    </apex:column>
+                    
+                    <apex:column headervalue="User">                                                                        
+                        <apex:outputfield value="{!u.Handwrytten__User__c}"/>                                                         
+                    </apex:column>
+
+                     <apex:column headervalue="First Name">                                                                        
+                        <apex:outputfield value="{!u.User__r.FirstName}"/>                                                         
+                    </apex:column>
+
+                    <apex:column headervalue="Last Name">                                                                        
+                        <apex:outputfield value="{!u.User__r.LastName}"/>                                                         
+                    </apex:column>
+                    
+                    <apex:column headervalue="Maximum Monthly Budget">                                                                        
+                        <apex:outputfield value="{!u.Handwrytten__Maximum_Monthly_Budget__c}"/>                                                         
+                    </apex:column>
+                    
+                    <apex:column headervalue="Allow Gift Cards">                                                                        
+                        <apex:outputfield value="{!u.Handwrytten__Allow_Gift_Cards__c}"/>                                                         
+                    </apex:column>
+                    
+                </apex:pageBlockTable>
+        </apex:pageBlock>
+        
+	</div>
+    </apex:form>
+</apex:page>

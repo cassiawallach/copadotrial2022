@@ -1,0 +1,104 @@
+<apex:page controller="TRIMDA.TRIMDA_Home_controller" docType="html-5.0">
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/> 
+
+<head>
+    <title>DataTrim Dupe Alerts - My First Alert</title>
+    <style type="text/css">
+    .showme
+    {
+        font-size:11px;
+        }
+    .myul
+    {
+         list-style-image: url({!URLFOR($Resource.DataTrimDupeAlerts, 'bullet.jpg')});
+         list-style-position: outside;
+        }
+    .back
+    {
+        background-image:url( {!URLFOR($Resource.DataTrimDupeAlerts, 'Washer7.png')});
+        background-repeat:no-repeat;
+        background-position:center;
+        background-position:top;
+        width:100%;
+        }
+        .DL
+        {
+            color: #3366FF;
+            font-size: 28px;
+            text-align: right;
+            font-weight: bold;
+        }
+        .DA
+        {
+            color: #3366FF; 
+            font-weight: bold;
+            font-size: 42px;
+        }
+
+    </style>
+</head>
+
+<body >
+
+
+<div class="slds">
+    <div class="back" >
+        <div class="slds-container--center slds-container--small">
+            <div class="slds-container--left DA">
+                My&nbsp;First Dupe&nbsp;Alert
+            </div>
+            <div class="slds-container--right DL">
+                -DataTrim Dupe Alerts
+            </div>
+        </div>
+        <div class="slds-container--center slds-container--small " style="color:black;background-color:#ffffff;border-color: #3366FF;width:100%;cellpadding:2px; margin:10 0 10 0;box-shadow:5px 5px 50px 0 #333;border-radius:10px;overflow:hidden;">
+            <div class="slds-grid slds-wrap"> 
+                <div class="slds-col slds-size--1-of-2 slds-align-middle" style="text-align:center;font-size:0.8rem;">
+                    <strong>Start by creating your First Alert</strong><br />
+                    <!-- <a href="/apex/trimda/apex/TRIMDA_AlertWizard?saveURL=%2Fapex%2Ftrimda%2FTRIMDA_DupeAlerts&retURL=%2Fapex%2Ftrimda%2FTRIMDA_DupeAlerts" class="slds-button slds-button--brand">New Alert (Wizard)</a> -->
+                    <a href="{!NewDaUrl}?saveURL=%2Fapex%2Ftrimda%2FTRIMDA__TRIMDA_DupeAlerts&retURL=%2Fapex%2Ftrimda%2FTRIMDA__TRIMDA_DupeAlerts" class="slds-button slds-button--brand" style="width:12rem;">New Alert</a>
+                </div>
+                <div class="slds-col slds-size--1-of-2 " style="padding:0.5rem;font-size:0.8rem;">
+                    <strong>Performing your First Deduplication</strong><br />
+                    To perform a deduplication there are 3 steps:<br />
+                    <ol class="slds-list--ordered">
+                        <li>Create and Activate an Alert<br /></li>
+                        <li>Review the list of potentential duplicates</li>
+                        <li>Merge/convert the duplicates</li>
+                    </ol>
+                    <b>Use the Wizard on the left or..<br />Watch the video, to see how easy it is...</b><br />
+                    <div style="text-align:center;">
+                    <a href="https://www.datatrim.com/d2b.php?mode=DupeAlerts#demo" title="Datatrim Dupe Alerts Introduction Demo" target="_blank"><img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'DA_DEMO180.png')}"  alt="Dupe Alerts Setup" /></a>
+                    </div>
+                     On our website you will find more tutorials demonstrating the various functions and features:
+                    <a href="https://www.datatrim.com/d2b.php?mode=DupeAlerts#demo" target="_blank" title="More Tutorials" class="slds-button slds-button--neutral" >More Tutorials</a>
+                </div>
+                <div class="slds-col slds-size--1-of-1" style="margin:1rem;padding:0.5rem;background-color:lightgrey;border-radius:10px;">
+                    <div style="font-size:0.75rem;">
+                        <b>User Guide:</b>&nbsp;The <a href="https://www.datatrim.com/downloads/DataTrimDupeAlertsUserGuide.pdf#Page=12&zoom=80" title="Datatrim Dupe Alerts User Guide" target="_blank">User Guide</a> contains more information regarding the creation of your First Alert, and contains details and examples for more advanced use, including:
+                        <ol class="slds-list--dotted">
+                            <li>Using filters for sub-segmenting your data</li>
+                            <li>Scheduling Alerts for automatic processing</li>
+                            <li>Make the review/merge process collaborative</li>
+                            <li>Mass merge/convert functions</li>
+                            <li>and more....</li>
+                        </ol>
+                    </div>
+                    <br />
+                    <div style="font-size:0.75rem;">
+                        <b>Support:</b>&nbsp;Contact us at <a  href="mailto:support@datatrim.com" target="_blank">support@datatrim.com</a> with any questions or ideas <br />-We appreciate all the feedback we can get.<br />
+                        <strong>Follow product updates and news on our Blog, Facebook and Twitter:</strong> 
+                        <a href="https://blog.datatrim.com" target="_new"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'wordpress_32.png')}" width="24px" height="24px" alt="DataTrim Blog" title="Follow product updates and news on our Blog" /></a>
+                        <a href="https://www.facebook.com/pages/DataTrim/112264318808785" target="_new"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'facebook_32.png')}" width="24px" height="24px"  alt="DataTrim on Facebook" title="Follow DataTrim on Facebook"  /></a>
+                        <a href="https://www.twitter.com/datatrim" target="_new"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'twitter_32.png')}" width="24px" height="24px" alt="DataTrim on Twitter" title="Follow DataTrim on Twitter" /></a>
+                    </div> 
+                  </div>        
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</apex:page>

@@ -1,0 +1,21 @@
+<apex:page standardController="Account" recordSetVar="accounts" extensions="AVA_SFCPQ.AddCustListToCertCaptureController"  sideBar="false" lightningStylesheets="true" >
+   <apex:includeLightning />
+   <div id="displayresult"></div>
+      
+   <script>
+    var x = {!listId};
+    
+    $Lightning.use("AVA_SFCPQ:HostCustomerToCertCapture", function() {
+ 
+        $Lightning.createComponent("AVA_SFCPQ:CustomerToCertCapture",
+                                   {
+                                       sessionId : "{!$API.Session_ID}",
+                                       selectedRecs : x
+                                   },
+                                   "displayresult",
+                                   function(component) {}
+                                  );
+    });
+    </script>
+    
+</apex:page>

@@ -1,0 +1,31 @@
+<apex:page standardController="redwing__Task__c" extensions="redwing.TaskRatingsManagementExt">
+    <apex:form >
+        <apex:sectionHeader title="{!redwing__Task__c.Name}" subtitle="{!$ObjectType.redwing__Task_Rating__c.labelplural}"/>
+        <apex:pageBlock title="{!$Label.redwing__alms_ratings_management}">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton value="{!$Label.redwing__alms_save}" action="{!save}" />
+                <apex:commandButton value="{!$Label.redwing__alms_back}" action="{!cancel}" immediate="true" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockTable value="{!redwing__Task__c.Task_Ratings__r}" var="tr" >
+                <apex:column headerValue="{!$Label.redwing__alms_action}">
+                    <apex:commandLink action="{!deleteTaskRating}" value="{!$Label.redwing__alms_delete}">
+                        <apex:param name="trId" value="{!tr.id}" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.redwing__Task_Rating__c.fields.Name.label}">
+                    <a href="/{!tr.Id}" target="_blank"><apex:outputText value="{!tr.Name}"/></a>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.redwing__Task_Rating__c.fields.redwing__Rating__c.label}">
+                    <apex:outputField value="{!tr.Rating__r.Name}"/>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.redwing__Task_Rating__c.fields.redwing__Weight__c.label}">
+                    <apex:inputField value="{!tr.redwing__Weight__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.redwing__Task_Rating__c.fields.redwing__Order__c.label}">
+                    <apex:inputField value="{!tr.redwing__Order__c}" />
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+</apex:form>
+</apex:page>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>IF(CDF1:AVG&gt;4,5,
+if(CDF1:AVG&lt;3,1,3))</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Delivery CSAT Rank</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$Name</field>
+    </columns>
+    <columns>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$GetFeedback_Aut__Contact__c</field>
+    </columns>
+    <columns>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r.GetFeedback_Aut__Answers__r$GetFeedback_Aut__DisplayValue__c</field>
+    </columns>
+    <columns>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$CreatedDate</field>
+    </columns>
+    <columns>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r.GetFeedback_Aut__Answers__r$GetFeedback_Aut__QuestionType__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <currency>EUR</currency>
+    <customDetailFormulas>
+        <calculatedFormula>value(left(GetFeedback_Aut__Answer__c.GetFeedback_Aut__DisplayValue__c,1))</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Delivery CSAT Helper</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Services Engagement - Delivery CSAT</description>
+    <filter>
+        <criteriaItems>
+            <column>GetFeedback_Aut__Survey__c$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Implementation Satisfaction Survey</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$GetFeedback_Aut__Account__c.Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>Copado</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$GetFeedback_Aut__Account__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r.GetFeedback_Aut__Answers__r$GetFeedback_Aut__QuestionType__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Multiple</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r$GetFeedback_Aut__Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Services Engagement - Delivery CSAT</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>GetFeedback_Surveys_and_Repsones__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>GetFeedback_Aut__Survey__c.GetFeedback_Aut__Responses__r.GetFeedback_Aut__Answers__r$GetFeedback_Aut__DisplayValue__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>GetFeedback_Aut__Survey__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

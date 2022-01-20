@@ -1,0 +1,49 @@
+<apex:page standardController="redwing__ILT_Instructor__c" extensions="ltui.ILTInstructorCmpCtrl">
+    <style type="text/css">
+        html{
+            height: 100%;
+        }
+        html body{
+            height: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <apex:includeLightning />
+    <div id="lightning" />
+
+    <apex:form >
+        <apex:actionFunction action="{!cancel}" name="cancelEvent"></apex:actionFunction>
+    </apex:form>
+
+    <script>
+        var eventHandler = function(event) {
+          var opt = JSON.parse(event.getParam("message"));
+          if (opt.action == "cancel") {
+              cancelEvent();
+          }
+        }
+
+        $Lightning.use("{!ns}:ILTOutApp", function() {
+            $Lightning.createComponent("{!ns}:ILTInstructorCmp",
+            {
+                "recordId" : '{!redwing__ILT_Instructor__c.Id}',
+                "sessionId" : '{! JSENCODE(redwing__ILT_Instructor__c.redwing__ILT_Session__c)}',
+                "classId" : '{! JSENCODE(redwing__ILT_Instructor__c.redwing__ILT_Class__c)}',
+                "navigateToSObjectFunc" : navigateToSObject
+            },
+            "lightning",
+            function(cmp) {
+                $A.eventService.addHandler({ "event": "{!ns}:ILTEvent", "handler" : eventHandler});
+            });
+        });
+
+        function navigateToSObject(recordId) {
+            if(typeof sforce != 'undefined' && sforce && sforce.one){
+                sforce.one.navigateToSObject(recordId);
+            } else {
+                window.location.href = '/' + recordId;
+        }
+    }
+    </script>
+</apex:page>

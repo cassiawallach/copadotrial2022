@@ -1,0 +1,52 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account Manage Templates page
+ -->
+<apex:page sidebar="false" standardController="Handwrytten__hndwrtObjAccount__c" Extensions="Handwrytten.hndwrtClsMngTmpls" title="Manage Handwrytten Account Templates" id="thePage" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theform">  
+    <div class="slds">
+    
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+    
+        <apex:sectionHeader title="Handwrytten" subtitle="Manage Templates" help="/apex/hndwrtPgHelp" />
+          
+        <apex:pageMessages />
+        
+        <apex:pageBlock title="Manage Tempaltes">
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Add New Template" action="{!newTemplate}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockTable value="{!lstTemplates}" var="t">
+                    <apex:column headervalue="Action" width="10%">  
+                        <apex:commandlink value="Delete" action="{!deleteTemplate}"
+                            onclick="return window.confirm('Are you sure you want to delete template?');">
+                            <apex:param name="templateId" value="{!t.id}" assignTo="{!templateId}"/> 
+                        </apex:commandlink> 
+                        &nbsp;|&nbsp;  
+                        <apex:commandlink value="Edit" action="{!editTemplate}"> 
+                            <apex:param name="editTemplate" value="{!t.id}" assignTo="{!templateId}"/>
+                        </apex:commandlink>   
+                        
+                    </apex:column> 
+                    
+                    <apex:column headerValue="Template Name" width="20%" value="{!t.name}"/>
+                    <apex:column headerValue="Template Message" width="70%" value="{!t.message}"/>
+                    
+        </apex:pageBlockTable>
+            
+    </apex:pageBlock>
+    </div>
+    </apex:form>
+</apex:page>

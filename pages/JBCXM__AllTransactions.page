@@ -1,0 +1,1461 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose                    : Included as a tab in JBara Customer Experience App.
+----                              Displays all Transactions for all Customers in a list.
+----                              User can perform CRUD operations on Transactions.
+---- Other comments (optional)  : User can export all the Transactions from list.
+----
+-->
+<apex:page sidebar="false" Controller="JBCXM.TransactionController"
+    extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker"
+    title="Transactions" showHeader="true">
+
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <apex:includeScript value="{!JSENCODE(URLFOR($Resource.JBCXM__JSONUtil))}" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js"/>
+
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/jqGridLatest/js/i18n/grid.locale-en.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/jqGridLatest/js/jquery.jqGrid.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/js/jqgrid.Custom.Utility.js"/>
+
+
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/miscscripts/jquery.limit-1.2.source.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/date.format.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/multiple-select/jquery.multiple.select.js" />
+    <apex:includeScript value="/support/console/43.0/integration.js"/>
+    <!-- Static Resource Includes: Highcharts libraries  -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/highcharts.src.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/themes/gray.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/modules/stock.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/appStyles/transaction.css"/>
+
+    <style type="text/css">
+        .filterControls {
+            background-color: #FFFFFF;
+            border: 1px solid #BBBBBB;
+            margin-bottom: 3px;
+            padding: 5px;
+        }
+
+        td {
+            color: color: #4A4A56;
+        }
+
+        .bPageTitle {
+            padding-bottom: 0px !important;
+            margin-bottom: 0px !important;
+        }
+
+        body .bPageBlock,body #bodyCell .bResource .secondaryPalette,body .secondaryPalette.bPageBlock
+            {
+            background-color: #FFF;
+            border-bottom: 1px solid #EAEAEA;
+            border-left: 1px solid #EAEAEA;
+            border-radius: 4px 4px 4px 4px;
+            border-right: 1px solid #EAEAEA;
+        }
+
+        .Trans_container {
+            margin: 0px 10px;
+        }
+
+        .header {
+            height: 24px;
+            background: # padding : 3px;
+            vertical-align: middle;
+            -moz-border-radius: 5px 5px 0px 0px;
+            -webkit-border-radius: 5px 5px 0px 0px;
+            border-radius: 5px 5px 0px 0px;
+            /* for some reason you have to declare all corners in ie*/
+        }
+
+        .jbarashowListButton {
+            background: url("/img/alohaSkin/twisty_sprite.png") no-repeat scroll 0 0
+                transparent;
+            height: 10px;
+            width: 12px;
+        }
+
+        .jbarahideListButton {
+            background: url("/img/alohaSkin/twisty_sprite.png") no-repeat scroll 0
+                -11px transparent;
+            height: 10px;
+            width: 12px;
+        }
+
+        select {
+            -moz-border-radius: 4px;
+            -moz-box-shadow: 1px 1px 5px #cfcfcf inset;
+            border: 1px solid #cfcfcf;
+            vertical-align: middle;
+            background-color: #FFFFFF;
+        }
+
+        option:hover {
+            cursor: pointer;
+        }
+
+        select option,select optgroup {
+            font-size: 100%;
+            border-right: 2px solid #BEBEBE;
+        }
+
+        #tabs .ui-corner-all {
+            border-radius: 5px 5px 0px 0px;
+            border-top: none;
+            border-right: none;
+            border-left: none;
+            border-radius: 0px;
+        }
+
+        #tabs .ui-widget-header {
+            border: none;
+            font-size: 1em;
+        }
+
+        .ui-tabs .ui-tabs-nav {
+            padding: 0px;
+            border: none;
+        }
+
+        .ui-tabs .ui-tabs-panel {
+            display: block;
+            border-width: 0;
+            border: 1px solid #A6C9E2;
+        }
+
+        #tabs-Alerts.ui-tabs,#tabs-Alerts.ui-tabs-panel {
+            padding: 5px;
+        }
+
+        .ui-state-active {
+            border: 1px solid #A6C9E2;
+        }
+
+        .ui-tabs .ui-tabs-nav li {
+            border-bottom: 0 none !important;
+            float: left;
+            list-style: none outside none;
+            margin: 0 5px 1px 0;
+            padding: 0;
+            position: relative;
+            top: 1px;
+            white-space: nowrap;
+        }
+
+        .ui-widget-content {
+            background: none;
+            /*border:none;*/
+        }
+
+        .ui-jqgrid tr.ui-row-ltr td,.ui-jqgrid tr.jqgrow td {
+            /*border-color: #A6C9E2;*/
+
+        }
+
+        .thingsToHideDefaultPageLoad1,.thingsToHideDefaultPageLoad2 {
+            display: none;
+        }
+
+        .additionalCountSection {
+            margin-left: 70%;
+            position: absolute;
+            text-align: right;
+            width: 28%;
+            z-index: 1000;
+        }
+
+        .noUIViewExistMsg {
+            text-align: center;
+            padding: 20px;
+        }
+
+
+        /*============gridContainer=================*/
+        .jbaraDummyTransUIViewsSelectControl {
+            float: left !important;
+            height: 27px;
+        }
+
+        .TransUIViewsSelectionList{
+            float:left;}
+
+
+        .customersTabsUrl {
+            margin: 0px 10px;
+        }
+
+        .dummyChartOptions {
+            background-image: none !important;
+            border: 1px solid #f2f2f2 !important;
+            background-color: #fff !important;
+            color: #333 !important;
+            border-radius: 0px !important;
+        }
+
+        .thingsToHideDefaultPageLoad {
+            padding: 15px 0px;
+        }
+
+        .dummyChartOptionsFilter {
+            top: 85px !important;
+            border: 1px solid #ccc !important;
+            height: auto;
+            min-width: 100px;
+            width: auto;
+            padding: 10px;
+            z-index: 6000;
+            position: absolute;
+        }
+
+        #Transacations-Analytics-Header {
+            padding: 10px 0px !important;
+        }
+
+        .arrow-up-coverDiv-UIParamsCls{
+        float:right;
+        margin-right:32px;
+        }
+
+        .arrow-up-div-UIParamsCls{
+        float:right;
+        margin-right:32px;
+        }
+
+        .dummyGridTitleBar {
+            font-size : 13px !important;
+        }
+        .dummyIEFilterDisplay input[type=checkbox] {
+            margin-left: 10px;
+        }
+        #chkAllTransactions {
+            margin-left: 0px !important;
+        }
+        .adp_tabs {
+            display : none;
+        }
+    </style>
+    <!-- Script to handle the Analytics Section -->
+
+    <script>
+        var j$ = jQuery.noConflict();
+        var GS = {};
+        GS.packageNS                    = "{!(pkgNS)}";
+        GS.isPackagedInstance           = (GS.packageNS) ? "true" : "false";
+        GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.userConfig = {
+            userLocale  : {!(userLocaleDateFormatMap)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        };
+    </script>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["transactions/scripts/transactions.bundle.js"], styles:["transactions/styles/transactions.css"]});
+        </script>
+        <script src = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/reportParams.js" />
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <link rel="stylesheet" type="text/css" href="https://localhost:9091/UI/transactions/styles/transactions.css" />
+            <script src = "https://localhost:9091/UI/transactions/scripts/transactions.bundle.js" async = "1"/>
+            <script src = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/reportParams.js" />
+    </apex:outputpanel>
+
+
+    <script type="text/javascript" language="javascript">
+
+
+        var reportParamsUIViewJSON;
+        var isRenderAnalytics = false;
+        var userLocaleDateFormatMap = fakeEval('{!JSINHTMLENCODE(userLocaleDateFormatMap)}');
+        var transOrderTypeNameBySysName = {};
+        var transOrderTypeNameBySysName = fakeEval('{!JSINHTMLENCODE(orderTypeDetialsMapByIdJson)}');
+        var transOrderTypeSysNamesByDO  = fakeEval('{!JSINHTMLENCODE(OrderTypeSysNamesListByDisplayOrderJson)}');
+        transOrderTypeSysNamesByDO      = (transOrderTypeSysNamesByDO.length > 0) ? transOrderTypeSysNamesByDO
+                                                : new Array('New Business', 'Upsell', 'Renewal with Upsell', 'Renewal', 'Renewal with Downsell', 'Downsell', 'Debook', 'Churn');
+        jqGridDateFormat        = JBARAjqGridDateFormat(userLocaleDateFormatMap);
+        jqGridDateTimeFormat    = JBARAjqGridDateTimeFormat(userLocaleDateFormatMap);
+        var selectedUIViewId    = "{!(defaultUIViewId)}";
+        var flagToDumpUS = false;
+        var buildReportParamsJSON = false;
+        var setClientSideGridFiltersByUIView = true;
+        var applyClientSFDetails    = true;
+        var atleastOneViewExists = '{!isCustomTransView}';
+
+        var isPackagedVersion = "{!(isPkgInstance)}";
+
+        //To handle the currency symbol.
+        var currencyConfigObject =  fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+
+        /**
+        *The below two function to process the transaction data.
+        */
+        var transactionPropertiesClassObjList, transactionPropertiesClassObj, userLocaleDateFormatMap,jqGridDateFormat,jqGridDateTimeFormat, allTransactionslist, commentsDataByTransaction, commentsDataByTransaction;
+        var transUIViewColumns, transAFM, isTransUIView; // "transAFM" stands Transaction Account Field Map.
+        var idToRenderTransList;
+        var statePreservString = fakeEval('{!JSINHTMLENCODE(userStateDetailsJson)}');
+        var isSameUserSessionExists = '{!(isSameUserSession)}';
+        var refreshAdvanceSearchPanel = true;
+        function refreshPassedConditionsJSON() {
+            buildReportParamsJSON = true;
+            flagToDumpUS = true;
+            setClientSideGridFiltersByUIView = false;
+            applyReportParamsToTransList();
+        }
+        var firstRender = false;
+        /**
+        *Javascript Object to store the transaction properties.
+        */
+        function TransactionPropertiesClass(data)  {
+            this.Action                             = data.Action;
+            this.Customer_link                      = data.Customer_link;
+            this.accId_c                            = data.accId_c;
+            this.Term_c                             = data.Term_c;
+            this.Subscription_Start_Date_c          = data.Subscription_Start_Date_c;
+            this.Subscription_End_Date_c            = data.Subscription_End_Date_c;
+            this.Users_c                            = data.Users_c;
+            this.UsersTotal_c                       = data.UsersTotal_c;
+            this.ASV_c                              = data.ASV_c;
+            this.MRR_c                              = data.MRR_c;
+            this.ASVTotal_c                         = data.ASVTotal_c;
+            this.MRRTotal_c                         = data.MRRTotal_c;
+            this.OneTimeRevenue_c                   = data.OneTimeRevenue_c;
+            this.Date_c                             = data.Date_c;
+            this.NextRenewalDate_c                  = data.NextRenewalDate_c;
+            this.OrderType_r                        = data.OrderType_r;
+            this.OrderTypeSys_Name                  = data.OrderTypeSys_Name;
+            this.ChurnReason_r_name                 = data.ChurnReason_r_name;
+            this.Comment_c                          = data.Comment_c;
+            this.LastModifiedBy_Name                = data.LastModifiedBy_Name;
+            this.LastModifiedDate                   = data.LastModifiedDate;
+        }
+
+        function getTransactionsDetailedInformation(transacionInfo, commentsDataByTransaction) {
+            transactionPropertiesClassObjList = new Array();
+            for(var i = 0; i < transacionInfo.length; i++) {
+                transactionPropertiesClassObj = new TransactionPropertiesClass({
+                    Action : ('<a class = "editIconTiny commonSpecsIcons" href=\'#\' onclick=\'editClicked(\"'+ transacionInfo[i].tid +'\", \"'+ transacionInfo[i].orsn +'\", \"'+ transacionInfo[i].aid +'\"); return false;\'>Edit</a>&nbsp;&nbsp;<a class = "deleteIconTiny commonSpecsIcons" href=\'#\' onclick=\'confirmDelete(\"'+ transacionInfo[i].tid +'\",  \"'+ transacionInfo[i].orsn +'\", \"'+ transacionInfo[i].aid +'\"); return false;\'>Delete</a>'),
+                    Customer_link: ('<a href=\'CustomerSuccess360?cid='+ transacionInfo[i].aid +'\' target=\'_top\'>'+ gsEncodeHtml(transacionInfo[i].cn) +'</a>'),
+                    accId_c : (transacionInfo[i].aid != null) ? transacionInfo[i].aid : '',
+                    Term_c: ((transacionInfo[i].trm != null) ? transacionInfo[i].trm : 0),
+                    Subscription_Start_Date_c: ((transacionInfo[i].sd != null) ? transacionInfo[i].sd : ''),
+                    Subscription_End_Date_c: ((transacionInfo[i].ed != null) ? transacionInfo[i].ed : ''),
+                    ASV_c: ((transacionInfo[i].asv != null) ? transacionInfo[i].asv : 0),
+                    MRR_c: ((transacionInfo[i].mrr != null) ? transacionInfo[i].mrr : 0),
+                    ASVTotal_c: ((transacionInfo[i].asvTot != null) ? transacionInfo[i].asvTot : 0),
+                    MRRTotal_c: ((transacionInfo[i].mrrTot != null) ? transacionInfo[i].mrrTot : 0),
+                    Users_c:((transacionInfo[i].urs != null) ? transacionInfo[i].urs : 0),
+                    UsersTotal_c:((transacionInfo[i].ursTot != null) ? transacionInfo[i].ursTot : 0),
+                    OneTimeRevenue_c: ((transacionInfo[i].otr!= null) ? transacionInfo[i].otr: 0),
+                    Date_c: ((transacionInfo[i].td != null) ? transacionInfo[i].td : ''),
+                    NextRenewalDate_c: ((transacionInfo[i].nrd != null) ? transacionInfo[i].nrd : ''),
+                    OrderType_r: ((transacionInfo[i].ort != null) ? transacionInfo[i].ort : ''),
+                    OrderTypeSys_Name: ((transacionInfo[i].orsn != null) ? transacionInfo[i].orsn : ''),
+                    ChurnReason_r_name: ((transacionInfo[i].cr != null) ? transacionInfo[i].cr : ''),
+                    Comment_c : ( (commentsDataByTransaction[transacionInfo[i].tid]) ? ( (commentsDataByTransaction[transacionInfo[i].tid]['cmt'] != null) ? gsEncodeHtml(commentsDataByTransaction[transacionInfo[i].tid]['cmt']) : '') : ''),
+                    LastModifiedBy_Name: ((transacionInfo[i].lmn != null) ? transacionInfo[i].lmn : ''),
+                    LastModifiedDate : ( (commentsDataByTransaction[transacionInfo[i].tid]) ? ( (commentsDataByTransaction[transacionInfo[i].tid]['lmd'] != null) ?  JBARAAddOffSetTime(commentsDataByTransaction[transacionInfo[i].tid]['lmd'],userLocaleDateFormatMap) : '') : '')
+                });
+                transactionPropertiesClassObjList.push(transactionPropertiesClassObj);
+            }
+            return transactionPropertiesClassObjList;
+        }
+
+
+        function getTransactionDetailsGridColumnByTabView() {
+            //viewColumnList, custFieldViewList
+            var customerViewColumnModel = new Array();
+            var footerColumnList        = new Array();
+            var customerViewGridLabels = new Array("Action", "Customer");
+            var isTransDateisSelected  = false;
+            var viewColumnList = transUIViewColumns;
+            viewColumnList.sort(function(a,b) { return parseFloat(a.displayOrder) - parseFloat(b.displayOrder) } );
+
+            customerViewColumnModel.push('{"name":"Action", "align":"center", "width":100, "sortable":false, "search":false,"classes":"hideInViewExport"}');
+            customerViewColumnModel.push('{"name":"Customer_link", "index":"Customer_link", "width":150, "searchoptions" : {"sopt":["cn"]}}');
+            footerColumnList.push('Action');
+            var colPrefix;
+            var colHidden, colDataType, selFieldName;
+
+            for(var c = 0; c < viewColumnList.length; c++) {
+                colHidden = (viewColumnList[c].visibilityMode) ? false : true;
+                isTransDateisSelected = ((viewColumnList[c].objectName == "TransHeader__c") && viewColumnList[c].name == 'Date__c') ? true : isTransDateisSelected;
+                //to Build the fooler columns
+                if((viewColumnList[c].objectName == "TransHeader__c") && (viewColumnList[c].name == 'MRR__c' || viewColumnList[c].name == 'ASV__c' || viewColumnList[c].name == 'Users__c' || viewColumnList[c].name == 'OneTimeRevenue__c')) {
+                    footerColumnList.push(viewColumnList[c].name);
+                }
+
+                customerViewGridLabels.push(viewColumnList[c].label);
+                colDataType = viewColumnList[c].fieldType.toLowerCase();
+                colDataType = (colDataType == "double" || colDataType == "integer") ? "number" : colDataType;
+
+                selFieldName =  (viewColumnList[c].objectName == "Account") ? 'ACC__'+viewColumnList[c].name+'' : viewColumnList[c].name;
+                selFieldName = (selFieldName.indexOf(".") > 0) ? selFieldName.replace(/\./g, "_") : selFieldName;
+
+                if(colDataType == 'string' || colDataType == 'picklist') {
+                    customerViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "align":"left","width":100, "searchoptions" : {"sopt":["cn"]}, "hidden":'+colHidden+'}');
+                }
+                else if(colDataType == 'number' || colDataType == 'currency') {
+                    colPrefix = (colDataType == 'currency') ? currencyConfigObject.symbol+' ' : '';
+                    customerViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "sorttype":"number", "align":"right", "width":65, "formatter":"'+colDataType+'", "formatoptions":{"decimalPlaces":0, "thousandsSeparator":",",  "prefix": "'+colPrefix+'" }, "hidden":'+colHidden+'}');
+                }
+                else if(colDataType == 'date') {
+                    customerViewColumnModel.push('{"name":"'+selFieldName+'", "width":90, "sorttype":"date", "datefmt":"ISO8601Long", "formatter":"date","align":"center" ,"formatoptions":{"srcformat": "ISO8601Long", "newformat":"'+jqGridDateFormat+'" }, "hidden":'+colHidden+'}');
+                }
+                else if(colDataType == 'datetime') {
+                    customerViewColumnModel.push('{"name":"'+selFieldName+'", "width":150, "sorttype":"datetime", "datefmt":"ISO8601Long","formatter":"date", "align":"center" ,"formatoptions":{"srcformat": "ISO8601Long", "newformat":"'+jqGridDateTimeFormat+'"}, "searchoptions" : {"sopt":["cn"]}, "hidden":'+colHidden+'}');
+                }
+                else {
+                    customerViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "width":100, "searchoptions" : {"sopt":["cn"]}, "hidden":'+colHidden+'}');
+                }
+            }
+            customerViewColumnModel = ''+customerViewColumnModel.join(",")+'';
+            customerViewColumnModel = fakeEval('[' + customerViewColumnModel + ']');
+            footerColumnList = (footerColumnList.length > 1) ? footerColumnList : new Array();
+
+            var colArray = new Array();
+            sort = {
+                'name': (isTransDateisSelected) ? 'Date__c' : 'Customer_link',
+                'order': 'desc'
+            };
+            colArray.push(customerViewGridLabels);
+            colArray.push(customerViewColumnModel);
+            colArray.push(sort);
+            colArray.push(footerColumnList);
+            return colArray;
+        }
+
+        //To build the Columns and Data by UIView.
+        function getTransactionsDetailedInformationByView(transRawData, cmtsRawData, viewColumnList) {
+            var transDataListByUIView = new Array();
+            var transDataByUIView;
+            var dummyKey, colDataType, colFieldName;
+            for(var t = 0; t < transRawData.length; t++) {
+                transDataByUIView = new Array();
+                transDataByUIView['Action']         = ('<a class = "editIconTiny commonSpecsIcons" href=\'#\' onclick=\'editClicked(\"'+ transRawData[t].tid +'\", \"'+ transRawData[t].orsn +'\", \"'+ transRawData[t].aid +'\"); return false;\'>Edit</a>&nbsp;&nbsp;<a class = "deleteIconTiny commonSpecsIcons" href=\'#\' onclick=\'confirmDelete(\"'+ transRawData[t].tid +'\",  \"'+ transRawData[t].orsn +'\", \"'+ transRawData[t].aid +'\"); return false;\'>Delete</a>');
+                transDataByUIView['Customer_link']  = ('<a href=\'CustomerSuccess360?cid='+ transRawData[t].aid +'\' target=\'_top\'>'+ gsEncodeHtml(transRawData[t].Name) +'</a>');
+                transDataByUIView['OrderTypeSys_Name'] = (transRawData[t].orsn != null) ? transRawData[t].orsn : '';
+                var accIndx;
+                for(var c = 0; c < viewColumnList.length; c++) {
+                    colDataType = viewColumnList[c].fieldType.toLowerCase();
+                    colDataType = (colDataType == "double" || colDataType == "integer") ? "number" : colDataType;
+
+                    if(viewColumnList[c].objectName == 'Account') {
+                        colFieldName = viewColumnList[c].name;
+                        accIndx = 'ACC__'+(viewColumnList[c].name).replace(/\./g, "_");
+                        if(colDataType == 'date') {
+                            transDataByUIView[accIndx] = (transRawData[t][transAFM[colFieldName]] != null) ? transRawData[t][transAFM[colFieldName]] : '';
+                        }
+                        else if(colDataType == 'datetime') {
+                            transDataByUIView[accIndx] = ((cmtsRawData[transRawData[t].tid]) ? ((cmtsRawData[transRawData[t].tid]['Account__r'][colFieldName] != null) ? ((cmtsRawData[transRawData[t].tid]['Account__r'][colFieldName].indexOf("M") > 0) ? JBARAAddOffSetTime(cmtsRawData[transRawData[t].tid]['Account__r'][colFieldName],userLocaleDateFormatMap) : JBARAAddOffSetTime(cmtsRawData[transRawData[t].tid]['Account__r'][colFieldName],userLocaleDateFormatMap)) : '') : '');
+                        }
+                        else {
+                            if(viewColumnList[c].isGroupable || (!viewColumnList[c].isGroupable && (colDataType == "number" || colDataType == "currency"))) {
+                                //Beause for the Account Name field we hard coding "Name" as alias.
+                                if(colFieldName == 'Name') {
+                                    transDataByUIView[accIndx] = (transRawData[t][colFieldName] != null) ? transRawData[t][colFieldName] : '';
+                                }
+                                else {
+                                    transDataByUIView[accIndx] = (transRawData[t][transAFM[colFieldName]] != null) ? transRawData[t][transAFM[colFieldName]] : ((colDataType == "number" || colDataType == "currency") ? '0' : '');
+                                }
+
+                            }
+                            else {
+                                if(colFieldName.indexOf('.')>0){
+                                    splitColName = colFieldName.split('.');
+                                    transDataByUIView[accIndx]= ((cmtsRawData[transRawData[t].tid]) ? ((cmtsRawData[transRawData[t].tid]['Account__r'][splitColName[0]] != null) ? (cmtsRawData[transRawData[t].tid]['Account__r'][splitColName[0]][splitColName[1]]!=null ? cmtsRawData[transRawData[t].tid]['Account__r'][splitColName[0]][splitColName[1]] :'') : '') : '');
+                                }
+                                else{
+                                    transDataByUIView[accIndx] = ((cmtsRawData[transRawData[t].tid]) ? ((cmtsRawData[transRawData[t].tid]['Account__r'][colFieldName] != null) ? cmtsRawData[transRawData[t].tid]['Account__r'][colFieldName] : '') : '');
+                                }
+                            }
+                        }
+                        transDataByUIView[accIndx] = gsEncodeHtml(transDataByUIView[accIndx]);
+                    }
+                    else {
+                        dummyKey = (viewColumnList[c].name).replace('.', '_');
+                        if(colDataType == 'date') {
+                            transDataByUIView[dummyKey] = (transRawData[t][dummyKey] != null) ? transRawData[t][dummyKey] : '';
+                        }
+                        else if(colDataType == 'datetime') {
+                            transDataByUIView[dummyKey] = ((cmtsRawData[transRawData[t].tid]) ? ((cmtsRawData[transRawData[t].tid][viewColumnList[c].name] != null) ? ((cmtsRawData[transRawData[t].tid][viewColumnList[c].name].indexOf("M") > 0) ? JBARAAddOffSetTime(cmtsRawData[transRawData[t].tid][viewColumnList[c].name],userLocaleDateFormatMap) : JBARAAddOffSetTime(cmtsRawData[transRawData[t].tid][viewColumnList[c].name],userLocaleDateFormatMap)) : '') : '');
+                        }
+                        else {
+                            if(viewColumnList[c].isGroupable || (!viewColumnList[c].isGroupable && (colDataType == "number" || colDataType == "currency"))) {
+                                transDataByUIView[dummyKey] = (transRawData[t][dummyKey] != null) ? transRawData[t][dummyKey] : ((colDataType == "number" || colDataType == "currency") ? '0' : '');
+                            }
+                            else {
+                                transDataByUIView[dummyKey] = ((cmtsRawData[transRawData[t].tid]) ? ((cmtsRawData[transRawData[t].tid][viewColumnList[c].name] != null) ? cmtsRawData[transRawData[t].tid][viewColumnList[c].name] : '') : '');
+                            }
+
+                        }
+
+                        transDataByUIView[dummyKey] = gsEncodeHtml(transDataByUIView[dummyKey]);
+                    }
+                }
+                transDataListByUIView.push(transDataByUIView);
+            }
+            return transDataListByUIView;
+        }
+
+        /**
+        *function to get date format based on the salesforce user local.
+        */
+        function getDateByUserLocal(dateAsInput) {
+            return dateFormat(new Date(dateAsInput), userLocalDateFormat);
+        }
+
+
+
+        /**
+        *Function for Round the number.
+        */
+        function roundNumber(num, dec) {
+            var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+            return result;
+        }
+
+        //This function gets called when you click on the "Export" link from the grid.
+        function exportClicked() {
+            j$(".AjaxLoadingButtonToInitiateBatchProcessToExportTransData").show();
+            var selectedTransOrderTypeStr = '';
+            var selOrderType;
+            callExportTransactionData(selectedTransOrderTypeStr);
+        }
+
+        // new code added for linking to new transaction form
+        function loadTransactionForm(transactionId) {
+            j$(".gridPanelDiv").hide();
+            j$(".ajaxLoadingButtonToRenderTransList").hide();
+            actionShowTransactionForm(transactionId);
+        }
+
+        function jbaraCallBackAfterTransactionFormSave() {
+            afterSave();
+        }
+
+        function jbaraCallBackAfterTransactionFormCancel() {
+            afterCancel();
+        }
+        function jbaraAfterCancelClick() {
+            j$(".gridPanelDiv").show();
+        }
+
+        function reSetWrapLinesIcon (){
+            j$(".new-wrap-lines").removeClass("gs-wrap-active").addClass("gs-wrap-lines");
+        }
+       function afterReportParamApplied(){
+            reSetWrapLinesIcon();
+            buildTransactionGrid();
+       }
+        /**
+         *This function is used to handle the UI View change.
+         */
+        function eventChangedTransUiView() {
+            j$(".dummyReportParamsOptionsFilter").remove();
+            j$(".reportParamsFilterOptionsJSON").val('');
+            j$(".additionalCountSection, .searchingIndicator").hide();
+            j$("#containerToRenderTransList").html('');
+            j$(".thingsToHideDefaultPageLoad1").hide();
+            j$(".ajaxLoadingButtonToRenderTransList").show();
+            flagToDumpUS                        = true;
+            setClientSideGridFiltersByUIView    = true;
+            applyClientSFDetails                = false;
+            refreshAdvanceSearchPanel           = true;
+            renderTransListByUIView();
+      }
+
+        /**
+         *This function is used to save the user state.
+         */
+        var actionTimer;
+        function processEntireState() {
+            clearTimeout(actionTimer);
+            statePreservString.Name = 'Transactions';
+            statePreservString.ClientSideFilter__c = (statePreservString.ClientSideFilter__c) ? ((typeof statePreservString.ClientSideFilter__c == "string") ? statePreservString.ClientSideFilter__c : JSON.stringify(statePreservString.ClientSideFilter__c)) :  JSON.stringify({});
+            statePreservString.SortColumns__c = (statePreservString.SortColumns__c) ? ((typeof statePreservString.SortColumns__c == "string") ?  statePreservString.SortColumns__c : JSON.stringify(statePreservString.SortColumns__c)) :  JSON.stringify({});
+            statePreservString.ReportParams__c = (statePreservString.ReportParams__c) ? ((typeof statePreservString.ReportParams__c == "string") ? statePreservString.ReportParams__c : JSON.stringify(statePreservString.ReportParams__c)) :  JSON.stringify({});
+            statePreservString.UIViewId__c = (statePreservString.UIViewId__c) ? ((typeof statePreservString.UIViewId__c == "string") ? statePreservString.UIViewId__c : JSON.stringify(statePreservString.UIViewId__c)) :  JSON.stringify({});
+            statePreservString.ServerSideFilters__c = ((statePreservString.ServerSideFilters__c) ? ((typeof statePreservString.ServerSideFilters__c == "string") ? (statePreservString.ServerSideFilters__c) : JSON.stringify(statePreservString.ServerSideFilters__c)) : JSON.stringify({}));
+            actionTimer = setTimeout(function() {
+                var dmyStr = (isPackagedVersion == "true") ? JSON.stringify(pushStatePreservationJbaraNameSpace(statePreservString)) : JSON.stringify(statePreservString);
+                actionUpdateStatePreservation(dmyStr);
+            }, 2000);
+         }
+
+         /**
+         *Functions regarding to render the Transaction data grid.
+         */
+         function exportTransactionCustomViewData() {
+             j$(".DateToExport").val(getExportDataString(idToRenderTransList,"Transaction"));
+             bringToExportPage();
+         }
+
+         //To show the Exception details.
+         function showUnCaughtError(errorMsgTxt) {
+            if(j$.trim(errorMsgTxt).length > 0) {
+                var errorList= new Array();
+                errorItem = new JBaraErrorClass();
+                    errorItem.header = '';
+                    errorItem.msg    =  errorMsgTxt;
+                    errorList.push(errorItem);
+                showJBaraValidationErrors('jBaraUIViewValidationsContainer', errorList);
+            }
+            else {
+                j$("#jBaraUIViewValidationsContainer").html("").hide();
+            }
+        }
+
+        function enableTransUsageTab() {
+            // j$("#tabs").tabs("enable", 0); commented by sekhar
+            //j$('.Trans_container').eq(0).show();
+        }
+            /*
+                ** All the function below handle advance search // Azhar khan
+                */
+                function advancedSearchIconClicked(){
+                    if(refreshAdvanceSearchPanel) {
+                        actShowAdvanceSearchForm();
+                    }
+                    else {
+                        showAdvanceSearchDailog();
+                    }
+                }
+                function showAdvanceSearchDailog() {
+                    j$("#grdAdvanceSearchDialog").dialog({title :'Advanced Search :: Transactions',modal: true,minWidth: 775,minHeight: 120,resizable: false});
+                    refreshAdvanceSearchPanel = false;
+                }
+
+                function changeAdvanceSearchFrameStyles(param) {
+                    j$("#frmAdvanceSearch").height(param);
+                }
+
+                function gridAdvanceSearchCallBackAfterSearch(strConditions) {
+                    j$(".hdnAdvanceSearchFilterJson").val(JSON.stringify(strConditions));
+                    j$("#grdAdvanceSearchDialog").dialog("close");
+                    j$("#containerToRenderTransList").html('');
+                    j$(".thingsToHideDefaultPageLoad1").hide();
+                    j$(".ajaxLoadingButtonToRenderTransList").show();
+                    if(strConditions.length == 0) {
+                        j$(".searchingIndicator").hide();
+                    }
+                    else {
+                        j$(".searchingIndicator").show();
+                    }
+                    actRefreshAfterAdvanceSearch();
+                }
+
+                function showOverLayForm(){
+                    j$(".jbaraDummyOverLayForm").css({
+                           'z-index':'700009',
+                           'left':'0px',
+                           'top':'0px',
+                           'width':'100%',
+                           'height':'100%'
+
+                    }).show();
+                }
+                function gridAdvanceSearchCallBackAfterClose() {
+                     j$("#grdAdvanceSearchDialog").dialog("close");
+                }
+
+    </script>
+    <script type="text/javascript">
+        function showReportParams(thisPointer, uiViewId) {
+            var hiddenFldForJson = 'reportParamsFilterOptionsJSON';
+            var reportParamsContainerCls = 'reportParamsContainerDiv';
+            j$('body').append('<div class="modalOverlayReportParams ui-widget-overlay"></div>');
+            var selectedViewText = j$(".jbaraDummyTransUIViewsSelectControl option:selected").text();
+            buildAndShowReportParams(thisPointer, uiViewId, hiddenFldForJson, reportParamsContainerCls,selectedViewText);
+
+            //if(clickCount == 0) {
+            //j$(".dummyReportParamsOptionsFilter").css({"left":(parseInt(j$(".dummyReportParamsOptionsFilter").css("left"), 10) + 475)+"px"});
+                //clickCount = clickCount+1;
+            //}
+
+            j$(".dummyReportParamsOptionsFilter").css({"left":parseInt(j$(".uIViewsParamsIconCls").position().left- 531) + 'px', "top":parseInt(j$(".uIViewsParamsIconCls").position().top + 29) + 'px'});
+        }
+    </script>
+
+    <apex:form >
+        <!-- Action function to export the data code start. -->
+        <apex:actionFunction name="callExportTransactionData"
+            action="{!initiateBatchProcessToExportTransactionData}"
+            reRender="rerenderApexMessagesToInitiateBatchToExportTransData"
+            oncomplete="return hideApexPageMessageWithDelay('exportApexMsgId', 7500)">
+            <apex:param name="filteredTransOrderTypeList" value="" />
+        </apex:actionFunction>
+
+        <apex:actionFunction name="renderRevenueAnalyticsByRange"
+            action="{!resetShowRevenueAnalytics}"
+            reRender="renderRevenueAnalyticsPageUsingTransactions"
+            onComplete="return enableTransUsageTab();" />
+        <!-- Action function to export the data code end. -->
+
+
+        <!-- This section handle the action functions -->
+        <apex:outputPanel id="allTransactionHeaderList">
+            <div align="center">
+                <apex:actionFunction name="afterSave"
+                    action="{!showTransactionGrid}"
+                    reRender="transactionGridPanel,panelNewTransactionForm,jsPanel" />
+                <apex:actionFunction name="afterCancel"
+                    action="{!showTransactionGrid}" reRender="panelNewTransactionForm"
+                    oncomplete="return jbaraAfterCancelClick();" />
+                <apex:actionFunction name="actionShowTransactionForm"
+                    action="{!showTransactionForm}" reRender="panelNewTransactionForm">
+                    <apex:param name="paramTransactionId" value="" />
+                </apex:actionFunction>
+
+
+                <apex:actionFunction name="deleteClicked"
+                    action="{!deleteTransaction}" reRender="jsPanel"
+                    oncomplete="return jbaraAfterDeleteClick();">
+                    <apex:param name="paramTransactionId" value="" />
+                </apex:actionFunction>
+
+                <apex:actionFunction name="getTransactionOperationValidation"
+                    action="{!getTransactionIsEditableOrDeletable}"
+                    reRender="panelToValidateTransactionOperations">
+                    <apex:param name="transAccId" value="" />
+                    <apex:param name="transOperation" value="" />
+                    <apex:param name="transBookingType" value="" />
+                    <apex:param name="transId" value="" />
+                    <apex:param name="transBookingTypeDS" value="" />
+                </apex:actionFunction>
+            </div>
+        </apex:outputPanel>
+
+        <!-- Overlay Container Starts Here-->
+        <div class="overlayBackground jbaraDummyOverLayForm"
+            style="position: absolute; display: none;"></div>
+        <!-- Overlay Container Ends Here-->
+
+    </apex:form>
+
+    <div class="additionalCountSection"></div>
+     <div id="gs-app-container">
+        <div class="gs-module-container">
+
+            <div class="TransacationsTabs" style="display: block; padding-left: 15px; width: 99%; height: auto; min-height: 500px; height:100%;">
+
+                <div id="tabs" style="padding: 0px !important; border: none; height:100%;">
+
+                    <div class="row customer_tabs customerAnalytics">
+                        <ul class="nav nav-tabs adp_tabs">
+                            <li class="gs-user-img"><img alt="user image"
+                                src="{!profilePhoto}" /></li>
+                            <li><span class="gs-tab-name">{!userDisplayName}</span><span
+                                class="gs-arrow">&nbsp;</span></li>
+                            <li class="active"><a href="#Transactions-Usage" class='tab'
+                                _ind='0'>Transactions</a></li>
+                            <li><a href="#Transactions-Analytics" class='tab' _ind='1'>Analytics</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Usage tab-->
+
+                    <div id="Transactions-Usage" class='Trans_container'
+                        style="align: center; height: 100%;">
+                        <apex:outputPanel id="transactionGridPanel">
+                            <apex:outputPanel rendered="{!renderTransactionGridPanel}">
+                                <!-- Graph Containers -->
+                                <div style="display: inline; width: 100%; height: 100%"
+                                    class="gridPanelDiv">
+                                    <apex:form >
+                                        <apex:inputText value="{!filterPassedConditionsJSON}"
+                                            styleClass="reportParamsFilterOptionsJSON"
+                                            style="display:none;" />
+                                        <apex:actionFunction name="applyReportParamsToTransList"
+                                            action="{!refreshView}" reRender="jsPanel"
+                                            oncomplete="afterReportParamApplied();" />
+
+
+
+                                        <div class='gridHeaderDiv' style="height:29px;">
+
+                                             <span
+                                                class="reportParamsContainerDiv"></span>
+                                            <div class="gs-moreactions-drop" >
+                                                <div class="gs-moreopt-btn" title="More..."></div>
+                                                 <div class="gs-moreopt-cnt" style="display:none;">
+                                                  <div class="gs-arowblue"></div>
+                                                    <ul>
+                                                        <li><a href="javascript:void(0);" class="gs-new-cost" onclick="loadTransactionForm('')">New Transaction</a></li>
+                                                        <li><a href="javascript:void(0);" class="gs-wrap-lines new-wrap-lines" onclick="transactionClickWrapLines();">Wrap lines</a></li>
+                                                        <li><a href="javascript:void(0);" class="gs-export-new" onclick="exportClicked();">Export</a></li>
+                                                        <li><a href="javascript:void(0);" class="gs-adv-search" onclick="advancedSearchIconClicked()">Advanced Search</a></li>
+                                                    </ul>
+                                                </div>
+                                           </div>
+                                           <span title = "Report Parameters"
+                                                    onclick="showReportParams(this,'{!(defaultUIViewId)}');"
+                                                    class="uIViewsParamsIconCls" style="margin:1px 0px 0px 10px;vertical-align:top;float:right;display:none;">&nbsp;</span>
+
+                                            <!-- To render the custom customer UI Views selection list -->
+                                            <apex:actionFunction name="renderTransListByUIView"
+                                                action="{!loadTransListByUIView}" reRender="jsPanel" />
+                                            <apex:outputpanel id="buildTransUIViewSelectionList">
+                                                <apex:outputpanel rendered="{!renderUISelectionList}">
+                                                    <span class="TransUIViewsSelectionList"> <apex:selectList value="{!defaultUIViewId}" size="1"
+                                                            StyleClass="jbaraDummyTransUIViewsSelectControl"
+                                                            onChange="eventChangedTransUiView()">
+                                                            <apex:selectOptions value="{!AllTransactionsUIViews}" />
+                                                        </apex:selectList>
+                                                    </span>
+
+                                                </apex:outputpanel>
+                                            </apex:outputpanel>
+
+
+                                        </div>
+                                    </apex:form>
+                                    <apex:outputpanel id="rerenderApexMessagesToInitiateBatchToExportTransData">
+                                            <div
+                                                class="AjaxLoadingButtonToInitiateBatchProcessToExportTransData"
+                                                align="center" style="margin: 1px 0px 1px 0px; display: none;">
+                                                <div class="waitingHolder gainsightLoadingIcon" >
+                                                <br /> <span
+                                                        class="waitingDescription"></span>
+                                                </div>
+                                            </div>
+                                            <div id="exportApexMsgId">
+                                                <apex:pageMessages rendered="{!showBatchInitiationMsg}" />
+                                            </div>
+                                        </apex:outputpanel>
+                                    <span Id="jBaraUIViewValidationsContainer"></span>
+                                    <!-- The code to render the AllTransaction Grid and Filter options using Check boxes. -->
+                                    <div id='containerToRenderTransList'></div>
+                                    <div class="ajaxLoadingButtonToRenderTransList" align="center"
+                                        style="margin: 100px 0px 100px 0px">
+                                        <div class="waitingHolder gainsightLoadingIcon" style="width: 74px; top: 25.8px;">
+                                            <span class="waitingDescription"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <!-- Transaction Entry Form Container Starts Here-->
+                        <apex:outputPanel id="panelNewTransactionForm">
+                            <apex:outputPanel rendered="{!renderTransactionFormPanel}">
+                                <iframe style='min-height: 500px;height: 100%;'
+                                    src="apex/TransactionForm?inline=1&transactionId={!transactionId}&customerId=&orderType=&callBackAfterSave=jbaraCallBackAfterTransactionFormSave&callBackAfterCancel=jbaraCallBackAfterTransactionFormCancel"
+                                    width="100%" frameborder="0"> </iframe>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <!-- Transaction Entry Form Container Ends Here-->
+                    </div>
+
+                    <!-- Analytics tab-->
+                    <div id="Transactions-Analytics"
+                        class='Trans_container Transacations-Analytics-Header TransactionsAnalyticsGraphContainer'
+                        style="align: center;">
+                        <!-- Graph Containers -->
+                        <apex:outputpanel id="renderRevenueAnalyticsPageUsingTransactions">
+                            <apex:include pageName="JBCXM__RevenueAnalytics"
+                                rendered="{!showRevenueAnalytics}" />
+                        </apex:outputpanel>
+                    </div>
+                </div>
+            </div>
+            <div class="noUIViewExistMsg" style="display: none;">
+                    No views configured
+            </div>
+      </div>
+    </div>
+
+
+
+
+    <script type="text/javascript" language="javascript">
+            var defaultTabloadDetails = (statePreservString.SubSection__c) ? j$.parseJSON(statePreservString.SubSection__c) : {};
+            var tabIndexToSelect = (j$.isEmptyObject(defaultTabloadDetails) || atleastOneViewExists == 'false') ? 0 : parseInt(defaultTabloadDetails.index);
+            j$('.Trans_container').hide();
+            j$('.Trans_container').eq(tabIndexToSelect).show();
+            j$( "#tabs" ).find('li').removeClass('active');
+            j$('a[_ind="' + tabIndexToSelect + '"]').parent().addClass('active');
+
+            /**if(tabIndexToSelect == 1) {
+                isRenderAnalytics=true;
+                renderRevenueAnalyticsByRange();
+            }**/
+
+            j$("#tabs").delegate('a.tab', 'click', function(event) {
+                var currentElmnt = j$(event.currentTarget);
+                var tabIndex = j$(currentElmnt).attr('_ind');
+                event.preventDefault();
+
+                if( tabIndexToSelect == tabIndex ) {
+                    return;
+                }
+                tabIndexToSelect = tabIndex;
+
+                j$( "#tabs" ).find('li').removeClass('active');
+                j$(currentElmnt).parent().addClass('active');
+
+                if(parseInt(tabIndex) == 1) {
+                    if(!isRenderAnalytics) {
+                        isRenderAnalytics=true;
+                        renderRevenueAnalyticsByRange();
+                    }
+               }
+
+               j$('.Trans_container').hide();
+               j$('.Trans_container').eq(tabIndex).show();
+
+               if(isSameUserSessionExists == "false") {
+                    statePreservString.SortColumns__c = {};
+                    statePreservString.ClientSideFilter__c = {};
+               }
+               statePreservString.SubSection__c   = '{"name" : "'+(j$(currentElmnt).attr('href')).substr(1)+'", "index" : '+parseInt(tabIndex)+'}';
+               processEntireState();
+               gainsightTrackEvents.pushPageViews('Transactions - '+j$(currentElmnt).text())
+            });
+
+
+            //Variables that control the display of ordertypes selction in drop down based on the transactions that a customer already has.
+            var defaultBookingOrderTypeId, defaultBookingOrderType, defaultBookingOrderTypeSelectOption;
+
+            var operationCode; //To check the operation(Adding new transaciton or editing existing transaction)
+            var toCheckNumOfOptionsList; //To check whether the transaction order type picklist data is there or not.
+            var isCustomerChurned;
+            var numberOfTransactionsHaving = 0;
+            var listOfChurnCustomers;
+
+            var positionTop
+            //code to jQueryGrid settings.
+            j$.jgrid.no_legacy_api = true;
+            j$.jgrid.useJSON = true;
+            var allTransactionsJsonData; //To store the AllTransactionsJsonData String.
+
+            var d = new Date();
+           //Adds z-index on mouseover on help text in overlay form.
+            function setHelpZindex() {
+                j$(".helpText").css({'z-index': '6000', 'position':'fixed'});
+            }
+
+            //Gets customer information based on the customer Id.
+            function getCustomerInformationById(custId) {
+                getCustomerInformation(custId);
+            }
+
+            //Popup the date picker to display on form.
+            function jbaraTransactionDateInputControl(id) {
+                j$("#datePicker").css({
+                    'z-index': '5001',
+                    'position':'fixed'
+                });
+                DatePicker.pickDate(true, id, false);
+            }
+
+            //Code to delete the Transaction.
+            var dummyJBCustName;
+            function confirmDelete(transactionId, bookingOrderType, custName) {
+                /*if(bookingOrderType == "Churn") {
+                    if (confirm("You are trying to delete a "+transOrderTypeNameBySysName['Churn']['DN']+" Transaction. This will reactivate the Customer with the last {!JSENCODE(customLabelsMap['MRR'])} and {!JSENCODE(customLabelsMap['ASV'])}. \n Are you sure ?")) { deleteClicked(transactionId); }
+                }
+                else {*/
+                    getTransactionOperationValidation(custName, "Delete", transOrderTypeNameBySysName[bookingOrderType]['MN'], transactionId, transOrderTypeNameBySysName[bookingOrderType]['DN']);
+                //}
+            }
+
+            //This function was called while editing transaction.
+            function editClicked(transactionId, bookingOrderType, custName) {
+                if(bookingOrderType != "Churn") {
+                    getTransactionOperationValidation(custName, "Edit", transOrderTypeNameBySysName[bookingOrderType]['MN'], transactionId, transOrderTypeNameBySysName[bookingOrderType]['DN']);
+                }
+                else {
+                    loadTransactionForm(transactionId);
+                }
+            }
+
+            //Binds grid
+            function bindTransactionsGrid(data) {
+                var customDateFrmt = 'm/d/Y';
+                var screenWidth = j$(window).width() - 50.5;
+                var arrCols = getTransactionDetailsGridColumnByTabView();
+                var listData = data;
+                var dummyUsrStateSort   = (statePreservString.SortColumns__c) ? j$.parseJSON(statePreservString.SortColumns__c) : {};
+                dummyUsrStateSort       = (dummyUsrStateSort['Transactions-Usage']) ? ((dummyUsrStateSort['Transactions-Usage'][selectedUIViewId]) ? dummyUsrStateSort['Transactions-Usage'][selectedUIViewId] : {}) : {};
+                dummyUsrStateSort       = (dummyUsrStateSort[idToRenderTransList]) ? dummyUsrStateSort[idToRenderTransList] : {};
+                var sscn = (isSameUserSessionExists == 'true') ? ((!j$.isEmptyObject(dummyUsrStateSort)) ? dummyUsrStateSort.name : arrCols[2].name) : arrCols[2].name;
+                var ssco = (isSameUserSessionExists == 'true') ? ((!j$.isEmptyObject(dummyUsrStateSort)) ? dummyUsrStateSort.order : arrCols[2].order) : arrCols[2].order;
+
+                var gridParam = {
+                    'Id': idToRenderTransList,
+                    'colnames': arrCols[0],
+                    'colmodel': arrCols[1],
+                    'data': listData,
+                    'pagerId': 'plist',
+                    'sort': {
+                        'name': sscn,
+                        'order': ssco
+                    },
+                    'width': screenWidth+5,
+                    'height': '100%',
+                    'footerrow': ((isTransUIView == "true") ? ((arrCols[3].length > 0) ? true : false) : true),
+                    'gridComplete':gridCompleteTransactionList,
+                    'sumColumns':((isTransUIView == "true") ? arrCols[3] : ['Action','ASV_c','MRR_c','OneTimeRevenue_c','Users_c','BookingAmount']),
+                    'userLocaleDateFormatMap' : userLocaleDateFormatMap
+                }
+
+                buildjqGrid('containerToRenderTransList', gridParam);
+
+                j$(".ui-pg-div").hide();
+                j$(".ui-jqgrid tr.ui-row-ltr td").css({
+                    "overflow": "hidden",
+                    "white-space": "nowrap"
+                });
+                j$("#gbox_"+idToRenderTransList+"").removeClass("ui-corner-all").addClass("ui-corner-bottom");
+                j$(".dummyGridTitleBar").css({
+                    "width": parseInt(screenWidth) - 5
+                });
+
+            }
+            var me = false;
+            //Grid complete functions for calcluating footers.
+
+            function gridCompleteTransactionList() {
+                setGridWrapping();
+                if(flagToDumpUS) {
+                     //j$(".HeaderTransacationsTabs .ui-tabs-selected").find("a").attr('href'); commented by sekhar
+                    var activeTabName   = j$('#tabs').find('li.active').find('a').attr('href');
+                    var activeTabIndex  = j$('#tabs').find('li.active').find('a').attr('_ind');
+                    activeTabName       = activeTabName.substr(1);
+                    if(isSameUserSessionExists == "false") {
+                        statePreservString.SortColumns__c = {};
+                        statePreservString.ClientSideFilter__c = {};
+                    }
+                    if(applyClientSFDetails) {
+                        var gridFilterDetails = [];
+                        var otherFitlerDetails = [];
+                        var dc = 0;
+                        var myFilterClass;
+                        j$(".ui-search-toolbar").find("input").each(function() {
+                            if(j$.trim(j$(this).val()) != '' && !j$(this).hasClass("gsDummyDateFilter")) {
+                                    gridFilterDetails.push({"datatype" : "string", "Id" : j$(this).attr("id"), "value" : j$(this).val()});
+                            }
+                        });
+                        var myCount = j$(".gsDummyDateFilter").length;
+                        myCount = myCount/3;
+                        var dAr = [];
+                        for(var i = 0; i < myCount ; i++) {
+                            var is = 0 + (i*3);
+                            var ie = 3 + (i*3);
+                            j$.each(j$(".gsDummyDateFilter").slice(is,ie), function() {
+                                if(j$.trim(j$(this).val()) != '') {
+                                    myFilterClass = {"fieldname" : j$(this).attr('fieldname'), "datatype" : 'date'};
+                                    myFilterClass[j$(this).attr('dmval')] = (j$.trim(j$(this).val()) == '') ? j$(this).attr('dmval') : j$.trim(j$(this).val());
+                                    myFilterClass[j$(this).next().attr('dmval')] = (j$.trim(j$(this).next().val()) == '') ? j$(this).next().attr('dmval') : j$.trim(j$(this).next().val());
+                                    myFilterClass[j$(this).next().next().attr('dmval')] = (j$.trim(j$(this).next().next().val()) == '') ? j$(this).next().next().attr('dmval') : j$.trim(j$(this).next().next().val());
+                                    gridFilterDetails.push(myFilterClass);
+                                }
+                                return false;
+                            });
+                        }
+
+                       var selOrderTypeList = {}
+                        if(!j$.isEmptyObject(selOrderTypeList)) {
+                            otherFitlerDetails.push({'fieldname' : 'OrderTypeSys_Name', 'datatype' : 'STRING', "value" : selOrderTypeList});
+                        }
+                        var tab1CFD = (isSameUserSessionExists == "false") ? {} : ((statePreservString.ClientSideFilter__c) ? j$.parseJSON(statePreservString.ClientSideFilter__c) : {});
+                        tab1CFD[activeTabName] = (tab1CFD[activeTabName]) ? tab1CFD[activeTabName] : {};
+                        tab1CFD[activeTabName][selectedUIViewId] = {};
+                        var gridFilterByGridId = {};
+                        gridFilterByGridId[idToRenderTransList] = gridFilterDetails;
+                        tab1CFD[activeTabName][selectedUIViewId] = (otherFitlerDetails.length > 0 || gridFilterDetails.length > 0) ? {"GridFitlers" : gridFilterByGridId, "OtherFilters" : {"BookingType" : otherFitlerDetails}} : {};
+                        statePreservString.ClientSideFilter__c = tab1CFD;
+
+                        //To builed the sorting json.
+                        var gsColName = j$("#"+idToRenderTransList+"").jqGrid('getGridParam', 'sortname');
+                        var gsColso = j$("#"+idToRenderTransList+"").jqGrid('getGridParam', 'sortorder');
+                        var tab1GSD = (isSameUserSessionExists == "false") ? {} : ((statePreservString.SortColumns__c) ? j$.parseJSON(statePreservString.SortColumns__c) : {});
+                        tab1GSD[activeTabName] = (tab1GSD[activeTabName]) ? tab1GSD[activeTabName] : {};
+                        tab1GSD[activeTabName][selectedUIViewId] = {}
+                        tab1GSD[activeTabName][selectedUIViewId][idToRenderTransList] = {'name' : gsColName, 'order' : gsColso};
+                        statePreservString.SortColumns__c = tab1GSD;
+                    }
+
+                    //To build the reportparams json.
+                    if(buildReportParamsJSON) {
+                        var rpDetails = (statePreservString.ReportParams__c) ? j$.parseJSON(statePreservString.ReportParams__c) : {};
+                        rpDetails[activeTabName] = (rpDetails[activeTabName]) ? rpDetails[activeTabName] : {};
+                        var rpDetailsJSON = j$(".reportParamsFilterOptionsJSON").val();
+                        rpDetails[activeTabName][selectedUIViewId]  = (rpDetailsJSON != undefined && rpDetailsJSON != null) ? j$.parseJSON(rpDetailsJSON) : "";
+                        statePreservString.ReportParams__c = rpDetails;
+                        buildReportParamsJSON = false;
+                    }
+
+                    statePreservString.SubSection__c   = '{"name" : "'+activeTabName+'", "index" : '+activeTabIndex+'}';
+
+                    var dummySPUIVId = (statePreservString.UIViewId__c) ? j$.parseJSON(statePreservString.UIViewId__c) : {};
+                    dummySPUIVId[activeTabName] = (j$(".jbaraDummyTransUIViewsSelectControl").val()) ? ((j$(".jbaraDummyTransUIViewsSelectControl").val() == 'JBaraStandardView') ? null : j$(".jbaraDummyTransUIViewsSelectControl").val()) : null;
+                    //dummySPUIVId['Transactions-Analytics'] = (dummySPUIVId['Transactions-Analytics']) ? dummySPUIVId['Transactions-Analytics'] : '';
+                    statePreservString.UIViewId__c = dummySPUIVId;
+                    processEntireState();
+                }
+                flagToDumpUS = true;
+                applyClientSFDetails = true;
+            }
+
+
+          /*
+         j$(".jbaraDummyTransUIViewsSelectControl").live("change", function() {
+            updateState(j$(this).val());
+         });
+         */
+
+            //Attach click event to toggle wrapping in grid.
+            function setGridWrapping() {
+                if(j$(".new-wrap-lines").hasClass("gs-wrap-active")) {
+                    j$(".ui-jqgrid tr.ui-row-ltr td").css({
+                        "overflow": "hidden",
+                        "white-space": "pre-line"
+                    });
+                }
+                else {
+                    j$(".ui-jqgrid tr.ui-row-ltr td").css({
+                        "overflow": "hidden",
+                        "white-space": "nowrap"
+                    });
+                }
+            }
+
+            //Disable the button when new or save buttons clicked.
+            function disableBtn(obj){
+                j$(obj).attr("disabled",true);
+                j$(obj).removeClass("btn").addClass("btnDisabled");
+            }
+
+            //To show additional panel if count is more than Limit
+            function showAdditionalCount(totalRecords, Limit){
+                if(totalRecords > Limit) j$(".additionalCountSection").html('Showing '+Limit+' of '+totalRecords).show();
+                else j$(".additionalCountSection").hide();
+            }
+        </script>
+
+
+    <apex:outputPanel id="jsPanel">
+        <script type='text/javascript' language="javascript">
+                selectedUIViewId        =  "{!(defaultUIViewId)}"
+                idToRenderTransList     = "transactionList_IdOf"+selectedUIViewId;
+
+                //To set the UserState report params.
+                /*var dummyRPDetials = (statePreservString.ReportParams__c) ? j$.parseJSON(statePreservString.ReportParams__c) : {};
+                if(j$.isEmptyObject(dummyRPDetials)) {
+                    dummyRPDetials = (dummyRPDetials['Transactions-Usage']) ? dummyRPDetials['Transactions-Usage'] : {};
+                    if(j$.isEmptyObject(dummyRPDetials)) {
+                        j$(".reportParamsFilterOptionsJSON").val(((dummyRPDetials[selectedUIViewId]) ? JSON.stringify(dummyRPDetials[selectedUIViewId]) : ""));
+                    }
+                }*/
+
+                //Builds Grid
+                j$(document).ready(function () {
+
+
+                    positionTop= j$(window).scrollTop();
+                    j$('body').css('overflow-y','scroll');
+
+                    if(isRenderAnalytics) {
+                        isRenderAnalytics = false;
+                    }
+
+                    j$('.jbaraDummyTransUIViewsSelectControl').multiselect({
+                        multiple: false,
+                        header:false,
+                        selectedList: 1,
+                        minWidth:150,
+                        height:'auto'
+                    });
+
+                j$(".thingsToHideDefaultPageLoad1").show();
+                j$(".ajaxLoadingButtonToRenderTransList").hide();
+                // j$("#tabs").tabs("enable", 1); commented by sekhar
+                //j$('.Trans_container').eq(1).show();
+
+
+                //Bind the grid using data and grid columns.
+                function buildTransactionGrid() {
+
+                    allTransactionslist        = fakeEval('{!(JSINHTMLENCODE(AllTransactionsJson))}');
+                    var countStr = fakeEval('{!JSINHTMLENCODE(totalRecordsCount)}');
+                    var totalRecords = parseInt(countStr[0].totalQueryCount);
+                    var hardLimit = parseInt("{!queryLimit}");
+                    showAdditionalCount(totalRecords,hardLimit);
+
+                    commentsDataByTransaction   = fakeEval('{!(JSINHTMLENCODE(CommentsDataByTransaction))}');
+
+                    transUIViewColumns          = fakeEval('{!JSINHTMLENCODE(transUIViewColumnsList)}');
+                    isTransUIView               = "{!(isCustomTransView)}";
+                    transAFM                    = fakeEval('{!JSINHTMLENCODE(transUIAccFieldMapStr)}');
+                    userLocalDateFormat         = 'm/d/yyyy';
+                    srcDateFormatByUserLocal = userLocalDateFormat.replace('yyyy', 'Y');
+
+                    if(isTransUIView == 'true') {
+                        allTransactionsJsonData = getTransactionsDetailedInformationByView(allTransactionslist, commentsDataByTransaction, transUIViewColumns);
+                    }
+                    else {
+                        allTransactionsJsonData = getTransactionsDetailedInformation(allTransactionslist, commentsDataByTransaction);
+                    }
+                    bindTransactionsGrid(allTransactionsJsonData);
+                    reportParamsUIViewJSON  = fakeEval('{!JSINHTMLENCODE(UIViewReportParamsList)}');
+                    showHideIfViewHasReportParams(reportParamsUIViewJSON);
+                }
+
+                if(atleastOneViewExists == 'true') {
+                    buildTransactionGrid(); //This function builds the Grid.
+
+                }
+                else {
+                    j$("#Transactions-Usage").empty().append(sanitizeHtml("<div class = 'noUIViewExistMsg'>"+j$(".noUIViewExistMsg").html()+"</div>"));
+                    // j$("#tabs").tabs({selected: 0}).tabs({disabled : [1]}); commented by Sekhar
+                    j$('.Trans_container').hide();
+                    j$('.Trans_container').eq(0).show();
+
+                }
+
+                /**
+                *To set the client side grid fiters.
+                */
+                if(isSameUserSessionExists == 'true' && setClientSideGridFiltersByUIView) {
+                        var dmyClientFiler = (statePreservString.ClientSideFilter__c) ? j$.parseJSON(statePreservString.ClientSideFilter__c) : {};
+                        dmyClientFiler = (dmyClientFiler['Transactions-Usage']) ? dmyClientFiler['Transactions-Usage'] : {};
+                        dmyClientFiler = (dmyClientFiler[selectedUIViewId]) ? dmyClientFiler[selectedUIViewId] : {};
+                        dmyClientFiler  = (dmyClientFiler['GridFitlers']) ? dmyClientFiler['GridFitlers'] : {};
+                        if(!j$.isEmptyObject(dmyClientFiler)) {
+                            var filterArr = [];
+                            var isIn = 0;
+                            var ieIn = 3;
+                            var dmyCl, mystr, gKey;
+                            j$.each(((dmyClientFiler[idToRenderTransList]) ? dmyClientFiler[idToRenderTransList] : []), function(indx, v) {
+                                if(v.datatype == "string") {
+                                    j$("#"+v.Id+"").val(v.value);
+                                    if(j$("#"+v.Id+"").length != 0) {
+                                        filterArr.push({field : v.Id.substring(3), op : "cn", data : v.value});
+                                    }
+                                }
+                                else if(v.datatype == "date") {
+                                    gKey = [];
+                                    mystr = '';
+                                    mystr = (v.yyyy != 'yyyy') ? v.yyyy+'-' : mystr;
+                                    mystr = (v.mm != 'mm') ? ((mystr == '') ? '-'+((parseInt(v.mm, 10) < 10) ? '0'+parseInt(v.mm, 10) : v.mm)+'-' : mystr+''+((parseInt(v.mm, 10) < 10) ? '0'+parseInt(v.mm, 10) : v.mm)+'-') : mystr;
+                                    mystr = (v.dd != 'dd') ? ((mystr == '') ? '-'+((parseInt(v.dd, 10) < 10) ? '0'+parseInt(v.dd, 10) : v.dd) : mystr+''+((parseInt(v.dd, 10) < 10) ? '0'+parseInt(v.dd, 10) : v.dd)) : mystr;
+                                    if(mystr != '') {
+                                        if(j$("[fieldname="+v.fieldname+"]").length != 0) {
+                                            filterArr.push({field : v.fieldname, op : "cn", data : mystr});
+                                        }
+                                    }
+                                    j$.each(j$(".gsDummyDateFilter"), function(){
+                                        for(var j in v) {
+                                            if(j$(this).attr("dmval") == j  && j$(this).attr("fieldname") == v.fieldname) {
+                                                j$(this).val(v[j]);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
+                            var filtersObj = {"groupOp" : "AND", "rules" : filterArr};
+                            flagToDumpUS = false; //to restrict the statesave call on reloadGrid.
+                            setClientSideGridFiltersByUIView = false;
+                            j$("#"+idToRenderTransList+"").setGridParam({
+                                postData:{filters:JSON.stringify(filtersObj)},
+                                search:true
+                            }).trigger('reloadGrid');
+                          }
+                       }
+                        j$(".gs-moreopt-btn").click(function(event) {
+                            if(j$(".gs-moreopt-cnt").filter(":hidden")){
+                                event.stopPropagation();
+                                j$(".gs-moreopt-cnt").show();
+                            }
+                         });
+                         j$(document).click(function() {
+                            j$(".gs-moreopt-cnt").hide();
+                        });
+
+                });
+
+                //To show the any Exceptions
+                 if(atleastOneViewExists == 'true') {
+                    showUnCaughtError("{!(unCaughtErrorMsg)}");
+                 }
+
+
+                function transactionClickWrapLines(){
+                            var newWrapLinesElmt = j$(".new-wrap-lines");
+                            if(newWrapLinesElmt.hasClass("gs-wrap-lines")) {
+                                newWrapLinesElmt.removeClass("gs-wrap-lines").addClass("gs-wrap-active");
+                            }
+                            else if(newWrapLinesElmt.hasClass("gs-wrap-active")){
+                                newWrapLinesElmt.removeClass("gs-wrap-active").addClass("gs-wrap-lines");
+                            }
+                            setGridWrapping();
+                }
+            </script>
+    </apex:outputPanel>
+
+    <apex:outputpanel id="panelToValidateTransactionOperations">
+        <apex:outputpanel rendered="{!showValidateOperations}">
+            <script type="text/javascript">
+                    var isOperationDuable = "{!(allowToEditOrDelete)}";
+                    var transOper = "{!(transactionOperation)}";
+                    if(isOperationDuable == 'false') {
+                        alert('{!JSENCODE(msgToUnableToPerformOperation)}');
+                    }
+                    else {
+                        if(transOper == 'Delete') {
+                            if (confirm('{!JSENCODE(msgToUnableToPerformOperation)}')) deleteClicked("{!(transactionId)}");
+                        }
+                        else {
+                            loadTransactionForm("{!(transactionId)}");
+                        }
+                    }
+
+                </script>
+        </apex:outputpanel>
+    </apex:outputpanel>
+    <div class="jBTFDateRangeSelectionDiv" style="display: none;">
+        <select
+            onchange="changeTFDateRangeSelection(this.options[this.selectedIndex].value,this)"
+            name="jBTFDateRangeSelectionReportParams"
+            class="reportParamControlDataInput">
+            <option value="JBcustom">Custom</option>
+
+            <optgroup label="Fiscal Year">
+                <option value="JBcurfy" selected="selected">Current FY</option>
+                <option value="JBprevfy">Previous FY</option>
+                <option value="JBprev2fy">Previous 2 FY</option>
+                <option value="JBago2fy">2 FY Ago</option>
+                <option value="JBnextfy">Next FY</option>
+                <option value="JBprevcurfy">Current and Previous FY</option>
+                <option value="JBprevcur2fy">Current and Previous 2 FY</option>
+                <option value="JBcurnextfy">Current and Next FY</option>
+            </optgroup>
+            <apex:outputPanel id="renderDrilldownComponentPanel"
+                rendered="{!If(CustomFiscalYearSettingsEnabled == false , true, false)}">
+                <optgroup label="Fiscal Quarter">
+                    <option value="JBcurrentfq">Current FQ</option>
+                    <option value="JBcurnextfq">Current and Next FQ</option>
+                    <option value="JBcurprevfq">Current and Previous FQ</option>
+                    <option value="JBnextfq">Next FQ</option>
+                    <option value="JBprevfq">Previous FQ</option>
+                    <option value="JBcurnext3fq">Current and Next 3 FQ</option>
+                </optgroup>
+            </apex:outputPanel>
+            <optgroup label="Calendar Year">
+                <option value="JBcury">Current CY</option>
+                <option value="JBprevy">Previous CY</option>
+                <option value="JBprev2y">Previous 2 CY</option>
+                <option value="JBago2y">2 CY Ago</option>
+                <option value="JBnexty">Next CY</option>
+                <option value="JBprevcury">Current and Previous CY</option>
+                <!--  <option value="JBprevcur2y">Current and Previous 2 CY</option> -->
+                <option value="JBcurnexty">Current and Next CY</option>
+            </optgroup>
+
+            <optgroup label="Calendar Quarter">
+                <option value="JBcurrentq">Current CQ</option>
+                <option value="JBcurnextq">Current and Next CQ</option>
+                <option value="JBcurprevq">Current and Previous CQ</option>
+                <option value="JBnextq">Next CQ</option>
+                <option value="JBprevq">Previous CQ</option>
+                <option value="JBcurnext3q">Current and Next 3 CQ</option>
+            </optgroup>
+
+            <optgroup label="Calendar Month">
+                <option value="JBlastmonth">Last Month</option>
+                <option value="JBthismonth">This Month</option>
+                <option value="JBnextmonth">Next Month</option>
+                <option value="JBlastthismonth">Current and Previous Month</option>
+                <option value="JBthisnextmonth">Current and Next Month</option>
+            </optgroup>
+
+            <optgroup label="Calendar Week">
+                <option value="JBlastweek">Last Week</option>
+                <option value="JBthisweek">This Week</option>
+                <option value="JBnextweek">Next Week</option>
+            </optgroup>
+
+            <optgroup label="Day">
+                <option value="JByesterday">Yesterday</option>
+                <option value="JBtoday">Today</option>
+                <option value="JBtomorrow">Tomorrow</option>
+                <option value="JBlast7">Last 7 Days</option>
+                <option value="JBlast30">Last 30 Days</option>
+                <option value="JBlast60">Last 60 Days</option>
+                <option value="JBlast90">Last 90 Days</option>
+                <option value="JBlast120">Last 120 Days</option>
+                <option value="JBnext7">Next 7 Days</option>
+                <option value="JBnext30">Next 30 Days</option>
+                <option value="JBnext60">Next 60 Days</option>
+                <option value="JBnext90">Next 90 Days</option>
+                <option value="JBnext120">Next 120 Days</option>
+            </optgroup>
+        </select>
+    </div>
+
+    <apex:outputPanel id="UserStatePanel">
+        <script type="text/javascript">
+            statePreservString = fakeEval('{!JSINHTMLENCODE(userStateDetailsJson)}');
+            isSameUserSessionExists = '{!(isSameUserSession)}';
+        </script>
+    </apex:outputPanel>
+    <apex:form >
+        <apex:actionFunction name="actionUpdateStatePreservation"
+            action="{!saveExistingUserState}" reRender="UserStatePanel"
+            oncomplete="return null;">
+            <apex:param name="stateJSON" value="" />
+        </apex:actionFunction>
+    </apex:form>
+    <div id="grdAdvanceSearchDialog"
+        style="display: none; background-color: white;">
+        <apex:outputPanel id="grdAdvanceSearchPanelContainer">
+            <apex:outputpanel rendered="{!renderAdvanceSearchPanel}">
+                <iframe id="frmAdvanceSearch"
+                    src="apex/AdvanceSearchIFrame?inline=1&SearchtabName=TRANSACTIONSEARCH&callbackAfterSearch=gridAdvanceSearchCallBackAfterSearch&callbackAfterReset=gridAdvanceSearchCallBackAfterReset&callbackAfterClose=gridAdvanceSearchCallBackAfterClose&flagToLoadOnDefault=true"
+                    width="735" height="120" frameborder="0"></iframe>
+        </apex:outputPanel>
+        </apex:outputPanel>
+    </div>
+    <apex:form >
+        <apex:actionFunction action="{!showAdvanceSearch}"
+            name="actShowAdvanceSearchForm"
+            reRender="grdAdvanceSearchPanelContainer"
+            onComplete="showAdvanceSearchDailog();">
+        </apex:actionFunction>
+        <apex:actionFunction action="{!refreshAfterAdvanceSearch}"
+            name="actRefreshAfterAdvanceSearch" reRender="jsPanel" onComplete="reSetWrapLinesIcon();">
+        </apex:actionFunction>
+        <apex:InputText StyleClass="hdnAdvanceSearchFilterJson"
+            value="{!advanceSearchFilterJsonString}" style="display:none;" />
+    </apex:form>
+    <script>
+          var GSGA = {
+            orgId: "{!$Organization.Id}",
+            orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+      };
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script type="text/javascript"
+        src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js" />
+    <script>
+        gainsightTrackEvents.pushPageViews('Transactions - '+ j$('#tabs').find('.active a').text());
+     </script>
+</apex:page>

@@ -5,7 +5,6 @@
         <name>copado__Copado_Header_Fields</name>
     </fieldSets>
     <fields>
-        <help><!-- Status of the most recent Compliance Scan of the Org. --></help>
         <label><!-- Compliance Status --></label>
         <name>copado__Compliance_Status__c</name>
     </fields>
@@ -15,7 +14,7 @@
         <name>copado__Custom_Domain__c</name>
     </fields>
     <fields>
-        <help><!-- If selected, this will be the preferred credential for Promotion deployments --></help>
+        <help><!-- If selected, this will be the preferred Org credential for Promotion deployments --></help>
         <label><!-- Default Credential --></label>
         <name>copado__Default_Credential__c</name>
     </fields>
@@ -31,12 +30,11 @@
         <relationshipLabel><!-- Credentials --></relationshipLabel>
     </fields>
     <fields>
-        <help><!-- Checking this checkbox will not validate the credentials when the record is saved or viewed. --></help>
+        <help><!-- Checking this checkbox will not validate the org credentials when the record is saved or viewed. --></help>
         <label><!-- Disable Validation --></label>
         <name>copado__Disable_Validation__c</name>
     </fields>
     <fields>
-        <help><!-- Environment records are created automatically when Credentials are authenticated. The Environment may have multiple Credentials which correspond to different users of the same Environment. --></help>
         <label><!-- Environment --></label>
         <name>copado__Environment__c</name>
         <relationshipLabel><!-- Credentials --></relationshipLabel>
@@ -95,12 +93,10 @@
         <name>copado__Metadata_Types__c</name>
     </fields>
     <fields>
-        <help><!-- Minimum code coverage required for deploying changes from this Environment. --></help>
         <label><!-- Minimum Apex Test Coverage --></label>
         <name>copado__Minimum_Apex_Test_Coverage__c</name>
     </fields>
     <fields>
-        <help><!-- This value is automatically set and updated by Copado. --></help>
         <label><!-- Oauth Signature --></label>
         <name>copado__Oauth_Signature__c</name>
     </fields>
@@ -115,14 +111,10 @@
             <masterLabel>Sandbox</masterLabel>
             <translation><!-- Sandbox --></translation>
         </picklistValues>
-        <picklistValues>
-            <masterLabel>Scratch Org</masterLabel>
-            <translation><!-- Scratch Org --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Scratch Org - Test only</masterLabel>
-            <translation><!-- Scratch Org - Test only --></translation>
-        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Password --></label>
+        <name>copado__Password__c</name>
     </fields>
     <fields>
         <label><!-- Platform --></label>
@@ -133,7 +125,6 @@
         <name>copado__Profile_Name__c</name>
     </fields>
     <fields>
-        <help><!-- Organization Id for the Environment. --></help>
         <label><!-- SFDC Org ID --></label>
         <name>copado__SFDC_Org_ID__c</name>
     </fields>
@@ -162,7 +153,7 @@
         </picklistValues>
     </fields>
     <fields>
-        <help><!-- Continuous Integration feature. Run all Apex Test methods and save the results in the Apex Test Result object to create email alerts or reports. This feature is very powerful along with Git Backups to detect recent failing changes automatically. --></help>
+        <help><!-- Continuous Integration feature. Run all Apex Test methods and save the results in  the Apex Test Result object to do email alerts or reporting. This feature is quite powerful together with the Git Backups to detect failure-changes automatically. --></help>
         <label><!-- Test Frequency --></label>
         <name>copado__Test_Frequency__c</name>
         <picklistValues>
@@ -196,7 +187,6 @@
         <name>copado__Username__c</name>
     </fields>
     <fields>
-        <help><!-- Latest OAuth authentication validation date. --></help>
         <label><!-- Validated Date --></label>
         <name>copado__Validated_Date__c</name>
     </fields>
@@ -208,6 +198,44 @@
         <label><!-- Is Developer Hub Credential --></label>
         <name>copado__is_Developer_Hub_Org__c</name>
     </fields>
+    <layouts>
+        <layout>Org Credential Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Org Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Authenticate --></label>
+        <name>copado__Authenticate</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Copado DX --></label>
+        <name>copado__Copado_DX</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Open Credential --></label>
+        <name>copado__Open_Credential</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Run All Test --></label>
+        <name>copado__Run_All_Test</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Run Compliance Scan --></label>
+        <name>copado__Run_Compliance_Scan</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Run Static Code Analysis --></label>
+        <name>copado__Run_Static_Code_Analysis</name>
+    </quickActions>
     <webLinks>
         <label><!-- Add_to_Deployment --></label>
         <name>copado__Add_to_Deployment</name>

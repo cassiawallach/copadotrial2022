@@ -159,7 +159,7 @@
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
@@ -622,14 +622,6 @@
         <label>Pipeline Manager</label>
     </fieldSets>
     <fields>
-        <fullName>Conflict__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Merge Conflict</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>copado__Back_Promotion__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
@@ -637,6 +629,7 @@
         <externalId>false</externalId>
         <inlineHelpText>Select this checkbox if you are promoting from a higher to a lower environment in the pipeline.</inlineHelpText>
         <label>Is Back-Promotion</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -647,6 +640,7 @@
         <externalId>false</externalId>
         <inlineHelpText>This field is checked by Copado once the promotion is merged and deployed successfully for multi-cloud platform.</inlineHelpText>
         <label>Completed</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -657,6 +651,7 @@
         <label>Connection Behavior</label>
         <length>18</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -666,8 +661,9 @@
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Select this checkbox if you wish to move added profiles to a Full Profiles step. Doing this will remove the profiles from the Metadata step.</inlineHelpText>
+        <inlineHelpText>Select this checkbox if you wish to move added profiles to a Full Permission Sets step. Doing this will remove the profiles from the Metadata step.</inlineHelpText>
         <label>Create Full Permission Sets Step</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -676,8 +672,9 @@
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Select this checkbox if you wish to move added permission sets to a Full Permission Sets step. Doing this will remove the permission sets from the Metadata step.</inlineHelpText>
+        <inlineHelpText>Select this checkbox if you wish to move added permission sets to a Full Profiles step. Doing this will remove the permission sets from the Metadata step.</inlineHelpText>
         <label>Create Full Profiles Step</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -691,6 +688,7 @@
         <relationshipLabel>Promotions (Destination Environment)</relationshipLabel>
         <relationshipName>Promotions1</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -714,6 +712,7 @@
         <relationshipLabel>Promotions (Destination Credential)</relationshipLabel>
         <relationshipName>Promotions2</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -725,6 +724,7 @@
         <inlineHelpText>Select the metadata types that you want to manually resolve when a conflict occurs while merging the feature branch into the promotion branch.</inlineHelpText>
         <label>Exclude From Auto Resolve</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MultiselectPicklist</type>
         <valueSet>
@@ -739,6 +739,7 @@
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Is Rolled Back?</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -749,6 +750,7 @@
         <label>Last Deployment Execution Id</label>
         <length>18</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -760,6 +762,7 @@
         <label>Last Promotion Execution Id</label>
         <length>18</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -771,6 +774,7 @@
         <externalId>false</externalId>
         <inlineHelpText>Indicates that this promotion includes a manual conflict resolution.</inlineHelpText>
         <label>Merge Conflict</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -778,10 +782,11 @@
         <fullName>copado__Order_by__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>Populate this field if you want to set an ascending or descending merge order for the selected user stories in a deployment. For example, status__c asc</inlineHelpText>
+        <inlineHelpText>Populate this field if you want to set an ascending or descending merge order for the selected user stories in a deployment. For example, status__c asc.</inlineHelpText>
         <label>Order User Stories by</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -794,6 +799,7 @@
         <inlineHelpText>This field auto-populates and displays the pipeline platform.</inlineHelpText>
         <label>Platform</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -809,6 +815,7 @@
         <relationshipLabel>Promotions</relationshipLabel>
         <relationshipName>Promotions</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -823,6 +830,7 @@
         <relationshipLabel>Promotions</relationshipLabel>
         <relationshipName>Promotions</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -833,6 +841,7 @@
         <externalId>false</externalId>
         <inlineHelpText>Select this checkbox if you want the promotion owner to receive an email notification when the promotion is complete.</inlineHelpText>
         <label>Notify When Complete</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -846,6 +855,7 @@
         <relationshipLabel>Promotions</relationshipLabel>
         <relationshipName>Promotions</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -869,6 +879,7 @@
         <relationshipLabel>Promotions (Source Credential)</relationshipLabel>
         <relationshipName>Promotions1</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -878,6 +889,7 @@
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -908,52 +920,93 @@
                     <default>false</default>
                     <label>Cancelled</label>
                 </value>
-                <value>
-                    <fullName>Completed with errors</fullName>
-                    <default>false</default>
-                    <label>Completed with errors</label>
-                </value>
-                <value>
-                    <fullName>Validated</fullName>
-                    <default>false</default>
-                    <label>Validated</label>
-                </value>
-                <value>
-                    <fullName>Validation failed</fullName>
-                    <default>false</default>
-                    <label>Validation failed</label>
-                </value>
-                <value>
-                    <fullName>Merge Conflict</fullName>
-                    <default>false</default>
-                    <label>Merge Conflict</label>
-                </value>
-                <value>
-                    <fullName>Conflicts Resolved</fullName>
-                    <default>false</default>
-                    <label>Conflicts Resolved</label>
-                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <fields>
+        <fullName>copadometrics__Caused_Business_Disruption__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Caused Business Disruption?</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>copadometrics__Destination_is_a_Production_Org__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>If(NOT(ISNULL(copado__Destination_Environment__c)), copado__Destination_Environment__r.copadometrics__Production_Org__c, false)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Destination is a Production Org?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
     <label>Promotion</label>
     <listViews>
-        <fullName>copado__All</fullName>
+        <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>copado__Destination_Environment__c</columns>
         <columns>copado__Project__c</columns>
-        <columns>copado__Release__c</columns>
-        <columns>copado__Source_Environment__c</columns>
-        <columns>copado__Back_Promotion__c</columns>
         <columns>copado__Status__c</columns>
+        <columns>copado__Source_Environment__c</columns>
+        <columns>copado__Destination_Environment__c</columns>
         <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Pending_Back_From_INT</fullName>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>copado__Source_Environment__c</columns>
+        <columns>copado__Source_Org_Credential__c</columns>
+        <columns>copado__Destination_Environment__c</columns>
+        <columns>copado__Destination_Org_Credential__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Source_Environment__c</field>
+            <operation>equals</operation>
+            <value>APO INT</value>
+        </filters>
+        <filters>
+            <field>copado__Back_Promotion__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <label>All Pending Back From INT</label>
         <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>copado__All</fullName>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Destination_Environment__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Destination_Environment__c</field>
+            <operation>contains</operation>
+            <value>BP</value>
+        </filters>
+        <label>All</label>
     </listViews>
     <nameField>
         <displayFormat>P{00000}</displayFormat>
         <label>Promotion Name</label>
+        <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Promotions</pluralLabel>

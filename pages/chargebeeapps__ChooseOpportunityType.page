@@ -1,0 +1,97 @@
+<apex:page controller="chargebeeapps.ChooseOpportunityType" action="{!checkPermissions}">
+    <apex:stylesheet value="{!URLFOR($Resource.chargebeeapps__CB_CSS)}" />
+    <style>
+        .cn-message--info {
+            background-color: #fcefef;
+        }
+
+        .cn-message--sm {
+            padding: 8px 16px;
+        }
+
+        .cn-message--compact {
+            display: inline-block;
+        }
+
+        .cn-message--info {
+            background-color: #eff3fc;
+            border-left: 2px solid #a4baf0;
+            -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 40, 0.08);
+            box-shadow: 0 0 2px 0 rgba(0, 0, 40, 0.08);
+        }
+
+        .cn-message {
+            color: #202022;
+            font-size: 12px;
+            line-height: 0.5;
+            min-width: 100%;
+            border-radius: 0;
+        }
+
+        .disabled-select {
+            -webkit-appearance: none!important;
+            appearance: none !important;
+            border: 0 !important;
+            pointer-events: none !important;
+        }
+    </style>
+    <div class="cb-layout">
+        <apex:form >
+            <apex:outputPanel >
+                <!--<div class="cn-message cn-message--info cn-message--sm cn-message--compact">
+                    <div class="cn-message__container">
+                        <div class="cn-message__main">
+                            <p>Choose the Chargebee site pricebook from which you want to add products. The opportunity will
+                                be updated with the products you add.</p>
+                        </div>
+                    </div>
+                </div>-->
+                <div style="display:{!IF(be.isErr,'block','none')}">
+                    <div class="cn-message cn-message--info cn-message--sm cn-message--compact">
+                        <div class="cn-message__container">
+                            <div class="cn-message__main">
+                                {!be.err_msg}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </apex:outputPanel>
+
+        <apex:pageBlock >
+            <apex:pageBlockSection title="{!title}" collapsible="false"/>
+            <apex:selectList label="{!title}" value="{!selectedSubscriptionOption}"  multiselect="false" size="1" >
+                <apex:actionSupport event="onchange" action="{!handleSubscriptionOptionChange}" reRender="subscriptions"/>
+                <apex:selectOptions value="{!subscriptionOptions}"/>
+            </apex:selectList><p/>
+        </apex:pageBlock>
+        
+        <apex:pageBlock id="subscriptions">
+            <apex:outputPanel rendered="{!showSubscriptions}">
+                <Apex:pageBlockSection title="Choose a Subscription" collapsible="False" />
+                <apex:pageBlockTable value="{!subscriptions}" var="c" id="table">
+                <apex:column >
+                    <input type="radio" name="selectSub">
+                        <apex:actionSupport event="onclick" action="{!selectSubscription}" reRender="">                                    
+                            <apex:param name="subId" value="{!c.Id}"/>
+                        </apex:actionSupport>
+                     </input>
+                </apex:column>
+                <apex:column value="{!c.chargebeeapps__CB_Subscription_Id__c}" title="Subscription Id"/>
+                <apex:column value="{!c.chargebeeapps__CB_Site__r.Name}" title="Site"/>
+                <apex:column value="{!c.chargebeeapps__Subscription_Plan__r.Name}" title="Plan"/>
+            </apex:pageBlockTable>
+            </apex:outputPanel>
+        </apex:pageBlock>
+        
+
+            <div style="padding-left:15px">
+                <apex:commandButton action="{!back}" style="background: white !important;color: black !important;opacity: .60;text-decoration: underline;"
+                    value="Back" />
+                <apex:commandButton action="{!next}" value="Next" />
+            </div>
+
+
+        </apex:form>
+    </div>
+
+</apex:page>

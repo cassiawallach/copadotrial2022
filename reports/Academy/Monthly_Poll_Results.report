@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>acpoll__Poll__c$acpoll__Name__c</field>
+    </columns>
+    <columns>
+        <field>acpoll__Poll__c.acpoll__Answers__r.acpoll__Voting_Results__r$CreatedBy</field>
+    </columns>
+    <currency>EUR</currency>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>acpoll__Poll__c$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>acpoll__Poll__c.acpoll__Answers__r$acpoll__Answer__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Monthly Poll Results</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>acpoll__Polls_Results__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>acpoll__Poll__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

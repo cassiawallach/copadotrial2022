@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_85996785</developerName>
+        <masterLabel>Topic</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Theme__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>DX Package Artifacts</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Customer Commitment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Enhancement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - GA MVP</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Internal findings</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Meet Competition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Usability (UX)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Research</sourceValue>
+            </sourceValues>
+            <value>Features</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Security Issue</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Bugs</sourceValue>
+            </sourceValues>
+            <value>Bugs</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>BAU - Business As Usual</sourceValue>
+            </sourceValues>
+            <value>BAU</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Tango</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Clean Code</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Technical Debt</sourceValue>
+            </sourceValues>
+            <value>TD</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>copado__User_Story__c.copado__Story_Points_SFDC__c</column>
+        </chartSummaries>
+        <chartType>VerticalColumnStacked</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>CUST_CREATED_DATE</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_85996785</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Project__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Theme__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Project__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>APO,QA</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Theme__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Ready for Tech. Review,Ready for Manual Testing,Ready for Packaging,Ready for Regression,Ready for Release,Released,Completed,Beta</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>CUST_CREATED_DATE</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_85996785</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>US per Theme per FQ</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CUST_CREATED_DATE</dateColumn>
+        <interval>INTERVAL_PREVCURFY</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,14 @@
+<apex:page standardController="Opportunity" extensions="ExpOpportunityWarningCtrl" action="{!updateOpportunity}">
+<apex:slds />  
+<script>
+window.onload = function(){   
+    if({!warningMessage == true}) {
+        alert('Please update Lead Source before proceeding');
+        return true;  
+    }  
+}
+</script>
+ 
+<apex:form >
+</apex:form>
+</apex:page>

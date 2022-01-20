@@ -1,0 +1,102 @@
+<aura:component controller="tms_TrailModuleSetupController" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+
+    <aura:attribute name="channel" type="String" default="/event/Step_Execution_Event__e"/>
+    <ltng:require scripts="{! $Resource.cometd }" afterScriptsLoaded="{! c.onCometdLoaded }" />
+    <aura:attribute name="cometd" type="Object" />
+    <aura:attribute name="sessionId" type="String" />
+    <aura:attribute name="cometdSubscriptions" type="Object[]" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" access="global"/>
+
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="jobInProgress" type="boolean" default="false"/>
+    <aura:attribute name="hasConfigStep" type="Boolean" />
+    <aura:attribute name="selectedPlayground" type="String" />
+    <aura:attribute name="selectedPlaygroundName" type="String" />
+
+    <aura:attribute name="stepExecutions" type="Object[]" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="isSeedBtnShow" type="Boolean" default="false" />
+    <aura:attribute name="isBtnRetryShow" type="Boolean" default="false" />
+    <aura:attribute name="isOpenPlaygroundBtnShow" type="Boolean" default="false" />
+
+    <aura:attribute name="showResponse" type="boolean" />
+    <aura:attribute name="response_message" type="String" />
+    <aura:attribute name="response_theme" type="String" />
+
+    <aura:dependency resource="markup://force:navigateToURL" type="EVENT" />
+
+    <aura:method name="setSelectedPlayground" action="{!c.setSelectedPlayground}" description="Set selected playground"> 
+        <aura:attribute name="playground" type="Object" /> 
+    </aura:method>
+
+    <aura:if isTrue="{!v.hasConfigStep}" >
+        <div class="slds-box">
+            <div class="slds-border--bottom slds-p-bottom--medium slds-m-bottom--large slds-text-heading--medium slds-truncate cmp-header">
+        		<div class="cmp-header-label">{!$Label.c.TMS_HEADER_LABEL}</div>
+            </div>
+
+            <c:tms_PlaygroundSelection instructions="{!$Label.c.TMS_SELECT_PLAYGROUND_INSTRUCTIONS}" btnlabel="{!$Label.c.TMS_BTN_SETUP}" parent="{!this}" isPlaygroundEnvShow="true" />
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.isOpen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{! c.closeModal }" alternativeText="close" variant="bare-inverse" class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.TMS_MODAL_TITLE}</h2>
+                </header>
+
+                <aura:if isTrue="{!v.showResponse}">
+                    <c:tms_ResponseMessage response_theme="{!v.response_theme}" response_message="{!v.response_message}"/>
+                </aura:if>
+
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-form--stacked">
+                        <p>{!$Label.c.TMS_MODAL_BODY}</p>
+                        <p class="slds-m-top_x-small"><b class="slds-m-right_x-small">{!$Label.c.TMS_SELECTED_PLAYGROUND}</b> {!v.selectedPlaygroundName}</p>
+                        <div class="slds-m-top_x-small">
+                            <aura:iteration items="{! v.stepExecutions }" var="se">
+                                <p class="stepExecutionRow">
+                                    <div class="status">
+                                        <aura:if isTrue="{!se.Status__c == 'In progress'}">
+                                            <div class="spinner" />
+                                        </aura:if>
+                                        <aura:if isTrue="{!se.Status__c == 'Completed'}">
+                                            <i data-status="Completed">✓</i>
+                                        </aura:if>
+                                        <aura:if isTrue="{!se.Status__c == 'Failed'}">
+                                            <img src="{! $Resource.cps_assets + '/Assets/close.svg' }" />
+                                        </aura:if>
+                                    </div>
+                                    {!se.Name}
+
+                                    <aura:if isTrue="{!se.Status__c == 'Failed'}">
+
+                                        <a class="retryIcon" data-stepId="{!se.Id}" onclick="{!c.changeStepStatus}"><lightning:icon iconName="utility:refresh" alternativeText="Retry" title="Retry"  size="xx-small" /></a>
+
+                                    </aura:if>
+                                </p>
+                            </aura:iteration>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning:button aura:id="btnClose" name="btnClose" variant="neutral" label="Close" title="Close" onclick="{! c.closeModal }" disabled="{!v.jobInProgress}" />
+                    <aura:if isTrue="{!v.isSeedBtnShow}">
+                        <lightning:button aura:id="btnSubmit" name="btnSubmit" variant="brand" label="{!$Label.c.TMS_BTN_SEEDPLAYGROUND}" title="{!$Label.c.TMS_BTN_SEEDPLAYGROUND}" onclick="{! c.runJob }" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.isBtnRetryShow}">
+                        <lightning:button aura:id="btnRetry" name="btnRetry" variant="brand" label="{!$Label.c.TMS_BTN_IV_RETRY}" title="{!$Label.c.TMS_BTN_IV_RETRY}" onclick="{! c.runJob }" />
+                    </aura:if>  
+                    <aura:if isTrue="{!v.isOpenPlaygroundBtnShow}">
+                        <lightning:button aura:id="btnOpenPlayground" name="btnOpenPlayground" variant="brand" label="{!$Label.c.TMS_BTN_OPENPLAYGROUND}" title="{!$Label.c.TMS_BTN_OPENPLAYGROUND}" onclick="{! c.openPlayground }"/>
+                    </aura:if>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

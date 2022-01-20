@@ -1,0 +1,134 @@
+.appx-carousel {
+    box-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
+.appx-carousel-header {
+    display: none;
+}
+.appx-carousel-icon {
+    height: 18px;
+    width: inherit;
+    fill: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    position: absolute;
+}
+.appx-carousel-media {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    width: 702px;
+    height: 469px;
+    line-height: 0;
+    font-size: 0;
+}
+.appx-carousel-media-slider {
+    top: 50%;
+    transform: translate(0, -50%);
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    cursor: pointer;
+}
+.appx-carousel-media-slider--efect {
+    transition: margin-left 0.7s;
+}
+.appx-carousel-media-swipe {
+    z-index: 9000;
+    height: 80%;
+    position: absolute;
+    width: 1000000px;
+}
+.appx-carousel-navigator {
+    position: relative;
+    background-color: #000;
+    width: 702px;
+    height: 40px;
+}
+.appx-carousel-navigator-button--left, 
+.appx-carousel-navigator-button--right, 
+.appx-carousel-navigator-button--close {
+    height: 40px;
+    width: 40px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+.appx-carousel-navigator-button--right, 
+.appx-carousel-navigator-button--close {
+    float: right;
+}
+.appx-carousel-navigator .appx-carousel-navigator-text {
+    color: #fff;
+    display: inline-block;
+    font-weight: lighter;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    line-height: 1.25;
+    width: 90%;
+    padding: 0 50px;
+    text-align: center;
+}
+.appx-carousel-fullscreen {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9000;
+    box-shadow: none;
+}
+.appx-carousel-fullscreen .appx-carousel-header {
+    background-color: #000;
+    display: block;
+    top: 0;
+    height: 50px;
+    padding: 0 0 0 2rem;
+}
+.appx-carousel-fullscreen .appx-carousel-header .appx-carousel-header-title {
+    color: #fff;
+    display: inline-block;
+}
+.appx-carousel-fullscreen .appx-carousel-navigator-button--left, 
+.appx-carousel-fullscreen .appx-carousel-navigator-button--right, 
+.appx-carousel-fullscreen .appx-carousel-navigator-button--close {
+    height: 50px;
+}
+.appx-carousel-fullscreen .appx-carousel-media {
+    width: 100%;
+    height: calc(100vh - 100px);
+}
+.appx-carousel-fullscreen .appx-carousel-navigator {
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    display: block;
+}
+
+/****  START CAROUSEL CONTAINER CSS *****/
+.appx-carousel-media-container {
+    display: inline-block;
+    position: relative;
+    height: inherit;
+    width: 702px;
+}
+.appx-carousel-media-description {
+    display: none;
+}
+.appx-carousel-media-file {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    max-height: 100%;
+}

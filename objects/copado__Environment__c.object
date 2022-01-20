@@ -128,11 +128,14 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Environment_Record_Page1</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -154,6 +157,18 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Developer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The developer&apos;s owner</description>
+        <externalId>false</externalId>
+        <label>Developer</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Environments</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
     <fields>
         <fullName>copado__CommitJobTemplateOverride__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
@@ -474,6 +489,11 @@
                     <label>Salesforce</label>
                 </value>
                 <value>
+                    <fullName>MuleSoft</fullName>
+                    <default>false</default>
+                    <label>MuleSoft</label>
+                </value>
+                <value>
                     <fullName>Other</fullName>
                     <default>false</default>
                     <label>Other</label>
@@ -495,20 +515,14 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Always</fullName>
+                    <fullName>All Promotions</fullName>
                     <default>true</default>
-                    <label>Always</label>
+                    <label>All Promotions</label>
                 </value>
                 <value>
                     <fullName>Only If User Has No Org Credential</fullName>
                     <default>false</default>
                     <label>Only If User Has No Org Credential</label>
-                </value>
-                <value>
-                    <fullName>All Promotions</fullName>
-                    <default>false</default>
-                    <isActive>false</isActive>
-                    <label>All Promotions</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -560,7 +574,7 @@
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>If selected, &quot;Run all local tests&quot; will be enforced when deploying to this environment.</inlineHelpText>
+        <inlineHelpText>If selected, &quot;Run all tests&quot; will be enforced when deploying to this environment.</inlineHelpText>
         <label>Run all local tests</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -585,11 +599,6 @@
                     <fullName>Sandbox</fullName>
                     <default>false</default>
                     <label>Sandbox</label>
-                </value>
-                <value>
-                    <fullName>Scratch Org</fullName>
-                    <default>false</default>
-                    <label>Scratch Org</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -620,7 +629,46 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <fields>
+        <fullName>copadometrics__Production_Org__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Production Org?</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
     <label>Environment</label>
+    <listViews>
+        <fullName>APO_Environments</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>PLG+</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>APO</value>
+        </filters>
+        <label>APO Environments</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Copado_DEV</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Current_Code_Coverage__c</columns>
+        <columns>copado__Minimum_Apex_Test_Coverage__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>startsWith</operation>
+            <value>Copado DEV</value>
+        </filters>
+        <label>Copado DEV</label>
+    </listViews>
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
@@ -629,9 +677,10 @@
         <columns>copado__Org_ID__c</columns>
         <columns>CREATED_DATE</columns>
         <columns>LAST_UPDATE</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATEDBY_USER.ALIAS</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
-        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Environment Name</label>
@@ -651,7 +700,6 @@
         <lookupDialogsAdditionalFields>LAST_UPDATE</lookupDialogsAdditionalFields>
         <searchFilterFields>NAME</searchFilterFields>
         <searchFilterFields>copado__Org_ID__c</searchFilterFields>
-        <searchResultsAdditionalFields>copado__Platform__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Type__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Minimum_Apex_Test_Coverage__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Org_ID__c</searchResultsAdditionalFields>

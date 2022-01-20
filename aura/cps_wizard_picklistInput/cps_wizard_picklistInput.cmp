@@ -1,0 +1,16 @@
+<aura:component>
+    <aura:attribute name="id" type="String" />
+    <aura:attribute name="label" type="String" access="public" />
+    <aura:attribute name="options" type="String[]"/>
+    <aura:attribute name="value" type="String" access="public"/>
+
+    <div>
+        <label class="slds-form-element__label">{!v.label}</label>
+        <lightning:helptext content="Full configuration will create all records for your playground including the complete pipeline. Choose light configuration only if you have been specifically instructed to do so." />
+        <lightning:select label="" name="{!v.id}" aura:id="{!v.id }" value="{!v.value}">
+            <aura:iteration items="{!v.options}" var="option">
+                    <option text="{!option}"></option>
+                </aura:iteration>
+        </lightning:select>
+    </div>
+</aura:component>

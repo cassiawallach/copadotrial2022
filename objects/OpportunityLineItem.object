@@ -121,10 +121,52 @@
         <fullName>Discount</fullName>
     </fields>
     <fields>
+        <fullName>Engagement_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies the Engagement Type value from the Product this Opportunity Product relates to. This field is populated via a Workflow Rule</inlineHelpText>
+        <label>Engagement Type</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>External_Id__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>37</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Full_Months__c</fullName>
+        <externalId>false</externalId>
+        <formula>FLOOR(SBQQ__QuoteLine__r.SBQQ__ProrateMultiplier__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Full Months</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>ListPrice</fullName>
     </fields>
     <fields>
         <fullName>Name</fullName>
+    </fields>
+    <fields>
+        <fullName>Number_of_Schedules__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Schedules</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>OpportunityId</fullName>
@@ -138,7 +180,54 @@
         <fullName>ProductCode</fullName>
     </fields>
     <fields>
+        <fullName>Product_Family__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Family</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Quantity</fullName>
+    </fields>
+    <fields>
+        <fullName>SBQQ__ParentID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>ID of the opportunity product that came from this product&apos;s bundle.</inlineHelpText>
+        <label>Parent ID</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SBQQ__QuoteLine__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Quote line that generated this Opportunity Product.</description>
+        <externalId>false</externalId>
+        <label>Quote Line</label>
+        <referenceTo>SBQQ__QuoteLine__c</referenceTo>
+        <relationshipLabel>Opportunity Product</relationshipLabel>
+        <relationshipName>OpportunityProducts</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SBQQ__SubscriptionType__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates the subscription type to determine contract&apos;s pricing.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates the subscription type to determine contract&apos;s pricing.</inlineHelpText>
+        <label>Subscription Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>SBQQ__SubscriptionType</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>ServiceDate</fullName>
@@ -152,4 +241,462 @@
     <fields>
         <fullName>UnitPrice</fullName>
     </fields>
+    <fields>
+        <fullName>Unit_Price_for_reference__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>this is internally used on the triggers to properly calculate the scheduled revenue</inlineHelpText>
+        <label>Unit Price for reference</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>chargebeeapps__Addon_Event__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Addon Event</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>SUBSCRIPTION_CREATION</fullName>
+                    <default>false</default>
+                    <label>On subscription creation</label>
+                </value>
+                <value>
+                    <fullName>SUBSCRIPTION_TRIAL_START</fullName>
+                    <default>false</default>
+                    <label>On subscription trial start</label>
+                </value>
+                <value>
+                    <fullName>PLAN_ACTIVATION</fullName>
+                    <default>false</default>
+                    <label>On plan activation</label>
+                </value>
+                <value>
+                    <fullName>SUBSCRIPTION_ACTIVATION</fullName>
+                    <default>false</default>
+                    <label>On subscription activation</label>
+                </value>
+                <value>
+                    <fullName>IMMEDIATELY</fullName>
+                    <default>false</default>
+                    <label>Immediately</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>chargebeeapps__Apply_Charges__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Apply Charges</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ONCE</fullName>
+                    <default>false</default>
+                    <label>Once</label>
+                </value>
+                <value>
+                    <fullName>EVERYTIME</fullName>
+                    <default>false</default>
+                    <label>Everytime this event occurs</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>chargebeeapps__Billing_Cycles__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Billing Cycles</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>chargebeeapps__Service_Period__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Period (days)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__ARR__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Calculation of the Annual Recurring Revenue forecasted.</description>
+        <externalId>false</externalId>
+        <label>Annual Recurring Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__DateServiceEnd__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Applies to Services only. The end date of the Opportunity Product is calculated by the Date Service Start and Service Term with Unit of Term.
+
+Users have the ability to change the Date Service End if Allow Override Service Date Update field is checked in Kugamon Settings.</description>
+        <externalId>false</externalId>
+        <label>Date Service End</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__DiscountSalesPrice__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Effective Price is the Sales Price with Discounts Applied.</description>
+        <externalId>false</externalId>
+        <formula>If (ISBLANK( kuga_sub__ServiceTerm__c ) || kuga_sub__ServiceTerm__c &lt;= 0,
+round(UnitPrice * (1 - Discount), 2),
+round(kuga_sub__NetAmount__c / Quantity / If(Text(kuga_sub__ServiceTermBehavior__c) = &quot;Excluded&quot;, 1, kuga_sub__ServiceTerm__c), 2)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Effective Price is the Sales Price with Discounts Applied</inlineHelpText>
+        <label>Effective Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__EffectiveDiscount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Effective Discount is based on Net Amount from List Amount.</description>
+        <externalId>false</externalId>
+        <formula>IF(
+  kuga_sub__ListAmount__c = 0,
+  NULL,
+  IF(
+    ListPrice == UnitPrice,
+    Discount,
+    (kuga_sub__ListAmount__c - kuga_sub__NetAmount__c) / kuga_sub__ListAmount__c
+  )
+)</formula>
+        <inlineHelpText>Effective Discount is based on Net Amount from List Amount</inlineHelpText>
+        <label>Effective Discount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__LineTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Displays the Service Term and the Unit of Term.</description>
+        <externalId>false</externalId>
+        <formula>IF( kuga_sub__ServiceTerm__c  = 0, &apos; &apos;, TEXT( kuga_sub__ServiceTerm__c ) + &apos; &apos; + TEXT ( kuga_sub__UnitofTerm__c )) + If( kuga_sub__ServiceTerm__c  &gt;1, &apos;s&apos;, &apos;&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Line Term</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__ListAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Quantity multiplied by List Price and Service Term, if Service Term Behavior is Included or Blank.</description>
+        <externalId>false</externalId>
+        <formula>if (ISBLANK( kuga_sub__ServiceTerm__c ) || kuga_sub__ServiceTerm__c &lt;= 0, Quantity * ListPrice, Quantity * ListPrice * If(Text(kuga_sub__ServiceTermBehavior__c) = &quot;Excluded&quot;, 1, kuga_sub__ServiceTerm__c) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Quantity multiplied by List Price and Service Term, if Service Term Behavior is Included or Blank</inlineHelpText>
+        <label>List Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__MRR__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Calculation of the Monthly Recurring Revenue forecasted.</description>
+        <externalId>false</externalId>
+        <label>Monthly Recurring Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__NetAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Net Amount is Total Amount with Discount applied.</description>
+        <externalId>false</externalId>
+        <formula>kuga_sub__TotalAmount__c - round(Discount * kuga_sub__TotalAmount__c, 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Net Amount is Total Amount with Discount applied.</inlineHelpText>
+        <label>Net Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__NonUpliftSalesPrice__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The initial Sales Price before applying the Opportunity Renewal Uplift Percent.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The initial Sales Price before applying the Opportunity Renewal Uplift Percent.</inlineHelpText>
+        <label>Non-Uplift Sales Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Renew__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates if the Opportunity Product is renewable or not. The underlying Product is setup on the Product object where the Renewable checkbox field can be set.</description>
+        <externalId>false</externalId>
+        <label>Renew</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__ServiceTermBehavior__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Included or if blank, feature will factor Term in Service Amount Calculation and Invoice Schedule. Price depends on Term.
+
+Excluded will not factor Term in Service Amount Calculation and Invoice Schedule (Service behaves as a Product). Price independent of Term.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Included or if blank, will factor Term in Service Amount Calculation and Invoice Schedule. Price depends on Term
+
+Excluded will not factor Term in Service Amount Calculation and Invoice Schedule (Service behaves as a Product). Price independent of Term</inlineHelpText>
+        <label>Service Term Behavior</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>kugo2p__ServiceTermBehavior</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__ServiceTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Applies to Services only. Duration for Unit of Term.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Applies to Services only. Duration for Unit of Term..</inlineHelpText>
+        <label>Service Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Service__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Designates if the Opportunity Product is a Service.</description>
+        <externalId>false</externalId>
+        <formula>IF(ISNULL(kuga_sub__DateServiceEnd__c), False, True)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Designates if the Opportunity Product is a Service.</inlineHelpText>
+        <label>Service</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__TotalAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>For Products, the Total Amount = Quantity x Unit Price.
+
+For Services, the Total Amount = Quantity x Unit Price x Service Term.</description>
+        <externalId>false</externalId>
+        <formula>if (ISBLANK(kuga_sub__ServiceTerm__c) || kuga_sub__ServiceTerm__c &lt;= 0, Quantity * UnitPrice, Quantity * UnitPrice * If(Text(kuga_sub__ServiceTermBehavior__c) = &quot;Excluded&quot;, 1, kuga_sub__ServiceTerm__c) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>For Products, the Total Amount = Quantity x Unit Price.
+
+For Services, the Total Amount = Quantity x Unit Price x Service Term.</inlineHelpText>
+        <label>Total Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__UnitofTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Applies to Services only. Period for Service Term..
+
+Note: Galactic Year is not a valid Value.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Applies to Services only. Period for Service Term..
+
+Note: Galactic Year is not a valid Value.</inlineHelpText>
+        <label>Unit of Term</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Second</fullName>
+                    <default>false</default>
+                    <label>Second</label>
+                </value>
+                <value>
+                    <fullName>Minute</fullName>
+                    <default>false</default>
+                    <label>Minute</label>
+                </value>
+                <value>
+                    <fullName>Hour</fullName>
+                    <default>false</default>
+                    <label>Hour</label>
+                </value>
+                <value>
+                    <fullName>Day</fullName>
+                    <default>false</default>
+                    <label>Day</label>
+                </value>
+                <value>
+                    <fullName>Week</fullName>
+                    <default>false</default>
+                    <label>Week</label>
+                </value>
+                <value>
+                    <fullName>Fortnight</fullName>
+                    <default>false</default>
+                    <label>Fortnight</label>
+                </value>
+                <value>
+                    <fullName>Month</fullName>
+                    <default>false</default>
+                    <label>Month</label>
+                </value>
+                <value>
+                    <fullName>Quarter</fullName>
+                    <default>false</default>
+                    <label>Quarter</label>
+                </value>
+                <value>
+                    <fullName>Year</fullName>
+                    <default>false</default>
+                    <label>Year</label>
+                </value>
+                <value>
+                    <fullName>Galactic Year</fullName>
+                    <default>false</default>
+                    <label>Galactic Year</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__UpliftRenewalPrice__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Designates if the Opportunity Product is subject for a Price Increase. 
+
+References the Uplift Renewal Price on the Additional Product Info record.</description>
+        <externalId>false</externalId>
+        <formula>PricebookEntry.Product2.kuga_sub__UpliftRenewalPrice__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Designates if the Opportunity Product is subject for a Price Increase. 
+
+References the Uplift Renewal Price on the Additional Product Info record..</inlineHelpText>
+        <label>Uplift Renewal Price</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__AdditionalChargeCredit__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup field to the Additional Charge/Credit record referenced in this Opportunity Product.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup field to the Additional Charge/Credit record referenced in this Opportunity Product</inlineHelpText>
+        <label>Additional Charge/Credit</label>
+        <referenceTo>kugo2p__AdditionalChargeCredit__c</referenceTo>
+        <relationshipLabel>Opportunity Product</relationshipLabel>
+        <relationshipName>Opportunity_Product</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ConfigurationOption__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup field to the Configuration Option record referenced in this Opportunity Product.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup field to the Configuration Option record referenced in this Opportunity Product</inlineHelpText>
+        <label>Configuration Option</label>
+        <referenceTo>kugo2p__ConfigurationOption__c</referenceTo>
+        <relationshipLabel>Opportunity Product</relationshipLabel>
+        <relationshipName>Opportunity_Product</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ParentLineID__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Opportunity Product ID of related Parent Line.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Opportunity Product ID of related Parent Line</inlineHelpText>
+        <label>Parent Line ID</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <webLinks>
+        <fullName>Update_Schedule_Divide_Monthly</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Update Schedule (Divide Monthly)</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/oppitm/establishschedule.jsp?id={!OpportunityLineItem.Id}&amp;p4=1&amp;p5=2&amp;p6={!OpportunityLineItem.Full_Months__c}&amp;retURL=%2F{!OpportunityLineItem.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Update_Schedule_Repeat_Monthly</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Update Schedule (Repeat Monthly)</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/oppitm/establishschedule.jsp?id={!OpportunityLineItem.Id}&amp;p4=2&amp;p5=2&amp;p6=12&amp;retURL=%2F{!OpportunityLineItem.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>chargebeeapps__Manage_CB_Products</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Manage CB Products</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/chargebeeapps__Choose_site?id={!Opportunity.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>kuga_sub__RefreshProducts</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Refresh Products</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/kuga_sub__Kontroller?action=refreshProducts&amp;Id={!Opportunity.Id}</url>
+    </webLinks>
 </CustomObject>

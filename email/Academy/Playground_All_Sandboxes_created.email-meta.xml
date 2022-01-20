@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>This email is sent out automatically when all the sandboxes for a playground have been created (based on the checkbox).</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Playground - All Sandboxes created</name>
+    <style>none</style>
+    <subject>Your Playground Sandboxes have all be created.</subject>
+    <textOnly>Hi {!Contact.FirstName}, 
+
+All sandboxes for your playground ({!Playground__c.Name}) have been create successfully. You can now continue with the Playground Creation Wizard.
+
+Kind regards,
+
+The Copado Playground Team
+Copado Solutions S.L.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,46 @@
+<apex:page tabStyle="Administration__tab" docType="html-5.0" sidebar="false" controller="JBCXM.ConfigBroker" extensions="JBCXM.GSCommonBroker" title="{!IF(($CurrentPage.parameters.surveyId != ''),'Survey Level Permissions','Survey Module Permissions')}">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+<script>
+    
+    var GS = GS || {};
+    
+    GS.remotingEndPoint     = '{!$RemoteAction.ConfigBroker.configRequestBroker}';
+    
+    GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+   	GS.commonRemotingBulkEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        
+    
+    GS.packageNS            = "{!(pkgNS)}";
+    GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+    
+   
+    GS.customerId = "";
+    
+    GS.surveyId = unescape("{!URLENCODE($CurrentPage.parameters.surveyId)}");
+    GS.userConfig = {
+                gainsightTabs       : fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+        		isLightningEnabled: {!(isLightningEnabled)}
+            };
+   
+</script>
+
+<div id="gs-app-container">
+	<div class="gs-module-container">
+		<div class="survey-permissions"></div>
+	</div>
+</div>
+
+
+<apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+      <c:AlertForm />
+      <script>
+          installResources({scripts: ["survey_permissions/scripts/app.bundle.js"], styles:["survey_permissions/styles/app.css"]});
+      </script>
+</apex:outputpanel>
+  	
+ <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+     <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:9091/UI')}/survey_permissions/styles/app.css" />
+   	<script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), 'https://localhost:9091/UI')}/survey_permissions/scripts/app.bundle.js"></script>
+</apex:outputpanel>
+
+</apex:page>

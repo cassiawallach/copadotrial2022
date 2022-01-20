@@ -1,0 +1,31 @@
+<apex:page standardController="Account" sideBar="false" lightningStylesheets="true" >
+    <apex:includeLightning />
+    <div id="AddCustomertoCertCaptureResult"></div>
+    
+    <script>
+    
+        $Lightning.use("AVA_SFCPQ:AvaTaxSaveExemptionCustomerApp", function() { 
+            $Lightning.createComponent("AVA_SFCPQ:AvaTaxSaveExemptionCustomer",
+                                       {
+                                           "recordId" : "{!$CurrentPage.parameters.id}"
+                                       },
+                                       "AddCustomertoCertCaptureResult",
+                                       function(component) {
+                                           $A.eventService.addHandler({
+                                               event: 'force:navigateToSObject',
+                                               handler: function(event) {
+                                                   debugger;
+                                                   if (typeof sforce != 'undefined' && typeof sforce.one != 'undefined') {
+                                                       // VF page in S1 or Lightning Exp
+                                                       sforce.one.navigateToSObject("{!$CurrentPage.parameters.id}", 'related');
+                                                   } else {
+                                                       // VF page in Classic
+                                                       window.location = '{!URLFOR($Action.Account.View, Account.Id)}';
+                                                   }
+                                               }
+                                           });
+                                       });
+        });
+    </script>
+    
+</apex:page>

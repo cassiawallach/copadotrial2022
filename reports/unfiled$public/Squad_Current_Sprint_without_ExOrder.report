@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_86968020</developerName>
+        <masterLabel>Main Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Status__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Draft</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Planning</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Investigation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Development</sourceValue>
+            </sourceValues>
+            <value>1 To Do</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Investigation in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Development In Progress</sourceValue>
+            </sourceValues>
+            <value>2 In Progress</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Investigation Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Development Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tech. Review Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Packaging Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Testing Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Regression Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Release Blocked</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Waiting for customer</sourceValue>
+            </sourceValues>
+            <value>3 Blocked</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Ready for Tech. Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tech. Review in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Testing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Testing in Progress</sourceValue>
+            </sourceValues>
+            <value>4 Tech Review / Testing</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Completed</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Released</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Release</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Release in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Regression</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Regression in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ready for Packaging</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Packaging in Progress</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tested in Base Package</sourceValue>
+            </sourceValues>
+            <value>5 Completed</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_RECORDTYPE</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Priority__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_Other__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>copado__User_Story__c.copado__Progress__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Release__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Epic__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Project__c</field>
+    </columns>
+    <columns>
+        <field>CUST_CREATED_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Developer__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>current</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Rejected</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_$copado__Sprint__c.copado__Project__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Copado Application</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CUST_RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>copado__User_Story__c.copado__Bug,copado__User_Story__c.copado__Investigation,copado__User_Story__c.copado__User_Story</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.Execution_Order__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_86968020</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>2 In Progress,3 Blocked,4 Tech Review / Testing,5 Completed</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Theme__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_86968020</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Squad Current Sprint without ExOrder</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Sprint__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>copado__User_Story__c.copado__Story_Points_SFDC__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

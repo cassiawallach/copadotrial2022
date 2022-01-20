@@ -1,0 +1,446 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose                    : This page is used to configure the revenue bands.
+----                              
+---- Other comments (optional)  : None.
+-->
+<apex:page Controller="JBCXM.SummaryExtension" extensions="JBCXM.GSCommonBroker" sidebar="false" title="Revenue Band Configuration"  tabStyle="Administration__tab">
+ <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+ <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+ <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js"/>
+ <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+ <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/backbone-min.js"/>
+ <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css"/>
+ <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/SurveyUtil/SurveyUtil.js"/>
+ <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/core/gsAppContainer.css" />
+ <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+ <!-- <apex:sectionHeader title="{!customLabelsMap['RevenueBand']} Configuration" />
+ <a href="/apex/Administration?sfdc.tabName={!JSENCODE($CurrentPage.parameters.tabId)}" style="text-decoration:none;">&nbsp;«&nbsp;Back</a> -->
+ <style type = "text/css">
+    .ui-icon{
+        cursor:pointer;
+    }
+    .errorRowClass{
+        background-color: #fbe3e4;
+    }
+    .dummyMessageTable .messageCell {
+        text-align : left;
+    }
+    .requiredExample {
+        border-left: 3px solid #CC0000;
+        font-size: 100%;
+        margin-right: 1px;
+        padding-bottom: 3px;
+        padding-top: 2px;
+        vertical-align: 1px;
+        width: 100%;
+    }
+    body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock{
+           background-color: #FFF;
+           border-radius: 3px;
+           border: 0;
+           padding-bottom:7px;
+           margin: 0 20px !important;
+     }
+     .bPageBlock .detailList tr td, .bPageBlock .detailList tr th,
+     .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+         border-bottom:none;
+     }
+     .tdlabel{
+         min-width:380px;
+         max-width:380px;
+     }
+     .apexp .bPageBlock .detailList {
+         width: 100%;
+     }
+     .apexp .bPageBlock .detailList td{
+         height:10px;
+     }
+     #gs-app-container .gs-module-container{
+         background-color: #f0f3f6;
+     }
+     .ui-tabs .ui-tabs-panel{
+         padding-left:3em;
+         background-color: #f0f3f6;
+     }
+     .listViewport .subNav .linkBar {
+         background-color: #ffffff;
+         border-top: none;
+     }
+     .bPageBlock.brandSecondaryBrd{
+            border:0 !important;
+            background: #fff;
+      }
+     .pbHeader{
+          background: #f0f3f6 !important;
+          border:none !important;
+      }
+      .pbHeader table{
+          border: none !important;    
+      }
+      .pbTitle{padding: 20px !important;}
+      .pbBody{
+          margin: 0 !Important;
+          padding: 20px !important;
+      }
+      .pbBody table{
+          border: none !important;
+      }
+      .pbBody table th{
+          height: 40px;
+          background-color: #fff !important;
+          border:0 !Important;
+          border-bottom: 2px solid #d3d6d9 !important;
+          font-size: 15px !important;
+          padding: 0 10px !important;
+          text-align: center;
+      }
+      .pbBody table tbody tr{
+          height: 30px;
+      }
+      .btn, .btnDisabled {
+          display: inline-block; 
+          line-height: 18px; 
+          cursor: pointer;
+          background: #00b4e5 !important;
+          padding: 6px 15px !important;
+          color: #fff !important;
+          font-weight: normal !important;
+          text-transform: uppercase !important;
+          border: 0 !important;
+          height: 30px !important;
+          font: 15px "Proxima Nova Rg",sans-serif !important;
+      }    
+      .dummyAllAdminNewBtn.btnDisabled{
+          background-color:#d9e0e9 !important;
+          pointer-events: none;
+          opacity:0.7 !important;
+      }
+      .btn:hover{
+          opacity: 0.7;
+          border-radius: 3px;
+      }
+      .btn.btnCancelClick{
+          background-color: #fff !important;
+          border: 1px solid #d3d6d9 !important;
+          color: #374353 !important;
+       }
+      .pbBody table th.labelCol.vfLabelColTextWrap{
+          border-bottom: 0 !important;
+          font-size: 14px !important;
+          font-weight:normal !important;
+          font-family: "Proxima Nova Semibold";
+      }
+      input{
+         height: 25px !important;
+         border: 0 !important;
+         border-bottom: 1px solid #d3d6d9 !important;
+         margin-left: 5px;  
+         box-shadow: none !important;  
+      }
+      .pbBottomButtons table tr td:first-child{
+         display: none;
+      }
+      
+      select {
+            height: 25px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #d3d6d9;
+            border-radius: 0;
+            outline: none;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            width: auto;
+            color: #374353; 
+       }
+ </style>
+    <script type = "text/javascript">
+    var j$ = $.noConflict();
+        window.jLatest = j$;
+        var GS = GS || {};
+
+        GS.userConfig = {
+            userLocale  : {!(dateTimeFormatByLocale)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        };
+        GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingEndPoint           = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+
+        
+    var configJson = new Array();
+    var isRBConfigured = "false";
+    var existingRBConfig, uiCustomLabelMap; 
+    j$(document).ready(function() {
+    
+
+    
+        configJson =  fakeEval('{!JSENCODE(RevenueBandConfiguration)}');
+        uiCustomLabelMap = fakeEval('{!JSINHTMLENCODE(customLabelsMapJSON)}');
+        isRBConfigured = "{!(isRevenueBandConfigured)}";
+        existingRBConfig = (isRBConfigured == "true") ? JSON.stringify(configJson) : "";
+         if(configJson != null  && configJson.length > 0) {
+            populateRBConfigBase(uiCustomLabelMap);
+            j$(".bandOnSelection").val(configJson[0].type); //always it returns a list.
+            
+            var rowMarkup = '';
+            j$(configJson).each(function(){
+                rowMarkup += addBandRows();
+            });
+            j$(".tbodyRevenueSection").html(sanitizeHtml(rowMarkup));
+            if(j$(".removeBandRow").length <= 1) {
+                j$(".removeBandRow").first().css({"opacity":"0.4"});
+            }
+            var indx = 0;
+            j$(configJson).each(function(k,v) {
+                j$(".labelValue").slice(indx).val(v.name);
+                j$(".minValue").slice(indx).val((v.min == 0) ? v.min : (v.min-1)+'+');
+                j$(".maxValue").slice(indx).val(v.max);
+                indx++;
+            });
+            j$(".maxValue").slice(indx-1).parent().find("span.requiredExample").hide();
+         }
+    });
+    
+    function populateRBConfigBase(uiCustomLabelMap) {
+        var htmlStr     = '<span>'+uiCustomLabelMap.RevenueBand+' on : </span>';
+        htmlStr         += '<select class = "bandOnSelection"><option value = "MRR__c">'+uiCustomLabelMap.MRR+'</option>';
+        htmlStr         += '<option value = "ASV__c">'+uiCustomLabelMap.ASV+'</option></select>';
+        j$(".RevenueBandConfigOn").append(htmlStr);
+    }
+    
+    function addBandRows(thisPointer) {
+        var rowHTML = '';
+        rowHTML += '<tr class = "trCompleteBandRow">';
+        rowHTML += '<td><span class="requiredExample"></span><input  class = "labelValue"  type = "text" maxlength="40" /></td><td><span class="requiredExample"></span><input  class = "minValue" disabled = "disabled" type = "text" /></td><td><span class="requiredExample"></span><input  class = "maxValue"  type = "text" /></td>'
+        rowHTML += '<td title = "Add"><span class = "ui-icon ui-icon-plus addBandRow"></span></td><td title = "Remove"><span class = "ui-icon ui-icon-minus removeBandRow" ></span></td></tr>';
+        if(!thisPointer) {
+            return rowHTML;
+        }
+        else {
+            j$(thisPointer).parent().parent().after(rowHTML);
+            j$(thisPointer).parent().parent().next().find(".minValue").val(j$.trim(j$(thisPointer).parent().parent().find(".maxValue").val())+'+');
+            toggleRequiredBlockForMaxValue();
+        }                               
+    }
+       
+    function remBandRows(thisPointer) {
+        j$(thisPointer).parent().parent().remove();
+        toggleRequiredBlockForMaxValue();
+    }
+    
+    /**
+    *This function is used to toggle the required block for band max value input text box.
+    **/
+    function toggleRequiredBlockForMaxValue() {
+        var rbListSize = j$(".tbodyRevenueSection .maxValue").length;
+        j$("span.requiredExample").show();
+        j$(".maxValue").slice(rbListSize-1).parent().find("span.requiredExample").hide();
+    }
+    
+    var bandStorageClass = function() {
+        this.type = null;
+        this.name = null;
+        this.min = null;
+        this.max = null;
+    }
+    
+    /**
+    *This function is used to validate the revenue band config then save.
+    **/
+    function getBandConditionToSave() {
+    	var configArray         = new Array();  
+        var sortedLabelArray    = new Array();
+        var isLabelEmpty        = false;
+        var bandStorageObj;
+        j$(".trCompleteBandRow").each(function() {
+            bandStorageObj = new bandStorageClass();
+            bandStorageObj.type = j$(".bandOnSelection").val();
+            bandStorageObj.name = j$.trim(j$(this).find(".labelValue").val());
+            if(bandStorageObj.name == '') {
+                isLabelEmpty = true;    
+            }
+            else {
+                sortedLabelArray.push(bandStorageObj.name);
+            }
+            bandStorageObj.min = (j$.trim(j$(this).find(".minValue").val()) == '' || isNaN(j$.trim(j$(this).find(".minValue").val()).split('+')[0])) ? null : parseFloat(j$.trim(j$(this).find(".minValue").val()).split('+')[0])+1;
+            bandStorageObj.max = (j$.trim(j$(this).find(".maxValue").val()) == '' || isNaN(j$.trim(j$(this).find(".maxValue").val()))) ? null : parseFloat(j$(this).find(".maxValue").val());
+            configArray.push(bandStorageObj);
+        });
+        var sortedLabelArrayLength = sortedLabelArray.length;
+                    
+        if(!validateUniqueLabels(isLabelEmpty, (configArray.length == sortedLabelArrayLength)) || !validateMaxGtrMin(configArray)) {
+            j$(".dummyAllAdminNewBtn").attr("disabled", false);
+               j$(".dummyAllAdminNewBtn").removeClass("btnDisabled").addClass("btn");
+        }
+        else {          
+            j$("#jBaraUIViewValidationsContainer").hide();              
+            //To comparing previous value with new value(If is there any change in config then only we will save to db).
+            var finalRBStr = JSON.stringify(configArray);
+            if(finalRBStr === existingRBConfig) {
+                redirectFun();
+            }
+            else {
+                saveRevenueConfig(finalRBStr);
+            }
+        }
+     }
+     
+     function redirectFun() {
+        window.location = "/apex/Administration"; 
+     }
+    
+     function disableBtn(obj) {
+                j$(obj).attr("disabled", true);
+                j$(obj).removeClass("btn").addClass("btnDisabled");
+            }
+     
+    /**
+    *This function is used to Check the Uniqueness of Band names.
+    **/       
+    function validateUniqueLabels(bolFlag1, bolFlag2) {
+        j$(".errorRowClass").removeClass("errorRowClass");
+        var validFlag = true;
+        if(bolFlag1 || !bolFlag2) {
+            var errorList= new Array();
+            var errorDupQues = new JBaraErrorClass();
+            errorDupQues.msg = (bolFlag1) ? "Please enter band name." : "Please enter unique band names.";
+            errorDupQues.header = '';
+            errorList.push(errorDupQues);
+            showJBaraValidationErrors('jBaraUIViewValidationsContainer', errorList);
+            validFlag = false;
+        }
+        return validFlag;
+     }
+     
+    /**
+    *This function is used to check band range.
+    **/ 
+    function validateMaxGtrMin(inputArray) {
+        j$(".errorRowClass").removeClass("errorRowClass");
+        var returnFlag = true;
+        var inputArrayLenth = inputArray.length;
+        for(var i = 0; i < inputArrayLenth; i++) {
+            if(inputArray[i].min == null || (inputArray[i].max == null && i+1 != inputArrayLenth)) {            
+                returnFlag = false;
+            }
+            else if(((i+1 != inputArrayLenth) && (parseFloat(inputArray[i].min) >= parseFloat(inputArray[i].max))) || (i+1 == inputArrayLenth && inputArray[i].max != null && (parseFloat(inputArray[i].min) >= parseFloat(inputArray[i].max)))) {
+                returnFlag = false;
+            }
+            if(i > 0) {
+                if(parseFloat(inputArray[i].min) <= parseFloat(inputArray[i-1].max)) {
+                    returnFlag = false;
+                }
+            }
+            if(!returnFlag) { break; } 
+        }       
+        if(!returnFlag) {
+            var errorList= new Array();
+            var errorDupQues = new JBaraErrorClass();
+            errorDupQues.msg = "Please correct Minimum and Maximum values..";
+            errorDupQues.header = '';
+            errorList.push(errorDupQues);
+            showJBaraValidationErrors('jBaraUIViewValidationsContainer', errorList);
+            j$(this).addClass("errorRowClass");
+        }
+        return returnFlag;
+     }
+     
+    j$(".addBandRow").live("click",function() {
+        if(j$.trim(j$(this).parent().parent().find(".maxValue").val()) == '' || isNaN(j$.trim(j$(this).parent().parent().find(".maxValue").val()))) {
+            j$(this).parent().parent().find(".maxValue").focus();
+            alert('Please enter numeric value');
+        }
+        else {
+            if(j$(".trCompleteBandRow").length < 10) {
+                addBandRows(this);
+                j$(".removeBandRow").first().css({"opacity":"1"});
+                if(j$(".trCompleteBandRow").length == 10){
+                    j$(".addBandRow").css({"opacity":"0.4"});
+                }else{
+                    j$(".addBandRow").css({"opacity":"1"});
+                }
+                
+            }
+            else{
+                j$(".addBandRow").css({"opacity":"0.4"});
+            }
+        }
+    });
+    
+    j$(".removeBandRow").live("click",function() {
+        
+        if(j$(".removeBandRow").length <= 1){
+            j$(".removeBandRow").first().css({"opacity":"0.4"});
+        }
+        else{
+        remBandRows(this);
+        j$(".addBandRow").css({"opacity":"1"});
+        if(j$(".removeBandRow").length <= 1){
+            j$(".removeBandRow").first().css({"opacity":"0.4"});
+        }
+        }
+        
+    });
+    
+    j$(".maxValue").live("focusout",function() {
+        j$(this).parent().parent().next().find(".minValue").val(j$.trim(j$(this).parent().parent().find(".maxValue").val())+'+');
+    });
+    
+   
+    
+    </script>
+    <div id="gs-app-container">
+    <div class="gs-module-container">
+    <apex:pageBlock title="{!customLabelsMap['RevenueBand']} Configuration">
+    
+    
+    <div class = "mainForSection" style = "width:500px; margin: 0 auto;">
+        <div style = "text-align: center;" class="RevenueBandConfigOn">    
+            <span Id="jBaraUIViewValidationsContainer"></span>
+        </div>
+        <table style = "border-collapse:collapse; margin-top:10px" cellpadding="2">
+            <thead><th>Label</th><th>Minimum</th><th>Maximum</th></thead>
+            <tbody class = "tbodyRevenueSection">
+                
+            </tbody>
+        </table>
+    </div>  
+    <apex:pageBlockButtons location="bottom" >
+          <div style="clear: both;text-align:center;margin-top: 20px;">
+                 <input type="button" value=" Save " class="btn dummyAllAdminNewBtn" onclick="disableBtn(this); getBandConditionToSave();"/>
+                 <input type="button" value=" Cancel " class="btn btnCancelClick dummyAllAdminNewBtn" onclick="disableBtn(this);redirectFun();"/>
+         </div>
+     </apex:pageBlockButtons>
+    </apex:pageBlock>
+        
+        <apex:form >
+        
+        <apex:actionFunction name="saveRevenueConfig"  action="{!saveRevenueBandConfig}" oncomplete="redirectFun();" >
+        <apex:param name="rbConfigStr" value=""/>
+        </apex:actionFunction>
+        </apex:form>
+    </div></div>    
+     <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>
+  
+    
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+</apex:page>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Annual Subscription Value calculated based on the Booking and Term. --></help>
+        <label><!-- ASV --></label>
+        <name>JBCXM__ASV__c</name>
+    </fields>
+    <fields>
+        <help><!-- Optional Reference number from external systems. --></help>
+        <label><!-- Booking Number --></label>
+        <name>JBCXM__BookingNumber__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select Churn Reason (applicable for Churn Transactions only). --></help>
+        <label><!-- Churn Reason --></label>
+        <name>JBCXM__ChurnReason__c</name>
+        <relationshipLabel><!-- Transaction Header (Churn Reason) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Enter optional commentary on the Transaction --></help>
+        <label><!-- Comment --></label>
+        <name>JBCXM__Comment__c</name>
+    </fields>
+    <fields>
+        <help><!-- Customer Name (auto populated) --></help>
+        <label><!-- Customer Name --></label>
+        <name>JBCXM__CustomerName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Reference to CustomerInfo Record --></help>
+        <label><!-- Customer --></label>
+        <name>JBCXM__Customer__c</name>
+        <relationshipLabel><!-- Transaction Header --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Transaction Date --></help>
+        <label><!-- Date --></label>
+        <name>JBCXM__Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Monthly Recurring Revenue calculated based on Booking Amount and Term --></help>
+        <label><!-- MRR --></label>
+        <name>JBCXM__MRR__c</name>
+    </fields>
+    <fields>
+        <help><!-- Next Renewal Date --></help>
+        <label><!-- Next Renewal Date --></label>
+        <name>JBCXM__NextRenewalDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- One-time revenue --></help>
+        <label><!-- OneTime Revenue --></label>
+        <name>JBCXM__OneTimeRevenue__c</name>
+    </fields>
+    <fields>
+        <help><!-- New Business: First business transaction&lt;br&gt;&lt;br&gt;Renewal: Renewal date auto populated &lt;br&gt;&lt;br&gt;Upsell / Downsell: Subsequent Upsell or Downsell transactions&lt;br&gt;&lt;br&gt;Debook: Any corrections to the previously booked amounts&lt;br&gt;&lt;br&gt;Churn: Churn transaction --></help>
+        <label><!-- Order Type --></label>
+        <name>JBCXM__OrderType__c</name>
+        <relationshipLabel><!-- Transaction Header (Order Type) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Contract Number is an optional reference used in the external systems. --></help>
+        <label><!-- Original Contract --></label>
+        <name>JBCXM__OriginalContract__c</name>
+    </fields>
+    <fields>
+        <help><!-- Deferred Revenue Recognition End Date --></help>
+        <label><!-- Revenue Recognition End Date --></label>
+        <name>JBCXM__RevRecEndDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Deferred Revenue Recognition Start Date --></help>
+        <label><!-- Revenue Recognition Start Date --></label>
+        <name>JBCXM__RevRecStartDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sales Representative (optional field) --></help>
+        <label><!-- SalesRep --></label>
+        <name>JBCXM__SalesRep__c</name>
+        <relationshipLabel><!-- Transaction Header --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Booking Term in whole Months --></help>
+        <label><!-- Term --></label>
+        <name>JBCXM__Term__c</name>
+    </fields>
+    <fields>
+        <help><!-- User licenses/count --></help>
+        <label><!-- Users --></label>
+        <name>JBCXM__Users__c</name>
+    </fields>
+    <layouts>
+        <layout>Transaction Header Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+</CustomObjectTranslation>

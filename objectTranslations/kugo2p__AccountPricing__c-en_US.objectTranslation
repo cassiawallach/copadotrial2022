@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Lookup to the Account Name --></help>
+        <label><!-- Account Name --></label>
+        <name>kugo2p__Account__c</name>
+        <relationshipLabel><!-- Account Pricing --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Lookup to the related Contract --></help>
+        <label><!-- Contract --></label>
+        <name>kugo2p__Contract__c</name>
+        <relationshipLabel><!-- Account Pricing --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Date Account Pricing Expires --></help>
+        <label><!-- Date End --></label>
+        <name>kugo2p__DateEnd__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date Account Pricing Commences --></help>
+        <label><!-- Date Start --></label>
+        <name>kugo2p__DateStart__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default Line Discount in Quote and Order configurator page. Use either this field or Price, but not both. --></help>
+        <label><!-- Discount --></label>
+        <name>kugo2p__Discount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Field API Name used for filter. Filter function ignored if Product/Service field is filled. --></help>
+        <label><!-- Filter Field --></label>
+        <name>kugo2p__FilterField__c</name>
+    </fields>
+    <fields>
+        <help><!-- Object used for filter. Filter function ignored if Product/Service field is filled. --></help>
+        <label><!-- Filter Object --></label>
+        <name>kugo2p__FilterObject__c</name>
+        <picklistValues>
+            <masterLabel>Additional Product Info</masterLabel>
+            <translation><!-- Additional Product Info --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Product</masterLabel>
+            <translation><!-- Product --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Value the Filter Field is evaluated against to determine if Account Pricing applies. --></help>
+        <label><!-- Filter Value --></label>
+        <name>kugo2p__FilterValue__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Product&apos;s Hide value. Hides Product from Quote and Order configurator page. If Hide is Checked, Pricing Information (Price or Discount) is not required. --></help>
+        <label><!-- Hide --></label>
+        <name>kugo2p__Hide__c</name>
+    </fields>
+    <fields>
+        <help><!-- Active if Date End is Blank, or Today is within Date Start and Date End, or the Related Contract is Activated with Today is within Start Date and End Date --></help>
+        <label><!-- Active --></label>
+        <name>kugo2p__IsActive__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Product&apos;s Lock Line Discount value. Prevents Line Discount to be editable in Quote and Order configurator page. Does not lock the Line Discount at the record level. --></help>
+        <label><!-- Lock Line Discount --></label>
+        <name>kugo2p__LockLineDiscount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Override Product&apos;s Lock Sales Price value. Prevents Sales Price to be editable in Quote and Order configurator page. Does not lock the Sales Price at the record level. --></help>
+        <label><!-- Lock Sales Price --></label>
+        <name>kugo2p__LockSalesPrice__c</name>
+    </fields>
+    <fields>
+        <help><!-- Operator used to evaluate Filter Field value against Filter Value. --></help>
+        <label><!-- Operator --></label>
+        <name>kugo2p__Operator__c</name>
+        <picklistValues>
+            <masterLabel>contains</masterLabel>
+            <translation><!-- contains --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>does not contain</masterLabel>
+            <translation><!-- does not contain --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>equals</masterLabel>
+            <translation><!-- equals --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>greater or equals</masterLabel>
+            <translation><!-- greater or equals --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>greater than</masterLabel>
+            <translation><!-- greater than --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>less or equals</masterLabel>
+            <translation><!-- less or equals --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>less than</masterLabel>
+            <translation><!-- less than --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>not equals</masterLabel>
+            <translation><!-- not equals --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>starts with</masterLabel>
+            <translation><!-- starts with --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Default Price in Quote and Order configurator page. Use either this field or Discount, but not both. --></help>
+        <label><!-- Price --></label>
+        <name>kugo2p__Price__c</name>
+    </fields>
+    <fields>
+        <help><!-- Lookup to the Product/Service. Alternately, Filter function can be used, but not both. --></help>
+        <label><!-- Product/Service --></label>
+        <name>kugo2p__ProductService__c</name>
+        <relationshipLabel><!-- Account Pricing --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Account Pricing can either be Product/Service or Filter --></help>
+        <label><!-- Type --></label>
+        <name>kugo2p__Type__c</name>
+    </fields>
+    <layouts>
+        <layout>Account Pricing Layout</layout>
+        <sections>
+            <label><!-- Configuration Information (Override) --></label>
+            <section>Configuration Information (Override)</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Filter Information --></label>
+            <section>Filter Information</section>
+        </sections>
+        <sections>
+            <label><!-- Optional Information --></label>
+            <section>Optional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Pricing Information --></label>
+            <section>Pricing Information</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You must enter Filter Object, Filter Field and Operator fields --></errorMessage>
+        <name>kugo2p__FilterCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must enter either Price or Discount --></errorMessage>
+        <name>kugo2p__PriceDiscountCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must enter either Product/Service or Filter Information --></errorMessage>
+        <name>kugo2p__ProductFilterCheck</name>
+    </validationRules>
+</CustomObjectTranslation>

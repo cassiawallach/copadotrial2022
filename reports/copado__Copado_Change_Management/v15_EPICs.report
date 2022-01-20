@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>copado__User_Story__c.copado__Story_Points_SFDC__c:SUM / copado__User_Story__c.copado__Story_Points_Other__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>It calculates the % of actual points completed</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Actual Progress (Story Points)</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_94433941</developerName>
+        <masterLabel>Main Epic</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Parent_Epic_Title__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Git Repository in Source DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Git Commit Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Git SnapShot Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Simplified DX Format (Happy path)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Deploy Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Promotion Flow Handle Simplified/DX Format</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format: Autoresolve</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format: 3rd Iteration</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dx Format: Autoresolve - 2nd iteration</sourceValue>
+            </sourceValues>
+            <value>Simplified DX Format</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>copado__User_Story__c.copado__Story_Points_Other__c</column>
+        </chartSummaries>
+        <chartType>HorizontalBar</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>copado__User_Story__c.copado__Project__c</groupingColumn>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_Other__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>copado__User_Story__c.copado__Progress__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Sprint__c</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <currency>EUR</currency>
+    <description>User Stories of the v16 epics that are still pending.</description>
+    <filter>
+        <criteriaItems>
+            <column>CUST_RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>copado__User_Story__c.Subtask</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Release__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>v16</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Project__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.copado__Theme__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_94433941</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>v16 EPICs - grouped</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Epic__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,12 @@
+<template>
+    <div id="container">
+        <fieldset class="slds-form-element slds-form-element_stacked">
+            <legend class="slds-form-element__legend slds-form-element__label">Solution Type</legend>
+            <div class="slds-form-element__control">
+                <lightning-input type="checkbox" onchange={handleFilterUpdate} data-id="checkbox" data-value="Template" label="Templates"  value="Templates" checked></lightning-input>
+                <lightning-input type="checkbox" onchange={handleFilterUpdate} data-id="checkbox" data-value="Extension" label="Extensions"  value="Extensions" checked></lightning-input>
+                <lightning-input type="checkbox" onchange={handleFilterUpdate} data-id="checkbox" data-value="Integration" label="Integrations"  value="Integrations" checked></lightning-input>
+            </div>
+          </fieldset>
+    </div>
+</template>

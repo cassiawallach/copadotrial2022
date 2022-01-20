@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>Campaign$Name</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Name</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Lead.AVA__AVAAI_first_message_date__c</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Lead.EBQ_First_Touch__c</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Contact.EBQ_First_Touch__c</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Contact.AVA__AVAAI_first_message_date__c</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Contact</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Lead</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers*CampaignMember$EBQ_Rating__c</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Lead.EBQ_Rating__c</field>
+    </columns>
+    <columns>
+        <field>Campaign.CampaignMembers$Contact.EBQ_Rating__c</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>if(
+    CampaignMember_ContactOrLead.Lead.EBQ_First_Touch__c&lt;=TODAY(),
+    CampaignMember_ContactOrLead.Lead.EBQ_First_Touch__c,
+
+    IF(
+    CampaignMember_ContactOrLead.Contact.EBQ_First_Touch__c&lt;=TODAY(),
+    CampaignMember_ContactOrLead.Contact.EBQ_First_Touch__c,
+
+    IF(
+    datevalue(CampaignMember_ContactOrLead.Lead.AVA__AVAAI_first_message_date__c)
+    &lt;=TODAY(),
+    datevalue(CampaignMember_ContactOrLead.Lead.AVA__AVAAI_first_message_date__c),
+
+    IF(
+    datevalue(CampaignMember_ContactOrLead.Contact.AVA__AVAAI_first_message_date__c)
+    &lt;=TODAY(),
+    datevalue(CampaignMember_ContactOrLead.Contact.AVA__AVAAI_first_message_date__c), 
+
+NULL
+
+        )
+        )
+        )
+        )</calculatedFormula>
+        <dataType>DateOnly</dataType>
+        <developerName>CDF1</developerName>
+        <label>1st Touch</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Uses EBQ First Touch if available and Conversica first message if available | Will zero out bad EBQ Rating</description>
+    <filter>
+        <criteriaItems>
+            <column>Campaign$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>demo</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Campaign.CampaignMembers$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>test,joey olson</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <field>Campaign.CampaignMembers$MemberCreatedDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>GTM - Lead Followup - Demo Requests</name>
+    <params>
+        <name>scopeid</name>
+        <value></value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Campaigns_with_Campaign_Members__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Campaign.CampaignMembers$MemberCreatedDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Copado_Monitoring</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <classAccesses>
+        <apexClass>CopadoMonitorComponentController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TestCopadoMonitorComponentController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Monitor_Enable_Prod_Actions</name>
+    </customPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Copado Access Monitor Production - Actions Enabled</label>
+    <pageAccesses>
+        <apexPage>CopadoMonitorDetailProduction</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>CopadoMonitorProduction</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>CopadoMonitorProductionEU</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <tabSettings>
+        <tab>Copado_Monitor_PROD</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Copado_Monitor_PROD_EU</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

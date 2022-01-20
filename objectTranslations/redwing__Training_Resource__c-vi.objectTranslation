@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Tài Nguyên cho Khóa Đào Tạo</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value><!-- Tài Nguyên cho Khóa Đào Tạo --></value>
+    </caseValues>
+    <fields>
+        <help>Nếu bật tùy chọn này, hệ thống sẽ chuyển các tham số ngữ cảnh sang URL Tài Nguyên Bên Ngoài (ví dụ https://someurl.com/?aid=ASSIGNMENT_ID&amp;tid=TPLAN_ID)</help>
+        <label><!-- Add training parameters to URL --></label>
+        <name>redwing__Add_training_parameters_to_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>redwing__Description__c</name>
+    </fields>
+    <fields>
+        <help>Nếu bật tùy chọn này, hệ thống sẽ tải URL Tài Nguyên trong iframe thay vì tải trong cửa sổ mới</help>
+        <label><!-- Display in Iframe --></label>
+        <name>redwing__Display_in_Iframe__c</name>
+    </fields>
+    <fields>
+        <label><!-- Learning --></label>
+        <name>redwing__Learning__c</name>
+        <relationshipLabel><!-- Training Resources --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Các đơn vị học tập thuộc loại &quot;Tài Nguyên&apos;&apos; sẽ được đánh dấu là đã hoàn thành khi khởi chạy theo mặc định, hãy bật tùy chọn này nếu bạn muốn ủy quyền hoàn thành cho URL Tài Nguyên</help>
+        <label><!-- Delegate assignment completion --></label>
+        <name>redwing__Prevent_completion_on_launch__c</name>
+    </fields>
+    <fields>
+        <help>URL cho tài nguyên học tập mà bạn muốn dùng cho bài học này (ví dụ như https://someurl.com)</help>
+        <label><!-- Resource URL --></label>
+        <name>redwing__Resource_URL__c</name>
+    </fields>
+    <layouts>
+        <layout>Training Resource Layout</layout>
+        <sections>
+            <label>Liên Kết Tùy Chỉnh</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Thông Tin Không Bắt Buộc</label>
+            <section>Optional Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Tên Tài Nguyên cho Khóa Đào Tạo</nameFieldLabel>
+</CustomObjectTranslation>

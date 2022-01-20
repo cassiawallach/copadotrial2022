@@ -1,0 +1,192 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username] 
+    Handwrytten Account Settings Page
+ -->
+<apex:page Controller="Handwrytten.hndwrtClsAcntCntrl" title="My Handwrytten Settings" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theform">  
+     
+    <div class="slds">
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+    
+        <apex:sectionHeader title="Handwrytten" subtitle="Handwrytten Settings" help="/apex/hndwrtPgHelp" />
+
+        <apex:pageBlock title="">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton value="New Handwrytten Account" action="{!newAcnt}"/>
+                <apex:commandButton value="Already Have Handwrytten Account" action="{!existingAcnt}"/>
+                <apex:commandButton value="New Automated Note" action="{!newAutomated}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:outputPanel id="opMsg" rendered="{!hasMsg}">
+                <table style="width:600px;"> 
+                <tr>
+                    <td>
+                        <apex:pageMessage summary="{!statusMsg}" severity="info" strength="3" />
+                    </td>                     
+                </tr> 
+                </table> 
+            </apex:outputPanel> 
+            
+            <apex:pageBlockSection title="My Handwrytten Account Settings" columns="1">
+              <apex:outputpanel id="opMyAcnts">
+                <apex:pageBlockTable value="{!lstMyAcntAccess}" var="a" id="pbtMyAcnts" rows="25">
+                    
+                    <apex:column headervalue="Action"> 
+                        <apex:commandlink value="Edit" action="{!editAcnt}">
+                            <apex:param name="editAcntId" value="{!a.id}" assignTo="{!editAcntId}"/> 
+                        </apex:commandlink>
+                        &nbsp;|&nbsp;  
+                        <apex:commandlink value="Share" action="{!shareAccount}">
+                            <apex:param name="shareAcntId" value="{!a.id}" assignTo="{!shareAcntId}"/> 
+                        </apex:commandlink>
+                        &nbsp;|&nbsp;                                                                                                                                   
+                        <apex:commandlink value="Change Password" action="{!changePassword}"> 
+                            <apex:param name="changePwAcntId" value="{!a.id}" assignTo="{!changePwAcntId}"/>
+                        </apex:commandlink>
+                        &nbsp;|&nbsp;                                                                                                                          
+                        <apex:commandlink value="Reset Password" action="{!resetPassword}"
+                            onclick="return window.confirm('Are you sure you want to reset password?');"> 
+                            <apex:param name="resetAcntId" value="{!a.id}" assignTo="{!resetAcntId}"/> 
+                        </apex:commandlink>
+                        &nbsp;|&nbsp;  
+                        <!--
+                        <apex:commandlink value="Credit Cards" action="{!manageCreditCards}"> 
+                            <apex:param name="mngCCAcntId" value="{!a.id}" assignTo="{!mngCCAcntId}"/>
+                        </apex:commandlink>  
+                        &nbsp;|&nbsp;  
+						-->
+                        <apex:commandlink value="Templates" action="{!manageTemplates}"> 
+                            <apex:param name="mngTmplAcntId" value="{!a.id}" assignTo="{!mngTmplAcntId}"/>
+                        </apex:commandlink>    
+                    </apex:column>
+
+                     <apex:column headervalue="Handwrytten Account Name">                                                                        
+                        <apex:outputfield value="{!a.Name}"/>                                                         
+                    </apex:column>
+                    
+                    <apex:column headervalue="Email/Username">                                                                        
+                        <apex:outputfield value="{!a.Handwrytten__Email__c}"/>                                                         
+                    </apex:column> 
+                    
+                    <apex:column headervalue="Active">                                                                        
+                        <apex:outputfield value="{!a.Handwrytten__Active__c}"/>                                                         
+                    </apex:column> 
+                    
+                    <apex:column headervalue="Org Wide Account">                                                                        
+                        <apex:outputfield value="{!a.Handwrytten__Org_Wide_Account__c}"/>                                                         
+                    </apex:column>  
+
+                    <apex:column headervalue="Shared">                                                                        
+                        <apex:outputfield value="{!a.Handwrytten__Shared_Account__c}"/>                                                         
+                    </apex:column> 
+            
+                </apex:pageBlockTable>
+              </apex:outputpanel>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Organization Handwrytten Address Settings" columns="1">
+             <apex:outputPanel id="opAdrsMsg">
+                <table style="width:300px;"> 
+                <tr>
+                    <td>
+                        <apex:pageMessage summary="Use this section to set address defaults for the organization" severity="info" strength="3" />
+                    </td>                     
+                </tr> 
+                </table> 
+            </apex:outputPanel>
+            
+                <apex:pageBlockTable value="{!lstMySettings}" var="b" id="pbtMyStng" rows="25">
+                    
+                    <apex:column headervalue="Action"> 
+                        <apex:commandlink value="Edit" action="{!editSettings}"/>                                                           
+                    </apex:column>
+
+                     <apex:column headervalue="Default Account Address Type">                                                                        
+                        <apex:outputfield value="{!b.Handwrytten__Default_Account_Address_Type__c}"/>                                                         
+                    </apex:column>
+                    
+                    <apex:column headervalue="Default Contact Address Type">                                                                        
+                        <apex:outputfield value="{!b.Handwrytten__Default_Contact_Address_Type__c}"/>                                                         
+                    </apex:column>  
+                    
+                    <apex:column headervalue="Default Opportunity Address Type">                                                                        
+                        <apex:outputfield value="{!b.Handwrytten__Default_Opportunity_Address_Type__c}"/>                                                         
+                    </apex:column>  
+                    
+                    <apex:column headervalue="Default Business Name">                                                                        
+                        <apex:outputfield value="{!b.Handwrytten__Default_Business_Name__c}"/>                                                         
+                    </apex:column>  
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            
+            <!-- Adding New Section in Handwrytten Setting Page -->
+            <apex:pageBlockSection title="Handwrytten Custom Object Settings" columns="1">
+                
+                <apex:pageBlockTable value="{!lstMySettings}" var="handwryttenSettingInstance" id="pbtMyNewStng" rows="1">
+                    
+                    <apex:column headervalue="Action" style="width:60px;">
+                        <apex:commandlink value="Edit" action="{!createNewSection}"/>                                                           
+                    </apex:column>
+                    
+                    <apex:column headervalue="Custom Objects Enabled">                                                                        
+                        <apex:outputfield value="{!handwryttenSettingInstance.Handwrytten__sObject_Value__c}"/>                                                         
+                    </apex:column>        
+                    
+                </apex:pageBlockTable>
+                
+            </apex:pageBlockSection>
+            <!-- End Of Adding New Section in Handwrytten Setting Page -->       
+            
+            <apex:pageBlockSection title="Handwrytten Automated Notes" columns="1">
+                
+                <apex:pageBlockTable value="{!lstAutomatedNotes}" var="an" id="pbtAutomated" rows="100">
+                    
+                    <apex:column headervalue="Action"> 
+                        <apex:commandlink value="Edit" action="{!editAutomated}">
+                            <apex:param name="automatedId" value="{!an.id}" assignTo="{!automatedId}"/> 
+                        </apex:commandlink>
+                        &nbsp;|&nbsp;  
+                        <apex:commandlink value="Delete" action="{!deleteAutomated}"
+                            onclick="return window.confirm('Are you sure you want to delete the automated note?');"> 
+                            <apex:param name="automatedId" value="{!an.id}" assignTo="{!automatedId}"/> 
+                        </apex:commandlink>
+                    </apex:column>
+                    
+                    <apex:column headervalue="Handwrytten Automated Note Name">                                                                        
+                        <apex:outputfield value="{!an.Handwrytten__Automated_Note_Name__c}"/>                                                         
+                    </apex:column> 
+                    
+                    <apex:column headervalue="Handwrytten Account">                                                                        
+                        <apex:outputfield value="{!an.Handwrytten_Account__r.Name}"/>                                                         
+                    </apex:column> 
+                    
+                    <apex:column headervalue="Card Name">                                                                        
+                        <apex:outputfield value="{!an.Handwrytten__Card_Name__c}"/>                                                         
+                    </apex:column>  
+                    
+                    <apex:column headervalue="Card Price">                                                                        
+                        <apex:outputfield value="{!an.Handwrytten__Card_Price__c}"/>                                                         
+                    </apex:column>
+                    
+                    <apex:column headervalue="Writing Style">                                                                        
+                        <apex:outputfield value="{!an.Handwrytten__font__c}"/>                                                         
+                    </apex:column>  
+                    
+                </apex:pageBlockTable>
+                 
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </div>     
+    </apex:form>
+</apex:page>

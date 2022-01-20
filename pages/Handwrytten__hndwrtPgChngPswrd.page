@@ -1,0 +1,66 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account Change Password page
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjAccount__c" extensions="Handwrytten.hndwrtClsRegHelper" title="Handwrytten Account Change Password: {!Handwrytten__hndwrtObjAccount__c.Name}" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theForm">
+    <div class="slds">
+    
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+        
+        <apex:sectionHeader title="Handwrytten" subtitle="Change Password" help="http://www.handwrytten.com" />
+        
+        <apex:pageBlock title="Change Account Password" mode="Edit">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Change Password" action="{!changePassword}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Handwrytten Account Information" columns="2">
+            
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Name}"/>
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Email__c}"/>
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Old Password" for="isOldPw"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputSecret id="isOldPw" label="Old Password" value="{!oldPassword}"/> 
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="New Password" for="isNewPw"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputSecret id="isNewPw" label="New Password" value="{!newPassword}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                 
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Re-enter Password" for="isConfirmPw"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputSecret id="isConfirmPw" label="Re-enter Password" value="{!reePassword}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem />
+                    
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </div>
+    </apex:form>
+</apex:page>

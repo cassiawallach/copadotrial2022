@@ -1,0 +1,116 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose                    : Create an interface from where users can Load Setup/Configuration Data.
+----                              Also list the number of Setup records loaded into each Object(PickList__c, TransactionType__c, OrderTransactionMap__c).
+----                              If there are any Setup records, give user option to delete Setup data.
+---- Other comments (optional)  : None
+-->
+<apex:page Controller="JBCXM.SystemDefinedDataLoader" extensions="JBCXM.GSCommonBroker" sidebar="false" showHeader="false" title="Setup Data Loader">
+    <!-- Static Resource Includes: Jquery and css files  -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/appStyles/main.css" />
+    <script type="text/javascript" language="javascript">
+        var j$ = jQuery.noConflict();
+        //Disable the button when new or save buttons clicked.
+        function disableBtn(obj) {
+            j$(obj).attr("disabled", true);
+            j$(obj).removeClass("btn").addClass("btnDisabled");
+        }
+    </script>
+    <style>
+    #loadSetupDatatable th{
+        background: url("/img/alohaSkin/grid_headerbg.gif") repeat-x scroll 0 bottom #FFFFFF;
+        border-width: 0 0 1px 1px;
+        color: #000000;
+        font-size: 0.9em;
+        font-weight: bold;
+        padding: 5px 2px 4px 5px;
+    }
+    .deleteBtnHidden{
+        visibility:hidden;
+        display:none;    
+    }
+    .pbHeader .pbTitle{
+        width:100%;
+        font-size:0.7em;
+        font-weight:normal;        
+    }
+    </style>
+    <br/>
+    <div style="display: inline; width: 100%;">
+        <div style="display: inline ;float:left;">
+            <apex:image id="JBaraImage" value="{!$Resource.JBCXM__JBaraLogo}" width="226" height="65"/>
+        </div>
+        <div align="center" style="display: inline ;float:left;font-size:24px;padding-left:30px;margin-top:21px;font-weight:bold;">
+            Initialize Setup Data        </div>
+    </div>
+    <br/>
+    <br/>
+    <apex:form id="loadSetupData">
+        <!--If Setup Data is not loaded, that is if AllPickListRecords are empty then give
+        button to load Setup data. -->
+        <apex:outputPanel id="LoadSetupData">
+            <apex:outputPanel rendered="{!AllPickListsRecords.size == 0}">
+                <apex:pageBlock title="After deploying Gainsight CSM to your Salesforce organization, Gainsight CSM must be initialized with setup parameters used by the application. Click on the button below to initialize the application. ">
+                    <p>
+                        Initailize Setup Data:
+                        <input type="button" value="INITIALIZE" class="btn" onclick="disableBtn(this);loadSetupDataClicked()" />
+                    </p>
+                    <apex:actionFunction name="loadSetupDataClicked" action="{!InsertSetupData}" reRender="loadSetupData">
+                    </apex:actionFunction>
+                </apex:pageBlock>
+            </apex:outputPanel>
+            <!--If Setup Data is loaded, list the number of records that are loaded into each
+            object. -->
+            <apex:outputPanel rendered="{!AllPickListsRecords.size != 0}">
+                <apex:pageBlock title="Gainsight CSM application has already been initialized.">
+                    <table class="rounded-corner table list" id="loadSetupDatatable" summary="Load setup data">
+                        <thead>
+                            <tr>
+                                <th class="rounded-h2" width="25%" style="min-width:250px; font-weight:bold;">
+                                    Setup Object
+                                </th>
+                                <th class="rounded-h5" style="min-width:250px; font-weight:bold;">
+                                    No of Records
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="25%" style="min-width:250px">
+                                    PickList Records:
+                                </td>
+                                <td>
+                                    <apex:outputText value="{! AllPickListsRecords.size}" />
+                                </td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                    <hr/>
+                    <br/>
+                     <span class="deleteBtnHidden">Delete setup data:</span >
+                    <!--Load the Delete button which is associated with the Delete action if Setup Data
+                    is already Loaded-->
+                   <apex:outputPanel id="DeleteSetupData">
+                        <apex:outputPanel rendered="{!(AllPickListsRecords.size != 0)}">
+                            <span class="deleteBtnHidden">
+                                <input type="button" value="Go!" class="btn" onclick="disableBtn(this);deleteSampleData()"/>
+                                &nbsp; Deleting setup data will also delete all sample data.
+                             </span>
+                            <apex:actionFunction name="deleteSampleData" action="{!DeleteAllSetupData}" reRender="loadSetupData">
+                            </apex:actionFunction>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!AllPickListsRecords.size == 0}">
+                            <div align="center" style="clear:both;">
+                                Load Setup Data.
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <p style="float:right;" class="deleteBtnHidden">
+                        <i><a href="{!URLENCODE("loadsampledata")}" class="btn" >Load sample data...</a></i>
+                    </p>                  
+                </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

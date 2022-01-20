@@ -1,0 +1,98 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Note View Page
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjNote__c" title="Handwrytten Note View" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:sectionHeader title="Handwrytten" subtitle="Handwrytten Note" help="/apex/hndwrtPgHelp"/>
+    
+    <apex:form id="theform">   
+    <div class="slds">
+    
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style>  
+          
+        <apex:pageBlock title="Handwrytten Note Detail">
+        
+            <apex:pageBlockButtons > 
+                <apex:commandButton value="Edit" action="{!edit}" rendered="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Status__c <> 'Completed'}"/>
+            </apex:pageBlockButtons>  
+            
+            <apex:pageBlockSection title="Address Info" columns="2">
+                <apex:outputField label="Sender Name" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Name__c}" />
+                <apex:outputField label="Recipient Name" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_Name__c}"/>
+                
+                <apex:outputField label="Sender Business Name" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Business_Name__c}"/>
+                <apex:outputField label="Recipient Business Name" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_Business_Name__c}"/>
+                
+                <apex:outputField label="Sender Address" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Address__c}"/>
+                <apex:outputField label="Recipient Address" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_Address__c}"/>
+                
+                <apex:outputField label="Sender Address Line 2" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Address_Line_2__c}"/>
+                <apex:outputField label="Recipient Address Line 2" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_Address_Line_2__c}"/>
+                
+                <apex:outputField label="Sender City" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_City__c}"/>
+                <apex:outputField label="Recipient City" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_City__c}"/>
+                
+                <apex:outputField label="Sender State" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_State__c}"/>
+                <apex:outputField label="Recipient State" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_State__c}"/>
+                
+                <apex:outputField label="Sender Zip" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Zip__c}"/>
+                <apex:outputField label="Recipient Zip" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_Zip__c}"/>
+                
+                <apex:outputField label="Sender Country" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Country__c}"/>
+                <apex:outputField label="Recipient Country" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Recipient_Country__c}"/>
+            </apex:pageBlockSection>  
+            
+             <apex:pageBlockSection title="Message" columns="1"> 
+                <apex:outputField label="Message" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Message__c}"/>
+             </apex:pageBlockSection>
+             
+             <apex:pageBlockSection title="Card" columns="1"> 
+                <apex:outputField label="Card Category" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Card_Category__c}"/>
+                <apex:outputField label="Card Name" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Card_Name__c}"/>
+                <apex:outputField label="Card Price" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Card_Price__c}"/>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Card Cover" for="cover_img"/>
+					<apex:image value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Card_URL__c}" style="max-wiidth:400px;max-height:400px;" alt="Image not available"/>
+                 </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Handwrytting Style" for="style_img"/>
+                    <apex:image id="style_img" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Font_URL__c}" width="600" height="300" alt="Image not available"/>
+                </apex:pageBlockSectionItem>
+                
+             </apex:pageBlockSection>
+             
+             <apex:pageBlockSection title="Other" columns="2"> 
+
+                <apex:outputField label="Insert" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Insert_Name__c}"/>
+                <apex:outputField label="Insert Price" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Insert_Price__c}"/>
+                 
+                <apex:outputField label="Gift Card" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Gift_Card__c}"/>
+                <apex:outputField label="Gift Card Amount" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Gift_Card_Amount__c}"/>
+                
+                <apex:outputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__International_Charge__c}"/>
+                <apex:outputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Postage__c}"/>
+                
+                <apex:outputField label="Status" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Status__c}"/>
+                <apex:outputField label="Status Message" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Status_Message__c}"/>
+
+                <apex:outputField label="Total" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Total__c}"/>
+                
+                <apex:outputField value="{!Handwrytten__hndwrtObjNote__c.LastModifiedDate}"/>
+                <apex:outputField label="Last Modified By" value="{!Handwrytten__hndwrtObjNote__c.LastModifiedBy.Name}"/>
+             </apex:pageBlockSection>
+            
+        </apex:pageBlock> 
+    </div>
+    </apex:form>
+</apex:page>

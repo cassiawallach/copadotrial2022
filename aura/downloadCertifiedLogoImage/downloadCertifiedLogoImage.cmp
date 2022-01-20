@@ -1,0 +1,25 @@
+<aura:component controller="downloadCertifiedLogoImage" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="staticResourceUrl" type="String" />
+    <aura:attribute name="Certifications" type="list" />
+    <aura:attribute name="isShow" type="boolean" default="false" />
+    <aura:if isTrue="{!v.isShow}">
+        <div class="slds-box" >
+            <div class="slds-border--bottom slds-p-bottom--medium slds-m-bottom--large slds-text-heading--medium slds-truncate cmp-header">
+                <div class="cmp-header-label">Certifications Logo</div>
+            </div>
+            <div class="slds-grid slds-wrap ">
+                
+                <aura:iteration items="{!v.Certifications}" var="data">
+                    <div class="slds-col  slds-text-align_center">
+                        {!data.CertificationName}<br/>
+                        <img src="{!data.ContentDocumentDownloadUrl}" alt="image not found" style="height:100px;" /><br/>
+                        <aura:if isTrue="{!data.isDownloadIcon}">
+                            <a href="{!data.ContentDocumentDownloadUrl}" target="_self" download="{!data.CertificationName + 'Certificate'}" ><lightning:icon iconName="utility:download" class="download-icon" alternativeText="download" title="download"  /></a>
+                        </aura:if>
+                    </div>
+                </aura:iteration>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

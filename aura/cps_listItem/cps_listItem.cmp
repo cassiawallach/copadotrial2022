@@ -1,0 +1,21 @@
+<aura:component
+  controller="cps_PlaygroundWizardController"
+  implements="forceCommunity:availableForAllPageTypes,force:hasRecordId"
+  access="global">
+    <aura:attribute name="username" type="String" />
+    <aura:attribute name="status" type="String" />
+    <aura:attribute name="createdAt" type="String" />
+    <aura:attribute name="envType" type="String" />
+    <aura:attribute name="orgId" type="String" />
+    <aura:attribute name="playgroundConfiguration" type="String" />
+
+    <div>
+    	<p>{! v.username }</p>
+        <p>{! v.status }</p>
+        <p>{! v.createdAt }</p>
+        <aura:if isTrue="{! and(v.orgId != '', v.playgroundConfiguration != 'Light Configuration')}">
+          <lightning:button name="btnOpenPlayground" variant="brand" label="Open" title="Open" onclick="{! c.openPlayground }"/>
+        </aura:if>
+    </div>
+
+</aura:component>

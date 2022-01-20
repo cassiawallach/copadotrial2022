@@ -1,0 +1,34 @@
+<apex:page sidebar="false" showHeader="false" Controller="JBCXM.DMLActions"  extensions="JBCXM.GSCommonBroker">
+  <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+  <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+  <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/SurveyJquery/js/jquery-ui-1.8.18.custom.min.js"/>
+   <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+  <apex:form >
+  		<script type="text/javascript">
+  			var j$ = jQuery.noConflict();
+						
+			//To handle the user state preservation details on readonly pages.
+			function loadUserStateByTab(stateJSONStr, usrSSId, tabOrAreaName) {
+				actionFunToUserStateByTab(stateJSONStr, usrSSId, tabOrAreaName);
+			}
+  		</script> 
+  		
+  		<apex:outputPanel id="JsFrameToresetStateDetails">
+  			<apex:outputPanel rendered="{!renderUserStatePanel}">
+	  			<script type="text/javascript">  				
+					function resetUserStatePreservationDetails() {
+						window.top.{!JSINHTMLENCODE($CurrentPage.parameters.callAfterStateSave)}(fakeEval('{!JSINHTMLENCODE(userStateDetailsJsonbyTab)}'), '{!(isSameUserSessionByTab)}');
+					}
+	  			</script>
+  			</apex:outputPanel>	
+  		</apex:outputPanel>
+  		
+  		<!-- To store the user state -->
+  		<apex:actionFunction name="actionFunToUserStateByTab" action="{!saveUserStateByTab}" reRender="JsFrameToresetStateDetails" oncomplete="resetUserStatePreservationDetails();" >
+  			<apex:param name="stateJSON" value=""/>
+  			<apex:param name="userSnId" value=""/>
+  			<apex:param name="tabName" value=""/>
+  		</apex:actionFunction>
+  		 
+  </apex:form>
+</apex:page>

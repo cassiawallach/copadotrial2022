@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_78317273</developerName>
+        <masterLabel>Commercial Deal Types</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>LEAD_SOURCE</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Click Deploy</sourceValue>
+            </sourceValues>
+            <value>Essentials Deals and Referrals</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado</sourceValue>
+            </sourceValues>
+            <value>Copado Referrals to Essentials</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>AE Outbound</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>AppExchange Chat Bot</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>AppExchange</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Watch Demo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>BDR Outbound</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>CSM Outbound</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Drift</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>G2</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paid Ad</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Partner Outbound</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trade Show</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Virtual Event</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Web</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Webinar</sourceValue>
+            </sourceValues>
+            <value>Copado Deals</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>CDF1</column>
+        </chartSummaries>
+        <chartType>Donut</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>Account.AOV_Band__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>true</showPercentage>
+        <showTotal>true</showTotal>
+        <showValues>true</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <field>CREATED_DATE</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <field>LEAD_SOURCE</field>
+    </columns>
+    <columns>
+        <field>RECORDTYPE</field>
+    </columns>
+    <columns>
+        <field>BucketField_78317273</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Lead_Source_Detail__c</field>
+    </columns>
+    <columns>
+        <field>FORECAST_CATEGORY</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_ID</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>AMOUNT.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_TYPE</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(
+    AND(
+    left(text(TYPE),5)=&quot;Click&quot;,ISNULL(Opportunity.ACV__c.CONVERT)=TRUE),AMOUNT.CONVERT,Opportunity.ACV__c.CONVERT)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Value</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Combines Brad&apos;s team&apos;s Copado (ACV) deals and ClickDeploy (Amount) deals and Essentials referrals to Enterprise team into a single &quot;Value&quot;. Year-to-date.</description>
+    <filter>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <column>FULL_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>BRAD BENZ,Eric Reeves</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>FiscalYear</dateGranularity>
+        <field>CLOSE_DATE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.AOV_Band__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Commercial Team by AOV Band--YTD</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>open</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

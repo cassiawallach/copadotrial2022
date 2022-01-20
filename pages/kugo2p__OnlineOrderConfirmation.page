@@ -1,0 +1,22 @@
+<apex:page controller="kugo2p.OnlineOrderConfirmationController" showHeader="false" sidebar="false" standardStylesheets="false" cache="false" action="{!initController}">
+
+<apex:stylesheet value="{!$Resource.kugo2p__PdfCss}" />
+<style>
+    #body {
+        padding-right:50px;
+        padding-bottom:25px;
+        padding-top: 25px;
+    }
+</style>
+<apex:composition template="{!$Site.Template}">
+    <apex:define name="body">
+      <div id="body">
+        <apex:outputField value="{!setting.kugo2p__OnlineConfirmationTextandTerms__c}" />
+        <br/><br/>
+        <!-- <apex:outputLink value="/apex/kugo2p__OnlineOrder?key={!order.OnlineApprovalKey__c}&id={!order.Id}" styleClass="stdAction" style="text-decoration:none;">View Order</apex:outputLink> -->
+        <apex:outputLink value="{!viewOrder}" styleClass="stdAction" style="text-decoration:none;">View Order</apex:outputLink>         
+      </div>
+      
+     </apex:define>
+</apex:composition>
+</apex:page>

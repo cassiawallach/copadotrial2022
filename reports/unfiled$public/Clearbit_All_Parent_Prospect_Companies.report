@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_35146546</developerName>
+        <masterLabel>SEG</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Prospect_Company__c.Industry__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Healthcare</sourceValue>
+            </sourceValues>
+            <value>HLS</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Banking and Finance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Financial Services</sourceValue>
+            </sourceValues>
+            <value>FINS</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Computers</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>High Tech</sourceValue>
+            </sourceValues>
+            <value>HTC</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Media &amp; Communications</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Telecommunications and Publishing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Entertainment, Travel and Leisure</sourceValue>
+            </sourceValues>
+            <value>MEDIA comms</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Manufacturing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Construction and Building Materials</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Automotive and Transportation</sourceValue>
+            </sourceValues>
+            <value>MFCT</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Nonclassifiable Establishments</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Agriculture, Forestry and Fishing</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Corporation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ICT Channel</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Professional Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Education</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Hospitality, Travel, &amp; Transportation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Public Sector and Government</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Not For Profit</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Business and Management Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Retail</sourceValue>
+            </sourceValues>
+            <value>GB</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_ID</field>
+    </columns>
+    <columns>
+        <field>Prospect_Company__c.Website__c</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Prospect_Company__c.Industry__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Prospect_Company__c.Employees__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Prospect_Company__c.Licenses__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Prospect_Company__c.Is_Customer__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>Prospect_Company__c.Parent__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Prospect_Company__c.Industry__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Prospect_Company__c.Country__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>US</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Prospect_Company__c.Is_Customer__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Prospect_Company__c.Is_Customer__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_35146546</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Prospect_Company__c.Country__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Clearbit: All Parent Prospect Companies</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Prospect_Company__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Prospect_Company__c.Is_Customer__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Prospect_Company__c.Initiation_Date_with_SFDC__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

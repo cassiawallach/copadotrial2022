@@ -1,0 +1,27 @@
+<apex:page standardController="kugo2p__SalesOrder__c" extensions="kugo2p.OrderPDFExt" renderas="{!renderAs}" showHeader="false" sidebar="false" standardStylesheets="false" cache="false">
+
+<head>
+    <style type="text/css">
+    
+    @page {
+        @bottom-left {content:  "Order: {!Order.Name}"; font-size: 10.5px; font-family:Arial,Helvetica,sans-serif; }
+    
+        @bottom-right {
+            content: "Page " counter(page) " of " counter(pages); font-size: 10.5px; font-family:Arial,Helvetica,sans-serif;
+        }
+    }
+            
+    </style>
+</head>
+
+<div id="body">
+    <div class="pageMessage">
+        <apex:outputPanel id="pageMessage">        
+            <apex:pageMessages id="msg" />
+        </apex:outputPanel>
+    </div>
+<apex:outputPanel >
+    <c:OrderPDF orderId="{!kugo2p__SalesOrder__c.Id}" renderAs="pdf" />    
+</apex:outputPanel>
+</div>
+</apex:page>

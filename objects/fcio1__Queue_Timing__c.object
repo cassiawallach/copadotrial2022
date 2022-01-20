@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>fcio1__ActiveRoutingRecord__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>AND(
+
+(MOD(DATE(
+VALUE(LEFT( fcio1__CurrentUTCTime__c ,4)), 
+VALUE(MID(fcio1__CurrentUTCTime__c,6,2)), 
+VALUE(MID(fcio1__CurrentUTCTime__c,9,2))
+) - DATE(1900, 1, 7), 7) = fcio1__Day_of_the_Week__c),
+ 
+
+IF((DATETIMEVALUE( fcio1__TodayStartDate__c ) &lt; DATETIMEVALUE(fcio1__TodayEndDate__c )), 
+
+            IF(
+                 AND (
+                        NOW()&gt; DATETIMEVALUE( fcio1__TodayStartDate__c ), NOW()&lt; DATETIMEVALUE(fcio1__TodayEndDate__c )
+                     ), TRUE,  FALSE
+              ), 
+
+
+IF(
+                OR(
+                   NOW() &lt; DATETIMEVALUE(fcio1__TodayEndDate__c ), NOW() &gt; DATETIMEVALUE( fcio1__TodayStartDate__c )
+                   ), TRUE, FALSE
+              )
+
+)
+
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ActiveRoutingRecord</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>fcio1__CurrentUTCTime__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>TEXT(NOW())</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current UTC Time</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>fcio1__Day_of_the_Week__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Day of the Week</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__End_time__c</fullName>
+        <defaultValue>(&quot;23:59:59&quot;)</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>End Time</label>
+        <length>8</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__QueueID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>CASESAFEID( fcio1__RoutingQueue__r.Id )</formula>
+        <label>QueueID</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__QueueSkills__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>fcio1__RoutingQueue__r.fcio1__Skills__c</formula>
+        <label>QueueSkills</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__QueueTags__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>fcio1__RoutingQueue__r.fcio1__Tags__c</formula>
+        <label>QueueTags</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__QueueType__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>TEXT(fcio1__RoutingQueue__r.fcio1__Type__c)</formula>
+        <label>QueueType</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__RoutingQueue__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Routing Queues</label>
+        <referenceTo>fcio1__RoutingQueues__c</referenceTo>
+        <relationshipName>Queue_Timings</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>fcio1__Start_Time__c</fullName>
+        <defaultValue>(&quot;00:00:00&quot;)</defaultValue>
+        <deprecated>false</deprecated>
+        <description>HH:MM:SS</description>
+        <externalId>false</externalId>
+        <label>Start Time</label>
+        <length>8</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__TodayEndDate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>LEFT(TEXT(NOW()),10)+ &quot; &quot; +  fcio1__End_time__c</formula>
+        <label>TodayEndDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__TodayStartDate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>LEFT(TEXT(NOW()),10)+ &quot; &quot; + fcio1__Start_Time__c</formula>
+        <label>TodayStartDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fcio1__isQueueEnabled__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>fcio1__RoutingQueue__r.fcio1__Enabled__c</formula>
+        <label>isQueueEnabled</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Fullcast Queue Timing</label>
+    <listViews>
+        <fullName>fcio1__All</fullName>
+        <columns>NAME</columns>
+        <columns>fcio1__Day_of_the_Week__c</columns>
+        <columns>fcio1__isQueueEnabled__c</columns>
+        <columns>fcio1__QueueTags__c</columns>
+        <columns>fcio1__RoutingQueue__c</columns>
+        <columns>fcio1__Start_Time__c</columns>
+        <columns>fcio1__End_time__c</columns>
+        <columns>fcio1__Date__c</columns>
+        <columns>fcio1__CurrentUTCTime__c</columns>
+        <columns>fcio1__ActiveRoutingRecord__c</columns>
+        <columns>fcio1__QueueID__c</columns>
+        <columns>fcio1__TodayStartDate__c</columns>
+        <columns>fcio1__TodayEndDate__c</columns>
+        <columns>fcio1__QueueType__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>fcio1__All1</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Queue Timing Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Fullcast Queue Timings</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>fcio1__Date_Cannot_be_in_the_Past</fullName>
+        <active>true</active>
+        <description>No point putting a date in the past. It will never execute.</description>
+        <errorConditionFormula>TODAY() &gt;  fcio1__Date__c</errorConditionFormula>
+        <errorDisplayField>fcio1__Date__c</errorDisplayField>
+        <errorMessage>Date must in the Future</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>fcio1__ValidateDayInput</fullName>
+        <active>true</active>
+        <description>Only 0-6 valid</description>
+        <errorConditionFormula>OR( fcio1__Day_of_the_Week__c &gt; 6, fcio1__Day_of_the_Week__c  &lt;0)</errorConditionFormula>
+        <errorDisplayField>fcio1__Day_of_the_Week__c</errorDisplayField>
+        <errorMessage>Only values 0 thru 6 is valid with 0 being Sunday and 6 being Saturday. Please fix the Day of the Week to be within this range.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>fcio1__ValidateEndTime</fullName>
+        <active>true</active>
+        <errorConditionFormula>NOT(REGEX(  fcio1__End_time__c  , &quot;^(?:2[0-3]|[01]?[0-9]):[0-5][0-9]:[0-5][0-9]$&quot;))</errorConditionFormula>
+        <errorDisplayField>fcio1__End_time__c</errorDisplayField>
+        <errorMessage>Must be in the format HH:MM:SS. Leading 0&apos;s are mandatory.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>fcio1__ValidateStartTime</fullName>
+        <active>true</active>
+        <errorConditionFormula>NOT(REGEX( fcio1__Start_Time__c , &quot;^(?:2[0-3]|[01]?[0-9]):[0-5][0-9]:[0-5][0-9]$&quot;))</errorConditionFormula>
+        <errorDisplayField>fcio1__Start_Time__c</errorDisplayField>
+        <errorMessage>Must be in the format HH:MM:SS. Leading 0&apos;s are mandatory.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

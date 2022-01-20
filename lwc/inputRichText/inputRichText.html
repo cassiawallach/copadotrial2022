@@ -1,0 +1,16 @@
+<template>
+    <div class={richTextClass}>
+        <lightning-input-rich-text label={label}
+                                label-visible={labelVisible}
+                                required={required}
+                                field-level-help={helpMessage}
+                                disabled-categories={disabledCategories}
+                                value={value}
+                                valid={validity}
+                                onblur={validate}>
+        </lightning-input-rich-text>
+        <template if:false={validity}>
+            <div class="slds-form-element__help" style="color: #ea001e" id="rte-error-01">{errorMessage}</div>
+        </template>
+    </div>
+</template>

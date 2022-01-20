@@ -1,0 +1,112 @@
+<apex:page sidebar="false" showHeader="true" Controller="JBCXM.SurveyDistributionController" title="Survey Distribution" tabStyle="Survey__tab" Readonly="true">
+	
+	
+	
+	<!--<style type="text/css">		
+        .validationMsgClass{
+        	font-size:20px;
+        	font-weight:bold;
+        	vertical-align: text-top;
+        }
+        .errorMedium {
+        	 display:inline-block;
+        }
+        .jbaraErrorMessageClass{
+        	margin-bottom: 20px;
+        	margin-left: auto;
+		    margin-right: auto;
+		    width: 60%;
+		    padding: 10px;
+        }
+        .ui-corner-all{
+		    border-radius: 5px;
+		}
+		.ui-state-error {
+		    background: url("images/ui-bg_glass_95_fef1ec_1x400.png") repeat-x scroll 50% 50% #FEF1EC;
+		    border: 1px solid #CD0A0A;
+		    color: #CD0A0A;
+		}
+		.pageTitleIconParticipantSettings {
+            background-image: url("/img/icon/custom51_100/gears32.png");
+            background-position: 0 0;
+            height: 32px;
+            width: 32px;
+        }        
+    </style>   
+   
+     	
+	<apex:outputpanel rendered="{!IF((isPermEnabledForSurvey == true && surveyIdExists == true) ,true,false)}" id="SurverDistributionOperation">
+		 <div style="height: 70px; width: 100%;">
+            <div style='width: 50%;'>
+               <apex:sectionHeader title="Survey Distribution" subtitle="{!surveyObj.Title__c}" />	
+				<a href="/apex/SurveyList?surveyId={!(surveyObj.Id)}"  style="text-decoration:none;">&nbsp;«&nbsp;Back</a>
+            </div>
+            <apex:outputPanel id="selectObjPanel" rendered="{!surveyObj.IsExternalParticipant__c}">
+	            <div style="margin-top: -50px; width: 49%; display: inline; float: right;margin-right:20px;" align="right">
+	                <a href="Surveyparticipantmapping?surveyId={!surveyObj.Id}"><img class="pageTitleIconParticipantSettings customObjectMapping" title="Custom Object mapping" alt="Custom Object mapping" src="/s.gif"/></a>
+	            </div>
+	        </apex:outputPanel>
+	        
+    	</div>
+   		<br/>		
+		<c:SurveyDistribution surveyId="{!surveyObj.Id}" surveyName="{!surveyObj.Title__c}" surveyStatus="{!surveyObj.Status__c}" 
+		surveyInternalSubmit="{!surveyObj.InternalSubmit__c}" surveyPublishedUrl="{!surveyObj.PublishedURL__c}"/>
+	</apex:outputpanel>
+		
+	<apex:outputPanel style="text-align:left;margin-right:auto;margin-left:auto;" rendered="{!(!surveyIdExists)}">
+		<div align="center" class="jbaraErrorMessageClass ui-state-error ui-corner-all" style="margin-top:20px;">
+			<span class="errorMedium ">&nbsp;</span> 
+			<span class="validationMsgClass"> Invalid Survey Id</span>
+		</div>
+	</apex:outputPanel>
+	
+	<apex:outputPanel id="permIdPanel" rendered="{!IF((isPermEnabledForSurvey == false && surveyIdExists == true) ,true,false)}">	   		
+		<a href="/apex/SurveyList?surveyId={!(surveyObj.Id)}"  style="text-decoration:none;">&nbsp;«&nbsp;Back</a>
+   		<div class="ui-widget ui-widget-content ui-corner-all noPermissionCls" style="width:70%;padding:10px; border: 1px solid #a6c9e2;background-color:#fcfdfd">   		
+    		<span class="infoImageClass">&nbsp;</span>
+           		<span style="font-size: 110%;vertical-align:bottom; font-weight: bold;line-height: 32px;">
+               		Insufficient privileges, please contact your Administrator.               	
+           		</span> 
+        </div>
+	</apex:outputPanel>
+   	
+	<apex:form >-->
+	<!-- Action function to export the data code start. -->
+    <!--<apex:actionFunction name="bringToExportPage" action="{!goToExportPage}"/>
+    <apex:inputTextarea id="exportDataString" value="{!exportDataString}" styleClass="surveyDistributionDataToExport" style="display:none;"/>-->
+    <!-- Action function to export the data code end. -->
+   <!-- </apex:form>
+ 	<script>
+   		var isExternalServicesEnabled = {!externalServicesEnabled};
+    	if(isExternalServicesEnabled) {
+   			j$(".customObjectMapping").hide();
+ 
+   		}
+   		else {
+   			j$(".customObjectMapping").show();
+   		}
+   		var GSGA = {
+		orgId: "{!$Organization.Id}",
+		orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+		userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+		};
+		
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		
+	 </script>
+     <script type = "text/javascript" src= "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js" />
+     <script>
+     	gainsightTrackEvents.pushPageViews('Survey Distribution');
+    </script>	 
+    <style> 
+     .infoImageClass{
+            background-image: url('/img/msg_icons/info32.png');
+            width:32px;
+            height:32px;
+            display:inline-block;
+        } 
+    </style>   -->
+</apex:page>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Invoice</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Invoices</value>
+    </caseValues>
+    <fields>
+        <label><!-- Account --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- Proforma Invoices --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Calculated based on today&apos;s date - due date, if the status is set to overdue. --></help>
+        <label><!-- Days Overdue --></label>
+        <name>Days_Overdue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Days to Pay --></label>
+        <name>Days_to_Pay__c</name>
+    </fields>
+    <fields>
+        <label><!-- %Discount --></label>
+        <name>Discount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Discount € off --></label>
+        <name>Discount_off__c</name>
+    </fields>
+    <fields>
+        <label><!-- Discounted Amount --></label>
+        <name>Discounted_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Due Date --></label>
+        <name>Due_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- External link --></label>
+        <name>External_link__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Amount --></label>
+        <name>Invoice_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Date --></label>
+        <name>Invoice_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- set any other text to be printed in the invoice --></help>
+        <label><!-- Invoice Notes --></label>
+        <name>Invoice_Notes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Opportunity Type --></label>
+        <name>Opportunity_Type__c</name>
+    </fields>
+    <fields>
+        <label><!-- Opportunity --></label>
+        <name>Opportunity__c</name>
+        <relationshipLabel><!-- Proforma Invoices --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- PO number --></label>
+        <name>PO_number__c</name>
+    </fields>
+    <fields>
+        <label><!-- Payment Date --></label>
+        <name>Payment_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Payment method --></label>
+        <name>Payment_method__c</name>
+        <picklistValues>
+            <masterLabel>Credit card</masterLabel>
+            <translation><!-- Credit card --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Transfer</masterLabel>
+            <translation><!-- Transfer --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Invoice Number --></label>
+        <name>Pro_Forma1__c</name>
+    </fields>
+    <fields>
+        <label><!-- Pro-Forma --></label>
+        <name>Pro_Forma__c</name>
+    </fields>
+    <fields>
+        <help><!-- This is the amount that has been received into the bank account. --></help>
+        <label><!-- Received Amount (Euros) --></label>
+        <name>Received_Amount_Euros__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Cancelled</masterLabel>
+            <translation><!-- Cancelled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Overdue</masterLabel>
+            <translation><!-- Overdue --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid</masterLabel>
+            <translation><!-- Paid --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending Payment</masterLabel>
+            <translation><!-- Pending Payment --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Sub total --></label>
+        <name>Sub_total__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Amount --></label>
+        <name>Total_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- VAT Amount --></label>
+        <name>VAT_Amount__c</name>
+    </fields>
+    <layouts>
+        <layout>Invoice Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Payment Information --></label>
+            <section>Payment Information</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Send Invoice --></label>
+        <name>Send_Invoice</name>
+    </quickActions>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <errorMessage><!-- VAT Number must start with &apos;ES&apos; --></errorMessage>
+        <name>Check_ES_VAT_Number</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- VAT amount is mandatory, if the customer is from EU --></errorMessage>
+        <name>EU_VAT_Validation</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Send_Invoice --></label>
+        <name>Send_Invoice</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- View_PDF --></label>
+        <name>View_PDF</name>
+    </webLinks>
+</CustomObjectTranslation>

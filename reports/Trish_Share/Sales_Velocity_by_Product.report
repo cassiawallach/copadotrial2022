@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>WON:SUM/CLOSED:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Win Rate (Record Count)</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF(UNIT_PRICE.CONVERT:SUM&gt;0,CDF1:SUM/UNIT_PRICE.CONVERT:SUM,0)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Win Rate (Sales Price)</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF(UNIT_PRICE.CONVERT:SUM&gt;0,((OPPORTUNITY_ID:UNIQUE*UNIT_PRICE.CONVERT:AVG*(WON:SUM/CLOSED:SUM))/(AGE:AVG)),0)</calculatedFormula>
+        <datatype>number</datatype>
+        <description>(# of Opps * Avg. Deal Size * Win Rate_RC) / (Avg. Age)</description>
+        <developerName>FORMULA3</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Sales Velocity</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_53436868</developerName>
+        <masterLabel>Licensing Model</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>PRODUCT_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Branch Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Agile Delivery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Change Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Branch Management (DUP)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Selenium Minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Selenium User</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Compliance Hub Package</sourceValue>
+            </sourceValues>
+            <value>Legacy</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Standard Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Professional Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Admin</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado User</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>DevOps360</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Stream Mapping</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Advanced Data Deployer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Relay Tunnel</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Additional Production Instance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Guest User</sourceValue>
+            </sourceValues>
+            <value>Current</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA3</column>
+        </chartSummaries>
+        <chartType>LineGrouped</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>CLOSE_DATE</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_53436868</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Toggle Y-axis</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>UNIT_PRICE.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>WON</field>
+    </columns>
+    <columns>
+        <field>Product2.SBQQ__SubscriptionType__c</field>
+    </columns>
+    <columns>
+        <field>FAMILY</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_ID</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>CLOSED</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(PROBABILITY=1,UNIT_PRICE.CONVERT,0)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>WON Sales Price</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Show me Renewable Products in the Licenses family | Sales Velocity for each period is: (# of Opps * AVG Price * Win Rate_RC) / (AVG Age)</description>
+    <filter>
+        <criteriaItems>
+            <column>RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Opportunity.Default</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>OPPORTUNITY_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notContain</operator>
+            <value>*TEST</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FAMILY</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Licenses</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Product2.SBQQ__SubscriptionType__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notEqual</operator>
+            <value>One-time</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_53436868</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Legacy,Current</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>CLOSE_DATE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_53436868</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>PRODUCT_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Sales Velocity by Product</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>OpportunityProduct</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_PREVCUR2FY</interval>
+    </timeFrameFilter>
+</Report>

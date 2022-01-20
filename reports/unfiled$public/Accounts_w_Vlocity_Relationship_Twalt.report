@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Partner_Opportunity__c$Account__c.Name</field>
+    </columns>
+    <columns>
+        <field>Partner_Opportunity__c$Account__c.Industry</field>
+    </columns>
+    <columns>
+        <field>Partner_Opportunity__c$Account__c.Type</field>
+    </columns>
+    <columns>
+        <field>Partner_Opportunity__c$Account__c.BillingCountry</field>
+    </columns>
+    <columns>
+        <field>Partner_Opportunity__c$Account__c.Region__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <column>Partner_Opportunity__c$Partner_Account__c.Parent</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>vlocity</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Partner_Opportunity__c$Account__c.Industry</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>&quot;Entertainment, Travel and Leisure&quot;,Retail</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Accounts w/ Vlocity Relationship - Twalt</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Partner_Relationships_with_Partner_and_Account__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Partner_Opportunity__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -155,6 +155,17 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>copado__API_Token__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>API Token</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__CI_Tool__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -169,16 +180,6 @@
                     <fullName>Jenkins</fullName>
                     <default>false</default>
                     <label>Jenkins</label>
-                </value>
-                <value>
-                    <fullName>Bamboo</fullName>
-                    <default>false</default>
-                    <label>Bamboo</label>
-                </value>
-                <value>
-                    <fullName>Team City</fullName>
-                    <default>false</default>
-                    <label>Team City</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -203,12 +204,35 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>copado__Password__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>copado__Username__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Username</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <label>External CI Setting</label>
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
         <columns>copado__CI_Tool__c</columns>
         <columns>copado__Endpoint__c</columns>
+        <columns>copado__Username__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
         <language>en_US</language>
@@ -221,6 +245,7 @@
     <searchLayouts>
         <customTabListAdditionalFields>copado__CI_Tool__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Endpoint__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>copado__Username__c</customTabListAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

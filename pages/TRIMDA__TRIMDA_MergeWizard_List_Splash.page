@@ -1,0 +1,53 @@
+<apex:page ShowHeader="false" sidebar="false"  docType="html-5.0" >
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/>
+
+
+    <div class="slds" style="padding-top:1.5rem;background:white;">
+        <div class="slds-container--center slds-container--medium " style="color:black;background-color:#ffffff;width:100%;box-shadow:5px 5px 50px 0 #333;border-radius:10px;overflow:hidden;">
+            <div class="slds-grid slds-wrap"> 
+                <div class="slds-col slds-size--1-of-1 slds-align-middle" style="text-align:center;">
+                    <span style="font-size:2rem;font-weight:bold;">
+                        How it Works!
+                    </span>
+                </div>
+                <div class="slds-col slds-size--1-of-1 " style="text-align:center;">
+                    <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'MergeWizardIntro.png')}" style="width:90%;" alt="Intro" title="How it works" />
+                </div>
+                
+                <div class="slds-col slds-size--1-of-3 " style="font-size:0.8rem;padding:1rem;">
+                    <strong>Select a Pair of Potential Dupes to Review</strong><br />
+                    Select a pair of Potential Dupes to display the corresponding Merge/Convert Options.<br />
+                    -and the lineup of the 2 records next to each other for easy comparision.
+                </div>
+                <div class="slds-col slds-size--1-of-3 " style="font-size:0.8rem;padding:1rem;">
+                    <strong>View the Details</strong><br />
+                    You can view the details of each record (account/contact/lead) in the pair.<br />
+                    The account/contact/lead details will open up in a separate tab.<br />
+                    View the Matching Details for the Potential Dupes, to see the scores and other information generated as a result of the matching.
+                </div>
+                <div class="slds-col slds-size--1-of-3 " style="padding:0.5rem;font-size:0.8rem;padding:1rem;">
+                    <strong>Other Actions</strong><br />
+                    Use the icons in to top right corner to access the user guide, video tutorials or to change the default settings of the app.<br />                  
+                    The Actions include a one-click action for marking the potentail dupes as False Dupes.<br />
+                    You can also open up the "standard" merge facility from here (Classic Only).
+                </div>
+                <div class="slds-col slds-size--1-of-1 " style="margin:1rem;padding:0.5rem;">
+                    <!-- Useful Links-->
+                    <div id="alertlinks" class="slds-grid slds-wrap component">
+                        <div class="slds-col slds-size--1-of-1 DTSHeader"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'links.png')}" style="height:1rem;" title="Links" />&nbsp;Useful Links</div>
+                        <div class="slds-col slds-size--1-of-4 statustext" style="padding:0.5rem;"><a href="https://www.datatrim.com/downloads/DataTrimDupeAlertsUserGuide.pdf#zoom=80"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'userguide.png')}" style="height:2rem;" title="News" />&nbsp;User&nbsp;Guide</a></div>
+                        <div class="slds-col slds-size--1-of-4 statustext" style="padding:0.5rem;"><a href="https://www.datatrim.com/dupe-alerts/#demo"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'tutorials.png')}" style="height:2rem;" title="News" />&nbsp;Tutorial&nbsp;Videos</a></div>
+                        <div class="slds-col slds-size--1-of-4 statustext" style="padding:0.5rem;"><a href="mailto:support@datatrim.com"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'support1.png')}" style="height:2rem;" title="News" />&nbsp;Support</a></div>
+                        <div class="slds-col slds-size--1-of-4 statustext" style="padding:0.5rem;"><a href="https://www.datatrim.com/category/news/"><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'news.png')}" style="height:2rem;" title="News" />&nbsp;Blog</a></div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size--1-of-1" style="margin:1rem;padding:0.5rem;background-color:lightgrey;border-radius:10px;">
+                    <div style="font-size:0.75rem;">
+                        <b>Support:</b>&nbsp;Contact us at <a  href="mailto:support@datatrim.com" target="_blank">support@datatrim.com</a> with any question or ideas. -We appreciate all the feedback we can get.<br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:page>

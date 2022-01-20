@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Account Level Aggregation --></label>
+        <name>JBCXM__AccountLevelAggregation__c</name>
+    </fields>
+    <fields>
+        <help><!-- This represents number of Customers to sent the Survey. --></help>
+        <label><!-- Customer Distribution Count --></label>
+        <name>JBCXM__CustomerDistributionCount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check if this is the default record again which all the survey responses will be saved. --></help>
+        <label><!-- Default --></label>
+        <name>JBCXM__Default__c</name>
+    </fields>
+    <fields>
+        <help><!-- End date of the survey. --></help>
+        <label><!-- End Date --></label>
+        <name>JBCXM__EndDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- EntityType --></label>
+        <name>JBCXM__EntityType__c</name>
+    </fields>
+    <fields>
+        <help><!-- Published date of the Survey. --></help>
+        <label><!-- Publish Date --></label>
+        <name>JBCXM__PublishDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Relationship Type --></label>
+        <name>JBCXM__RelationshipType__c</name>
+        <relationshipLabel><!-- Survey --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Start date of the survey. --></help>
+        <label><!-- Start Date --></label>
+        <name>JBCXM__StartDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- SurveyId --></label>
+        <name>JBCXM__SurveyId__c</name>
+        <relationshipLabel><!-- NPS Survey Master --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Name of the Survey. --></help>
+        <label><!-- Survey Name --></label>
+        <name>JBCXM__SurveyName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Survey Type: Eg:NPS --></help>
+        <label><!-- Survey Type --></label>
+        <name>JBCXM__SurveyType__c</name>
+    </fields>
+    <fields>
+        <help><!-- This represents number of Users to sent the Survey. --></help>
+        <label><!-- User Distribution Count --></label>
+        <name>JBCXM__UserDistributionCount__c</name>
+    </fields>
+    <fields>
+        <label><!-- User Level Aggregation --></label>
+        <name>JBCXM__UserLevelAggregation__c</name>
+    </fields>
+    <validationRules>
+        <errorMessage><!-- Start Date cannot be greater than End date. --></errorMessage>
+        <name>JBCXM__EndDateValidation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Start Date cannot be less than Publish Date --></errorMessage>
+        <name>JBCXM__StartDateValidation</name>
+    </validationRules>
+</CustomObjectTranslation>

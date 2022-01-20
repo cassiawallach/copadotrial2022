@@ -1,0 +1,73 @@
+<apex:page docType="html-5.0" controller="JBCXM.AdminBroker" sidebar="false" title="Data Operation" tabStyle="Administration__tab" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var GS                      = GS || {};
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.sessionId                = "{!NSSessionId}";
+        GS.isScorecardEnabled       = {!(isScorecardEnabled)};
+        GS.nsParams                 = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        GS.isNSEnabled              = GS.nsParams.nsenabled == "true" ? true : false;
+        GS.nsURL                    = GS.nsParams.url;
+        GS.remotingEndPoint         = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.remotingBulkEndPoint     = '{!$RemoteAction.AdminBroker.adminBulkRequestBroker}';
+        GS.commonRemotingEndPoint  = "{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}";
+        GS.usageConfigInfo          = fakeEval('{!JSINHTMLENCODE(UsageConfigInfo)}');
+        GS.packageNS            	= "{!(pkgNS)}";
+    GS.isPackagedInstance   	= (GS.packageNS) ? "true" : "false";
+        GS.customLookUpConfig       = fakeEval('{!JSINHTMLENCODE(customLookUpConfigMap)}');
+        GS.userConfig = {
+          userLocale        : {!(dateTimeFormatByLocale)},
+          userName          : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+          userId            : "{!$User.Id}",
+          emailId           : "{!$User.Email}",
+          profilePhoto      : "{!(profilePhoto)}",
+          userDisplayName   : "{!(JSINHTMLENCODE(userDisplayName))}",
+          gainsightTabs     : fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+          isLightningEnabled: {!(isLightningEnabled)}
+        };
+        GS.orgId = "{!$Organization.Id}";
+
+        var nsParams            = GS.nsParams;
+
+        var mode            = '{!JSINHTMLENCODE($CurrentPage.parameters.mode)}';
+
+    </script>
+
+    <apex:form ></apex:form>
+     <div id="gs-app-container">
+         <div class="gs-module-container">
+            <div class="gs-data-operation-mainContainer" id="gs-data-operation-main">
+
+            </div>
+        </div>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["data-operations/scripts/data-operation.bundle.js"], styles:["data-operations/styles/data-operation.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),JSINHTMLENCODE($CurrentPage.parameters.apppath))}/data-operations/styles/data-operation.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),JSINHTMLENCODE($CurrentPage.parameters.apppath))}/data-operations/scripts/data-operation.bundle.js"></script>
+    </apex:outputpanel>
+
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('DataOperation 1.0');
+    </script>
+
+</apex:page>

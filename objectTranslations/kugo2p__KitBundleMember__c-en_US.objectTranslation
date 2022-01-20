@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- For Kit/Bundle Member Lines only. Allows Quantity to be editable in Quote and Order configurator page. Does not lock the Quantity at the record level --></help>
+        <label><!-- Edit Quantity --></label>
+        <name>kugo2p__AllowQuantityChange__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default Quantity value. Sets the initial Quantity value in Quote and Order configurator page. If blank, the Default Quantity is 1 --></help>
+        <label><!-- Default Quantity --></label>
+        <name>kugo2p__Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle --></label>
+        <name>kugo2p__ReferenceKitBundle__c</name>
+        <relationshipLabel><!-- Kit/Bundle Members --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Member Product/Service --></label>
+        <name>kugo2p__ReferenceMemberProductService__c</name>
+        <relationshipLabel><!-- Member of Kit/Bundles --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Member is included in Kit/Bundle. Cannot be removed. --></help>
+        <label><!-- Required --></label>
+        <name>kugo2p__Required__c</name>
+    </fields>
+    <layouts>
+        <layout>Kit/Bundle Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Kit/Bundle Member Information --></label>
+            <section>Kit/Bundle Member Information</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Kit/Bundle Member Product is Not Active --></errorMessage>
+        <name>kugo2p__InactiveMember</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Kit/Bundle and Member Product Cannot Have the Same Name --></errorMessage>
+        <name>kugo2p__KitandMemberCannotHaveSameName</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Member Cannot Be a Kit --></errorMessage>
+        <name>kugo2p__MemberCannotBeKit</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Kit/Bundle Must Be Checked As A Kit --></errorMessage>
+        <name>kugo2p__MustBeKit</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Kit/Bundle Member Must Have A Quantity Greater Than 0 --></errorMessage>
+        <name>kugo2p__QuantityMustBeGreaterThanZero</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- New_Kit_Bundle_Member --></label>
+        <name>kugo2p__New_Kit_Bundle_Member</name>
+    </webLinks>
+</CustomObjectTranslation>

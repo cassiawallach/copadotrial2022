@@ -1,0 +1,144 @@
+<apex:page id="homePage" showHeader="false" sidebar="false" standardStylesheets="false">
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+  <title>Copado Solutions - Home</title>
+  <meta name="description" content="Copado is the next generation cloud based change and release management solutionthat delivers quicker deployments; better visibility and traceability of your Salesforce orgs and allows you to manage errors proactively." />
+  <meta name="keywords" content="salesforce, deployment, release management, continuous integration, change management, git" />
+  <meta property="og:title" content="Copado Solutions - Home" />
+  <meta property="og:url" content="http://www.copa.do" />
+  <c:websiteHeadTag />
+  </head>
+  
+  <body class="homepage">
+  <div id="header-wrapper">
+    <c:websiteHeader />
+    <div id="banner">
+      <div class="container">
+        <section>
+          <header>
+            <h2>'Anxious' in the Oxford English Dictionary:</h2>
+            <span class="byline">Feeling or showing worry, nervousness, or unease about something with an uncertain outcome (e.g. a Salesforce release).<br/>
+            <br/>
+            ... not with Copado!</span> </header>
+          <a href="https://www.youtube.com/watch?v=oR6C3SW49no&list=UUo2IXZej8qNyIbbWWCG9z3Q" class="button medium" target="_blank">See how it works</a> </section>
+      </div>
+    </div>
+  </div>
+  <div id="extra">
+    <div class="container">
+      <div class="row">
+        <section class="3u"> <span class="fa fa-rocket"></span>
+          <header>
+            <h2>Enterprise Edition</h2>
+          </header>
+          <p>The Enterprise Edition of Copado includes, unlimited OAuth authentication to Salesforce Orgs, automated Apex testing &amp; Git Metadata backups, metadata &amp; data deployments and difference calculators.</p>
+          <a href="features#copado" class="button small copado_hp_extraButtons">Find out more</a> </section>
+        <section class="3u"> <span class="fa fa-check-square-o"></span>
+          <header>
+            <h2>Change Management</h2>
+          </header>
+          <p>Change Management allows business users and developers to interact on User Stories.  Associate Metadata and Git Metadata changes with User Stories, and have release managers deploy approved &amp; tested User Stories.</p>
+          <a href="features#ccm" class="button small copado_hp_extraButtons">Find out more</a> </section>
+        <section class="3u"> <span class="fa fa-undo"></span>
+          <header>
+            <h2>Continuous Integration</h2>
+          </header>
+          <p>Copado Continuous Integration (CI) allows customers to run unlimited full git based CI processes without the need for you to worry about servers or Jenkins. Copado CI allows pre and post build task deployment jobs to be run.</p>
+          <a href="features#ci" class="button small copado_hp_extraButtons">Find out more</a> </section>
+        <section class="3u"> <span class="fa fa-exchange"></span>
+          <header>
+            <h2>Branch Management</h2>
+          </header>
+          <p>Copado Branch Management (CBM) allows users to keep Salesforce orgs' metadata and Git branches effortlessly in sync.  With Copado Branch Management, running multiple work streams in parallel is easier than never before.</p>
+          <a href="features#cbm" class="button small copado_hp_extraButtons">Find out more</a> </section>
+        <section class="3u"> <span class="icon_selenium"></span>
+          <header>
+            <h2>Selenium Testing</h2>
+          </header>
+          <p>Copado Selenium Test (CST) allows users to record, store and run Selenium tests within Copado. Record data-driven tests once, and run them securely on any Org using OAuth.</p>
+          <a href="features#st" class="button small copado_hp_extraButtons">Find out more</a> </section>
+      </div>
+    </div>
+  </div>
+  <div id="featured-white">
+    <div class="container">
+      <section>
+        <header>
+          <h2>What our customers say</h2>
+        </header>
+      </section>
+      <div id="owl-demo" class="owl-carousel owl-theme">
+        <div class="item">
+          <p class="fa-2x fa-pull-left"> The deployment solution alone has taken the pain out of managing change sets for our large organization with heavy Salesforce.com use. Partnering with Copado has been incredibly valuable. <br />
+            <br />
+            - Lesley Morgan, Coca-Cola Enterprises</p>
+        </div>
+          <div class="item">
+          <p class="fa-2x fa-pull-left"> Best cloud based deployment tool for salesforce. 
+            <br />
+            <br />
+           - Kapil Sama, NISA</p>
+        </div>
+        <div class="item">
+          <p class="fa-2x fa-pull-left">This tool is a must-have for every developer, saving a lot of deployment    <br />time and effort. 
+            <br />
+            <br />
+          - Evgenij Starchak, Deloitte</p>
+        </div>
+         <div class="item">
+          <p class="fa-2x fa-pull-left"> This is by far the best app for deployments I've used. 
+            <br />
+            <br />
+        - David Affentranger, Salesforce.com</p>
+        </div>
+           <div class="item">
+          <p class="fa-2x fa-pull-left"> This tool has saved us a lot of time and headache and I especially like the profile feature. Copado Deployer is by far the best Salesforce Deployment tool! 
+           <br />
+            <br />
+         - Joseph Alviani, Salesforce.com</p>
+        </div>
+         <div class="item">
+          <p class="fa-2x fa-pull-left">
+                                I evaluated this app for adoption by my team, and found it to be a superior solution to anything else I've looked at. 
+                            <br /><br />- Dennis Denton, Capital One Home Loans</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="featured-blue">
+    <div class="container">
+      <section>
+        <header>
+          <h2>Try Copado now</h2>
+          <span class="byline">The leading Salesforce Release Management platform on the AppExchange</span> </header>
+      </section>
+      <div class="row">
+        <section class="12u">
+          <p><a href="install" class="button small">Try it now</a><br />
+            Start your free 30 day trial. No credit card details required.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+  <c:websiteFooter />
+  <script>
+
+   $(document).ready(function() {
+ 
+  $("#owl-demo").owlCarousel({
+ 
+      navigation : false, // Show next and prev buttons
+      slideSpeed : 300,
+      paginationSpeed : 400,
+      singleItem:true
+
+ 
+  });
+ 
+});
+
+
+    </script>
+  </body>
+  </html>
+</apex:page>

@@ -1,0 +1,15 @@
+<aura:component controller="cps_InteractiveModule_Utils" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" access="global"/>
+
+    <aura:attribute name="playgroundUrl" type="String"/>
+
+    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+        <h2>
+            {!$Label.c.TMS_NO_PLAYGROUNDSFOUND}
+            <a style="margin-left: 4px;" href="{!v.playgroundUrl}" >
+                {!$Label.c.TMS_NO_PLAYGROUNDSFOUND_LINKNAME}
+            </a>&nbsp;
+            {!$Label.c.TMS_NO_PLAYGROUNDSFOUND_SUFFIX}
+        </h2>
+    </div>
+</aura:component>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_59637040</developerName>
+        <masterLabel>Single vs Multi-year</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>CONTRACT_TERM</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>12</to>
+            </sourceValues>
+            <value>Single year</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>12</from>
+            </sourceValues>
+            <value>Multi-year</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>Contract.SBQQ__Opportunity__c</field>
+    </columns>
+    <columns>
+        <field>START_DATE</field>
+    </columns>
+    <columns>
+        <field>END_DATE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>CONTRACT_TERM</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Contract.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Contract.TCV__c.CONVERT</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Active contracts broken out by single year deal or multi-year deal</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_59637040</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Contracts by Single or Multi-year</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ContractList</reportType>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Contract.ACV__c.CONVERT</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>END_DATE</dateColumn>
+        <endDate>2022-10-31</endDate>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2020-08-01</startDate>
+    </timeFrameFilter>
+</Report>

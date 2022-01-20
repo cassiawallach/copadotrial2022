@@ -1,0 +1,21 @@
+<apex:page controller="scormanywhere.MediaPublishController">
+    <apex:form >
+        <apex:actionRegion rendered="{!!showMessage}">
+            <div class="bPageTitle" style="padding:0px;">
+                <div class="ptBreadcrumb"><a href="#" onclick="goBack();" >&lt;&lt;&nbsp;{!$Label.Back}</a></div>
+            </div>
+        </apex:actionRegion>
+        <apex:actionRegion rendered="{!showMessage}">
+            <apex:actionFunction action="{!init}" name="runInit"/>
+            <apex:pageMessage severity="info" strength="3" detail="{!$Label.scormanywhere__publish_message}"/>
+                <script>
+                    setTimeout(runInit, 1500);
+                </script>
+        </apex:actionRegion>
+    </apex:form>
+    <script>
+        function goBack() {
+        	window.history.go(-2);
+        }
+    </script>
+</apex:page>

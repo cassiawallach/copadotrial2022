@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Renew --></label>
+        <name>kuga_sub__Renew__c</name>
+    </fields>
+    <fields>
+        <help><!-- Lookup to the Account Pricing. 
+
+Used as basis for Sales Price. Disables Tiered Pricing. --></help>
+        <label><!-- Account Pricing --></label>
+        <name>kugo2p__AccountPricing__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- For Kit/Bundle Member Lines only. Allows Quantity to be editable in Quote and Order configurator page. Does not lock the Quantity at the record level --></help>
+        <label><!-- Edit Quantity (Kit/Bundle Member) --></label>
+        <name>kugo2p__AllowQuantityChange__c</name>
+    </fields>
+    <fields>
+        <label><!-- Configuration Option --></label>
+        <name>kugo2p__ConfigurationOption__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Contract Term (months) --></label>
+        <name>kugo2p__ContractTerm__c</name>
+    </fields>
+    <fields>
+        <label><!-- Contract Number --></label>
+        <name>kugo2p__Contract__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Cost Markup Amount --></label>
+        <name>kugo2p__CostMarkupAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Customer PO Date --></label>
+        <name>kugo2p__CustomerPODate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Customer PO Line --></label>
+        <name>kugo2p__CustomerPOLine__c</name>
+    </fields>
+    <fields>
+        <label><!-- Customer PO Number --></label>
+        <name>kugo2p__CustomerPONumber__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date Service End --></label>
+        <name>kugo2p__DateServiceEnd__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date Service Start --></label>
+        <name>kugo2p__DateServiceStart__c</name>
+    </fields>
+    <fields>
+        <label><!-- Discount Amount --></label>
+        <name>kugo2p__DiscountAmount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Effective Price is the Sales Price with Discounts Applied --></help>
+        <label><!-- Effective Price --></label>
+        <name>kugo2p__DiscountSalesPrice__c</name>
+    </fields>
+    <fields>
+        <help><!-- Effective Discount is based on Total Amount from List Amount --></help>
+        <label><!-- Effective Discount --></label>
+        <name>kugo2p__EffectiveDiscount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle Line --></label>
+        <name>kugo2p__KitBundleLine__c</name>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle Member Required --></label>
+        <name>kugo2p__KitBundleMemberRequired__c</name>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle Product Line --></label>
+        <name>kugo2p__KitBundleProductLine__c</name>
+        <relationshipLabel><!-- Quote Service Lines (Kit/Bundle Product Line) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle Product/Service Line Id --></label>
+        <name>kugo2p__KitBundleProductServiceLineId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle Product/Service Line Name --></label>
+        <name>kugo2p__KitBundleProductServiceLineName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle Service Line --></label>
+        <name>kugo2p__KitBundleServiceLine__c</name>
+        <relationshipLabel><!-- Quote Service Lines (Kit/Bundle Service Line) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Kit/Bundle --></label>
+        <name>kugo2p__KitBundle__c</name>
+    </fields>
+    <fields>
+        <label><!-- Line Description --></label>
+        <name>kugo2p__LineDescription__c</name>
+    </fields>
+    <fields>
+        <label><!-- Line Discount Amount --></label>
+        <name>kugo2p__LineDiscountAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Line Discount Percent --></label>
+        <name>kugo2p__LineDiscountPercent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Line Group Sort Order --></label>
+        <name>kugo2p__LineGroupSortOrder__c</name>
+    </fields>
+    <fields>
+        <label><!-- Line Group --></label>
+        <name>kugo2p__LineGroup__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Line Term --></label>
+        <name>kugo2p__LineTerm__c</name>
+    </fields>
+    <fields>
+        <help><!-- Unit Cost Override, if Blank, &apos;Product Unit Cost&apos; is used. User configuration controlled by Additional Product Info configuration settings and if &apos;Edit Unit Cost&apos; is checked --></help>
+        <label><!-- Line Unit Cost --></label>
+        <name>kugo2p__LineUnitCost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Line --></label>
+        <name>kugo2p__Line__c</name>
+    </fields>
+    <fields>
+        <help><!-- Quantity multiplied by List Price and Service Term, if Service Term Behavior is Included or Blank --></help>
+        <label><!-- List Amount --></label>
+        <name>kugo2p__ListAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- List Price --></label>
+        <name>kugo2p__ListPrice__c</name>
+    </fields>
+    <fields>
+        <label><!-- Net Amount --></label>
+        <name>kugo2p__NetAmount__c</name>
+    </fields>
+    <fields>
+        <help><!-- References the Opportunity Product Line of the related Opportunity associated with the Quote for the particular Quote Service Line --></help>
+        <label><!-- Opportunity Line Item Id --></label>
+        <name>kugo2p__OpportunityLineItemId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent Line --></label>
+        <name>kugo2p__ParentLine__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent Product Line --></label>
+        <name>kugo2p__ParentProductLine__c</name>
+        <relationshipLabel><!-- Quote Service Lines (Parent Product Line) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Parent Service Line --></label>
+        <name>kugo2p__ParentServiceLine__c</name>
+        <relationshipLabel><!-- Quote Service Lines (Parent Service Line) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Pricing Method --></label>
+        <name>kugo2p__PricingMethod__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product Cost Number --></label>
+        <name>kugo2p__ProductCost__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Quantity --></label>
+        <name>kugo2p__Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote Discount Amount --></label>
+        <name>kugo2p__QuoteDiscountAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote Discount Percent --></label>
+        <name>kugo2p__QuoteDiscountPercent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote Line % of Unit Price --></label>
+        <name>kugo2p__QuoteLinePercentOfUnitPrice__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sales Price --></label>
+        <name>kugo2p__SalesPrice__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote Product Line Unit Price --></label>
+        <name>kugo2p__SalesQuoteProductLineUnitPrice__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote Product Line --></label>
+        <name>kugo2p__SalesQuoteProductLine__c</name>
+        <relationshipLabel><!-- Quote Service Lines (Sales Quote Product Line) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Quote Number --></label>
+        <name>kugo2p__SalesQuote__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Quantity multiplied by Sales Price and Service Term, if Service Term Behavior is Included or Blank --></help>
+        <label><!-- Service Amount --></label>
+        <name>kugo2p__ServiceAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Family --></label>
+        <name>kugo2p__ServiceFamily__c</name>
+    </fields>
+    <fields>
+        <help><!-- Service Name Override, if Blank, Name from Product record is used. User configuration controlled by Additional Product Info configuration settings and if &apos;Edit Product Name&apos; is checked --></help>
+        <label><!-- Service Name --></label>
+        <name>kugo2p__ServiceName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Included or if blank, will factor Term in Service Amount Calculation and Invoice Schedule. Price depends on Term.
+
+Excluded will not factor Term in Service Amount Calculation and Invoice Schedule (Service behaves as a Product). Price independent of Term --></help>
+        <label><!-- Service Term Behavior --></label>
+        <name>kugo2p__ServiceTermBehavior__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Term --></label>
+        <name>kugo2p__ServiceTerm__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service --></label>
+        <lookupFilter>
+            <errorMessage><!-- Value does not exist or is not a service. --></errorMessage>
+        </lookupFilter>
+        <name>kugo2p__Service__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Sort Order --></label>
+        <name>kugo2p__SortOrder__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Amount --></label>
+        <name>kugo2p__TaxAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Excise Rate --></label>
+        <name>kugo2p__TaxExciseRate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Location --></label>
+        <name>kugo2p__TaxLocation__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Tax Sales Rate --></label>
+        <name>kugo2p__TaxSalesRate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Usage Rate --></label>
+        <name>kugo2p__TaxUsageRate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax --></label>
+        <name>kugo2p__TaxVAT__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxable Excise --></label>
+        <name>kugo2p__TaxableExcise__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxable Sales --></label>
+        <name>kugo2p__TaxableSales__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxable Usage --></label>
+        <name>kugo2p__TaxableUsage__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxable VAT/GST --></label>
+        <name>kugo2p__TaxableVAT__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Amount --></label>
+        <name>kugo2p__TotalAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product Unit Cost --></label>
+        <name>kugo2p__UnitCost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Unit of Term --></label>
+        <name>kugo2p__UnitofTerm__c</name>
+    </fields>
+    <fields>
+        <label><!-- VAT/GST Amount --></label>
+        <name>kugo2p__VATAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- VAT/GST Rate --></label>
+        <name>kugo2p__VATRate__c</name>
+    </fields>
+    <fields>
+        <label><!-- VAT Registration --></label>
+        <name>kugo2p__VATRegistration__c</name>
+    </fields>
+    <fields>
+        <label><!-- VAT/GST --></label>
+        <name>kugo2p__VAT__c</name>
+        <relationshipLabel><!-- Quote Service Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- $0 Charge Reason --></label>
+        <name>kugo2p__X0ChargeReason__c</name>
+        <picklistValues>
+            <masterLabel>Kit/Bundle</masterLabel>
+            <translation><!-- Kit/Bundle --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Loaner</masterLabel>
+            <translation><!-- Loaner --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Promotion</masterLabel>
+            <translation><!-- Promotion --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Replacement</masterLabel>
+            <translation><!-- Replacement --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sample</masterLabel>
+            <translation><!-- Sample --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>Quote Service Line Layout v2</layout>
+        <sections>
+            <label><!-- Configuration Information --></label>
+            <section>Configuration Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date Information --></label>
+            <section>Date Information</section>
+        </sections>
+        <sections>
+            <label><!-- Group Information --></label>
+            <section>Group Information</section>
+        </sections>
+        <sections>
+            <label><!-- Kit/Bundle Information --></label>
+            <section>Kit/Bundle Information</section>
+        </sections>
+        <sections>
+            <label><!-- Service Information --></label>
+            <section>Service Information</section>
+        </sections>
+        <sections>
+            <label><!-- Service Line Amount Information --></label>
+            <section>Service Line Amount Information</section>
+        </sections>
+        <sections>
+            <label><!-- Tax Information --></label>
+            <section>Tax Information</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- The selected Service is not active. --></errorMessage>
+        <name>kugo2p__ActiveServiceCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Once a service line has been saved, the Service cannot be changed. Please create a new line and delete this one. --></errorMessage>
+        <name>kugo2p__Cant_Change_Service_Fields</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Only Services Allowed --></errorMessage>
+        <name>kugo2p__ServiceCheck</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Add_Service_Lines --></label>
+        <name>kugo2p__Add_Service_Lines</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Sort --></label>
+        <name>kugo2p__Sort</name>
+    </webLinks>
+</CustomObjectTranslation>

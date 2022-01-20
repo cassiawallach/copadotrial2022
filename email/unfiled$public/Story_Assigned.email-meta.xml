@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>To notify Developer about story Assignment</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Copado_Letterhead</letterhead>
+    <name>Story Assigned</name>
+    <style>freeForm</style>
+    <subject>A story has been assigned to you.</subject>
+    <textOnly>Hi {!copado__User_Story__c.copado__Developer__c},
+
+A Story {!copado__User_Story__c.Name} has been assigned to you.
+
+Please have a look!
+
+Thanks.</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

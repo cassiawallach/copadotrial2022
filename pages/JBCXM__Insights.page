@@ -1,0 +1,90 @@
+<apex:page docType="html-5.0" controller="JBCXM.AdminBroker" sidebar="false" title="DataSpace Manager" tabStyle="Administration__tab" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var nsParams                = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        var GS                      = GS || {};
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.sessionId                = "{!NSSessionId}";
+        GS.isScorecardEnabled       = {!(isScorecardEnabled)};
+        GS.nsURL                    = nsParams.url;
+        GS.isNSEnabled = (nsParams.nsenabled == "true" || nsParams.nsenabled == true);
+
+        GS.remotingEndPoint         = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.remotingBulkEndPoint     = '{!$RemoteAction.AdminBroker.adminBulkRequestBroker}';
+        GS.commonRemotingEndPoint =  '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+
+        GS.usageConfigInfo          = fakeEval('{!JSINHTMLENCODE(UsageConfigInfo)}');
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.customLookUpConfig       = JSON.parse("{!(JSENCODE(customLookUpConfigMap))}");
+        GS.colorConfig = {!(colorConfig)};
+        GS.userConfig = {
+          userLocale        : {!(dateTimeFormatByLocale)},
+          userName          : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+          userId            : "{!$User.Id}",
+          emailId           : "{!$User.Email}",
+          profilePhoto      : "{!(profilePhoto)}",
+          userDisplayName   : "{!(JSINHTMLENCODE(userDisplayName))}",
+          gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+          isLightningEnabled: {!(isLightningEnabled)}
+        };
+
+        GS.customLabels         = fakeEval('{!JSINHTMLENCODE(customLabelsMap)}');
+        GS.operatorsListMap     = fakeEval('{!JSINHTMLENCODE(operatorsListMap)}');
+        GS.fiscalYrEnabled      = {!(IsCustomFiscalYearSettingsEnabled)};
+        GS.churnLabelMap        = fakeEval('{!JSINHTMLENCODE(churnLabelMap)}');
+        GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+
+        var mode            = '{!JSINHTMLENCODE($CurrentPage.parameters.mode)}';
+        GS.frameworkPath    = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSApp/js/Gainsight";
+        GS.vendorPath       = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor";
+        GS.textVendorPath   = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/text";
+
+        GS.customJSPath     = "{!JSENCODE(URLFOR($Resource.CustomJS, ''))}";
+        GS.nsPath           = "{!JSENCODE(URLFOR($Resource.NS, ''))}";
+        GS.highcharts       = "{!JSENCODE(URLFOR($Resource.HighchartsJS, ''))}";
+        GS.jqGrid           = "{!JSENCODE(URLFOR($Resource.jqGrid,''))}";
+        GS.jQuery           = "{!JSENCODE(URLFOR($Resource.JQuery,''))}"
+    </script>
+
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gs-report-space-cnt">
+            </div>
+        </div>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["dataspace/scripts/dataspace.bundle.js"], styles:["dataspace/styles/dataspace.css"]});
+        </script>
+     </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <!-- System.js approach -->
+        <c:Alerts360 />
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "http://127.0.0.1:8080")}/dataspace/styles/dataspace.css" />
+    
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "http://127.0.0.1:8080")}/dataspace/scripts/dataspace.bundle.js"></script>
+    </apex:outputpanel>
+
+    <apex:form ></apex:form>
+
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('DataSpace Manager');
+    </script>
+
+</apex:page>

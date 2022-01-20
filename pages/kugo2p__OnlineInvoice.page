@@ -1,0 +1,93 @@
+<apex:page standardController="kugo2p__KugamonInvoice__c" extensions="kugo2p.InvoicePDFExt" renderas="{!renderAs}" showHeader="false" sidebar="false" standardStylesheets="false" cache="false" action="{!initOnlineInvoice}" id="onlineInvoicePageId">
+
+    <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+    <!-- SLDS Wrapper -->
+    <div class="kugamon">
+    
+        <apex:outputPanel rendered="{!NOT(isValid)}">
+            <!-- 
+            <div class="slds-notify_container">
+                <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" id="restrictNotification" role="alert">
+                     <span class="slds-assistive-text" id="restrictNotificationIcon">Error</span>
+                     <h2>
+                         <svg aria-hidden="true" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                             <use id="restrictNotificationURL" xlink:href="{!URLFOR($Resource.kugo2p__SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#ban')}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                         </svg>
+                         <span id="restrictNotificationMessage" >This Invoice link is invalid. Please request a new Invoice link.</span>
+                     </h2>
+                 </div>
+             </div>
+             -->
+             <c:Alert title="This Invoice link is invalid. Please request a new Invoice link." theme="error" icon="ban" striped="true" styleClass="icon-text-email slds-m-right--x-small" />
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!isValid}">
+
+            <!-- Invoice Past Due Error notification -->
+            <apex:outputPanel rendered="{!balancePastDueMsg != ''}">
+                <div class="slds-notify_container">
+                    <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" id="balancePastDueNotification" role="alert">
+                         <button class="slds-button slds-button--icon-inverse slds-notify__close" onclick="closeNotification('balancePastDueNotification');">
+                             <svg aria-hidden="false" class="slds-button__icon" onclick="closeNotification('balancePastDueNotification');">
+                                 <use xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#close')}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                             </svg>
+                             <span class="slds-assistive-text">Close</span>
+                         </button>
+                         <span class="slds-assistive-text" id="balancePastDueNotificationIcon">Error</span>
+                         <h2>
+                             <svg aria-hidden="false" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                                 <use id="balancePastDueNotificationURL" xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#info')}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                             </svg><span id="balancePastDueNotificationMessage" >{!balancePastDueMsg}</span>
+                         </h2>
+                     </div>
+                 </div>
+            </apex:outputPanel>
+    
+            <!-- Invoice Paid Success notification -->
+            <apex:outputPanel rendered="{!(Invoice.kugo2p__BalanceDueAmount__c <= 0 && Invoice.kugo2p__NetAmount__c > 0)}">
+                <div class="slds-notify_container">
+                    <div class="slds-notify slds-notify--alert slds-theme--success slds-theme--alert-texture" id="invoicePaidNotification" role="alert">
+                         <button class="slds-button slds-button--icon-inverse slds-notify__close" onclick="closeNotification('invoicePaidNotification');">
+                             <svg aria-hidden="false" class="slds-button__icon" onclick="closeNotification('invoicePaidNotification');">
+                                 <use xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#close')}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                             </svg>
+                             <span class="slds-assistive-text">Close</span>
+                         </button>
+                         <span class="slds-assistive-text" id="invoicePaidNotificationIcon">Success</span>
+                         <h2>
+                             <svg aria-hidden="false" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                                 <use id="invoicePaidNotificationURL" xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#info')}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                             </svg><span id="invoicePaidNotificationMessage" >This Invoice has been paid.</span>
+                         </h2>
+                     </div>
+                 </div>
+            </apex:outputPanel>     
+    
+            <script>
+                 function closeNotification(elementId) {
+                    document.getElementById(elementId).setAttribute('class', 'slds-hide');
+                  }
+            </script>
+
+        </apex:outputPanel>
+
+    </div>
+
+<apex:outputPanel rendered="{!isValid}">
+<apex:composition template="{!$Site.Template}">
+    <apex:define name="body">
+        <div id="body">
+            <div class="pageMessage">
+                <apex:outputPanel id="pageMessage" >        
+                    <apex:pageMessages id="msg" />
+                </apex:outputPanel>
+            </div>
+            <apex:outputPanel id="onlineInvoiceOP1" rendered="{!NOT(hasError)}">
+                <c:InvoicePDF invoiceId="{!kugo2p__KugamonInvoice__c.Id}" isOnlineInvoice="true" id="onlineInvoiceCompId"/>
+            </apex:outputPanel>
+        </div>
+    </apex:define>
+</apex:composition>
+</apex:outputPanel>
+</apex:page>

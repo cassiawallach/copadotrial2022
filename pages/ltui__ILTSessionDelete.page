@@ -1,0 +1,29 @@
+<apex:page standardController="redwing__ILT_Session__c" extensions="ltui.ILTSessionCmpCtrl">
+
+    <!-- Include lightning libraries to visualforce -->
+    <apex:includeLightning />
+    <apex:form >
+        <apex:actionFunction action="{!cancel}" name="cancelEvent"></apex:actionFunction>
+    </apex:form>
+    <!-- Container for wrapping a Lightning Component -->
+    <div id="lightning" />
+    <script>
+        var eventHandler = function(event) {
+            var opt = JSON.parse(event.getParam("message"));
+            if (opt.action == "cancel") {
+                cancelEvent();
+            }
+        }
+        $Lightning.use("{!ns}:ILTOutApp", function() {
+            $Lightning.createComponent("{!ns}:ILTSessionDeleteCmp",
+                {
+                    "recordId" : '{!redwing__ILT_Session__c.Id}',
+                    "parentId" : '{! JSENCODE(redwing__ILT_Session__c.redwing__ILT_Class__c)}',
+                },
+                "lightning",
+                function(cmp) {
+                    $A.eventService.addHandler({ "event": "{!ns}:ILTEvent", "handler" : eventHandler});
+                });
+        });
+    </script>
+</apex:page>

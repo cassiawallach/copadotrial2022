@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dashboard xmlns="http://soap.sforce.com/2006/04/metadata">
+    <backgroundEndColor>#FFFFFF</backgroundEndColor>
+    <backgroundFadeDirection>Diagonal</backgroundFadeDirection>
+    <backgroundStartColor>#FFFFFF</backgroundStartColor>
+    <dashboardType>SpecifiedUser</dashboardType>
+    <isGridLayout>false</isGridLayout>
+    <leftSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+            <chartSummary>
+                <axisBinding>y</axisBinding>
+                <column>RowCount</column>
+            </chartSummary>
+            <componentType>Gauge</componentType>
+            <displayUnits>Integer</displayUnits>
+            <footer>Running total for the FQ</footer>
+            <gaugeMax>1150.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <header>New Users this FQ</header>
+            <indicatorBreakpoint1>100.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>1000.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>ClickDeploy/New_Sign_ups_by_Week</report>
+            <showPercentage>true</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>true</showTotal>
+            <showValues>false</showValues>
+            <title>New Sign-ups vs Target</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>Column</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>true</enableHover>
+            <expandOthers>false</expandOthers>
+            <footer>Net new users by week - we want to see this trending up!</footer>
+            <groupingSortProperties/>
+            <legendPosition>Bottom</legendPosition>
+            <report>ClickDeploy/New_Sign_ups_by_Week</report>
+            <showPercentage>false</showPercentage>
+            <showValues>true</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>All New Sign-ups by Week</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <displayUnits>Auto</displayUnits>
+            <footer>Running total for the FQ</footer>
+            <gaugeMax>120.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <indicatorBreakpoint1>20.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>100.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>ClickDeploy/ClickDeploy_MQLs_by_Week</report>
+            <showPercentage>true</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>true</showTotal>
+            <showValues>false</showValues>
+            <title>New MQLs vs. Target</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <chartSummary>
+                <axisBinding>y</axisBinding>
+                <column>RowCount</column>
+            </chartSummary>
+            <componentType>Column</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>true</enableHover>
+            <expandOthers>false</expandOthers>
+            <footer>MQL&apos;d Net-New Users. Trailing weeks will likely always be higher as users have time to user the app successfully,</footer>
+            <groupingColumn>Contact.MQL_Date__c</groupingColumn>
+            <groupingSortProperties/>
+            <legendPosition>Bottom</legendPosition>
+            <report>ClickDeploy/ClickDeploy_MQLs_by_Week</report>
+            <showPercentage>false</showPercentage>
+            <showValues>true</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>New MQLs Created by Week</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <chartSummary>
+                <axisBinding>y</axisBinding>
+                <column>RowCount</column>
+            </chartSummary>
+            <componentType>Column</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <footer>Trial starts by Net-New users. Trailing weeks will likely be greater as users spend time with the app before starting a trial.</footer>
+            <groupingColumn>Contact.ClickDeploy_Enterprise_Trial_Start_Date__c</groupingColumn>
+            <groupingSortProperties/>
+            <legendPosition>Bottom</legendPosition>
+            <report>ClickDeploy/ClickDeploy_Trial_Starts_by_Week</report>
+            <showPercentage>false</showPercentage>
+            <showValues>true</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>New Trial Starts by Week</title>
+            <useReportChart>false</useReportChart>
+        </components>
+    </leftSection>
+    <middleSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <displayUnits>Auto</displayUnits>
+            <footer>Running total for the FQ</footer>
+            <gaugeMax>160.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <header>New Pipeline this FQ</header>
+            <indicatorBreakpoint1>20.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>140.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>ClickDeploy/ClickDeploy_Active_Users_by_Week</report>
+            <showPercentage>true</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>true</showTotal>
+            <showValues>false</showValues>
+            <title>Active Users vs. Target</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <chartSummary>
+                <axisBinding>y</axisBinding>
+                <column>RowCount</column>
+            </chartSummary>
+            <componentType>ColumnStacked</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>true</enableHover>
+            <expandOthers>false</expandOthers>
+            <footer>Net new Opps by week</footer>
+            <groupingColumn>CREATED_DATE</groupingColumn>
+            <groupingColumn>TYPE</groupingColumn>
+            <groupingSortProperties/>
+            <legendPosition>Bottom</legendPosition>
+            <report>ClickDeploy/ClickDeploy_Opps_by_Week</report>
+            <showPercentage>false</showPercentage>
+            <showValues>false</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Opportunities Created by Week</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Table</componentType>
+            <displayUnits>Integer</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <footer>Calculated as the total net-new opportunities x ASP of the subscription tier.</footer>
+            <groupingSortProperties/>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>ClickDeploy/ClickDeploy_Opps_by_Week</report>
+            <showPicturesOnTables>true</showPicturesOnTables>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Pipeline Value Created this Quarter</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <chartSummary>
+                <axisBinding>y</axisBinding>
+                <column>RowCount</column>
+            </chartSummary>
+            <componentType>Column</componentType>
+            <displayUnits>Integer</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>true</enableHover>
+            <expandOthers>false</expandOthers>
+            <footer>Based on Opp create date, drill down report includes Contact info and usage data</footer>
+            <groupingColumn>CREATED_DATE</groupingColumn>
+            <groupingSortProperties/>
+            <legendPosition>Bottom</legendPosition>
+            <report>ClickDeploy/New_Premium_Opps_This_Quarter</report>
+            <showPercentage>false</showPercentage>
+            <showValues>true</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>New Premium (Trial) Opps by Week</title>
+            <useReportChart>false</useReportChart>
+        </components>
+    </middleSection>
+    <rightSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <displayUnits>Auto</displayUnits>
+            <footer>Running total for the FQ</footer>
+            <gaugeMax>89.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <header>New Customers this FQ</header>
+            <indicatorBreakpoint1>9.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>80.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>ClickDeploy/New_Subscriptions_this_Quarter_w_Opps</report>
+            <showPercentage>true</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>true</showTotal>
+            <showValues>false</showValues>
+            <title>New Licenses vs. Target</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <displayUnits>Auto</displayUnits>
+            <footer>Running total for the FQ</footer>
+            <gaugeMax>66.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <indicatorBreakpoint1>6.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>60.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>ClickDeploy/New_Basic_Subscriptions_This_Qtr</report>
+            <showPercentage>true</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>true</showTotal>
+            <showValues>false</showValues>
+            <title>New Basic License vs. Target</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <displayUnits>Auto</displayUnits>
+            <footer>Running total for the FQ</footer>
+            <gaugeMax>23.0</gaugeMax>
+            <gaugeMin>0.0</gaugeMin>
+            <groupingSortProperties/>
+            <indicatorBreakpoint1>3.0</indicatorBreakpoint1>
+            <indicatorBreakpoint2>20.0</indicatorBreakpoint2>
+            <indicatorHighColor>#54C254</indicatorHighColor>
+            <indicatorLowColor>#C25454</indicatorLowColor>
+            <indicatorMiddleColor>#C2C254</indicatorMiddleColor>
+            <report>ClickDeploy/New_Premium_Subscriptions_This_Quarter</report>
+            <showPercentage>true</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>true</showTotal>
+            <showValues>false</showValues>
+            <title>New Premium License vs. Target</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>Column</componentType>
+            <displayUnits>Auto</displayUnits>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <legendPosition>Bottom</legendPosition>
+            <report>ClickDeploy/New_Subscriptions_this_Quarter_w_Opps</report>
+            <showPercentage>false</showPercentage>
+            <showValues>true</showValues>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>New Licenses by Week</title>
+            <useReportChart>false</useReportChart>
+        </components>
+    </rightSection>
+    <runningUser>daniel@oxrevs.com.copado</runningUser>
+    <textColor>#000000</textColor>
+    <title>ClickDeploy Funnel</title>
+    <titleColor>#000000</titleColor>
+    <titleSize>12</titleSize>
+</Dashboard>

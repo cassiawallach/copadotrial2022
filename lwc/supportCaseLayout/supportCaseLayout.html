@@ -1,0 +1,57 @@
+<template>
+    <div class="slds-box slds-theme--default slds-m-top_xx-small slds-box_x-small">
+        <div class="slds-align_absolute-center slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body" align="center">
+                    <h1 class="slds-text-heading_large slds-p-bottom_x-large">
+                        What best describes the type of issue that you are experiencing? 
+                    </h1>
+                </div>
+            </header>
+        </div>
+        <lightning-layout class="slds-wrap slds-grid_align-space" horizontal-align="center">
+            <lightning-layout-item style="text-align:center">                        
+                <a class="CaseTypeGroup" onclick={showSupportCaseForm} data-name='academy'>
+                    <img class="CaseImages" src={copadoAcademySupportLogo} alt="Training/Certification Support"/>
+                    <div class="slds-p-top_medium text-color" style="font-weight: bold; font-size:16px">
+                        <span class="slds-p-right_x-small">Training/Certification Support</span>
+                    </div>
+                </a>
+                <span class="help-text-color">Support related to Copado Training and Certifications.</span>
+            </lightning-layout-item>
+            <lightning-layout-item style="text-align:center">
+                <a class="CaseTypeGroup" onclick={showSupportCaseForm} data-name='playground'>
+                    <img class="CaseImages" src={copadoPlaygroundSupportLogo} alt="Copado Playground Support"/>
+                    <div class="slds-p-top_medium text-color" style="font-weight: bold; font-size:16px">
+                        <span class="slds-p-right_x-small">Playground Support</span>
+                    </div>
+                </a>
+                <span class="help-text-color">Support related to Copado Playgrounds.</span>
+            </lightning-layout-item>
+            <lightning-layout-item style="text-align:center">
+                <a class="CaseTypeGroup" onclick={showSupportCaseForm} data-name='copadoSupport'>
+                    <img class="CaseImages" src={copadoSupportLogo} alt="Copado Support"/>
+                    <div class="slds-p-top_medium text-color" style="font-weight: bold; font-size:16px">
+                        <span class="slds-p-right_x-small">Copado Support</span>
+                    </div>
+                </a>
+                <span class="help-text-color">Customer Support for Copado Products and Services.</span>                     
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    <template if:true={form.copadoSupport.show}>
+        <c-support-copado-technical-case form-name={formName} form-label={form.copadoSupport.label} onsubmit={handleSubmit} onerror={handleError}></c-support-copado-technical-case>
+    </template>
+    <template if:true={form.academy.show}>
+        <c-support-copado-technical-case form-name={formName} form-label={form.academy.label} onsubmit={handleSubmit} onerror={handleError}></c-support-copado-technical-case>
+    </template>
+    <template if:true={form.playground.show}>
+        <c-support-copado-technical-case form-name={formName} form-label={form.playground.label} onsubmit={handleSubmit} onerror={handleError}></c-support-copado-technical-case>
+    </template>
+    <template if:true={showSuccess}>
+        <c-support-copado-success created-case={createdCase}></c-support-copado-success>
+    </template>
+    <template if:true={showError}>
+        <c-support-copado-error error-message={errorMessage}></c-support-copado-error>
+    </template>
+</template>

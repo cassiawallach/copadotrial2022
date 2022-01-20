@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Action Order --></label>
+        <name>sortablegrid__Action_Order__c</name>
+    </fields>
+    <fields>
+        <label><!-- Action Type --></label>
+        <name>sortablegrid__Action_Type__c</name>
+        <picklistValues>
+            <masterLabel>List</masterLabel>
+            <translation><!-- List --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>List Button</masterLabel>
+            <translation><!-- List Button --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>List Multi-Select</masterLabel>
+            <translation><!-- List Multi-Select --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Row</masterLabel>
+            <translation><!-- Row --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Row Button</masterLabel>
+            <translation><!-- Row Button --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Payload for the event.  For LIST actions, will automatically replace #parentrecordId# with valid id.  For ROW actions, will automatically replace fieldnames with # at beginning and end with the corresponding values.  example: 
+{
+   &quot;recordId&quot;: &quot;#Id#&quot;
+} --></help>
+        <label><!-- Event Payload --></label>
+        <name>sortablegrid__Event_Payload__c</name>
+    </fields>
+    <fields>
+        <help><!-- Lightning event to raise: eg c.force:editRecord --></help>
+        <label><!-- Event --></label>
+        <name>sortablegrid__Event__c</name>
+    </fields>
+    <fields>
+        <help><!-- Icon name from Lightning Design System - eg standard:contact --></help>
+        <label><!-- Icon --></label>
+        <name>sortablegrid__Icon__c</name>
+    </fields>
+    <fields>
+        <help><!-- Only show this action if the user is required to have Create rights on the sObject on the grid. --></help>
+        <label><!-- Requires Createable --></label>
+        <name>sortablegrid__Requires_Createable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Only show this action if the user is required to have Delete rights on the sObject on the grid. --></help>
+        <label><!-- Requires Deletable --></label>
+        <name>sortablegrid__Requires_Deletable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Only show this action if the user is required to have Edit rights on the sObject on the grid. --></help>
+        <label><!-- Requires Editable --></label>
+        <name>sortablegrid__Requires_Editable__c</name>
+    </fields>
+    <fields>
+        <label><!-- SDG --></label>
+        <name>sortablegrid__SDG__c</name>
+        <relationshipLabel><!-- Sortable Data Grid Actions --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>SDG Action Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>SDG Layout v2</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Payload must end with a } --></errorMessage>
+        <name>sortablegrid__Payload_must_end_with_brace</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Payload must start with a { --></errorMessage>
+        <name>sortablegrid__Payload_must_start_with_brace</name>
+    </validationRules>
+</CustomObjectTranslation>

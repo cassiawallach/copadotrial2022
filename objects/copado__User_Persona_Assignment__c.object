@@ -329,6 +329,16 @@
         <type>Lookup</type>
     </fields>
     <label>User Persona Assignment</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Persona__c</columns>
+        <columns>copado__User__c</columns>
+        <columns>copado__Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
     <nameField>
         <displayFormat>UPA-{000000000}</displayFormat>
         <label>User Persona Assignment Ref</label>
@@ -360,7 +370,7 @@
     </validationRules>
     <validationRules>
         <fullName>copado__Start_date_issue</fullName>
-        <active>true</active>
+        <active>false</active>
         <description>If either start date or end date is set less than current datetime, the rule&apos;s error message will appear on the top of the page.</description>
         <errorConditionFormula>If( OR(copado__Start_Time__c &lt;  NOW() , copado__End_Time__c &lt; NOW()),true,false )</errorConditionFormula>
         <errorMessage>Start Time or End Time cannot be in the past. Please add a couple of minutes to related field.</errorMessage>

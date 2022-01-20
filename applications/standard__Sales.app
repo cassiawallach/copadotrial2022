@@ -3,16 +3,18 @@
     <defaultLandingTab>standard-home</defaultLandingTab>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <tabs>standard-Contact</tabs>
-    <tabs>standard-Account</tabs>
     <tabs>standard-Lead</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
     <tabs>standard-Opportunity</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
-    <tabs>standard-Chatter</tabs>
-    <tabs>standard-File</tabs>
-    <tabs>standard-Product2</tabs>
     <tabs>standard-Forecasting3</tabs>
+    <tabs>standard-ContentSearch</tabs>
     <tabs>standard-Quote</tabs>
-    <tabs>MobileLanding</tabs>
+    <tabs>AVA__AVA</tabs>
+    <tabs>standard-WaveHome</tabs>
+    <tabs>Competitor__c</tabs>
+    <tabs>standard-OtherUserProfile</tabs>
+    <tabs>Customer_Success__c</tabs>
 </CustomApplication>

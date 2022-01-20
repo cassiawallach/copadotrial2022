@@ -1,0 +1,135 @@
+<apex:page standardController="Lead" extensions="G2Crowd.G2Settings">
+  <apex:slds />
+  <c:G2_Base_Includes />
+
+  <script>
+    G2.app.controller('LeadVisitors', function ($sce, $scope, $uibModal, $controller) {
+      $controller('BaseController', { $scope: $scope });
+      $scope.leadId = '{!JSENCODE(lead.G2Crowd__G2_UUID__c)}';
+
+      $scope.processResults = function (results) {
+        if (results.data.attributes['visitor-details'] !== undefined) {
+          $scope.VisitorDetails = results.data.attributes['visitor-details'].data.attributes;
+          $scope.loading = false;
+          $scope.$apply();
+        }
+      }
+
+      $scope.checkIt = function () {
+        return Object.keys($scope.VisitorDetails.categories).length > 0
+      }
+
+      $scope.dateParse = function (time) {
+        return new Date(time).getTime();
+      }
+
+      if ($scope.leadId !== '' && $scope.leadId !== undefined) {
+        $scope.loading = true;
+        $scope.initialized = true;
+        G2.G2Remoting.leadPage($scope.processResults, $scope.leadId);
+      }
+    });
+  </script>
+  <style>
+    .G2Crowd .g2-flex-row {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
+    .G2Crowd .g2-flex-column {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+    }
+  </style>
+  <div class="slds-scope">
+    <div ng-app="G2Crowd" class='G2Crowd'>
+      <div ng-controller="LeadVisitors">
+        <div ng-cloak='true'>
+          <c:G2Notice />
+          <div ng-if="loading === false && VisitorDetails !== undefined" class='g2-flex-column' style='width: 100%'>
+            <div class='g2-flex-column'>
+              <div class='g2-flex-row slds-border_bottom' style='margin: 0 16px; padding-bottom: 16px;'>
+                <div class="slds-text-heading_small">
+                  <b>{{VisitorDetails['hard-impressions']}}</b> Direct Impressions</div>
+                <div class="slds-text-heading_small">
+                  <b>{{VisitorDetails['impressions']}}</b> Indirect Impressions</div>
+              </div>
+              <div class='g2-flex-row' style='margin: 16px 0; justify-content: center;'>
+                <div class='slds-border_right' style='padding: 0 16px; width: 33%;'>
+                  <div class="slds-text-heading_small" style='padding-bottom: 16px;'>
+                    <b>Competitors Viewed</b>
+                  </div>
+                  <table>
+                    <tbody>
+                      <tr class='report-list-item' ng-repeat='competitor in VisitorDetails.competitors.data'>
+                        <td style='padding-top: 16px; width: 44px;'>
+                          <img src='{{competitor.attributes.favicon}}' width='32px' height='32px' />
+                        </td>
+                        <td style='padding-top: 16px;'>{{competitor.attributes.name}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class='slds-border_right' style='padding: 0 16px; width: 33%;'>
+                  <div class="slds-text-heading_small" style='padding-bottom: 16px;'>
+                    <b>Siblings Viewed</b>
+                  </div>
+                  <table>
+                    <tbody>
+                      <tr class='report-list-item' ng-repeat='sibling in VisitorDetails.siblings.data'>
+                        <td style='padding-top: 16px; width: 44px;'>
+                          <img src='{{sibling.attributes.favicon}}' width='32px;' height='32px' />
+                        </td>
+                        <td style='padding-top: 16px;'>{{sibling.attributes.name}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class='' style='padding: 0 16px; width: 33%;'>
+                  <div class="slds-text-heading_small" style="padding-bottom: 16px;">
+                    <b>Categories of Interest</b>
+                  </div>
+                  <div class='report-name' ng-repeat='(id, name) in VisitorDetails.categories'>
+                    {{name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='g2-flex-column'>
+              <div class='event-stream'>
+                <table>
+                  <tbody ng-repeat='(date, events) in VisitorDetails["grouped-events"]'>
+                    <tr>
+                      <td colspan='2' style='font-weight: 800; font-size: 18px;'>Visit starting at: {{dateParse(date) | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+                    </tr>
+                    <tr ng-repeat='event in events'>
+                      <td>
+                        <a target='_blank' href="{{event.url}}">{{event.title}}</a>
+                      </td>
+                      <td>
+                        {{dateParse(event.time) | date:"MM/dd/yyyy 'at' h:mma"}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div ng-if='loading' class='loading-mask'>
+            <div class="demo-only" style="height: 6rem;">
+              <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_large">
+                  <span class="slds-assistive-text">Loading</span>
+                  <div class="slds-spinner__dot-a"></div>
+                  <div class="slds-spinner__dot-b"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</apex:page>

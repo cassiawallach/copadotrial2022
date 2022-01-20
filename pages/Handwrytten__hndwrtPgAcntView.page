@@ -1,0 +1,52 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account View page
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjAccount__c" title="Handwrytten Account View: {!Handwrytten__hndwrtObjAccount__c.Name}" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theForm" >
+    
+    <div class="slds">
+    <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+        
+        <apex:sectionHeader title="Handwrytten" subtitle="Edit Handwrytten Account" help="/apex/hndwrtPgHelp" />
+        
+        <apex:pageBlock title="Handwrytten Account View" mode="View">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Edit" action="{!edit}"/>
+                <!--  
+                <apex:commandButton value="Delete" action="{!delete}"/>
+                -->
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Handwrytten Account Information" columns="2">
+            	<apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Name}"/>
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Email__c}"/>
+                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Handwrytten Account Settings" columns="2">
+            	<apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Org_Wide_Account__c}"/>
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Monthly_Budget_Per_User__c}"/>
+                
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Allow_Deletes__c}"/>
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Allow_Gift_Cards__c}"/>
+                
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Log_to_Activity_History__c}"/>
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+        
+    </div>
+    </apex:form>
+</apex:page>

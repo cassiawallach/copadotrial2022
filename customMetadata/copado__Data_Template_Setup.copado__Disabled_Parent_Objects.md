@@ -4,6 +4,6 @@
     <protected>false</protected>
     <values>
         <field>copado__API_Names__c</field>
-        <value xsi:type="xsd:string">Group</value>
+        <value xsi:type="xsd:string">User,Group</value>
     </values>
 </CustomMetadata>

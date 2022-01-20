@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Copado_Usage__c.Total_Activity__c:SUM /Copado_Usage__c.Unique_Users__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <description>total activity divided by unique users</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Total Activity by Unique users</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Copado_Usage__c.New_Commits__c:SUM/Copado_Usage__c.Unique_Users__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <description>total new commits divided by unique users</description>
+        <developerName>FORMULA2</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Commits by unique users</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Copado_Usage__c.New_User_Stories__c:SUM/Copado_Usage__c.Unique_Users__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA3</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>User Stories by unique users</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Copado_Usage__c.New_Promotions__c:SUM/Copado_Usage__c.Unique_Users__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA4</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Promotions by unique user</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF(CDF1:MIN&lt;14,5,
+if(CDF1:MIN&gt;30,1,
+3))</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA5</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Last Usage Rank</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <columns>
+        <aggregateTypes>Minimum</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>FK_$Salesforce_Org__c.Last_Overall_Activity__c</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>Copado_Usage__c.Month__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <customDetailFormulas>
+        <calculatedFormula>today()-Copado_Usage__c.Month__c</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Last Usage Helper</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Test - Support &amp; Usage - Last Usage</description>
+    <filter>
+        <criteriaItems>
+            <column>FK_$Salesforce_Org__c.Parent_Account__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Linde,Sandvik,hulu,WeWork</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Copado_Usage__c.Month__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>N_MONTHS_AGO:2</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FK_$Salesforce_Org__c.Parent_Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Test - Support &amp; Usage</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Copado_Usage__c@Copado_Usage__c.Salesforce_Org__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Copado_Usage__c.Month__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Copado_Usage__c.Month__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,19 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="ZealynxController" action="{!syncQuotes}">
+  <apex:pageBlock >
+    <apex:pageBlockButtons >
+      <apex:form >
+        <apex:commandButton action="{!cancel}" value="Back to Record" />
+      </apex:form>
+    </apex:pageBlockButtons>
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:pageBlockTable value="{!results}" var="r">
+      <apex:column value="{!r.quoteRecord.Name}"></apex:column>
+      <apex:column headerValue="Order Name">
+        <apex:outputLink value="/{!r.orderRecord.Id}" rendered="{!r.orderRecord.Id <> null}">View Order</apex:outputLink>
+      </apex:column>
+    </apex:pageBlockTable>
+  </apex:pageBlock>
+  <apex:outputPanel rendered="false">
+    <apex:outputField value="{!SBQQ__Quote__c.Name}" />
+  </apex:outputPanel>
+</apex:page>

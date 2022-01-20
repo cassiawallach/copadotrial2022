@@ -1,0 +1,56 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account Selection page
+ -->
+<apex:page id="thePage" controller="Handwrytten.hndwrtClsAcntSelection" title="Handwrytten Account Selection Page" tabstyle="hndwrtTabAcnts__tab">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theForm" >
+    
+    <div class="slds">
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+    
+    <apex:sectionHeader title="Handwrytten" subtitle="Select Handwrytten Account" help="/apex/hndwrtPgHelp" />
+        
+        <!-- Place holder for error messages -->
+        <apex:pageMessages />
+        
+        <apex:pageBlock id="thePageBlock">
+     
+                
+               <apex:pageBlockSection columns="1">
+               
+               <apex:outputPanel id="opMsg" rendered="{!hasMsg}">
+                    <table style="width:500px;"> 
+                        <tr> <td>
+                            <apex:pageMessage summary="{!infoMsg}" severity="info" strength="3" />
+                        </td> </tr> 
+                    </table> 
+               </apex:outputPanel>
+            
+                <apex:selectList value="{!hAcntId}" size="1" id="slhAcnts" label="My Handwrytten Accounts">
+                    <apex:selectOptions value="{!hAcnts}"/> 
+                </apex:selectList>
+                
+                <!--<apex:selectList value="{!addrType}" size="1" id="slAdrs" label="Please select a recipient address" rendered="{!NOT(hasDefaultAddr)}">
+                    <apex:selectOptions value="{!addrOptions}"/>
+                </apex:selectList>-->
+
+                <apex:outputPanel id="opCmdButtons">
+                    <apex:commandButton value="Setup Handwrytten Account" action="{!newhAcntPg}"/>
+                    <apex:commandButton value="Previous" action="{!vwPg}"/>
+                    <apex:commandButton value="Next" action="{!redirectPg}" disabled="{!NOT(hasAcnts)}"/>
+                </apex:outputPanel>
+                </apex:pageBlockSection>
+
+        </apex:pageBlock> 
+   	</div>
+    </apex:form> 
+</apex:page>

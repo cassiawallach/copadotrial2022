@@ -1,0 +1,95 @@
+<apex:page sidebar="false" title="SightLine" controller="JBCXM.GSCommonBroker" extensions="JBCXM.NSRemoting,JBCXM.AdminBroker" tabStyle="Administration__tab">
+         <div id="gs-app-container">
+           <div class="gs-module-container">
+              <div class="gainsight-app" style="width:100%">
+                <gs-root></gs-root>
+               </div>
+             </div>
+         </div>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+        <script>
+            var hc= fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+            var cdnVersion = "{!(tenantCDNVersion)}";
+            var apiEndPoint = hc.gatewayURL;
+            var authorization= "";
+            
+            var appSessionId = hc.appSessionId;
+            var appUserId = hc.appUserId;
+            var appOrgId = hc.appOrgId;
+            var GS = GS || {};
+            GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.gainsightTabs = fakeEval('{!JSINHTMLENCODE(GainsightTabs)}');
+
+            GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.remotingCommonBulkEndPoint  ='{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+            var host = "SALESFORCE";
+            GS.appName = "Sightline";
+            GS.sessionId = "{!NSSessionId}";
+            GS.NSSessionId = "{!(NSSessionId)}";
+            GS.hasModifyAllPerm = {!(HasModifyAllPermission)};
+            GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+
+            var urlParams =  window.location.search
+                .substring(1)
+                .split("&")
+                .map(function(v) {
+                    return v.split("=");
+                })
+                .reduce(function(acc, arr) {
+                    if (acc[arr[0]]) {
+                        if (!Array.isArray(acc[arr[0]])) {
+                            acc[arr[0]] = [acc[arr[0]]]
+                        }
+                        if(arr[0]) {
+                            acc[arr[0]].push(decodeURIComponent(arr[1]))
+                        }
+                    } else {
+                        if(arr[0]) {
+                            acc[arr[0]] = decodeURIComponent(arr[1]);
+                        }
+                    }
+                    return acc;
+                }, {});
+
+                var nsParams        = GS.nsParams;
+                var mode            = '{!JSINHTMLENCODE($CurrentPage.parameters.mode)}';
+
+        </script>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:Features360 moduleName="cote-sightline"/>
+        <script>
+            installResources({
+                scripts: [
+                    "runtime-es2015.js",
+                    "runtime-es5.js",
+                    "polyfills-es5.js",
+                    "polyfills-es2015.js",
+                    "vendor-es2015.js",
+                    "vendor-es5.js",
+                    "main-es2015.js",
+                    "main-es5.js"
+                ],
+                styles : ["styles.css"]
+            });
+        </script>
+    </apex:outputpanel>
+        <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:4200/')}/styles.css" />
+        <script>
+            GS.cdnUrl ="https://localhost:4200/";
+        </script>
+         <script type="text/javascript" src="https://localhost:4200/runtime.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/polyfills.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/styles.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/scripts.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/vendor.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/main.js"></script>
+</apex:outputpanel>
+    <style>
+    .bodyDiv .outerNoSidebar ,
+    .bodyDiv .noSidebarCell {
+        padding: 0 !important;
+    }
+    </style>
+
+        </apex:page>

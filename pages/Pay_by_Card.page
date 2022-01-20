@@ -1,0 +1,53 @@
+<apex:page showHeader="false" sidebar="false" controller="PayByCard" action="{!init}">
+<apex:pageMessages />
+<apex:outputPanel rendered="{!ok && !isCharge}">
+<table align="center">
+	<tr>
+		<td>
+			<apex:pageBlock >
+				<apex:pageBlockSection columns="1">
+					<apex:image url="{!$Resource.CopadoLogo}" height="50"/>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel for="numb">{!type}
+						</apex:outputLabel>
+						<apex:outputText value="{!name}" id="numb"/>
+					</apex:pageBlockSectionItem>
+				</apex:pageBlockSection>	
+			</apex:pageBlock>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<form action="/Pay_By_Card?quoteId={!quoteId}&accountId={!accountId}&invoiceId={!invoiceId}&mode=charge" method="POST">
+				<script
+					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+					data-key="{!stripe_key}"
+					data-image="{!URLFOR($Resource.Copado_round_logo)}"
+					data-name="Copado Solutions SL"
+					data-description="{!name}"
+					data-currency="{!isoCode}"
+					data-amount="{!amount}">
+				</script>
+			</form>
+		</td>
+	</tr>
+</table>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!isCharge}">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1">
+                <apex:image url="{!$Resource.CopadoLogo}" height="50"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="numb">{!type}
+                    </apex:outputLabel>
+                    <apex:outputText value="{!name}" id="numb"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>	
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!charge}" value="Confirm payment"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:outputPanel>
+</apex:page>

@@ -1,0 +1,17 @@
+<apex:page lightningStylesheets="true" sidebar="false" standardStylesheets="false">
+  <apex:includeLightning />
+  <div id="lightning" class="cb-lighting-popup-classic" />
+  <script>
+    $Lightning.use("chargebeeapps:DependencyApp", function () {
+      $Lightning.createComponent("chargebeeapps:SetViewHierarchyModal",
+        {
+          recordId: "{!JSENCODE($CurrentPage.parameters.id)}",
+          isLightning: false
+        },
+        "lightning",
+        function (cmp) {
+        }
+      );
+    });
+  </script>
+</apex:page>

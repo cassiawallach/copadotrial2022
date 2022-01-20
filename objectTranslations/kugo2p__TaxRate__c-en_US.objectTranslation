@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Jurisdiction --></label>
+        <name>kugo2p__Jurisdiction__c</name>
+    </fields>
+    <fields>
+        <label><!-- Rate (%) --></label>
+        <name>kugo2p__Rate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Location --></label>
+        <name>kugo2p__TaxLocation__c</name>
+        <relationshipLabel><!-- Tax Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>kugo2p__Type__c</name>
+        <picklistValues>
+            <masterLabel>Excise</masterLabel>
+            <translation><!-- Excise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sales</masterLabel>
+            <translation><!-- Sales --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Usage</masterLabel>
+            <translation><!-- Usage --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>Tax Rate Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Tax Rate Cannot Equal Zero --></errorMessage>
+        <name>kugo2p__RateCannotBeZero</name>
+    </validationRules>
+</CustomObjectTranslation>

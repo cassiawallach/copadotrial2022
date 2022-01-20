@@ -1,0 +1,5 @@
+<messaging:emailTemplate subject="Mission Control: Timesheet Exception Notification for {!relatedTo.Name}" recipientType="User" relatedToType="amc__Role__c">
+<messaging:htmlEmailBody >
+    <c:MC_TimesheetExceptionNotification roleId="{!relatedTo.Id}"/>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

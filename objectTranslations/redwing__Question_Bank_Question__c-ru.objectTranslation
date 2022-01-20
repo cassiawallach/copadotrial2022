@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <caseType>Nominative</caseType>
+        <plural>false</plural>
+        <value>Вопрос банка вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Nominative</caseType>
+        <plural>true</plural>
+        <value>Вопросы банков вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Accusative</caseType>
+        <plural>false</plural>
+        <value>Вопрос банка вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Accusative</caseType>
+        <plural>true</plural>
+        <value>Вопросы банков вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Genitive</caseType>
+        <plural>false</plural>
+        <value>Вопроса банка вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Genitive</caseType>
+        <plural>true</plural>
+        <value>Вопросов банков вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Dative</caseType>
+        <plural>false</plural>
+        <value>Вопросу банка вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Dative</caseType>
+        <plural>true</plural>
+        <value>Вопросам банков вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Instrumental</caseType>
+        <plural>false</plural>
+        <value>Вопросом банка вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Instrumental</caseType>
+        <plural>true</plural>
+        <value>Вопросами банков вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Prepositional</caseType>
+        <plural>false</plural>
+        <value>Вопросе банка вопросов</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Prepositional</caseType>
+        <plural>true</plural>
+        <value>Вопросах банков вопросов</value>
+    </caseValues>
+    <fields>
+        <label><!-- Allow Partial Credit --></label>
+        <name>redwing__Allow_Partial_Credit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Answer Sequence --></label>
+        <name>redwing__Answer_Sequence__c</name>
+        <relationshipLabel><!-- Questions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Correct True/False --></label>
+        <name>redwing__Correct_Boolean__c</name>
+        <picklistValues>
+            <masterLabel>false</masterLabel>
+            <translation>Ложь</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>true</masterLabel>
+            <translation>Истина</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Correct Number --></label>
+        <name>redwing__Correct_Number__c</name>
+    </fields>
+    <fields>
+        <label><!-- Additional Description --></label>
+        <name>redwing__Description_RTA__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>redwing__Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Max Answers --></label>
+        <name>redwing__Max_Answers__c</name>
+    </fields>
+    <fields>
+        <label><!-- Question Bank --></label>
+        <name>redwing__Question_Bank__c</name>
+        <relationshipLabel><!-- Questions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Question Image URL --></label>
+        <name>redwing__Question_Image_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Question Topic --></label>
+        <name>redwing__Question_Topic__c</name>
+        <relationshipLabel><!-- Questions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Randomize Answers --></label>
+        <name>redwing__Randomize__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>redwing__Type__c</name>
+        <picklistValues>
+            <masterLabel>Number</masterLabel>
+            <translation>Числовой</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SelectMultipleQuestion</masterLabel>
+            <translation>Выбор нескольких вопросов</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SelectOneQuestion</masterLabel>
+            <translation>Выбор одного вопроса</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Text</masterLabel>
+            <translation>Текст</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>True/False</masterLabel>
+            <translation>Истина/Ложь</translation>
+        </picklistValues>
+    </fields>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Question Bank Question Layout</layout>
+        <sections>
+            <label>Настраиваемые ссылки</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Информация о вопросе</label>
+            <section>Question Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Вопрос Банка вопросов</nameFieldLabel>
+    <validationRules>
+        <errorMessage><!-- You must specify an answer sequence for this type of question --></errorMessage>
+        <name>redwing__AnswerSequence_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must specify a correct true/false value for this type of question --></errorMessage>
+        <name>redwing__CorrectBoolean_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must specify a correct number value when defining a Number type of question --></errorMessage>
+        <name>redwing__CorrectNumber_Required</name>
+    </validationRules>
+</CustomObjectTranslation>

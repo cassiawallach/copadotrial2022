@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitlementProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <SObjectType>Case</SObjectType>
+    <active>true</active>
+    <entryStartDateField>Case.CreatedDate</entryStartDateField>
+    <exitCriteriaFilterItems>
+        <field>Case.IsClosed</field>
+        <operation>equals</operation>
+        <value>true</value>
+    </exitCriteriaFilterItems>
+    <exitCriteriaFilterItems>
+        <field>Case.RecordTypeId</field>
+        <operation>notEqual</operation>
+        <value>APO Request</value>
+    </exitCriteriaFilterItems>
+    <isVersionDefault>false</isVersionDefault>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>Critical</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>First Response</milestoneName>
+        <minutesToComplete>60</minutesToComplete>
+        <useCriteriaStartTime>false</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>Urgent</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>First Response</milestoneName>
+        <minutesToComplete>120</minutesToComplete>
+        <useCriteriaStartTime>false</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>High</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>First Response</milestoneName>
+        <minutesToComplete>240</minutesToComplete>
+        <useCriteriaStartTime>false</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>Medium</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>First Response</milestoneName>
+        <minutesToComplete>480</minutesToComplete>
+        <useCriteriaStartTime>false</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>In progress</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>Critical</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>Response Time</milestoneName>
+        <minutesToComplete>60</minutesToComplete>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>In progress</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>Urgent</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>Response Time</milestoneName>
+        <minutesToComplete>120</minutesToComplete>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>In progress</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>High</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>Response Time</milestoneName>
+        <minutesToComplete>240</minutesToComplete>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>In progress</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Priority</field>
+            <operation>equals</operation>
+            <value>Medium</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>Response Time</milestoneName>
+        <minutesToComplete>480</minutesToComplete>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <name>Premier Support</name>
+    <versionMaster>552260000008P1A</versionMaster>
+    <versionNotes>Updated Minutes To Complete Milestone for Response Time</versionNotes>
+    <versionNumber>3</versionNumber>
+</EntitlementProcess>

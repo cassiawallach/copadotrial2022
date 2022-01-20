@@ -1,0 +1,11 @@
+<aura:component >
+	<aura:registerEvent name="stepChange" type="c:cps_wizard_stepChange"/>
+    
+    <div>
+    	<h1>Ready to enjoy Copado?</h1>
+        <h2>Start by creating your first playground</h2>
+        <img src="{! $Resource.cps_assets + '/Assets/welcome.png' }" />
+        <c:cps_Button id="welcomeCreatePlayground" onclick="{! c.goToCreationPage }">Create Playground</c:cps_Button>
+    </div>
+    
+</aura:component>

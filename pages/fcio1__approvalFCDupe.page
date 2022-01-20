@@ -1,0 +1,42 @@
+<apex:page sidebar="false"  setup="false" standardController="fcio1__Fullcast_Dupe_Action__c" extensions="fcio1.FullcastDupeController" lightningStylesheets="true">   
+    <apex:slds />	
+    <apex:form >
+        
+        <apex:pageBlock title="Please Select the Accounts to Merge">
+			
+			<apex:pageMessages id="showmsg"></apex:pageMessages>
+			
+            <apex:pageBlockSection title="Master Record Details">                               
+                <apex:pageBlockTable value="{!masterforQuery}" var="displaydata">
+                    <apex:repeat value="{!fieldApiName}" var="displayfieldname">                  
+                        <apex:column value="{!displaydata[displayfieldname]}"/>                    
+                    </apex:repeat>        
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            
+						
+            <apex:pageBlockSection title="Please Select Below Duplicate Records for Merging">          
+                <apex:pageBlockTable value="{!wrapDataList}" var="displaydata2">  
+                   <apex:column headervalue="Exclude">
+                   <apex:inputcheckbox value="{!displaydata2.isCheck}"/>
+                   </apex:column>						
+                   <apex:repeat value="{!fieldApiName}" var="displayfieldname2">                    
+                      <apex:column value="{!displaydata2.Data[displayfieldname2]}"/> 					  
+                   </apex:repeat>                        
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+			
+            <br></br>
+            <br></br>
+    		Please add 'Approved' to approve the merging of above records in the following box. <br></br> 
+			<br></br>  
+			<apex:inputText id="it" value="{!txt}"> 
+                 <apex:actionSupport event="onkeyup" reRender="commandButtonPanel" status="status"/>
+            </apex:inputText>
+			<br></br>
+			 <apex:outputPanel id="commandButtonPanel">
+			<apex:commandButton value="Merge" disabled="{!Not(Lower(txt)=='approved')}" action="{!approveMerge}" rerender="showmsg" />
+			 </apex:outputPanel>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

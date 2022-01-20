@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Post in Chatter that the US is ready to test in Staging</description>
+        <name>Staging_QA_Status</name>
+        <label>Staging QA Status</label>
+        <locationX>264</locationX>
+        <locationY>551</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <connector>
+            <targetReference>Loop_QA_Engineer_Members</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>@[{!Loop_QA_Engineer_Members.copado__Member__c}] The US is currently in Staging</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>52.0</apiVersion>
+    <description>Notify the QA Eng that a US change the environment to Staging</description>
+    <interviewLabel>Notify QA Engineer User Story Staging {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Notify QA Engineer User Story Staging</label>
+    <loops>
+        <name>Loop_QA_Engineer_Members</name>
+        <label>Loop QA Engineer Members</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <collectionReference>Get_QA_Member</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Staging_QA_Status</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_QA_Member</name>
+        <label>Get QA Member</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_QA_Engineer_Members</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>copado__Team__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.copado__Team__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>copado__Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>QA Engineer</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>copado__Team_Member__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>copado__Member__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_QA_Member</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>copado__Environment__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>a0t0N00000NtWn4QAF</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>copado__Team__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>copado__Environment__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>copado__User_Story__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

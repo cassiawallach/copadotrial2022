@@ -1,0 +1,67 @@
+<apex:page controller="chargebeeapps.UpdatePaymentMethod" action="{!check}"  id="thepage" docType="html-5.0"  tabStyle="chargebeeapps__CB_Subscription__c" >  
+	<apex:stylesheet value="{!URLFOR($Resource.chargebeeapps__CB_LAYOUT)}"/>
+    <style>
+        .btnDisabled{
+        	pointer-events:none !important;
+        }
+        .api-error{
+            padding: 10px !important;
+            border: 1px solid #ff0000 !important;
+            border-radius: 7px;
+            background: #ffcfcf;
+        }
+    </style>
+    <div class="cb-layout">
+        <apex:sectionHeader title="Customer" subtitle="Customer Payment Method Update" /> 
+        <apex:form id="theform">
+            <apex:pageBlock id="pb1" rendered="{!(now==null)}">
+                <Apex:pageBlockSection title="Request payment method"  collapsible="False"/>
+                <table cellspacing="8">
+                    <tr>
+                        <td>
+                            <apex:outputLabel >To Address : </apex:outputLabel>
+                        </td>
+                        <td>
+                            <apex:outputLabel >{!email}</apex:outputLabel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputLabel >Subject :</apex:outputLabel>
+                        </td>
+                        <td>
+                            <apex:inputTextarea rows="2" cols="60" value="{!subject}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputLabel >Message : </apex:outputLabel>
+                        </td>
+                        <td>
+                            <table cellpadding="0" cellspacing="0" border="0">
+                                <tr><td><apex:inputTextarea rows="5" cols="60" value="{!preMessage}"/></td></tr>
+                                <tr><td><apex:outputLabel > Link </apex:outputLabel></td></tr>
+                                <tr><td><apex:inputTextarea rows="5" cols="60" value="{!postMessage}"/></td></tr>          
+                            </table>
+                        </td>
+                    </tr>     
+                    <tr>
+                        <td>
+                            <apex:commandButton value="Request payment method from customer" styleClass="{!if(btnDisabled,'btnDisabled','')}" id="sendButton" onclick="this.classList.add('btnDisabled');updatePayment();return false;" action="{!send}"/>
+                            <apex:actionFunction id="updatePayment" action="{!send}" name="updatePayment" reRender="sendButton,pb4"/>
+                        </td>
+                        <td>
+                            <apex:commandButton value="Cancel" id="cancelButton" action="{!back}" />
+                        </td>
+                    </tr>
+                </table>
+            </apex:pageBlock>
+            <apex:pageBlock id="pb4">
+            	<apex:outputPanel styleClass="api-error" rendered="{!if(error != null,true,false)}">Error :{!error}</apex:outputPanel>
+            </apex:pageBlock>
+            <apex:pageBlock rendered="{!(now!=null)}">
+                <apex:commandButton value="Back" action="{!back}" />
+            </apex:pageBlock>
+        </apex:form>
+    </div>
+</apex:page>

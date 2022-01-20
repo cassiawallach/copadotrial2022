@@ -1,0 +1,430 @@
+<apex:page standardStylesheets="false" showHeader="false" standardController="amc__Billing_Event__c" extensions="amc.InvoiceExt" renderAs="PDF">
+    <apex:stylesheet value="{!URLFOR($Resource.amc__assets, '/styles/invoice.css')}"/>
+    <!-- These styles will get transferred to the static resource after dev -->
+    <div class="footer-center">
+        <apex:image rendered="{!NOT(docSettings.removeLogo)}" value="{!URLFOR($Resource.amc__assets, '/images/MissionControl_H_web.png')}" height="60"/>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <apex:image value="{!imageURl}" width="{!imageWidth}px"/>
+            </div>
+            <div class="header-right">
+                <h1>{!IF(amc__Billing_Event__c.amc__Type__c='Invoice', docSettings.invoiceName, docSettings.creditName)}</h1>
+                <div class="address-right">
+                    <apex:outputPanel rendered="{!companyInfo.name!=null}">
+                        {!companyInfo.name}<br/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!companyInfo.street!=null}">
+                        {!companyInfo.street}<br/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!companyInfo.city!=null}">
+                        {!companyInfo.city}<br/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!companyInfo.state!=null}">
+                        {!companyInfo.state}<br/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!companyInfo.postCode!=null}">
+                        {!companyInfo.postCode}<br/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!companyInfo.country!=null}">
+                        {!companyInfo.country}<br/>
+                    </apex:outputPanel>
+                    <p>{!docSettings.businessNumber}</p>
+                </div>
+            </div>
+        </div>
+        <div class="client-address">
+            <apex:outputPanel rendered="{!billingContact.Name!=null}">
+                {!billingContact.Name}<br />
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!billingAccount.Name!=null}">
+                {!billingAccount.Name}<br />
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!billingAccount.BillingStreet!=null}">
+                {!billingAccount.BillingStreet}<br />
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!billingAccount.BillingCity!=null}">
+                {!billingAccount.BillingCity}<br />
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!billingAccount.BillingState!=null}">
+                {!billingAccount.BillingState}<br />
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!billingAccount.BillingPostalCode!=null}">
+                {!billingAccount.BillingPostalCode}<br />
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!billingAccount.BillingCountry!=null}">
+                {!billingAccount.BillingCountry}<br />
+            </apex:outputPanel>
+        </div>
+        <div class="billing-details">
+            <table>
+                <apex:repeat value="{!billingDetails}" var="b">
+                    <tr>
+                        <td class="title">
+                            {!b.label}
+                        </td>
+                        <td class="value">
+                            {!b.value}
+                        </td>
+                    </tr>
+                </apex:repeat>
+            </table>
+        </div>
+        <div class="line-items">
+            <table cellpadding="5" cellspacing="0">
+                <tr class="line-bottom">
+                    <td class="title align-left vertical-bottom">
+                        <apex:outputPanel rendered="{!NOT(fields.descriptionHidden)}">
+                            {!labels.description}
+                        </apex:outputPanel>
+                    </td>
+                    <td class="title totals">
+                        {!labels.amount}<br/>
+                        ({!labels.exc} {!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Tax_Label__c})
+                    </td>
+                </tr>
+                <apex:repeat value="{!items}" var="i">
+                    <tr class="vertical-top">
+                        <td class="align-left">
+                            <apex:outputPanel rendered="{!NOT(fields.descriptionHidden)}">
+                                <apex:outputText escape="false" value="{!i.description}" />
+                            </apex:outputPanel>
+                        </td>
+                        <td>
+                            <span>{!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Symbol__c}</span>
+                        <apex:outputText value="{0, number, #,##0.00}">
+                            <apex:param value="{!i.billingEventItem.amc__Amount__c}"/>
+                        </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:repeat>
+                <tr class="line-top">
+                    <td class="title">
+                        {!labels.subTotalExc} {!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Tax_Label__c} ({!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Code__c})
+                    </td>
+                    <td>
+                        <span>{!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Symbol__c}</span>
+                        <apex:outputText value="{0, number, #,##0.00}">
+                            <apex:param value="{!amc__Billing_Event__c.amc__Amount__c}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">
+                        {!labels.plus} {!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Tax_Label__c} ({!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Code__c})
+                    </td>
+                    <td>
+                        <span>{!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Symbol__c}</span>
+                        <apex:outputText value="{0, number, #,##0.00}">
+                            <apex:param value="{!amc__Billing_Event__c.amc__Tax_Amount__c}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">
+                        {!labels.totalInc} {!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Tax_Label__c} ({!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Code__c})
+                    </td>
+                    <td>
+                        <span>{!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Symbol__c}</span>
+                        <apex:outputText value="{0, number, #,##0.00}">
+                            <apex:param value="{!amc__Billing_Event__c.amc__Total_Amount__c}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+                    <tr class="line-bottom">
+                        <td class="title">
+                            {!labels.amountPaid} ({!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Code__c})
+                        </td>
+                        <td>
+                            <span>{!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Symbol__c}</span>
+                            <apex:outputText value="{0, number, ###,##0.00}">
+                                <apex:param value="{!amc__Billing_Event__c.amc__Total_Paid__c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title">
+                            {!labels.balanceDue} ({!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Code__c})
+                        </td>
+                        <td>
+                            <span>{!amc__Billing_Event__c.Project__r.Tax_Label__r.amc__Currency_Symbol__c}</span>
+                            <apex:outputText value="{0, number, #,##0.00}">
+                                <apex:param value="{!amc__Billing_Event__c.amc__Total_Outstanding__c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+            </table>
+        </div>
+        <div class="notes">
+            <p><apex:outputText escape="false" value="{!docSettings.footerNotes}"/></p><br/>
+            <p><apex:outputText escape="false" value="{!customFooterField1Value}" rendered="{!NOT(fields.customFooterField1Hidden)}"/></p>
+        </div>
+    </div>
+    <apex:outputPanel styleClass="log-container" layout="block" rendered="{!showTimelogs}">
+        <div class="header">
+            <div class="header-left">
+                <h1>Time Log Summary</h1>
+                <p>
+                    <span class="appendix-title">
+                        {!labels.invoiceNumber}
+                    </span>
+                    <span class="value">
+                        {!amc__Billing_Event__c.amc__Invoice_Number__c}
+                    </span>
+               </p> 
+            </div>
+            <div class="header-right">
+                <apex:image value="{!imageURl}" width="{!imageWidth}px"/>
+            </div>
+        </div>
+        <table class="appendix-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <th>
+                    Milestone/<br/>
+                    Action
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Resource
+                </th>
+                <th>
+                    Notes
+                </th>
+                <th>
+                    Hours
+                </th>
+                <th>
+                    Amount
+                </th>
+            </tr>
+            <apex:repeat value="{!timelogs}" var="w">
+                <tr>
+                    <td colspan="6">
+                        {!w.milestoneName}<br/>
+                        {!w.name} {!w.actionName} ( {!w.ownerName}{!w.skillName} )
+                    </td>
+                </tr>
+                <apex:repeat value="{!w.timelogs}" var="t">
+                    <tr>
+                        <td>
+                            <!-- blank -->
+                        </td>
+                        <td>
+                            <apex:outputField value="{!t.amc__Date__c}"/>
+                        </td>
+                        <td style="white-space:nowrap">
+                            <apex:outputField value="{!t.Project_Member__r.Name}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="{!t.amc__Time_Log_Notes_RT__c}" escape="false"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="{!t.amc__Hours_Completed__c}"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!t.amc__Hours_Completed_Value_Billable__c}"/>
+                        </td>
+                    </tr>
+                </apex:repeat>
+            </apex:repeat>
+            <tr class="top-border">
+                <td>
+                    <!-- blank -->
+                </td>
+                <td>
+                    <!-- blank -->
+                </td>
+                <td>
+                    <!-- blank -->
+                </td>
+                <td class="appendix-total">
+                    <span>Total</span>
+                </td>
+                <td>
+                    <span class="title">{!timelogTotal}</span>
+                </td>
+                <td style="white-space: nowrap">    
+                    <span>{!Billing_Event__c.Project__r.Tax_Label__r.Currency_Symbol__c}</span>
+                    <apex:outputText value="{0, number, #,##0.00}">
+                        <apex:param value="{!timeLogTotalValue}"/>
+                    </apex:outputText>
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>
+    <!-- Non Billable -->
+    <apex:outputPanel styleClass="log-container" layout="block"  rendered="{! AND(showNonBillable, showTimelogs)}">
+        <div class="header">
+            <div class="header-left">
+                <h1>Non Billable Time Log Summary</h1>
+                <p>
+                    <span class="appendix-title">
+                        {!labels.invoiceNumber}
+                    </span>
+                    <span class="value">
+                        {!amc__Billing_Event__c.amc__Invoice_Number__c}
+                    </span>
+            </p> 
+            </div>
+            <div class="header-right">
+                <apex:image value="{!imageURl}" width="{!imageWidth}px"/>
+            </div>
+        </div>
+        <table class="appendix-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <th>
+                    Milestone/<br/>
+                    Action
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Resource
+                </th>
+                <th>
+                    Notes
+                </th>
+                <th>
+                    Hours
+                </th>
+                <th>
+                    Amount
+                </th>
+            </tr>
+            <apex:repeat value="{!timelogsNon}" var="w">
+                <tr>
+                    <td colspan="6">
+                        {!w.milestoneName}<br/>
+                        {!w.name} {!w.actionName} ( {!w.ownerName}{!w.skillName} )
+                    </td>
+                </tr>
+                <apex:repeat value="{!w.timelogs}" var="t">
+                    <tr>
+                        <td>
+                            <!-- blank -->
+                        </td>
+                        <td>
+                            <apex:outputField value="{!t.amc__Date__c}"/>
+                        </td>
+                        <td style="white-space:nowrap">
+                            <apex:outputField value="{!t.Project_Member__r.Name}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="{!t.amc__Time_Log_Notes_RT__c}" escape="false"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="{!t.amc__Hours_Completed__c}"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!t.amc__Hours_Completed_Value_Billable__c}"/>
+                        </td>
+                    </tr>
+                </apex:repeat>
+            </apex:repeat>
+            <tr class="top-border">
+                <td>
+                    <!-- blank -->
+                </td>
+                <td>
+                    <!-- blank -->
+                </td>
+                <td>
+                    <!-- blank -->
+                </td>
+                <td class="appendix-total">
+                    <span>Total</span>
+                </td>
+                <td>
+                    <span class="title">{!timelogTotalNon}</span>
+                </td>
+                <td style="white-space: nowrap">    
+                    <span>{!Billing_Event__c.Project__r.Tax_Label__r.Currency_Symbol__c}</span>
+                    <apex:outputText value="0.00"/>
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>
+    <apex:outputPanel styleClass="exp-container" layout="block" rendered="{!showExpenses}">
+        <div class="header">
+            <div class="header-left">
+                <h1>Expense Summary</h1>
+                <p>
+                    <span class="appendix-title">
+                        {!labels.invoiceNumber}
+                    </span>
+                    <span class="value">
+                        {!amc__Billing_Event__c.amc__Invoice_Number__c}
+                    </span>
+               </p> 
+            </div>
+            <div class="header-right">
+                <apex:image value="{!imageURl}" width="{!imageWidth}px"/>
+            </div>
+        </div>
+        <table class="appendix-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <th>
+                    Expense
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Notes
+                </th>
+                <th>
+                    Amount Claimed
+                </th>
+            </tr>
+            
+            <apex:repeat value="{!expenses}" var="e">
+                <tr>
+                    <td>
+                        <apex:outputField value="{!e.Name}"/>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!e.amc__Category__c}"/>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!e.amc__Date__c}"/>
+                    </td>
+                    <td>
+                        <apex:outputText value="{!e.amc__Expense_Notes_RT__c}" escape="false"/>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!e.amc__Converted_Amount__c}"/>
+                    </td>
+                </tr>
+            </apex:repeat>
+            <tr class="top-border">
+                <td>
+                    <!-- blank -->
+                </td>
+                <td>
+                    <!-- blank -->
+                </td>
+                <td>
+                    <!-- blank -->
+                </td>
+                <td class="appendix-total">
+                    <span>Total Amount Claimed</span>
+                </td>
+                <td>
+                    <span class="title">
+                        <span>{!Billing_Event__c.Project__r.Tax_Label__r.Currency_Symbol__c}</span>
+                        <apex:outputText value="{0, number, #,##0.00}">
+                            <apex:param value="{!expenseTotal}"/>
+                        </apex:outputText>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>
+</apex:page>

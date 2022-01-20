@@ -1,0 +1,50 @@
+.THIS .slds-box {
+    background-color: #FFF;
+}
+.THIS .stepExecutionRow {
+  display: flex;
+  min-height: 18px;
+}
+
+
+.THIS .status {
+  width: 20px;
+  margin-right: 4px;
+}
+.THIS .status i {
+  text-align: center;
+  color: #3e3e3c;
+}
+
+.THIS .spinner {
+  height: 12px;
+  width: 12px;
+  margin: 4px 0 0 -1px;
+  border-radius: 100%;
+  border-left: 2px solid rgb(180, 213, 254);
+  animation-name: spin;
+  animation-duration: 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.THIS p {
+  padding-top: 1px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.58;
+  letter-spacing: normal;
+}
+.THIS .retryIcon {
+  text-decoration:none;
+  margin-left: 4px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

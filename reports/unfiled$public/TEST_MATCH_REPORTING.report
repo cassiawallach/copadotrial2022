@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_MatchingResult__c.TRIMDA__Account1__c</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_MatchingResult__c.TRIMDA__Account2__c</field>
+    </columns>
+    <columns>
+        <field>CUST_ID</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_MatchingResult__c.TRIMDA__ExternalRefId__c</field>
+    </columns>
+    <columns>
+        <field>TRIMDA__TRIMDA_MatchingResult__c.TRIMDA__Same_Country__c</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Tabular</format>
+    <name>TEST - MATCH REPORTING</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$TRIMDA__TRIMDA_MatchingResult__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>TRIMDA__TRIMDA_MatchingResult__c.TRIMDA__Match_Found_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

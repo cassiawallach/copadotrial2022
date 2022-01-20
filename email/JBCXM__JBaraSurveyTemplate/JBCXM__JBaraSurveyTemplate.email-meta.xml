@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Gainsight Survey Template</name>
+    <style>none</style>
+    <subject>Survey Template</subject>
+    <textOnly>Hello {!JBCXM__SurveyParticipant__c.JBCXM__DisplayName__c},
+
+Can you please respond on the link below:
+{!JBCXM__SurveyParticipant__c.JBCXM__SurveyURL__c}?surveyId={!JBCXM__SurveyParticipant__c.JBCXM__SurveyId__c}&amp;participantId={!JBCXM__SurveyParticipant__c.JBCXM__Token__c}
+
+Thank You
+{!JBCXM__SurveyParticipant__c.OwnerFirstName}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

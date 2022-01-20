@@ -1,0 +1,53 @@
+<aura:component description="Signup Request Form" controller="newTrialSignupController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:attribute name="user" type="Object" />
+    <aura:attribute name="domain" type="String"/>
+    <aura:attribute name="username" type="String"/>
+    
+    <div class="cCps_wizard">
+
+        <div id="progressIndicator">
+            <lightning:progressIndicator currentStep="Start" type="base" hasError="false" variant="base">
+                <lightning:progressStep label="Start" value="Start"/>
+                <lightning:progressStep label="Trial Org Created" value="TrialOrgCreated"/>
+                <lightning:progressStep label="Create Playground" value="Create Playground"/>
+            </lightning:progressIndicator>
+        </div>
+
+        <c:cps_wizard_body>
+            <div class="view-2 flex col">
+                <c:cps_wizard_heading id="header">Register now and for thirty-day evaluation of Copado.</c:cps_wizard_heading>
+            </div>
+            <br />
+            <form class="slds-form slds-form_compound slds-p-horizontal_small">
+                <lightning:layout>
+                    <lightning:layoutItem flexibility="auto" size="4" padding="around-small">
+                        <lightning:input label="First Name" name="firstName" value="{!v.user.FirstName}" readonly="true" class="slds-form-element"/>
+                        <lightning:input label="Last Name" name="lastName" value="{!v.user.LastName}" readonly="true" class="slds-form-element" />
+                        <lightning:input type="email" label="Email Address" name="email" value="{!v.user.Email}" readonly="true" class="slds-form-element" />
+                        <lightning:input label="Company" name="company" value="{!v.user.CompanyName}" readonly="true" class="slds-form-element" />
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem flexibility="auto" size="8" padding="around-small">
+                        <div>
+                            <abbr class="slds-required" title="required">*</abbr>
+                            <label class="slds-form-element__label" style="margin-right: 0.5rem;">Username (sually your email): You can add a suffix to your email, e.g. 'John.Doe@copado.com.training'.</label>
+                            <lightning:helptext content="The Username is Salesforce must be unique and take the form of an email address.  Most users will select their email and add a suffix to the end of it. For example: 'John.Doe@copado.com' becomes 'John.Doe@copado.com.training'. " />
+                            <lightning:input aura:id="signupRequestForm" variant="label-hidden" name="username" value="{!v.username}" placeholder="{!v.user.Email}" required="true" class="slds-form-element" />
+                        </div>
+                        <div>
+                            <label class="slds-checkbox__label" for="chkPrivacy">
+                                <span class="slds-form-element__label">
+                                    Please read the <a href="https://copado.com/company-legal-agreements/" target="_blank">Global Master Services Agreement</a> and check the below checkbox if you agree to share your details with Copado.
+                                </span>
+                                <lightning:input type="checkbox" aura:id="signupRequestForm" name="privacyPolicy" checked="false" required="true" label="I agree" />
+                            </label>
+                        </div>
+                        <lightning:button label="Submit" class="slds-m-top--medium" variant="brand" onclick="{!c.submitSignupRequest}" disabled="false" name="nextBtn" aura:id="nextBtn" />
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </form>
+            
+        </c:cps_wizard_body>
+    </div>
+</aura:component>

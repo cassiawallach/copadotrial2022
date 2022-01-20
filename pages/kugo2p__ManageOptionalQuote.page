@@ -1,0 +1,31 @@
+<apex:page standardController="kugo2p__SalesQuote__c"
+    title="Manage Lines | Kugamon"
+    applyBodyTag="false"
+    sidebar="false"
+    docType="html-5.0" language="en-US">
+ 
+	<script>
+        // get the id of the quote record    
+        var quoteId = "{!JSENCODE(kugo2p__SalesQuote__c.Id)}";    
+        var discountPercent = "{!kugo2p__SalesQuote__c.kugo2p__DiscountPercent__c}"; 
+        /* Core changes BEGIN 11/18/2019 - remove line that's setting discount value to 2 fixed decimal points, discount percent should be passed in without being changed */
+        //discountPercent = discountPercent == '' ? '' : Number(discountPercent).toFixed(2);        
+        /* Core changes END 11/18/2019 */
+
+        var pricebookName = "{!JSENCODE(kugo2p__SalesQuote__c.kugo2p__PriceBookName__c)}";
+
+        const appName = 'ManageLinesContainerApp';
+        const cmpName = 'ManageLinesContainer';
+        const cmpParams = {
+		                    isModal: true,
+		                    objectName: 'Quote',
+		                    objectIconName: 'custom:custom84', // custom "quote" icon
+		                    recordId: quoteId,
+		                    discountPercent: discountPercent,
+		                    pricebookName: pricebookName,
+		                    selectedView: "optionalLines",                        
+                    	};
+    </script>
+
+    <c:BaseLightningOut />
+</apex:page>

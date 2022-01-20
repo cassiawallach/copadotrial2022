@@ -1,0 +1,51 @@
+<!-- *****************************************************************************************************************************************
+*    Name:        		ManageLinesPriceBook
+*    
+*    Description:       This page is used to Choose a new Price Book for an Opportunity 
+*
+*   Page History:       Created by Kiran Kurella July 22nd 2014
+*
+*   Copyright 2014 Kugamon.  All rights reserved.
+***************************************************************************************************************************************** -->
+
+<apex:page standardController="Opportunity" extensions="kuga_sub.ManageLinesPriceBookExt">
+    <apex:pageMessages />
+    <apex:form rendered="{!NOT(ISNULL(Opp.Id))}">
+        <apex:sectionHeader title="Choose Price Book for " subTitle="{!Opp.Name}" help="/help/doc/user_ed.jsp?loc=help&target=products_pricebook.htm&section=Products&instance=NA11&release=180.10.2"/>
+        <div style="text-align:left;font-size:13px;">
+            <p style="line-hight:20px;">Select a price book for this opportunity. You can add products only from a single price book. Changing a selected price book will delete all existing products from this opportunity. </p>
+        </div>
+        <apex:outputPanel rendered="false">
+        	<apex:outputField value="{!Opportunity.Name}" />
+        	<apex:outputField value="{!Opportunity.Pricebook2Id}" />
+        </apex:outputPanel>
+        
+        <apex:pageBlock mode="edit" title="Choose Price Book">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!save}" value="Save" status="saveStatus"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+                
+                <apex:actionStatus id="saveStatus">
+			        <apex:facet name="start">
+			            <apex:outputPanel >&nbsp;
+		        			<img src="/img/loading.gif" />
+			        		&nbsp;Saving...
+		        		</apex:outputPanel>
+			        </apex:facet>
+			        <apex:facet name="stop">
+			            <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" />
+			        </apex:facet>
+				</apex:actionStatus>			                     
+            </apex:pageBlockButtons>
+        
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Price Book" />
+                    <apex:selectList value="{!Opp.Pricebook2Id}" size="1">
+                        <apex:selectOptions value="{!PricebookOptions}" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

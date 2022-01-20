@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Opportunity.Id:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Opps</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_40991710</developerName>
+        <masterLabel>Discount Range</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__TotalDiscountRate__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>-1</to>
+            </sourceValues>
+            <value>markup</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>-1</from>
+                <to>0</to>
+            </sourceValues>
+            <value>0%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>0</from>
+                <to>15</to>
+            </sourceValues>
+            <value>1-15%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>15</from>
+                <to>30</to>
+            </sourceValues>
+            <value>16-30%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>30</from>
+                <to>40</to>
+            </sourceValues>
+            <value>31-40%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>40</from>
+                <to>50</to>
+            </sourceValues>
+            <value>41-50%</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>50</from>
+            </sourceValues>
+            <value>50+%</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_65391594</developerName>
+        <masterLabel>Licensing Model</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ProductName__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Branch Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Agile Delivery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Change Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Branch Management (DUP)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Selenium Minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Selenium User</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Compliance Hub Package</sourceValue>
+            </sourceValues>
+            <value>Legacy</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Standard Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Professional Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Admin</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado User</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>DevOps360</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Stream Mapping</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Advanced Data Deployer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Relay Tunnel</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Additional Production Instance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Guest User</sourceValue>
+            </sourceValues>
+            <value>Current</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_70328568</developerName>
+        <masterLabel>List Total (bucket)</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ListTotal__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>10,000</to>
+            </sourceValues>
+            <value>0-10K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>10,000</from>
+                <to>15,000</to>
+            </sourceValues>
+            <value>10K-15K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>15,000</from>
+                <to>20,000</to>
+            </sourceValues>
+            <value>15K-20K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>20,000</from>
+                <to>25,000</to>
+            </sourceValues>
+            <value>20K-25K</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>25,000</from>
+            </sourceValues>
+            <value>25K+</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_17457504</developerName>
+        <masterLabel>Opp Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity$StageName</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Pipeline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Prospecting</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trial</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Proposition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Demo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation/Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Procurement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Suspend</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Best Case</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation CS</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Commit</sourceValue>
+            </sourceValues>
+            <value>Open</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <value>Closed Lost</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <value>Closed Won</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_88358636</developerName>
+        <masterLabel>Opp Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Opportunity$Type</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <value>New</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>Expansion</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <value>Renewal</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA1</column>
+        </chartSummaries>
+        <chartType>VerticalColumnStacked</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>Opportunity.SBQQ__Quotes2__r$SBQQ__Primary__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>CDF1</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>Opportunity$Type</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ProductName__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__ListTotal__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__NetTotal__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity$StageName</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Account.Vertical__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Account.X6s_Industry__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Account</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner.Manager</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__TotalDiscountRate__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity$CloseDate</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$PS_CPQ_Term_in_Months__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$PS_CPQ_Term_in_Months__c</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>if(or(SBQQ__QuoteLine__c.SBQQ__ProductName__c=&quot;DevOps360&quot;,SBQQ__QuoteLine__c.SBQQ__ProductName__c=&quot;DevOps 360 Analytics&quot;,SBQQ__QuoteLine__c.SBQQ__ProductName__c=&quot;Value Stream Mapping&quot;),1,0)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>DevOps + VSM</label>
+        <scale>0</scale>
+    </customDetailFormulas>
+    <description>Quote Created Date Starting June 1st 2020</description>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity$StageName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Marketing Qualification,Pipeline,Discovery,Prospecting,Solution Alignment,Trial,Solution Validation,Value Proposition,Demo,Formal Proposal,Negotiation/Review,Procurement,Negotiation,Signed Contract Received,Closed Won,Closed Suspend,Closed Lost,Fully Paid,Best Case,Negotiation CS,Commit</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>TEST</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_17457504</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>CDF1</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.SBQQ__Quotes2__r$SBQQ__Primary__c</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_88358636</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Quoting Analysis - DevOps + VSM</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Quotes_with_Quote_Lines_and_Opportunity__c</reportType>
+    <roleHierarchyFilter>System_Administrator</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity.SBQQ__Quotes2__r$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2020-06-01</startDate>
+    </timeFrameFilter>
+</Report>

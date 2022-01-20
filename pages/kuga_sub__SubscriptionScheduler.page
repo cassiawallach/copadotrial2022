@@ -1,0 +1,44 @@
+<apex:page id="SubscriptionScheduler"
+		   standardController="kugo2p__KugamonSetting__c"
+           title="Subscription Scheduler | Kugamon"
+           applyBodyTag="false"
+           sidebar="false"
+           docType="html-5.0">
+
+	<apex:slds />
+    <apex:includeLightning />
+
+    <div id="componentContainer" class="slds-scope">
+        <div id="spinner">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div>
+
+	<!-- Window Resize handler function -->
+	<c:ResponsiveWindow />
+
+    <script>
+        // create component on page
+        //debugger;
+        $Lightning.use(namespace + ":SubscriptionSchedulerApp", function() {
+            $Lightning.createComponent(namespace + ":SubscriptionScheduler",
+                {
+                	recordId: "{!JSENCODE(kugo2p__KugamonSetting__c.Id)}",
+                    isModal: true
+                },
+                "componentContainer",
+                function(cmp, status, errorMsg) {
+                    document.getElementById('spinner').style.display = 'none';
+	                if ('SUCCESS' != status) {
+                        document.getElementById('spinner').innerHTML = 'Failed to load Kugamon lightning component.';
+	                }
+                }
+            );
+        });
+    </script>
+
+</apex:page>

@@ -1,0 +1,1 @@
+{"data":[{"id":"personal","type":"teams","attributes":{"name":"personal","account-balance":"0.00","permissions":["designs","email_fine_print","logos","salesforce"]}},{"id":"sandbox","type":"teams","attributes":{"name":"sandbox","account-balance":"-128265.00}}]}

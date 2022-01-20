@@ -1,0 +1,151 @@
+<apex:component >
+    <div id="header">
+        <a id="logo" rel="home" title="Home" href="/cms/Home">
+            <img alt="Home" src="{!URLFOR($Resource.WebsitePack, '/Images/CopadoLogo.png')}"/>
+        </a>
+        <div class="login"> </div>
+        <div class="region region-header" >
+            <div id="block-block-2" class="block block-block first last odd">
+                <div class="menu">
+                    <ul>
+                        <li>
+                            <a class="fancybox" onclick="" href="https://appexchange.salesforce.com/listingDetail?listingId=a0N3000000B3dgGEAR">Visit the AppExchange</a>
+                        </li>
+                        <li>
+                            <a class="open_fancybox" href="#" rel="fancyboxtour">Take a tour</a>
+                        </li>
+                        <li>
+                            <a class="fancybox" onclick="" href="/cms/documentation">Documentation</a>
+                        </li>
+                        <li>
+                            <a class="fancybox" onclick="" href="/cms/pricing" >Pricing</a>
+                        </li>
+                        <li>
+                            <a class="fancybox" onclick="" href="/cms/about" >About</a>
+                        </li>
+                        <li>
+                            <a class="contactUsLnk" href="#theForm" >Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br style="clear:both;" />
+    </div>
+    <link rel="stylesheet" href="{!URLFOR($Resource.WebsitePack, '/fancybox/source/jquery.fancybox.css')}" type="text/css" media="screen" />
+    <script type="text/javascript" src="{!URLFOR($Resource.WebsitePack, '/fancybox/source/jquery.fancybox.pack.js')}"></script>
+    <script type="text/javascript" >
+        $(".contactUsLnk").fancybox({
+            'scrolling': 'no',
+            'titleShow': false,
+            'onClosed': function () {
+                $("#theForm").hide();
+            }
+        });
+        $(".open_fancybox").click(function() {
+            $.fancybox({
+                openEffect  : 'none',
+                closeEffect : 'none',
+                nextEffect  : 'none',
+                prevEffect  : 'none',
+                padding     : 10,
+                margin      : [20, 60, 20, 60]
+            });
+            $.fancybox.open([
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/1.png')}',                
+                    title : 'Create a deployment'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/2.png')}',                
+                    title : 'Select components to deploy - e.g. profiles'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/3.png')}',                
+                    title : 'Select components to deploy - e.g. translations'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/4.png')}',                
+                    title : 'Full user deployment with amendment of username suffix'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/5.png')}',                
+                    title : 'Step 2 review showing the order items will be deployed'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/6.png')}',                
+                    title : 'Easily search for MetaData components'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/7.png')}',                
+                    title : 'Deploy the selected components to 1 or more destination orgs'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/71.png')}',                
+                    title : 'Easily schedule deployments'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/8.png')}',                
+                    title : 'Use OAuth to Authenticate Orgs'
+                },
+                {
+                    href : '{!URLFOR($Resource.WebsitePack, '/TourSlides/9.png')}',                
+                    title : 'View and search Org differences & easily create a deployment with differences pre-selected'
+                }
+            ]);
+            return false;
+        });
+    </script>
+    <style>
+        .contactForm { 
+            width: 500px; 
+        }
+        .contactForm tr td {
+            vertical-align:top;
+        }
+        .contactForm tr td:first-child {
+            width: 30%;
+            font-weight: bolder;
+        }
+        .contactForm tr td:last-child {
+        }
+        .contactForm input, .contactForm textArea {
+            padding: 3px;
+            width: 350px;
+        }
+        .contactForm .btn {
+            width: 358px;
+        }
+    </style>
+    <div id="theForm" style="display:none;">
+        <div class="CopadoLogo"> </div>
+        <h1>Contact us</h1>
+        <form method="post" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8">
+            <table class="contactForm">
+                <tr>
+                    <td><label for="first_name">First Name</label></td>
+                    <td><input type="text" size="20" name="first_name" maxlength="40" id="first_name" /></td>
+                </tr>
+                <tr>
+                    <td><label for="last_name">Last Name</label></td>
+                    <td><input type="text" size="20" name="last_name" maxlength="80" id="last_name" /></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email</label></td>
+                    <td><input type="text" size="20" name="email" maxlength="80" id="email" /></td>
+                </tr>
+                <tr>
+                    <td><label for="description">Comments</label></td>
+                    <td><textarea name="description" rows="6" cols="23"></textarea></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" class="btn" name="submit" /></td>
+                </tr>
+            </table>
+            <input type="hidden" value="00Db0000000YN5R" name="oid" /> 
+            <input type="hidden" value="http://copado.force.com/cms/thankyou" name="retURL" />  
+            <input type="hidden" name="lead_source" id="lead_source" value="Web" />
+        </form>
+    </div>
+</apex:component>

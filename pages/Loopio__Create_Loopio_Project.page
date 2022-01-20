@@ -1,0 +1,9 @@
+<apex:page standardController="Opportunity" extensions="Loopio.LoopioPageController" >
+    <apex:outputPanel rendered="{!permitted}">
+    <iframe src='{!loopUrl}' width='100%' height='1000' frameBorder='0' />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!notPermitted}">
+        <h1>Sorry, you do not have access to the Loopio Plugin</h1>
+    </apex:outputPanel>
+   
+</apex:page>

@@ -1,0 +1,97 @@
+<apex:page showHeader="true" sidebar="true" controller="PaymentManagerController" tabStyle="Batch_Payment__c">
+	
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"/>
+	<script>
+		var $copado = jQuery.noConflict();
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+        var apexJobId = '{!apexJob.Id}';
+	</script>
+	<script src="/soap/ajax/32.0/connection.js"></script>
+
+	<apex:sectionHeader title="Copado Solutions" subtitle="Payment Manager" />
+	<apex:form >
+		<apex:pageMessages />
+		<apex:pageBlock title="" >
+			<apex:pageBlockButtons location="top" rendered="{!NOT(isProcessing)}">
+				<apex:commandButton value="Get Invoices" action="{!getInvoices}" rendered="{!NOT(hasBatchPaymentId)}"/>
+				<apex:commandButton value="Mark as Paid" action="{!markAsPaid}" rendered="{!hasBatchPaymentId}"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection collapsible="false" columns="1" rendered="{!AND(NOT(isProcessing),NOT(hasBatchPaymentId))}">
+				<apex:inputField value="{!batchPayment.Covering_Period_From__c}" />
+				<apex:inputField value="{!batchPayment.Covering_Period_To__c}" />
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="2" collapsible="false" rendered="{!hasBatchPaymentId}">
+				<apex:outputField value="{!batchPayment.Name}" />
+				<apex:outputField value="{!batchPayment.Status__c}" />
+				<apex:outputField value="{!batchPayment.Covering_Period_From__c}" />
+				<apex:outputField value="{!batchPayment.Amount__c}" />
+				<apex:outputField value="{!batchPayment.Covering_Period_To__c}" />
+			</apex:pageBlockSection>
+			<apex:pageBlockSection title="Salesforce.com Bank details" columns="1" collapsible="false" rendered="{!hasBatchPaymentId}">
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Remit To" />
+					<apex:outputText >
+						salesforce.com EMEA Limited<br />
+						Route de la Longeraie 9<br />
+						1110 Morges<br />
+						Switzerland
+					</apex:outputText>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Wire Transfer To" />
+					<apex:outputText >
+						Bank Name: Deutsche Bank AG London<br />
+						A/C Name: salesforce.com EMEA Limited<br />
+						Swift Code: DEUTGB2L<br />
+						Sort Code: 23-30-55<br />
+						A/C No: 26077700<br />
+						IBAN: GB48DEUT40508126077700
+					</apex:outputText>
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+
+			<apex:outputPanel rendered="{!isProcessing}">
+				<div id="loadingDiv"><center><img src="/img/loading.gif" /> <i>Loading...</i></center></div>
+				<script>
+					function checkStatus(){
+						var isComplete = false;
+						timer = setInterval(function(){
+							doStatusChecking();
+			            }, 3000);
+					}
+					function getBatchPayment(){
+						console.info('getting batch payment...');
+						var fd = '{!TEXT(batchPayment.Covering_Period_From__c)}';
+						var td = '{!TEXT(batchPayment.Covering_Period_To__c)}';
+						var result = sforce.connection.query("select Id, Name, Amount__c, Status__c, Payment_Date__c, Covering_Period_From__c, Covering_Period_To__c from Batch_Payment__c where Covering_Period_From__c="+fd+" and Covering_Period_To__c="+td+" and Status__c='Draft'");
+			            console.log(result);
+			            var records = result.getArray("records");
+			            console.log(records);
+			            if(records){
+			            	window.location.href = "/apex/PaymentManager?bpid="+records[0].Id;
+			            }
+					}
+					function doStatusChecking(){
+						console.info('checking status...');
+						var result = sforce.connection.query("SELECT Id, Status, JobItemsProcessed, TotalJobItems, NumberOfErrors FROM AsyncApexJob WHERE Id='"+apexJobId+"'");
+			            console.log(result);
+			            var records = result.getArray("records");
+			            console.log(records);
+			            if(records && records[0].Status=='Completed'){
+			            	console.info('hande query and redirect to result.');
+			            	clearInterval(timer);
+			            	getBatchPayment();
+			            }
+					}
+				</script>
+				<script>
+					var apexJobId = '{!apexJobId}';
+					console.log('job Id: '+apexJobId);					
+					checkStatus();
+				</script>
+			</apex:outputPanel>
+		</apex:pageBlock>
+	</apex:form>
+
+
+</apex:page>

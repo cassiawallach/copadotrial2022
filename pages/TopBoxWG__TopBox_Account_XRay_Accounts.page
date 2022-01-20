@@ -1,0 +1,47 @@
+<apex:page standardController="Account" showHeader="false" sidebar="false" >
+
+    <apex:slds />
+    
+    <div>
+        <div role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header slds-modal__header_empty"> </div>
+                <div class="slds-modal__content slds-p-around_medium slds-text-align_center" >
+                    <div id="Button">
+                        <p class="slds-m-vertical_medium">
+                            Please disable your popup blocker or click the button below to open TopBox
+                        </p>
+                        <a id="TheButton" href="https://clients.topboxtech.com/?{!Account.TopBoxWG__Account_TopBox_X_Ray__c}&SessionId={!$Api.Session_ID}&InstanceUrl={!$Api.Partner_Server_URL_360}&UserId={!$User.Id}"
+                           target="_blank" 
+                           class="slds-button slds-button_brand"
+                           onclick="backToRecord();"
+                           >Continue to TopBox</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+    
+    
+<script>
+    let uri = document.getElementById('TheButton').getAttribute('href');
+    console.log(uri);
+    let newWin = window.open(uri, "_blank");
+
+    if(!newWin || newWin.closed || typeof newWin.closed=='undefined')
+    {
+        console.log('blocked');
+    }else{
+        backToRecord();
+    }
+
+    function backToRecord () {
+        window.location = '/{!Account.Id}';
+    }
+    
+</script>
+    
+</apex:page>

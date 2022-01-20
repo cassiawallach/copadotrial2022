@@ -1,0 +1,837 @@
+<apex:page controller="kugo2p.PayPalARBTerminalController" tabStyle="kugo2p__Payment_Profile__c" extensions="kugo2p.KugamonARBTerminalControllerExt" id="terminalPage">
+
+<style>
+    .lock {
+        color : #545454 !important;
+    }
+
+    .btnReview {
+        background: #008cd1 !important; /* Old browsers */
+        background: -moz-linear-gradient(top,  #008cd1 0%, #01a5f8 100%) !important; /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008cd1), color-stop(100%,#01a5f8)) !important; /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* IE10+ */
+        background: linear-gradient(to bottom,  #008cd1 0%,#01a5f8 100%) !important; /* W3C */
+        //padding: 4px 10px !important;
+        padding: 2px 5px !important;
+        border: 1px solid #008dd4 !important;
+        -webkit-border-radius: 3px !important;
+        -moz-border-radius: 3px !important;
+        border-radius: 3px !important;
+        color: #fff !important;
+        font-weight: bold !important;
+        text-decoration: none !important;
+        vertical-align: middle !important;
+        font-size:11px !important;
+        height: 21px !important;
+    }
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<!-- <apex:sectionHeader title="Recurring Charge Terminal" subtitle="Set up a Recurring Charge Subscription" /> -->
+<c:PageHeader title="Recurring Charge Terminal" subtitle="Set up a Recurring Charge Subscription" pathname="custom" icon="custom46" description="" />
+<apex:pageMessages />
+
+<apex:form id="terminalForm">
+
+    <script language="javascript">
+        var isSameDaySubscription = false;
+    </script>
+    
+<apex:actionFunction name="nullAction" action="{!nullAction}" rerender="JSPanel" />
+<apex:actionFunction name="afCreateSubscription" action="{!createSubscription}" />
+
+<apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!transactionCompleted}" >
+    <br></br>
+    <apex:commandButton value="Back to Order" action="{!cancel}" styleClass="slds-button slds-button--brand" />
+    <apex:commandButton value="View Recurring Charge" action="{!gotoRecurringCharge}" styleClass="slds-button slds-button--neutral" />
+</apex:outputPanel>
+
+<apex:outputPanel id="JSPanel">
+    <script language="javascript">
+        // going to the server to handle various user Locales and date formats.
+        //debugger;
+        isSameDaySubscription = "{!isSameDaySubscription}";
+    </script>
+</apex:outputPanel>
+
+<apex:pageBlock title="Recurring Charges Payment Terminal" id="terminfo" mode="edit" rendered="{!NOT(transactionCompleted)}">
+
+    <div style="width: 100%; text-align: center; height: 24px;">
+        <apex:actionStatus id="formActionStatus">
+            <apex:facet name="start">
+                <apex:outputPanel >
+                    <apex:image value="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/icon-spinner.gif')}" style="vertical-align:middle;" alt="busy..." />
+                    &nbsp;Updating Page</apex:outputPanel>
+            </apex:facet>
+            <apex:facet name="stop">
+                <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" />
+            </apex:facet>
+        </apex:actionStatus>
+    </div>
+
+    <apex:pageBlockSection title="Processor Information" collapsible="false" columns="1">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="processor_connection">Processor Connection</apex:outputLabel>
+            <apex:selectList size="1" multiselect="false" value="{!processorConnectionId}" id="processor_connection">
+                <apex:actionSupport event="onchange" status="formActionStatus"/>
+                <apex:selectOptions id="processorOptions" value="{!processorConnectionOptions}" />
+            </apex:selectList>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem ><apex:outputText /></apex:pageBlockSectionItem>
+        
+        <apex:outputField id="account" value="{!ARBProfile.kugo2p__Account__c}"/>        
+        
+        <apex:outputField id="salesorder" value="{!ARBProfile.kugo2p__SalesOrder__c}"/>
+        
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="description">Description</apex:outputLabel>
+            <apex:inputField id="description" value="{!profile.kugo2p__Description__c}" style="width: 50%;height:50px;" />
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+
+    <apex:pageBlockSection title="Subscription Information" collapsible="false" columns="1" id="subscr_sec">
+        <apex:pageBlockSectionItem id="subscr_name_fld">
+            <apex:outputLabel for="subscr_name">Subscription Name</apex:outputLabel>
+            <apex:inputField value="{!profile.Name}" id="subscr_name" style="width:290px" styleClass="{!if($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.name)), 'lock', '')}"/>
+        </apex:pageBlockSectionItem>
+
+        <apex:inputField id="startDate" value="{!profile.kugo2p__Subscription_Start_Date__c}" onchange="nullAction();" styleClass="{!if($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.startDate)), 'lock', '')}" rendered="{!NOT(($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.startDate))))}" />
+        <apex:pageBlockSectionItem dataStyleClass="lock" rendered="{!($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.startDate)))}" >
+            <apex:outputLabel for="startDateOF1">Subscription Start Date</apex:outputLabel>
+            <apex:outputField id="startDateOF1" value="{!profile.kugo2p__Subscription_Start_Date__c}" label="Subscription Start Date" styleClass="lock" />
+        </apex:pageBlockSectionItem>
+        
+        <br/>
+        <apex:pageBlockSectionItem id="subscr_frequency_fld">
+            <apex:outputLabel for="subscr_frequency">Schedule Payments Every</apex:outputLabel>
+            <apex:outputPanel id="subscr_frequency_pnl">
+                <!-- <apex:inputText id="subscr_frequency" value="{!profile.kugo2p__Frequency__c}" style="width:35px;" styleClass="{!if($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.frequency)), 'lock', '')}"></apex:inputText>&nbsp; -->
+                <apex:inputField id="subscr_frequency" value="{!profile.kugo2p__Frequency__c}" onchange="convertToInt(this);AssignTrialFrequency();" onkeypress="return numberOnly(event);"
+                    style="width:35px;" styleClass="{!if($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.frequency)), 'lock', '')}"></apex:inputField>&nbsp;
+                <apex:selectList id="subscr_option" value="{!profile.kugo2p__Period__c}" size="1" disabled="{!($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.period)))}">
+                    <apex:selectOptions value="{!periodOptions}" />
+                </apex:selectList>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem id="user_total_occurrences_fld">
+            <apex:outputLabel for="user_total_occurrences">Total Occurrences</apex:outputLabel>
+            <apex:outputPanel id="user_total_occurrences_pnl">
+                <apex:inputText id="user_total_occurrences" style="width:35px;" onchange="convertToInt(this);calculateAmount();" onkeypress="return numberOnly(event);"
+                        styleClass="{!if($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.occurrences)), 'lock', '')}" />&nbsp;
+                <!-- <apex:commandButton value="Calculate" onclick="return false;" styleClass="btnImportant btnReview" /> -->
+                <apex:outputPanel styleClass="kugamon">
+                    <apex:commandButton value="Calculate" onclick="return false;" styleClass="slds-button" style="line-height:normal;text-decoration:none;"/>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem id="total_sub_amount_block">
+            <apex:outputLabel for="service_amount">Total Subscription Amount</apex:outputLabel>
+            <apex:outputText id="total_sub_amount_value" value="{!amount}" />
+        </apex:pageBlockSectionItem>
+        <br/>
+        
+        <apex:pageBlockSectionItem id="trial_amount_fld">
+            <apex:outputLabel for="trial_amount">First Charge Amount</apex:outputLabel>
+            <apex:inputField id="trial_amount" value="{!profile.kugo2p__Trial_Amount__c}" onchange="calculateFromFirstCharge()" style="width: 100px" styleClass="{!if($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.trialAmount)), 'lock', '')}" />
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem id="amount_fld">
+            <apex:outputLabel for="amount">Recurring Amount</apex:outputLabel>
+            <apex:inputField id="amount" value="{!profile.kugo2p__Amount__c}" onchange="calculateFromRecurring()" style="width: 100px" styleClass="{!if($CurrentPage.parameters.lock=='1' && NOT(ISNULL($CurrentPage.parameters.trialAmount)), 'lock', '')}" /> 
+        </apex:pageBlockSectionItem>
+        
+    </apex:pageBlockSection>
+    
+
+    <apex:pageBlockSection id="paymentTypeSection" title="Payment Information" columns="1" collapsible="false">
+        <apex:pageBlockSectionItem id="paymentTypeSI" rendered="{!paymentTypeOptions.size > 1}">
+            <apex:outputLabel for="paymentType" >Payment Type </apex:outputLabel>
+            
+            <apex:outputPanel layout="inline">
+            <table class="unformattedTable" >
+            <tr>
+            <td style="vertical-align:top;">
+                <!--             
+                <apex:selectList size="1" id="paymentType" value="{!paymentType}" >
+                    <apex:selectOptions value="{!paymentTypeOptions}" />
+                        <apex:actionSupport event="onchange" id="selectPaymentType" 
+                            action="{!paymentTypeChanged}" rerender="paymentTypeSection, paymentTypePanels, addresses, pageMessages" 
+                            status="paymentTypeSelectionStatus" oncomplete="disableAutoComplete();"/>
+                </apex:selectList>
+                -->
+
+                <apex:selectRadio id="paymentType" value="{!paymentType}" >
+                    <apex:selectOptions value="{!paymentTypeOptions}" />
+                        <apex:actionSupport event="onchange" id="selectPaymentType" 
+                            action="{!paymentTypeChanged}" rerender="paymentTypeSection,paymentTypePanels,addresses,pageMessages" 
+                            status="paymentTypeSelectionStatus" oncomplete="disableAutoComplete();" />
+                </apex:selectRadio>
+                
+            </td>
+            <td style="vertical-align:top;">
+                    <apex:actionStatus id="paymentTypeSelectionStatus" >
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >&nbsp; 
+                                <apex:image value="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                            </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                        </apex:facet>
+                    </apex:actionStatus>             
+            </td>
+            </tr>
+            </table>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+
+    </apex:pageBlockSection>
+    
+        <apex:outputPanel id="paymentTypePanels"> 
+
+            <apex:pageBlockSection id="cardInfo" showHeader="false" title="Credit Card Information"  collapsible="false" columns="1" rendered="{!(paymentType == 'creditcard')}">
+
+            <apex:pageBlockSectionItem id="cardTypeSI">
+            <apex:outputLabel for="cardType">Card Type</apex:outputLabel>
+            <apex:selectList id="cardType" value="{!cardType}" size="1" >
+                <apex:selectOptions value="{!cardTypeOptions}" />
+                <apex:actionSupport event="onchange" action="{!nullAction}" rerender="soloMaestroFields" status="formActionStatus"/>
+              </apex:selectList>
+            </apex:pageBlockSectionItem>
+    
+            <apex:pageBlockSectionItem id="cardNumberSI">
+            <apex:outputLabel for="cardNumber">Credit Card Number</apex:outputLabel>
+            <apex:inputText id="cardNumber" value="{!cardNumber}" onkeypress="return numberOnly(event);" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem id="expirationSI">
+            <apex:outputLabel for="expirationDate">Credit Card Expiration </apex:outputLabel>
+            <apex:outputPanel layout="inline">
+                <apex:selectList id="expMonth" value="{!expirationMonth}" size="1"> 
+                    <apex:selectOptions value="{!expMonthOptions}" />
+                </apex:selectList> &nbsp;
+                <apex:selectList id="expYear" value="{!expirationYear}" size="1"> 
+                    <apex:selectOptions value="{!expYearOptions}" />
+                </apex:selectList> 
+            </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem id="cardCodeSI" >    <!-- helpText="For your safety and security, PayPal may require that you enter your card’s verification number. The verification number is a 3-digit number printed on the back of your card. It appears after and to the right of your card number. " -->
+            <apex:outputLabel for="cardCode">Security Code</apex:outputLabel>
+            <apex:outputPanel >
+                <apex:inputText id="cardCode" value="{!cardCode}" style="width:35px;" onkeypress="return numberOnly(event);"/>
+                    <apex:variable var="cvvHelpText" value="Card Verification Value is an additional security value printed on the physical credit card.<br/><br/> 
+                                                        Visa, MasterCard, Discover: a 3-digit number shown on the back of the card.<br/><br/>
+                                                        American Express: a 4-digit number printed on the front fo the card." /> 
+                    <c:Tooltip uniqueId="cardCvv1" helpText="{!cvvHelpText}" qTipStyleClass="qtip-dark qtip-rounded qtip-shadow" loadJQuery="true" />
+            </apex:outputPanel>
+
+            </apex:pageBlockSectionItem>
+            
+            </apex:pageBlockSection>
+            
+            <apex:outputPanel id="soloMaestroFields">
+            <apex:pageBlockSection id="soloMaestroSection" showHeader="false" title="Credit Card"  collapsible="false" columns="2" rendered="{!(cardType == 'Solo' || cardType=='Maestro')}">
+            
+            <apex:pageBlockSectionItem id="cardIssueDateSI" helpText="Required for Maestro and Solo cards.">
+            <apex:outputLabel for="cardIssueDate">Card Issue Date</apex:outputLabel>
+            <apex:outputPanel layout="inline">
+                <apex:selectList id="issueMonth" value="{!cardStartMonth}" size="1"> 
+                    <apex:selectOptions value="{!expMonthOptions}" />
+                </apex:selectList> &nbsp;
+                <apex:selectList id="issueYear" value="{!cardStartYear}" size="1"> 
+                    <apex:selectOptions value="{!issueYearOptions}" /> 
+                </apex:selectList> 
+            </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem id="cardIssueNumberSI" helpText="Required for Maestro and Solo cards.">
+            <apex:outputLabel for="issueNumber">Issue Number</apex:outputLabel>
+            <apex:inputText styleclass="pc_short_input_field" id="issueNumber" value="{!cardIssueNumber}"   />
+            </apex:pageBlockSectionItem>
+        
+        
+            </apex:pageBlockSection>
+            </apex:outputPanel>
+            
+          <apex:pageBlockSection id="storedCardInfo" showHeader="false" title="Credit Card Profile" collapsible="false" columns="1" rendered="{!(paymentType == 'storedCreditCard')}">
+
+            <apex:pageBlockSectionItem id="paymentMethodSelectionSI">
+            <apex:outputLabel for="storedCardSelectList">Payment Method</apex:outputLabel>
+            <apex:outputPanel >
+                <apex:selectList id="storedCardSelectList" value="{!selectedPaymentMethodId}" size="1" multiselect="false">
+                    <apex:selectOptions value="{!storedCreditCardOptions}"/> 
+                        <apex:actionSupport event="onchange" action="{!cardProfileSelectionChanged}"  id="selectStoredCard"
+                            rerender="addresses, storedCardInfo, cardProfileSelectionStatus, pageMessages"                      
+                            status="cardProfileSelectionStatus" />
+                    
+                </apex:selectList>
+                    &nbsp;
+                    <apex:actionStatus id="cardProfileSelectionStatus">
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >&nbsp; 
+                                <apex:image value="{!URLFOR($Resource.kugo2p__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                            </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                        </apex:facet>
+                    </apex:actionStatus>
+               <apex:outputPanel rendered="{!usePmtMethodBilling}">
+                    <br/><apex:outputText style="font-size: 91%;" value="Note: Only Active Payment Methods with Salesforce Type are available" />   
+               </apex:outputPanel>
+                      
+            </apex:outputPanel>     
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem id="storedCardTypeSI" rendered="{!paymentMethodRecord.kugo2p__Card_Type__c != null}">
+            <apex:outputLabel for="storedCardType">Card Type</apex:outputLabel>
+            <apex:outputText id="storedCardType" value="{!paymentMethodRecord.kugo2p__Card_Type__c}" />
+            </apex:pageBlockSectionItem>
+                                
+            <apex:pageBlockSectionItem id="storedCardNumberSI">
+            <apex:outputLabel for="maskedCardNumber">Credit Card Number</apex:outputLabel>
+            <apex:outputText id="maskedCardNumber" value="************{!paymentMethodRecord.kugo2p__Last_4_Digits__c}" />
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem id="storedCardExpirationSI">
+                    <apex:outputText value="Credit Card Expiration"/>
+                    <apex:outputText value="{!expirationMonth}/{!expirationYear}"/>
+            </apex:pageBlockSectionItem>
+ 
+            <apex:pageBlockSectionItem id="cardCodeSI" >
+            <apex:outputLabel for="cardCode">Security Code</apex:outputLabel>
+            <apex:outputPanel >
+                <apex:inputText id="cardCode" value="{!cardCode}" style="width:35px;"/>
+
+                <apex:variable var="cvvHelpText" value="Card Verification Value is an additional security value printed on the physical credit card.<br/><br/> 
+                                                    Visa, MasterCard, Discover: a 3-digit number shown on the back of the card.<br/><br/>
+                                                    American Express: a 4-digit number printed on the front fo the card." /> 
+                <c:Tooltip uniqueId="cardCvv2" helpText="{!cvvHelpText}" qTipStyleClass="qtip-dark qtip-rounded qtip-shadow" loadJQuery="true" />
+
+                <apex:outputPanel >
+                    <br/><apex:outputText style="font-size: 91%;" value="Optional: Based on PayPal Security Code settings" />   
+                </apex:outputPanel>
+            </apex:outputPanel>            
+            </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:outputPanel>
+        
+
+    <apex:pageBlockSection title="Contact Billing Information" columns="2" collapsible="false" id="addresses">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel style="font-weight: bold; font-size: 110%" >Contact Billing</apex:outputLabel>
+            <!-- <apex:outputField id="contact" value="{!profile.kugo2p__Contact__c}" /> -->
+
+            <apex:outputPanel layout="inline">
+            <table class="unformattedTable" >
+            <tr>
+            <td style="vertical-align:top;">
+                <apex:inputField id="contact" value="{!profile.kugo2p__Contact__c}" onKeyPress="return convertEnterKeyToBlur(event, this);">
+                    <apex:actionSupport event="onchange" action="{!loadContact}" rerender="paymentTypeSection,paymentTypePanels,addresses,pageMessages,buttons" status="contactStatus" />
+                </apex:inputField>
+            </td>
+            <td style="vertical-align:top;">
+                    <apex:actionStatus id="contactStatus" >
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >&nbsp; 
+                                <apex:image value="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+                            </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                        </apex:facet>
+                    </apex:actionStatus>             
+            </td>
+            </tr>
+            </table>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="billingname">Billing Name</apex:outputLabel>
+            <apex:inputText id="billingname" value="{!billingname}" disabled="{!usePmtMethodBilling}"/>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem id="blsiSaveBillingContact" >
+            <apex:inputCheckbox value="{!saveBillingContact}" id="saveBillingContact" style="font-weight: bold;" rendered="{!saveBillingContact}" />
+            <apex:outputPanel >
+                <apex:outputLabel id="saveBillingContactLabel_Order" for="saveBillingContact" value="Contact Billing changes will be saved to Order details" style="font-weight:bold;font-size:91%;" rendered="{!(saveBillingContact)}"/>
+            </apex:outputPanel> 
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem rendered="{!NOT(usePmtMethodBilling)}" id="pbsiLoadAddress">
+                <apex:outputLabel for="loadBillingFrom" rendered="{!NOT(usePmtMethodBilling)}">Load Address From</apex:outputLabel>
+                
+                <apex:outputPanel >
+                    <apex:selectList id="selectBillingFrom" value="{!loadBillingFrom}" size="1" rendered="{!NOT(usePmtMethodBilling)}">
+                        <apex:selectOptions value="{!billingAddressFromOptions}" />
+                        <apex:actionSupport event="onchange"
+                            action="{!loadBillingAddressFields}"
+                            rerender="addresses, billingstreet, billingcity, billingstate, billingpostalcode, billingcountry, pageMessages, addressNote"
+                            status="addressSelectionStatus" />
+                    </apex:selectList>
+                    &nbsp;
+                    <apex:actionStatus id="addressSelectionStatus" >
+                        <apex:facet name="start" > 
+                            <apex:outputPanel >
+                                &nbsp;<apex:image value="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/icon-spinner.gif')}" style="vertical-align:middle;" alt="busy..." />
+                                <!-- &nbsp;Updating Page -->
+                             </apex:outputPanel>
+                        </apex:facet> 
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+                            </apex:facet>
+                    </apex:actionStatus>  
+                </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem rendered="{!usePmtMethodBilling}" >
+            <apex:outputLabel for="loadBillingFrom">Load Address From</apex:outputLabel>            
+            <apex:selectList id="selectBillingFrom" size="1" disabled="true" style="color:rgb(84, 84, 84);">
+                <apex:selectOption itemValue="Stored Payment Method" itemLabel="Stored Payment Method"/>
+            </apex:selectList>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="billingstreet">Billing Street</apex:outputLabel>
+            <apex:inputText id="billingstreet" value="{!billingstreet}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="billingcity">City</apex:outputLabel>
+            <apex:inputText id="billingcity" value="{!billingcity}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="billingstate">State/Province</apex:outputLabel>
+            <apex:inputText id="billingstate" value="{!billingstate}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="billingpostalcode">Zip/Postal Code</apex:outputLabel>
+            <apex:inputText id="billingpostalcode" value="{!billingpostalcode}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="billingcountry">Country</apex:outputLabel>
+            <apex:inputText id="billingcountry" value="{!billingcountry}" onchange="addressChanged();" disabled="{!usePmtMethodBilling}"/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel style="font-weight: bold; font-size: 110%" ></apex:outputLabel>
+                <apex:outputText />
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem id="blsiSaveAddress" >
+            <apex:inputCheckbox value="{!saveAddress}" id="saveAddress" style="font-weight:bold; display:none;" />
+            <apex:outputLabel id="saveAddressLabel" for="saveAddress" value="Address changes will be saved to {!loadBillingFrom} details" style="font-weight:bold;font-size:91%;display:none;" />
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>    
+
+    <apex:pageBlockButtons styleClass="kugamon">
+        <!-- <apex:commandButton id="continue" value="Complete Transaction" action="{!createSubscription}" disabled="{!disableForm}" onclick="return validateForm();" styleClass="btnImportant" /> -->
+        <apex:commandButton id="continue" value="Complete Transaction" disabled="{!disableForm}" onclick="return validateForm(this);" styleClass="slds-button slds-button--brand" rerender="pageMessages" />
+        <apex:commandButton id="cancel" value="Cancel" action="{!cancelOverride}" styleClass="slds-button slds-button--neutral"/> &nbsp;&nbsp; 
+    </apex:pageBlockButtons>            
+
+    <apex:outputPanel rendered="false">
+        <apex:inputField id="opportunity" value="{!profile.kugo2p__Opportunity__c}" />
+        <apex:inputText id="refId" value="{!refId}" />
+    </apex:outputPanel>
+    <apex:inputHidden id="trialFrequency" value="{!profile.kugo2p__Trial_Frequency__c}" />
+    <apex:inputHidden id="trialPeriod" value="{!profile.kugo2p__Trial_Period__c}" />
+    <apex:inputHidden id="total_occurrences" value="{!profile.kugo2p__Total_Occurrences__c}" />
+    <apex:inputHidden id="trial_occurrences" value="{!profile.kugo2p__Trial_Occurrences__c}" />
+    <apex:inputHidden value="{!amount}" id="service_amount" />
+</apex:pageBlock>               
+<script language="javascript">
+    // View amount as currency instead of integer
+    window.onload = function init() {        
+        initAmount();
+
+        var occ = '{!JSENCODE($CurrentPage.parameters.occurrences)}';
+        if (occ != null && occ != '') {
+            //$("{!$Component.terminalForm.terminfo.subscr_sec.user_total_occurrences_fld.user_total_occurrences}").value = occ;
+            var occElem = $("{!$Component.terminalForm.terminfo.subscr_sec.user_total_occurrences_fld.user_total_occurrences}");
+            occElem.value = occ;
+            convertToInt(occElem);
+            calculateFromFirstCharge();
+        }
+
+        var lockedFlds = document.getElementsByClassName("lock");
+        if (lockedFlds != null && lockedFlds.length > 0) {
+            console.log(' lockedFlds.length ' + lockedFlds.length);
+            var i;
+            for (i = 0; i < lockedFlds.length; i++) {
+                lockedFlds[i].setAttribute("readonly", "true");
+            }
+        }
+
+        var variable = document.getElementById("{!$Component.terminalForm.terminfo.subscr_sec.subscr_frequency_fld.subscr_frequency}");
+        if (variable != null) variable.focus();
+    }   
+    function initAmount() {
+        var elem = $("{!$Component.terminalForm.terminfo.subscr_sec.total_sub_amount_block.total_sub_amount_value}");
+        if (elem != null) $("{!$Component.terminalForm.terminfo.subscr_sec.total_sub_amount_block.total_sub_amount_value}").innerHTML = formatCurrency(elem.innerHTML);
+    }
+    
+    function $(id) { 
+        return document.getElementById(id); 
+    }
+
+    function validateForm(ele) {
+
+        ele.disabled = true;
+        console.log('disabled Complete Transaction button');
+
+        //debugger;
+        // check required fields
+        var name = $("{!$Component.terminalForm.terminfo.subscr_sec.subscr_name_fld.subscr_name}");
+        if (name.value == "") {
+            alert("Please provide name for this subscription profile.");
+            name.focus();
+            ele.disabled = false;
+            return false;
+        }
+    
+        var freq = $("{!$Component.terminalForm.terminfo.subscr_sec.subscr_frequency_fld.subscr_frequency}");
+        if (freq.value == "") {
+            alert("Please specify a frequency of 1 more months (or 7 or more days) between each payment.");
+            freq.focus();
+            ele.disabled = false;
+            return false;
+        }
+    
+        var occurrences = $("{!$Component.terminalForm.terminfo.subscr_sec.user_total_occurrences_fld.user_total_occurrences}");
+        if (occurrences.value == "") {
+            alert("Please specify the number of occurrences.");
+            occurrences.focus();
+            ele.disabled = false;
+            return false;
+        }
+    
+        // Recurring amount
+        var amount = $("{!$Component.terminalForm.terminfo.subscr_sec.amount_fld.amount}");
+        if (amount.value == "") {
+            alert("Please specify the recurring amount.");
+            amount.focus();
+            ele.disabled = false;
+            return false;
+        }
+
+        var cardNum = $("{!$Component.terminalForm.terminfo.cardInfo.cardNumberSI.cardNumber}");
+        if (cardNum != null && cardNum.value == "") {
+            alert("Please provide a credit card number.");
+            cardNum.focus();
+            ele.disabled = false;
+            return false;
+        }
+
+        /*
+        var cardCvv = $("{!$Component.terminalForm.terminfo.cardInfo.cardCodeSI.cardCode}");
+        if (cardCvv == null) cardCvv = $("{!$Component.terminalForm.terminfo.storedCardInfo.cardCodeSI.cardCode}");
+        if (cardCvv != null && cardCvv.value == "") {
+            alert("Please provide Credit Card Security Code.");
+            cardCvv.focus();
+            ele.disabled = false;
+            return false;
+        }*/
+
+        // Make sure the amount calculated is correct and totals the total amount
+        var calculated_amount = 0;
+        var amount = $("{!$Component.terminalForm.terminfo.service_amount}").value;
+        var trial_amount = $("{!$Component.terminalForm.terminfo.subscr_sec.trial_amount_fld.trial_amount}").value;
+        var recurring_amount = $("{!$Component.terminalForm.terminfo.subscr_sec.amount_fld.amount}").value;
+        var user_occurrences = convertToFloat($("{!$Component.terminalForm.terminfo.subscr_sec.user_total_occurrences_fld.user_total_occurrences}").value);
+        var temp_user_occurrences = user_occurrences;
+        if (user_occurrences == 0) user_occurrences = 1;
+    
+        while(recurring_amount.match(","))
+            recurring_amount = recurring_amount.replace(",","");
+        while(trial_amount.match(","))
+            trial_amount = trial_amount.replace(",","");
+        
+        if (isNaN(trial_amount) || trial_amount== "" || trial_amount == "0" || trial_amount == "0.0"){
+            trial_amount = "0.00";
+            $("{!$Component.terminalForm.terminfo.total_occurrences}").value = user_occurrences;
+            $("{!$Component.terminalForm.terminfo.trial_occurrences}").value = 0;
+            $("{!$Component.terminalForm.terminfo.trialFrequency}").value = 0;
+            $("{!$Component.terminalForm.terminfo.trialPeriod}").value = "";
+            $("{!$Component.terminalForm.terminfo.subscr_sec.trial_amount_fld.trial_amount}").value = "";
+        }
+        if (trial_amount != "0.00")
+            user_occurrences -= 1;
+        calculated_amount = parseFloat(user_occurrences*recurring_amount);
+        calculated_amount += parseFloat(trial_amount);
+    
+        if (parseFloat(calculated_amount).toFixed(2) != parseFloat(amount) || (parseFloat(amount-calculated_amount).toFixed(2) > 0.02) || (parseFloat(calculated_amount-amount).toFixed(2) > 0.02)) {
+            alert("The Initial One-Time amount and recurring amount do not sum up to the total amount: "+calculated_amount.toFixed(2)+"\nPlease adjust your Initial One-Time amount by: "+parseFloat(amount-calculated_amount).toFixed(2));
+            ele.disabled = false;
+            return false;
+        }
+
+        if (temp_user_occurrences == 1 && isSameDaySubscription == 'true') {
+            ele.disabled = false;
+            return confirm('This payment has been configured as a one-time payment for today with no recurring subscription. Are you sure you want to proceed?');
+        }
+
+        afCreateSubscription();
+        return true;
+    }
+
+    // Given a Initial One-Time Amount and an occurrence number, calculates the recurring charge
+    function calculateFromFirstCharge() {
+    
+        //debugger;
+        var amount = convertToFloat($("{!$Component.terminalForm.terminfo.service_amount}").value);
+        var user_occurrences = convertToFloat($("{!$Component.terminalForm.terminfo.subscr_sec.user_total_occurrences_fld.user_total_occurrences}").value);
+        if (user_occurrences == 0) user_occurrences = 1;
+        
+        var trial_amount_Ref = $("{!$Component.terminalForm.terminfo.subscr_sec.trial_amount_fld.trial_amount}");
+        var trial_amount = convertToFloat(trial_amount_Ref.value);
+        var init_trial_amount = trial_amount; 
+        
+        if (trial_amount < 0) {
+            alert("First Charge Amount must be greater than or equal to zero.");
+            trial_amount_Ref.focus();
+            return;
+        }
+    
+        if (trial_amount > amount) {
+            alert("You cannot enter an amount higher than the Total Subscription Amount.");
+            trial_amount_Ref.focus();
+            return;
+        }
+    
+        var tempOccurrences = user_occurrences;
+        if (trial_amount > 0) tempOccurrences = user_occurrences-1;
+        
+        var recurring_amount = roundNum((amount - trial_amount) / tempOccurrences, 2);
+    
+        // re-calculate the trail amount to over come rounding issues.
+        trial_amount = roundNum((amount - roundNum(recurring_amount * tempOccurrences, 2)), 2);
+        //debugger;
+    
+        // recalcuate recurring amount if the initial trial amount is zero and has a value after recalculation.
+        if (init_trial_amount == 0 && trial_amount > 0) {
+            tempOccurrences = user_occurrences-1;
+            recurring_amount = roundNum((amount - trial_amount) / tempOccurrences, 2);
+            trial_amount = amount - roundNum(recurring_amount * tempOccurrences, 2);
+            // set the trail amount to -1 so that it gets modified in the following IF section.
+            if (trial_amount == 0) trial_amount = -1; 
+        }
+    
+        if (trial_amount < 0) {
+            var counter = 0.1;
+            while (trial_amount < 0) {
+                trial_amount = counter;
+                tempOccurrences = user_occurrences-1;
+                recurring_amount = roundNum((amount - trial_amount) / tempOccurrences, 2);
+                trial_amount = roundNum((amount - roundNum(recurring_amount * tempOccurrences, 2)), 2);
+                counter = counter + 0.1;
+            }
+        }
+    
+        AssignTrialAndRecurringDetails(trial_amount, recurring_amount, user_occurrences);
+    }
+    
+    // Given a recurring amount and an occurrence number, calculates the first charge
+    function calculateFromRecurring() {
+        
+        //debugger;
+        
+        var amount = convertToFloat($("{!$Component.terminalForm.terminfo.service_amount}").value);
+        var user_occurrences = convertToFloat($("{!$Component.terminalForm.terminfo.subscr_sec.user_total_occurrences_fld.user_total_occurrences}").value);
+        if (user_occurrences == 0) user_occurrences = 1;
+    
+        var recurring_amount_Ref = $("{!$Component.terminalForm.terminfo.subscr_sec.amount_fld.amount}");    
+        var recurring_amount = convertToFloat(recurring_amount_Ref.value);
+    
+        if (recurring_amount <= 0) {
+            alert("Recurring Amount must be greater than zero.");
+            recurring_amount_Ref.focus();
+            return;
+        }
+        
+        if (recurring_amount > amount) {
+            alert("You cannot enter an amount higher than the Total Subscription Amount.");
+            recurring_amount_Ref.focus();
+            return;
+        }
+    
+        var trial_amount = amount - roundNum((user_occurrences-1) * recurring_amount, 2);
+    
+        if (trial_amount < 0) {
+            alert("Total Recurring Amount must be less than or equal to Total Subscription Amount.");
+            recurring_amount_Ref.focus();
+            return;
+        }
+    
+        AssignTrialAndRecurringDetails(trial_amount, recurring_amount, user_occurrences);
+    
+    }
+    
+    function calculateAmount() {
+        //debugger;
+        var amount = $("{!$Component.terminalForm.terminfo.service_amount}").value;
+        var user_occurrences = convertToFloat($("{!$Component.terminalForm.terminfo.subscr_sec.user_total_occurrences_fld.user_total_occurrences}").value);
+        if (user_occurrences == 0) user_occurrences = 1;
+    
+        var recurring_amount = roundNum(amount / user_occurrences, 2);
+        var trial_amount = recurring_amount + (amount - roundNum(recurring_amount * user_occurrences, 2));
+        
+        AssignTrialAndRecurringDetails(trial_amount, recurring_amount, user_occurrences);
+    }
+    
+    function AssignTrialAndRecurringDetails(trialAmount, recurringAmount, noOfOccurrences) {
+    
+        $("{!$Component.terminalForm.terminfo.subscr_sec.amount_fld.amount}").value = formatCurrency(recurringAmount);
+        if (trialAmount > 0 && noOfOccurrences > 1) {   //&& trialAmount != recurringAmount
+            $("{!$Component.terminalForm.terminfo.subscr_sec.trial_amount_fld.trial_amount}").value = formatCurrency(trialAmount);
+    
+            // set trial occurrences = 1 always
+            $("{!$Component.terminalForm.terminfo.trial_occurrences}").value = 1;
+            //$("{!$Component.terminalForm.terminfo.trialFrequency}").value = 1;
+            AssignTrialFrequency();
+
+            var option = $("{!$Component.terminalForm.terminfo.subscr_sec.subscr_frequency_fld.subscr_option}");
+            $("{!$Component.terminalForm.terminfo.trialPeriod}").value = option.options[option.selectedIndex].value;
+    
+            // total occurrences = user_occurrences - trial occurrences (1)
+            $("{!$Component.terminalForm.terminfo.total_occurrences}").value = noOfOccurrences - 1;
+    
+        } else {
+            $("{!$Component.terminalForm.terminfo.subscr_sec.trial_amount_fld.trial_amount}").value = '';
+    
+            // set trial occurrences to empty
+            $("{!$Component.terminalForm.terminfo.trial_occurrences}").value = '';
+            $("{!$Component.terminalForm.terminfo.trialFrequency}").value = '';
+            
+            $("{!$Component.terminalForm.terminfo.trialPeriod}").value = '';
+    
+            // total occurrences = user_occurrences - trial occurrences (1)
+            $("{!$Component.terminalForm.terminfo.total_occurrences}").value = noOfOccurrences;
+        }
+    }
+
+    function AssignTrialFrequency() {
+        // set Trial Frequency to match Subscription Frequency
+        //debugger;
+        var trialFreq = $("{!$Component.terminalForm.terminfo.subscr_sec.subscr_frequency_fld.subscr_frequency}").value;
+        if (trialFreq == "") {
+            trialFreq = 1;
+        }
+        $("{!$Component.terminalForm.terminfo.trialFrequency}").value = trialFreq;  
+    }
+
+    function roundNum(n, p) {
+        return Math.round(n * Math.pow(10, p)) / Math.pow(10, p);
+    }
+    
+    function convertToFloat(inStr) {
+        var inStrValue = parseFloat(inStr.replace(/,/g,''));
+        if(isNaN(inStrValue)) inStrValue = 0;
+        return inStrValue;
+    }
+
+    function convertToInt(elem) {
+        if (elem != null) {
+            var inStrValue = parseInt(elem.value);
+            if (isNaN(inStrValue)) inStrValue = '';
+            elem.value = inStrValue;
+        }
+    }   
+
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g,'');
+        if(isNaN(num))
+            num = "0";
+    
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num*100+0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num/100).toString();
+    
+        if(cents < 10)
+            cents = "0" + cents;
+        
+      for (var i=0; i < Math.floor((num.length-(1+i))/3); i++)
+          num = num.substring(0,num.length-(4*i+3))+','+ num.substring(num.length-(4*i+3));
+    
+        return (((sign)?'':'-') + num + '.' + cents);
+    }
+
+    function addressChanged() {
+        //debugger;
+        
+        // display the page block section item
+        //document.getElementById('{!$Component.terminalForm.terminfo.addresses.blsiSaveAddress}').style.display = '';
+        
+        var eleSaveAddress = document.getElementById('{!$Component.terminalForm.terminfo.addresses.blsiSaveAddress:saveAddress}');
+        if (eleSaveAddress != null) {
+            eleSaveAddress.style.display = '';
+            eleSaveAddress.checked = true;
+        }
+        var eleSaveAddressLabel = document.getElementById('{!$Component.terminalForm.terminfo.addresses.blsiSaveAddress:saveAddressLabel}');
+        if (eleSaveAddressLabel != null) {
+            var eleLoadAddressFrom = document.getElementById('{!$Component.terminalForm.terminfo.addresses.pbsiLoadAddress.selectBillingFrom}');
+            //var loadAddressFrom = eleLoadAddressFrom.selectedOptions[0].text; //eleLoadAddressFrom.selectedIndex
+            eleSaveAddressLabel.innerHTML = 'Address changes will be saved to ' + eleLoadAddressFrom.selectedOptions[0].text + ' details';
+            eleSaveAddressLabel.style.display = '';
+        }
+    }
+
+    function numberOnly(event) {
+        var key = event ? event.which : window.event.keyCode;
+        console.log('key: ' + key);
+        //if (String.fromCharCode(key).match(/[^0-9]/g)) return false;
+
+        // 0 = left/right keys, 8 = delete/back key, 118 = paste key, 120 = cut key, 122 = undo key, 90 = redo key to over an issue in FireFox
+        if (key != 0 && key != 8 && key != 118 && key != 120 && key != 122 && key != 90 && (key < 47 || key > 57)) return false;
+    }
+
+    function convertEnterKeyToBlur(ev, obj) {
+        var returnValue = disableEnterKey(ev);
+        if (returnValue == false) obj.blur();
+        return returnValue;
+    }
+
+    function disableEnterKey(ev) {
+         var key;
+         if(window.event)
+              key = window.event.keyCode; //IE
+         else
+              key = ev.which; //firefox      
+         
+         if(key==13) return false;
+         
+         return (key != 13);
+    }
+</script>
+
+</apex:form>
+</apex:page>

@@ -1,0 +1,390 @@
+<apex:page id="configPageId" Controller="kugo2p.KugamonConfigurationExt" tabStyle="kugo2p__KugamonSetting__c" sidebar="false" showHeader="true" applyHtmlTag="true" applyBodyTag="false">  <!-- action="{!CreateCustomSettings}" -->
+
+<style>
+    .btnRef {
+        background: #008cd1 !important; /* Old browsers */
+        background: -moz-linear-gradient(top,  #008cd1 0%, #01a5f8 100%) !important; /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008cd1), color-stop(100%,#01a5f8)) !important; /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #008cd1 0%,#01a5f8 100%) !important; /* IE10+ */
+        background: linear-gradient(to bottom,  #008cd1 0%,#01a5f8 100%) !important; /* W3C */
+        //padding: 4px 10px !important;
+        padding: 2px 5px !important;
+        border: 1px solid #008dd4 !important;
+        -webkit-border-radius: 3px !important;
+        -moz-border-radius: 3px !important;
+        border-radius: 3px !important;
+        color: #fff !important;
+        font-weight: bold !important;
+        text-decoration: none !important;
+        vertical-align: middle !important;
+        font-size:11px !important;
+        height: 21px !important;
+    }
+
+    .auto-width {
+        min-width: initial !important;
+    }
+
+    .slds-scope .slds-theme_shade, .slds-scope .slds-theme--shade {
+        background-color: rgb(249, 249, 250);
+    }
+
+    .slds-scope .kugamon-help {
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    .kugamon-help__header {
+        padding: 1.5rem;
+    }
+    
+    .kugamon-help__body {
+        padding: 1.5rem;
+    }
+
+    #lightning {
+        position: relative;
+        height: 100%;
+        min-height: 100vh;
+        background-color: #f9f9fa;
+    }
+
+    .noSidebarCell #lightning {
+        height: auto;
+        min-height: 0;
+        background-color: white;
+    }
+
+    .noSidebarCell #lightning #spinner {
+        min-height: 20rem;
+    }
+
+    .bodyDiv .outerNoSidebar,
+    .noSidebarCell,
+    .sidebarCell .fixed {
+        padding: 0;
+    }
+
+    #auraErrorMessage {
+        position: fixed;
+        top: 0;
+        z-index: 9999;
+    }
+
+    .btn-width {
+        width: 118px;
+    }
+
+    .btn-width-pp {
+        width: 153px;
+    }
+
+    .centersvg {
+        margin-right: 35px;
+    }
+</style>
+
+<apex:form id="configFormId">
+
+        <head>
+            <apex:slds />
+        </head>
+
+        <body class="slds-scope" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <apex:outputPanel id="lightning" layout="block" style="display: block;" styleClass="slds-scope">
+                <div class="slds-grid slds-grid_vertical" >
+                    
+                    <div class="slds-scope slds-theme_shade" >
+
+                        <!-- TO DO: create a new Toast VF component in the next major release -->
+
+                        <!--  
+                        <div class="slds-notify_container slds-is-relative">
+                            <div class="slds-notify slds-notify_toast slds-theme_error auto-width" role="status">
+                                <span class="slds-assistive-text">error</span>
+                                <c:Icon pathname="utility" name="error" size="small" styleClass="slds-m-right--x-small slds-no-flex slds-align-top" />
+                                <div class="slds-notify__content">
+                                    <h2 class="slds-text-heading_small ">This version of Kugamon Quote to Cash is out of date. Please contact <a href="mailto:support@kugamon.com?subject=Kugamon Upgrade Request">Kugamon Support</a> for the latest version.</h2>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+
+                        <apex:outputPanel id="toastMessageOPId" layout="block" rendered="{!toastMsg != null}">  <!-- style="{!if(toastMsg=='', 'display:none;', '')}"-->
+                            <div class="slds-notify_container slds-is-relative">
+                                <div class="slds-notify slds-notify_toast slds-theme_success auto-width" role="status">
+                                    <span class="slds-assistive-text">success</span>
+                                    <c:Icon pathname="utility" name="success" size="small" styleClass="slds-m-right_small slds-no-flex slds-align-top" />
+                                    <div class="slds-notify__content">
+                                        <h2 class="slds-text-heading_small ">{!toastMsg}</h2>
+                                    </div>
+                                    <div class="slds-notify__close" style="top: 1rem;">
+                                        <apex:commandLink action="{!clearToast}">
+                                            <c:Icon pathname="utility" name="close" size="small" styleClass="slds-m-right_small-kkk slds-no-flex slds-align-top" />
+                                        </apex:commandLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+
+                       <div class="slds-container_large slds-container_center slds-m-vertical_medium slds-p-horizontal_xx-large" >
+
+                          <div class="slds-p-vertical_xxx-small slds-text-align_center" >
+                            <div >
+                                <apex:image url="{!URLFOR($Resource.kugo2p__KugamonImages, 'images/kugamonLogo.png')}" alt="Kugamon Logo" style="height: 300px;" />
+                            </div>
+ 
+                            <apex:outputPanel layout="block" rendered="{!settings != null}" >
+                                <div class="slds-p-vertical_x-large">
+                                    <apex:commandButton value="Kugamon Settings" title="View Kugamon Settings" onclick="window.open('{!kugamonSettingsUrl}');" styleClass="slds-button slds-button_brand" rerender="none" />
+                                </div>
+
+                                <apex:commandLink value="{!if(showInitialConfiguration, 'Hide Initial Configuration', 'Show Initial Configuration')}" title="{!if(showInitialConfiguration, 'Hide Initial Configuration', 'Show Initial Configuration')}" action="{!toggleInitialConfiguration}" />
+                            </apex:outputPanel>
+                          </div>
+
+                          <apex:outputPanel id="initialConfig" layout="block" styleClass="slds-card slds-card_boundary initialConfig" rendered="{!(settings == null || showInitialConfiguration)}"> <!-- {!IF(settings != null, ' slds-hide', '')}  -->
+                             <div class="slds-p-vertical_medium slds-p-horizontal_small" >
+                                <ol class="slds-setup-assistant" >
+                                   <li class="slds-setup-assistant__item" >
+                                      <article class="slds-setup-assistant__step" >
+                                         <div class="slds-setup-assistant__step-summary" >
+                                            <div class="slds-media" >
+
+                                               <div class="slds-media__body slds-m-top_x-small" >
+                                                  <div class="slds-media" >
+                                                     <div class="slds-setup-assistant__step-summary-content slds-media__body" >
+                                                        <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small" >Application Activation</h3>
+                                                        <p >Activate Kugamon Quote to Cash application</p>
+                                                     </div>
+                                                     
+                                                     <div class="slds-media__figure slds-media__figure_reverse" >
+                                                        <div class="" >
+                                                            <apex:commandButton value="Activate" title="Activate" action="{!createSettings}" styleClass="slds-button slds-button_success btn-width" rendered="{!settings == null}" />   <!--value="{!if(settings != null, 'Activated', 'Activate')}" disabled="{!settings != null}" rerender="lightning" status="saveStatus" -->
+
+                                                            <!-- <c:Icon pathname="utility" name="check" size="small" styleClass="slds-m-right--x-small slds-no-flex slds-align-top" rendered="{!settings != null}" /> -->
+                                                            <apex:outputPanel rendered="{!settings != null}" styleClass="centersvg">
+                                                                <span class="slds-icon_container slds-icon-utility-success" title="Activated">
+                                                                    <svg class="slds-icon slds-icon-text-success slds-icon_large" aria-hidden="true">
+                                                                        <use xmlns="http://www.w3.org/2000/svg" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#success')}" ></use>
+                                                                    </svg>
+                                                                    <span class="slds-assistive-text">Activated</span>
+                                                                </span>
+                                                            </apex:outputPanel>
+
+                                                        </div>
+                                                     </div>
+                                                     
+                                                  </div>
+                                               </div>
+                                               
+                                            </div>
+                                         </div>
+                                      </article>
+                                   </li>
+
+                                   <li class="slds-setup-assistant__item" >
+                                        <article class="slds-setup-assistant__step" >
+                                        <div id="step2Detail" class="slds-summary-detail step2Detail">
+                                        <div class="slds-container_fluid">
+                                        <div class="slds-summary-detail__title">
+                                        
+                                         <div class="slds-setup-assistant__step-summary" >
+                                            <div class="slds-media" >
+                                               <div class="slds-media__body slds-m-top_x-small" >
+                                                  <div class="slds-media" >
+                                                     <div class="slds-setup-assistant__step-summary-content slds-media__body" >
+                                                        <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small" >Setup Configuration</h3>
+                                                        <p >Initial setup of Online functionality</p>
+                                                     </div>
+                                                     <div class="slds-media__figure slds-media__figure_reverse" >
+                                                        <div class="" >
+                                                           <button class="slds-button slds-button_neutral btn-width expand" id="expandBtn" type="button" title="Expand" onclick="toggleStep2(event);" >
+                                                                Expand
+                                                           </button>
+                                                           <!-- <apex:commandButton value="Expand" styleClass="slds-button slds-button_neutral btn-width" onclick="toggleStep2(event);" disabled="{!settings == null}" /> -->
+                                                        </div>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                         
+                                         </div>
+
+                                            <div aria-hidden="false" class="slds-summary-detail__content" id="step-1-summary-action">
+                                                <div class="slds-setup-assistant__step-detail">
+
+                                                    <ol class="slds-setup-assistant">
+                                                      <li class="slds-setup-assistant__item slds-p-vertical_small">
+                                                        <article class="slds-setup-assistant__step">
+                                                          <div class="slds-setup-assistant__step-summary">
+                                                            <div class="slds-media">
+                                                              <div class="slds-setup-assistant__step-summary-content slds-media__body">
+                                                                <h3 class="slds-setup-assistant__step-summary-title">Select Payment Processor(s) to enable</h3>
+                                                    
+                                                                    <div class="slds-grid slds-wrap slds-gutters_small slds-p-left_large" >
+                                                                        <div class="slds-col slds-size_8-of-12">
+                                                                            <apex:outputLabel value="Payment Processors" />
+                                                                            <apex:selectCheckboxes value="{!selectedPaymentProcessors}" layout="pageDirection">
+                                                                                <apex:selectOptions value="{!PaymentProcessorsList}" />
+                                                                            </apex:selectCheckboxes>                    
+                                                                        </div>
+                                                    
+                                                                        <div class="slds-col slds-size_4-of-12">
+                                                                            <apex:commandButton value="Enable Connection" title="Enable Connection" action="{!createSettings}" styleClass="slds-button slds-button_brand slds-m-bottom_medium btn-width-pp" />
+                                                                            <apex:commandButton value="Payment Settings" title="View Payment Settings" onclick="window.open('{!paymentSettingsUrl}');" styleClass="slds-button slds-button_neutral btn-width-pp" style="margin-left: 0px;" rendered="{!paymentSettingsUrl != ''}" rerender="none" />
+                                                                        </div>
+                                                                    </div>                        
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </article>
+                                                      </li>
+                                                      <li class="slds-setup-assistant__item slds-p-vertical_small">
+                                                        <article class="slds-setup-assistant__step">
+                                                          <div class="slds-setup-assistant__step-summary">
+                                                            <div class="slds-media">
+                                                              <div class="slds-setup-assistant__step-summary-content slds-media__body">
+                                                                <h3 class="slds-setup-assistant__step-summary-title">
+                                                                    Setup <a href="/0DM/o?setupid=CustomDomain" target="_blank">Sites</a> to enable Online Order &amp; Invoice function and Payment Processor support
+                                                                </h3>
+                                                                <div class="slds-p-left_large">
+                                                                    <apex:outputLabel for="SitesUrl">Sites URL</apex:outputLabel>
+                                                                    <apex:outputPanel styleClass="slds-p-left_medium">
+                                                                        <apex:inputText id="SitesUrl" style="width: 400px" value="{!SitesUrl}" />   <!-- required="true" -->
+                                                                            &nbsp;<apex:commandButton value="Save" title="Save" action="{!saveSitesUrl}" styleClass="slds-button slds-button_brand" />  <!-- rerender="lightning,toastMessageOPId" -->
+                                                                    </apex:outputPanel>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </article>
+                                                      </li>
+                                                    
+                                                      <li class="slds-setup-assistant__item slds-p-vertical_small">
+                                                        <article class="slds-setup-assistant__step">
+                                                          <div class="slds-setup-assistant__step-summary">
+                                                            <div class="slds-media">
+                                                              <div class="slds-setup-assistant__step-summary-content slds-media__body">
+                                                                <h3 class="slds-setup-assistant__step-summary-title">Add Sites domain to Remote Site settings for Payment Processor support</h3>
+                                                                    <div class="slds-p-left_large">
+                                                                    (a) Go to the <a href="/0rp?setupid=SecurityRemoteProxy" target="_blank">Remote Site settings</a>, click [New Remote Site] button<br/>
+                                                                    (b) Fill "KugamonSite" as the Remote Site Name, the Sites domain as the Remote Site URL, and keep Active checked<br/>
+                                                                    (c) Click [Save] button to create Remote Site settings
+                                                                    </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </article>
+                                                      </li>  
+                                                    </ol>
+                                                                                                            
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                         </div>
+                                      </article>
+                                   </li>
+
+                                   <li class="slds-setup-assistant__item" >
+                                      <article class="slds-setup-assistant__step" >
+                                         <div class="slds-setup-assistant__step-summary" >
+                                            <div class="slds-media" >
+                                               <div class="slds-media__body slds-m-top_x-small" >
+                                                  <div class="slds-media" >
+                                                     <div class="slds-setup-assistant__step-summary-content slds-media__body" >
+                                                        <h3 class="slds-setup-assistant__step-summary-title slds-text-heading_small" >Data Initialization</h3>
+                                                        <!-- <p >Start the automated process to create Additional Product Info and Additional Account Info records</p> -->
+                                                            <p>New Setup: Start the automated process to create Additional Product Info and Additional Account Info records<br/><br/>
+                                                            Existing Setup: Re-calculate the Account Balance on Additional Account Info records and create missing Additional Product Info and Additional Account Info records</p>
+                                                     </div>
+                                                     <div class="slds-media__figure slds-media__figure_reverse" >
+                                                        <div class="" >
+                                                           <apex:commandButton value="Start" title="Start" action="{!step4}" styleClass="slds-button slds-button_brand btn-width slds-m-top_medium" disabled="{!settings == null}" />   <!-- rerender="opId,lightning,toastMessageOPId" status="saveStatus" -->
+                                                        </div>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                      </article>
+                                   </li>
+                                </ol>
+                             </div>
+                          </apex:outputPanel>   
+
+                         <!-- help section -->      
+                          <div class="kugamon-help slds-box slds-m-vertical_large slds-theme_default" >
+                             <div class="kugamon-help__header slds-theme_info" >
+                                <div class="slds-grid slds-gutters_direct" >
+                                   <div class="slds-col" >
+                                      <h3 class="slds-text-heading_medium" >Need help?</h3>
+                                   </div>
+                                   <div class="slds-col slds-no-flex" >
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="kugamon-help__body slds-text-body_small" >
+                                <div class="slds-grid slds-wrap slds-gutters_small" >
+                                   <div class="slds-col slds-size_10-of-12 slds-text-longform" >
+                                      <p >We are happy to help answer your questions to get the most out of Kugamon. From instructions on Kugamon functionality to best practices on getting the most out of your Kugamon investment, you can count on us to help.</p>
+
+                                    <div class="slds-grid slds-wrap slds-gutters_small" >
+                                        <div class="slds-col slds-size_6-of-12">
+                                            <b>Kugamon Sales</b><br/>
+                                            <a href="mailto:info@kugamon.com?subject=Kugamon Customer Question">info@kugamon.com</a><br/>
+                                            - Purchase Additional Users<br/>
+                                            - Learn about Product Add-Ons and Upgrades<br/> 
+                                            - Discuss Upcoming Renewal
+                                        </div>
+
+                                        <div class="slds-col slds-size_6-of-12">
+                                            <b>Kugamon Support</b><br/>
+                                            <a href="mailto:support@kugamon.com?subject=Kugamon Customer Question">support@kugamon.com</a><br/>
+                                            - Report an Issue<br/>
+                                            - Inquire on Product Functionality<br/> 
+                                            - Learn Best Practices<br/>
+                                            - Share Product Feedback
+                                        </div>
+                                    </div>
+                                   </div>
+
+                                   <div class="slds-col slds-size_2-of-12 slds-text-align_right" >
+                                        <apex:commandButton value="Support Site" title="Support Site" onclick="window.open('http://help.kugamon.com/');" styleClass="slds-button slds-button_neutral slds-m-bottom_large btn-width" rerender="none" />
+                                        <apex:commandButton value="Change Log" title="Change Log" onclick="window.open('http://link.kugamon.com/release');" styleClass="slds-button slds-button_neutral slds-m-bottom_large btn-width" rerender="none" />
+                                        <apex:commandButton value="Helpful Guides" title="Helpful Guides" onclick="window.open('http://link.kugamon.com/reference-guide');" styleClass="slds-button slds-button_neutral btn-width" rerender="none" />
+                                   </div>
+
+                                </div>
+                             </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+
+                <apex:commandButton id="initBtn" value="Init" action="{!CreateCustomSettings}" style="display: none;" rerender="dummyopId" />
+            </apex:outputPanel>
+        </body>
+
+    <script>
+        window.onload=function()
+        {
+            document.getElementById("{!$Component.configPageId:configFormId:initBtn}").click();
+        };
+
+        function toggleStep2(evt) {
+            //debugger;
+            const elem = evt.currentTarget;
+            elem.innerText = elem.innerText=='Expand' ? 'Collapse' : 'Expand';
+            elem.title = elem.innerText;
+
+            document.getElementsByClassName("step2Detail")[0].classList.toggle('slds-is-open');
+        }
+    </script>
+
+</apex:form>
+</apex:page>

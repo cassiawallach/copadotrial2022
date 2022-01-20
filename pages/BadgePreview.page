@@ -1,0 +1,14 @@
+<apex:page controller="BadgePreviewController" docType="html-5.0" applyHtmlTag="false" showHeader="false" sidebar="false" standardStylesheets="false" lightningStyleSheets="true">
+    <head>
+        <meta property='og:title' content='{!title}'/>
+        <meta property='og:image' content='{!$Site.BaseUrl}{!badgeImageUrlPath}'/>
+        <meta property='og:description' content='{!description}'/>
+        <meta name="twitter:title" content="{!title}"/>
+        <meta name="twitter:description" content="{!description}"/>
+        <meta name="twitter:image" content='{!$Site.BaseUrl}{!badgeImageUrlPath}'/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <script>
+          window.location.href = '{!redirectUrl}';
+        </script>
+    </head>
+</apex:page>

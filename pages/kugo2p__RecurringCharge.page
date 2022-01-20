@@ -1,0 +1,79 @@
+<apex:page StandardController="kugo2p__SalesOrder__c" extensions="kugo2p.RecurringChargeExt">
+
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<apex:form id="form">
+    <!-- 
+    <apex:sectionHeader title="Schedule Payment Subscription" subtitle="Create Order Recurring Charge Subscription" rendered="{!NOT(disableContinueButton)}"/>
+    <apex:outputPanel rendered="{!NOT(disableContinueButton)}">
+        <div class="bOverviewSearch">
+            <div class="view">
+            Select the payment processor and amount to create a recurring billing subscription.
+            </div>
+        </div>
+     </apex:outputPanel>
+     -->
+     <apex:outputPanel rendered="{!NOT(disableContinueButton)}" >
+        <c:PageHeader title="Schedule Payment Subscription" subtitle="Create Order Recurring Charge Subscription" pathname="custom" icon="custom46" description="Select the payment processor and amount to create a recurring billing subscription." />
+    </apex:outputPanel>
+    <apex:pageMessages escape="false" />
+
+    <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!disableContinueButton}" >
+        <br></br>
+        <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral"/>
+        <apex:commandButton value="Approve Order & Create Recurring Charge" action="{!ApproveOrderandCreateRecurringCharge}" styleClass="slds-button slds-button--brand" rendered="{!showApproveOrderandCreateRecurringCharge}"/>
+    </apex:outputPanel>
+
+    <apex:pageBlock id="pBlock" mode="edit" rendered="{!NOT(disableContinueButton)}">
+        <apex:pageBlockButtons styleClass="kugamon">
+            <apex:commandButton value="Continue" action="{!goToTerminal}" styleClass="slds-button slds-button--brand" disabled="{!disableContinueButton}"/>
+            <apex:commandButton value="Cancel" action="{!cancel}" styleClass="slds-button slds-button--neutral"/>
+        </apex:pageBlockButtons>
+        
+        <!--  <p>Select the payment processor and amount to create a recurring billing subscription.</p>
+        <br/> <br/>-->       
+        <apex:pageBlockSection columns="1" id="pBlockSectionAmount">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="paymentprocessor">Processor Connection:</apex:outputLabel>
+                <apex:selectList size="1" value="{!PaymentProcessor}" id="paymentprocessor">
+                    <apex:selectOptions value="{!PaymentProcessorOptions}" />
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="amount" >
+                   <apex:outputLabel >Amount: &nbsp;</apex:outputLabel> <apex:inputText id="amountField" value="{!amount}"/>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+</apex:form>
+    <script>          
+        // View amount as currency instead of integer
+        window.onload = function init(){
+            initAmount();
+        }
+        
+        function initAmount()
+        {
+            var elem = document.getElementById("{!$Component.form.pBlock.pBlockSectionAmount.amount.amountField}");
+            document.getElementById("{!$Component.form.pBlock.pBlockSectionAmount.amount.amountField}").value = FormatToCurrency(elem.value);
+        }
+        
+        function FormatToCurrency(num) 
+        {
+            num = num.toString().replace(/\$|\,/g,'');
+            if(isNaN(num))
+                num = "0";
+                
+            sign = (num == (num = Math.abs(num)));
+            num = Math.floor(num*100+0.50000000001);
+            cents = num%100;
+            num = Math.floor(num/100).toString();
+            if(cents < 10)
+                cents = "0" + cents;
+            for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+                num = num.substring(0,num.length-(4*i+3))+','+ num.substring(num.length-(4*i+3));
+            return (((sign)?'':'-') +  num + '.' + cents);
+        }
+        
+    </script> 
+</apex:page>

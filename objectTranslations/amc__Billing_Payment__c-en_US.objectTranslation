@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies the value of the payment --></help>
+        <label><!-- Amount --></label>
+        <name>amc__Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the parent Billing Event this payment relates to --></help>
+        <label><!-- Billing Event --></label>
+        <name>amc__Billing_Event__c</name>
+        <relationshipLabel><!-- Billing Payments --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the date the payment was made --></help>
+        <label><!-- Date Paid --></label>
+        <name>amc__Date_Paid__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies how the payment was made. --></help>
+        <label><!-- Payment Method --></label>
+        <name>amc__Payment_Method__c</name>
+        <picklistValues>
+            <masterLabel>Cash</masterLabel>
+            <translation><!-- Cash --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Cheque</masterLabel>
+            <translation><!-- Cheque --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Direct Deposit</masterLabel>
+            <translation><!-- Direct Deposit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>EFTPOS</masterLabel>
+            <translation><!-- EFTPOS --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies the reference number for this payment --></help>
+        <label><!-- Reference # --></label>
+        <name>amc__Reference__c</name>
+    </fields>
+    <layouts>
+        <layout>Billing Payment Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+</CustomObjectTranslation>

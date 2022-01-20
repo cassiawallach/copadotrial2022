@@ -1,0 +1,149 @@
+<!--
+Copyright (c) 2014, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<apex:page controller="redwing.LMSTemplateCtrl" docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" cache="false">
+
+    <head>
+        <apex:insert name="head"/>
+        <c:LMSTemplateCSS isPortalUser="{!isPortalUser}" />
+        <script>
+            function findGetParameter(parameterName) {
+                var result = null,
+                    tmp = [];
+                location.search
+                    .substr(1)
+                    .split("&")
+                    .forEach(function (item) {
+                      tmp = item.split("=");
+                      if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                    });
+                return result;
+            }
+            var lexOriginPathName = window.location.pathname;
+
+
+        	if(sessionStorage.getItem('pMsgRecipient') == undefined){
+                sessionStorage.setItem('pMsgRecipient', 'https://'+findGetParameter('pdomain'));
+            }
+            function sendToLC(e) {
+                var pMsgRecipient = sessionStorage.getItem('pMsgRecipient');
+                var heightVaL = window.document.body.clientHeight;
+                console.dir(window);
+                //send first height
+
+
+
+                parent.postMessage(JSON.stringify({'height':heightVaL, 'iframeUrl':lexOriginPathName}), '*');
+
+                //check if it`s changed, send again
+                var preHeight = heightVaL;
+                var i = 0;
+                var myInterval = setInterval( function() {
+                  i++;
+                  try {
+                    if (preHeight != window.document.body.offsetHeight) {
+                      if (window.document.body.offsetHeight != preHeight) {
+                        heightVaL = window.document.body.offsetHeight;
+                        parent.postMessage(JSON.stringify({'height':heightVaL, 'iframeUrl':lexOriginPathName}), '*');
+                      }
+                      preHeight = window.document.body.offsetHeight;
+                    }
+                  } catch (mEx) {
+                    console.log(mEx.message);
+                  }
+                  if (i > 10) {
+                    clearInterval(myInterval);
+                  }
+                } , 300);
+            }
+
+            if (window.addEventListener) {
+                window.addEventListener('load', sendToLC, true);
+            } else if (window.attachEvent) {
+                window.attachEvent('onload', sendToLC);
+            }
+
+            if (window.addEventListener) {
+                window.addEventListener('resize', sendToLC, true);
+            } else if (window.attachEvent) {
+                window.attachEvent('onresize', sendToLC);
+            }
+        </script>
+        <style>
+        	            @media (max-height: 800px) {
+            	.lmscore #lms-container{
+            		min-height: inherit;
+            	}
+           }
+            @media (max-width: 800px) {
+                .lms-body-container.container{
+                    margin: inherit;
+                }
+             }
+        </style>
+    </head>
+
+    <body class="lmscore-body">
+
+        <div class="lmscore lmscore-template lmscore-bs">
+
+            <div id="lms-container">
+
+                <div id="header"></div>
+
+                <div id="lms-template-wrapper">
+
+                    <apex:insert name="pre-body" />
+
+                    <div class="lms-body-container container">
+                        <div class="tmpl-body-container">
+                            <div id="container-header">
+                                <apex:insert name="container-header" />
+                            </div>
+                            <apex:insert name="body" />
+                        </div>
+                        <hr class="lms-template-hr"/>
+                        <c:LMSFooter id="lms-footer" />
+                    </div>
+
+                    <!-- js files -->
+                    <apex:includeScript value="{!URLFOR($Resource.redwing__lmscore_uilib, '/js/jquery.min.js')}"/>
+                    <apex:includeScript value="{!URLFOR($Resource.redwing__lmscore_uilib, '/js/bootstrap.min.js')}"/>
+                    <apex:includeScript value="{!URLFOR($Resource.redwing__lmscore_uilib, '/js/lmscoreutils.min.js')}"/>
+                    <apex:includeScript value="{!URLFOR($Resource.redwing__lmscore_uilib, '/js/fastclick.min.js')}"/>
+                    <apex:includeScript value="{!URLFOR($Resource.redwing__lmscore_uilib, '/js/handlebars.min.js')}"/>
+
+                </div>
+            </div>
+
+            <c:LMSTemplateJS />
+
+            <c:LMSCustomJS rendered="{!customJSEnabled}"/>
+
+        </div>
+    </body>
+</apex:page>

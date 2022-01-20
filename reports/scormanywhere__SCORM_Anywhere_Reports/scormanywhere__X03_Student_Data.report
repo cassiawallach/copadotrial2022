@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>scormanywhere__Transcript__c$Name</field>
+    </columns>
+    <columns>
+        <field>scormanywhere__Transcript__c$scormanywhere__User__c</field>
+    </columns>
+    <columns>
+        <field>scormanywhere__Transcript__c$scormanywhere__User__c.TimeZoneSidKey</field>
+    </columns>
+    <columns>
+        <field>scormanywhere__Transcript__c$scormanywhere__Total_Time_Seconds__c</field>
+    </columns>
+    <columns>
+        <field>scormanywhere__Transcript__c$scormanywhere__Course__c</field>
+    </columns>
+    <columns>
+        <field>scormanywhere__Transcript__c$scormanywhere__User__c.Id</field>
+    </columns>
+    <description>Student information from the Salesforce.com User Table and Scorm Transcript</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>scormanywhere__Transcript__c$scormanywhere__User__c.Profile</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>scormanywhere__Transcript__c$scormanywhere__User__c.UserRole</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>scormanywhere__Transcript__c$scormanywhere__User__c.CreatedDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>03 Student Data</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>scormanywhere__X02_Transcripts__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>scormanywhere__Transcript__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

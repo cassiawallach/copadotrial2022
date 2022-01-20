@@ -1,0 +1,15 @@
+<apex:page id="KnowledgeSettings" sideBar="false" title="Knowledge Settings" controller="acknowltng.KnowledgeSettingsCtrl">
+    <apex:includeLightning />
+
+    <div id="acKnowledgeSettingsContainer"></div>
+
+    <script>
+        $Lightning.use("{!namespace}:acLightningContainer", function() {
+            $Lightning.createComponent(
+                "{!namespace}:acKnowledgeSettings",
+                {},
+                "acKnowledgeSettingsContainer",
+                function() {});
+        });
+    </script>
+</apex:page>

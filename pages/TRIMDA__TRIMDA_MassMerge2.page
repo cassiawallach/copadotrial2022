@@ -1,0 +1,374 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c" recordSetVar="TRIMDA_MatchingResult__cs" extensions="TRIMDA.TRIMDA_MassMergeController" action="{!MassMergeInit}" doctype="HTML-5.0">
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<!--<apex:stylesheet value="{!URLFOR($Resource.DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/>-->
+   
+<style>
+    
+    .trimdmr_header{
+        width:100%;
+        border-radius: 0.25rem 0.25rem 0 0;
+        background-color:#9bb1d9;
+        background: linear-gradient(#9bb1d9,#ddecf9);  
+        padding:0.5rem;
+    }
+
+    
+    .dt_pbs{
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+    
+    .dt_highlight{
+        font-weight:bold;
+    }
+    
+    .slds-scope .slds-brand-band:before{
+        z-index:0;
+     }
+    
+    
+</style>
+
+<apex:slds />
+<div class="slds-scope" style="{!IF($User.UIThemeDisplayed == 'Theme4d','background-color:#b2c5e0;','')}">    
+<div class="{!IF($User.UIThemeDisplayed == 'Theme4d','slds-brand-band slds-brand-band_large','')}" >
+    <div  style="{!IF($User.UIThemeDisplayed == 'Theme4d','z-index:1;margin:0.75rem;','')}">
+
+
+<apex:form id="All" >
+    
+    
+    <div class="slds-grid slds-wrap"> 
+        <!--HEADER -->
+        <div class="slds-col slds-size--1-of-1 trimdmr_header" >
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'MatchedRecords48x40_NL.png')}" style="height:2.5rem;" title="DataTrim Matched Records" />
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-heading--label" style="color:black;">DataTrim</p>
+                        <div class="slds-grid">
+                            <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Mass Merge"><strong>Mass Merge</strong></h1>
+                        </div>
+                    </div>
+                    <a href="/apex/TRIMDA__TRIMDA_DupeAlertsSetup?display=merge"  title="DataTrim setup/customization etc." ><apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'setup.png')}" style="height:1.5rem;" title="Setup" rendered="{!runMode != 'Batch'}"/></a>
+                </div>
+            </div>
+        </div>
+   
+    
+        <div class="slds-col slds-size--1-of-1 " >
+            <apex:pageMessages id="messages" />
+            <apex:actionStatus id="actionStatus"  style="font-size:11px;" startText="Updating..." />    
+        </div>  
+        
+        <div class="slds-col slds-size--1-of-1 " >
+              <apex:pageBlock id="Settings" tabstyle="TRIMDA_MatchingResult__c" title="Mass Merge Settings" rendered="{!MassActionResult}">
+                <apex:facet name="header" >
+                    <apex:panelGroup >
+                        <div class="slds-grid" style="border:1px;margin-top:0.25rem;padding:0.5rem;padding-left:0.8rem;">
+                            <div class="slds-col slds-size--11-of-12 " style="text-align:left;font-size:1.3rem;">
+                                 &nbsp;Mass Merge Settings&nbsp;
+                            </div>
+                            <!--
+                            <div class="slds-col slds-size--1-of-12 " style="text-align:right;">
+                                <apex:commandLink onClick="javascript:window.open('/{!Settings.Id}/e?isdtp=mn&retURL={!Settings.Id}', 'LookupWindow', 'height=600, width=800, resize=0, scrollbars=yes, showSideBar=false, showHeader=false')" value="Change defaults" style="font-size:11px" title="Edit Default Parameters" rerender="Settings" rendered="{!Settings.isUserAdmin}"/>
+                            </div>
+                            -->
+                        </div>
+                    </apex:panelGroup>
+                </apex:facet>
+                 
+                 <apex:panelGroup id="MergeSettings" rendered="{!MassActionResult}">
+                 <div class="" style="margin-bottom:0.5rem;">
+                     <div class="slds-grid slds-wrap"> 
+                         <div class="slds-col slds-size--1-of-1 pbSubheader first tertiaryPalette dt_pbs slds-text-title_caps" style="padding-left:0.5rem;">
+                             Merge Settings
+                         </div>
+                         <div class="slds-col slds-size--1-of-1 " style="padding-left:0.5rem;">
+                             <div class="slds-grid slds-wrap" style="font-size:0.8rem;"> 
+                                 <div class="slds-col slds-size--1-of-1 ">
+                                     <div class="slds-grid "> 
+                                         <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                             Store Duplication Information as Activity:
+                                         </div>
+                                         <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                               <apex:inputCheckBox value="{!Settings.DupeDataAsActivity}"/>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="slds-col slds-size--1-of-1 ">
+                                     <div class="slds-grid "> 
+                                         <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                             Store Duplication Information as Note:
+                                         </div>
+                                         <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                               <apex:inputCheckBox value="{!Settings.DupeDataAsNote}"/>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="slds-col slds-size--1-of-1 ">
+                                     <div class="slds-grid "> 
+                                         <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                             Store Duplication Information as Text:
+                                         </div>
+                                         <div class="slds-col slds-size--1-of-12 " style="padding-left:0.5rem;">
+                                             <apex:inputCheckBox value="{!Settings.DupeDataAsText}"/>
+                                         </div>
+                                         <div class="slds-col slds-size--8-of-12 " style="padding-left:0.5rem;">
+                                             Text Area field:&nbsp;<apex:inputText value="{!Settings.DupeDataTextArea}" size="40" style="width: 20rem;"/>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="slds-col slds-size--1-of-1 ">
+                                     <div class="slds-grid "> 
+                                         <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                             Merge Multi Pick Lists:
+                                         </div>
+                                         <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                               <apex:inputCheckBox value="{!Settings.mergeMultiPickList}"/>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="slds-col slds-size--1-of-1 ">
+                                         <div class="slds-grid "> 
+                                             <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                                 Delete Matched Records After Merge:
+                                             </div>
+                                             <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                                   <apex:inputCheckBox value="{!Settings.deleteMRAfterMerge}"/>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 <div class="slds-col slds-size--1-of-1 ">
+                                     <div class="slds-grid "> 
+                                         <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                             Disable Custom Merge Rule:
+                                         </div>
+                                         <div class="slds-col slds-size--1-of-12 " style="padding-left:0.5rem;">
+                                               <apex:inputCheckBox value="{!disableCustomMergeRules}"/>
+                                         </div>
+                                         <div class="slds-col slds-size--8-of-12 " style="padding-left:0.5rem;">
+                                             <apex:inputText disabled="True" style="width:100%;" value="{!MergeRules}"/><br />
+                                             <!--<apex:input type="number" id="BatchSize" Html-min="1" Html-max="99" value="{!Settings.batchMaxMerge}" styleclass="slds-input" style="max-width:5rem;" html-placeholder="Batch Size"/>-->
+                                         </div>
+                                     </div>
+                                 </div>
+                                 
+                                 
+
+                             </div>
+                            
+                         </div>
+                     </div>
+                 </div>
+                 </apex:panelGroup>
+                 
+                 <apex:panelGroup id="Batch" rendered="{!Settings.EnableBatch}">
+                 <div class="" style="margin-bottom:0.5rem;">
+                     <div class="slds-grid slds-wrap"> 
+                         <div class="slds-col slds-size--1-of-1 pbSubheader first tertiaryPalette dt_pbs slds-text-title_caps" style="padding-left:0.5rem;">
+                             Batch Merge, optional for lists with less than {!Settings.BatchMaxMerge} pairs
+                         </div>
+                         <div class="slds-col slds-size--1-of-1 " style="padding-left:0.5rem;">
+                             <apex:outputPanel >
+                                 <div class="slds-grid slds-wrap" style="font-size:0.8rem;"> 
+                                     <div class="slds-col slds-size--1-of-1 ">
+                                         <div class="slds-grid "> 
+                                             <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                                 Use Batch:
+                                             </div>
+                                             <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                                   <apex:inputCheckBox value="{!useBatch}" disabled="{!disableBatch}" /><apex:actionsupport event="onclick" action="{!nop}" rerender="Settings"  /> 
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </apex:outputPanel> 
+                             <apex:outputPanel id="BatchSettings" rendered="{!useBatch}" >
+                                 <div class="slds-grid slds-wrap" style="font-size:0.8rem;"> 
+                                     <div class="slds-col slds-size--1-of-1 ">
+                                         <div class="slds-grid "> 
+                                             <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                                 Batch Name:
+                                             </div>
+                                             <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                                   <apex:inputText value="{!BatchName}"  style="width: 20rem;" />
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="slds-col slds-size--1-of-1 ">
+                                         <div class="slds-grid "> 
+                                             <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                                 Send notification when done:
+                                             </div>
+                                             <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                                   <apex:inputCheckBox value="{!Settings.notify}"/> 
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="slds-col slds-size--1-of-1 ">
+                                         <div class="slds-grid "> 
+                                             <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                                 Send notification to:
+                                             </div>
+                                             <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                                   <apex:inputText value="{!Settings.notifyEmail}" style="width: 20rem;"/>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="slds-col slds-size--1-of-1 ">
+                                         <div class="slds-grid "> 
+                                             <div class="slds-col slds-size--1-of-4 " style="padding-left:0.5rem;">
+                                                 Batch Block Size (1-90):
+                                             </div>
+                                             <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                                  <!--<apex:input type="number" id="BatchSize" Html-min="1" Html-max="99" value="{!Settings.batchMaxMerge}" styleclass="slds-input" style="max-width:5rem;" html-placeholder="Batch Size"/>-->
+                                                 <apex:inputText value="{!BatchSize}" style="max-width:3rem;text-align: center;"/>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                     
+                            </apex:outputPanel>
+                         </div>
+                     </div>
+                 </div>
+                 </apex:panelGroup>
+                  
+<!-- TEST START                  
+                  <apex:panelGroup rendered="{!runMode='Batch'}" >
+                      <div class="slds-text-align--center" >
+                           <apex:input value="{!BatchWhere}" html-placeholder="SOQL Filter" style="width:500px;"  /> 
+                           <apex:input value="{!BatchLimit}" html-placeholder="Limit" style="max-width:50px;"  /> 
+                      </div>
+                  </apex:panelGroup>
+ TEST END -->                  
+                  
+                  <apex:panelGroup rendered="{!runMode='Batch'}" >
+
+                      <div class="slds-text-align--center" style="border-top:#e0dddd;border-top-width:1px;border-top-style:solid;padding-top:1rem;">
+	                      <!--<apex:commandLink id="btnapply" action="{!MassMergeInit_Batch}" value="Apply" rendered="{!HideApply}"  status="ProgressStatus" styleclass="slds-button slds-button--brand" reRender="Table, messages" style="padding-left: 3rem;padding-right: 3rem;"  />-->
+                          <apex:commandButton action="{!MassMergeInit_Batch}" value="Apply"  status="ProgressStatus" styleclass="slds-button slds-button--brand" rerender="Table, messages" style="padding-left: 3rem;padding-right: 3rem;" />
+                      </div>
+                  </apex:panelGroup>
+
+                 
+            </apex:pageBlock>
+        </div>
+        
+        <!--
+        <apex:actionStatus id="ProgressStatus">
+        <apex:facet name="start">
+        <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="" messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+        </apex:actionStatus>
+        -->
+            <apex:actionStatus id="ProgressStatus">
+                <apex:facet name="start">
+                    <div class="" >    
+                        <div class="slds-spinner_container">
+                            <div class="slds-spinner slds-spinner_medium" aria-hidden="false" role="status">
+                                <div class="slds-spinner__dot-a"></div>
+                                <div class="slds-spinner__dot-b"></div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+
+<!-- SELECTED MATCHED RECORDS -->        
+        <div class="slds-col slds-size--1-of-1 " >
+             <apex:pageBlock id="Table" tabstyle="TRIMDA_MatchingResult__c" title="Selected Matched Records" rendered="{!MassActionResult}">
+                <apex:facet name="header" >
+                    <apex:panelGroup >
+                        <div class="slds-grid" style="border:1px;margin-top:0.25rem;padding:0.5rem;padding-left:0.8rem;">
+                            <div class="slds-col slds-size--4-of-12 " style="text-align:left;font-size:1.3rem;">
+                                 &nbsp;Selected Matched Records&nbsp; <apex:outputtext rendered="{!MassActionStep2}" >({!ListSize})</apex:outputtext>
+                            </div>
+                            <div class="slds-col slds-size--8-of-12 " >
+                                 <apex:panelGroup >
+                                    <apex:commandButton action="{!MassMergeStep2}" value="Merge (Keep Survivor)" title="Merge and keep the Records labelled Survivor as the Master records" onclick="if(!confirm('Are you sure?')){return false};" disabled="{!NOT MassActionStep2}" status="ProgressStatus" reRender="All" styleclass="slds-button slds-button--brand">
+                                        <apex:param name="MergeType" value="2Survivor" assignTo="{!MergeType}"></apex:param>
+                                    </apex:commandButton>
+                                    <apex:commandButton action="{!MassMergeStep2}" value="Merge (Keep Duplicate)" title="Merge and keep the Records labelled Dupe as the Master records" onclick="if(!confirm('Are you sure?')){return false};" disabled="{!NOT MassActionStep2}" status="ProgressStatus" reRender="All" styleclass="slds-button slds-button--brand">
+                                        <apex:param name="MergeType" value="2Dupe" assignTo="{!MergeType}"></apex:param>
+                                    </apex:commandButton>
+                                     <apex:commandButton value="Okay" onclick="javascript:sforce.one.back(true);" disabled="{!MassActionStep2}" rendered="{!and($User.UIThemeDisplayed =='Theme4d',runMode != 'Batch')}"  styleclass="slds-button slds-button--brand" />
+                                     <apex:commandButton value="Back" action="{!retURL}" disabled="{!MassActionStep2}" rendered="{!and($User.UIThemeDisplayed !='Theme4d',runMode != 'Batch')}" styleclass="slds-button slds-button--brand" />
+                                </apex:panelGroup>
+                            </div>
+       
+                        </div>
+                    </apex:panelGroup>
+                    
+                    
+                </apex:facet>
+                
+                <apex:outputPanel rendered="{!runMode == 'StandardSet'}" >
+                <apex:dataTable id="theTable" styleClass="slds-table slds-table--bordered" style="font-size:90%;" value="{!MassActionList}" var="MAList" >
+                    <apex:column style="width:1rem;padding-top:0rem;padding-bottom:0rem;">
+                        <apex:facet name="header" ><strong>Match Type</strong></apex:facet>
+                        <!-- <apex:outputText value="{!MAList.AlertType}"/> -->
+                        <apex:outputLink value="/{!MAList.mr.id}" title="View Details" target="_new">{!MAList.AlertType}</apex:outputLink>
+                        <div style="width:4.5rem;">
+                            <apex:outputfield value="{!MAList.mr.TRIMDA__Match_Class__c}" style="height:0.8rem;"/>
+                        </div>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header"><strong>Survivor</strong></apex:facet>
+                        <!-- <apex:outputText value="{!MAList.Master}"/>-->
+                        <apex:outputLink value="/{!MAList.MasterId}" title="Master Record" target="_new">{!MAList.Master}</apex:outputLink>
+                    </apex:column>
+                    <apex:column style="width:4rem;">
+                            <apex:image id="theImage" title="Ready To Merge" url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'Merge.gif')}" style="height:1rem;" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}"/> 
+                            <span class="slds-icon_container slds-icon-standard-poll" title="Ready to Merge" style="{!IF($User.UIThemeDisplayed != 'Theme4d','display:none;','')}">
+                            <svg class="slds-icon slds-icon_small" aria-hidden="true" style="{!IF($User.UIThemeDisplayed != 'Theme4d','display:none;','')}">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.salesforcelightningdesignsystem, '/icons/standard-sprite/svg/symbols.svg#merge')}"></use>
+                                </svg>
+                            </span> 
+                    </apex:column>      
+                    <apex:column >
+                        <apex:facet name="header"><strong>Dupe</strong></apex:facet>
+                        <!-- <apex:outputText value="{!MAList.Secondary}"/> -->
+                        <apex:outputLink value="/{!MAList.SecondaryId}" title="Secondary Record" target="_new">{!MAList.Secondary}</apex:outputLink>
+                    </apex:column>   
+                    <apex:column style="width:30%;">
+                        <apex:facet name="header"><strong>Result</strong></apex:facet>
+                        <apex:outputText value="{!MAList.Result}" styleClass="{!MAList.ResultStyle}"/>
+                    </apex:column>
+                </apex:dataTable>
+                </apex:outputPanel> 
+                
+            </apex:pageBlock>
+        </div>
+        
+    </div>
+
+</apex:form>
+</div>
+
+
+    
+<!--COPYRIGHT-->
+<div  style="{!IF(runMode == 'Batch','display:none','')}">
+   <div class="slds-grid slds-wrap">    
+       <div class="slds-col slds-size--1-of-1" >
+           <div style="text-align:center;font-size:xx-small;font-family:Arial;margin-top:2rem;">Copyright © 2007-<span id="thisYear">2017</span> DataTrim Dupe Alerts by d2b International ApS, All rights reserved. </div>
+       </div>
+    </div>
+</div>
+    
+    
+    </div> 
+</div>    
+<script>
+    var d = new Date();
+	document.getElementById("thisYear").innerHTML = d.getFullYear();
+</script> 
+   
+    
+       
+   
+ </apex:page>

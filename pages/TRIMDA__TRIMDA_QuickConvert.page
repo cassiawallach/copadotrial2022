@@ -1,0 +1,304 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c" extensions="TRIMDA.TRIMDA_QuickConvert_Controller" tabStyle="Lead"  sidebar="false" Showheader="false" >
+<!--<apex:includeScript value="{!URLFOR($Resource.DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>-->
+
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}" />
+<!--<apex:stylesheet value="{!URLFOR($Resource.DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/> -->
+
+<title>Quick Convert</title>
+<!-- <style>.listRelatedObject{overflow-x:scroll;width:550px;}</style> -->
+<!-- <style>.bRelatedList{overflow-x:auto;width:550px;}</style> -->
+<style>.bRelatedList{overflow-x:auto;}</style>
+<style>
+    .mergecontainer{
+        background-color: rgba(155, 177, 217, 0.33);
+    }
+    .convertcontainer{
+        background-color: rgba(242, 207, 91, 0.33);
+    }
+    .trimdmr_header{
+        width:100%;
+        border-radius: 0.25rem 0.25rem 0 0;
+        background-color:#9bb1d9;
+        background: linear-gradient(#9bb1d9,#ddecf9); 
+        padding:0.5rem;
+    }
+    .dt_pbs{
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+    
+    .dt_highlight{
+        font-weight:bold;
+    }
+    
+    .slds-scope .slds-brand-band:before{
+        z-index:0;
+     }
+</style>
+<script>
+    function navigateBack(Theme, inline, isSuccess){
+        //alert(Theme);
+        //alert(inline);
+        //alert(isSuccess);
+        //var isSuccess = '{!success}';
+        if (inline == '0' && isSuccess == 'true'){
+            if (Theme == 'Theme4d'){
+                sforce.one.back(true);
+        	}else{
+                window.history.back();
+            }
+        }
+  }  
+</script>     
+    
+<apex:slds />  
+<div class="slds">
+<div class="slds-scope" style="{!IF($User.UIThemeDisplayed == 'Theme4d','background-color:#b2c5e0;','')}">    
+<div class="{!IF($User.UIThemeDisplayed == 'Theme4d','slds-brand-band slds-brand-band_large','')}" >
+    <div  style="{!IF($User.UIThemeDisplayed == 'Theme4d','z-index:1;margin:0.75rem;','')}">    
+    
+<apex:form id="All">
+    
+
+    
+    <!--HEADER - NOT INLINE -->
+    <apex:outputPanel rendered="{!inlineQC == '0'}" >
+        <div class="slds-col slds-size--1-of-1 trimdmr_header" style="margin:0.5rem;" >
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'MatchedRecords48x40_NL.png')}" style="height:2.5rem;" title="DataTrim Matched Records" />
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-heading--label" style="color:black;">DataTrim</p>
+                        <div class="slds-grid">
+                            <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Mass Merge"><strong>Quick Convert</strong></h1>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </apex:outputPanel>
+      <!--
+    ReviewQC:{!ReviewQC}
+    InlineQC:{!inlineQC} 
+    -->
+<!-- HEADER -->    
+    <div class="slds-grid slds-wrap"> 
+        <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;">
+              <apex:pageBlock id="QuickConvert" tabstyle="Lead" title="Quick Convert Settings" >
+                <apex:facet name="header" >
+                    <apex:panelGroup rendered="{!inlineQC != '0'}">
+                        <div class="slds-grid pbSubheader first tertiaryPalette dt_pbs" style="border:1px;padding:0.5rem;padding-left:0.8rem;font-size:1.3rem;text-align:left;">
+                                 &nbsp;Convert Lead: {!LeadName}&nbsp;
+                        </div>
+                    </apex:panelGroup>
+                </apex:facet>
+ <!--REVIEW ONLY-->   
+               <apex:panelGroup id="ReviewOnlySection" rendered="{!reviewQC='1'}">
+                   <apex:panelGroup >
+                     <div class="slds-grid slds-wrap" style="margin-top:-0.5rem;">
+                        <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem;">
+                            <apex:panelGroup >
+                                <div class="slds-container--large convertcontainer"  style="margin-bottom:-0.5rem;margin-top:-0.25rem;">
+                                    <div class="slds-grid slds-wrap" style="padding:0.5rem;"> 
+                                        <div class="slds-col slds-size--2-of-12 " style="color:black;font-size:1.1rem;text-align:center;vertical-align:middle;">
+                                            OK to Convert?&nbsp;
+                                        </div>
+                                        <div class="slds-col slds-size--2-of-12 " style="font-size:0.8rem;text-align:left;padding-top:0.5rem;">
+                                            <div class="slds-button-group" role="group">
+                                                <apex:commandButton action="{!rConvertYes}" styleclass="slds-button slds-button--brand slds-button--small" value="Yes" oncomplete="navigateBack('{!$User.UIThemeDisplayed}','{!inlineQC}', '{!success}');" status="FeedbackStatus" reRender="All"/>
+                                                <apex:commandButton action="{!rFalseDupe}" styleclass="slds-button slds-button--brand slds-button--small" value="False Dupe" oncomplete="navigateBack('{!$User.UIThemeDisplayed}','{!inlineQC}', '{!success}');" status="FeedbackStatus" reRender="All"/>
+                                                <apex:commandButton action="{!rConvertNo}" styleclass="slds-button slds-button--brand slds-button--small slds-button--last" oncomplete="navigateBack('{!$User.UIThemeDisplayed}','{!inlineQC}', '{!success}');" value="No" status="FeedbackStatus" reRender="All"/>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size--4-of-12 " style="font-size:0.8rem;text-align:center;">
+                                            <apex:inputField value="{!MyMR.TRIMDA__Review_Note__c}" styleclass="slds-textarea" html-placeholder="Review Notes" label="Review Notes" />
+                                        </div>
+                                        <div class="slds-col slds-size--2-of-12 " style="font-size:0.8rem;text-align:left;padding-top:0.5rem;">
+                                            <div class="slds-button-group" role="group">
+                                                <apex:commandButton action="{!SaveMe}" styleclass="slds-button slds-button--brand slds-button--small" value="Submit Review Notes"  oncomplete="navigateBack('{!$User.UIThemeDisplayed}','{!inlineQC}', '{!success}');" status="FeedbackStatus" reRender="All"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:panelGroup>
+                            </div>
+                        </div>
+                   </apex:panelGroup>
+
+                   <apex:panelGroup id="thankyou" rendered="{!FeedbackSubmitted == true}">
+                    <div class="slds">
+                        <div class="slds-container--large convertcontainer"  style="margin-top:0.5rem;">
+                            <div class="slds-grid slds-wrap" style="padding:0.5rem;"> 
+                                <div class="slds-col slds-size--1-of-1 " >
+                                    <apex:pageMessages />
+                                </div>
+                                <div class="slds-col slds-size--1-of-1 " style="font-size:1.1rem;text-align:center;vertical-align:middle;">
+                                    Feedback Submitted: (Dupe:&nbsp;{!MyMR.Review_Outcome__c})
+                                </div>
+                                <div class="slds-col slds-size--1-of-1 " style="font-size:1rem;text-align:center;vertical-align:middle;">
+                                    Thank you for help keeping our data clean! &nbsp;<apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'thankyou.png')}" style="height:1.5rem;" title="Thank you!" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </apex:panelGroup>
+               </apex:panelGroup>
+  <!--ACTION--> 
+               <apex:panelGroup id="ActionSection" rendered="{!reviewQC='0'}">
+                   <div class="slds-container--large" style="margin-bottom:0.5rem;">
+                     <div class="slds-grid slds-wrap"> 
+                         <div class="slds-col slds-size--2-of-3 " style="padding-left:0.5rem;">
+                             <div class="slds-grid slds-wrap" style="padding:0.25rem;"> 
+                                 
+                                 <div class="slds-col slds-size--1-of-4 requiredInput" style="text-align:right;padding-right:0.5rem;">
+                                     Converted Status:
+                                 </div>
+                                 <div class="slds-col slds-size--3-of-4 requiredInput" style="padding-left:0.5rem;padding-right:0.5rem;">
+                                     <apex:outputPanel layout="block" styleClass="requiredBlock"/>
+                                     <!--<input type="text" value="{!ConvertedStatus}"/>-->
+                                     <apex:selectList id="chooseConvStatus" value="{!ConvertStatus}" size="1" required="true">
+                                          <apex:selectOptions value="{!LeadStatuses}"></apex:selectOptions>
+                                     </apex:selectList>
+                                 </div>
+                                 
+                                 <div class="slds-col slds-size--1-of-4 " style="text-align:right;padding-right:0.5rem;">
+                                     Overwrite Lead Source:
+                                 </div>
+                                 <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                     <input type="checkbox" value="{!overwriteLeadSource}"/>
+                                 </div>
+
+                                 <div class="slds-col slds-size--1-of-4 " style="text-align:right;padding-right:0.5rem;">
+                                     Send Email to Owner:
+                                 </div>
+                                 <div class="slds-col slds-size--3-of-4 " style="padding-left:0.5rem;">
+                                     <input type="checkbox" value="{!sendNoti}"/>
+                                 </div>
+                                 
+                                 <div class="slds-col slds-size--1-of-4 " style="text-align:right;padding-right:0.5rem;">
+                                     Owner:
+                                 </div>
+                                 <div class="slds-col slds-size--1-of-4 requiredInput" style="padding-left:0.5rem;padding-right:0.5rem;">
+                                     <apex:outputPanel layout="block" styleClass="requiredBlock"/>
+                                     <input type="text" value="{!RecordOwner}"/>
+                                 </div>
+
+                                 <div class="slds-col slds-size--1-of-4 " style="padding-right:0.5rem;text-align:right;">
+                                     Opportunity Name:
+                                 </div>
+                                 <div class="slds-col slds-size--1-of-4 requiredInput" style="padding-left:0.5rem;padding-right:0.5rem;">
+                                     <apex:outputPanel layout="block" styleClass="requiredBlock"/>
+                                     <input type="text" value="{!OpportunityName}"/>
+                                 </div>
+      
+                             </div>
+                         </div>
+                         <div class="slds-col slds-size--1-of-3 " style="padding-left:0.5rem;">
+                             <strong>Lead Conversion</strong><br />
+                             Leads can be converted to companies/accounts, contacts and opportunities<br />
+                            You should only convert a lead once you have identified it as qualified.<br />
+                              
+                         </div>
+                         
+                         <div class="slds-col slds-size--4-of-12 " style="font-size:0.8rem;text-align:center;padding-top:0.5rem;">
+                             <apex:commandButton action="{!QuickConvertWooppty}" disabled="{! Not OK2Convert}" value="Convert"  oncomplete="navigateBack('{!$User.UIThemeDisplayed}','{!inlineQC}', '{!success}');" title="Convert Lead" status="ProgressStatus" reRender="All" id="ConvertButton" styleclass="slds-button slds-button--brand slds-button--small"/>
+                             <!--<a href="#" class="slds-button slds-button--brand">Convert Lead</a>-->
+                         </div>
+                         <div class="slds-col slds-size--4-of-12 " style="font-size:0.8rem;text-align:center;padding-top:0.5rem;">
+                             <apex:commandButton action="{!QuickConvertWoppty}" disabled="{! Not OK2Convert}" value="Convert Lead with Opportunity" oncomplete="navigateBack('{!$User.UIThemeDisplayed}','{!inlineQC}', '{!success}');" title="Convert Lead with Opportunity" status="ProgressStatus" reRender="All" id="ConvertWOpptyButton" styleclass="slds-button slds-button--brand slds-button--small"/>
+                             <!--<a href="#" class="slds-button slds-button--brand">Convert Lead with Opportunity</a>-->
+                         </div>
+                         <div class="slds-col slds-size--4-of-12 " style="padding-left:0.5rem;">
+                           After this lead has been converted, it can no longer be viewed or edited as a lead, but can be viewed in lead reports.&nbsp;
+                         </div>
+                         
+                     </div>
+                  </div>
+                </apex:panelGroup>
+                   
+<!-- MESSAGES-->                   
+                   <div class="slds-col slds-size--1-of-1 " style="font-size:0.8rem">
+                    <apex:pageMessages />
+                  </div>
+
+<!-- DETAILS-->   
+              <apex:panelGroup id="detail" rendered="{!FeedbackSubmitted != true}">
+                  <div class="slds-grid slds-wrap"> 
+                    <div class="slds-col slds-size--1-of-2 " style="font-size:95%;" >
+                        <apex:pageBlock >
+                        <!--{!DupeID}-->
+                        <apex:detail id="theLead" subject="{!DupeID}" inlineEdit="true" title="false"   />
+                        </apex:pageBlock>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 " style="font-size:95%;">
+                        <apex:pageBlock >
+                            <!--{!SurvivorID}-->
+                            <apex:detail id="theSurvivor" subject="{!SurvivorID}" inlineEdit="true" title="false" />
+                        </apex:pageBlock>
+                    </div>
+                    <script style="text/javascript">
+                       jQuery(document).ready(function(){
+                           jQuery("#mainTable").css("width", jQuery(window).width()-60);
+                           jQuery(".listHoverLinks").css("visibility", "hidden");
+                            jQuery(".listHoverLinks").css("display", "none");
+                           jQuery(".listHoverLinks").css("height", "0rem");
+                           jQuery(".listHoverLinks").css("margin", "0rem");
+                           jQuery(".bRelatedList").css("width", (jQuery(window).width()-80)/2);
+                           jQuery(".bRelatedList").css("overflow-x",'auto');
+                           //jQuery(".pbButton").css("visibility", "hidden");
+                           //jQuery(".pbButton").css("height", "0rem");
+                           jQuery(".pbButtonb").css("visibility", "hidden");
+                           jQuery(".pbButtonb").css("height", "0rem");
+                           //jQuery(".pbBottomButtons").css("height", "0rem");
+                           
+                           jQuery(".bRelatedList .bPageBlock .pbButton").css("visibility", "hidden");
+                           //Hide imbedded VF pages
+                           jQuery(".dataCol iframe").css("visibility", "hidden");
+                           jQuery(".dataCol iframe").css("height", "0rem");
+                           jQuery(".data2Col iframe").css("visibility", "hidden");
+                           jQuery(".data2Col iframe").css("height", "0rem");
+                       });
+                    </script>
+                </div>
+            </apex:panelGroup>
+            </apex:pageBlock>
+        </div>
+    </div>
+    
+<!--COPYRIGHT-->
+<apex:panelGroup rendered="{!inlineQC == '0'}">   
+<div class="slds" id="copyright">
+   <div class="slds-grid slds-wrap">	
+       <div class="slds-col slds-size--1-of-1" >
+           <div style="text-align:center;font-size:xx-small;font-family:Arial;margin-top:2rem;">Copyright © 2007-<span id="year">201X</span> DataTrim Dupe Alerts by d2b International ApS, All rights reserved.
+           </div>
+       </div>
+    </div>
+    <script>
+    	var elem = document.getElementById('year');
+    	//alert(new Date().getFullYear());
+    	elem.innerText = new Date().getFullYear();
+    </script>
+</div>
+</apex:panelGroup>    
+    
+    <apex:actionStatus id="FeedbackStatus">
+        <apex:facet name="start">
+            <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Saving Feedback..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+
+    <apex:actionStatus id="ProgressStatus">
+        <apex:facet name="start">
+            <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Converting..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+    
+</apex:form>
+</div>
+   
+	</div>
+</div>
+</div>    
+</apex:page>

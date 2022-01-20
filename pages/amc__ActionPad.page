@@ -1,0 +1,10 @@
+<apex:page sidebar="false" tabStyle="Action_Pad__tab" standardController="amc__Project__c">
+    <apex:includeLightning /> 
+    <div id="actionpad"/>
+    <script>
+        $Lightning.use("amc:ActionPadApp", function() {
+          $Lightning.createComponent("amc:ActionPad",{'isLightning': false, 'recordId':'{!amc__Project__c.Id}'},"actionpad",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

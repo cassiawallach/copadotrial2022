@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_5742468</developerName>
+        <masterLabel>Theme</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Theme__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Feature - Customer Commitment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Enhancement</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Meet Competition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Feature - Usability (UX)</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>DX Package Artifacts</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Governance</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Metadata Dependency Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Version Control Automation</sourceValue>
+            </sourceValues>
+            <value>Features</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Bugs</sourceValue>
+            </sourceValues>
+            <value>Bugs</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>BAU - Business As Usual</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Technical Debt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Security Issue</sourceValue>
+            </sourceValues>
+            <value>Tech. Debt</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>copado__User_Story__c.copado__Story_Points_Other__c</column>
+        </chartSummaries>
+        <chartType>HorizontalBar</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>copado__User_Story__c.Module__c</groupingColumn>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_Other__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Release__c</field>
+    </columns>
+    <columns>
+        <field>CUST_CREATED_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Epic__c</field>
+    </columns>
+    <columns>
+        <field>BucketField_5742468</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Project__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>documentation,QA,academy,infra,apo</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Release__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>v13,v1.8</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Draft,Backlog,Backburner,Awaiting Approval,Approved,Rejected,Cancelled</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>copado__User_Story__c.Module__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CUST_RECORDTYPE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>v13 Release - User Stories</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Sprint__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

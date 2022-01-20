@@ -1,0 +1,66 @@
+<apex:page title="LRM Config" sidebar="false" docType="html-5.0" controller="JBCXM.LRMBroker" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker" standardStylesheets="false" tabStyle="Administration__tab">
+   <script>
+      var GS = GS || {};
+      var d = new Date();
+      GS.userConfig = {
+                userLocale  : {!(dateTimeFormatByLocale)},
+                userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+                userId      : "{!$User.Id}",
+                userEmail   : "{!$User.Email}",
+                profilePhoto: "{!(profilePhoto)}",
+            userDisplayName: "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs       : fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+               isLightningEnabled  : {!(isLightningEnabled)}
+            };
+    
+      GS.sessionId =  '{!sessionId}';
+      GS.remotingEndPoint = '{!$RemoteAction.LRMBroker.lrmRequestBroker}';
+      GS.remotingBulkEndPoint = '{!$RemoteAction.LRMBroker.lrmRequestBroker}';
+      GS.commonRemotingEndPoint  = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+      GS.remoting = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+      GS.usageConfigInfo      = {};
+      GS.isPackagedInstance = "{!(isPkgInstance)}"; 
+      GS.packageNS = "{!(nameSpace)}"; 
+      GS.restClientConfig = {sessionId: "{!NSSessionId}", remoting : "{!$RemoteAction.NSRemoting.apinsinvoke}"};
+      GS.hasModifyAllPerm = {!(hasModifyAllPerm)};
+      GS.sfDate = "{!(sfDate)}";    
+      GS.customLabels         = fakeEval('{!JSINHTMLENCODE(customLabelsMap)}');
+      var debugUrl = "{!JSINHTMLENCODE($CurrentPage.parameters.debug)}";
+       var GSGA = {
+         orgId: "{!$Organization.Id}",
+         orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+         userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+      };
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');  
+      
+   </script>
+   
+    <div id="gs-app-container">
+     <div class="gs-module-container">
+      <div class = "completeContainer"></div>
+     </div>
+    </div>
+   
+   
+ 
+   <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+      <c:AlertForm />
+      <script>
+         installResources({scripts: ["lrm/scripts/lrm.bundle.js"], styles:["lrm/styles/lrm.css"]});
+      </script>
+   </apex:outputpanel>
+   <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+      <link rel="stylesheet" type="text/css" href="https://localhost:9091/UI/lrm/styles/lrm.css" />
+      <script src = "https://localhost:9091/UI/lrm/scripts/lrm.bundle.js" />
+   </apex:outputpanel>
+   
+   
+   <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+   <script>
+      gainsightTrackEvents.pushPageViews('LRM Config');
+   </script>
+   
+</apex:page>

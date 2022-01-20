@@ -1,0 +1,46 @@
+<!--
+ - Created by eva on 10/31/18.
+ -->
+
+<apex:page id="X6sense_Sales_Intelligence_Lead" standardController="Lead" extensions="sixsense.Indicator_Lead">
+    <apex:slds />
+    <apex:includeScript value="{!URLFOR($Resource.sixsense__jQuery, 'jquery.min.js')}"/>
+    <style>
+        div .sixsense-card {
+            border: 1px solid #E2E7EC;
+            border-radius: 2px;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            var form = document.getElementById("sales_lead_form");
+            var origin = window.location.origin;
+            var input = document.getElementById("origin");
+            input.setAttribute("value", origin);
+            form.submit();
+        });
+    </script>
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <div class="slds-scope">
+        <apex:outputPanel layout="none" rendered="{!!havePermission}">
+            <div>To access this page, please have your system administrator assign
+                6sense User or 6sense Admin permission set to your user profile.</div>
+        </apex:outputPanel>
+        <apex:outputPanel layout="none" rendered="{!havePermission}">
+        <form id="sales_lead_form" target="sales_intelligence_lead_iframe" action="https://abm.6sense.com/sales/sfdc/" method="post" class="slds-hide">
+            <input type="text" name="apikey" value="{!apiKey}"/>
+            <input type="text" name="userid" value="{!userId}"/>
+            <input type="text" name="email" value="{!userEmail}"/>
+            <input type="text" name="username" value="{!userName}"/>
+            <input type="text" name="record" value="{!Lead.Id}"/>
+            <input type="text" name="isSandbox" value="{!isSandbox}"/>
+            <input type="text" name="origin" id="origin"/>
+            <input type="submit"/>
+        </form>
+        <div class="sixsense-card">
+            <apex:iframe scrolling="true" id="sales_intelligence_lead_iframe" height="695px"/>
+        </div>
+        </apex:outputPanel>
+    </div>
+    </html>
+</apex:page>

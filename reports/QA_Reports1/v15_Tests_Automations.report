@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_65116899</developerName>
+        <masterLabel>Main Epic</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>copado__User_Story__c.copado__Parent_Epic_Title__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>(ADD) Advanced Data Deployments</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 1 - Pre Beta</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 2 - Beta</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 3 - Pre GA</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 4 - GA</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ADD 5 - Future</sourceValue>
+            </sourceValues>
+            <value>Advanced Data Deployment</value>
+        </values>
+        <values>
+            <value>Copado Continuous Delivery</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__User_Story_Title__c</field>
+    </columns>
+    <columns>
+        <field>copado__User_Story__c.copado__Developer__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado__User_Story__c.copado__Story_Points_SFDC__c</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_$copado__Sprint__c.copado__Release__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>startsWith</operator>
+            <value>v16</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado__User_Story__c.copado__Developer__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>santi,yago</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_65116899</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>v16 Tests Automations</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$copado__User_Story__c@copado__User_Story__c.copado__Sprint__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

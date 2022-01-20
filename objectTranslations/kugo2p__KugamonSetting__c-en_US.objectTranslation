@@ -1,0 +1,883 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Allows Accounts to have multiple active Contracts. --></help>
+        <label><!-- Allow Multiple Active Contracts --></label>
+        <name>kuga_sub__AllowMultipleActiveContracts__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enables auto activation of the Contract upon Creation. --></help>
+        <label><!-- Auto-Activate Contract --></label>
+        <name>kuga_sub__AutoActivateContract__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enabling Automated Contract Renewal Notifications requires: (1) Assign Renewal Email Template, (2) Effective Contract, (3) Enabling Contract Renewal Scheduled Job Daily, and (4) Set Contract &quot;Auto Email Renewal Notice&quot; = True. --></help>
+        <label><!-- Contract Renewal Email Template Name --></label>
+        <name>kuga_sub__ContractRenewalEmailTemplateName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Number of days before the &quot;Contract Renewal Notice&quot; is Sent prior to the Renewal Date. Value used for &quot;Contract Renewal Notice Date&quot; on Contract. Blank value = 0 Days. --></help>
+        <label><!-- Contract Renewal Notice Days Before Sent --></label>
+        <name>kuga_sub__ContractRenewalNoticeDaysBeforeSent__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default Stage Name used for Generated Expansion Opportunity. --></help>
+        <label><!-- Expansion Opportunity Stage --></label>
+        <name>kuga_sub__ExpansionOpportunityStage__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default behavior is to Create a New Contract when Renewal Order is processed. If Checked, the Existing Contract is Extended when Renewal Order is processed. --></help>
+        <label><!-- Extend Contract on Renewal --></label>
+        <name>kuga_sub__ExtendContractonRenewal__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enables the generation of related Contract, Asset, Subscription, and Renewal Opportunity on Order Approved and/or Release status. --></help>
+        <label><!-- Initiate Order Subscription Management --></label>
+        <name>kuga_sub__InitiateOrderSubscriptionManagement__c</name>
+        <picklistValues>
+            <masterLabel>Approve/Release</masterLabel>
+            <translation><!-- Approve/Release --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Release</masterLabel>
+            <translation><!-- Release --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Default Stage Name used for Generated Renewal Opportunity. --></help>
+        <label><!-- Renewal Opportunity Stage --></label>
+        <name>kuga_sub__RenewalOpportunityStage__c</name>
+    </fields>
+    <fields>
+        <help><!-- Number of days before the &quot;Renewal Order&quot; is Created prior to the Renewal Date.Value used for &quot;Renewal Order Auto-Create Date&quot; on Renewal Opportunity. Blank value = 0 Days. --></help>
+        <label><!-- Renewal Order Days Before Create --></label>
+        <name>kuga_sub__RenewalOrderDaysBeforeCreate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enabling Renewal Order Email requires: (1) Assign Renewal Order Email Template, (2) Set Renewal Opportunity &quot;Renewal Order Auto Creation Date&quot;, (3) Enabling Renewal Order Scheduled Job Daily, and (4) Check Renewal Opportunity &quot;Auto Email Renewal Order&quot; --></help>
+        <label><!-- Renewal Order Email Template Name --></label>
+        <name>kuga_sub__RenewalOrderEmailTemplateName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default value for the Renewal Price Uplift Percent field in Additional Account Info. --></help>
+        <label><!-- Renewal Price Uplift Percent --></label>
+        <name>kuga_sub__RenewalPriceUpliftPercent__c</name>
+    </fields>
+    <fields>
+        <label><!-- ABA Number --></label>
+        <name>kugo2p__ABANumber__c</name>
+    </fields>
+    <fields>
+        <label><!-- A/C Name --></label>
+        <name>kugo2p__ACName__c</name>
+    </fields>
+    <fields>
+        <label><!-- A/C Number --></label>
+        <name>kugo2p__ACNumber__c</name>
+    </fields>
+    <fields>
+        <label><!-- Accounting Group --></label>
+        <name>kugo2p__AccountingGroup__c</name>
+        <picklistValues>
+            <masterLabel>Business Sale</masterLabel>
+            <translation><!-- Business Sale --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Consumer Sale</masterLabel>
+            <translation><!-- Consumer Sale --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Internal Sale</masterLabel>
+            <translation><!-- Internal Sale --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Partner Sale</masterLabel>
+            <translation><!-- Partner Sale --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Reseller Sale</masterLabel>
+            <translation><!-- Reseller Sale --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Lookup to the Administrator User, who is the designated User to receive important application notifications and error messages. --></help>
+        <label><!-- Administrator User --></label>
+        <name>kugo2p__Admin_User__c</name>
+        <relationshipLabel><!-- Kugamon Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This advanced option allows an override of the automatic Date updates of the Quote and Order Service Lines. Consult with a Kugamon Administrator before making any changes. --></help>
+        <label><!-- Allow Override Service Date Update --></label>
+        <name>kugo2p__AllowOverrideServiceDateUpdate__c</name>
+    </fields>
+    <fields>
+        <help><!-- This function is deprecated --></help>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__AllowZeroUnitPrice__c</name>
+    </fields>
+    <fields>
+        <help><!-- Orders with Draft or Sent Status changed to Cancelled when associated Opportunity Stage set to Closed/Lost stage type. Orders with other Statuses not affected --></help>
+        <label><!-- Auto-Cancel Order --></label>
+        <name>kugo2p__AutoCancelOrder__c</name>
+    </fields>
+    <fields>
+        <help><!-- Quotes with Draft or Sent Status changed to Closed/Lost when associated Opportunity Stage set to Closed/Lost stage type. Quotes with other Statuses not affected --></help>
+        <label><!-- Auto-Closed/Lost Quote --></label>
+        <name>kugo2p__AutoClosedLostQuote__c</name>
+    </fields>
+    <fields>
+        <label><!-- Auto-Release Order --></label>
+        <name>kugo2p__AutoReleaseOrder__c</name>
+    </fields>
+    <fields>
+        <label><!-- Bank Name --></label>
+        <name>kugo2p__BankName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Method --></label>
+        <name>kugo2p__BillingMethod__c</name>
+        <picklistValues>
+            <masterLabel>Email</masterLabel>
+            <translation><!-- Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Email and Print</masterLabel>
+            <translation><!-- Email and Print --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Print</masterLabel>
+            <translation><!-- Print --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Carrier --></label>
+        <name>kugo2p__Carrier__c</name>
+        <relationshipLabel><!-- Kugamon Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Terms displayed on Online Checkout page, which is accessible either Online Order or Online Invoice --></help>
+        <label><!-- Checkout Terms &amp; Conditions --></label>
+        <name>kugo2p__CheckoutTermsConditions__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company Terms &amp; Conditions --></label>
+        <name>kugo2p__CompanyTextandTerms__c</name>
+    </fields>
+    <fields>
+        <label><!-- Credit Terms --></label>
+        <name>kugo2p__CreditTerms__c</name>
+        <picklistValues>
+            <masterLabel>Credit Check Required</masterLabel>
+            <translation><!-- Credit Check Required --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>No Credit Check Required</masterLabel>
+            <translation><!-- No Credit Check Required --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>On Credit Hold</masterLabel>
+            <translation><!-- On Credit Hold --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Suspended</masterLabel>
+            <translation><!-- Suspended --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Blank value defaults to Latest of Today or Date Required
+
+For Historical Invoice Creation, Set Value to Date Required --></help>
+        <label><!-- Date Available to Promise Basis --></label>
+        <name>kugo2p__DateAvailabletoPromiseBasis__c</name>
+        <picklistValues>
+            <masterLabel>Date Required</masterLabel>
+            <translation><!-- Date Required --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Select the day of the month your company recognize revenue. --></help>
+        <label><!-- Day of Revenue Recognition --></label>
+        <name>kugo2p__DayofRevenueRecognition__c</name>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation><!-- 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>10</masterLabel>
+            <translation><!-- 10 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>11</masterLabel>
+            <translation><!-- 11 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>12</masterLabel>
+            <translation><!-- 12 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>13</masterLabel>
+            <translation><!-- 13 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>14</masterLabel>
+            <translation><!-- 14 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>15</masterLabel>
+            <translation><!-- 15 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>16</masterLabel>
+            <translation><!-- 16 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>17</masterLabel>
+            <translation><!-- 17 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>18</masterLabel>
+            <translation><!-- 18 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>19</masterLabel>
+            <translation><!-- 19 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2</masterLabel>
+            <translation><!-- 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>20</masterLabel>
+            <translation><!-- 20 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>21</masterLabel>
+            <translation><!-- 21 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>22</masterLabel>
+            <translation><!-- 22 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>23</masterLabel>
+            <translation><!-- 23 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>24</masterLabel>
+            <translation><!-- 24 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>25</masterLabel>
+            <translation><!-- 25 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>26</masterLabel>
+            <translation><!-- 26 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>27</masterLabel>
+            <translation><!-- 27 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>28</masterLabel>
+            <translation><!-- 28 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>29</masterLabel>
+            <translation><!-- 29 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation><!-- 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>30</masterLabel>
+            <translation><!-- 30 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4</masterLabel>
+            <translation><!-- 4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5</masterLabel>
+            <translation><!-- 5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>6</masterLabel>
+            <translation><!-- 6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>7</masterLabel>
+            <translation><!-- 7 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>8</masterLabel>
+            <translation><!-- 8 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>9</masterLabel>
+            <translation><!-- 9 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Default value for payment due date calculation; should match the Payment Terms value. Days Till Payment Due value is the default for the Additional Account Info object. --></help>
+        <label><!-- Days Till Payment Due --></label>
+        <name>kugo2p__DaysTillPaymentDue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Default Invoice Schedule --></label>
+        <name>kugo2p__DefaultInvoiceSchedule__c</name>
+        <relationshipLabel><!-- Kugamon Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Default eCommerce Shipping Charge --></label>
+        <name>kugo2p__DefaulteCommerceShippingCharge__c</name>
+        <relationshipLabel><!-- Kugamon Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Default eCommerce Tax Charge --></label>
+        <name>kugo2p__DefaulteCommerceTaxCharge__c</name>
+        <relationshipLabel><!-- Kugamon Settings (Default eCommerce Tax Charge) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Delivery Terms --></label>
+        <name>kugo2p__DeliveryTerms__c</name>
+        <picklistValues>
+            <masterLabel>FOB Destination</masterLabel>
+            <translation><!-- FOB Destination --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>FOB Origin</masterLabel>
+            <translation><!-- FOB Origin --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Enable Versioning to Attach PDF function for Quotes, Orders, and Invoices --></help>
+        <label><!-- Enable Document Versioning --></label>
+        <name>kugo2p__EnableDocumentVersioning__c</name>
+    </fields>
+    <fields>
+        <help><!-- Blank value defaults to Order Release Date or Order Date Available to Promise, if Later. If filled, Shipment Date based on Product Line Date Available to Promise.
+
+For Historical Invoice Creation, Set Value to Date Required or Date Available to Promise --></help>
+        <label><!-- Invoice Date Basis --></label>
+        <name>kugo2p__FirstInvoiceDateBasis__c</name>
+        <picklistValues>
+            <masterLabel>Order Date Available to Promise</masterLabel>
+            <translation><!-- Order Date Available to Promise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Order Date Required</masterLabel>
+            <translation><!-- Order Date Required --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Hide Ship To on Quote &amp; Order PDFs and Online Order --></help>
+        <label><!-- Hide Ship To on Quote/Order --></label>
+        <name>kugo2p__Hide_Ship_To_on_Quote_Order_PDF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Hide Shipment Information on Invoice PDF and Online Invoice --></help>
+        <label><!-- Hide Shipment Information on Invoice --></label>
+        <name>kugo2p__Hide_Shipment_Information_on_Invoice_PDF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Changes to text are automatically updated in Invoice text and term section in Unsent status. If the Invoice text is different, then that text will not be updated. --></help>
+        <label><!-- Invoice Terms &amp; Conditions --></label>
+        <name>kugo2p__InvoiceTextandTerms__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays List Price Column on Quote &amp; Order PDFs and Online Order --></help>
+        <label><!-- Show List Price on Quote/Order --></label>
+        <name>kugo2p__ListPriceColumnonPDF__c</name>
+    </fields>
+    <fields>
+        <label><!-- Multi-Currency Enabled --></label>
+        <name>kugo2p__MultiCurrencyEnabled__c</name>
+    </fields>
+    <fields>
+        <help><!-- Content displayed on the Online Payment confirmation page. --></help>
+        <label><!-- Online Order Confirmation --></label>
+        <name>kugo2p__OnlineConfirmationTextandTerms__c</name>
+    </fields>
+    <fields>
+        <help><!-- Applies to Both PDF and Online Order. 
+
+Blank = Online Order Pages Never Expire --></help>
+        <label><!-- Order Valid In Days --></label>
+        <name>kugo2p__OnlineOrderValidInDays__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates button and behavior that should be used on the online order page. --></help>
+        <label><!-- Online Order Acceptance Button --></label>
+        <name>kugo2p__OnlinePaymentButton__c</name>
+        <picklistValues>
+            <masterLabel>Accept &amp; Approve</masterLabel>
+            <translation><!-- Accept &amp; Approve --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Accept &amp; Pay</masterLabel>
+            <translation><!-- Accept &amp; Pay --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The source URL of Checkout Image that is displayed on Order and Invoice Documents. If Blank, a default Checkout Image is used.
+
+Steps: 
+1) Pick your desired logo image from an Online source
+2) Copy/Paste the Image URL --></help>
+        <label><!-- Checkout Image URL --></label>
+        <name>kugo2p__OnlinePaymentLogoinPDFSourceURL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Payment Method --></label>
+        <name>kugo2p__PaymentMethod__c</name>
+        <picklistValues>
+            <masterLabel>Cash</masterLabel>
+            <translation><!-- Cash --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Check</masterLabel>
+            <translation><!-- Check --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Debit/Credit Card</masterLabel>
+            <translation><!-- Debit/Credit Card --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Invoice</masterLabel>
+            <translation><!-- Invoice --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Wire</masterLabel>
+            <translation><!-- Wire --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Payment Terms --></label>
+        <name>kugo2p__PaymentTerms__c</name>
+        <picklistValues>
+            <masterLabel>Due Upon Receipt</masterLabel>
+            <translation><!-- Due Upon Receipt --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Net 10 Days</masterLabel>
+            <translation><!-- Net 10 Days --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Net 30 Days</masterLabel>
+            <translation><!-- Net 30 Days --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Net 45 Days</masterLabel>
+            <translation><!-- Net 45 Days --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Net 60 Days</masterLabel>
+            <translation><!-- Net 60 Days --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Net 7 Days</masterLabel>
+            <translation><!-- Net 7 Days --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Net 90 Days</masterLabel>
+            <translation><!-- Net 90 Days --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Prevents Multiple Orders to be appended to existing Unsent Invoices of similar Account, Contact, and date parameters. If checked, related Order Number is populated on Invoice. --></help>
+        <label><!-- Prevent Multiple Orders on an Invoice --></label>
+        <name>kugo2p__PreventMultipleOrdersonanInvoice__c</name>
+    </fields>
+    <fields>
+        <label><!-- Price Book Name --></label>
+        <name>kugo2p__PriceBookName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default Price Book for subsequent Additional Account Info (Accounts). Please use [Choose Price Book] button to change the Price Book. --></help>
+        <label><!-- Price Book --></label>
+        <name>kugo2p__Pricebook2Id__c</name>
+        <relationshipLabel><!-- Kugamon Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Print Company Terms &amp; Conditions --></label>
+        <name>kugo2p__PrintCompanyTextandTerms__c</name>
+    </fields>
+    <fields>
+        <label><!-- Print Invoice Terms &amp; Conditions --></label>
+        <name>kugo2p__PrintInvoiceTextandTerms__c</name>
+    </fields>
+    <fields>
+        <label><!-- Print Quote/Order Terms &amp; Conditions --></label>
+        <name>kugo2p__PrintSpecificTextandTerms__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check this option if product scheduling is enabled for your Salesforce.com organization. --></help>
+        <label><!-- Product Scheduling Enabled --></label>
+        <name>kugo2p__ProductSchedulingEnabled__c</name>
+    </fields>
+    <fields>
+        <label><!-- Remit To Address --></label>
+        <name>kugo2p__RemitToAddress__c</name>
+    </fields>
+    <fields>
+        <label><!-- Remit To City --></label>
+        <name>kugo2p__RemitToCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Remit To Country --></label>
+        <name>kugo2p__RemitToCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Remit To Name --></label>
+        <name>kugo2p__RemitToName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Remit To State/Province --></label>
+        <name>kugo2p__RemitToStateProvince__c</name>
+    </fields>
+    <fields>
+        <label><!-- Remit To Street --></label>
+        <name>kugo2p__RemitToStreet__c</name>
+    </fields>
+    <fields>
+        <label><!-- Remit To Zip/Postal Code --></label>
+        <name>kugo2p__RemitToZipPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote/Order Terms &amp; Conditions Reset --></label>
+        <name>kugo2p__ResetQuoteOrderTermsConditions__c</name>
+        <picklistValues>
+            <masterLabel>Replace All Terms</masterLabel>
+            <translation><!-- Replace All Terms --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Update Matched Terms</masterLabel>
+            <translation><!-- Update Matched Terms --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Displays on Quote, Order, and Invoice document templates, if Restricted checkbox is Checked --></help>
+        <label><!-- Restricted Banner Text --></label>
+        <name>kugo2p__RestrictedBannerText__c</name>
+    </fields>
+    <fields>
+        <label><!-- SWIFT Code --></label>
+        <name>kugo2p__SWIFT_Code__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote Valid In Days --></label>
+        <name>kugo2p__SalesQuoteValidOfferInDays__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays Signature Lines on Order PDF --></help>
+        <label><!-- Show Signature Lines on Order PDF --></label>
+        <name>kugo2p__SignatureLinestoPDF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Changes to text are automatically updated in Additional Account Info text and terms section and Quote/Order text and terms section in Draft status. If the text for Additional Account Info, Quote or Order is different, then those text will not be updated. --></help>
+        <label><!-- Quote/Order Terms &amp; Conditions --></label>
+        <name>kugo2p__SpecificTextandTerms__c</name>
+    </fields>
+    <fields>
+        <help><!-- If checked, Quote or Order generated from an Opportunity will use Primary Contact Role value for the selected field(s). Note: Contact Billing not present in Quotes. --></help>
+        <label><!-- Support Opportunity Primary Contact Role --></label>
+        <name>kugo2p__SupportOpportunityPrimaryContactRole__c</name>
+        <picklistValues>
+            <masterLabel>Contact Billing</masterLabel>
+            <translation><!-- Contact Billing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contact Buying</masterLabel>
+            <translation><!-- Contact Buying --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contact Shipping</masterLabel>
+            <translation><!-- Contact Shipping --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Updates Opportunity Amount with Order Net Amount only if Opportunity has no Products --></help>
+        <label><!-- Sync Primary Order to Opportunity Amount --></label>
+        <name>kugo2p__SyncPrimaryOrdertoOpportunityAmount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Updates Opportunity Product with Order Product and Service Lines. Order Additional Charges/Credit Lines are not Synced. Sync is one-way from Order to Opportunity --></help>
+        <label><!-- Sync Primary Order to Opportunity Lines --></label>
+        <name>kugo2p__SyncPrimaryOrdertoOpportunityLines__c</name>
+        <picklistValues>
+            <masterLabel>Order Approved</masterLabel>
+            <translation><!-- Order Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Order Draft</masterLabel>
+            <translation><!-- Order Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Order Released</masterLabel>
+            <translation><!-- Order Released --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Order Sent</masterLabel>
+            <translation><!-- Order Sent --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Updates Opportunity Amount with Quote Net Amount only if Opportunity has no Products --></help>
+        <label><!-- Sync Primary Quote to Opportunity Amount --></label>
+        <name>kugo2p__SyncPrimaryQuotetoOpportunityAmount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Updates Opportunity Product with Quote Product and Service Lines. Quote Optional Lines and Quote Additional Charges/Credit Lines are not Synced. Sync is one-way from Quote to Opportunity --></help>
+        <label><!-- Sync Primary Quote to Opportunity Lines --></label>
+        <name>kugo2p__SyncPrimaryQuotetoOpportunityLines__c</name>
+        <picklistValues>
+            <masterLabel>Quote Draft</masterLabel>
+            <translation><!-- Quote Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quote Sent</masterLabel>
+            <translation><!-- Quote Sent --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quote Won</masterLabel>
+            <translation><!-- Quote Won --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Taxable Excise --></label>
+        <name>kugo2p__TaxableExcise__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxable Sales --></label>
+        <name>kugo2p__TaxableSales__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxable Usage --></label>
+        <name>kugo2p__TaxableUsage__c</name>
+    </fields>
+    <fields>
+        <label><!-- Taxable VAT/GST --></label>
+        <name>kugo2p__TaxableVAT__c</name>
+    </fields>
+    <fields>
+        <label><!-- Unit of Measure --></label>
+        <name>kugo2p__UnitofMeasure__c</name>
+        <picklistValues>
+            <masterLabel>Case</masterLabel>
+            <translation><!-- Case --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Dozen</masterLabel>
+            <translation><!-- Dozen --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Each</masterLabel>
+            <translation><!-- Each --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Unit of Term --></label>
+        <name>kugo2p__UnitofTerm__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Galactic Year</masterLabel>
+            <translation><!-- Galactic Year --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour</masterLabel>
+            <translation><!-- Hour --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Minute</masterLabel>
+            <translation><!-- Minute --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Second</masterLabel>
+            <translation><!-- Second --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Sets the default value for Order &apos;Update Additional Account Info Contacts&apos; field. Function updates Additional Account Info corresponding field on Order Release. --></help>
+        <label><!-- Update Additional Account Info Contacts --></label>
+        <name>kugo2p__UpdateAdditionalAccountInfoContacts__c</name>
+    </fields>
+    <fields>
+        <help><!-- Total Amount = Product &amp; Service Amount + Discount Amount, while Net Amount = Total Amount + Additional Charges/Credit Amount + Total Tax Amount + Total VAT/GST Amount --></help>
+        <label><!-- Update Opportunity Amount Basis --></label>
+        <name>kugo2p__UpdateOpportunityAmountBasis__c</name>
+        <picklistValues>
+            <masterLabel>Net Amount</masterLabel>
+            <translation><!-- Net Amount --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Total Amount</masterLabel>
+            <translation><!-- Total Amount --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Total Amount + Additional Charges/Credit Amount</masterLabel>
+            <translation><!-- Total Amount + Additional Charges/Credit Amount --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Use Record Owner User Company Name, Mailing Address, Phone &amp; Fax for Header and Footer for Kugamon Documents. Default is False, which uses the Organization info found in Setup | Company Information. --></help>
+        <label><!-- Use Record Owner Details for Documents --></label>
+        <name>kugo2p__UseUserDetailsforDocuments__c</name>
+    </fields>
+    <fields>
+        <label><!-- VAT/GST --></label>
+        <name>kugo2p__VAT__c</name>
+        <relationshipLabel><!-- Kugamon Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Warehouse --></label>
+        <name>kugo2p__Warehouse__c</name>
+        <relationshipLabel><!-- Kugamon Settings --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Kugamon Setting (Subscription) Layout</layout>
+        <sections>
+            <label><!-- Contract Information --></label>
+            <section>Contract Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Default Information --></label>
+            <section>Default Information</section>
+        </sections>
+        <sections>
+            <label><!-- Invoice Information --></label>
+            <section>Invoice Information</section>
+        </sections>
+        <sections>
+            <label><!-- Online Order Information --></label>
+            <section>Online Order Information</section>
+        </sections>
+        <sections>
+            <label><!-- Opportunity Information --></label>
+            <section>Opportunity Information</section>
+        </sections>
+        <sections>
+            <label><!-- Order Information --></label>
+            <section>Order Information</section>
+        </sections>
+        <sections>
+            <label><!-- PDF Document Information --></label>
+            <section>PDF Document Information</section>
+        </sections>
+        <sections>
+            <label><!-- Quote Information --></label>
+            <section>Quote Information</section>
+        </sections>
+        <sections>
+            <label><!-- Remittance Information --></label>
+            <section>Remittance Information</section>
+        </sections>
+        <sections>
+            <label><!-- Specific Text and Terms Default Information --></label>
+            <section>Specific Text and Terms Default Information</section>
+        </sections>
+        <sections>
+            <label><!-- eCommerce Information --></label>
+            <section>eCommerce Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Kugamon Setting Layout</layout>
+        <sections>
+            <label><!-- Contract Information --></label>
+            <section>Contract Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Default Information --></label>
+            <section>Default Information</section>
+        </sections>
+        <sections>
+            <label><!-- Document Information --></label>
+            <section>Document Information</section>
+        </sections>
+        <sections>
+            <label><!-- Invoice Information --></label>
+            <section>Invoice Information</section>
+        </sections>
+        <sections>
+            <label><!-- Online Information --></label>
+            <section>Online Information</section>
+        </sections>
+        <sections>
+            <label><!-- Opportunity Information --></label>
+            <section>Opportunity Information</section>
+        </sections>
+        <sections>
+            <label><!-- Order Information --></label>
+            <section>Order Information</section>
+        </sections>
+        <sections>
+            <label><!-- Quote Information --></label>
+            <section>Quote Information</section>
+        </sections>
+        <sections>
+            <label><!-- Remittance Information --></label>
+            <section>Remittance Information</section>
+        </sections>
+        <sections>
+            <label><!-- Specific Text and Terms Default Information --></label>
+            <section>Specific Text and Terms Default Information</section>
+        </sections>
+        <sections>
+            <label><!-- eCommerce Information --></label>
+            <section>eCommerce Information</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- The Days Till Payment Due Date must equal &quot;0&quot; zero days if the Payment Term is Due Upon Receipt. --></errorMessage>
+        <name>kugo2p__Payment_Terms_Due_Date_Check</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please enter a number of days to the Days Till Payment Due Date field that matches the Payment Term. --></errorMessage>
+        <name>kugo2p__Payment_Terms_Due_Date_Second_Check</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- A valid default VAT setting must have both a Listing for &quot;VAT&quot; and a Check for &quot;Taxable VAT&quot; --></errorMessage>
+        <name>kugo2p__VAT_check</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- SubscriptionAutomation --></label>
+        <name>kuga_sub__SubscriptionAutomation</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Check_for_Updates --></label>
+        <name>kugo2p__Check_for_Updates</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Choose_Price_Book --></label>
+        <name>kugo2p__Choose_Price_Book</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- ConfigurationSettings --></label>
+        <name>kugo2p__ConfigurationSettings</name>
+    </webLinks>
+</CustomObjectTranslation>

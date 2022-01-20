@@ -1,0 +1,22 @@
+<apex:page standardController="amc__Project__c">
+    <style>
+        .pbInnerFooter{
+            float:left;
+            padding:3px;
+        }
+    </style>
+    <apex:relatedList list="amc__Risks__r" rendered="{!$CurrentPage.parameters.list='risks'}">
+        <apex:facet name="footer">
+            <apex:form >
+                <apex:commandButton value="Back" action="{!cancel}"/>
+            </apex:form>
+        </apex:facet>
+    </apex:relatedList>
+    <apex:relatedList list="amc__Expenses__r" rendered="{!$CurrentPage.parameters.list='expenses'}">
+        <apex:facet name="footer">
+            <apex:form >
+                <apex:commandButton value="Back" action="{!cancel}"/>
+            </apex:form>
+        </apex:facet>
+    </apex:relatedList>
+</apex:page>

@@ -1,0 +1,731 @@
+<apex:component id="CopadoMonitorComponent" controller="CopadoMonitorComponentController">
+    <apex:attribute name="endpoint" type="String" description="Endpoint of the current environment" required="true" />
+    <apex:attribute name="environment" type="String" description="Name of the current environment" required="true" />
+
+    <apex:stylesheet value="{!URLFOR($Resource.MonitoringResources,'lib/datatables.min.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jsfullcalendar,'lib/jquery.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.MonitoringResources,'lib/datatables.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.MonitoringResources,'lib/micro-template.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.MonitoringCode)}" />
+    <apex:slds />
+
+    <style type="text/css">
+        /* prevent the search box from scrolling all the way to the right */
+        .dataTables_wrapper .dataTables_filter {
+            text-align: left;
+            float: left;
+        }
+
+        /* info Showing N of M records */
+        .dataTables_wrapper .dataTables_info {
+            margin-left: 20px;
+            clear: none;
+            text-align: right;
+        }
+
+        /* fixed font for every dataTable and detail page */
+        .dataTable td,
+        .dataTable th {
+            font-family: Lucida Console, Lucida Sans Typewriter, monaco, Bitstream Vera Sans Mono, monospace;
+        }
+
+        .dataTable td.jobstatus_waiting { background-color: #ccc; }
+        .dataTable td.jobstatus_initializing { background-color: #ccc; }
+        .dataTable td.jobstatus_queued { background-color: #ccc; }
+        .dataTable td.jobstatus_started { background-color: #eee; }
+        /* styling the pre-filters for tables */
+        h3.filters {
+            width: 100px;
+            float: left;
+        }
+
+        ul.filters>li {
+            display: inline-block;
+            margin-right: 20px;
+            zoom: 1;
+        }
+
+        /* styling datatables search/pagelength and pagination*/
+        .dataTables_filter label {
+            margin-left: 50px;
+        }
+
+        .dataTables_filter input {
+            min-width: 300px;
+        }
+
+        .dataTables_length label {
+            margin-left: 50px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            float: none;
+            text-align: left;
+        }
+
+        .filteredBy {
+            font-weight: bold;
+            color: green;
+        }
+
+        .slds-scope input.herokuSettingChanged {
+            background-color: '#CCC';
+            color: '#CCC';
+            border: 1px solid red;
+        }
+
+        table.dataTable {
+            margin: 0;
+        }
+
+        ul#filters li a:hover,ul#filters li.active a{
+            color: red;
+        }
+
+        .app-selected {
+            color: green;
+        }
+    </style>
+
+    <!-- auto refresh every a bit less than 30 min ( 30 min is the max time of each token ) -->
+    <apex:form >
+        <apex:actionPoller reRender="refreshToken" interval="1600" />
+        <apex:outputPanel id="refreshToken">
+            <script type="text/javascript">window.COPADO_TOKEN = '{!refreshToken}'; console.debug('token refreshed.');</script>
+        </apex:outputPanel>
+    </apex:form>
+
+    <script type="text/javascript">
+        window.COPADO_ENDPOINT = '{!endpoint}';
+    </script>
+
+    <script type="text/javascript">
+
+        var copadoMonitorComponentGlobalData = {};
+
+        function renderTab_workers() {
+            lockScreen();
+            var url = new URL(window.location);
+
+            var REFRESH_BUTTON = {
+                text: 'Reload',
+                action: function (e, dt, node, config) {
+                    dataTableObject.ajax.reload(null, false);
+                }
+            };
+
+            var dataTable = $('#workersTable');
+            var dataTableObject = dataTable.DataTable({
+                lengthChange: false,
+                pageLength: 1000,
+                caseInsensitive: true,
+                ordering: false,
+                searchDelay: 1000,
+                serverSide: true,
+                processing: true,
+                responsive: { details: false },
+                dom: 'frlit',
+                ajax: function (data, callback, settings) {
+                    console.debug('calling server for workers', data);
+
+                    // prepare the API parameters.
+                    var apiParams = {};
+
+                    callServiceAPI('/api/workers', apiParams, null, 'GET', function (jsonData) {
+                        var t;
+                        if( (t=document.getElementById('countTotalWorkers')) ) t.innerText = jsonData.total;
+
+                        // prepare the callback expected by DataTables
+                        jsonData.records.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0) );
+                        callback({
+                            data: jsonData.records,
+                            recordsTotal: jsonData.total,
+                            recordsFiltered: jsonData.total
+                        });
+                    });
+
+                },
+                columns: [
+                    { data: "createdAt", title: "createdAt" },
+                    { data: "name", title: "Name" },
+                    { data: "type", title: "Type" },
+                    { data: "release.version", title: "version" },
+                    { data: "state", title: "State" },
+                ]
+            });
+            copadoMonitorComponentGlobalData.dataTableWorkers = dataTableObject;
+            unlockScreen();
+        };
+
+        function renderTab_organizations() {
+            lockScreen();
+            // get the query parameter from the url, if any.
+            var url = new URL(window.location);
+            var searchString = url.searchParams.get("q");
+            var is_beta = url.searchParams.get("is_beta");
+            var tabName = url.searchParams.get("sfdc.tabName");
+
+            var dataTable = $('#organizationsTable');
+            dataTable.DataTable({
+                lengthChange: true,
+                lengthMenu: [50, 100, 1000],
+                pageLength: 50,
+                search: {
+                    search: searchString
+                },
+                caseInsensitive: true,
+                ordering: false,
+                searchDelay: 1000,
+                serverSide: true,
+                processing: true,
+                responsive: { details: false },
+                dom: 'Bfrlitp',
+                buttons: ['copy', 'csv'],
+                ajax: function (data, callback, settings) {
+                    console.debug('calling server for orgs', data);
+
+                    // prepare the API parameters.
+                    var pageNo = (data.start && data.length) ? data.start / data.length : 0;
+                    var apiParams = {
+                        page: pageNo,
+                        page_size: data.length
+                    };
+                    if (data.search.value)
+                        apiParams.q = data.search.value;
+                    if (is_beta)
+                        apiParams.is_beta = is_beta;
+
+                    callServiceAPI('/api/organizations', apiParams, null, 'GET', function (jsonData) {
+                        // prepare the callback expected by DataTables
+                        for (var i = 0; i < jsonData.records.length; i++) {
+                            jsonData.records[i].name = '<a href="/apex/CopadoMonitorDetail{!IF(CONTAINS(environment, "prod"), "Production?", "?")}sfdc.tabName=' + tabName + '&objectName=Organization&environment={!environment}&orgId=' + jsonData.records[i].orgid + '&e=' + window.COPADO_ENDPOINT + '" target="_parent">' + jsonData.records[i].name + '</a>';
+                        }
+
+                        callback({
+                            data: jsonData.records,
+                            recordsTotal: jsonData.total,
+                            recordsFiltered: jsonData.total
+                        });
+                    });
+
+                    // update the browser url, so the search is reflected upon reloading
+                    if (data.search.value) {
+                        updateNavigation('q', data.search.value || '');
+                    }
+                },
+                columns: [
+                    { data: "id", title: "Id" },
+                    { data: "name", title: "Name" },
+                    { data: "orgid", title: "Org Id" },
+                    { data: "isbeta", title: "Is Beta" },
+                    { data: "multilicenses", title: "Multilicenses" },
+                    { data: "copadolicenses", title: "Copado Licenses" },
+                    { data: "cstlicenses", title: "CST Licenses" },
+                    { data: "cadlicenses", title: "CAD Licenses" },
+                    { data: "cchlicenses", title: "CCH Licenses" },
+                    { data: "build", title: "Build" },
+                    { data: "seats", title: "Seats" },
+                    { data: "userid", title: "User Id" },
+                    { data: "creditsperplan", title: "Credits Per Plan" },
+                    { data: "mincredits", title: "Min Credits" },
+                ]
+            });
+            unlockScreen();
+        }
+
+        /**
+        *
+        *
+        * elementLocator = '#jobsTable'
+        * jobGroup = 'jobs'
+        **/
+        function renderTab_jobs(elementLocator, jobGroup) {
+            lockScreen();
+            // by default, jobs, but this function is REUSED
+            elementLocator = elementLocator || '#jobsTable';
+
+            var REFRESH_BUTTON = {
+                text: 'Reload',
+                action: function (e, dt, node, config) {
+                    dataTableObject.ajax.reload(null, false);
+                }
+            };
+
+            // read the search string from the url, if any
+            var url = new URL(window.location);
+            var searchString = url.searchParams.get("q");
+            var tabName = url.searchParams.get("sfdc.tabName");
+
+            var dataTable = $(elementLocator);
+            var dataTableObject = dataTable.DataTable({
+                lengthChange: true,
+                lengthMenu: [50, 100, 1000],
+                pageLength: jobGroup=='active'? 1000 : 50,
+                search: {
+                    search: searchString
+                },
+                caseInsensitive: true,
+                ordering: false,
+                searchDelay: 1000,
+                serverSide: true,
+                processing: true,
+                responsive: { details: false },
+                dom: jobGroup=='active'? 'Bfrlit' : 'Bfrlitp',
+                buttons: ['copy', 'csv', REFRESH_BUTTON],
+                rowCallback: function( row, data, index ) {
+                    console.debug('data.jobstatus', data.jobstatus)
+                    if( data.jobstatus != "success" &&  data.jobstatus != "error" ) {
+                        $('td', row).addClass('jobstatus_'+data.jobstatus);
+                    }
+                },
+                ajax: function (data, callback, settings) {
+                    console.debug('calling server for jobs', data);
+
+                    // prepare the API parameters.
+                    var pageNo = (data.start && data.length) ? data.start / data.length : 0;
+                    var apiParams = {
+                        page: pageNo,
+                        page_size: data.length,
+                        group: jobGroup,
+                    };
+                    if (data.search.value)
+                        apiParams.q = data.search.value;
+                    if (url.searchParams.get("organizationId")) {
+                        apiParams.organizationId = url.searchParams.get("organizationId");
+                        $('#filteredByOrg').addClass('filteredBy');
+                    }
+                    if (url.searchParams.get("status"))
+                        apiParams.status = url.searchParams.get("status");
+
+                    callServiceAPI('/api/jobs', apiParams, null, 'GET', function (jsonData) {
+                        var t;
+                        if( (t=document.getElementById('countTotalJobs')) ) t.innerText = jsonData.total;
+
+                        // prepare the callback expected by DataTables
+                        for (var i = 0; i < jsonData.records.length; i++) {
+                            var rec = jsonData.records[i];
+                            var detailUrl = generateUrl('/apex/CopadoMonitorDetail{!IF(CONTAINS(environment, "prod"), "Production", "")}', {
+                                'jobId': rec.copadojobid,
+                                //'sfdc.tabName': tabName,
+                                'objectName': 'Job',
+                                'environment': '{!environment}',
+                                'id': rec.id,
+                                'e': window.COPADO_ENDPOINT
+                            });
+                            var orgFilterUrl = 'javascript:void(window.location=updateURLParameter(window.location.href, \'organizationId\', \'' + rec.orgid + '\'))';
+                            rec._apitime_ago = '<a href="' + detailUrl + '" target="_parent">' + rec.apitime_ago + '</a>';
+                            rec._apistarttime = rec.apistarttime.replace(/\.[0-9]+$/, ''); // remove millisecions
+                            rec._orgname = '<a href="' + orgFilterUrl + '" target="_parent">' + rec.orgname + '</a>';
+                        }
+                        callback({
+                            data: jsonData.records,
+                            recordsTotal: jsonData.total,
+                            recordsFiltered: jsonData.total
+                        });
+                    });
+
+                    // update the browser url, so the search is reflected upon reloading
+                    updateNavigation('q', data.search.value || '');
+
+                    // if there is a worker list, refresh that too
+                    if(copadoMonitorComponentGlobalData.dataTableWorkers)
+                        copadoMonitorComponentGlobalData.dataTableWorkers.ajax.reload();
+
+                },
+                columns: [
+                    { data: "_apitime_ago", title: "When" },
+                    { data: "jobname", title: "Job Name" },
+                    { data: "_orgname", title: "Org Name" },
+                    { data: "jobstatus", title: "Status" },
+                    { data: "jobduration_seconds", title: "Secs" },
+                    { data: "jobworkerid", title: "Dyno/Job Version" },
+                    { data: "jobqueued_seconds", title: "QT" },
+                    { data: "copadojobid", title: "copadoJobId" },
+                    { data: "_apistarttime", title: "API Start Time" },
+                    { data: "apitype", title: "API Type" },
+                    { data: "jobtype", title: "Job Type" },
+                    { data: "apistatus", title: "API Status" },
+                ]
+            });
+            unlockScreen();
+        }
+
+        function renderTab_apis() {
+            lockScreen();
+            var REFRESH_BUTTON = {
+                text: 'Reload',
+                action: function (e, dt, node, config) {
+                    dataTableObject.ajax.reload(null, false);
+                }
+            };
+
+            // read the search string from the url, if any
+            var url = new URL(window.location);
+            var searchString = url.searchParams.get("q");
+            var tabName = url.searchParams.get("sfdc.tabName");
+            var dataTable = $('#apiLogTable');
+            var dataTableObject = dataTable.DataTable({
+                lengthChange: true,
+                lengthMenu: [50, 100, 1000],
+                pageLength: 50,
+                search: {
+                    search: searchString
+                },
+                caseInsensitive: true,
+                ordering: false,
+                searchDelay: 1000,
+                serverSide: true,
+                processing: true,
+                responsive: { details: false },
+                dom: 'Bfrltip',
+                buttons: ['copy', 'csv', REFRESH_BUTTON],
+                ajax: function (data, callback, settings) {
+                    console.debug('calling server for jobs', data);
+
+                    // prepare the API parameters.
+                    var pageNo = (data.start && data.length) ? data.start / data.length : 0;
+                    var apiParams = {
+                        page: pageNo,
+                        page_size: data.length,
+                    };
+                    if (data.search.value)
+                        apiParams.q = data.search.value;
+                    if (url.searchParams.get("organizationId"))
+                        apiParams.organizationId = url.searchParams.get("organizationId");
+                    if (url.searchParams.get("status"))
+                        apiParams.status = url.searchParams.get("status");
+
+                    callServiceAPI('/api/jobs', apiParams, null, 'GET', function (jsonData) {
+                        // prepare the callback expected by DataTables
+                        for (var i = 0; i < jsonData.records.length; i++) {
+                            var rec = jsonData.records[i];
+                            var detailUrl = generateUrl('/apex/CopadoMonitorDetail{!IF(CONTAINS(environment, "prod"), "Production?", "?")}', {
+                                'jobId': rec.copadojobid,
+                                'sfdc.tabName': tabName,
+                                'objectName': 'Job',
+                                'environment': '{!environment}',
+                                'id': rec.id,
+                                'e': window.COPADO_ENDPOINT
+                            });
+                            var orgFilterUrl = 'javascript:void(window.location=updateURLParameter(window.location.href, \'organizationId\', \'' + rec.orgid + '\'))';
+                            rec._apitime_ago = '<a href="' + detailUrl + '" target="_parent">' + rec.apitime_ago + '</a>';
+                            rec._apistarttime = rec.apistarttime.replace(/\.[0-9]+$/, ''); // remove millisecions
+                            rec._orgname = '<a href="' + orgFilterUrl + '" target="_parent">' + rec.orgname + '</a>';
+                        }
+                        callback({
+                            data: jsonData.records,
+                            recordsTotal: jsonData.total,
+                            recordsFiltered: jsonData.total
+                        });
+                    });
+
+                    // update the browser url, so the search is reflected upon reloading
+                    updateNavigation('q', data.search.value || '');
+                },
+                columns: [
+                    { data: "_apitime_ago", title: "When" },
+                    { data: "apitype", title: "API Type" },
+                    { data: "apistatus", title: "API Status" },
+                    { data: "_orgname", title: "Org Name" },
+                    { data: "copadojobid", title: "copadoJobId" },
+                    { data: "_apistarttime", title: "API Start Time" },
+                    { data: "apiurl", title: "API Url" },
+                    { data: "jobname", title: "Job Name" },
+                    { data: "jobstatus", title: "Status" },
+                    { data: "jobduration_seconds", title: "Secs" },
+                    { data: "jobworkerid", title: "Dyno/Job Version" },
+                    { data: "jobqueued_seconds", title: "QT" },
+                ]
+            });
+            unlockScreen();
+        }
+
+        function renderTab_herokuSettings() {
+            lockScreen();
+            // get the list of apps first, if it is not cached.
+            if(!copadoMonitorComponentGlobalData.herokuApplications) {
+                callServiceAPI('/api/apps', {}, null, 'GET', function (jsonData) {
+                    copadoMonitorComponentGlobalData.herokuApplications = jsonData.records;
+                    if(!jsonData.records.length) {
+                        var msg = 'There was an error retrieving the app list. Zero apps found';
+                        console.error(msg, jsonData);
+                        alert(msg);
+                        throw new Error(msg);
+                    }
+                    renderTab_herokuSettings();
+                });
+                return; // we will continue after the callback back to this function.
+            }
+
+
+            getHerokuAppSettings('dev-copado-worker');
+            unlockScreen();
+        }
+
+        function on_herokuSettingChanged(elt) {
+            elt.classList.add('herokuSettingChanged');
+            console.debug(elt);
+        }
+
+        function getHerokuAppSettings(selectedApp){
+            // render the app list
+            var drawAppList = function(settings, selectedApp) {
+                var html = template('herokuSettingsTemplate', {
+                    apps: copadoMonitorComponentGlobalData.herokuApplications,
+                    selectedApp: selectedApp,
+                    settings: settings,
+                    copadoMonitorComponentGlobalData: copadoMonitorComponentGlobalData
+                });
+                document.getElementById("herokuSettingsMain").innerHTML = html;
+
+            }
+
+            drawAppList({});
+
+            callServiceAPI('/api/apps/'+encodeURIComponent(selectedApp)+'/settings', {}, null, 'GET', function (jsonData) {
+                // sort the returned data from the server by key
+                settings = {};
+                var keys = Object.keys(jsonData.record);
+                keys.sort();
+                keys.map(key => settings[key] = jsonData.record[key]);
+
+                drawAppList(settings, selectedApp);
+
+                var listItems = document.getElementsByClassName('slds-item');
+                console.log(listItems.length);
+                for(var counter = 0; counter < listItems.length; counter++){
+                    console.log('appname ' + listItems[counter].id);
+                    if(listItems[counter].id == selectedApp){
+                        console.log('equals add class' + listItems[counter].id);
+                        listItems[counter].classList.add("app-selected");
+                    } else {
+                        listItems[counter].classList.remove("app-selected");
+                    }
+                }
+            });
+        }
+
+        function updateHerokuSettings(selectedAppName){
+            var changedItems = document.getElementsByClassName('herokuSettingChanged');
+            var postData = {};
+            var changeMessage = 'Review the changed fields \n';
+            for(var counter = 0; counter < changedItems.length; counter++){
+                postData[changedItems[counter].name] = changedItems[counter].value;
+                changeMessage += changedItems[counter].name + '  "'+ settings[changedItems[counter].name] + '" --> "' + changedItems[counter].value + '"\n';
+            }
+
+            var isConfirmed = confirm(changeMessage);
+            if(isConfirmed){
+                var shouldUpdate = confirm('This will change Heroku Settings. Are you sure you want to continue with changes?');
+                if(shouldUpdate){
+                    callServiceAPI('/api/apps/'+encodeURIComponent(selectedAppName)+'/settings', {}, postData, 'PUT', function (jsonData) {
+                        alert('Update complete');
+                        getHerokuAppSettings(selectedAppName);
+                    });
+                }
+            } else{
+
+            }
+
+        }
+
+        // Page initialization
+        $(document).ready(function () {
+            var listOfInitializedSubTabs = [];
+
+            // select a tab looking up by id or by the dom element
+            function selectSubTab(tabId, _tabElement) {
+                _tabElement = _tabElement || $('#' + tabId);
+                tabId = _tabElement.attr('id');
+                console.info('selectSubTab() id=', tabId);
+
+                _tabElement.addClass('slds-is-active');
+                _tabElement.find('a').attr('aria-selected', true);
+                var $contentToShow = $('#' + _tabElement.find('a').attr('aria-controls'));
+                $contentToShow.removeClass('slds-hide');
+                $contentToShow.addClass('slds-show');
+
+                _tabElement.siblings().removeClass('slds-is-active');
+                _tabElement.siblings().find('a').attr('aria-selected', false);
+                $contentToShow.siblings('.slds-tabs_default__content').removeClass('slds-show');
+                $contentToShow.siblings('.slds-tabs_default__content').addClass('slds-hide');
+
+                // update the url reflecting the currently selected sub-tab
+                updateNavigation('subtab', tabId);
+
+                // initialize the tabs, if they are not initialized already.
+                if (listOfInitializedSubTabs.indexOf(tabId) == -1) {
+                    listOfInitializedSubTabs.push(tabId);
+                    switch (tabId) {
+                        case "workersTab":
+                            renderTab_workers();
+                            renderTab_jobs('#jobsActiveTable', 'active');
+                            break;
+                        case "jobsTab":
+                            renderTab_jobs('#jobsTable', 'jobs');
+                            break;
+                        case "apiTab":
+                            renderTab_apis();
+                            break;
+                        case "orgsTab":
+                            renderTab_organizations();
+                            break;
+                        case "herokuSettingsTab":
+                            renderTab_herokuSettings();
+                            break;
+                    }
+                }else{
+                    // some tabs need to be re-rendered every time
+                    switch (tabId) {
+                        case "herokuSettingsTab":
+                            renderTab_herokuSettings();
+                            break;
+                    }
+                }
+            }
+
+            // when a tab is clicked, setup the page
+            $('.slds-tabs_default__item').on('click', function () {
+                updateNavigation('q', ''); // cleanup any previous search
+                selectSubTab(null, $(this));
+            });
+
+            // read the initial subtab from the url, if any
+            var url = new URL(window.location);
+            var subTab = (url).searchParams.get("subtab");
+            selectSubTab(subTab || 'workersTab');
+
+            function updateLinks(){
+
+            }
+        });
+
+    </script>
+    <div class="slds-spinner_container" id="screenLocker" style="display:none;">
+        <div role="status" class="slds-spinner slds-spinner_medium">
+            <span class="slds-assistive-text">Please Wait</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <div class="slds-tabs_default">
+        <ul class="slds-tabs_default__nav" role="tablist">
+            <li class="slds-tabs_default__item slds-is-active" title="Workers" role="presentation" id="workersTab">
+                <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true"
+                   aria-controls="workersTabFrame" id="workerList">Workers</a>
+            </li>
+            <li class="slds-tabs_default__item" title="Jobs" role="presentation" id="jobsTab">
+                <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false"
+                   aria-controls="jobsTabFrame" id="jobList">Jobs</a>
+            </li>
+            <li class="slds-tabs_default__item" title="Api Logs" role="presentation" id="apiTab">
+                <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false"
+                   aria-controls="apiTabFrame" id="apiList">API calls</a>
+            </li>
+            <li class="slds-tabs_default__item" title="Organizations" role="presentation" id="orgsTab">
+                <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="true"
+                   aria-controls="orgsTabFrame" id="organizationList">Organizations</a>
+            </li>
+            <apex:outputPanel rendered="{!$Permission.Monitor_Enable_Heroku_Settings}" layout="none">
+                <li class="slds-tabs_default__item" title="herokuSettings" role="presentation" id="herokuSettingsTab">
+                    <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false"
+                       aria-controls="herokuSettings" id="herokuSettingsList">Heroku Settings</a>
+                </li>
+            </apex:outputPanel>
+        </ul>
+
+        <!-- WORKERS TAB -->
+        <div id="workersTabFrame" class="slds-tabs_default__content slds-show" role="tabpanel" aria-labelledby="workerList">
+
+            <h3>Active jobs: <span id="countTotalJobs"></span> / Total workers: <span id="countTotalWorkers"></span></h3>
+            <table id="jobsActiveTable" class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+            </table>
+
+            <p>
+            <hr />
+            </p>
+
+            <h3>Workers ( Heroku Dynos )</h3>
+            <table id="workersTable" class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+            </table>
+
+        </div>
+
+        <!-- JOBS TAB -->
+        <div id="jobsTabFrame" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="jobList">
+            <h3 class="filters">Pre-filters:</h3>
+            <ul class="filters">
+                <li class="active"><a href="javascript:void(window.location='?subtab=jobsTab')">all</a></li>
+                <li><a href="javascript:void(window.location=generateUrl(window.location.href, {'status':'memoryError'}))">java-heap-errors</a></li>
+                <li><a href="javascript:void(window.location=generateUrl(window.location.href, {'status':'error'}))">errors</a></li>
+                <li><a href="javascript:void(window.location=generateUrl(window.location.href, {'status': 'fatal'}))" onclick="updateLinks(this.id);">fatal</a></li>
+                <li id="filteredByOrg">by-org</li>
+            </ul>
+            <br />
+
+            <table id="jobsTable" class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+            </table>
+        </div>
+
+        <!-- API TAB -->
+        <div id="apiTabFrame" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="apiLogList">
+            <table id="apiLogTable" class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+            </table>
+        </div>
+
+        <!-- ORGANIZATIONS TAB -->
+        <div id="orgsTabFrame" class="display slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="organizationList">
+            <h3>Pre-filters:</h3>
+            <ul class="filters">
+                <li><a href="javascript:void(window.location=generateUrl(window.location.href, {'is_beta':''}))">All
+                        Orgs</a></li>
+                <li><a href="javascript:void(window.location=generateUrl(window.location.href, {'is_beta':'true'}))">Orgs
+                        in Beta</a></li>
+            </ul>
+            <br />
+
+            <table id="organizationsTable" class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal responsive no-wrap">
+            </table>
+
+        </div>
+
+        <!-- HEROKU SETTINGS TAB -->
+        <apex:outputPanel rendered="{!$Permission.Monitor_Enable_Heroku_Settings}" layout="none">
+            <div id="herokuSettings" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="herokuSettingsList">
+                <div id="herokuSettingsMain"></div>
+            </div>
+        </apex:outputPanel>
+    </div>
+
+
+        <!-- HEROKU SETTINGS TEMPLATE -->
+    <script type="application/x-template" id="herokuSettingsTemplate">
+        <p>Select an app to view/update its settings</p>
+        <ul class="slds-list_horizontal slds-has-dividers_right">
+            <% for(var i=0; i < apps.length ; i++) { var app=apps[i]; %>
+            <li class="slds-item" id="<%= app.name %>"><a href="#" onclick="getHerokuAppSettings('<%= app.name %>');return false;"><%= app.name %></a></li>
+            <% }/*for(var i=0; i < apps.length ; i++) */ %>
+        </ul>
+        <hr/>
+
+        <% if(selectedApp) { %>
+            <h3 class="slds-text-heading--medium slds-text-align_center">Values of <%= escapeHtml(selectedApp) %></h3>
+            <br />
+            <div class="slds-form slds-form_horizontal">
+            <% for(var key in settings) { %>
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="form-element-<%= escapeHtml(key) %>"><%= escapeHtml(key) %></label>
+                  <div class="slds-form-element__control">
+                    <input type="text" id="form-element-<%= escapeHtml(key) %>" name="<%= escapeHtml(key) %>" class="slds-input" value="<%= escapeHtml(settings[key]) %>" onchange="on_herokuSettingChanged(this);" {!IF($Permission.Monitor_Enable_Heroku_Settings_Actions, '', 'disabled')} />
+                  </div>
+                </div>
+            <% } /*for(var key in settings) { */ %>
+            </div>
+        <% } /*if(selectedApp) */ %>
+        <apex:outputPanel rendered="{!$Permission.Monitor_Enable_Heroku_Settings_Actions}" layout="none">
+            <button type="button" onclick="updateHerokuSettings('<%= selectedApp %>');">Update changed</button>
+        </apex:outputPanel>
+    </script>
+
+</apex:component>

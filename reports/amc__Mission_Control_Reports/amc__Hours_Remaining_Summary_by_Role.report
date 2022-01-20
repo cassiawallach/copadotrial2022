@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>amc__Role__c.amc__Milestones__r$amc__Project__c</field>
+    </columns>
+    <columns>
+        <field>amc__Role__c.amc__Milestones__r$Name</field>
+    </columns>
+    <columns>
+        <field>amc__Role__c.amc__Milestones__r.amc__Actions__r$Name</field>
+    </columns>
+    <columns>
+        <field>amc__Role__c.amc__Milestones__r.amc__Actions__r$amc__Action_Name__c</field>
+    </columns>
+    <columns>
+        <field>amc__Role__c.amc__Milestones__r.amc__Actions__r$amc__Hours_Scheduled__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>amc__Role__c.amc__Milestones__r.amc__Actions__r$amc__Hours_Remaining__c</field>
+    </columns>
+    <columns>
+        <field>amc__Role__c.amc__Milestones__r.amc__Actions__r$amc__Status__c</field>
+    </columns>
+    <description>Displays total Hours Remaining by Role Name for Actions with an End Date of less or equal to the Next 7 Days</description>
+    <filter>
+        <criteriaItems>
+            <column>amc__Role__c.amc__Milestones__r.amc__Actions__r$amc__End_Date__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>lessOrEqual</operator>
+            <value>NEXT_N_DAYS:7</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>amc__Role__c.amc__Milestones__r.amc__Actions__r$amc__Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Planned,In Progress</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>amc__Role__c$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Hours Remaining Summary by Role</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>amc__Roles_with_Milestones_with_Actions__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>amc__Role__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

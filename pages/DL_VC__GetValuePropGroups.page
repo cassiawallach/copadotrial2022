@@ -1,0 +1,26 @@
+<apex:page controller="DL_VC.GetValuePropGroupsController" docType="html-5.0">
+    <apex:form >
+        <apex:pageBlock title="Value Proposition Groups" id="vp_list">
+            <apex:pageBlockTable value="{! valuePropGroups }" var="vp">
+                <apex:column >
+                    <apex:commandLink value="Add" action="{! addValuePropositionGroup }">
+                        <apex:param name="Opp_To_Add" value="{! vp.Value_Prop_Group_Id__c }"
+                                    assignTo="{! Opp_To_Add }"/>
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column value="{! vp.Name }" headerValue="Name"/>
+            </apex:pageBlockTable>
+            <apex:pageBlockSection >
+                <!--<apex:inputText value="{!url}"/>-->
+                <apex:commandButton action="{! PreviousPage }" value="Close"/>
+                <apex:commandButton action="{! GoToAccount }" value="Go To Account" disabled="{! acct_disabled}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:pageMessages >
+                </apex:pageMessages>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

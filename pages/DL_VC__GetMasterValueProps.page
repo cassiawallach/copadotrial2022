@@ -1,0 +1,28 @@
+<apex:page controller="DL_VC.GetMasterValuePropsController" docType="html-5.0">
+    <apex:form >
+        <apex:pageBlock title="Master Value Propositions" id="mvp_list">
+            <apex:pageBlockTable value="{! masterValueProps }" var="mvp">
+                <apex:column >
+                    <apex:commandLink value="Add" action="{! addMasterValueProposition }">
+                        <apex:param name="Opp_To_Add" value="{! mvp.Master_Value_Prop_Id__c }"
+                                    assignTo="{! Opp_To_Add }"/>
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column value="{! mvp.Name }" headerValue="Name"/>
+                <apex:column value="{! mvp.Total_Benefits__c }" headerValue="Total Benefits"/>
+                <apex:column value="{! mvp.Total_Costs__c }" headerValue="Total Costs"/>
+            </apex:pageBlockTable>
+            <apex:pageBlockSection >
+                <!-- <apex:inputText value="{!retval}"/> -->
+                <apex:commandButton action="{! PreviousPage }" value="Close"/>
+                <apex:commandButton action="{! GoToAccount }" value="Go To Account" disabled="{! acct_disabled}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:pageMessages >
+                </apex:pageMessages>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

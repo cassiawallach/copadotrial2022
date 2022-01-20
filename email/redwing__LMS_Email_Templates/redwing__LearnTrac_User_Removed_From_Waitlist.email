@@ -1,0 +1,5 @@
+<messaging:emailTemplate subject="A seat is now available for Class" recipientType="User" relatedToType="redwing__Learning_Assignment__c" language="{!recipient.LanguageLocaleKey}">
+<messaging:htmlEmailBody >
+<c:ILTNotification learningAssignment="{!relatedTo}" notificationName="LearnTrac_User_Removed_From_Waitlist" />
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

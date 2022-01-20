@@ -1,0 +1,181 @@
+<aura:component Controller="CommunitySignupController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="progressIndicatorIsError" type="boolean" default="false"  />
+    <aura:attribute name="mainHeading" type="string" default="" />
+    <aura:attribute name="mainSubHeading" type="string" default="" />
+    <aura:attribute name="step1ContainerHeading" type="string" default="" />
+    <aura:attribute name="Step1Btnlabel" type="string" default="" />
+    <aura:attribute name="step2ContainerHeading" type="string" default="" />
+    <aura:attribute name="SubmitBtnLabel" type="string" default="" />
+    <aura:attribute name="footertext" type="string" default="" />
+    <aura:attribute name="loginUrl" type="string" default="" />
+    <aura:attribute name="SuccessPageUrl" type="string" default="" />
+    <aura:attribute name="progressIndicatorFlag" type="String" default="step1" />
+    <aura:attribute name="IsErrorMessage" type="String" default="" />
+    <aura:attribute name="IsErrorMessageStep2" type="String" default="" />
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    
+    <aura:attribute name="personalEmailValidationError" type="String" default="" />
+    <aura:attribute name="corporateEmailValidationError" type="String" default="" />
+    <aura:attribute name="cityValidationError" type="String" default="" />
+    <aura:attribute name="custType" type="String" default="" />
+    <aura:attribute name="jobRole" type="String" default="" />
+    <aura:attribute name="jobRoleData" type="List" default="" />
+    <aura:attribute name="countryData" type="List" default="" />
+    <aura:attribute name="stateDataMap" type="Map" default="" />
+    <aura:attribute name="stateData" type="List" default="" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="Main-container">
+        <div class="Heading-Container slds-text-align_center">
+            <div class="main-heading">
+                <p>Join the biggest<br/>
+                    Salesforce DevOps Community</p>
+            </div> 
+            <div class="sub-heading">
+                <p>Connect with thousands of DevOps Professionals in our Copado <br/>
+                    Success Community. Start your learning journey today.</p>
+            </div>
+        </div>
+        <div class="salesforceIdentitySelfRegister2 input-field-container">
+            <div aura:id="stepOne">
+                <div class="slds-text-align_center text-danger" aura:id="stepOneError" tabindex="0">{!v.IsErrorMessage}</div>
+                <div class="step-container-heading">
+                    <p><aura:unescapedHtml value="Tell Us About Yourself" /></p>
+                </div>
+                <div class="slds-wrap bottom20">
+                    <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>What brings you to the Copado Community</label>
+                    <lightning:select class="slds-form-element__control select_label" value="{!v.custType}" variant="label-hidden" aura:id="CustomerType">
+                        <option value="">--None--</option>
+                        <option value="Individual">I am an Individual, here to learn Copado</option>
+                        <option value="Customer">I am a Customer</option>
+                        <option value="Partner">I am a Partner</option>
+                    </lightning:select>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>First Name</label>
+                        <lightning:input type="text"  class="slds-form-element__control ss-input" aura:id="FirstName"  variant="label-hidden"/>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col ">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>Last Name</label>
+                        <lightning:input type="text"  class="slds-form-element__control ss-input" aura:id="LastName"  variant="label-hidden"/>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>Email</label>
+                        <lightning:helptext class="" iconName="utility:info" variant="warning" alternativeText="Your username. This will be the email address used for community communications." size="small" content="Your username. This will be the email address used for community communications." />
+                        <lightning:input  type="text"  class="slds-form-element__control ss-input" aura:id="Email"  variant="label-hidden" onchange="{! c.validateEmailPersonal }"/>
+                        <span class="text-required">{!v.personalEmailValidationError}</span>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>Job Role</label>
+                        <lightning:select class="slds-form-element__control select_label" value="{!v.jobRole}" variant="label-hidden" aura:id="Job_Role">
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.jobRoleData}" var="option">
+                                <option value="{!option}">{!option}</option>
+                            </aura:iteration>
+                            <option value="Other">Other</option>
+                        </lightning:select>
+                    </div>
+                </div>
+                <aura:if isTrue="{! v.jobRole == 'Other' }">
+                    <div class="slds-grid slds-wrap bottom20">
+                        <div class="slds-col ">
+                            <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>Specify your Job Role</label>
+                            <lightning:input  type="text" class="slds-form-element__control ss-input slds-m-top_xx-small" aura:id="Job_Role_Other"  variant="label-hidden"  />
+                        </div>
+                    </div>
+                </aura:if>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col size_1-of-2 size_1">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>Country</label>
+                        <lightning:select class="slds-form-element__control select_label" variant="label-hidden" aura:id="Country" onchange="{!c.getStates}">
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.countryData}" var="option">
+                                <option value="{!option}">{!option}</option>
+                            </aura:iteration>
+                            <option value="Other">Other</option>
+                        </lightning:select>
+                    </div>
+                    <div class="slds-col size_1-of-2 size_2">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="text-required">* </span>State</label>
+                        <lightning:select class="slds-form-element__control select_label" variant="label-hidden" aura:id="State">
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.stateData}" var="option">
+                                <option value="{!option}">{!option}</option>
+                            </aura:iteration>
+                            <option value="Other">Other</option>
+                        </lightning:select>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col size_1-of-2 size_1">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input">City</label>
+                        <lightning:input  type="text"  class="slds-form-element__control ss-input" aura:id="City"  variant="label-hidden" onchange="{!c.checkCity}" />
+                        <span class="text-required">{!v.cityValidationError}</span>
+                    </div>
+                    <div class="slds-col size_1-of-2 size_2">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input">Zip Code</label>
+                        <lightning:input  type="text" class="slds-form-element__control ss-input" aura:id="ZipCode"  variant="label-hidden"/>
+                    </div>
+                </div>
+                <div class="slds-text-align_center">
+                    <lightning:button onclick="{!c.goToStep2}" variant="brand" label="{!v.Step1Btnlabel}" title="{!v.Step1Btnlabel}"  class="ss-sign-up-btn"></lightning:button>
+                </div>
+            </div>
+            
+            
+            <div aura:id="stepTwo">
+                <div class="slds-text-align_center text-danger" >{!v.IsErrorMessageStep2}</div>
+                <div class="step-container-heading">
+                    <p><aura:unescapedHtml value="Share your Professional Details" /></p>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="{! v.custType!='Individual' ? 'text-required' : 'text-required slds-hide' }">* </span>Company Name</label>
+                        <lightning:input  type="text"  class="slds-form-element__control ss-input" aura:id="companyName"  variant="label-hidden"  />
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input"><span class="{! v.custType!='Individual' ? 'text-required' : 'text-required slds-hide' }">* </span>Corporate E-mail</label>
+                        <lightning:input  type="text"  class="slds-form-element__control ss-input" aura:id="CorporateEmail"  variant="label-hidden" onchange="{! c.validateEmailCorporate }"/>
+                        <span class="text-required">{!v.corporateEmailValidationError}</span>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap bottom20">
+                    <div class="slds-col">
+                        <label class="slds-form-element__label register-label" for="unique-id-of-input">Title</label>
+                        <lightning:input  type="text"  class="slds-form-element__control ss-input" aura:id="Title"  variant="label-hidden"  />
+                    </div>
+                </div>
+                <div class="slds-text-align_center">
+                    <lightning:button onclick="{!c.doSignup}" variant="brand" label="{!v.SubmitBtnLabel}" title="{!v.SubmitBtnLabel}"  class="ss-sign-up-btn"></lightning:button>
+                </div>
+            </div>
+            
+            
+            <div class="footer-container slds-text-align_center">
+                <p>{!v.footertext} <a href="{!'./'+ v.loginUrl}" class="login-link"> Log in</a></p>
+            </div>
+            
+            
+            <lightning:progressIndicator class="custom-Indicator" hasError="{!v.progressIndicatorIsError}" currentStep="{!v.progressIndicatorFlag}" type="base" variant="base">
+                <lightning:progressStep label="{!v.step1ContainerHeading}" value="step1" onclick="{!c.goToStep1}"/>
+                <lightning:progressStep label="{!v.step2ContainerHeading}" value="step2" onclick="{!c.goToStep2}"/>
+            </lightning:progressIndicator>
+            
+        </div>
+    </div>
+    <div class="exampleHolder">
+        <aura:if isTrue="{! v.loaded }">
+            <lightning:spinner alternativeText="Loading" size="large" />
+        </aura:if>
+    </div>
+</aura:component>

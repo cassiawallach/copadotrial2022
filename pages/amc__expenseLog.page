@@ -1,0 +1,123 @@
+<apex:page controller="amc.expenseLogController" tabstyle="amc__Expense__c">
+    <apex:sectionHeader title="Mission Control" subtitle="Submit Expenses"/>
+    <apex:form style="width:fit-content;">
+    
+        <apex:pageBlock >
+            <apex:pageMessages />
+            <!--Select the Role who incurred the expenses-->
+            <apex:pageBlockSection title="Select the Role" id="mileage_rate">
+                <apex:pageBlockSectionItem labelTitle="Select the Role for 'Incurred By'">
+                    <apex:outputLabel value="Incurred By" for="select_role"/>
+                    <apex:selectList value="{!selectRole}" size="1" id="Incurred_By">
+                        <apex:selectOptions value="{!roles}" />
+                        <apex:actionSupport event="onchange" action="{!getRole}" reRender="mileage_rate, new-expenses" onsubmit="showSpinner()" oncomplete="hideSpinner()"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                        <apex:outputField value="{!scopeRole.amc__Mileage_Rate__c}"/>
+            </apex:pageBlockSection>
+            <!--Create the Expenses-->
+            <apex:pageBlockSection title="Create Expenses" id="new-expenses" columns="1">
+                <apex:pageBlockTable value="{!newEs}" var="e">
+                    <apex:column headerValue="Project" >
+                        <apex:inputField value="{!e.newE.amc__Project__c}" id="Project">
+                            <apex:actionSupport reRender="mPanel, poPanel, biPanel" event="onchange" action="{!e.getAdditionalOptions}" onsubmit="showSpinner()" oncomplete="hideSpinner()"/>
+                        </apex:inputField>
+                    </apex:column>
+                    <apex:column headerValue="Milestone">
+                        <apex:outputPanel id="mPanel">
+                            <apex:inputField value="{!e.newE.amc__Milestone__c}" id="Milestone" rendered="{!e.newE.amc__Project__c=null}"/>
+                            <apex:selectList value="{!e.newE.amc__Milestone__c}"  size="1" rendered="{!e.newE.amc__Project__c!=null}" style="max-width: 160px;">
+                                <apex:selectOptions value="{!e.milestoneOptions}"/>
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:column>
+                    <apex:column headerValue="Purchase Order">
+                        <apex:outputPanel id="poPanel">
+                            <apex:inputField value="{!e.newE.amc__Purchase_Order__c}" id="purchaseOrder" rendered="{!e.newE.amc__Project__c=null}"/>
+                            <apex:selectList value="{!e.newE.amc__Purchase_Order__c}"  size="1" rendered="{!e.newE.amc__Project__c!=null}" style="max-width: 160px;">
+                                <apex:selectOptions value="{!e.purchaseOrderOptions}"/>
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:column>
+                    <apex:column headerValue="Budget Item">
+                        <apex:outputPanel id="biPanel">
+                            <apex:inputField value="{!e.newE.amc__Budget_Item__c}" id="budgetItem" rendered="{!e.newE.amc__Project__c=null}"/>
+                            <apex:selectList value="{!e.newE.amc__Budget_Item__c}"  size="1" rendered="{!e.newE.amc__Project__c!=null}" style="max-width: 160px;">
+                                <apex:selectOptions value="{!e.budgetItemOptions}"/>
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:column>
+                    <apex:column headerValue="Category">
+                        <apex:inputField value="{!e.newE.amc__Category__c}" id="Category" />
+                    </apex:column>
+                    <apex:column headerValue="Source">
+                        <apex:inputField value="{!e.newE.amc__Source__c}" id="Source" />
+                    </apex:column>
+                    <apex:column headerValue="Date">
+                        <apex:inputField value="{!e.newE.amc__Date__c}" id="Date" />
+                    </apex:column>
+                    <apex:column headerValue="Cost Amount">
+                        <apex:inputField value="{!e.newE.amc__Cost_Amount__c}" id="Amount">
+                        <apex:actionSupport event="onchange" reRender="new-expenses" onsubmit="showSpinner()" oncomplete="hideSpinner()"/>
+                        </apex:inputField>
+                    </apex:column>
+                    <apex:column headerValue="Cost Tax Amount">
+                        <apex:inputField value="{!e.newE.amc__Cost_Tax_Amount__c}" id="tax">
+                        <apex:actionSupport event="onchange" reRender="new-expenses" onsubmit="showSpinner()" oncomplete="hideSpinner()"/>
+                        </apex:inputField>
+                    </apex:column>
+                    <apex:column headerValue="Mark Up Required">
+                        <apex:inputField value="{!e.newE.amc__Mark_Up_Required__c}" id="Mark_Up_Req" />
+                    </apex:column>
+                    <apex:column headerValue="Custom Mark Up %">
+                        <apex:inputField value="{!e.newE.amc__Custom_Mark_Up__c}" id="Custom_Mark_Up">
+                        <apex:actionSupport event="onchange" reRender="new-expenses" onsubmit="showSpinner()" oncomplete="hideSpinner()"/>
+                        </apex:inputField>
+                    </apex:column>
+                    <apex:column headerValue="Distance">
+                        <apex:inputField value="{!e.newE.amc__Distance_Km_Miles__c}" id="Distance">                       
+                            <apex:actionSupport event="onchange" reRender="new-expenses" onsubmit="showSpinner()" oncomplete="hideSpinner()"/>
+                       </apex:inputField>
+                    </apex:column>
+                    <apex:column headerValue="Amount Claimed">
+                        <apex:outputText value="{0, number,###,###,##0.00}">
+                            <apex:param value="{!e.amountClaimed}"/>
+                        </apex:outputText>
+                        
+                        <apex:facet name="footer">
+                            <apex:outputPanel >
+                                <apex:outputText value="{0, number,###,###,##0.00}">
+                                    <apex:param value="{!TotalAmountClaimed}" />
+                                </apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerValue="Expense Notes">
+                        <apex:inputTextArea value="{!e.newE.amc__Expense_Notes_RT__c}" id="Expense_Notes"/>
+                    </apex:column>
+                    <apex:column headerValue="Non Billable">
+                        <apex:inputField value="{!e.newE.amc__Non_Billable__c}" id="Non_Billable" />
+                    </apex:column>
+                    <apex:column headerValue="Currency" rendered="{!IF(!isMulti, FALSE, TRUE)}" >
+                        <apex:outputPanel rendered="{!isMulti}">
+                            <apex:inputField value="{!e.newE['CurrencyIsoCode']}"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column style="vertical-align:top;">
+                        <apex:commandButton action="{!e.deleteRow}" value="Remove"/>
+                    </apex:column>                     
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <apex:outputPanel >
+                <apex:inputText value="{!rows}" size="2"/>
+                <apex:commandButton action="{!addRow}" value="Add Row(s)"/>
+                <apex:commandButton action="{!saveExpenses}" value="Save Expenses"/>
+                <apex:commandButton action="{!submitExpenses}" value="Save & Submit Expenses"/>
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+
+    <c:spinner />
+</apex:page>

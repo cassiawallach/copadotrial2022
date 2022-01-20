@@ -128,11 +128,14 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Value_Stream_Map_Record_Page1</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -354,6 +357,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>copadovsm__Snapshot_Mode_Enabled__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Snapshot Mode</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>copadovsm__Start_Date__c</fullName>
         <businessStatus>Active</businessStatus>
         <deprecated>false</deprecated>
@@ -392,6 +406,8 @@
     <label>Value Stream Map</label>
     <listViews>
         <fullName>copadovsm__All</fullName>
+        <columns>NAME</columns>
+        <columns>copadovsm__Recalculation_Status__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

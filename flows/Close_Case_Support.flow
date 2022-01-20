@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <name>Update_Case_status</name>
+        <label>Update Case status</label>
+        <locationX>806</locationX>
+        <locationY>179</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Current_Case.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Current_Case.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Status</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Current_Case.Module__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>DependentPicklist3.topValue</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Current_Case.Sub_Module__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>DependentPicklist3.middleValue</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Current_Case.Action__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>DependentPicklist3.bottomValue</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Current_Case.Comments</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Internal_Comments</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Case</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>Canceled</name>
+        <choiceText>Canceled</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Canceled</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Closed</name>
+        <choiceText>Closed</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedBugfixsubmitted</name>
+        <choiceText>Closed - Bug fix submitted</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Bug fix submitted</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedDuplicate</name>
+        <choiceText>Closed - Duplicate</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Duplicate	</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedFeatureRequest</name>
+        <choiceText>Closed - Feature Request</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Feature Request</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedNoresponsefromcustomer</name>
+        <choiceText>Closed - No response from customer</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - No response from customer</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedOutofscope</name>
+        <choiceText>Closed - Out of scope</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Out of scope</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedResolved</name>
+        <choiceText>Closed - Resolved</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Resolved</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedRoutedtointernalhelpdesk</name>
+        <choiceText>Closed - Routed to internal helpdesk</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Routed to internal helpdesk</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClosedSpam</name>
+        <choiceText>Closed - Spam</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Spam</stringValue>
+        </value>
+    </choices>
+    <dynamicChoiceSets>
+        <name>Action</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Action__c</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>Module</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Module__c</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>SubModule</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Sub_Module__c</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <interviewLabel>Close_Case_Support {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Close Case</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_Current_Case</name>
+        <label>Get Current Case</label>
+        <locationX>529</locationX>
+        <locationY>187</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Close_Case</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Case</name>
+        <label>Update Case</label>
+        <locationX>964</locationX>
+        <locationY>181</locationY>
+        <inputReference>Get_Current_Case</inputReference>
+    </recordUpdates>
+    <screens>
+        <name>Close_Case</name>
+        <label>Close Case</label>
+        <locationX>676</locationX>
+        <locationY>186</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Update_Case_status</targetReference>
+        </connector>
+        <fields>
+            <name>Subject</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Get_Current_Case.Subject</elementReference>
+            </defaultValue>
+            <fieldText>Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Status</name>
+            <choiceReferences>Canceled</choiceReferences>
+            <choiceReferences>ClosedBugfixsubmitted</choiceReferences>
+            <choiceReferences>ClosedDuplicate</choiceReferences>
+            <choiceReferences>ClosedFeatureRequest</choiceReferences>
+            <choiceReferences>ClosedNoresponsefromcustomer</choiceReferences>
+            <choiceReferences>ClosedOutofscope</choiceReferences>
+            <choiceReferences>ClosedResolved</choiceReferences>
+            <choiceReferences>ClosedRoutedtointernalhelpdesk</choiceReferences>
+            <choiceReferences>ClosedSpam</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Status</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Internal_Comments</name>
+            <fieldText>Internal Comments</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>DependentPicklist3</name>
+            <extensionName>flowruntime:dependentPicklists</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>dependencyWrapperApiName</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>topPicklistApiName</name>
+                <value>
+                    <stringValue>Module__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>middlePicklistApiName</name>
+                <value>
+                    <stringValue>Sub_Module__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>topLabel</name>
+                <value>
+                    <stringValue>Module</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>middleLabel</name>
+                <value>
+                    <stringValue>Sub Module</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>bottomPicklistApiName</name>
+                <value>
+                    <stringValue>Action__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>bottomLabel</name>
+                <value>
+                    <stringValue>Action</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>topValue</name>
+                <value>
+                    <elementReference>Get_Current_Case.Module__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>middleValue</name>
+                <value>
+                    <elementReference>Get_Current_Case.Sub_Module__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>bottomValue</name>
+                <value>
+                    <elementReference>Get_Current_Case.Action__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>410</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Get_Current_Case</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

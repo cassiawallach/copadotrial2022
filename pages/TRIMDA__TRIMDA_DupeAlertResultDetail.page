@@ -1,0 +1,266 @@
+<apex:page id="DAR_Page" standardController="TRIMDA__TRIMDA_DupeAlertResult__c"  extensions="TRIMDA.TRIMDA_DupeAlertResultDetail" readOnly="true" tabStyle="TRIMDA__TRIMDA_DupeAlertResult__c" doctype="HTML-5.0" >
+<apex:includeScript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>
+<apex:includescript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/circleDonutChart.js')}"></apex:includescript>
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<!--<apex:stylesheet value="{!URLFOR($Resource.DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/>-->
+<style>
+    
+    .trimdar_header{
+        color:white;
+        width:100%;
+        border-radius: 0.25rem 0.25rem 0 0;
+        background-color:#f28411;
+        background: linear-gradient(#f7b46e, #f28411);
+        padding:0.5rem;
+    }
+    
+    .dt_highlight{
+        font-weight:bold;
+    }
+    .slds-scope .slds-brand-band:before{
+        z-index:0;
+     }
+     @media all and (max-width: 1000px)  {
+         .dt_container{
+            margin-left:0.75rem;
+     		margin-right:0.75rem;
+         }
+     }
+     @media (min-width: 700px) {
+         .dt_container{
+            margin-left:5rem;
+     		margin-right:5rem;
+         }
+     }
+    
+</style>
+
+<apex:slds />
+<div class="slds-scope" style="{!IF($User.UIThemeDisplayed == 'Theme4d','background-color:#b2c5e0;','')}">    
+<div class="{!IF($User.UIThemeDisplayed == 'Theme4d','slds-brand-band slds-brand-band_large','')}" >
+    <div class="dt_container" style="{!IF($User.UIThemeDisplayed == 'Theme4d','z-index:1;margin-top:0.75rem;','')}">
+    
+    <apex:form >
+    <apex:outputpanel id="header">
+    <apex:panelGrid rendered="{!initialized}">
+            <div class="slds-grid slds-wrap"> 
+            <div class="slds-col slds-size--1-of-1 trimdar_header" >
+                <div class="slds-col slds-has-flexi-truncate">
+                  <div class="slds-media">
+                    <div class="slds-media__figure">
+                      <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'DupeAlertResults60x60_NL.gif')}" style="height:2.5rem;" title="DataTrim Dupe Alerts Result" />
+                    </div>
+                    <div class="slds-media__body">
+                      <p class="slds-text-heading--label" >DataTrim</p>
+                      <div class="slds-grid">
+                        <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Alert Results"><strong>DataTrim Dupe Alert Result: {!alertResult.Name}</strong></h1>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col slds-size--1-of-1" style="height:0.75rem">
+                <!-- Spacer -->
+            </div>
+
+            <div class="slds-col slds-size--1-of-1 slds-medium-size--4-of-6" >
+                <div class="slds-card">
+                    <div class="slds-card__header slds-grid" style="padding-left:0.5rem">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                          <div class="slds-media__body">
+                            <h2 class="slds-card__header-title">
+                                <span class="slds-text-title_caps" style="font-size:0.8rem;font-weight:bold;">{!$ObjectType.TRIMDA_DupeAlerts__c.fields.Name.label}:&nbsp;<a href="/{!alertResult.DataTrim_Dupe_Alert__c}">{!alertResult.DataTrim_Dupe_Alert__r.Name}</a></span>
+                            </h2>
+                          </div>
+                          
+                        </header>
+                     </div>
+                    <div class="slds-card__body">
+                        <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                            <thead>
+                                <tr>
+                                    <th class="slds-text-heading--label slds-size--1-of-5 slds-truncate" scope="col" style="padding-left:0.5rem;">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__AlertType__c.label}</th>
+                                    <!--<th class="slds-text-heading--label slds-size--1-of-4" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__AlertType__c.label}</th>-->
+                                    <th class="slds-text-heading--label slds-size--1-of-5" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__MatchBinding__c.label}</th>
+                                    <th class="slds-text-heading--label slds-size--1-of-5" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Result__c.label}</th>
+                                    <!--<th class="slds-text-heading--label slds-size--1-of-4" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Records_newandchanged__c.label}</th>-->
+                                    <th class="slds-text-heading--label slds-size--1-of-5" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Possible_DupesFound__c.label}</th>
+                                    <th class="slds-text-heading--label slds-size--1-of-5" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__SurvivorshipRules__c.label}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="slds-hint-parent">
+                                    <!--<td class="slds-size--1-of-4 slds-truncate" data-label="alert" ><a href="/{!alertResult.DataTrim_Dupe_Alert__c}">{!alertResult.DataTrim_Dupe_Alert__r.Name}</a></td>-->
+                                    <td class="slds-size--1-of-4 slds-truncate" data-label="alerttype" >{!alertResult.TRIMDA__AlertType__c}</td>
+                                    <!--<td class="slds-size--1-of-4" data-label="type">{!alertResult.TRIMDA__AlertType__c}</td>-->
+                                    <td class="slds-size--1-of-4" data-label="matchlevel">{!alertResult.TRIMDA__MatchBinding__c}</td>
+                                    <td class="slds-size--1-of-4" data-label="result">{!alertResult.TRIMDA__Result__c}</td>
+                                    <!--<td class="slds-size--1-of-4" data-label="recordsmatched">{!alertResult.TRIMDA__Records_newandchanged__c}</td>-->
+                                    <td class="slds-size--1-of-4 dt_highlight" data-label="possibledupes">{!alertResult.TRIMDA__Possible_DupesFound__c}</td>
+                                    <td class="slds-size--1-of-4 dt_highlight" data-label="survrules">{!alertResult.TRIMDA__SurvivorshipRules__c}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="slds-card__footer" style="padding-left:0.5rem">
+                        <div class="slds-text-body--small" style="text-align:left;" >{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Run_Date__c.label}:&nbsp;{!alertResult.TRIMDA__Run_Date__c}</div>
+                    </div>
+                    <div class="slds-card__body">
+                        <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                            <thead>
+                                <tr>
+                                    <th class="slds-text-heading--label slds-size--1-of-4 slds-truncate" scope="col" style="padding-left:0.5rem;">Records Matched</th>
+                                    <th class="slds-text-heading--label slds-size--1-of-4" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__New_Dupes_Found__c.label}</th>
+                                    <th class="slds-text-heading--label slds-size--1-of-4" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Score100__c.label}</th>
+                                    <th class="slds-text-heading--label slds-size--1-of-4" scope="col">{!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__MatchBinding__c.label}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="slds-hint-parent">
+                                    <td class="slds-size--1-of-4 slds-truncate" data-label="records" >
+                                        <div class="slds-grid slds-wrap" >
+                                            <div class="slds-col slds-size--1-of-1" > 
+                                                <div class="slds-grid slds-wrap">
+                                                  <div class="slds-col slds-size--4-of-12  dt_highlight" style="text-align:right;">{!alertResult.TRIMDA__Records_newandchanged__c}&nbsp;</div>
+                                                  <div class="slds-col slds-size--8-of-12" style="text-align:left;font-size:0.8rem;">Secondary&nbsp;</div>
+                                                    <br />
+                                                  <div class="slds-col slds-size--4-of-12  dt_highlight" style="text-align:right;">{!alertResult.TRIMDA__Records_in_Target__c}&nbsp;</div>
+                                                  <div class="slds-col slds-size--8-of-12" style="text-align:left;font-size:0.8rem;" >Master&nbsp;</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="slds-size--1-of-4" data-label="new">{!alertResult.TRIMDA__New_Dupes_Found__c}</td>
+                                    <td class="slds-size--1-of-4 " data-label="100%">{!alertResult.TRIMDA__Score100__c}</td>
+                                    <td class="slds-size--1-of-4" data-label="Classification">
+                                        <div class="slds-grid slds-wrap " >
+                                            <div class="slds-col slds-size--4-of-12  dt_highlight" style="text-align:right;">
+                                                {!alertResult.TRIMDA__No_of_Exact__c}&nbsp;
+                                            </div>
+                                            <div class="slds-col slds-size--8-of-12 " style="text-align:left;font-size:0.8rem;">
+                                                {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__No_of_Exact__c.label}
+                                            </div>
+        
+                                            <div class="slds-col slds-size--4-of-12  dt_highlight {!IF(OR(alertResult.TRIMDA__MatchBinding__c = 'Loose', alertResult.TRIMDA__MatchBinding__c = 'Medium', alertResult.TRIMDA__MatchBinding__c = 'Tight', alertResult.TRIMDA__MatchBinding__c = 'SuperTight'),'slds-show','slds-hide')}" style="text-align:right;">
+                                                {!alertResult.TRIMDA__No_of_Supertight__c}&nbsp;
+                                            </div>
+                                            <div class="slds-col slds-size--8-of-12  {!IF(OR(alertResult.TRIMDA__MatchBinding__c = 'Loose', alertResult.TRIMDA__MatchBinding__c = 'Medium', alertResult.TRIMDA__MatchBinding__c = 'Tight', alertResult.TRIMDA__MatchBinding__c = 'SuperTight'),'slds-show','slds-hide')}" style="text-align:left;font-size:0.8rem;">
+                                                {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__No_of_Supertight__c.label}
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size--4-of-12  dt_highlight {!IF(OR(alertResult.TRIMDA__MatchBinding__c = 'Loose', alertResult.TRIMDA__MatchBinding__c = 'Medium', alertResult.TRIMDA__MatchBinding__c = 'Tight'),'slds-show','slds-hide')}" style="text-align:right;">
+                                                {!alertResult.TRIMDA__No_of_Tight__c}&nbsp;
+                                            </div>
+                                            <div class="slds-col slds-size--8-of-12  {!IF(OR(alertResult.TRIMDA__MatchBinding__c = 'Loose', alertResult.TRIMDA__MatchBinding__c = 'Medium', alertResult.TRIMDA__MatchBinding__c = 'Tight'),'slds-show','slds-hide')}" style="text-align:left;font-size:0.8rem;">
+                                                {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__No_of_Tight__c.label}
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size--4-of-12  dt_highlight {!IF(OR(alertResult.TRIMDA__MatchBinding__c = 'Loose', alertResult.TRIMDA__MatchBinding__c = 'Medium'),'slds-show','slds-hide')}" style="text-align:right;">
+                                                {!alertResult.TRIMDA__No_of_Medium__c}&nbsp;
+                                            </div>
+                                            <div class="slds-col slds-size--8-of-12 {!IF(OR(alertResult.TRIMDA__MatchBinding__c = 'Loose', alertResult.TRIMDA__MatchBinding__c = 'Medium'),'slds-show','slds-hide')}" style="text-align:left;font-size:0.8rem;">
+                                                {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__No_of_Medium__c.label}
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size--4-of-12  dt_highlight {!IF(alertResult.TRIMDA__MatchBinding__c = 'Loose','slds-show','slds-hide')}"  style="text-align:right;">
+                                                {!alertResult.TRIMDA__No_of_Loose__c}&nbsp;
+                                            </div>
+                                            <div class="slds-col slds-size--8-of-12  {!IF(alertResult.TRIMDA__MatchBinding__c = 'Loose','slds-show','slds-hide')}" style="text-align:left;font-size:0.8rem;">
+                                                {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__No_of_Loose__c.label}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="slds-card__footer slds-text-body--small" style="padding-left:0.5rem;" >
+                        <div class="slds-col slds-size--1-of-1" style="margin-top: 0.5rem;text-align:left;">
+                            <div class="slds-grid slds-wrap" >
+                                <div class="slds-col slds-size--2-of-12 slds-large-size--2-of-12 " >
+                                    {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Filter_Secondary_Data__c.label}:
+                                </div>
+                                <div class="slds-col slds-size--10-of-12 slds-large-size--10-of-12" >
+                                    {!alertResult.TRIMDA__Filter_Secondary_Data__c}&nbsp;
+                                </div>
+                                <div class="slds-col slds-size--2-of-12 slds-large-size--2-of-12 " >
+                                    {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Filter_Master_Data__c.label}:
+                                </div>
+                                <div class="slds-col slds-size--10-of-12 slds-large-size--10-of-12" >
+                                    {!alertResult.TRIMDA__Filter_Master_Data__c}&nbsp;
+                                </div>
+                                <div class="slds-col slds-size--2-of-12 slds-large-size--2-of-12 " >
+                                    {!$ObjectType.TRIMDA_DupeAlertResult__c.fields.TRIMDA__Advanced_Parameters__c.label}:
+                                </div>
+                                <div class="slds-col slds-size--10-of-12 slds-large-size--10-of-12" >
+                                    {!alertResult.TRIMDA__Advanced_Parameters__c}&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-size--1-of-1 slds-medium-size--2-of-6" style="padding-left:0.75rem">
+                <div class="slds-card">
+                     <div class="slds-grid--align-center" style="text-align:center;">
+                         <h2 class="slds-text-heading--small slds-truncate" >Potential&nbsp;Dupes<br />Matched&nbsp;Records to&nbsp;Review</h2><br />
+                    </div>
+
+                    <div class="slds-card__header slds-grid  slds-grid--align-center" style="text-align:center;">
+                        <button class="slds-button slds-button--brand " onclick="ReviewMatchedRecords()" disabled="true" style="width:15rem;{!IF(noOfMRs2Review = 0,'display:initial;','display:none;')}">Review Potential&nbsp;Dupes</button>
+                        <!--show_RPD_Button_AR : {!show_RPD_Button_AR}-->
+                        <a class="slds-button slds-button--brand slds-truncate" style="font-weight:bold;width:15rem;{!IF(OR(noOfMRs2Review = 0, show_RPD_Button_AR = false),'display:none;','display:initial;')}" href="/apex/TRIMDA__TRIMDA_Nav2ListView?myId={!myId}&o=ar"  >Review Potential&nbsp;Dupes</a>
+                        <!--show_RPD_Button_A : {!show_RPD_Button_A}-->
+                        <a class="slds-button slds-button--brand slds-truncate" style="font-weight:bold;width:15rem;{!IF(or(noOfMRs2Review = 0, show_RPD_Button_A = false),'display:none;','display:initial;')}" title="View All Potential Dupes From Alert: {!myAName}" href="/apex/TRIMDA__TRIMDA_Nav2ListView?myId={!myAId}&o=a"  >Review Potential&nbsp;Dupes</a>
+                    </div>
+                    <div class="slds-card__body" id="circlegraph" >
+                        <div class="slds-grid slds-grid--align-center" id="circlegraph2">
+                            <div id="MR2Review" ></div>
+                        </div>
+                    </div>
+                    <div class="slds-card__footer slds-grid--align-center" style="text-align:center;"> 
+                        	<a class="slds-button slds-button--brand slds-truncate" title="Batch Process Matched Records ({!noOfMRsinObject})" style="font-weight:bold;width:15rem;{!if(betaOn == false,'display:none;','')}" href="/apex/TRIMDA__trimda_matchedrecordsbatch?arid={!myId}"  >Use Batch</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </apex:panelGrid>
+    </apex:outputpanel>
+ 
+    <apex:outputpanel id="msgs">
+        <apex:Messages /> 
+    </apex:outputpanel>
+    </apex:form>
+
+  
+
+<!--COPYRIGHT-->
+<div class="slds">
+   <div class="slds-grid slds-wrap">    
+       <div class="slds-col slds-size--1-of-1" >
+           <div style="text-align:center;font-size:xx-small;font-family:Arial;margin-top:2rem;">Copyright © 2007-<script>document.write(new Date().getFullYear())</script> DataTrim Dupe Alerts by d2b International ApS, All rights reserved. </div>
+       </div>
+    </div>
+</div>
+       
+	</div>
+</div>       
+</div>
+ 
+<script>
+    var circle = new circleDonutChart('MR2Review');
+        circle.draw({
+            end:{!noOfMRs2Review},
+            start:0,
+            maxValue:{!IF(alertResult.TRIMDA__Possible_DupesFound__c=0,1,alertResult.TRIMDA__Possible_DupesFound__c)},
+            titlePosition:"outer-top",
+            titleText:"",
+            unitText:"",
+            outerCircleColor:'#d80210',
+            innerCircleColor:'#8bcf54'
+        });
+                
+</script>
+
+</apex:page>

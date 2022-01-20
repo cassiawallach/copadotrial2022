@@ -1,0 +1,38 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="FeaturedUserController" access="global" >
+    <aura:attribute name="mainHeading" type="string" default="" />
+    <aura:attribute name="mainSubHeading" type="string" default="" />
+    <aura:attribute name="featuredUserId" type="string" default="" />
+    <aura:attribute name="userProfileUrl" type="string" default="" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="IsShow" type="boolean" default="true" />
+    <aura:attribute name="UserDetail" type="object"   />
+    
+    <aura:if isTrue="{!v.IsShow}" >
+        <div class="slds-m-around_x-small" >
+            <lightning:card >
+                <div class="card-header slds-text-align_center">
+                    <img src="{!$Resource.FeaturedUserDesignImage}" class="Heading-image" alt="" width="26" height="26"/>
+                    <span class="card-title-heading slds-m-left_x-small">{!v.mainHeading}</span>
+                    <p class="card-title-sub-heading">{!v.mainSubHeading}</p>
+                    <div class="hr-breaker"></div>
+                </div>
+                <div class="card-body">
+                    <div class="slds-text-align_center">
+                        <div class="profile-pic-area">
+                            <img src="{!v.UserDetail.FullPhotoUrl}" class="card-profile-pic" alt="User Image not found" width="72" height="82"/>
+                        </div>
+                        <div class="user-detail-area">
+                            <a href="{!v.userProfileUrl}" style="text-decoration:none;"><span class="card-user-name slds-m-left_x-small">{!v.UserDetail.Name}</span></a>
+                            <p class="card-user-Title slds-m-left_x-small">{!v.UserDetail.Title}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer slds-text-align_center">
+                    <p class="card-aboutme-text">{!v.UserDetail.AboutMe}</p>
+                </div>
+            </lightning:card>
+        </div>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,13 @@
+<aura:component>
+  <aura:attribute name="playgroundName" type="String" required="true" />
+  <aura:attribute name="onAccept" type="Object" />
+  <aura:attribute name="onCancel" type="Object" />
+
+  <div id="dialogWrapper">
+    <p id="messageText">Are you sure you want to delete {! v.playgroundName }?</p>
+    <div id="buttonWrapper" class="actions">
+      <button id="btnYes" class="primary" onclick="{! v.onAccept }">Yes</button>
+      <button id="btnCancel" onclick="{! v.onCancel }">Cancel</button>
+    </div>
+  </div>
+</aura:component>

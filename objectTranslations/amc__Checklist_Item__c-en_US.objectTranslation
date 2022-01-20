@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldSets>
+        <label><!-- Checklist Item: Status Report Fields --></label>
+        <name>amc__Checklist_Item_Status_Report_Fields</name>
+    </fieldSets>
+    <fields>
+        <help><!-- Formula Field: References the Action Name from the Action this Checklist Item relates to --></help>
+        <label><!-- Action Name --></label>
+        <name>amc__Action_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Action record that this Checklist Item relates to --></help>
+        <label><!-- Action --></label>
+        <name>amc__Action__c</name>
+        <relationshipLabel><!-- Checklist Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Detailed Notes about the Checklist Item --></help>
+        <label><!-- Checklist Item Notes --></label>
+        <name>amc__Checklist_Item_Notes_RT__c</name>
+    </fields>
+    <fields>
+        <label><!-- Complete Count --></label>
+        <name>amc__Complete_Count__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Checklist Item has been completed --></help>
+        <label><!-- Complete --></label>
+        <name>amc__Complete__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>amc__End_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies if this Checklist Item should be excluded from the Client Overview Page --></help>
+        <label><!-- Exclude from Client Page Indicator --></label>
+        <name>amc__Exclude_from_Client_Page_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Checklist Item should be excluded from the Client Overview Page --></help>
+        <label><!-- Exclude from Client Page --></label>
+        <name>amc__Exclude_from_Client_Page__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies whether this Checklist Item should be hidden from the Gantt Chart --></help>
+        <label><!-- Exclude from Gantt Indicator --></label>
+        <name>amc__Exclude_from_Gantt_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies whether this Checklist Item should be hidden from the Gantt Chart --></help>
+        <label><!-- Exclude from Gantt --></label>
+        <name>amc__Exclude_from_Gantt__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Checklist Item should be excluded from the Project Status Report. Will be TRUE if either Checklist Item or parent Action is set to TRUE --></help>
+        <label><!-- Exclude from Status Report Indicator --></label>
+        <name>amc__Exclude_from_Status_Report_Indicator__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Checklist Item should be excluded from the Project Status Report --></help>
+        <label><!-- Exclude from Status Report --></label>
+        <name>amc__Exclude_from_Status_Report__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the billable hours that have been associated to this Checklist Item from Time Logs --></help>
+        <label><!-- Hours Completed - Billable --></label>
+        <name>amc__Hours_Completed_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the non billable hours that have been associated to this Checklist Item from Time Logs --></help>
+        <label><!-- Hours Completed - Non Billable --></label>
+        <name>amc__Hours_Completed_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: If Completed = TRUE, then 0, otherwise &apos;Hours Scheduled - Billable&apos; - &apos;Hours Completed - Billable&apos; --></help>
+        <label><!-- Hours Remaining - Billable --></label>
+        <name>amc__Hours_Remaining_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: If Completed = TRUE, then 0, otherwise &apos;Hours Scheduled - Non Billable&apos; - &apos;Hours Completed - Non Billable&apos; --></help>
+        <label><!-- Hours Remaining - Non Billable --></label>
+        <name>amc__Hours_Remaining_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the billable hours scheduled to this Checklist Item --></help>
+        <label><!-- Hours Scheduled - Billable --></label>
+        <name>amc__Hours_Scheduled_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the non billable hours scheduled to this Checklist Item --></help>
+        <label><!-- Hours Scheduled - Non Billable --></label>
+        <name>amc__Hours_Scheduled_Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays 1 if the current user is the Item Owner, otherwise displays 0 --></help>
+        <label><!-- Item Owner Current User --></label>
+        <name>amc__Item_Owner_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Role record of the person responsible for this Checklist Item --></help>
+        <label><!-- Item Owner --></label>
+        <name>amc__Item_Owner__c</name>
+        <relationshipLabel><!-- Checklist Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Formula: Calculates Total Hours Scheduled - (Total Hours Completed + Total Hours Remaining) --></help>
+        <label><!-- KPI: Total Hours Variance --></label>
+        <name>amc__KPI_Total_Hours_Variance__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: References the Milestone Name that the Action this Checklist Item relate to is part of --></help>
+        <label><!-- Milestone Name --></label>
+        <name>amc__Milestone_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the detailed notes explaining what needs to be achieved as part of this Checklist Item --></help>
+        <label><!-- Notes --></label>
+        <name>amc__Notes__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula Field: References the Project Name that the Action this Checklist Item relate to is part of --></help>
+        <label><!-- Project Name --></label>
+        <name>amc__Project_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Requirement record this Checklist Item relates to --></help>
+        <label><!-- Requirement --></label>
+        <name>amc__Requirement__c</name>
+        <relationshipLabel><!-- Checklist Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Sort Order --></label>
+        <name>amc__Sort_Order__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>amc__Start_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: &apos;Hours Completed - Billable&apos; + &apos;Hours Completed - Non Billable&apos; --></help>
+        <label><!-- Total Hours Completed --></label>
+        <name>amc__Total_Hours_Completed__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: &apos;Hours Remaining - Billable&apos; + &apos;Hours Remaining - Non Billable&apos; --></help>
+        <label><!-- Total Hours Remaining --></label>
+        <name>amc__Total_Hours_Remaining__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: &apos;Hours Scheduled - Billable&apos; + &apos;Hours Scheduled - Non Billable&apos; --></help>
+        <label><!-- Total Hours Scheduled --></label>
+        <name>amc__Total_Hours_Scheduled__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies which User Story this Checklist Item relates to --></help>
+        <label><!-- User Story --></label>
+        <name>amc__User_Story__c</name>
+        <relationshipLabel><!-- Checklist Items --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Checklist Item Layout</layout>
+        <sections>
+            <label><!-- Checklist Item Notes --></label>
+            <section>Checklist Item Notes</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- KPI Information --></label>
+            <section>KPI Information</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- The End Date must be greater or equal to the Start Date --></errorMessage>
+        <name>amc__End_Date_Validation</name>
+    </validationRules>
+</CustomObjectTranslation>

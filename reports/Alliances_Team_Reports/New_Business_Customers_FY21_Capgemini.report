@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_6604462</developerName>
+        <masterLabel>Partner-Sourced Wins</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Opportunity.Partner_Account__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Salesforce.com, Inc. LATAC</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce.com, Inc. US</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>SALESFORCE.COM EMEA LIMITED</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Australia</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Brasil</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Canada</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Finland</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce France</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Germany GmbH</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Hong Kong</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Italy</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Mexico</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Salesforce Switzerland</sourceValue>
+            </sourceValues>
+            <value>Salesforce/Vlocity</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Accenture ANZ</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture Brazil</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture Federal Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture France</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture Germany</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture India</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture Nordics</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture PARENT</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture Spain</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture Switzerland</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture UK</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Accenture US</sourceValue>
+            </sourceValues>
+            <value>Accenture</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Capgemini Australia</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini Brasil</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini France</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini India</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>CapGemini Italy</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini NL</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini Spain</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini Sweden</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini Switzerland</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini UK</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini UK Financial Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Capgemini US</sourceValue>
+            </sourceValues>
+            <value>Capgemini</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>ROLLUP_DESCRIPTION</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <field>LEAD_SOURCE</field>
+    </columns>
+    <columns>
+        <field>Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Opportunity.ACV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Alliances_Owner__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.PAM_Credit__c</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <field>FISCAL_QUARTER</field>
+    </columns>
+    <columns>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>CREATED_DATE</field>
+    </columns>
+    <columns>
+        <field>NEXT_STEP</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Partner_Ultimate_Parent__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>All partner NB customers.</description>
+    <filter>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>CLOSE_DATE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.Pipeline_Channel__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>New Business Customers FY21/FY22</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closedwon</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_PREVCURFY</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,35 @@
+<apex:page standardController="kugo2p__SalesOrder__c" 
+    title="Manage Lines | Kugamon"
+    applyBodyTag="false"
+    sidebar="false" 
+    docType="html-5.0">
+
+    <script>
+        //debugger;
+        // get the id of the Order record
+        var orderId = "{!JSENCODE(kugo2p__SalesOrder__c.Id)}";
+        var discountPercent = "{!kugo2p__SalesOrder__c.kugo2p__DiscountPercent__c}"; 
+        /* Core changes BEGIN 11/18/2019 - remove line that's setting discount value to 2 fixed decimal points, discount percent should be passed in without being changed */
+        //discountPercent = Number(discountPercent).toFixed(2);
+        /* Core changes END 11/18/2019 */
+        var pricebookName = "{!JSENCODE(kugo2p__SalesOrder__c.kugo2p__PriceBookName__c)}";
+
+        // determine the current view that is to be displayed on page launch. Add Lines or Edit Lines
+        let selectedView = "{!$CurrentPage.parameters.view}";
+        selectedView = (selectedView == undefined || selectedView == '') ? 'addLines' : selectedView;
+
+        const appName = 'ManageLinesContainerApp';
+        const cmpName = 'ManageLinesContainer';
+        const cmpParams = {
+		                    isLightningMode: {!$User.UIThemeDisplayed == 'Theme4d'}, 
+		                    isModal: true,
+		                    objectName: 'Order',
+		                    recordId: orderId,
+		                    discountPercent: discountPercent,
+		                    pricebookName: pricebookName,
+		                    selectedView: selectedView
+                        };
+    </script>
+
+    <c:BaseLightningOut />    
+</apex:page>

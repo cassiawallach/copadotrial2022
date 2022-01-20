@@ -2,7 +2,6 @@
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <brand>
         <headerColor>#00C3EF</headerColor>
-        <logo>copado__Copado_Logo_Symbol_Only_Blue</logo>
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
@@ -13,6 +12,78 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Copado Console</label>
     <navType>Console</navType>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>ABM Sales User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>ABM Sales User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>Copado Base Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>Copado Base Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>Success Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>Success Profile</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Copado_Work_Management_Work_Item</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>copado__User_Story__c</pageOrSobjectType>
+        <recordType>copado__User_Story__c.IT_Operations</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
     <setupExperience>all</setupExperience>
     <tabs>copado__User_Story__c</tabs>
     <tabs>copado__Work_Manager</tabs>

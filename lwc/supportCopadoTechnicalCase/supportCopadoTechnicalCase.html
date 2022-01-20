@@ -1,0 +1,221 @@
+<template>
+    <div class='slds-m-top_large' style="width:100%">
+        <div class="slds-grid">
+            <div class="slds-col slds-size_0-of-12 slds-small-size_0-of-12 slds-medium-size_0-of-12 slds-large-size_3-of-12"></div>
+            <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_6-of-12">
+                <div class="slds-card slds-p-around_medium">
+                    <div class="slds-align_absolute-center slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__body" align="center">
+                                <h1 class="slds-text-heading_large slds-p-bottom_x-large">
+                                    {formTitle}
+                                </h1>
+                            </div>
+                        </header>
+                    </div>
+                    <template if:true={isBusy}>
+                        <div class="slds-align_absolute-center slds-p-around_medium">
+                            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                            </lightning-spinner>
+                        </div>
+                    </template>
+                    <template if:true={isCopadoSupportCase}>
+                        <c-custom-string-search-lookup
+                            name="impactedArea"
+                            label="Impacted Area"
+                            required="true"
+                            placeholder='Start typing to find matching issue. eg - Deployment failure, Promotion Failed etc.'
+                            s-object-api-name="Case_Impacted_Areas__mdt"
+                            form-name={formName}
+                            onlookupupdate={handleImpactedArea}
+                            onerror={handleErrorInImpactedArea}
+                            container-class="slds-p-bottom_small">
+                        </c-custom-string-search-lookup>
+                    </template>
+                    <template if:true={isAcademyOrPlayground}>
+                        <lightning-combobox name="caseReason"
+                                            label="Case Reason"
+                                            options={picklistFieldsMap.caseReason.fieldOptions}
+                                            onchange={handleCaseReasonChange}
+                                            required
+                                            class="slds-p-bottom_small">
+                        </lightning-combobox>
+                        <template if:true={hasImpactedArea}>
+                            <lightning-combobox name="academyOrPlaygroundImpactedArea"
+                                                label="Impacted Area"
+                                                max-length="255"
+                                                options={academyOrPlaygroundImpactedArea}
+                                                class="slds-p-bottom_small">
+                            </lightning-combobox>
+                        </template>
+                        <template if:true={showCertificates}>
+                            <lightning-combobox name="certificate"
+                                                required
+                                                label="Select Certificate"
+                                                options={certificates}
+                                                class="slds-p-bottom_small">
+                            </lightning-combobox>
+                        </template>
+                        <template if:true={showModule}>
+                            <lightning-input name="module"
+                                            required
+                                            label="Please provide the name of module in which you are getting issue."
+                                            class="slds-p-bottom_small">
+                            </lightning-input>
+                        </template>
+                    </template>
+                    <lightning-input name="subject"
+                                    label="Subject"
+                                    max-length="255"
+                                    value={impactedArea}
+                                    required
+                                    class="slds-p-bottom_small">
+                    </lightning-input>
+                    <template if:true={isCopadoSupportCase}>
+                        <lightning-input name="orgId"
+                                        label="Production Org ID where Copado is installed"
+                                        max-length="18"
+                                        pattern="[a-zA-Z0-9]{15}|[a-zA-Z0-9]{18}"
+                                        message-when-pattern-mismatch="Org Id can be either of 15 or 18 characters."
+                                        required
+                                        field-level-help="Please enter your 15 or 18 digit org id for the affected organization/environment."
+                                        class="slds-p-bottom_small">
+                        </lightning-input>
+                        <label class="slds-form-element__label">
+                            <abbr class="slds-required" title="required">*</abbr>
+                            Have you Granted Login Access to Copado Support Agents where Copado is installed?
+                        </label>
+                        <i><a href="https://docs.copado.com/article/7iaiwop3tk-granting-login-access-to-copado" target="_blank">Reference guide</a></i>
+                        <lightning-radio-group name="loginAccessGranted"
+                                                label="Have you Granted Login Access to Copado Support Agents where Copado is installed?"
+                                                type="button"
+                                                required
+                                                variant="label-hidden"
+                                                options={picklistFieldsMap.loginAccessGranted.fieldOptions}
+                                                class="slds-p-bottom_small">
+                        </lightning-radio-group>
+                        <lightning-radio-group name="productionDeployment"
+                                                label="Is the issue in Production Deployment?"
+                                                onchange={setProductionDeployment}
+                                                required
+                                                type="button"
+                                                options={picklistFieldsMap.productionDeployment.fieldOptions}
+                                                class="slds-p-bottom_small">
+                        </lightning-radio-group>
+                        <template if:true={isNotProductionDeployment}>
+                            <lightning-input name="sourceOrgId"
+                                            required
+                                            max-length="18"
+                                            label="Source Org ID"
+                                            pattern="[a-zA-Z0-9]{15}|[a-zA-Z0-9]{18}"
+                                            message-when-pattern-mismatch="Org Id can be either of 15 or 18 characters."
+                                            field-level-help="Please enter your 15 or 18 digit org id for the affected source organization/environment."
+                                            class="slds-p-bottom_small">
+                            </lightning-input>
+                            <lightning-input name="targetOrgId"
+                                            required
+                                            max-length="18"
+                                            label="Target Org ID"
+                                            pattern="[a-zA-Z0-9]{15}|[a-zA-Z0-9]{18}"
+                                            message-when-pattern-mismatch="Org Id can be either of 15 or 18 characters."
+                                            field-level-help="Please enter your 15 or 18 digit org id for the affected target organization/environment."
+                                            class="slds-p-bottom_small">
+                            </lightning-input>
+                        </template>
+                        <lightning-combobox name="userPriority"
+                                            options={picklistFieldsMap.userPriority.fieldOptions}
+                                            label="What is the severity of this case?" 
+                                            class="slds-p-bottom_small">
+                        </lightning-combobox>
+                        <lightning-combobox name="percentageUsersAffected"
+                                            label="What % of your users are affected"
+                                            options={picklistFieldsMap.percentageUsersAffected.fieldOptions}
+                                            required
+                                            class="slds-p-bottom_small">
+                        </lightning-combobox>
+                        <lightning-radio-group name="isAffectDataIntegrity"
+                                                label="Does this affect data integrity?"
+                                                options={picklistFieldsMap.isAffectDataIntegrity.fieldOptions}
+                                                required
+                                                onchange={setAffectDataIntegrity}
+                                                type="button">
+                        </lightning-radio-group>
+                        <template if:true={isAffectDataIntegrity}>
+                            <span><i>Please provide additional details in the case description.</i></span>
+                        </template>
+                        <lightning-radio-group name="haveWorkaround"
+                                                label="Do you have a viable workaround?"
+                                                options={picklistFieldsMap.haveWorkaround.fieldOptions}
+                                                required
+                                                onchange={sethaveWorkaround}
+                                                type="button"
+                                                class="slds-p-top_small">
+                        </lightning-radio-group>
+                        <template if:true={haveWorkaround}>
+                            <span><i>Please provide additional details on the workaround in the case description.</i></span>
+                        </template>
+                        <lightning-radio-group name="isAffectCriticalFunctionality"
+                                                label="Does this affect critical application functionality?"
+                                                options={picklistFieldsMap.isAffectCriticalFunctionality.fieldOptions}
+                                                required
+                                                onchange={setAffectCriticalFunctionality}
+                                                type="button"
+                                                class="slds-p-top_small">
+                        </lightning-radio-group>
+                        <template if:true={isAffectCriticalFunctionality}>
+                            <span><i>Please provide additional details on the affected functionality in the case description.</i></span>
+                        </template>
+                        <lightning-textarea name="affectedRecords"
+                                        label="Affected Records"
+                                        max-length="32000"
+                                        field-level-help="Please provide any links to affected records related to this issue."
+                                        class="slds-p-top_small slds-p-bottom_small">
+                        </lightning-textarea>
+                    </template>
+                    <c-input-rich-text name="description"
+                                    label="Description"
+                                    label-visible="true"
+                                    required="true"
+                                    value={defaultDescription}
+                                    help-message="Provide a detailed description of the issue you are experiencing. Be sure to include details such as when the issue started, who the issue is affecting, how often the issue happens, etc."
+                                    disabled-categories="FORMAT_FONT,ALIGN_TEXT,INSERT_CONTENT"
+                                    error-message="Complete this field."
+                                    rich-text-class="slds-p-bottom_small">
+                    </c-input-rich-text>
+                    <template if:true={isCopadoSupportCase}>
+                        <lightning-combobox name="userTimezone"
+                                        label="Timezone"
+                                        value={picklistFieldsMap.userTimezone.defaultOption}
+                                        onchange={handleTimezoneChange}
+                                        options={picklistFieldsMap.userTimezone.fieldOptions}
+                                        field-level-help="Confirm that the correct timezone has been selected. If not, please update to the correct timezone."
+                                        class="slds-p-bottom_small">
+                        </lightning-combobox>
+                        <template if:true={showHideUpdateTimezone}>
+                            <lightning-input name="updateTimezone"
+                                        type="checkbox"
+                                        label="Would you like to update timezone on your user record?"
+                                        class="slds-p-bottom_small">
+                            </lightning-input>
+                        </template>
+                    </template>
+                    <c-upload-file name="files"
+                                   label="Attachment (max 4 MB/attachment)"
+                                   help-text='Max. size of file 4 MB, and Max. 10 files.'
+                                   multiple="true"
+                                   required="false"
+                                   div-class="slds-p-bottom_small"
+                                   onfilesuploaded={handleFileUploaded}>
+                    </c-upload-file>
+                    <lightning-button onclick={validateFieldsAndSave}
+                                    type="submit"
+                                    label="Submit Case"
+                                    variant="brand"
+                                    class='slds-align_absolute-center'>
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col slds-size_0-of-12 slds-small-size_0-of-12 slds-medium-size_0-of-12 slds-large-size_3-of-12"></div>
+    </div>
+</template>

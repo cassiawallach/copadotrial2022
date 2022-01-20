@@ -1,0 +1,155 @@
+<apex:page docType="html-5.0" standardController="amc__Action__c" extensions="amc.actionCloneExt" standardStylesheets="true" lightningStyleSheets="true">
+    <style type="text/css">
+        .icon-sizing{
+            width:25px;
+            height:25px;
+        }
+        .pbBottomButtons .pbTitle{
+            display:none;
+        }
+    </style>
+    <apex:outputPanel id="thePanel">
+        <apex:outputPanel id="messagePanel">
+            <apex:pageMessages escape="false" />
+        </apex:outputPanel>
+        <apex:sectionHeader title="Clone Action" subtitle="{!dummyAction.amc__Action_Name__c}" />
+        <apex:form id="theForm">
+            <!--Settings-->
+            <apex:pageBlock title="Clone Settings" id="settingsBlock" >
+                <apex:pageBlockSection columns="1" collapsible="false">
+                    Settings changed here will be applied across the Action and Checklist Items    
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="2" id="settingsSection">
+                    <!--start date input-->
+                    <apex:inputField value="{!dummyAction.amc__Start_Date__c}" id="startDate">
+                        <apex:actionSupport event="onchange" action="{!updateActionDates}"/>
+                    </apex:inputField>
+                    <!--clone items input-->
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >
+                            Clone Checklist Items
+                        </apex:outputLabel>
+                        <apex:inputCheckbox value="{!cloneItems}" />
+                    </apex:pageBlockSectionItem>
+                    <!--end date input-->
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >Forecast End Date</apex:outputLabel>
+                        <apex:outputText value="{!forecastEndDate}"/>
+                    </apex:pageBlockSectionItem> 
+                    <!--clone contributors input-->
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >
+                            Clone Contributors
+                        </apex:outputLabel>
+                        <apex:inputCheckbox value="{!cloneContributors}" />
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockButtons location="top">
+                    <apex:commandButton value="Clone Action" action="{!cloneCustom}" />
+                    <apex:commandButton value="Cancel" action="{!cancel}" />
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+            <!--Action Details-->
+            <apex:pageBlock mode="edit">
+                <apex:pageBlockSection title="Action Information" collapsible="false">
+                    <apex:outputPanel rendered="{!OR(fields == null, fields.empty)}">
+                        Permission set is missing fields. Ask an administrator to populate the Mission Control Standard and/or Mission Control Custom field sets on the Action object.
+                    </apex:outputPanel>
+                    <apex:repeat value="{!fields}" var="f">
+                        <apex:inputField value="{!action[f.fieldPath]}" 
+                            required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <!--Checklist Items-->
+            <apex:pageBlock id="itemsBlock">
+                <apex:pageBlockSection title="Checklist Items" columns="1" collapsible="false">
+                    <apex:repeat value="{!itemWrappers}" var="itemWrapper">
+                        <apex:pageBlockSection columns="1" showHeader="false">
+                            <apex:pageblockTable value="{!itemWrapper}" var="i">
+                                <apex:column headervalue="Checklist Item Name">
+                                    <apex:inputField value="{!i.item.Name}" />
+                                </apex:column>
+                                <apex:column headervalue="Item Owner">
+                                    <apex:inputField value="{!i.item.amc__Item_Owner__c}" />
+                                </apex:column>
+                                <apex:column headervalue="Start Date">
+                                    <apex:inputField value="{!i.item.amc__Start_Date__c}" />
+                                </apex:column>
+                                <apex:column headervalue="End Date">
+                                    <apex:inputField value="{!i.item.amc__End_Date__c}" />
+                                </apex:column>
+                                <apex:column headervalue="Checklist Item Notes" width="500px">
+                                    <apex:inputtextarea label="" richtext="true" value="{!i.item.amc__Checklist_Item_Notes_RT__c}" id="Body" cols="100" rows="5"/>
+                                </apex:column>
+                                <apex:column headervalue="Exclude from Gantt">
+                                    <apex:inputField value="{!i.item.amc__Exclude_from_Gantt__c}" />
+                                </apex:column>
+                                <apex:column headervalue="">
+                                    <apex:commandLink onclick="if(!confirm('Are you sure?')){return false;}" action="{!removeItem}">
+                                        <apex:param name="index" value="{!i.index}" assignTo="{!itemIndex}"/>
+                                        <span class="slds-icon_container slds-icon-utility-delete slds-icon-text-default" >
+                                            <svg aria-hidden="true" class="slds-icon slds-icon--small icon-sizing">
+                                                <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                    xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#delete">
+                                                </use>
+                                            </svg>
+                                        </span>
+                                    </apex:commandLink>
+                                </apex:column>
+                            </apex:pageblockTable>
+                        </apex:pageBlockSection>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                <apex:pageBlockButtons location="bottom" style="text-align:left; padding-left:30px;">
+                    <apex:input value="{!itemInputCount}" id="itemInput"/>
+                    <apex:commandButton value="Add Rows" action="{!addItem}" styleClass="slds-vf-button_brand"/>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+            <!--Contributors-->
+            <apex:pageBlock id="contributorsBlock">
+                <apex:pageBlockSection title="Contributors" columns="1" collapsible="false">
+                    <apex:repeat value="{!conWrappers}" var="conWrapper">
+                        <apex:pageBlockSection columns="1" showHeader="false">
+                            <apex:pageblockTable value="{!conWrapper}" var="c">
+                                <apex:column headervalue="Contributor Name">
+                                    <apex:inputField value="{!c.con.amc__Role__c}"/>
+                                </apex:column>
+                                <apex:column headervalue="Contribution Billable">
+                                    <apex:inputField value="{!c.con.amc__Contribution_Billable__c}" />
+                                </apex:column>
+                                <apex:column headervalue="Contribution Non Billable">
+                                    <apex:inputField value="{!c.con.amc__Contribution_Non_Billable__c}" />
+                                </apex:column>
+                                <apex:column headervalue="Exclude from Billable Capacity">
+                                    <apex:inputField value="{!c.con.amc__Exclude_from_Billable_Capacity__c}" />
+                                </apex:column>
+                                <apex:column headervalue="">
+                                    <apex:commandLink onclick="if(!confirm('Are you sure?')){return false;}" action="{!removeCon}" reRender="contributorsBlock">
+                                        <apex:param name="index" value="{!c.index}" assignTo="{!conIndex}"/>
+                                        <span class="slds-icon_container slds-icon-utility-delete slds-icon-text-default" >
+                                            <svg aria-hidden="true" class="slds-icon slds-icon--small icon-sizing">
+                                                <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                    xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#delete">
+                                                </use>
+                                            </svg>
+                                        </span>
+                                    </apex:commandLink>
+                                </apex:column>
+                            </apex:pageblockTable>
+                        </apex:pageBlockSection>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                <!--Buttons-->
+                <apex:pageBlockButtons location="bottom" style="text-align:left; padding-left:30px;">
+                    <apex:input value="{!conInputCount}" id="conInput"/>
+                    <apex:commandButton value="Add Rows" action="{!addContributor}" styleClass="slds-vf-button_brand" reRender="contributorsBlock"/>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+            <!--save/cancel buttons-->
+            <apex:commandButton value="Clone Action" action="{!cloneCustom}" />
+            <apex:commandButton value="Cancel" action="{!cancel}" />
+        </apex:form>
+    </apex:outputPanel>
+    <c:spinner />
+</apex:page>

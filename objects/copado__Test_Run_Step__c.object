@@ -147,7 +147,7 @@
     <description>The execution of each templated test script step.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -182,6 +182,7 @@
         <externalId>false</externalId>
         <label>Actual Result</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>5</visibleLines>
@@ -232,6 +233,7 @@
         <relationshipLabel>Test Run Steps</relationshipLabel>
         <relationshipName>Test_Script_Steps</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -241,6 +243,7 @@
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -274,6 +277,7 @@
         <relationshipName>Test_Run_Steps</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
@@ -282,6 +286,7 @@
     <nameField>
         <displayFormat>TRS-{000000}</displayFormat>
         <label>Test Run Step Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Test Run Steps</pluralLabel>

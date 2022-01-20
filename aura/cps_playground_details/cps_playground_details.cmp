@@ -1,0 +1,120 @@
+<aura:component
+                controller="cps_PlaygroundWizardController"
+                implements="forceCommunity:availableForAllPageTypes,force:hasRecordId"
+                access="global"
+                >
+    <aura:attribute name="showDetails" type="Boolean" />
+    <aura:attribute name="loadingRecord" type="Boolean" default="true" />
+    <aura:attribute name="playground" type="Object" access="private" />
+    <aura:attribute name="production" type="Object" access="private" />
+    <aura:attribute name="environments" type="Object[]" access="private" />
+    <aura:attribute name="git" type="Object" access="private" />
+    <aura:attribute name="displayDeletePlaygroundDialog" type="Boolean" access="private" />
+    <aura:attribute name="childOrgHeader" type="String" access="private" />
+    <aura:attribute name="headings" type="Object" access="private" />
+
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+
+    <aura:if isTrue="{! v.loadingRecord }"><c:cps_loading /></aura:if>
+    <aura:if isTrue="{! !v.loadingRecord }">
+        <aura:if isTrue="{! !v.showDetails }">
+            <c:cps_wizard playground="{! v.playground }" />
+        </aura:if>
+        <aura:if isTrue="{! v.showDetails }">
+            <div>
+                <div class="header">
+                    <div class="back-button">
+                        <button onclick="{! c.navigateBack }">
+                            <img src="{! $Resource.cps_assets + '/Assets/back.svg' }"/>
+                        </button>
+                    </div>
+                    <div class="center">
+                        <img
+                             class="playground-picture"
+                             src="{! $Resource.cps_assets + '/Assets/playground_profile.png' }"
+                             />
+                        <div class="basics">
+                            <h2>{! v.playground.Name }</h2>
+                            <div class="status">
+                                <aura:if isTrue="{! v.playground.Status__c == 'Activated' }">
+                                    <img src="{! $Resource.cps_assets + '/Assets/activated.svg' }" />
+                                </aura:if>
+                                <aura:if isTrue="{! v.playground.Status__c == 'In Progress' }">
+                                    <img src="{! $Resource.cps_assets + '/Assets/in_progress.svg' }" />
+                                </aura:if>
+                                <aura:if isTrue="{! v.playground.Status__c == 'Failed' }">
+                                    <img src="{! $Resource.cps_assets + '/Assets/close.svg' }" />
+                                </aura:if>
+                                <p>{! v.playground.Status__c }</p>
+                            </div>
+                        </div>
+                        <div class="playground-actions">
+                            <button
+                                    ><img
+                                          src="{! $Resource.cps_assets + '/Assets/delete.svg' }"
+                                          onclick="{! c.showDeleteDialog }"
+                                          /></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="body" style="margin-top: 22px;">
+                    <div class="center">
+                        <div class="orgs-section flex col">
+                            <h4>Git Account</h4>
+                            <c:cps_list headings="['Username', 'Status', 'Modified']">
+                                <c:cps_listItem
+                                                username="{! v.playground.Git_Username__c }"
+                                                status="{! v.git.status }"
+                                                createdAt="{! v.git.Date }"
+                                                orgId= ""
+                                                playgroundConfiguration = "{!v.playground.Playground_Configuration__c}"
+                                                />
+                            </c:cps_list>
+                        </div>
+
+                        <div class="orgs-section flex col">
+                            <h4>Production Org</h4>
+                            <c:cps_list headings="{! v.headings }">
+                                <c:cps_listItem
+                                                username="{! v.production.Name }"
+                                                status="{! v.production.Status__c }"
+                                                createdAt="{! v.production.LastModifiedDate }"
+                                                envType = "{!v.production.Type__c}"
+                                                orgId= "{! v.production.Id }"
+                                                playgroundConfiguration = "{!v.playground.Playground_Configuration__c}"
+                                                />
+                            </c:cps_list>
+                        </div>
+
+                        <div class="orgs-section flex col">
+                          <h4>{! v.childOrgHeader}</h4>
+                            <c:cps_list headings="{! v.headings }">
+                              <aura:iteration items="{! v.environments }" var="env">
+                                  <c:cps_listItem
+                                                  username="{! env.Name }"
+                                                  status="{! env.Status__c }"
+                                                  createdAt="{! env.LastModifiedDate }"
+                                                  envType = "{!env.Type__c}"
+                                                  orgId= "{! env.Id }"
+                                                  playgroundConfiguration = "{!v.playground.Playground_Configuration__c}"
+                                                  />
+                              </aura:iteration>
+                          </c:cps_list>
+                        </div>
+                    </div>
+                </div>
+
+                <aura:if isTrue="{! v.displayDeletePlaygroundDialog }">
+                    <div class="lights-out">
+                        <c:cps_dialog_deletePlayground
+                                                       playgroundName="{! v.playground.Name }"
+                                                       onCancel="{! c.hideDeleteDialog }"
+                                                       onAccept="{! c.deletePlayground }"
+                                                       />
+                    </div>
+                </aura:if>
+            </div>
+        </aura:if>
+    </aura:if>
+</aura:component>

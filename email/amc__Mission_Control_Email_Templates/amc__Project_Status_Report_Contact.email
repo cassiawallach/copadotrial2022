@@ -1,0 +1,11 @@
+<messaging:emailTemplate subject="{!relatedTo.Name}: Project Status Report" recipientType="Contact" relatedToType="amc__Project__c">
+<messaging:htmlEmailBody >
+    <div style="width:100%;min-width:100%; padding: 20px;font: 15px arial, sans-serif;">
+        <p>Please find attached the weekly 'Project Status Report' for {!relatedTo.Name}.</p>
+        <p>If you have any questions, please contact {!relatedTo.Project_Owner__r.amc__First_Name__c}.</p>
+        <p>Thanks,</p>
+        
+        <p>{!$Organization.Name}</p>
+    </div>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Task</value>
+    </caseValues>
+    <fields>
+        <help>การใช้ตัวเลือกนี้จะส่งพารามิเตอร์บริบทไปให้กับ URL ทรัพยากรภายนอก (เช่น https://someurl.com/?aid=ASSIGNMENT_ID&amp;tid=TPLAN_ID)</help>
+        <label><!-- Add training parameters to URL --></label>
+        <name>redwing__Add_training_parameters_to_URL__c</name>
+    </fields>
+    <fields>
+        <help>ใช้ฟิลด์นี้เพื่อเขียนคำอธิบายงานเพิ่มเติม</help>
+        <label><!-- Additional Description --></label>
+        <name>redwing__Description_RTA__c</name>
+    </fields>
+    <fields>
+        <help>คำอธิบายงานนี้</help>
+        <label><!-- Description --></label>
+        <name>redwing__Description__c</name>
+    </fields>
+    <fields>
+        <help>เปิดใช้ตัวเลือกนี้ ถ้าคุณไม่ต้องการให้ผู้ใช้แสดงความคิดเห็นเกี่ยวกับงานนี้</help>
+        <label><!-- Disable Comments --></label>
+        <name>redwing__Disable_Comments__c</name>
+    </fields>
+    <fields>
+        <help>เปิดใช้ตัวเลือกนี้ ถ้าคุณไม่ต้องการให้ผู้ใช้เปิดงานที่เขียนไว้ว่า &quot;เสร็จแล้ว&quot; ขึ้นมาใหม่</help>
+        <label><!-- Disable Undo for Completed Tasks --></label>
+        <name>redwing__Disable_Undo__c</name>
+    </fields>
+    <fields>
+        <help>การใช้ตัวเลือกนี้จะบังคับให้ผู้ใช้อัปโหลดรูปภาพเพื่อดำเนินงานให้แล้วเสร็จ</help>
+        <label><!-- Enable Image Upload --></label>
+        <name>redwing__Enable_Image_Upload__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable Ratings --></label>
+        <name>redwing__Enable_Ratings__c</name>
+    </fields>
+    <fields>
+        <help>การใช้ตัวเลือกนี้จะบังคับให้ผู้ใช้อัปโหลดวิดีโอเพื่อดำเนินงานให้แล้วเสร็จ</help>
+        <label><!-- Enable Video Upload --></label>
+        <name>redwing__Enable_Video_Upload__c</name>
+    </fields>
+    <fields>
+        <help>ชื่อที่เป็นมิตรสำหรับ URL ทรัพยากรภายนอก ถ้าเว้นว่างไว้ URL ทรัพยากรภายนอก ก็จะปรากฏให้เห็น</help>
+        <label><!-- External Resource Name --></label>
+        <name>redwing__External_Resource_Name__c</name>
+    </fields>
+    <fields>
+        <help>เลือกหน้าต่างเพื่อแสดง URL ทรัพยากรภายนอก สถานะ &quot;ว่างเปล่า&quot; จะเปิดแท็บ/หน้าต่างใหม่ขึ้นมา และสถานะ &quot;ตนเอง&quot; ก็จะใช้แท็บ/หน้าต่างปัจจุบัน</help>
+        <label><!-- External Resource Target --></label>
+        <name>redwing__External_Resource_Target__c</name>
+        <picklistValues>
+            <masterLabel>blank</masterLabel>
+            <translation>ว่าง</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>self</masterLabel>
+            <translation>ตนเอง</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>URL ที่เชื่อมโยงไปยังทรัพยากรภายนอกที่จะช่วยแนะนำวิธีทำงานให้ผู้ใช้</help>
+        <label><!-- External Resource URL --></label>
+        <name>redwing__External_Resource_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Learning --></label>
+        <name>redwing__Learning__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>จำนวนครั้งที่ลองส่งงานได้</help>
+        <label><!-- Max Attempts --></label>
+        <name>redwing__Max_Attempts__c</name>
+    </fields>
+    <fields>
+        <help>หมายเลขตั้งแต่ 0 ถึง 100 ที่จะเป็นตัวกำหนดร้อยละของคะแนนขั้นต่ำสำหรับการอนุมัติ</help>
+        <label><!-- Passing Rating --></label>
+        <name>redwing__Passing_Rating__c</name>
+    </fields>
+    <fields>
+        <help>เปิดใช้ตัวเลือกนี้ ถ้าคุณต้องการคำอนุมัติจากผู้จัดการในการดำเนินงานนี้ ตัวเลือกนี้จะใช้ฟิลด์ผู้จัดการมาตรฐานในออบเจ็คของผู้ใช้</help>
+        <label><!-- Requires Manager Approval to Complete --></label>
+        <name>redwing__Requires_Manager_Approval__c</name>
+    </fields>
+    <layouts>
+        <layout>Task Layout</layout>
+        <sections>
+            <label>ข้อมูลเพิ่มเติม</label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label>ลิงก์กำหนดเอง</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>ข้อมูลที่ใส่หรือไม่ใส่ก็ได้</label>
+            <section>Optional Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>ชื่องาน</nameFieldLabel>
+    <webLinks>
+        <label><!-- Ratings_Management --></label>
+        <name>redwing__Ratings_Management</name>
+    </webLinks>
+</CustomObjectTranslation>

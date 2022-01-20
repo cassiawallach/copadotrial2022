@@ -1,0 +1,24 @@
+<aura:component controller="ContactRelatedPlaygrounds" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="isShow" type="boolean" default="true" />
+    <aura:attribute name="columnName" type="String" />
+    <aura:attribute name="TableData" type="list" />
+    <aura:if isTrue="{!v.isShow}">
+        <div class="slds-m-around_small">
+            <div class="demo-only slds-m-vertical_x-small" style="padding:0.5rem;background:#16325c">
+                <div class="slds-text-color_inverse slds-text-align_center slds-text-heading_medium ">Playgrounds</div>
+            </div>
+            <div class="slds-order-list">
+                <lightning:datatable aura:id="PlaygroundList"
+                                     keyField="PlagroundId"
+                                     class=""
+                                     columns="{!v.columnName}"
+                                     data="{!v.TableData}"
+                                     hideCheckboxColumn="true"
+                                     showRowNumberColumn="true"
+                                     />
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

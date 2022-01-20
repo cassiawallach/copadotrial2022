@@ -1,0 +1,36 @@
+<apex:page >
+  <script>
+    operation = "{!JSINHTMLENCODE($CurrentPage.parameters.operation)}";
+    sObject = "{!JSINHTMLENCODE($CurrentPage.parameters.sObject)}";
+    recordTypeId = "{!JSINHTMLENCODE($CurrentPage.parameters.recordTypeId)}";
+    recordId = "{!JSINHTMLENCODE($CurrentPage.parameters.recordId)}";
+    accId = "{!JSINHTMLENCODE($CurrentPage.parameters.accId)}";
+    accountLookupField = "{!JSINHTMLENCODE($CurrentPage.parameters.accountLookupField)}";
+    rId = "{!JSINHTMLENCODE($CurrentPage.parameters.rId)}";
+    relationshipLookupFieldName = "{!JSINHTMLENCODE($CurrentPage.parameters.relationshipLookupFieldName)}";
+    if (operation.toUpperCase() === "ADD") {
+      var defaultValues = {};
+      if (accountLookupField) {
+        defaultValues[accountLookupField] = accId;
+      }
+      if (relationshipLookupFieldName) {
+        defaultValues[relationshipLookupFieldName] = rId;
+      }
+      if (!accountLookupField && accId) {
+        defaultValues["AccountId"] = accId;
+      }
+      if (rId && !relationshipLookupFieldName) {
+        defaultValues["RelationshipId"] = rId;
+      }
+      if (recordTypeId) {
+        sforce.one.createRecord(sObject, recordTypeId, defaultValues);
+      } else {
+        sforce.one.createRecord(sObject, null, defaultValues);
+      }
+    } else if (operation.toUpperCase() === "EDIT") {
+      sforce.one.editRecord(recordId);
+    } else if (operation.toUpperCase() === "PREVIEW") {
+      sforce.one.navigateToSObject(recordId);
+    }
+  </script>
+</apex:page>

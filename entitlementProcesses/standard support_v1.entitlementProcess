@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitlementProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <SObjectType>Case</SObjectType>
+    <active>false</active>
+    <entryStartDateField>Case.CreatedDate</entryStartDateField>
+    <exitCriteriaFilterItems>
+        <field>Case.IsClosed</field>
+        <operation>equals</operation>
+        <value>true</value>
+    </exitCriteriaFilterItems>
+    <isVersionDefault>false</isVersionDefault>
+    <milestones>
+        <businessHours>Default - 24/7</businessHours>
+        <milestoneCriteriaFormula>1=1</milestoneCriteriaFormula>
+        <milestoneName>First Response</milestoneName>
+        <minutesToComplete>960</minutesToComplete>
+        <useCriteriaStartTime>false</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <businessHours>Default - 24/7</businessHours>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>In progress</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>Response Time</milestoneName>
+        <minutesToComplete>960</minutesToComplete>
+        <timeTriggers>
+            <actions>
+                <name>URGENT_Case_Violation_at_Risk</name>
+                <type>Task</type>
+            </actions>
+            <timeLength>-4</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <timeTriggers>
+            <actions>
+                <name>URGENT_Case_Violation_at_Risk</name>
+                <type>Task</type>
+            </actions>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <name>Standard Support</name>
+    <versionMaster>5522600000000Za</versionMaster>
+    <versionNumber>1</versionNumber>
+</EntitlementProcess>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Gong__Gong_Call__c.Gong__Primary_Account__c.Id:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_21763835</developerName>
+        <masterLabel>Meeting Opp Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Gong__Gong_Call__c$Gong__Opp_Stage_Time_Of_Call__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Prospecting</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trial</sourceValue>
+            </sourceValues>
+            <value>Open</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_97686134</developerName>
+        <masterLabel>Opp Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Gong__Gong_Call__c$Gong__Opportunity_Stage_Now__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trial</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Demo</sourceValue>
+            </sourceValues>
+            <value>Open</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <value>Closed Won</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <value>Closed Lost</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Gong__Gong_Call__c$Gong__Call_Start__c</field>
+    </columns>
+    <columns>
+        <field>Gong__Gong_Call__c$Gong__Opportunity_Stage_Now__c</field>
+    </columns>
+    <columns>
+        <field>BucketField_21763835</field>
+    </columns>
+    <columns>
+        <field>Gong__Gong_Call__c.Gong__Trackers__r$Name</field>
+    </columns>
+    <columns>
+        <field>Gong__Gong_Call__c$Name</field>
+    </columns>
+    <columns>
+        <field>Gong__Gong_Call__c$Gong__Primary_Opportunity__c.RecordType</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Gong__Gong_Call__c$Gong__Opp_Amount_Time_of_Call__c</field>
+    </columns>
+    <columns>
+        <field>Gong__Gong_Call__c$Gong__Opp_Close_Date_Time_Of_Call__c</field>
+    </columns>
+    <columns>
+        <field>Gong__Gong_Call__c$Gong__Related_Topics_json__c</field>
+    </columns>
+    <columns>
+        <field>Gong__Gong_Call__c.Gong__Trackers__r$Gong__Tracker_Phrase__c</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>CASE(Gong__Gong_Call__c.Gong__Opportunity_Stage_Now__c,
+
+
+&quot;Marketing Qualification&quot;,1,
+&quot;Discovery&quot;,2,
+&quot;Solution Alignment&quot;,3,
+&quot;Solution Validation&quot;,4,
+&quot;Formal Proposal&quot;,5,
+&quot;Negotiation&quot;,6,
+&quot;Signed Contract Received&quot;,7,
+&quot;Closed Won&quot;,8,
+&quot;Fully Paid&quot;,9,
+&quot;Closed Lost&quot;,10,
+
+0)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>Stage Rank</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Security Planning Mentions</description>
+    <filter>
+        <criteriaItems>
+            <column>Gong__Gong_Call__c.Gong__Trackers__r$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>product</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Gong__Gong_Call__c.Gong__Trackers__r$Gong__Tracker_Phrase__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>security planning</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_97686134</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Gong__Gong_Call__c$Gong__Primary_Opportunity__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Gong__Gong_Call__c$Gong__Primary_Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>GTM - Gong - CSP Tracker</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Conversations_with_Trackers_Additional_Info__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Gong__Gong_Call__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_THISMONTH</interval>
+    </timeFrameFilter>
+</Report>

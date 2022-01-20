@@ -1,0 +1,6 @@
+<messaging:emailTemplate renderUsingSystemContextWithoutSharing="True" subject="{!relatedTo.Name} {!$Label.redwing__alms_email_session} {!$Label.redwing__alms_has_been_cancelled} ({!$Label.redwing__alms_email_instructor})" recipientType="User" relatedToType="redwing__ILT_Session__c"  language="{!recipient.LanguageLocaleKey}">
+<messaging:htmlEmailBody >
+<c:ILTNotification sessionId="{!relatedTo.Id}" notificationName="LearnTrac_vILT_Host_Session_Cancelled" />
+</messaging:htmlEmailBody>
+<c:ILTNotificationIcsAttachment sessionId="{!relatedTo.id}" notificationName="LearnTrac_vILT_Host_Session_Cancelled" />
+</messaging:emailTemplate>

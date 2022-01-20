@@ -158,7 +158,7 @@
     <description>If a project is broken down into multiple sprints this object should be used.</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -167,6 +167,19 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Time_Spent_Hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Time Spent (hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__ActualVelocity__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -174,6 +187,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -187,7 +201,8 @@
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -198,7 +213,8 @@
         <externalId>false</externalId>
         <label>End Date</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -210,7 +226,8 @@
         <precision>7</precision>
         <required>false</required>
         <scale>1</scale>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -223,6 +240,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -234,6 +252,7 @@
         <externalId>false</externalId>
         <label>Sprint Goal</label>
         <length>10000</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
@@ -247,6 +266,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -262,6 +282,7 @@
         <relationshipLabel>Sprints</relationshipLabel>
         <relationshipName>Sprints</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -276,6 +297,7 @@
         <relationshipLabel>Sprints</relationshipLabel>
         <relationshipName>Sprints</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -286,7 +308,8 @@
         <externalId>false</externalId>
         <label>Start Date</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -296,7 +319,8 @@
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -333,7 +357,8 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -348,6 +373,7 @@
         <relationshipLabel>Sprints</relationshipLabel>
         <relationshipName>Sprints</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -395,57 +421,139 @@
         <precision>3</precision>
         <required>false</required>
         <scale>0</scale>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>copadoccmint__External_Id__c</fullName>
-        <caseSensitive>true</caseSensitive>
+        <fullName>copadometrics__Active__c</fullName>
         <deprecated>false</deprecated>
-        <externalId>true</externalId>
-        <label>External Id</label>
-        <length>255</length>
-        <required>false</required>
+        <externalId>false</externalId>
+        <formula>AND(
+TODAY() &gt;= copado__Start_Date__c,
+TODAY() &lt;= copado__End_Date__c
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Active</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>true</unique>
+        <type>Checkbox</type>
     </fields>
     <label>Sprint</label>
     <listViews>
-        <fullName>copado__All</fullName>
+        <fullName>APO_Team</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>copado__End_Date__c</columns>
+        <columns>copado__Story_points__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Objective__c</columns>
+        <columns>Time_Spent_Hours__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>APO</value>
+        </filters>
+        <label>APO Team</label>
+    </listViews>
+    <listViews>
+        <fullName>Academy_Sprints</fullName>
         <columns>NAME</columns>
         <columns>copado__Start_Date__c</columns>
         <columns>copado__End_Date__c</columns>
         <columns>copado__Status__c</columns>
-        <columns>copado__Working_Days_Left__c</columns>
-        <columns>copado__Release__c</columns>
-        <columns>copado__Team__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Project__c</field>
+            <operation>equals</operation>
+            <value>Copado Academy</value>
+        </filters>
+        <label>Academy Sprints</label>
+    </listViews>
+    <listViews>
+        <fullName>All2</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>copado__End_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>CVC</value>
+        </filters>
+        <label>CVC Sprints</label>
+    </listViews>
+    <listViews>
+        <fullName>All_IT_Ops_Sprints</fullName>
+        <columns>NAME</columns>
         <columns>copado__Project__c</columns>
-        <columns>OWNER.FIRST_NAME</columns>
-        <columns>copado__Objective__c</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>copado__End_Date__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Days_in_sprint__c</columns>
+        <columns>copado__Working_days_in_sprint__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Team__c</field>
+            <operation>equals</operation>
+            <value>IT Operations</value>
+        </filters>
+        <label>All IT Ops Sprints</label>
+        <sharedTo>
+            <role>Director_IT_Ops</role>
+            <roleAndSubordinatesInternal>IT_Ops_Team_Member</roleAndSubordinatesInternal>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>GCP_Rollout_Sprints</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>copado__End_Date__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copadometrics__Active__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Project__c</field>
+            <operation>equals</operation>
+            <value>GCP Rollout</value>
+        </filters>
+        <label>GCP Rollout Sprints</label>
+    </listViews>
+    <listViews>
+        <fullName>copado__All</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Project__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>copado__Start_Date__c</columns>
+        <columns>copado__End_Date__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copado__Story_points__c</columns>
+        <columns>copado__Days_in_sprint__c</columns>
+        <columns>copado__Working_days_in_sprint__c</columns>
+        <columns>copado__Full_time_resources_in_sprint__c</columns>
+        <columns>Time_Spent_Hours__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
-        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Sprint Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Sprints</pluralLabel>
     <searchLayouts>
+        <customTabListAdditionalFields>copado__Project__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>copado__Release__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Start_Date__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__End_Date__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Working_Days_Left__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Release__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Team__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Project__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>OWNER.FIRST_NAME</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Objective__c</customTabListAdditionalFields>
         <lookupDialogsAdditionalFields>copado__Project__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__Release__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__Start_Date__c</lookupDialogsAdditionalFields>

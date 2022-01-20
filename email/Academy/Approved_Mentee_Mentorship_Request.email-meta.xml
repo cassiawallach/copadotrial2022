@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>This email will be sent when a Mentorship Request of Mentee role is approved. It contains the Mentor details.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <letterhead>Mentorship_Letterhead</letterhead>
+    <name>Approved Mentee Mentorship Request</name>
+    <style>formalLetter</style>
+    <subject>Copado Mentorship: Your Request has been approved!</subject>
+    <textOnly>Hi,
+
+
+Congratulations! You have been selected to participate in the Copado Mentorship Program. We’ve paired you off with a mentor, please find below the details:
+
+
+Name: {!Mentee__c.Mentor_Name__c}
+
+
+Email: {!Mentee__c.Mentor_Email__c}
+
+
+They are looking forward to chatting with you and guiding you through the certification path, so hurry up and set-up your first meeting! Keep in mind the approximate dates of your mentorship period:
+
+
+Start Date: {!Mentee__c.Mentorship_Start_Date__c}
+
+
+End Date: {!Mentee__c.Mentorship_End_Date__c}
+
+
+To help you get started, take a look at the Copado Mentorship Playbook that outlines the expectations and responsibilities of both mentor and mentee.
+
+
+Copado Mentorship Playbook
+
+
+
+The Academy Team,
+
+
+
+
+
+The Copado Team
+© Copyright  {!YEAR(TODAY())} Copado Solutions S.L. All rights reserved.
+
+
+This e-mail was sent automatically by Copado Solutions, S.L. We process your email address, as well as the rest of the information and personal data that you provide, in order to carry out the management and archiving of the communications and their attachments for security reasons, the inclusion of the data in our contact list, and the sending of electronic professional communications. You have the right to obtain confirmation about whether Copado Solutions, S.L., is processing your personal data, so, in consequence, you have the right to access your personal data, correct inaccurate data, or request its deletion when the data is no longer necessary. You also have the right to oppose the processing of your data, request limitation to the processing, and request the portability of your data. If you consider that your personal data has not been processed in accordance with the regulations, you can contact privacy@copado.com. You can also submit a claim to the Spanish Data Protection Agency, especially when you have not obtained satisfaction in the exercise of your rights, through the electronic website at www.aepd.es. For additional information about our way to process your data check our Privacy section at https://copado.com (PrivacyPolicy.pdf)</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

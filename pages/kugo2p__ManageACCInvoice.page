@@ -1,0 +1,20 @@
+<apex:page standardController="kugo2p__KugamonInvoice__c" extensions="kugo2p.ManageACCInvoiceExt" sidebar="false" action="{!calculateTotal}" id="thePage" >
+    <apex:outputPanel rendered="false">
+        <apex:outputField value="{!kugo2p__KugamonInvoice__c.Name}" />
+        <apex:outputField value="{!kugo2p__KugamonInvoice__c.kugo2p__RecordStatus__c}" />
+        <apex:outputField value="{!kugo2p__KugamonInvoice__c.kugo2p__Account__c}" />
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!!(showPage)}" >
+        <apex:form >
+            <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+            <apex:pageMessages escape="false" />
+            <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon">
+                <br></br>
+                <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+            </apex:outputPanel>
+        </apex:form>
+    </apex:outputPanel>
+
+    <c:ManageLines type="invoiceACC" ManageACCInvoiceCon="{!ManageACCInvoiceCon}" id="pageComp" rendered="{!showPage}" />
+</apex:page>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies the Account the Billing Event should be linked to, if it is not the Account specified on the Project --></help>
+        <label><!-- Account --></label>
+        <name>amc__Account__c</name>
+        <relationshipLabel><!-- Billing Events --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Amount Outstanding --></label>
+        <name>amc__Amount_Outstanding__c</name>
+    </fields>
+    <fields>
+        <label><!-- Amount Paid --></label>
+        <name>amc__Amount_Paid__c</name>
+    </fields>
+    <fields>
+        <help><!-- Roll Up Summary of all related Billing Event Item records. Sum of ‘Amount’ field --></help>
+        <label><!-- Amount --></label>
+        <name>amc__Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- When set to TRUE, any approved billable Expenses not yet invoiced will be added to this Billing Event. Note: Only applies where Billing Cycle is Manual --></help>
+        <label><!-- Auto Add Expenses --></label>
+        <name>amc__Auto_Add_Expenses__c</name>
+    </fields>
+    <fields>
+        <help><!-- When set to TRUE, any approved billable Time Logs not yet invoiced will be added to this Billing Event. Note: Only applies where Billing Cycle is Manual --></help>
+        <label><!-- Auto Add Time Logs --></label>
+        <name>amc__Auto_Add_Time_Logs__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Contact the Billing Event should be linked to, if it is not the Contact specified on the Project --></help>
+        <label><!-- Contact --></label>
+        <name>amc__Contact__c</name>
+        <relationshipLabel><!-- Billing Events --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Content Invoice Id --></label>
+        <name>amc__Content_Invoice_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the date the Invoice / Credit is due to be settled by --></help>
+        <label><!-- Due Date --></label>
+        <name>amc__Due_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>amc__End_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Invoice Date for this Billing Event --></help>
+        <label><!-- Invoice Date --></label>
+        <name>amc__Invoice_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Generates a sequential number --></help>
+        <label><!-- Invoice Number --></label>
+        <name>amc__Invoice_Number__c</name>
+    </fields>
+    <fields>
+        <help><!-- If the Billing Event is Milestone based, this will be populated with the relevant Milestone. --></help>
+        <label><!-- Milestone --></label>
+        <name>amc__Milestone__c</name>
+        <relationshipLabel><!-- Billing Events --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Details the URL Link of the Invoice / Credit Note PDF for sharing externally --></help>
+        <label><!-- PDF URL --></label>
+        <name>amc__PDF_URL__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Project record this Billing Event relates to --></help>
+        <label><!-- Project --></label>
+        <name>amc__Project__c</name>
+        <relationshipLabel><!-- Billing Events --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>amc__Start_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the status of the Billing Event --></help>
+        <label><!-- Status --></label>
+        <name>amc__Status__c</name>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Issued</masterLabel>
+            <translation><!-- Issued --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid</masterLabel>
+            <translation><!-- Paid --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies the summary description for this billing event --></help>
+        <label><!-- Summary --></label>
+        <name>amc__Summary__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Amount Outstanding --></label>
+        <name>amc__Tax_Amount_Outstanding__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax Amount Paid --></label>
+        <name>amc__Tax_Amount_Paid__c</name>
+    </fields>
+    <fields>
+        <help><!-- Roll Up Summary of all related Billing Item records. Sum of ‘Tax Amount’ field --></help>
+        <label><!-- Tax Amount --></label>
+        <name>amc__Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Tax Label for the Tax Rate being used on the project this Billing Event relates to --></help>
+        <label><!-- Tax Label --></label>
+        <name>amc__Tax_Label__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Tax Rate for this currency (e.g. 10.00%). This figure populates automatically if left blank based on the Tax Rate specified on the Tax Rate record at the time of creating this Billing event --></help>
+        <label><!-- Tax Rate --></label>
+        <name>amc__Tax_Rate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Calculates the Total Amount of this Billing Event (Amount + Tax Amount) --></help>
+        <label><!-- Total Amount --></label>
+        <name>amc__Total_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Calculates the Total Outstanding of this Billing Event (Total Amount – Total Paid) --></help>
+        <label><!-- Total Outstanding --></label>
+        <name>amc__Total_Outstanding__c</name>
+    </fields>
+    <fields>
+        <help><!-- Roll Up Summary of all related Billing Payment records. Sum of ‘Amount’ --></help>
+        <label><!-- Total Paid --></label>
+        <name>amc__Total_Paid__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the type of Billing Event --></help>
+        <label><!-- Type --></label>
+        <name>amc__Type__c</name>
+        <picklistValues>
+            <masterLabel>Credit</masterLabel>
+            <translation><!-- Credit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Invoice</masterLabel>
+            <translation><!-- Invoice --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Indicates the attached invoice is out of date and needs updating. Click the View Invoice button to manually update. Invoices get automatically updated within 5 minutes. --></help>
+        <label><!-- Update PDF --></label>
+        <name>amc__Update_PDF__c</name>
+    </fields>
+    <layouts>
+        <layout>Billing Event Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Financial Information --></label>
+            <section>Financial Information</section>
+        </sections>
+        <sections>
+            <label><!-- PDF Details --></label>
+            <section>PDF Details</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You can only use the Auto Add field(s) if the Project Billing Type = Manual --></errorMessage>
+        <name>amc__Ensure_Billing_Cycle_is_Manual</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- View_PDF --></label>
+        <name>amc__View_PDF</name>
+    </webLinks>
+</CustomObjectTranslation>

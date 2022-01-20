@@ -1,0 +1,825 @@
+<apex:page Controller="JBCXM.OpportunityBookingTypeRules" extensions="JBCXM.GSCommonBroker" sidebar="false" title="Opportunity Booking Type Rules"  tabStyle="Administration__tab">
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/backbone-min.js"/>
+	<script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+	<apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/SurveyJquery/js/jquery-ui-1.8.18.custom.min.js"/>
+	<apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+	<apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/SurveyJquery/css/redmond/jquery-ui-1.8.18.custom.css"/>
+	<apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/core/gsAppContainer.css" />
+   <style>
+   	 .jbaraErrorMessageClass{ 
+        	margin-top:20px;
+        	margin-bottom: 20px;
+        	margin-left: auto;
+		    margin-right: auto;
+		    width: 60%;
+		    padding: 10px;
+        }
+      .warningImageClass{
+            background-image: url('/img/msg_icons/error32.png');
+	        width:32px;
+	        height:32px;
+	        display:inline-block;
+        } 
+       .validationMsgClass{
+        	font-size:20px;
+        	font-weight:bold;
+        	vertical-align: text-top;
+        }  
+        .removeSelectedFieldClass {
+			background:url("/img/func_icons/remove12_on.gif") no-repeat;
+		    background-position:center;
+		    padding:10px;
+		    text-decoration:none;
+		    cursor:pointer;		   
+		}
+		
+		body .pbBody table.list tr th, body .pbBody table.list tr td {
+			border: 0 none;
+			color: #000000;
+		}
+		
+		#rulesTbody .dataRowAddRemove td {
+			border-bottom: 1px solid #CCC;
+			padding: 1em 0.5em;
+			font-weight: bold;
+		}
+		body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock{
+           background-color: #FFF;
+           border-radius: 3px;
+           border: 0;
+           padding-bottom:7px;
+           margin: 0 20px !important;
+     }
+     .bPageBlock .detailList tr td, .bPageBlock .detailList tr th,
+     .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+         border-bottom:none;
+     }
+     .tdlabel{
+         min-width:380px;
+         max-width:380px;
+     }
+     .apexp .bPageBlock .detailList {
+         width: 100%;
+     }
+     .apexp .bPageBlock .detailList td{
+         height:10px;
+     }
+     #gs-app-container .gs-module-container{
+         background-color: #f0f3f6;
+     }
+     .ui-tabs .ui-tabs-panel{
+         padding-left:3em;
+         background-color: #f0f3f6;
+     }
+     .listViewport .subNav .linkBar {
+         background-color: #ffffff;
+         border-top: none;
+     }
+     .bPageBlock.brandSecondaryBrd{
+            border:0 !important;
+            background: #fff;
+      }
+     .pbHeader{
+          background: #f0f3f6 !important;
+          border:none !important;
+      }
+      .pbHeader table{
+          border: none !important;
+      }
+      .pbTitle{padding: 20px !important;}
+      .pbBody{
+          margin: 0 !Important;
+          padding: 20px !important;
+      }
+      .pbBody table{
+          border: none !important;
+      }
+      .pbBody table th{
+          height: 40px;
+          background-color: #fff !important;
+          border:0 !Important;
+          border-bottom: 2px solid #d3d6d9 !important;
+          font-size: 15px !important;
+          padding: 0 10px !important;
+          text-align: center;
+      }
+      .pbBody table tbody tr{
+          height: 30px;
+      }
+      .btn, .btnDisabled {
+          display: inline-block;
+          line-height: 18px;
+          cursor: pointer;
+          background: #00b4e5 !important;
+          padding: 6px 15px !important;
+          color: #fff !important;
+          font-weight: normal !important;
+          text-transform: uppercase !important;
+          border: 0 !important;
+          height: 30px !important;
+          font: 15px "Proxima Nova Rg",sans-serif !important;
+      }
+      .dummyAllAdminNewBtn.btnDisabled{
+          background-color:#d9e0e9 !important;
+          pointer-events: none;
+          opacity:0.7 !important;
+      }
+      .btn:hover{
+          opacity: 0.7;
+          border-radius: 3px;
+      }
+      .btn.btnCancelClick{
+          background-color: #fff !important;
+          border: 1px solid #d3d6d9 !important;
+          color: #374353 !important;
+       }
+      .pbBody table th.labelCol.vfLabelColTextWrap{
+          border-bottom: 0 !important;
+          font-size: 14px !important;
+          font-weight:normal !important;
+          font-family: "Proxima Nova Semibold";
+      }
+      input{
+         height: 25px !important;
+         border: 0 !important;
+         border-bottom: 1px solid #d3d6d9 !important;
+         margin-left: 5px;
+         box-shadow: none !important;
+      }
+      .pbBottomButtons table tr td:first-child{
+         display: none;
+      }
+      select {
+            height: 90px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #d3d6d9;
+            border-radius: 0;
+            outline: none;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            width: auto;
+            color: #374353;
+       }
+       th.headerRow {
+		  text-align: left !important;
+		}
+   </style>
+	<script type="text/javascript">
+		var j$ = $.noConflict();
+        window.jLatest = j$;
+        var GS = GS || {};
+
+        GS.userConfig = {
+            userLocale  : {!(dateTimeFormatByLocale)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        };
+        GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingEndPoint           = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+
+       
+        var rulesFieldsList;
+		var rulesFieldLabel;
+		var rulesFieldsItems;
+		var rulesBookingTypeMapItem;
+		var rulesBookingTypeMapItemList;
+		var jBaraBookingTypes;
+		var rulesFieldsCount;
+		var bookingType;
+		var strHTML;
+	    var fldNameToGetNameSpace;
+		var strNameSpace;
+		var JbaraCustomPickListAnyKey='jbara9999';
+		var rulesTdLength;
+		var dummyTransOTPLNameMapBySysNameJSONStr;
+		j$(document).ready(function() {
+			
+			dummyTransOTPLNameMapBySysNameJSONStr = fakeEval('{!JSINHTMLENCODE(transOTPLNameMapBySysNameJSON)}');
+			fldNameToGetNameSpace ="{!($ObjectType.OpportunityFieldMap__c.Fields.JBaraField__c.Name)}";
+	    	strNameSpace =   getJbaraNameSpace(fldNameToGetNameSpace,'JBaraField__c');     
+	     	actionLoadOppRulesSettings();
+	     	moveScroller();
+		});
+		
+		function moveScroller() {
+		  var a = function() {
+		    var b = j$(window).scrollTop();
+		    var d = j$("#tblRulesList").offset().top;
+		    var c=j$(".jbRulesHeaderTable");
+		    
+		    if (b>d) {
+		      c.css({position:"fixed",top:"0px",width:"96.4%"})
+		    } else {
+		      if (b<=d) {
+		        c.css({position:"relative",top:"",width:"100%"})
+		      }
+		    }
+		  };
+		  j$(window).scroll(a);a()
+		}
+		
+		function cancelClick(){
+	       	window.top.location.href='/apex/Administration#Administration-Opportunity';
+	    }
+	    
+	    function showOverLayForm(opr){
+			if(opr=='S'){
+				j$(".waitingHolder").show();
+			}
+			else {
+				j$(".waitingHolder").hide();
+			}
+			
+            j$(".jbaraDummyOverLayForm").css({
+                   'z-index':'700009',
+                   'left':'0px',
+                   'top':'0px',
+                   'width':'100%',
+                   'height':'100%'
+
+            }).show();
+		}
+		
+		
+	    
+	  
+    </script>
+     <apex:outputPanel id="rulesConnectorJSPanel">
+      <script type="text/javascript">
+	       function afterOppConnectorFieldRules(){
+		    	
+		    	rulesFieldsList= '{!(rulesFields)}';
+		    	
+		    	if(rulesFieldsList!=''){
+		    		j$("#rulesFormDiv").show();
+		    		j$("#noFieldsMessageDiv").hide();
+		    		jBaraBookingTypes = eval('{!(jBaraBookingTypes)}');
+		    		rulesBookingTypeMapItemUnsort= eval('{!(rulesBookingTypeMapJson)}');
+		    		rulesBookingTypeMapItemList =getSortedByBookingType();
+
+		    		addHeaderHTML();
+
+		    		if(rulesBookingTypeMapItemList.length==0){
+		    			addDefaultRuleRows();
+		    		}
+		    		addRulesHTML();
+		    	}
+		    	else{
+		    		j$("#noFieldsMessageDiv").show();
+		    		j$("#rulesFormDiv").hide();
+		    	}
+
+		    }
+
+		    function getSortedByBookingType() {
+		   	    var rulesBookingTypeMapItemSortedList = new Array();
+		   	    var isBookingTypeExistsInRulesConfig;
+		    	for(var sdx = 0; sdx < jBaraBookingTypes.length; sdx++) {
+		    		isBookingTypeExistsInRulesConfig = false;
+		    		for(var bdx = 0; bdx < rulesBookingTypeMapItemUnsort.length; bdx++) {
+		    			if(rulesBookingTypeMapItemUnsort[bdx].JBaraField__c == jBaraBookingTypes[sdx].SystemName__c) {
+		    				rulesBookingTypeMapItemSortedList.push(rulesBookingTypeMapItemUnsort[bdx]);
+		    				isBookingTypeExistsInRulesConfig = true;
+		    				break;
+		    			}
+		    		}
+		    		if(!isBookingTypeExistsInRulesConfig) {
+		    			rulesBookingTypeMapItem 				= new rulesBookingTypeMapClass();
+				    	rulesBookingTypeMapItem.JBaraField__c 	= jBaraBookingTypes[sdx].SystemName__c;
+				    	rulesBookingTypeMapItem.MapRules__c   	= new Array();
+				    	rulesBookingTypeMapItemSortedList.push(rulesBookingTypeMapItem);
+		    		}
+		    	}
+		    	return rulesBookingTypeMapItemSortedList;
+		    }
+
+		    function addHeaderHTML(){
+			    rulesFieldLabel= fakeEval('{!JSINHTMLENCODE(rulesFieldsLabel)}');
+
+			    strHTML  ='<table cellpadding="0" cellspacing="0" class="list jbRulesHeaderTable" style="z-index:10000"><thead class="rich-table-thead">';
+				strHTML +='<tr class="headerRow">';
+				strHTML +='<th class="headerRow  " scope="col" colspan="1" style="width:25%;">';
+				strHTML +='<div>Gainsight Booking Type</div>';
+				strHTML +='</th>';
+				if(rulesFieldsList.indexOf(",")>0){
+					rulesFieldsItems= rulesFieldsList.split(",");
+				}
+				else {
+					rulesFieldsItems = new Array();
+					rulesFieldsItems.push(rulesFieldsList);
+				}
+				rulesFieldsCount = rulesFieldsItems.length;
+				rulesTdLength = 75/rulesFieldsCount;
+				for(var Idx=0;Idx<rulesFieldsItems.length;Idx++){
+					strHTML +='<th class="headerRow" scope="col" style="width:'+rulesTdLength+'%">';
+					if('RecordTypeId'==rulesFieldsItems[Idx]){
+						strHTML +='<div>Record Types</div>';
+					}
+					else{
+						strHTML +='<div>'+ getFieldLabel(rulesFieldsItems[Idx]) +'</div>';
+					}
+					strHTML +='</th>';
+				}
+				strHTML +='</thead></table>';
+				j$(strHTML).insertBefore("#tblRulesList");
+
+		    }
+
+		    function getFieldLabel(fldName){
+		    	var fldLabel=fldName;
+		    	for(var Ldx=0;Ldx<rulesFieldLabel.length;Ldx++){
+		    		var ItemFld= rulesFieldLabel[Ldx];
+		    		if(ItemFld.split('^')[0]==fldName){
+		    			fldLabel = ItemFld.split('^')[1];
+		    			break;
+		    		}
+		    	}
+		    	return fldLabel;
+		    }
+
+		    function addRulesHTML(){
+		    		strHTML ='<tbody id="rulesTbody"></tbody>';
+		    		j$("#tblRulesList").append(strHTML);
+		    		var rulesPerBookingType;
+		    		bookingType='';
+		    		var mapFilterValue;
+		    		var filterFieldType;
+					for(var Mdx=0;Mdx<rulesBookingTypeMapItemList.length;Mdx++){
+						rulesPerBookingType = rulesBookingTypeMapItemList[Mdx].MapRules__c;
+
+						if(bookingType!=rulesBookingTypeMapItemList[Mdx].JBaraField__c && bookingType!=''){
+							strHTML ='<tr class="dataRowAddRemove">';
+							strHTML +='<td class="dataCell" style="width:100%" colspan="'+ parseInt(rulesFieldsCount+1) + '">';
+							strHTML +='<span class="addRemoveControl" id="frowButtons" style="display: table-row; ">';
+							strHTML +='<a href="javascript:void(0)" OnClick="addNewRuleRow(this); return false" id="fAddRuleLink" style="">Add '+ dummyTransOTPLNameMapBySysNameJSONStr[bookingType]+' Rule</a>';
+							strHTML +='</span>';
+							strHTML +='</td>';
+							strHTML +='</tr>';
+							j$("#rulesTbody").append(strHTML);
+						}
+
+						bookingType = rulesBookingTypeMapItemList[Mdx].JBaraField__c;
+						if(rulesPerBookingType.length==0){
+							mapRulesItemList  = new mapRuleClass();
+		    				mapRulesItemList.mapRule = getDefaultMapRule();
+		    				rulePerBoookingList = new Array();
+				    		rulePerBoookingList.push(mapRulesItemList);
+				    		rulesBookingTypeMapItemList[Mdx].MapRules__c = rulePerBoookingList;
+				    		rulesPerBookingType = rulesBookingTypeMapItemList[Mdx].MapRules__c;
+						}
+
+						for(var Ndx=0;Ndx<rulesPerBookingType.length;Ndx++){
+							strHTML ='<tr class="dataRow filterRow JbaraRowFilter'+Mdx+Ndx+'"></tr>';
+							j$("#rulesTbody").append(strHTML);
+							strHTML ='<td class="dataCell filterBookingType" style="width:25%">'
+							strHTML +='<span class="removeSelectedFieldClass removeSelectedFieldIcon" title="Remove">&nbsp;</span>';
+							strHTML += dummyTransOTPLNameMapBySysNameJSONStr[rulesBookingTypeMapItemList[Mdx].JBaraField__c];
+							strHTML +='<input type="hidden" class="hdnBookingType" value="'+rulesBookingTypeMapItemList[Mdx].JBaraField__c+'"/>';
+							if(rulesBookingTypeMapItemList[Mdx].Id!=null){
+								strHTML +='<input type="hidden" class="hdnBookingTypeMapId" value="'+rulesBookingTypeMapItemList[Mdx].Id+'"/>';
+							}
+							else {
+								strHTML +='<input type="hidden" class="hdnBookingTypeMapId" value=""/>';
+							}
+							strHTML +='</td>';
+							j$(".JbaraRowFilter"+ Mdx +Ndx).append(strHTML);
+							for(var Fdx=0;Fdx<rulesPerBookingType[Ndx].mapRule.length;Fdx++){
+								strHTML ='<td class="dataCell filterCell" valign="top" style="width:'+rulesTdLength+'%">'+ j$(".spanAllFilterContainer").find("span[class='"+rulesPerBookingType[Ndx].mapRule[Fdx].name+"Span']").html() + '</td>';
+								j$(strHTML).appendTo(j$(".JbaraRowFilter"+ Mdx+ Ndx));
+								filterFieldType = j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldTypeClass").val();
+
+								if(filterFieldType=='CUSTOMPICKLIST' || filterFieldType=='RECORDTYPE'){
+									if(filterFieldType=='CUSTOMPICKLIST'){
+										j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass").attr("multiple","multiple").attr("size","5");
+									}
+									j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass").find("option[value='']").remove();
+									j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass").prepend("<option value='"+JbaraCustomPickListAnyKey+"'>Any</option>");
+									j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass").bind("change",function(){
+										if(j$(this).val()!=''){
+											if(j$(this).find("option[value='"+JbaraCustomPickListAnyKey +"']:selected").length>0){
+												j$(this).find("option").removeAttr("selected");
+												j$(this).find("option[value='" + JbaraCustomPickListAnyKey +"']").attr("selected","selected");
+
+											}
+											else {
+												j$(this).find("option[value='" + JbaraCustomPickListAnyKey +"']").removeAttr("selected");
+											}
+										}
+									});
+								}
+								j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".requiredBlock").removeClass("requiredBlock");
+								j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass[type='text']").attr("maxlength","50").attr("size","30");
+								mapFilterValue =rulesPerBookingType[Ndx].mapRule[Fdx].value;
+								if(mapFilterValue!=''){
+									if(rulesPerBookingType[Ndx].mapRule[Fdx].type=='RECORDTYPE'){
+										j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass").find("option").removeAttr("selected");
+										$lookupContainer =j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass");
+										$multiValueItem =j$.trim(mapFilterValue).split('(')[1].split(')')[0];
+
+										if($multiValueItem.indexOf(',')>0){
+											$multiValueItem = $multiValueItem.split(",");
+											for(var Kdx=0;Kdx<$multiValueItem.length;Kdx++){
+												$lookupContainer.find("option[value='" + $multiValueItem[Kdx] +"']").attr("selected","selected") ;
+											}
+										}
+										else {
+											$lookupContainer.find("option[value='" + $multiValueItem +"']").attr("selected","selected") ;
+										}
+
+									}
+									else if(rulesPerBookingType[Ndx].mapRule[Fdx].type=='CUSTOMPICKLIST'){
+										$lookupContainer =j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass");
+										$multiValueItem = j$.trim(mapFilterValue).substr(1, j$.trim(mapFilterValue).length-2);  //j$.trim(mapFilterValue).split('(')[1].split(')')[0];
+										if($multiValueItem.indexOf(',')>0){
+											$multiValueItem = $multiValueItem.split(",");
+											for(var Kdx=0;Kdx<$multiValueItem.length;Kdx++){
+												$lookupContainer.find("option[value='" + $multiValueItem[Kdx].replace("\\'","'")  +"']").attr("selected","selected") ;
+											}
+										}
+										else {
+
+											$lookupContainer.find("option[value='" + $multiValueItem.replace("\\'","'")   +"']").attr("selected","selected") ;
+										}
+
+
+									}
+									else if(rulesPerBookingType[Ndx].mapRule[Fdx].type=='BOOLEAN'){
+									$chkValueItem =j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass");
+										if(j$.trim(mapFilterValue)=='true'){
+											$chkValueItem.attr("checked","checked");
+										}
+									}
+									else {
+
+										j$(".JbaraRowFilter"+ Mdx+ Ndx).find("td.filterCell:last").find(".filterFieldClass").val(mapFilterValue);
+									}
+
+								}
+							}
+
+
+						}
+
+					}
+
+					strHTML ='<tr class="dataRowAddRemove">';
+					strHTML +='<td class="dataCell" style="width:100%" colspan="'+ parseInt(rulesFieldsCount+1) + '">';
+					strHTML +='<span class="addRemoveControl" id="frowButtons" style="display: table-row; ">';
+					strHTML +='<a href="javascript:void(0)" OnClick="addNewRuleRow(this); return false;" id="fAddRuleLink" style="">Add '+ dummyTransOTPLNameMapBySysNameJSONStr[bookingType] +' Rule</a>';
+					strHTML +='</span>';
+					strHTML +='</td>';
+					strHTML +='</tr>';
+					j$("#rulesTbody").append(strHTML);
+
+					j$("#rulesTbody").find(".removeSelectedFieldIcon").live("click",function(){
+						var rowBookingType= j$(this).parent().find(".hdnBookingType").val();
+						if(j$("#rulesTbody").find(".filterRow").find(".filterBookingType").find(".hdnBookingType[value='"+rowBookingType+"']").length>1){
+							j$(this).parent().parent().remove();
+						}
+						else {
+							alert('You cannot delete this rule.There should be at least one rule per booking type');
+						}
+					});
+
+
+		    }
+
+		    function addNewRuleRow(obj){
+		    	strHTML=sanitizeHtml('<tr class="dataRow filterRow JbaraRowFilter">'+ j$(obj).parent().parent().parent().prev("tr").html() +'</tr>');
+		    	j$(strHTML).insertBefore(j$(obj).parent().parent().parent());
+		    	j$(obj).parent().parent().parent().prev("tr").find("td.filterCell").find(".filterFieldClass").each(function(){
+		    		j$(this).val('');
+		    	});
+		    	j$(obj).parent().parent().parent().prev("tr").find("td.filterCell").find(".filterFieldTypeClass").each(function(){
+		    		if(j$(this).val()=='CUSTOMPICKLIST'){
+		    			j$(this).parent().find(".filterFieldClass").bind("change",function(){
+		    				if(j$(this).val()!=''){
+								if(j$(this).find("option[value='"+JbaraCustomPickListAnyKey +"']:selected").length>0){
+									j$(this).find("option").removeAttr("selected");
+									j$(this).find("option[value='" + JbaraCustomPickListAnyKey +"']").attr("selected","selected");
+
+								}
+								else {
+									j$(this).find("option[value='" + JbaraCustomPickListAnyKey +"']").removeAttr("selected");
+								}
+							}
+		    			});
+		    		}
+		    	});
+
+		    }
+
+		  function addDefaultRuleRows(){
+
+		    	rulesBookingTypeMapItemList = new Array();
+		    	var ruleItem;
+		    	var mapRules = getDefaultMapRule();
+		    	rulesFieldsItems= rulesFieldsList.split(",");
+				if(jBaraBookingTypes.length>0){
+		    		var rulePerBoookingList;
+		    		for(var Kdx=0;Kdx<jBaraBookingTypes.length;Kdx++){
+
+		    			mapRulesItemList  = new mapRuleClass();
+		    			mapRulesItemList.mapRule = mapRules;
+
+		    			rulePerBoookingList = new Array();
+				    	rulePerBoookingList.push(mapRulesItemList);
+
+				    	rulesBookingTypeMapItem = new rulesBookingTypeMapClass();
+				    	rulesBookingTypeMapItem.JBaraField__c =jBaraBookingTypes[Kdx].SystemName__c;
+				    	rulesBookingTypeMapItem.MapRules__c = rulePerBoookingList;
+
+				    	rulesBookingTypeMapItemList.push(rulesBookingTypeMapItem);
+		    		}
+		    	}
+
+
+		  }
+
+		  function getDefaultMapRule(){
+		  		var mapRules = new Array();
+		    	rulesFieldsItems= rulesFieldsList.split(",");
+				for(var Idx=0;Idx<rulesFieldsItems.length;Idx++){
+					ruleItem = new mapRuleItemClass();
+		    		ruleItem.name = rulesFieldsItems[Idx];
+		    		mapRules.push(ruleItem);
+				}
+				return mapRules;
+		  }
+
+		 function saveSetttinsClick(){
+		 	bookingType='';
+		 	var ruleListToSave =new Array();
+		 	var ruleItemToSave;
+		 	var rulePerBoookingList;
+
+		 	j$("#rulesTbody tr.filterRow").each(function(){
+
+		 		if(bookingType!=j$(this).find("td.filterBookingType").find(".hdnBookingType").val()){
+		 			ruleItemToSave = new rulesBookingTypeMapClass();
+		 			/*if(j$(this).find("td.filterBookingType").find(".hdnBookingTypeMapId").val()!=null && j$(this).find("td.filterBookingType").find(".hdnBookingTypeMapId").val()!=''){
+		 				ruleItemToSave.Id= j$.trim(j$(this).find("td.filterBookingType").find(".hdnBookingTypeMapId").val());
+		 			}*/
+		 			ruleItemToSave.JBaraField__c= j$(this).find("td.filterBookingType").find(".hdnBookingType").val();
+		 			rulesBookingTypeMapItem = new rulesBookingTypeMapClass();
+		 			rulePerBoookingList = new Array();
+	    			mapRulesItemList  = new mapRuleClass();
+	    			mapRulesItemList.mapRule = getRulesConditionsToSave(j$(this));
+
+	    			if(isAnyRuleItemAdded(mapRulesItemList.mapRule)){
+			    		rulePerBoookingList.push(mapRulesItemList);
+			    	}
+			    	ruleItemToSave.MapRules__c =JSON.stringify(rulePerBoookingList);
+
+	       			if(!isAnyRuleAdded(rulePerBoookingList)){
+	       				ruleItemToSave.MapRules__c='[]';
+	       			}
+	       			/*if (strNameSpace != '') {
+	        			ruleItemToSave = pushJbaraNameSpace(ruleItemToSave, strNameSpace);
+	       			}
+	       			*/
+		 			ruleListToSave.push(ruleItemToSave);
+		 		}
+		 		else if(bookingType==j$(this).find("td.filterBookingType").find(".hdnBookingType").val()){
+		 			mapRulesItemList  = new mapRuleClass();
+	    			mapRulesItemList.mapRule =  getRulesConditionsToSave(j$(this));
+
+	    			if(isAnyRuleItemAdded(mapRulesItemList.mapRule)){
+			    		rulePerBoookingList.push(mapRulesItemList);
+			    	}
+
+			    	/*if (strNameSpace != '') {
+			    		ruleItemToSave.JBCXM__MapRules__c =JSON.stringify(rulePerBoookingList);
+			    	}
+			    	else {
+			    		ruleItemToSave.MapRules__c =JSON.stringify(rulePerBoookingList);
+			    	}
+			    	*/
+
+			    	ruleItemToSave.MapRules__c =JSON.stringify(rulePerBoookingList);
+		 		}
+		 		bookingType =j$(this).find("td.filterBookingType").find(".hdnBookingType").val();
+		 	});
+
+		 	if (strNameSpace != '') {
+			 	for(var Ldx=0;Ldx<ruleListToSave.length;Ldx++){
+			 		ruleItemToSave = ruleListToSave[Ldx];
+			 		ruleItemToSave =pushJbaraNameSpace(ruleItemToSave, strNameSpace);
+			 		ruleListToSave[Ldx]= ruleItemToSave;
+			 	}
+		 	}
+
+		 	j$(".hdnRulesJson").val(JSON.stringify(ruleListToSave));
+			actionSaveRules();
+
+		 }
+
+		function isAnyRuleAdded(rulesList){
+			blnRuleAdded=false;
+			for(var Idx=0;Idx<rulesList.length;Idx++){
+				for(var Kdx=0;Kdx<rulesList[Idx].mapRule.length;Kdx++){
+					if(rulesList[Idx].mapRule[Kdx].value!=''){
+						blnRuleAdded =true;
+						break;
+					}
+				}
+				if(blnRuleAdded){
+					break;
+				}
+			}
+			return blnRuleAdded;
+		}
+
+		function isAnyRuleItemAdded(ruleItems){
+			blnRuleAdded=false;
+
+			for(var Kdx=0;Kdx<ruleItems.length;Kdx++){
+
+					if(ruleItems[Kdx].value!=''){
+						blnRuleAdded =true;
+						break;
+					}
+				}
+			return blnRuleAdded;
+		}
+
+		function getRulesConditionsToSave(ruleRow){
+	       	 var toSaveRuleItems = new Array();
+	       	 var rulePerField;
+	       	 var filterItemValue='';
+	       	 j$(ruleRow).find("td.filterCell").each(function(){
+	       	 	rulePerField = new mapRuleItemClass();
+	       	 	rulePerField.name=j$(this).find(".filterFieldNameClass").val();
+	       	 	rulePerField.type=j$(this).find(".filterFieldTypeClass").val();
+	       	 	filterItemValue='';
+	       	 	if(rulePerField.type=='BOOLEAN'){
+	       	 		filterItemValue =j$(this).find(".filterFieldClass").is(":checked");
+	       	 	}
+	       	 	else if(rulePerField.type=='RECORDTYPE'){
+	       	 		if(j$(this).find(".filterFieldClass option:selected").length>0){
+			 			filterItemValue = 	"("
+						j$(this).find(".filterFieldClass option:selected").each(function(){
+							filterItemValue +=  j$(this).val() +",";
+						});
+						filterItemValue = filterItemValue.substring(0,filterItemValue.length-1) + ')';
+					}
+	       	 	}
+	       	 	else if(rulePerField.type=='CUSTOMPICKLIST'){
+	       	 		if(j$(this).find(".filterFieldClass option:selected").length>0){
+			 			filterItemValue = 	"("
+						j$(this).find(".filterFieldClass option:selected").each(function(){
+							filterItemValue += j$(this).val().replace("'","\\'") +',';
+						});
+						filterItemValue = filterItemValue.substring(0,filterItemValue.length-1) + ')';
+					}
+	       	 	}
+	       	 	else {
+
+	       	 		filterItemValue =j$.trim(j$(this).find(".filterFieldClass").val());
+	       	 	}
+	       	 	rulePerField.value = filterItemValue;
+	       	 	toSaveRuleItems.push(rulePerField);
+	       	 });
+	       	 return toSaveRuleItems;
+	     }
+
+	     function afterBookingTypeRulesSaveClick(){
+
+	     	if('{!(validFlag)}'=='true'){
+	       		window.top.location.href='/apex/Administration?sfdc.tabName={!JSENCODE($CurrentPage.parameters.tabId)}#Administration-Opportunity';
+	       	}
+	       	else {
+	       		hideOverLayForm();
+	       	}
+	     }
+
+	     function hideOverLayForm(){
+			 j$(".jbaraDummyOverLayForm").hide();
+			// j$(".waitingDescription").html('Saving...');
+		 }
+
+		 var rulesBookingTypeMapClass= function(){
+		  	this.Id =null;
+		  	this.Type__c='Booking Type';
+		  	this.OpportunityField__c =null;
+		  	this.JBaraField__c =null;
+		  	this.MapRules__c = null;
+		  }
+		 var mapRuleClass=function(){
+		 	this.mapRule = null;
+		 }
+
+		 var mapRuleItemClass= function(){
+		   this.name=null;
+		   this.type= null;
+		   this.operator='e';
+		   this.value=null;
+		  }
+	   </script>
+     </apex:outputPanel>
+	<div id="gs-app-container">
+	<div class="gs-module-container">
+ 	<apex:form >
+ 	<apex:actionFunction name="actionLoadOppRulesSettings" action="{!loadOppBookingRulesSettingsPage}"
+ 	reRender="rulesConnectorJSPanel,filterFieldsHiddenPanel" oncomplete="return afterOppConnectorFieldRules()">
+ 	</apex:actionFunction>
+ 	<apex:actionFunction name="actionSaveRules" action="{!saveBookingTypeRules}" reRender="rulesConnectorJSPanel,jbaraOppConnectorLabelErrorMessages" oncomplete="return afterBookingTypeRulesSaveClick()">
+ 		</apex:actionFunction>
+ 	 <div id="rulesFormDiv" style="display:none;">
+		 <apex:pageBlock title="Opportunity Booking Types Rules" mode="edit">
+	 		 <apex:pageMessages id="jbaraOppConnectorLabelErrorMessages" />
+	 		  <span Id="jBaraOppConnectorValidationsContainer"></span>
+
+
+			 <apex:outputPanel id="rulesConnectorform">
+				 <div id="rulesFormDiv" style="width:1260px;overflow-x:auto;">
+					<table class="list " border="0" cellpadding="0" cellspacing="0" id="tblRulesList"></table>
+				</div>
+			</apex:outputPanel>
+
+	     <apex:pageBlockButtons location="bottom" style="text-align:center;">
+		        	<input type="button" value="Save" class="btn btnSaveClick" onClick="showOverLayForm('S');saveSetttinsClick();"/>&nbsp;
+		        	<input type="button" value="Cancel" class="btn btnCancelClick" onClick="showOverLayForm('C');cancelClick();"/>&nbsp;
+		      </apex:pageBlockButtons>
+	 	 </apex:pageBlock>
+	  <apex:inputText value="{!rulesBookingTypeMapJson}" styleClass="hdnRulesJson" Style="display:none;" />
+ 	</div>
+
+ 	<div id="noFieldsMessageDiv" align="center" class="jbaraErrorMessageClass ui-widget ui-widget-content ui-corner-all" style="margin-top:20px;display:none;">
+		<span class="warningImageClass">&nbsp;</span>
+		<span class="validationMsgClass">
+			 No Opportunity Rules Fields had been configured.Please configure those fields by
+					 navigating to Opportunity Connector Settings section.
+		</span>
+	</div>
+ 	</apex:form>
+ 	<apex:form >
+	    <apex:outputPanel id="filterFieldsHiddenPanel">
+		    <apex:outputPanel rendered="{!renderHiddenFilterPanel}" styleClass="spanAllFilterContainer">
+				<apex:repeat value="{!filterFieldsList}" var="afield" >
+					<apex:repeat value="{!afield.filterFieldname}" var="fldName" >
+					 <span class="{!fldName}Span" dummyFilterFieldAttr="fldFilterSubContainer" style="display:none;">
+					  	<apex:outputPanel rendered="{!IF(fldName == 'RecordTypeId',true,false)}">
+					      				<apex:selectList size="5" styleClass="{!fldName} filterFieldClass" multiselect="true">
+								            <apex:selectOptions value="{!RecordTypesOption}"/>
+								    	</apex:selectList>
+						 </apex:outputPanel>
+						  <apex:outputPanel rendered="{!IF(afield.filterFieldtype == 'FORMULATYPE',true,false)}">
+					      	<apex:inputText value="{!oppObj[fldName]}" size="25" styleClass="{!fldName} filterFieldClass" />
+					    </apex:outputPanel>
+					     <apex:outputPanel rendered="{!IF(fldName != 'RecordTypeId' && afield.filterFieldtype != 'FORMULATYPE' && afield.filterFieldtype != 'CUSTOMPICKLIST',true,false)}"> <!-- JB-4007 -->
+					      	<apex:inputField value="{!oppObj[fldName]}" styleClass="{!fldName} filterFieldClass" />
+					    </apex:outputPanel>
+
+					    <!-- JB-4007 -->
+                        <apex:outputPanel rendered="{!IF(afield.filterFieldtype == 'CUSTOMPICKLIST',true,false)}">
+                            <apex:selectList value="{!oppObj[fldName]}" size="1" styleClass="{!fldName} filterFieldClass" multiselect="true">
+                            	<apex:selectOptions value="{!picklistValuesMap[afield.filterObjectName+'~'+fldName]}"/>
+                    		</apex:selectList>
+                        </apex:outputPanel>
+
+					  	<apex:inputText value="{!afield.filterFieldtype}" styleClass="filterFieldTypeClass"  style="display:none;"/>
+				    	<apex:inputText value="{!afield.filterFieldname}" styleClass="filterFieldNameClass"  style="display:none;"/>
+			     		<apex:inputText value="{!afield.filterFieldLabel}" styleClass="filterFieldLabelClass"  style="display:none;"/>
+					 </span>
+					</apex:repeat>
+				</apex:repeat>
+			</apex:outputPanel>
+		</apex:outputPanel>
+
+    </apex:form>
+    </div>
+	</div>
+ 	    <div class="overlayBackground jbaraDummyOverLayForm" style="position: absolute; display: none;" align="center">
+	 	    <div class="waitingHolder" style="margin-top:500px;width: 174px;height:25px; top: 525.8px;" align="center"><img src="/img/loading.gif" class="waitingImage" title="Please Wait..." />
+				                    	<span class="waitingDescription" style="color:#FFFFFF;">Saving...</span>
+	 	    </div>
+ 	    </div>
+ 	<apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>
+
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+</apex:page>

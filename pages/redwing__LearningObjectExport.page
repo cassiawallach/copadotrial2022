@@ -1,0 +1,27 @@
+<apex:page controller="redwing.LearningObjectExportCtrl" sidebar="false" showHeader="true" tabStyle="redwing__Learning__c">
+
+    <apex:sectionHeader title="{!$Label.redwing__alms_export_learning_object}" subtitle="{!learning.name}">
+        <div class="bPageTitle" style="padding:0px;">
+            <div class="ptBreadcrumb">&nbsp;&lt;&lt;&nbsp;<a href="/{!learning.Id}">{!$Label.ALMS_Learning_Object_Back}</a></div>
+        </div>
+    </apex:sectionHeader>
+
+    <script src="{!URLFOR($Resource.lmscore_uilib, '/js/jquery.min.js')}" />
+
+    <apex:form id="theForm">
+
+        <apex:actionStatus id="status">
+            <apex:facet name="start">
+                <c:LMSStatus />
+            </apex:facet>
+        </apex:actionStatus>
+
+        <apex:pageBlock >
+            <apex:pageMessages />
+            <apex:inputTextArea value="{!learningJSON}" style="height:300px;width:98%;"/>
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>

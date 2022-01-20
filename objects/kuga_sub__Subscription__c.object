@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Kugamon Subscription - Related object to Salesforce Account and Contract that captures purchased Order Service Lines.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>kuga_sub__ARR__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Calculation of the Annual Recurring Revenue generated by the related Order Service Line record.</description>
+        <externalId>false</externalId>
+        <label>Annual Recurring Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Account__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Master-Detail field linking the relationship between Account and Subscription.</description>
+        <externalId>false</externalId>
+        <label>Account Name</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Subscriptions</relationshipLabel>
+        <relationshipName>Subscriptions</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Active__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Field is Checked, if the following three conditions are met: 
+
+(1) Associated Contract Record is Effective
+(2) Associated Order Record Status is Approved or Released
+(3) Subscription Dates are Blank or Today is within Start Date and End Date</description>
+        <externalId>false</externalId>
+        <formula>AND(
+  kuga_sub__ContractNumber__r.kuga_sub__Effective__c = true,
+  OR(
+    kuga_sub__Order__r.kugo2p__RecordStatus__c == &apos;Approved&apos;,
+    kuga_sub__Order__r.kugo2p__RecordStatus__c == &apos;Released&apos;
+  ),
+  OR(
+    AND(
+      ISBLANK(kuga_sub__StartDate__c),
+      ISBLANK(kuga_sub__EndDate__c)
+    ),
+    AND(
+      kuga_sub__StartDate__c &lt;= Today(),
+      kuga_sub__EndDate__c &gt;= Today()
+    )
+  )
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__ContractNumber__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Master-Detail field linking the relationship between Contract Number and Subscription.</description>
+        <externalId>false</externalId>
+        <label>Contract Number</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Subscriptions</relationshipLabel>
+        <relationshipName>Subscriptions</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__EndDate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Date Service End field.</description>
+        <externalId>false</externalId>
+        <label>End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__IsActive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Field is Check via a Subscription Automation Scheduled Job if the following two criteria are met:
+
+(1) Associated Contract Status is Activated
+(2) Subscription Dates are Blank or Today is within Start Date and End Date</description>
+        <externalId>false</externalId>
+        <label>Is Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__MRR__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Calculation of the Monthly Recurring Revenue generated by the related Order Service Line record.</description>
+        <externalId>false</externalId>
+        <label>Monthly Recurring Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__NetAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Net Amount field (Includes Tax)</description>
+        <externalId>false</externalId>
+        <label>Net Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__OrderRecordType__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Record Type.</description>
+        <externalId>false</externalId>
+        <formula>kuga_sub__Order__r.RecordType.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Order Record Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__OrderServiceLine__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the Order Service Line.</description>
+        <externalId>false</externalId>
+        <label>Order Service Line</label>
+        <referenceTo>kugo2p__SalesOrderServiceLine__c</referenceTo>
+        <relationshipLabel>Subscriptions</relationshipLabel>
+        <relationshipName>Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the Order Number.</description>
+        <externalId>false</externalId>
+        <label>Order Number</label>
+        <referenceTo>kugo2p__SalesOrder__c</referenceTo>
+        <relationshipLabel>Subscriptions</relationshipLabel>
+        <relationshipName>Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__PurchasePrice__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Effective Price field.</description>
+        <externalId>false</externalId>
+        <label>Purchase Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Quantity__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Quantity field.</description>
+        <externalId>false</externalId>
+        <label>Quantity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Renew__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line’s Renew field.
+
+Field will be set to Unchecked if any of the conditions below exist:
+
+(1) Order Service Line Record Status is Cancelled
+(2) Contract is Cancelled
+(3) Current Renewal Opportunity is Closed Lost
+(4) Service is Not Renewable</description>
+        <externalId>false</externalId>
+        <formula>if( kuga_sub__OrderServiceLine__r.kugo2p__RecordStatus__c = &apos;Cancelled&apos; || TEXT(kuga_sub__ContractNumber__r.Status) = &apos;Cancelled&apos; || 
+TEXT(kuga_sub__ContractNumber__r.kuga_sub__RenewalOpportunity__r.StageName) = &apos;Closed Lost&apos;, False, kuga_sub__OrderServiceLine__r.kuga_sub__Renew__c)</formula>
+        <label>Renew</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__ServiceTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Service Term field.</description>
+        <externalId>false</externalId>
+        <formula>kuga_sub__OrderServiceLine__r.kugo2p__ServiceTerm__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Service__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the Service.</description>
+        <externalId>false</externalId>
+        <label>Service</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Subscriptions</relationshipLabel>
+        <relationshipName>Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__StartDate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Date Service Start field.</description>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Subscription__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Hyperlink to the related Subscription record.</description>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&apos;/&apos;+  Id ,  Name  , &quot;_self&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Subscription Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__Term__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Line Term field.</description>
+        <externalId>false</externalId>
+        <formula>kuga_sub__OrderServiceLine__r.kugo2p__LineTerm__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>References the Order Service Line Line Term field</inlineHelpText>
+        <label>Line Term</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__TotalAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Total Amount field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>References the Order Service Line Total Amount field</inlineHelpText>
+        <label>Total Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kuga_sub__UnitofTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <description>References the Order Service Line Unit of Term field.</description>
+        <externalId>false</externalId>
+        <formula>kuga_sub__OrderServiceLine__r.kugo2p__UnitofTerm__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Unit of Term</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Subscription</label>
+    <listViews>
+        <fullName>kuga_sub__All</fullName>
+        <columns>NAME</columns>
+        <columns>kuga_sub__Account__c</columns>
+        <columns>kuga_sub__ContractNumber__c</columns>
+        <columns>kuga_sub__Active__c</columns>
+        <columns>kuga_sub__StartDate__c</columns>
+        <columns>kuga_sub__EndDate__c</columns>
+        <columns>kuga_sub__Order__c</columns>
+        <columns>kuga_sub__MRR__c</columns>
+        <columns>kuga_sub__ARR__c</columns>
+        <columns>kuga_sub__NetAmount__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>kuga_sub__All_Active</fullName>
+        <columns>NAME</columns>
+        <columns>kuga_sub__Account__c</columns>
+        <columns>kuga_sub__ContractNumber__c</columns>
+        <columns>kuga_sub__Quantity__c</columns>
+        <columns>kuga_sub__MRR__c</columns>
+        <columns>kuga_sub__Order__c</columns>
+        <columns>kuga_sub__StartDate__c</columns>
+        <columns>kuga_sub__EndDate__c</columns>
+        <columns>kuga_sub__Renew__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>kuga_sub__Active__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>All Active</label>
+    </listViews>
+    <nameField>
+        <displayFormat>SUB-{00000}</displayFormat>
+        <label>Subscription</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Subscriptions</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>kuga_sub__Service__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__StartDate__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__EndDate__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__ServiceTerm__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__UnitofTerm__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__MRR__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__ARR__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__Renew__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>kuga_sub__Active__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__Service__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__StartDate__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__EndDate__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__ServiceTerm__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__UnitofTerm__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__ARR__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__MRR__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__Renew__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kuga_sub__Active__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__Service__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__StartDate__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__EndDate__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__ServiceTerm__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__UnitofTerm__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__MRR__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__ARR__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__Renew__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kuga_sub__Active__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__Service__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__EndDate__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__StartDate__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__ServiceTerm__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__UnitofTerm__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__ARR__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__MRR__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__Renew__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>kuga_sub__Active__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

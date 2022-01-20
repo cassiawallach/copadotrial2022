@@ -1,0 +1,14 @@
+<apex:page sidebar="false" showHeader="false" >
+    <apex:includeLightning />
+    <script>
+    $Lightning.use("Handwrytten:AddressInfoRecipientFieldMappingApp",function(){
+        $Lightning.createComponent("Handwrytten:AddressInfoRecipientFieldMapping",{
+        standardObject: '{!$CurrentPage.parameters.param1}',
+        customObject :'{!$CurrentPage.parameters.param2}'
+        },"showPanel",function(component){});
+    });
+    </script>
+    <div id="showPanel">
+        
+    </div>
+</apex:page>

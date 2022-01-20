@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Value will be set to 0 when expired --></help>
+        <label><!-- Expiration Date --></label>
+        <name>Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Salesforce Org --></label>
+        <name>Salesforce_Org__c</name>
+    </fields>
+    <fields>
+        <label><!-- Feature Parameter --></label>
+        <name>sfFma__FeatureParameter__c</name>
+        <relationshipLabel><!-- Feature Parameter Integers --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Full Name --></label>
+        <name>sfFma__FullName__c</name>
+    </fields>
+    <fields>
+        <label><!-- License --></label>
+        <name>sfFma__License__c</name>
+        <relationshipLabel><!-- Feature Parameter Integers --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Feature Parameter Value --></label>
+        <name>sfFma__Value__c</name>
+    </fields>
+    <layouts>
+        <layout>Feature Parameter Integer Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- License Management App user cannot update Feature Parameter Integers that are LMO to Subscriber. --></errorMessage>
+        <name>Licences_only_updated_by_Copado</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please enter a parameter Name --></errorMessage>
+        <name>Name_cannot_be_empty</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This value is set by the installed package and cannot be changed. Click undo or cancel to continue. --></errorMessage>
+        <name>sfFma__FullNameUpdatePrevention</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Subscriber To LMO feature parameter values can only be created or updated by the Feature Management app. Click undo or cancel to continue. --></errorMessage>
+        <name>sfFma__MetricValueUpdatePrevention</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Full Name must be in the format of &lt;namespace&gt;__&lt;developer name&gt; --></errorMessage>
+        <name>sfFma__XSS_Prevention_FullName</name>
+    </validationRules>
+</CustomObjectTranslation>

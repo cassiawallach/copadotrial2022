@@ -1,0 +1,53 @@
+<apex:page docType="html-5.0" id="MilestoneTypes" sidebar="false" title="Milestone types configuration | Gainsight" controller="JBCXM.AdminBroker" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker" tabStyle="Administration__tab">
+
+    <script>
+        var GS                         = GS || {};
+        GS.remotingConfigEndPoint      = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingCommonBulkEndPoint  ='{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        GS.remotingEndPoint            = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.commonRemotingEndPoint      = GS.remotingConfigEndPoint;
+        GS.remoting                    = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.NSSessionId                 = "{!(NSSessionId)}";
+        GS.orgId                       = "{!$Organization.Id}";
+        GS.isRelationshipEnabled       = "{!isRelationshipEnabled}";
+    </script>
+
+    <apex:outputPanel style="display:none;">
+        <apex:form >
+            <input type="date"/>
+        </apex:form>
+    </apex:outputPanel>
+
+    <div id="gs-app-container">
+        <div class="gs-milestones-main-container"></div>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["milestones_admin/scripts/milestones_admin.bundle.js"], styles:["milestones_admin/styles/milestones_admin.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:8080/UI')}/milestones_admin/styles/milestones_admin.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "https://localhost:8080/UI")}/milestones_admin/scripts/milestones_admin.bundle.js"></script>
+    </apex:outputpanel>
+
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('MilestoneTypes');
+    </script>
+    <apex:Form ></apex:Form>
+</apex:page>

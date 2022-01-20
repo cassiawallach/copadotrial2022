@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies the Engagement Type value from the Product this Opportunity Product relates to. This field is populated via a Workflow Rule --></help>
+        <label><!-- Engagement Type --></label>
+        <name>Engagement_Type__c</name>
+    </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Full Months --></label>
+        <name>Full_Months__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number of Schedules --></label>
+        <name>Number_of_Schedules__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product Family --></label>
+        <name>Product_Family__c</name>
+    </fields>
+    <fields>
+        <help>Id. del producto de oportunidad que provino del paquete de este producto.</help>
+        <label><!-- Parent ID --></label>
+        <name>SBQQ__ParentID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quote Line --></label>
+        <name>SBQQ__QuoteLine__c</name>
+        <relationshipLabel><!-- Opportunity Product --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Indica el tipo de suscripción para determinar el precio del contrato.</help>
+        <label><!-- Subscription Type --></label>
+        <name>SBQQ__SubscriptionType__c</name>
+    </fields>
+    <fields>
+        <help><!-- this is internally used on the triggers to properly calculate the scheduled revenue --></help>
+        <label><!-- Unit Price for reference --></label>
+        <name>Unit_Price_for_reference__c</name>
+    </fields>
+    <fields>
+        <label><!-- Addon Event --></label>
+        <name>chargebeeapps__Addon_Event__c</name>
+        <picklistValues>
+            <masterLabel>Immediately</masterLabel>
+            <translation><!-- Immediately --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>On plan activation</masterLabel>
+            <translation><!-- On plan activation --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>On subscription activation</masterLabel>
+            <translation><!-- On subscription activation --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>On subscription creation</masterLabel>
+            <translation><!-- On subscription creation --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>On subscription trial start</masterLabel>
+            <translation><!-- On subscription trial start --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Apply Charges --></label>
+        <name>chargebeeapps__Apply_Charges__c</name>
+        <picklistValues>
+            <masterLabel>Everytime this event occurs</masterLabel>
+            <translation><!-- Everytime this event occurs --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Once</masterLabel>
+            <translation><!-- Once --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Billing Cycles --></label>
+        <name>chargebeeapps__Billing_Cycles__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Period (days) --></label>
+        <name>chargebeeapps__Service_Period__c</name>
+    </fields>
+    <fields>
+        <label><!-- Annual Recurring Revenue --></label>
+        <name>kuga_sub__ARR__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date Service End --></label>
+        <name>kuga_sub__DateServiceEnd__c</name>
+    </fields>
+    <fields>
+        <help><!-- Effective Price is the Sales Price with Discounts Applied --></help>
+        <label><!-- Effective Price --></label>
+        <name>kuga_sub__DiscountSalesPrice__c</name>
+    </fields>
+    <fields>
+        <help><!-- Effective Discount is based on Net Amount from List Amount --></help>
+        <label><!-- Effective Discount --></label>
+        <name>kuga_sub__EffectiveDiscount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Line Term --></label>
+        <name>kuga_sub__LineTerm__c</name>
+    </fields>
+    <fields>
+        <help><!-- Quantity multiplied by List Price and Service Term, if Service Term Behavior is Included or Blank --></help>
+        <label><!-- List Amount --></label>
+        <name>kuga_sub__ListAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Monthly Recurring Revenue --></label>
+        <name>kuga_sub__MRR__c</name>
+    </fields>
+    <fields>
+        <help><!-- Net Amount is Total Amount with Discount applied. --></help>
+        <label><!-- Net Amount --></label>
+        <name>kuga_sub__NetAmount__c</name>
+    </fields>
+    <fields>
+        <help><!-- The initial Sales Price before applying the Opportunity Renewal Uplift Percent. --></help>
+        <label><!-- Non-Uplift Sales Price --></label>
+        <name>kuga_sub__NonUpliftSalesPrice__c</name>
+    </fields>
+    <fields>
+        <label><!-- Renew --></label>
+        <name>kuga_sub__Renew__c</name>
+    </fields>
+    <fields>
+        <help><!-- Included or if blank, will factor Term in Service Amount Calculation and Invoice Schedule. Price depends on Term
+
+Excluded will not factor Term in Service Amount Calculation and Invoice Schedule (Service behaves as a Product). Price independent of Term --></help>
+        <label><!-- Service Term Behavior --></label>
+        <name>kuga_sub__ServiceTermBehavior__c</name>
+    </fields>
+    <fields>
+        <help><!-- Applies to Services only. Duration for Unit of Term.. --></help>
+        <label><!-- Service Term --></label>
+        <name>kuga_sub__ServiceTerm__c</name>
+    </fields>
+    <fields>
+        <help><!-- Designates if the Opportunity Product is a Service. --></help>
+        <label><!-- Service --></label>
+        <name>kuga_sub__Service__c</name>
+    </fields>
+    <fields>
+        <help><!-- For Products, the Total Amount = Quantity x Unit Price.
+
+For Services, the Total Amount = Quantity x Unit Price x Service Term. --></help>
+        <label><!-- Total Amount --></label>
+        <name>kuga_sub__TotalAmount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Applies to Services only. Period for Service Term..
+
+Note: Galactic Year is not a valid Value. --></help>
+        <label><!-- Unit of Term --></label>
+        <name>kuga_sub__UnitofTerm__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fortnight</masterLabel>
+            <translation><!-- Fortnight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Galactic Year</masterLabel>
+            <translation><!-- Galactic Year --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour</masterLabel>
+            <translation><!-- Hour --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Minute</masterLabel>
+            <translation><!-- Minute --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quarter</masterLabel>
+            <translation><!-- Quarter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Second</masterLabel>
+            <translation><!-- Second --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Designates if the Opportunity Product is subject for a Price Increase. 
+
+References the Uplift Renewal Price on the Additional Product Info record.. --></help>
+        <label><!-- Uplift Renewal Price --></label>
+        <name>kuga_sub__UpliftRenewalPrice__c</name>
+    </fields>
+    <fields>
+        <help><!-- Lookup field to the Additional Charge/Credit record referenced in this Opportunity Product --></help>
+        <label><!-- Additional Charge/Credit --></label>
+        <name>kugo2p__AdditionalChargeCredit__c</name>
+        <relationshipLabel><!-- Opportunity Product --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Lookup field to the Configuration Option record referenced in this Opportunity Product --></help>
+        <label><!-- Configuration Option --></label>
+        <name>kugo2p__ConfigurationOption__c</name>
+        <relationshipLabel><!-- Opportunity Product --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Opportunity Product ID of related Parent Line --></help>
+        <label><!-- Parent Line ID --></label>
+        <name>kugo2p__ParentLineID__c</name>
+    </fields>
+    <layouts>
+        <layout>Opportunity Product (Kugamon) Layout</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- Revenue Information --></label>
+            <section>Revenue Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Opportunity Product Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
+    <webLinks>
+        <label><!-- Update_Schedule_Divide_Monthly --></label>
+        <name>Update_Schedule_Divide_Monthly</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Update_Schedule_Repeat_Monthly --></label>
+        <name>Update_Schedule_Repeat_Monthly</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Manage_CB_Products --></label>
+        <name>chargebeeapps__Manage_CB_Products</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- RefreshProducts --></label>
+        <name>kuga_sub__RefreshProducts</name>
+    </webLinks>
+</CustomObjectTranslation>

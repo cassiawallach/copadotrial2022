@@ -1,0 +1,39 @@
+<apex:page id="clonePageId" standardController="kugo2p__SalesOrder__c" extensions="kugo2p.CloneSalesOrderController">  <!-- action="{!cloneSalesOrder}" -->
+
+<apex:outputPanel id="opId">
+    <apex:pagemessages escape="false"/>
+    
+    <apex:form id="cloneFormId">
+        <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+        <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!showCancel}" >         
+            <br></br>
+            <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" />
+        </apex:outputPanel>
+
+        <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" >
+            <apex:actionStatus id="busyStatus" >
+                <apex:facet name="start">
+                    <div class="kugamon">
+                        <div class="slds-spinner_container">
+                            <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                                <span class="slds-assistive-text">Processing...</span>
+                                <div class="slds-spinner__dot-a"></div>
+                                <div class="slds-spinner__dot-b"></div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:outputPanel>
+
+        <apex:commandButton id="cloneBtn" value="Clone" action="{!cloneSalesOrder}" style="display: none;" status="busyStatus" rerender="opId" />
+    </apex:form>
+
+    <script>
+        window.onload=function()
+        {
+            document.getElementById("{!$Component.clonePageId:cloneFormId:cloneBtn}").click();
+        };
+    </script>
+</apex:outputPanel>
+</apex:page>

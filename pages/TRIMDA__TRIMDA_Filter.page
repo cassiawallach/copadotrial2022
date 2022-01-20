@@ -1,0 +1,377 @@
+<apex:page doctype="HTML-5.0"  tabStyle="TRIMDA__TRIMDA_MatchingResult__c"  Controller="TRIMDA.TRIMDA_Filter">
+<apex:includeScript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+
+<head>
+      <meta http-equiv="x-ua-compatible" content="ie=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>DataTrim Filter Module</title>
+</head>
+ <apex:slds />    
+<body>    
+  <script>
+    function NewFilter() {
+    	$("#defaultHeader").hide();
+        $("#NewHeader").show();
+	};
+	</script>  
+    
+     <script>
+        function togglefilter() {
+            var x = document.getElementById('filter');
+             if (x.style.display == 'none') {
+                x.style.display = 'block';
+             } else {
+                x.style.display = 'none';
+             }
+        }
+    </script>
+    
+    <script>
+        function positionModal(e) {
+            var x = document.getElementById('EditFilter');
+            x.style.position = 'relative';
+            x.style
+        }
+    </script>
+
+    
+<div  id="filterleft">
+
+<apex:outputPanel id="filter"> 
+<apex:form >
+<apex:actionFunction action="{!removeFilter}" name="removeMe" rerender="mytestList, myList, FilterLogic, FilterSoql">
+     <apex:param name="aindex" assignTo="{!curindex}" value="" />
+</apex:actionFunction> 
+<apex:actionFunction action="{!editFilter}" onComplete="showModal();" name="EditFilter" rerender="EditFilter, mytestList, myList, FilterLogic, FilterSoql">
+     <apex:param name="aindex" assignTo="{!curindex}" value="" />
+</apex:actionFunction>    
+   
+<div class="slds-grid" style="height:800px;max-width:420px;overflow:hidden;"> 
+  <div class="slds-panel slds-grid slds-grid_vertical slds-nowrap slds-panel_filters">
+    <div class="slds-form slds-form_stacked slds-grow slds-scrollable_y slds-grid slds-grid_vertical">
+      <div class="slds-filters">
+        	<div id="defaultHeader" class="slds-filters__header slds-grid slds-has-divider_bottom-space" >
+            
+                <h2 class="slds-align-middle slds-text-heading_small">
+                    <svg class="slds-button__icon" aria-hidden="true">
+                  		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.salesforcelightningdesignsystem, '/assets/icons/utility-sprite/svg/symbols.svg#filterList')}"></use>
+                	</svg>
+                    &nbsp;
+                    Filter
+                </h2>
+                
+              <a onclick="togglefilter()" href="" class="slds-button slds-button_icon slds-col_bump-left slds-button_icon slds-button_icon-small" title="Close Filter Panel" autofocus="True" >
+                <svg class="slds-button__icon" aria-hidden="true">
+                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.salesforcelightningdesignsystem, '/assets/icons/utility-sprite/svg/symbols.svg#forward')}"></use>
+                </svg>
+                <span class="slds-assistive-text">Close Filter Panel</span>
+              </a>
+             </div>
+
+        <apex:outputPanel id="myList"> 
+
+            <div class="slds-filters__body">
+              
+              <ol class="slds-list_vertical slds-list_vertical-space">
+                <li class="slds-item slds-hint-parent">
+                  <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+                    <button href="#" class="slds-button_reset slds-grow slds-has-blur-focus">
+                      <span class="slds-assistive-text">Edit filter:</span>
+                        <span class="slds-text-body_small">Show Me</span><br />
+                      <span>{!IF(InitialfilterElems_label=='','All from Selection',InitialfilterElems_label)} </span>
+                    </button>
+                  </div>
+                </li>
+              </ol>
+                
+              <apex:outputPanel rendered="{!noFilters > 0}" >    
+              	<h3 class="slds-text-body_small slds-m-vertical_x-small">Matching all these filters</h3>
+              </apex:outputPanel>
+                
+              <apex:outputPanel id="hasError" rendered="{!sError != ''}">  
+                  <div class="slds-form-element slds-has-error">
+                       <div id="error-message" class="slds-form-element__help">{!sError}</div>
+                    </div>
+                </apex:outputPanel>
+                
+                <apex:repeat value="{!filterElems}" var="fe" >
+                  <ol class="slds-list_vertical slds-list_vertical-space">
+                    <li class="slds-item slds-hint-parent">
+                      <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+                          <a onclick="EditFilter({!fe.index});"   id='editFilter' class="slds-button_reset slds-grow slds-has-blur-focus" Title="Edit filter"> <!-- pop up Edit filter -->
+                              <span class="slds-text-body_small">{!fe.fieldLabel}</span><br />
+                              <span>{!fe.operator} {!fe.value}</span>
+                            </a>
+                        <a onclick="removeMe({!fe.index});" html-href="" class="slds-button slds-button_icon slds-button_icon slds-button_icon-small" title="Remove {!fe.operator} {!fe.value}">
+                          <svg class="slds-button__icon slds-button__icon_hint" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.salesforcelightningdesignsystem, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                          </svg>
+                          <span class="slds-assistive-text">Remove filter: {!fe.fieldLabel} {!fe.operator} {!fe.value}</span>
+                        </a>
+                      </div>
+                    </li>
+                   </ol>
+                </apex:repeat>
+                
+            </div>
+            
+            <div class="slds-filters__footer slds-grid slds-shrink-none">
+                <apex:commandlink id="AddFilter" action="{!addFilter}" onComplete="javascript:showModal();" html-href="" title="Add Filter" value="Add Filter" styleclass="slds-button_reset slds-text-link" rerender="EditFilter, mytestList, filter, FilterLogic, FilterSoql" /> 
+                <apex:commandlink action="{!reset}" html-href="" title="Remove All" value="Remove All" onComplete="Filterchanged()" styleclass="slds-button_reset slds-text-link slds-col_bump-left" rendered="{!noFilters > 0}" rerender="mytestList, filter, FilterLogic, FilterSoql" />  
+            </div>
+            
+        </apex:outputPanel>
+          
+          <apex:actionFunction action="{!custom_filter_logic}"  name="setascustom" />
+        
+        <apex:outputPanel id="logic" rendered="{!or(noFilters > 0,InitialfilterElems_query != '')}">
+            <!-- spacer  -->
+        <div style="height:1rem;"></div>
+            
+        <div class="slds-filters__footer slds-grid slds-shrink-none"  style="padding-bottom:0;"> 
+            <a id="FilterLogicBtn" onclick="toggleLogic()" class="slds-button_reset slds-text-link">Show Logic</a>
+            <apex:commandlink action="{!reset_filter_logic}" onComplete="Filterchanged()" title="Reset"  value="Reset" rendered="{! isfilterlogiccustom == True}" styleclass="slds-button_reset slds-text-link slds-col_bump-left" />
+        </div>
+        <div class="slds-filters__body" style="padding-top:0;padding-bottom:0;">
+            <apex:outputPanel id="hasFilterError" rendered="{!sLogicError != ''}" style="padding-top:0;padding-bottom:0;">  
+                  <div class="slds-form-element slds-has-error">
+                       <div id="error-message" class="slds-form-element__help" style="padding-top:0;padding-bottom:0;">{!sLogicError}</div>
+                    </div>
+                </apex:outputPanel>
+            <div style="display:block;" id="theFilterLogic" >
+                  <apex:inputText value="{!filterlogic}" onchange="setascustom();Filterchanged();" style="{! IF(isfilterlogiccustom == False, 'background-color:#d8dde6','')}"  styleclass="slds-input {! IF(isfilterlogiccustom == False,'slds-is-locked','')}  {! IF(sLogicError != '','slds-has-error','')}" id="FilterLogic" />
+            </div> 
+        </div>
+          
+        <!-- spacer  -->
+        <div style="height:1rem;"></div>
+            
+        <div class="slds-filters__footer" >
+            <a id="FilterSoqlBtn" onclick="toggleSoql()" class="slds-button_reset slds-text-link">Show SOQL</a>
+            <div style="display:none;" id="theSoql">
+                 <apex:inputTextarea value="{!mySoql}" onchange="Filterchanged()" onblur="Filterchanged()" styleclass="slds-input slds-textarea" id="FilterSoql" style="height:4rem;line-height:1.15rem;" rows="5" />
+            </div>   
+        </div>  
+
+     	</apex:outputPanel>
+        
+        <!--CHECK FILTER -->  
+        <div id="apply" class="slds-filters__footer slds-grid slds-shrink-none">
+                <apex:commandlink action="{!apply}" oncomplete="Filterchanged()" html-href="" title="Check and Apply SOQL Filter" rendered="{!noFilters > 0}" value="Check and Apply SOQL Filter" styleclass="slds-button {!if(FilterError=false,'slds-button_success','slds-button_destructive')}"  style="{!if(FilterError=false,'background-color: #74bf36;','')}"  rerender="mytestList, filter, FilterLogic, FilterSoql" status="statusPanel"/>  
+        </div>
+        <apex:actionStatus id="statusPanel">
+            <apex:facet name="start">
+                 <div class="" >    
+                 <div class="slds-spinner_container">
+                  <div class="slds-spinner slds-spinner_medium" aria-hidden="false" role="status">
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                  </div>
+    
+                </div>
+                </div>
+	        </apex:facet>
+        </apex:actionStatus>
+      </div>
+    </div>
+  </div>
+</div>
+</apex:form>
+</apex:outputPanel>
+     
+<!-- THE MODAL --> 
+    <div id="EditFilterModal" style="height:640px;display:none;">
+    <apex:outputPanel id="EditFilter"> 
+    <apex:form >
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container" style="width:300px;">
+          <header class="slds-modal__header">
+            <button class="close slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+              <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.salesforcelightningdesignsystem, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+              </svg>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{! IF(curfilterElem.index = -1,'New','Edit')} Filter</h2>
+          </header>
+          
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="text-input-id-1"><abbr class="slds-required" title="required">*</abbr>Field</label>
+              <div class="slds-form-element__control">
+                  <apex:selectList id="text-input-id-1" value="{!curfilterElem.FieldId}" size="1" styleclass="slds-input" >
+                      <apex:actionSupport event="onchange" rerender="text-input-id-2, text-input-id-3"/>
+                      <apex:selectOptions value="{!FieldList}"/>
+                  </apex:selectList>
+              </div>
+            </div>
+              
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="text-input-id-2"><abbr class="slds-required" title="required">*</abbr>Operator</label>
+              <div class="slds-form-element__control">
+                  <apex:outputPanel id="text-input-id-2">
+                        <apex:selectList id="text-input-id-2a" rendered="{!OR(aFieldsType = 'BOOLEAN',aFieldsType = 'ID')}" value="{!curfilterElem.operator}" size="1" styleclass="slds-input">
+                              <apex:selectOptions value="{!BooleanOperators}"/>
+                        </apex:selectList>
+                        <apex:selectList id="text-input-id-2b" rendered="{!AND(aFieldsType != 'ID',aFieldsType != 'BOOLEAN',aFieldsType != 'PERCENT',aFieldsType != 'CURRENCY',aFieldsType != 'DOUBLE',aFieldsType != 'INTEGER', aFieldsType != 'PICKLIST',aFieldsType != 'MULTIPICKLIST')}" value="{!curfilterElem.operator}" size="1" styleclass="slds-input">
+                              <apex:selectOptions value="{!StringOperators}"/>
+                        </apex:selectList>
+                      	<apex:selectList id="text-input-id-2s" rendered="{!OR(aFieldsType = 'PICKLIST',aFieldsType = 'MULTIPICKLIST')}" value="{!curfilterElem.operator}" size="1" styleclass="slds-input">
+                              <apex:selectOptions value="{!PicklistOperators}"/>
+                        </apex:selectList>
+                        <apex:selectList id="text-input-id-2d" rendered="{!OR(aFieldsType = 'PERCENT',aFieldsType = 'CURRENCY',aFieldsType = 'DOUBLE',aFieldsType = 'INTEGER')}" value="{!curfilterElem.operator}" size="1" styleclass="slds-input">
+                              <apex:selectOptions value="{!Operators}"/>
+                      	</apex:selectList>
+                  </apex:outputPanel>
+              </div>
+            </div>
+              
+			<script>
+              	function updateCurElemvalue(ish){
+                    document.getElementById("{!$Component.curfilterElem}").value = ish;
+                }
+              	function updateCurElemvalue_boolean(ish){
+                    //alert('ish=' + ish);
+                    if (ish == true){
+                    	document.getElementById("{!$Component.curfilterElem}").value = 'TRUE';
+                        document.getElementById("CurElemvalue_boolean").Checked = true;
+                    }else{
+                    	document.getElementById("{!$Component.curfilterElem}").value = 'FALSE';
+                        document.getElementById("CurElemvalue_boolean").Checked = false;
+                    }
+                }
+              </script>
+              
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="text-input-id-3">Value</label>
+              <div class="slds-form-element__control">
+                  <apex:outputPanel id="text-input-id-3"> <!--({!aFieldsType}-{!curfilterElem.value})-->
+                      <!--
+                      <apex:input type="email" value="{!curfilterElem.value}" rendered="{!aFieldsType = 'EMAIL'}"  styleclass="slds-input" html-placeholder="{!aFieldsType}" /> 
+                      <apex:input type="auto" value="{!curfilterElem.value}" rendered="{!aFieldsType = 'URL'}"  styleclass="slds-input" html-placeholder="{!aFieldsType}" />
+                      <apex:input type="auto" value="{!curfilterElem.value}" rendered="{!aFieldsType = 'BOOLEAN'}"  styleclass="slds-input" html-placeholder="{!aFieldsType}" />
+                      <apex:input type="number" value="{!curfilterElem.value}" rendered="{!OR(aFieldsType = 'PERCENT',aFieldsType = 'CURRENCY',aFieldsType = 'DOUBLE',aFieldsType = 'INTEGER')}"   styleclass="slds-input" html-placeholder="{!aFieldsType}" />
+                      <apex:input type="phone" value="{!curfilterElem.value}" rendered="{!aFieldsType = 'PHONE'}" styleclass="slds-input" html-placeholder="{!aFieldsType}" />
+                      
+                      <apex:input type="text" value="{!curfilterElem.value}" rendered="{!AND(aFieldsType != 'EMAIL', aFieldsType != 'URL',aFieldsType != 'BOOLEAN',aFieldsType != 'PERCENT',aFieldsType != 'CURRENCY',aFieldsType != 'DOUBLE',aFieldsType != 'INTEGER', aFieldsType = 'PHONE', aFieldsType != 'TIME', aFieldsType != 'DATETIME')}" styleclass="slds-input" html-placeholder="{!aFieldsType}" />
+					   -->
+                      <!--<apex:input type="date" styleclass="slds-input" rendered="{!OR(aFieldsType = 'TIME',aFieldsType = 'DATE',aFieldsType = 'DATETIME')}" onchange="updateCurElemvalue(this.value)" />-->
+                      <input type="date" value="{!curfilterElem.value}" onchange="updateCurElemvalue(this.value)" style="{!IF(OR(aFieldsType = 'TIME',aFieldsType = 'DATE',aFieldsType = 'DATETIME'),'display:block;','display:none;')}"  class="slds-input" />
+                      <!--<input id="CurElemvalue_boolean" type="checkbox" checked="{!IF(curfilterElem.value=null,false,curfilterElem.value)}" onchange="updateCurElemvalue_boolean(this.checked)" style="{!IF(aFieldsType = 'BOOLEAN','display:block;','display:none;')}"  class="slds-input" />-->
+                      <!--<apex:input id="curfilterElem_text" onchange="updateCurElemvalue(this.value)" value="{!curfilterElem.value}" styleclass="slds-input" rendered="{!OR(aFieldsType='',AND(aFieldsType != 'TIME',aFieldsType != 'DATE',aFieldsType != 'DATETIME'))}" title="Data Type: {!aFieldsType}" html-placeholder="{!aFieldsTypeText}" />-->
+                      <input id="curfilterElem_text" value="{!curfilterElem.value}" onchange="updateCurElemvalue(this.value)"  class="slds-input" style="{! IF(OR(aFieldsType='',AND(aFieldsType != 'TIME',aFieldsType != 'DATE',aFieldsType != 'DATETIME')),'display:block;','display:none;')}" title="Data Type: {!aFieldsType}" placeholder="{!aFieldsTypeText}" />
+                      <apex:inputHidden id="curfilterElem" value="{!curfilterElem.value}" />
+                  </apex:outputPanel>
+               </div>
+            </div>  
+          </div>
+           
+          <footer class="slds-modal__footer slds-modal__footer_directional">
+            <button class="close slds-button slds-button_neutral">Cancel</button>  <!-- Do nothing -->
+            <apex:commandlink id="saveFilter" action="{!saveNewFilter}" oncomplete="hideModal();Filterchanged();" rendered="{!curfilterElem.index = -1}" html-href="" title="Save" value="Save" styleclass="close slds-button slds-button_brand" rerender="mytestList, filter, FilterLogic, FilterSoql" />
+            <apex:commandlink id="updateFilter" action="{!updateFilter}" oncomplete="hideModal();Filterchanged();" rendered="{!curfilterElem.index != -1}" html-href="" title="Update" value="Update" styleclass="close slds-button slds-button_brand" rerender="mytestList, filter, FilterLogic, FilterSoql" />
+            <!--<button class="close slds-button slds-button_brand">Save</button>->		<!-- Save Element -->
+          </footer>
+        </div>
+      </section>
+      </apex:form>       
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </apex:outputPanel> 
+    </div>
+    
+        
+    <script>
+       function showModal(){
+           //first call the controller
+           //AddFilter();
+           // Get the modal
+           var modal = document.getElementById('EditFilterModal');
+           modal.style.display = "block";
+       } 
+       function hideModal(){
+           //first call the controller
+           //AddFilter();
+           // Get the modal
+           var modal = document.getElementById('EditFilterModal');
+           modal.style.display = "none";
+       } 
+        
+    // Get the modal
+    var modal = document.getElementById('EditFilterModal');
+    
+    // Get the button that opens the modal
+    //var btn = document.getElementById("{!$Component.myBtn}");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var span1 = document.getElementsByClassName("close")[1];
+    var span2 = document.getElementById('{!$Component.saveFilter}');
+    var span3 = document.getElementById('{!$Component.updateFilter}');
+    
+    // When the user clicks the button, open the modal 
+    //btn.onclick = function() {
+    //    modal.style.display = "block";
+    //}
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    span1.onclick = function() {
+        modal.style.display = "none";
+    }
+    span2.onclick = function() {
+        modal.style.display = "none";
+    }
+    span3.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>  
+     
+</div>   
+
+<!--</div>-->
+       
+<!--</div>-->
+
+
+
+
+    
+
+    
+    <script>
+        function toggleLogic() {
+            var x = document.getElementById('theFilterLogic');
+            var y = document.getElementById('FilterLogicBtn');
+            if (x.style.display === 'none') {
+                x.style.display = 'block';
+                y.innerHTML = 'Hide Logic';
+            } else {
+                x.style.display = 'none';
+                y.innerHTML = 'Show Logic';
+            }
+        }
+    function toggleSoql() {
+            var x = document.getElementById('theSoql');
+            var y = document.getElementById('FilterSoqlBtn');
+            if (x.style.display === 'none') {
+                x.style.display = 'block';
+                y.innerHTML = 'Hide Soql';
+            } else {
+                x.style.display = 'none';
+                y.innerHTML = 'Show Soql';
+            }
+        }
+        </script>
+</body>
+</html>
+</apex:page>

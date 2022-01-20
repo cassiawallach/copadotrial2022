@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>textJson</name>
+            <value>
+                <stringValue>{&quot;mentions&quot;:[{&quot;name&quot;:&quot;Account Health Chatter Member&quot;,&quot;id&quot;:&quot;0F95p00000158WYCAY&quot;}],&quot;message&quot;:&quot;Account: {![Account].Name}\nAccount Owner: {![Account].Owner.FirstName} {![Account].Owner.LastName}\nContract Expiration Date: {![Account].Contract_Expiration_Date__c}\nAccount Health: {![Account].Account_Health__c}\nAccount Health Summary: {![Account].Account_Health_Code_Summary__c}\n \n @[0F95p00000158WYCAY]     @[{![Account].OwnerId}]&quot;}</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Post to Chatter</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>Account: {!myVariable_current.Name}
+Account Owner: {!myVariable_current.Owner.FirstName} {!myVariable_current.Owner.LastName}
+Contract Expiration Date: {!myVariable_current.Contract_Expiration_Date__c}
+Account Health: {!myVariable_current.Account_Health__c}
+Account Health Summary: {!myVariable_current.Account_Health_Code_Summary__c}
+ 
+ @[0F95p00000158WYCAY]     @[{!myVariable_current.OwnerId}]</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>type</name>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Account Health Red</label>
+        </rules>
+    </decisions>
+    <description>Chatter post to management when an account health turns red</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+  PRIORVALUE([Account].Account_Health__c) &lt;&gt; &quot;Red&quot;,
+  [Account].Account_Health__c = &quot;Red&quot;
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+  PRIORVALUE({!myVariable_current.Account_Health__c}) &lt;&gt; &quot;Red&quot;,
+  {!myVariable_current.Account_Health__c} = &quot;Red&quot;
+)</expression>
+    </formulas>
+    <interviewLabel>Account_Health_Red_Chatter_Post-13_InterviewLabel</interviewLabel>
+    <label>Account Health Red Chatter Post</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Account</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+</Flow>

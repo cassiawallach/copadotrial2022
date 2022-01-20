@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_53714336</developerName>
+        <masterLabel>Revenue Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Invoice__c.Invoice_Line_Items__r$Name</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Enterprise</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Change Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Branch Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Selenium User</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Selenium Minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Compliance Hub</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Premier Support</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Agile Delivery</sourceValue>
+            </sourceValues>
+            <value>Recurring Revenue</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Services</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Academy</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Services Package: 25 hours</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Professional Services</sourceValue>
+            </sourceValues>
+            <value>Non Recurring Revenue</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>Invoice__c.Invoice_Line_Items__r$Total_Price__c.CONVERT</column>
+        </chartSummaries>
+        <chartType>VerticalColumnStacked</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>Invoice__c$Invoice_Date__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_TOP</location>
+        <secondaryGroupingColumn>BucketField_53714336</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>Invoice__c$Name</field>
+    </columns>
+    <columns>
+        <field>Invoice__c.Invoice_Line_Items__r$Name</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Invoice__c.Invoice_Line_Items__r$Total_Price__c.CONVERT</field>
+    </columns>
+    <currency>EUR</currency>
+    <description>Invoice Line</description>
+    <filter>
+        <criteriaItems>
+            <column>BucketField_53714336</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>VAT -</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>Invoice__c$Invoice_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_53714336</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Invoice Line</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Invoices_with_Invoice_Line_Items__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Invoice__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

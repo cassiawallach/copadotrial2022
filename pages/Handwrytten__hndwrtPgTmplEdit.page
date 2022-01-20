@@ -1,0 +1,82 @@
+<!-- 
+Author: Phase One First, LLC
+Email: info@phaseonefirst.com [SFDC licensed username]
+Handwrytten Edit Template page
+-->
+<apex:page standardController="Handwrytten__hndwrtObjAccount__c" extensions="Handwrytten.hndwrtClsTmplEdit" title="Handwrytten Template Edit" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form >
+        <div class="slds">
+            <style>
+                input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+                }
+            </style> 
+            
+            <apex:sectionHeader title="Handwrytten" subtitle="Edit Template" help="http://www.handwrytten.com" />
+            
+            <apex:pageBlock title="New Handwrytten Template" mode="Edit">
+                <apex:pageMessages />
+                
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="Save" action="{!saveTemplate}"/>
+                    <apex:commandButton value="Cancel" action="{!cancel}"/>
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockSection title="Handwrytten Account Information" columns="1">
+                    
+                    <apex:outputField value="{!Handwrytten__hndwrtObjAccount__c.Name}"/>
+                    
+                    <apex:pageBlockSectionItem >  
+                        <apex:outputLabel value="Template Name" for="itName"/>
+                        <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                            <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                            <apex:inputText id="itName" value="{!templateName}" label="Template Name"/><!-- required="true"/>-->
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    
+                    <!--This Section displays copy feild merge and replace value-->
+                    <apex:pageBlockSectionItem >
+                        <apex:outputPanel >
+                            <i>Use merge fields to personalize your message content. The merge field value will be replaced
+                                by the corresponding field value when the bulk order is processed.</i> Select contact field, copy 
+                            and paste the merge field value into your message below.
+                            
+                            <table style="border:1px solid black">
+                                <tr>
+                                    <th>Selected Field</th>
+                                    <th>Copy Merge Field Value</th> 
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <apex:selectList value="{!selectedMergeFld}" size="1"  label="Select Field">
+                                            <apex:actionSupport event="onchange" action="{!mergeFieldChanged}" reRender="otMergeFld" />
+                                            <apex:selectOptions value="{!MergeFields}"/>
+                                        </apex:selectList>
+                                    </td>
+                                    <td>
+                                        <apex:inputText value="{!mergeFldVal}" label="Copy Merge Field Value" id="otMergeFld" style="width:200px"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    <!--End of copy feild merge and replace value-->
+                    
+                    <apex:pageBlockSectionItem >  
+                        <apex:outputLabel value="Template Message" for="itMessage"/>
+                        <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                            <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                            <apex:inputTextarea id="itMessage" value="{!templateMessage}" label="Template Message" rows="10" /><!--required="true"/>-->
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    
+                </apex:pageBlockSection>
+                
+            </apex:pageBlock>
+        </div>
+    </apex:form>
+</apex:page>

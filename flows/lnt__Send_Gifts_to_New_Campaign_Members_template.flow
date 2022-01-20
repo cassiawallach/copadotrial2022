@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_gift_to_Contact_Campaign_Member</name>
+        <label>Send gift to Contact Campaign Member</label>
+        <locationX>490</locationX>
+        <locationY>274</locationY>
+        <actionName>lnt__SendGiftToContactInvocableClass</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>campaignId</name>
+            <value>
+                <elementReference>$Record.CampaignId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>contactId</name>
+            <value>
+                <elementReference>$Record.ContactId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateName</name>
+            <value>
+                <stringValue>&lt;your gift template name&gt;</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_gift_to_Lead_Campaign_Member</name>
+        <label>Send gift to Lead Campaign Member</label>
+        <locationX>493</locationX>
+        <locationY>493</locationY>
+        <actionName>lnt__SendGiftToLeadInvocableClass</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>campaignId</name>
+            <value>
+                <elementReference>$Record.CampaignId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateName</name>
+            <value>
+                <stringValue>&lt;your gift template name&gt;</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>leadId</name>
+            <value>
+                <elementReference>$Record.LeadId</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>53.0</apiVersion>
+    <decisions>
+        <name>Type_of_Campaign_Member</name>
+        <label>Campaign Member Type</label>
+        <locationX>165</locationX>
+        <locationY>384</locationY>
+        <defaultConnector>
+            <targetReference>Send_gift_to_Contact_Campaign_Member</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Contact Campaign Member</defaultConnectorLabel>
+        <rules>
+            <name>Lead_Campaign_Member</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.LeadId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_gift_to_Lead_Campaign_Member</targetReference>
+            </connector>
+            <label>Lead Campaign Member</label>
+        </rules>
+    </decisions>
+    <description>Save As a New Flow to customize for your Campaign gift sending requirements.</description>
+    <interviewLabel>Send Gifts to New Campaign Members template {!$Flow.CurrentDateTime}</interviewLabel>
+    <isTemplate>true</isTemplate>
+    <label>Send Gifts to New Campaign Members template</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>51</locationX>
+        <locationY>50</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CampaignId</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>&lt;your Campaign ID&gt;</stringValue>
+            </value>
+        </filters>
+        <object>CampaignMember</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>Send_one_minute_after_create</name>
+            <connector>
+                <targetReference>Type_of_Campaign_Member</targetReference>
+            </connector>
+            <label>Send one minute after create</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <recordField>CreatedDate</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

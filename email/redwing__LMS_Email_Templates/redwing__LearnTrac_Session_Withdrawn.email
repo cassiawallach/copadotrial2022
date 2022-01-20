@@ -1,0 +1,6 @@
+<messaging:emailTemplate subject="{!$Label.redwing__alms_email_withdrawal_confirmation} {!relatedTo.ILT_Session__r.Name} {!$Label.redwing__alms_email_session}" recipientType="User" relatedToType="redwing__ILT_Roster__c"  language="{!recipient.LanguageLocaleKey}">
+    <messaging:htmlEmailBody >
+        <c:ILTNotification roster="{!relatedTo}" notificationName="LearnTrac_Session_Withdrawn" />
+    </messaging:htmlEmailBody>
+    <c:ILTNotificationIcsAttachment roster="{!relatedTo}" notificationName="LearnTrac_Session_Cancelled" />
+</messaging:emailTemplate>

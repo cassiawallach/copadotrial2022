@@ -1,0 +1,20 @@
+<apex:page controller="DL_VC.GetValueTrackersController" docType="html-5.0">
+    <apex:form >
+        <apex:pageBlock title="Value Trackers" id="tracker_list">
+            <apex:pageBlockTable value="{! valueTrackers }" var="vt">
+                <apex:column >
+                    <apex:commandLink value="Add" action="{! addValueTracker }">
+                        <apex:param name="Tracker_To_Add" value="{! vt.DL_VC__Value_Prop_Id__c }" assignTo="{! Tracker_To_Add }" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column value="{! vt.Name }" headerValue="Name" />
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:pageMessages >
+                </apex:pageMessages>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

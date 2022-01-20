@@ -1,0 +1,5 @@
+<messaging:emailTemplate renderUsingSystemContextWithoutSharing="True" subject="{!$Label.redwing__seats_available_for} {!relatedTo.Learning_Version__r.ILT__r.Name}" recipientType="User" relatedToType="redwing__Learning_Assignment__c" language="{!recipient.LanguageLocaleKey}">
+    <messaging:htmlEmailBody >
+        <c:ILTNotification learningAssignment="{!relatedTo}" notificationName="LearnTrac_Class_Seats_Are_Available" />
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

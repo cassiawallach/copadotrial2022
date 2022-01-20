@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>EMAIL</field>
+    </columns>
+    <columns>
+        <field>Contact.Copado_Role__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <booleanFilter>(1 AND 2 AND 3 AND (5 OR 6)) OR 4</booleanFilter>
+        <criteriaItems>
+            <column>Contact.Contact_User_Profile__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.ACV__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>79999</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>EMAIL</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>accenture,lashgroup</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>sky germany</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>&quot;FireEye, Inc.&quot;,&quot;UMUC Ventures, Inc.&quot;,Campbell Soup Company,Fortive Corporation,Google HUB,Elastic,&quot;Merz Pharmaceuticals, LLC&quot;,BlueWave Customer Management,&quot;HCSC / Blue Cross and Blue Shield of Illinois, New Mexico, Oklahoma &amp; Texas&quot;,Rogers Communication Inc,Zendesk Inc.,Paypal,Cisco Meraki,&quot;CRMScience, Inc&quot;,&quot;TriNet USA, Inc.&quot;,Comerica Bank,Siemens Corporation,&quot;Financial Engines, Inc.&quot;,Sopra Steria Germany,&quot;Dupont, Inc.&quot;,Informatica,&quot;Traemand Installation Services, Inc.&quot;,TDS Telecommunications LLC,Accenture US,Episource LLC,Invesco,Fifth Third Bank,National Trust,Siemens Digital Industries Software,Health Alliance Plan,Kaiser Permanente,Waters Corporation,BeyondTrust - New Org,YPO Inc,&quot;Medtronic, Inc.&quot;,&quot;NASCO, LLC&quot;,Twilio,Livongo Health,WeWork,&quot;F5 Networks, Inc.&quot;,MAN Truck &amp; Bus SE,Sunrun,International Game Technology (IGT),Weave,Hyland,Compagnie Monégasque de Banque,eMoney Advisor,California Office of Systems Integration (CWDS),CMS/OIT/SEI - Master Org,AmerisourceBergen Corporation,iRhythm Technologies Inc,Altria Group,Commerce Bank</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Carl Zeiss AG,Hyland,The Predictive Index,Volvo,BASF SE,&quot;Charles Schwab &amp; Co., Inc.&quot;,AmerisourceBergen Corporation,&quot;ANSYS, Inc.&quot;,Zscaler,Marlin Business Services Corp.,Okta,Houghton Mifflin Harcourt,Roto-Rooter Services Company,Copado Solutions SL,Ingersoll Rand,Compagnie Monégasque de Banque,&quot;DS Technology Hub, LLC&quot;,&quot;Seismic Software, Inc.&quot;,&quot;The Scotts Company, Llc.&quot;</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ACCOUNT.NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>10/6 Downtime Notification</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ContactList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

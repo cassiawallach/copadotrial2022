@@ -1,0 +1,20 @@
+<apex:page controller="DL_VC.ConnectToDLController" showHeader="false">
+    <apex:form >
+        <apex:pageBlock rendered="{! not_connected }">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Connect to Value Cloud" onclick="window.open('{! conn_url }');" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+
+
+        <apex:pageBlock rendered="{! connected }">
+            <apex:pageBlockSection >
+                <apex:messages />
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Disconnect from Value Cloud" onclick="window.open('{! dis_url }');" action="{! clearUserKey }"
+                />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,18 @@
+<apex:page id="ProductSetupConfigurator"
+        standardController="kugo2p__AdditionalProductDetail__c"
+           title="Product Setup Configurator | Kugamon"
+           applyBodyTag="false"
+           sidebar="false"
+           docType="html-5.0">
+
+    <script>        
+        const appName = 'ProductSetupConfiguratorApp';
+        const cmpName = 'ProductSetupConfigurator';
+        const cmpParams = {
+		                    recordId: "{!JSENCODE(kugo2p__AdditionalProductDetail__c.Id)}",
+		                    isModal: true
+                        };
+    </script>
+
+    <c:BaseLightningOut />
+</apex:page>

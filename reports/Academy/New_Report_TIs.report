@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>CHILD_NAME</field>
+    </columns>
+    <columns>
+        <field>copado1p__Platform_Job_Execution__c.copado1p__Start_Date__c</field>
+    </columns>
+    <columns>
+        <field>copado1p__Platform_Job_Execution__c.copado1p__End_Date__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado1p__Platform_Job_Execution__c.copado1p__Elapsed_Time_Seconds__c</field>
+    </columns>
+    <columns>
+        <field>copado1p__Platform_Job_Execution__c.copado1p__Elapsed_Time__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>copado1p__Platform_Job_Execution__c.Job_Cost__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>CUST_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Copado Playgrounds</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>copado1p__Platform_Job_Execution__c.copado1p__Start_Date__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>4/1/2020 12:00 AM</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>April Playground Job Executions Cost</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntityCustomEntity$copado1p__Platform_Job__c$copado1p__Platform_Job_Execution__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>copado1p__Platform_Job_Execution__c.copado1p__Start_Date__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>copado1p__Platform_Job__c.copado1p__Last_Job_Run__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

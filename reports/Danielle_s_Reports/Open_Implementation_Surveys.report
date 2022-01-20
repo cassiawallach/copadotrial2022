@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_OPP_CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_$Opportunity.Implementation_Survey_Status__c</field>
+    </columns>
+    <columns>
+        <field>Implementation_Survey_Response__c.Opportunity_Owner__c</field>
+    </columns>
+    <columns>
+        <field>FK_$Opportunity.Sales_AE_Vertical__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_$Opportunity.Implementation_Survey_Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Survey Submitted,Scoping in Progress,More Information Required</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FK_OPP_STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Marketing Qualification,Pipeline,Discovery,Prospecting,Solution Alignment,Trial,Solution Validation,Value Proposition,Demo,Formal Proposal,Negotiation/Review,Procurement,Negotiation</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Open Implementation Surveys</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Implementation_Survey_Response__c@Implementation_Survey_Response__c.Opportunity__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>FK_OPP_CLOSE_DATE</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>FK_OPP_CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CURNEXT1</interval>
+    </timeFrameFilter>
+</Report>

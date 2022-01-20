@@ -128,11 +128,14 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Application_Record_Page1</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -140,7 +143,7 @@
         <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
-    <allowInChatterGroups>false</allowInChatterGroups>
+    <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>copado__Application_Highlight_Panel</compactLayoutAssignment>
     <compactLayouts>
         <fullName>copado__Application_Highlight_Panel</fullName>
@@ -153,9 +156,9 @@
     </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <deprecated>false</deprecated>
-    <enableActivities>false</enableActivities>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -164,11 +167,26 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Time_Spent_hours__c</fullName>
+        <description>Sum of all time spent on the related features.</description>
+        <externalId>false</externalId>
+        <label>Time Spent (hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__Description__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Description</label>
         <length>131072</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Html</type>
@@ -184,6 +202,7 @@
         <relationshipLabel>Sub-Applications</relationshipLabel>
         <relationshipName>Sub_Applications</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -197,6 +216,7 @@
         <referenceTo>User</referenceTo>
         <relationshipName>Applications</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -207,6 +227,7 @@
         <externalId>false</externalId>
         <label>Release Status</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -267,6 +288,7 @@ CASE( copado__Stability__c,
         <externalId>false</externalId>
         <label>Stability</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -294,6 +316,33 @@ CASE( copado__Stability__c,
     </fields>
     <label>Application</label>
     <listViews>
+        <fullName>Agile_Planning_Applications</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Parent_Application__c</columns>
+        <columns>copado__Release_Status__c</columns>
+        <columns>Time_Spent_hours__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Product_Manager__c</field>
+            <operation>contains</operation>
+            <value>Soraya</value>
+        </filters>
+        <label>Agile Planning - Applications</label>
+    </listViews>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Product_Manager__c</columns>
+        <columns>copado__Release_Status__c</columns>
+        <columns>copado__Stability__c</columns>
+        <columns>copado__Stability_Icon__c</columns>
+        <columns>copado__Parent_Application__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
         <columns>copado__Release_Status__c</columns>
@@ -307,16 +356,12 @@ CASE( copado__Stability__c,
     </listViews>
     <nameField>
         <label>Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Applications</pluralLabel>
     <searchLayouts>
-        <customTabListAdditionalFields>copado__Release_Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Stability__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Stability_Icon__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Parent_Application__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Product_Manager__c</customTabListAdditionalFields>
         <searchResultsAdditionalFields>copado__Release_Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Stability__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Stability_Icon__c</searchResultsAdditionalFields>

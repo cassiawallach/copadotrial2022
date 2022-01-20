@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Renewed template, with new Letterhead</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Sales_Email_Letterhead</letterhead>
+    <name>Email after demo HTML v2</name>
+    <style>freeForm</style>
+    <subject>Copado Demo</subject>
+    <textOnly>Hi {!IF(ISNULL(Lead.Id),Contact.FirstName,Lead.FirstName)},
+
+Thank you for attending the Demo, it was a pleasure to assist you. Please check the following information:
+
+- Link to recorded demo:
+{!Demo__c.Video_URL__c}
+
+- Please help us grow and give us a feedback of the demo at: https://goo.gl/forms/62B74d6cGU6AKmuX2
+
+In order to start the 30 day free trial link to www.copa.do/install and send me the Org Id so I can activate the features.
+
+I look forward to hearing from you soon.
+
+Best regards,
+{!Demo__c.OwnerFirstName}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

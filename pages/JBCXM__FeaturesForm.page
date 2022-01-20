@@ -1,0 +1,26 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+----- Purpose: Displays  Features iframe form for customer.
+----- Other comments (optional):
+-->
+<apex:page sidebar="false" showHeader="true">
+	<style type="text/css">
+	        body #AppBodyHeader {
+	            display: none;
+	        }
+	</style> 
+ 
+	<script type="text/javascript">
+		function callBackAfterFeaturesFormSave(){
+			window.top.{!JSENCODE($CurrentPage.parameters.callbackAfterSave)}();
+		}
+		function callBackAfterFeaturesFormCancel()	{
+			window.top.{!JSENCODE($CurrentPage.parameters.callBackAfterCancel)}(); 
+		}
+	</script>
+ 
+	<apex:form >
+		<c:CustomerFeatures customerId="{!JSINHTMLENCODE($CurrentPage.parameters.customerId)}" headerText="Features"
+				callBackAfterSave="callBackAfterFeaturesFormSave" callBackAfterCancel="callBackAfterFeaturesFormCancel">
+		</c:CustomerFeatures>
+	</apex:form>
+</apex:page>

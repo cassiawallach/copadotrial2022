@@ -1,0 +1,684 @@
+<apex:page doctype="HTML-5.0"  tabStyle="TRIMDA__TRIMDA_MatchingResult__c" Controller="TRIMDA.TRIMDA_MatchedRecordsBatchController" extensions="TRIMDA.TRIMDA_Filter,TRIMDA.TRIMDA_MassMergeController,TRIMDA.TRIMDA_MassConvert" >
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<apex:includeScript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>
+
+ <style>
+     
+    .trimdmr_header{
+        width:100%;
+        border-radius: 0.25rem 0.25rem 0 0;
+        background-color:#9bb1d9;
+        background: linear-gradient(#9bb1d9,#ddecf9);  
+        padding:0.5rem;
+    }
+     .slds-scope .slds-brand-band:before{
+        z-index:0;
+     }
+     
+    .dt_highlight{
+        font-weight:bold;
+    }
+     @media all and (max-width: 1000px)  {
+         .dt_container{
+            margin-left:0.75rem;
+     		margin-right:0.75rem;
+         }
+     }
+     @media (min-width: 700px) {
+         .dt_container{
+            margin-left:5rem;
+     		margin-right:5rem;
+         }
+     }
+     
+     .blue1 > span {
+			background-color: #0070D2;
+			background-image: -moz-linear-gradient(top, #A7B8D1, #0C8EFF);
+			background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #A7B8D1),color-stop(1, #0C8EFF));
+			background-image: -webkit-linear-gradient(#A7B8D1, #0C8EFF); 
+	}
+     .meter3 { 
+			height: 20px;  /* Can be anything */
+			position: relative;
+			margin: 0px 0 0px 0; 
+			background: #CFD7E6;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+			padding: 2px;
+			-webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+			-moz-box-shadow   : inset 0 -1px 1px rgba(255,255,255,0.3);
+			box-shadow        : inset 0 -1px 1px rgba(255,255,255,0.3);
+		}
+		.meter3 > span {
+			
+			display: block;
+			height: 100%;
+			   -webkit-border-top-right-radius: 4px;
+			-webkit-border-bottom-right-radius: 4px;
+			       -moz-border-radius-topright: 4px;
+			    -moz-border-radius-bottomright: 4px;
+			           border-top-right-radius: 4px;
+			        border-bottom-right-radius: 4px;
+			    -webkit-border-top-left-radius: 5px;
+			 -webkit-border-bottom-left-radius: 5px;
+			        -moz-border-radius-topleft: 5px;
+			     -moz-border-radius-bottomleft: 5px;
+			            border-top-left-radius: 5px;
+			         border-bottom-left-radius: 5px;
+			background-color: #CFD7E6;
+			-webkit-box-shadow: 
+			  inset 0 2px 9px  rgba(255,255,255,0.3),
+			  inset 0 -2px 6px rgba(0,0,0,0.4);
+			-moz-box-shadow: 
+			  inset 0 2px 9px  rgba(255,255,255,0.3),
+			  inset 0 -2px 6px rgba(0,0,0,0.4);
+			box-shadow: 
+			  inset 0 2px 9px  rgba(255,255,255,0.3),
+			  inset 0 -2px 6px rgba(0,0,0,0.4);
+			position: relative;
+			overflow: hidden;
+			
+		}
+		.meter3 > span:after, .animate > span > span {
+			display: block;
+			height: 100%;
+
+			background-color: #CFD7E6;
+			-webkit-box-shadow: 
+			  inset 0 2px 9px  rgba(255,255,255,0.3),
+			  inset 0 -2px 6px rgba(0,0,0,0.4);
+			-moz-box-shadow: 
+			  inset 0 2px 9px  rgba(255,255,255,0.3),
+			  inset 0 -2px 6px rgba(0,0,0,0.4);
+			box-shadow: 
+			  inset 0 2px 9px  rgba(255,255,255,0.3),
+			  inset 0 -2px 6px rgba(0,0,0,0.4);
+			position: relative;
+			overflow: hidden;
+			content: "";
+			font-family:ariel;
+			font-size:12px;
+			font-weight:bold;
+			color:white;
+
+			top: 0; left: 0; bottom: 0; right: 0;
+			z-index: 1;
+			-webkit-background-size: 250px 50px;
+			-moz-background-size: 50px 50px;
+			-webkit-animation: mymove 13s infinite;
+
+		}
+     /* Chrome, Safari, Opera */
+		@-webkit-keyframes mymove {
+		    from {left: 0px;}
+		    to {left: 100%;}
+		}
+		
+		@keyframes mymove {
+		    from {left: 0px;}
+		    to {left: 100%;}
+		}
+     
+    
+</style>
+
+<!-- script: find lookup elements, and remove css class -->
+    <script >
+    $(function(){
+        $("a").removeClass("slds-input");
+    });
+    </script>
+
+<apex:slds />
+<div class="slds-scope" style="{!IF($User.UIThemeDisplayed == 'Theme4d','background-color:#b2c5e0;','')}">    
+<div class="{!IF($User.UIThemeDisplayed == 'Theme4d','slds-brand-band slds-brand-band_large','')}" >
+    <div class="dt_container" style="{!IF($User.UIThemeDisplayed == 'Theme4d','z-index:1;margin-top:0.75rem;','')}">    
+    
+<div class="slds-scope">    
+<!-- HEADER -->    
+<div  >
+     <div class="slds-grid slds-wrap">
+         <div class="slds-col slds-size--1-of-1 trimdmr_header" >
+             <div class="slds-col slds-has-flexi-truncate">
+                 <div class="slds-media">
+                     <div class="slds-media__figure">
+                         <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'MatchedRecords48x40_NL.png')}" style="height:3rem;" title="DataTrim Matched Records" />
+                     </div>
+                     <div class="slds-media__body">
+                         <p class="slds-text-heading--label" style="color:black;">DataTrim</p>
+                         <div class="slds-grid">
+                             <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Mass Merge"><strong>Batch Processing</strong></h1>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+    </div>
+</div>
+
+
+
+
+    
+<!-- HEADER -->  
+<div class="slds-grid"> 
+    
+<div class="slds-col"> 
+<apex:form > 
+    <apex:outputPanel id="header">
+    <article class="slds-card">
+     
+      <div class="slds-card__header slds-grid">
+        <header class="slds-media slds-media--center slds-has-flexi-truncate">
+          <div class="slds-media__body">
+            <h2>
+                <span class="slds-text-heading--small">MY MATCHED RECORDS</span>
+            </h2>
+          </div>
+        </header>
+         
+        <div class="slds-no-flex">
+            <!--<apex:commandLink value="Apply filter"  action="{!refreshfilter}"  styleclass="slds-button slds-button--neutral " reRender="selection, actions, myFilterPage" status="statusPanel"/>-->
+            <apex:commandLink value="Clear"  action="{!clearfilter}" onclick="Filterchanged()" styleclass="slds-button slds-button--neutral " reRender="selection, actions, header, myFilterPage, batchresult, actionsPages" status="statusPanel"/>
+            <apex:commandLink value="Create Test Data" action="{!create_test_data}" onclick="Filterchanged()" rendered="{!debug == true}" styleclass="slds-button slds-button--neutral " reRender="selection, actions, header, myFilterPage, batchresult" status="statusPanel"/>
+            <apex:commandLink value="Delete Test Leads" action="{!DeleteAllTestLeads}" onclick="Filterchanged()" rendered="{!debug == true}" styleclass="slds-button slds-button--neutral " reRender="selection, actions, header, myFilterPage, batchresult" status="statusPanel"/>
+            <apex:commandLink value="Select Test Data" action="{!Testfilter}" onclick="Filterchanged()" rendered="{!debug == true}" styleclass="slds-button slds-button--neutral " reRender="selection, actions, header, myFilterPage, batchresult" status="statusPanel"/>
+        </div>
+       
+      </div>
+      <div class="slds-card__body" style="margin-left: 1.5rem;margin-bottom:0rem;">
+           
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2" >
+               
+                
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="selbyAlert">Select by Alert:</label>
+                    <div class="slds-form-element__control">
+                        <apex:inputfield id="selbyAlert" onchange="Filterchanged()"  value="{!myMR.TRIMDA__DupeAlertRef__c}" styleclass="slds-lookup__search-input " html-placeholder="Dupe Alert Name (e.g. Accounts)" style="max-width:300px;"/>
+                    </div>
+                </div>
+                
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="selbyAlertResult">Select by Alert Result:</label>
+                    <div class="slds-form-element__control">
+                        <apex:inputField id="selbyAlertResult" onchange="Filterchanged()" value="{!myMR.TRIMDA__DupeAlertResultRef__c}" styleclass="slds-lookup__search-input " html-placeholder="Dupe Alert Result Name (e.g. AR004069)" style="max-width:300px;"/>
+                    </div>
+                </div>
+               
+            </div>
+            
+            
+            
+            <div class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2" >
+                <span style="color: #54698d;font-size: 0.75rem;" >&nbsp;Include/Exclude:</span> <!-- ({!FalseDupe_True}/{!FalseDupe_False})-->
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control" style="margin-left: 0.2rem;">
+                        <div class="slds-button-group" role="group">
+                            	<button id="toggleFalseDupeTrue" title="Include False Dupe Pairs"  onclick="click_FalseDupe_True();Filterchanged();return false;" class="slds-button slds-button_neutral" style="{! if(FalseDupe_True = true,'Background-color:#74bf36','Background-color:lightgray')};color:#54698d;width:8rem;" >False Dupes</button>
+ 						        <button id="toggleFalseDupeFalse" title="DO NOT Include False Dupes" onclick="click_FalseDupe_False();Filterchanged();return false;" class="slds-button slds-button_neutral" style="{! if(FalseDupe_False = true,'Background-color:#74bf36','Background-color:lightgray')};color:#54698d;width:8rem;">Not False Dupes</button>
+                            	
+                        </div>
+                        <div style="height:1.1rem;">
+                            <div id="FalseDupe_error" style="color:red;display:none;font-size: 0.7rem;vertical-align: top;">Including and Excluding at the same time will give no result!</div>
+                        </div>
+                        <div class="slds-button-group" role="group">
+                            	<button id="toggleResolvedTrue" title="Include Resolved Pairs"  onclick="click_Resolved_True();Filterchanged();return false;" class="slds-button slds-button_neutral" style="{! if(Resolved_True = true,'Background-color:#74bf36','Background-color:lightgray')};color:#54698d;width:8rem;" >Resolved</button>
+ 						        <button id="toggleResolvedFalse" title="DO NOT Include Resolved Pairs" onclick="click_Resolved_False();Filterchanged();return false;" class="slds-button slds-button_neutral" style="{! if(Resolved_False = true,'Background-color:#74bf36','Background-color:lightgray')};color:#54698d;width:8rem;">Not Resolved</button>
+                        </div>
+                        <div style="height:1.1rem;">
+                            <div id="Resolved_error" style="color:red;display:none;font-size: 0.7rem;vertical-align: top;">Including and Excluding at the same time will give no result!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+                
+      </div>
+      
+    </article>
+        
+    
+    </apex:outputPanel>    
+    
+        
+<!-- SPACER -->    
+    <div style="height:1rem;">  
+    </div>
+    <!--
+    <apex:outputPanel id="test2">
+        <apex:commandButton action="{!test_setStart}" title="start" value="start" />
+        <apex:inputtext value="{!processes}" />
+        
+        <apex:commandButton action="{!test_timeremains}" title="calc" value="calc" />
+        <apex:actionPoller action="{!test_timeremains}" rerender="test2" interval="5" enabled="{!actionstatusD == 'Started'}"/>
+        <br />
+        <apex:outputText value="Time: {0,time,HH:mm:ss}"><apex:param value="{!totalTime}" /></apex:outputText><br />
+        {!restseconds}<br />
+        {!secondsgone}<br />
+        <apex:outputText rendered="{!actionstatusD != 'Completed'}" value="Remaining Time(Estimated): {0,time,HH:mm:ss}"><apex:param value="{!RemainingTime}" /></apex:outputText><br />
+    </apex:outputPanel>
+    -->
+    
+<!-- SELECTION-->
+	<apex:outputPanel id="selection">
+    <div class="slds" > 
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+              <div class="slds-media__body">
+                <h2>
+                    <span class="slds-text-heading--small">SELECTION</span>
+                </h2>
+              </div>
+            </header>
+            <div class="slds-no-flex slds-is-relative">
+                 <apex:actionFunction action="{!refreshfilter}" name="refreshfilter_fromJava"  reRender="header, selection, actions, batchresult, actionsPages, resultPanel1" status="statusPanel" >
+            	     <apex:param name="Resolved_True" value="" assignTo="{!Resolved_True}"/>
+        	         <apex:param name="Resolved_False" value="" assignTo="{!Resolved_False}"/>
+                     <apex:param name="FalseDupe_True" value="" assignTo="{!FalseDupe_True}"/>
+                     <apex:param name="FalseDupe_False" value="" assignTo="{!FalseDupe_False}"/>
+    	        </apex:actionFunction>
+	         	<apex:commandLink id="btnUpdate" value="Update"  onclick="goUpdate();return false;"  styleclass="slds-button slds-button--neutral " status="statusPanel"/>
+                <!--<apex:commandLink id="btnUpdate" value="Update"  action="{!refreshfilter}"  styleclass="slds-button slds-button--neutral " reRender="header, selection, actions, myFilterPage, batchresult, actionsPages" status="statusPanel"/>-->
+                <apex:commandLink id="btnTglfilter" value="Filter" onclick="togglefilter1();" styleclass="slds-button slds-button--neutral " reRender="selection, myFilterPage, actionsPages" />
+                
+            </div>
+          </div>
+        
+         <apex:actionStatus id="statusPanel">
+            <apex:facet name="start">
+                 <div class="" >    
+                 <div class="slds-spinner_container">
+                  <div class="slds-spinner slds-spinner_medium" aria-hidden="false" role="status">
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                  </div>
+    
+                </div>
+                </div>
+	        </apex:facet>
+        </apex:actionStatus>
+        
+        <!-- Script: On change filter values: Highlight Update button, change No to ???, disable actions, hide selections info -->
+        <apex:actionFunction name="ResetFR" action="{!ResetFR}" oncomplete="highlightUpdateButton()" rerender="actions, resultPanel1" />
+        <script>
+        function Filterchanged() {
+            //function myFunction() {
+            ResetFR();
+        }
+        function highlightUpdateButton() {
+            var x = document.getElementById("{!$Component.btnUpdate}");
+            x.classList.remove("slds-button--neutral");
+            x.classList.add("slds-button--brand");
+        }
+        </script>   
+        
+        <apex:outputPanel id="resultPanel1" style="margin-bottom:0rem;">
+            
+            <div class="slds-grid slds-grid--align-center slds-wrap">
+                <div class=" slds-size--1-of-1 " >
+                    <apex:outputPanel rendered="{!myFR.recordcount > 0}" >
+                    <div id="resultbody" class="slds slds-card__body" style="margin-left: 1.5rem;">
+                        <apex:outputPanel id="maxlimit" rendered="{!myFR.recordcount >= myFR.recordlimit }">
+                            <span style="color:red;font-weight:bold;">WARNING: Your selection returned more records than the current max limit for the batch process: ({!myFR.recordlimit}): <br /></span>
+                            Refine your filter above, or run the process with the max number, and come back, run it multiple times.
+                        </apex:outputPanel>
+                        <apex:outputPanel id="notmaxlimit" rendered="{!myFR.recordcount < myFR.recordlimit }">
+                            Your selection returned: <br />
+                            <div class="slds-text-body" style="font-size:1rem;font-weight:bold;">{!myFR.recordcount}&nbsp; Matched Records (potential dupes)</div>
+                        </apex:outputPanel>
+                    </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!debug=true}" >
+                        <div class="slds slds-card__body"  style="margin-left: 1.5rem;font-size:0.65rem;margin-top:1rem;">
+                           DupeAlertRef__c: {!myMR.TRIMDA__DupeAlertRef__c}<br />
+                           DupeAlertResultRef__c: {!myMR.TRIMDA__DupeAlertResultRef__c}<br />
+                           False Dupe? ({!FalseDupe_True}/{!FalseDupe_False})<br />
+                           Resolved? ({!Resolved_True}/{!Resolved_False})<br />
+                           mySOQL: {!mySoql}<br />
+                           myfilterSOQL: {!myFilterObj.mySoql}<br />
+                           myCustomSOQL: {!myCustomSoql}<br />
+                           SOQL total: {!mySoql_total}<br />
+                           <apex:input value="{!myCustomSoql}" html-placeholder="SOQL Filter" style="width:500px;" /> 
+                           <apex:input value="{!myLimit}" html-placeholder="Limit" style="max-width:50px;" /> 
+                           <apex:commandLink id="btnapply" value="Apply"  onclick="goUpdate();return false;"  styleclass="slds-button slds-button--neutral " status="statusPanel"/>
+                        </div> 
+                    </apex:outputPanel>
+                </div>
+            </div>
+           
+        </apex:outputPanel>
+        
+ 		     
+    </article>
+    </div>
+    
+    <apex:pageMessages id="pageMessages"/>
+
+	</apex:outputPanel>
+
+<!-- SPACER -->        
+<apex:outputPanel id="msg" layout="block" styleclass="slds" style="height:1rem;">  
+</apex:outputPanel> 
+
+     
+
+<!-- ACTIONS -->
+<apex:outputPanel id="actions" >
+    <div class="slds" >    
+    <apex:outputPanel id="MyActions" layout="block" rendered="{!action=''}">
+    <article class="slds-card">        
+          <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__body">
+                    <h2>
+                        <span class="slds-text-heading--small">ACTIONS</span>
+                    </h2>
+                  </div>
+                </header>
+                <div class="slds-no-flex">
+                <apex:actionFunction action="{!DeleteAllviaBatch_prep}" name="goDelete"  rerender="selection, actionsPages, batchresult, actions" status="statusPanel"/>
+                <button  type='button' class="slds-button slds-button--neutral" onclick="goDelete()"  style="{!if(and(runningD=false,myFR.recordcount > 0),'display:initial;','display:none;')}" >Delete</button>
+                <button class="slds-button slds-button--neutral" disabled="true" style="{!if(or(runningD!=false,myFR.recordcount = 0),'display:initial;','display:none;')}" >Delete</button>
+
+                <apex:actionFunction action="{!MergeAllviaBatch_prep}" name="goMerge"  rerender="selection, actionsPages, actions, MassMerge2" status="statusPanel"/>
+                <button  type='button' class="slds-button slds-button--neutral" onclick="goMerge()"  style="{!if(and(runningD=false,myMRAction != 'Convert', myFR.recordcount > 0),'display:initial;','display:none;')}" >Merge</button>
+                <button  type='button' class="slds-button slds-button--neutral" onclick="goMerge()"  style="{!if(and(runningD=false,myMRAction = 'Convert', myFR.recordcount > 0),'display:initial;','display:none;')}"  disabled="true">Merge</button>
+                <button class="slds-button slds-button--neutral" disabled="true" style="{!if(or(runningD!=false,myFR.recordcount = 0),'display:initial;','display:none;')}" >Merge</button>
+
+                <apex:actionFunction action="{!ConvertAllviaBatch_prep}" name="goConvert"  rerender="selection, actionsPages, actions" status="statusPanel"/>
+                <button  type='button' class="slds-button slds-button--neutral" onclick="goConvert()" style="{!if(and(runningD=false,myMRAction != 'Merge', myFR.recordcount > 0),'display:initial;','display:none;')}" >Convert</button>
+                <button  type='button' class="slds-button slds-button--neutral" onclick="goConvert()" style="{!if(and(runningD=false,myMRAction = 'Merge', myFR.recordcount > 0),'display:initial;','display:none;')}"  disabled="true">Convert</button>
+                <button class="slds-button slds-button--neutral" disabled="true" style="{!if(or(runningD!=false,myFR.recordcount = 0),'display:initial;','display:none;')}" >Convert</button>
+                                  
+                <!--    
+                <apex:actionFunction action="{!MassTest}" name="goTest"  rerender="selection, actionsPages, actions" status="statusPanel" />
+                <button  type='button' class="slds-button slds-button--neutral" onclick="goTest();"  style="{!if(and(runningD=false,myFR.recordcount > 0),'display:initial;','display:none;')}" >Test</button>
+				-->
+                </div>
+          </div>
+         
+          <apex:outputPanel id="msgPanel" rendered="{!Messages.size != 0}">
+    	      <div class="slds-card__body" style="margin-left: 1.5rem;">
+                  <div class="slds-grid slds-wrap">
+                      <div class="slds-col slds-size--1-of-1 " >
+                          <apex:repeat value="{!Messages}" var="msg">
+                              <strong>{!msg}</strong><br />
+                          </apex:repeat>
+                      </div>
+                  </div>
+ 	         </div>
+          </apex:outputPanel>
+         
+    </article>
+        </apex:outputPanel>
+    </div>
+</apex:outputPanel>
+    
+    <script>
+        function togglefilter1() {
+            var x = document.getElementById('filter');
+             if (x.style.display == 'none') {
+                x.style.display = 'block';
+             } else {
+                 x.style.display = 'none';
+             }
+        }
+    </script>
+    <script>
+        var Resolved_True_Value = false;
+        var Resolved_False_Value = false;
+        var FalseDupe_True_Value = false;
+        var FalseDupe_False_Value = true;
+        
+        function click_Resolved_True() {
+            Resolved_True_Value = !Resolved_True_Value;
+            var x = document.getElementById("toggleResolvedTrue");
+            if (Resolved_True_Value == true) {
+                x.style.background = "#74bf36";
+            }else{
+                x.style.background ="lightgray";
+            }
+            Resolved_valid();
+        }
+        
+        function click_Resolved_False() {
+            Resolved_False_Value = !Resolved_False_Value;
+            var x = document.getElementById("toggleResolvedFalse");
+            if (Resolved_False_Value == true) {
+                x.style.background = "#74bf36";
+            }else{
+                x.style.background ="lightgray";
+            }
+            Resolved_valid();
+        }
+        function Resolved_valid() {
+            var y = document.getElementById("Resolved_error");
+            if (Resolved_True_Value == true && Resolved_False_Value == true){
+                y.style.display = "initial";
+            }else{
+                y.style.display = "none";
+            }
+        }
+        
+        function click_FalseDupe_True() {
+            FalseDupe_True_Value = !FalseDupe_True_Value;
+            var x = document.getElementById("toggleFalseDupeTrue");
+            if (FalseDupe_True_Value == true) {
+                x.style.background = "#74bf36";
+            }else{
+                x.style.background ="lightgray";
+            }
+            FalseDupe_valid();
+        }
+        
+        function click_FalseDupe_False() {
+            FalseDupe_False_Value = !FalseDupe_False_Value;
+            var x = document.getElementById("toggleFalseDupeFalse");
+            if (FalseDupe_False_Value == true) {
+                x.style.background = "#74bf36";
+            }else{
+                x.style.background ="lightgray";
+            }
+            FalseDupe_valid();
+        }
+        function FalseDupe_valid() {
+            var y = document.getElementById("FalseDupe_error");
+            if (FalseDupe_True_Value == true && FalseDupe_False_Value == true){
+                y.style.display = "initial";
+            }else{
+                y.style.display = "none";
+            }
+        }
+        
+        
+        function goUpdate() {
+            refreshfilter_fromJava(Resolved_True_Value, Resolved_False_Value, FalseDupe_True_Value, FalseDupe_False_Value);
+        }
+    </script>
+    
+</apex:form>     
+
+
+        
+<!-- IMBEDDED ACTION PAGES -->
+<div id="ImbeddedPages">
+<apex:outputPanel id="actionsPages" >
+	<div class="slds" >
+    <article class="slds-card">        
+ 		<div class="slds-card__body" style="margin-top: 0rem;">
+             <div class="slds-grid slds-wrap">
+	             <div class="slds-col slds-size--1-of-1 " >
+					 <apex:outputPanel id="MassActionPages" layout="block">
+                         <apex:outputPanel id="Mass" layout="block" rendered="{!action=''}">
+            				...
+		           		</apex:outputPanel>
+                         
+                         <apex:outputPanel id="MassMerge" layout="block" rendered="{!action='Merge'}">
+            				<apex:include id="MassMerge2" pageName="TRIMDA__TRIMDA_MassMerge2"/>
+		           		</apex:outputPanel>
+					
+			   			<apex:outputPanel id="MassConvert" layout="block" rendered="{!action='Convert'}">
+            				<apex:include pageName="TRIMDA__TRIMDA_MassConvertLeads"/>
+		           		</apex:outputPanel>
+                         
+                         <apex:outputPanel id="MassDelete" layout="block" rendered="{!action='Delete'}">
+                            <apex:form >
+                                 <div class="slds-card__header slds-grid" style="padding-left: 0;">
+                                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                      <div class="slds-media__body">
+                                        <h2>
+                                            <span class="slds-text-heading--small">MASS DELETE</span>
+                                        </h2>
+                                      </div>
+                                    </header>
+                                </div>
+                                <div class="slds-grid slds-grid--align-left slds-wrap" style="margin-bottom: 1rem;">
+                                    <div class=" slds-size--1-of-1 slds-medium-size--1-of-2 " >
+                                        <div id="" class="slds slds-card__body" style="margin-left: 1.5rem;">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    Batch Name:&nbsp;<apex:inputText id="BatchName" value="{!BatchActionName}" styleclass="slds-input" style="max-width:22rem;" html-placeholder="Batch Name"/>
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element">
+                                                 <div class="slds-form-element__control">
+                                                    <apex:inputCheckbox id="sendEmail" value="{!notifyD}" /><span style="color: #54698d;font-size: 0.75rem;" >&nbsp;Send Notification Email when done?</span>
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element">
+                                               <div class="slds-form-element__control">
+                                                    <apex:inputText id="NotifyEmail"  value="{!notifyDEmail}" styleclass="slds-input" style="max-width:20rem;" html-placeholder="Email"/>
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    Batch Block Size:&nbsp;<apex:input type="number" id="BatchDSize" Html-min="1" Html-max="99" value="{!BatchDSize}" styleclass="slds-input" style="max-width:5rem;" html-placeholder="Batch Size"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Apply button -->
+                                        <!-- BUTTON -->
+                                        <script>
+                                        function applyDelete() {
+                                            if(confirm('Are you sure?')){
+                                                actionFuncDelete();
+                                            }else{
+                                                return false;
+                                            }
+                                        }
+                                        
+                                        </script>
+                                        <apex:actionFunction action="{!DeleteAllviaBatch}" name="actionFuncDelete"  rerender="selection, batchresult, actionsPages, pageMessages" />
+                                        <button  type='button' class="slds-button slds-button--brand" onclick="applyDelete()"  style="{!if(and(runningD=false,myFR.recordcount > 0),'display:initial;','display:none;')}" >Delete</button>
+                                        <button class="slds-button slds-button--brand" disabled="true" style="{!if(or(runningD!=false,myFR.recordcount = 0),'display:initial;','display:none;')}" >Delete</button>
+                                        
+                                    </div>
+                                </div>
+                          </apex:form> 
+		           		</apex:outputPanel>
+                         
+					
+                          <!-- Batch Result-->
+                        <!--<apex:outputPanel id="batchresult" rendered="{!and(action = 'Delete', runningD= true)}" >-->
+                        <apex:outputPanel id="batchresult"  rendered="{!action = 'Delete'}">    
+                           
+                        <apex:form >
+                            <apex:actionPoller action="{!xgetBatchResult}" rerender="batchresult, running, pageMessages, batchresultdetail" interval="9" enabled="{!actionstatusD == 'Started'}"/>
+                        </apex:form> 
+
+                        <div class="slds" >    
+                        <div class="slds-card">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                  <div class="slds-media__body">
+                                    <h2>
+                                        <span class="slds-text-heading--small">BATCH RESULT</span>
+                                    </h2>
+                                  </div>
+                                </header>
+                            </div>
+                            
+
+                            
+                            
+                            <apex:outputPanel id="running" rendered="{!myFR.recordcount > 0}">
+                                <div class="slds-card__body" style="margin-left: 1.5rem;">
+                                    <div class="slds-grid slds-wrap">
+                                        <apex:outputPanel id="ready" rendered="{!actionstatusD == 'Ready'}">
+                                              <div class=" slds-size--1-of-1 " >
+                                                  <div id="readydetail" class="slds slds-card__body">
+                                                      Ready to perform Batch process! <br />
+                                                      <!--<div class="slds-text-body" style="font-size:1rem;font-weight:bold;">Set SELECTION and choose ACTION</div>-->
+                                                  </div>
+                                              </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="batchresultdetail" rendered="{!OR(actionstatusD = 'Started',actionstatusD = 'Completed')}" style="width:97%;">
+                                                
+                                            	
+                                                Batch Name: {!BatchActionName}<br />
+                                                Total: {!myBatchResult.Total}<br />
+                                                Processed: {!myBatchResult.TotalSuccess}<br />
+                                                Failed: {!myBatchResult.TotalFailed}<br />
+                                                Status: {!actionstatusD}<br />
+                                                {!BatchFail}<br />
+												<br />
+                                            	<apex:outputText value="Time: {0,time,HH:mm:ss}"><apex:param value="{!totalTime}" /></apex:outputText><br />
+                                            	<apex:outputText rendered="{!actionstatusD != 'Completed'}" value="Remaining Time(Estimated): {0,time,HH:mm:ss}"><apex:param value="{!RemainingTime}" /></apex:outputText><br />
+                                            	<!--<apex:outputText rendered="{!actionstatusD != 'Completed'}" value="Remaining Time(Estimated): {0,date,HH:mm:ss}"><apex:param value="{!RemainingTime}" /></apex:outputText><br />-->
+                                                <apex:outputPanel id="prosessing" rendered="{!actionstatusD == 'Started'}">
+                                                    <div class="meter3 blue1 nostripes">
+                                                        <span id="">
+                                                        </span>
+                                                    </div>
+                                                    <div style="margin-left:0.5rem;position: absolute;color:white;margin-top:-1.3rem;" >
+                                                        Processing...                       
+                                                    </div>
+                                                </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                          </div>
+                         </div>
+                         
+                         </apex:outputPanel>  
+                         
+                     </apex:outputPanel>
+                 </div>
+              </div>
+          </div>
+ 	</article>
+    </div>
+</apex:outputPanel>
+</div>  
+
+<!-- SPACER -->    
+<div style="height:1rem;">  
+</div>
+        
+      
+
+        
+</div>
+
+    <!-- End of contents Right -->
+    
+    
+     
+
+    <div class="slds-col" id="filter" style="display:none;min-width: 300px;max-width: 400px;">
+         <apex:outputPanel id="myFilterPage" > 
+            <apex:include id="filterpage" pageName="TRIMDA__TRIMDA_Filter" />
+         </apex:outputPanel>
+    </div>
+      
+ </div> 
+ </div>
+
+    </div>        
+</div>
+</div>
+</apex:page>

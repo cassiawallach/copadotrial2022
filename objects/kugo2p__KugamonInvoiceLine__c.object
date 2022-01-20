@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Kugamon - Related object to Invoice for Invoice Product and Service Lines. Invoice Line records are created on Order release.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>kugo2p__AppliedPaymentAmount__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Applied Payment Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__BalanceDueAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>round(kugo2p__NetAmount__c - kugo2p__AppliedPaymentAmount__c,2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Balance Due Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__CalculatedQuantity__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Calculated Quantity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__CustomerPODate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderProductLine__r.kugo2p__CustomerPODate__c, kugo2p__SalesOrderServiceLine__r.kugo2p__CustomerPODate__c)</formula>
+        <label>Customer PO Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__CustomerPOLine__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderProductLine__r.kugo2p__CustomerPOLine__c, kugo2p__SalesOrderServiceLine__r.kugo2p__CustomerPOLine__c)</formula>
+        <label>Customer PO Line</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__CustomerPONumber__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderProductLine__r.kugo2p__CustomerPONumber__c, kugo2p__SalesOrderServiceLine__r.kugo2p__CustomerPONumber__c)</formula>
+        <label>Customer PO Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__DiscountPercent2__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Discount Percent</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__DiscountSalesPrice__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Effective Price is the Sales Price with Discounts Applied.</description>
+        <externalId>false</externalId>
+        <formula>round(kugo2p__TotalAmount__c  /  kugo2p__Quantity__c,2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Effective Price is the Sales Price with Discounts Applied</inlineHelpText>
+        <label>Effective Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__Invoice__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Invoice Number</label>
+        <referenceTo>kugo2p__KugamonInvoice__c</referenceTo>
+        <relationshipLabel>Invoice Lines</relationshipLabel>
+        <relationshipName>Invoice_Lines</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>kugo2p__LineAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(
+  ISBLANK(kugo2p__ServiceDeliverySchedule__r.kugo2p__ServiceAmount__c),
+  BLANKVALUE(kugo2p__CalculatedQuantity__c, kugo2p__Quantity__c) * kugo2p__SalesPrice__c,
+  kugo2p__ServiceDeliverySchedule__r.kugo2p__ServiceAmount__c
+)</formula>
+        <label>Line Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__LineDescription__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Line Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__LineDiscountAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>round(kugo2p__DiscountPercent2__c * kugo2p__LineAmount__c,4)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Line Discount Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__Line__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Right(&apos;00&apos; + TEXT(kugo2p__SortOrder__c), 3)&amp;&quot; &quot;&amp;HYPERLINK(&quot;/&quot; + Id,  &quot;Detail&quot;, &quot;_self&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Line</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__NetAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>round(kugo2p__TotalAmount__c  +  kugo2p__VATAmount__c  +  kugo2p__TaxAmount__c,2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Net Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ProductServiceName__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Product/Service Name used in the Order Line.</description>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(kugo2p__SalesOrderProductLine__c), 
+
+IF(
+ISBLANK(kugo2p__SalesOrderServiceLine__r.kugo2p__ServiceName__c),
+kugo2p__ProductService__r.kugo2p__ReferenceProduct__r.Name,
+kugo2p__SalesOrderServiceLine__r.kugo2p__ServiceName__c), 
+
+IF(
+ISBLANK(kugo2p__SalesOrderProductLine__r.kugo2p__ProductName__c),
+kugo2p__ProductService__r.kugo2p__ReferenceProduct__r.Name,
+kugo2p__SalesOrderProductLine__r.kugo2p__ProductName__c)
+
+)</formula>
+        <inlineHelpText>Product/Service Name used in the Order Line</inlineHelpText>
+        <label>Product/Service Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ProductService__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Product/Service</label>
+        <referenceTo>kugo2p__AdditionalProductDetail__c</referenceTo>
+        <relationshipLabel>Invoice Lines</relationshipLabel>
+        <relationshipName>Invoice_Lines</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__Quantity__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Quantity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__RecordStatus__c</fullName>
+        <defaultValue>&quot;Unsent&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Record Status</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__SalesOrderProductLine__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order Product Line</label>
+        <referenceTo>kugo2p__SalesOrderProductLine__c</referenceTo>
+        <relationshipLabel>Invoice Lines</relationshipLabel>
+        <relationshipName>Invoice_Lines</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__SalesOrderServiceLine__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order Service Line</label>
+        <referenceTo>kugo2p__SalesOrderServiceLine__c</referenceTo>
+        <relationshipLabel>Invoice Lines</relationshipLabel>
+        <relationshipName>Invoice_Lines</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__SalesOrder__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order Number</label>
+        <referenceTo>kugo2p__SalesOrder__c</referenceTo>
+        <relationshipLabel>Invoice Lines</relationshipLabel>
+        <relationshipName>Invoice_Lines</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__SalesPrice__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderProductLine__r.kugo2p__SalesPrice__c, kugo2p__SalesOrderServiceLine__r.kugo2p__SalesPrice__c)</formula>
+        <label>Sales Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ServiceDeliverySchedule__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Delivery Schedule</label>
+        <referenceTo>kugo2p__ServiceDeliverySchedule__c</referenceTo>
+        <relationshipLabel>Invoice Lines</relationshipLabel>
+        <relationshipName>Invoice_Lines</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ServiceTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>kugo2p__SalesOrderServiceLine__r.kugo2p__ServiceTerm__c</formula>
+        <label>Service Term</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ShipmentDate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Shipment Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__ShipmentLine__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Shipment Line</label>
+        <referenceTo>kugo2p__ShipmentLine__c</referenceTo>
+        <relationshipLabel>Invoice Lines</relationshipLabel>
+        <relationshipName>Invoice_Lines</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__SortOrder__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sort Order</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>kugo2p__RecordStatus__c</formula>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__TaxAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>round(kugo2p__TotalAmount__c * (kugo2p__TaxSalesRate__c + kugo2p__TaxExciseRate__c + kugo2p__TaxUsageRate__c ),2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Tax Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__TaxExciseRate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderServiceLine__r.kugo2p__TaxExciseRate__c, kugo2p__SalesOrderProductLine__r.kugo2p__TaxExciseRate__c)</formula>
+        <label>Tax Excise Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__TaxSalesRate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderServiceLine__r.kugo2p__TaxSalesRate__c, kugo2p__SalesOrderProductLine__r.kugo2p__TaxSalesRate__c)</formula>
+        <label>Tax Sales Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__TaxUsageRate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderServiceLine__r.kugo2p__TaxUsageRate__c, kugo2p__SalesOrderProductLine__r.kugo2p__TaxUsageRate__c)</formula>
+        <label>Tax Usage Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__TaxVAT__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE( kugo2p__SalesOrderProductLine__r.kugo2p__TaxVAT__c ,  kugo2p__SalesOrderServiceLine__r.kugo2p__TaxVAT__c )</formula>
+        <label>Tax</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__TotalAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>round(kugo2p__LineAmount__c - kugo2p__LineDiscountAmount__c,2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__UnitofMeasure__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Unit of Measure</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__UnitofTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Unit of Term</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kugo2p__VATAmount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>round(kugo2p__TotalAmount__c * kugo2p__VATRate__c,2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>VAT/GST Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>kugo2p__VATRate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(kugo2p__SalesOrderProductLine__r.kugo2p__VATRate__c, kugo2p__SalesOrderServiceLine__r.kugo2p__VATRate__c)</formula>
+        <label>VAT/GST Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <label>Invoice Line</label>
+    <nameField>
+        <displayFormat>{0000000}</displayFormat>
+        <label>Invoice Line</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Invoice Lines</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>kugo2p__SalesOrder__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kugo2p__ProductService__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kugo2p__LineDescription__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kugo2p__NetAmount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>kugo2p__BalanceDueAmount__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kugo2p__SalesOrder__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kugo2p__ProductService__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kugo2p__LineDescription__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kugo2p__NetAmount__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>kugo2p__BalanceDueAmount__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>kugo2p__SalesOrder__c</searchFilterFields>
+        <searchFilterFields>kugo2p__ProductService__c</searchFilterFields>
+        <searchFilterFields>kugo2p__LineDescription__c</searchFilterFields>
+        <searchFilterFields>kugo2p__NetAmount__c</searchFilterFields>
+        <searchFilterFields>kugo2p__BalanceDueAmount__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>kugo2p__Sort</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Sort</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/apex/kugo2p__sortLineItemsInvoice?id={!kugo2p__KugamonInvoice__c.Id}&amp;formType=invLines</url>
+    </webLinks>
+</CustomObject>

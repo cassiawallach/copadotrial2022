@@ -1,0 +1,90 @@
+<apex:page docType="html-5.0" controller="JBCXM.RelationshipBroker"  extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker" sidebar="false" title="Person" tabStyle="CustomerSuccess360__tab">
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+
+    <script>
+        var nsParams               = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        var GS                      = GS || {};
+        GS.sessionId                = "{!$Api.Session_ID}";
+        GS.nsURL                    = nsParams.url;
+        GS.isNSEnabled              = (nsParams.nsenabled == "true" || nsParams.nsenabled == true);
+        GS.remotingEndPoint         = '{!$RemoteAction.RelationshipBroker.relationshipConfigBroker}';
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.commonRemotingEndPoint  = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        restClient.config           = {sessionId: GS.sessionId , remoting : "{!$RemoteAction.NSRemoting.apinsinvoke}"};
+        GS.remotingBulkEndPoint     = '';
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.customLookUpConfig       = fakeEval('{!JSINHTMLENCODE(customLookUpConfigMap)}');
+
+
+        GS.userConfig = {
+        userLocale          : {!(dateTimeFormatByLocale)},
+        userName            : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+        userId              : "{!$User.Id}",
+        emailId             : "{!$User.Email}",
+        profilePhoto        : "{!(profilePhoto)}",
+        userDisplayName     : "{!(JSINHTMLENCODE(userDisplayName))}",
+        gainsightTabs		: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+        isLightningEnabled	: {!(isLightningEnabled)}
+        };
+        GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+
+        var mode                = '{!JSINHTMLENCODE($CurrentPage.parameters.mode)}';
+        GS.frameworkPath        = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSApp/js/Gainsight";
+        GS.vendorPath           = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor";
+        GS.textVendorPath       = "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/text";
+
+        GS.customJSPath         = "{!JSENCODE(URLFOR($Resource.CustomJS, ''))}";
+        GS.nsPath               = "{!JSENCODE(URLFOR($Resource.NS, ''))}";
+        GS.highcharts           = "{!JSENCODE(URLFOR($Resource.HighchartsJS, ''))}";
+        GS.jqGrid               = "{!JSENCODE(URLFOR($Resource.jqGrid,''))}";
+        GS.jQuery               = "{!JSENCODE(URLFOR($Resource.JQuery,''))}"
+        GS.maxAjaxTimeout       = 120000; //Used for timeout in case of ajax remoting request
+        GS.hasModifyAllPerm 	= {!(hasModifyAllPerm)};
+        GS.hasToolingAPIPermission = "{!(hasToolingAPIPermission)}";
+
+    </script>
+    <apex:form ></apex:form>
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gs-person-config-main" id="gs-person-config-main"></div>
+        </div>
+    </div>
+    <style>
+        .bPageFooter.noTableFooter{
+            display:none;
+        }
+    </style>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["personconfig/scripts/personconfig.bundle.js"], styles:["personconfig/styles/personconfig.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),JSINHTMLENCODE($CurrentPage.parameters.apppath))}/personconfig/styles/personconfig.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), JSINHTMLENCODE($CurrentPage.parameters.apppath))}/personconfig/scripts/personconfig.bundle.js"></script>
+    </apex:outputpanel>
+
+
+
+
+    <script>
+        var GSGA = {
+        orgId   : "{!$Organization.Id}",
+        orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+        userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('Person Config');
+    </script>
+
+</apex:page>

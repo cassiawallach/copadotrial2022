@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <fields>
-        <help><!-- If checked, all Branch Management features will be enabled in the Deployment Flow. --></help>
         <label><!-- Active --></label>
         <name>copado__Active__c</name>
     </fields>
     <fields>
-        <help><!-- If checked, committing changes on user stories linked to this Pipeline will not be allowed --></help>
+        <help><!-- If checked, committing changes on user stories linked to this pipeline will not be allowed --></help>
         <label><!-- Block Commits --></label>
         <name>copado__Block_Commits__c</name>
     </fields>
@@ -42,16 +41,16 @@
             <translation><!-- Branches --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Git Package</masterLabel>
-            <translation><!-- Git Package --></translation>
+            <masterLabel>Git Artifacts</masterLabel>
+            <translation><!-- Git Artifacts --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Org Metadata</masterLabel>
             <translation><!-- Org Metadata --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Salesforce Package</masterLabel>
-            <translation><!-- Salesforce Package --></translation>
+            <masterLabel>Package Artifacts</masterLabel>
+            <translation><!-- Package Artifacts --></translation>
         </picklistValues>
     </fields>
     <fields>
@@ -69,7 +68,6 @@
         <relationshipLabel><!-- Pipelines (Deployment Job Template) --></relationshipLabel>
     </fields>
     <fields>
-        <help><!-- If checked, Deployment Flow Steps best practices validations will be disabled. --></help>
         <label><!-- Disable Validations --></label>
         <name>copado__Disable_Validations__c</name>
     </fields>
@@ -83,7 +81,6 @@
         <name>copado__Enable_Smart_Conflict_Resolution__c</name>
     </fields>
     <fields>
-        <help><!-- If checked, Environment names must equal their corresponding Branches in the Deployment Flow Steps. --></help>
         <label><!-- Enforce branch/env naming convention --></label>
         <name>copado__Equal_Branch_Environment_Name__c</name>
     </fields>
@@ -97,7 +94,6 @@
         <name>copado__Flow_Step_Coordinates__c</name>
     </fields>
     <fields>
-        <help><!-- Git Repository linked to the Deployment Flow. All branches of the Deployment Flow Steps must exist in this Git Repository. --></help>
         <label><!-- Git Repository --></label>
         <name>copado__Git_Repository__c</name>
         <relationshipLabel><!-- Pipelines --></relationshipLabel>
@@ -140,26 +136,23 @@
         </picklistValues>
     </fields>
     <fields>
-        <help><!-- Main branch of the selected Git Repository (e.g. master). --></help>
         <label><!-- Main Branch --></label>
         <name>copado__Main_Branch__c</name>
     </fields>
     <fields>
-        <help><!-- Link to open the Pipeline Manager to promote and back promote User Stories. --></help>
         <label><!-- Manage Releases --></label>
         <name>copado__Manage_Branches__c</name>
     </fields>
     <fields>
-        <help><!-- When a conflicted file cannot be semantically merged during an Auto Resolve, the entire file is overwritten by default. You can choose to overwrite only the conflicting lines and merge the mergeable lines; Copado uses the &quot;Theirs&quot; git merge strategy. --></help>
         <label><!-- Auto Resolve Conflict Strategy --></label>
         <name>copado__Merge_Strategy__c</name>
         <picklistValues>
-            <masterLabel>Overwrite conflicting lines only</masterLabel>
-            <translation><!-- Overwrite conflicting lines only --></translation>
+            <masterLabel>Default</masterLabel>
+            <translation><!-- Default --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Overwrite file</masterLabel>
-            <translation><!-- Overwrite file --></translation>
+            <masterLabel>Theirs</masterLabel>
+            <translation><!-- Theirs --></translation>
         </picklistValues>
     </fields>
     <fields>
@@ -171,6 +164,10 @@ This value will prefill the order by field on related Promotion record creation 
     <fields>
         <label><!-- Platform --></label>
         <name>copado__Platform__c</name>
+        <picklistValues>
+            <masterLabel>MuleSoft</masterLabel>
+            <translation><!-- MuleSoft --></translation>
+        </picklistValues>
         <picklistValues>
             <masterLabel>Other</masterLabel>
             <translation><!-- Other --></translation>
@@ -195,11 +192,44 @@ This value will prefill the order by field on related Promotion record creation 
         <relationshipLabel><!-- Pipelines --></relationshipLabel>
     </fields>
     <fields>
-        <help><!-- Static Code Analysis settings used whenever the analysis is run in Environments or User Stories linked to the Deployment Flow. --></help>
         <label><!-- Static Code Analysis Settings --></label>
         <name>copado__Static_Code_Analysis_Settings__c</name>
         <relationshipLabel><!-- Pipelines --></relationshipLabel>
     </fields>
+    <layouts>
+        <layout>Deployment Flow Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Flow --></label>
+            <section>Deployment Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Graphic Options --></label>
+            <section>Graphic Options</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Pipeline Layout V.17</layout>
+        <sections>
+            <label><!-- Advanced Options --></label>
+            <section>Advanced Options</section>
+        </sections>
+        <sections>
+            <label><!-- Copado DX --></label>
+            <section>Copado DX</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Clone with Environments --></label>
+        <name>copado__Clone_with_Environments</name>
+    </quickActions>
     <validationRules>
         <errorMessage><!-- A pipeline cannot have the same template for both Promote and Deploy --></errorMessage>
         <name>copado__Unique_Template_for_promote_and_deploy</name>

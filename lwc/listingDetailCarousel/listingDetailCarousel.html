@@ -1,0 +1,47 @@
+<template>
+    <div class="appx-carousel">
+        <div class="appx-carousel-header">
+            <div class="appx-carousel-header-title">
+                <span>Lightning Carousel and Banner</span>
+            </div>
+            <div class="appx-carousel-navigator-button--close">
+                <svg aria-hidden="true" class="appx-carousel-icon" name="close" >
+                    <use xlink:href="#close">
+                        <svg viewBox="0 0 24 24" id="close"><path d="M14.3 11.7l6-6c.3-.3.3-.7 0-1l-.9-1c-.3-.2-.7-.2-1 0l-6 6.1c-.2.2-.5.2-.7 0l-6-6.1c-.3-.3-.7-.3-1 0l-1 1c-.2.2-.2.7 0 .9l6.1 6.1c.2.2.2.4 0 .6l-6.1 6.1c-.3.3-.3.7 0 1l1 1c.2.2.7.2.9 0l6.1-6.1c.2-.2.4-.2.6 0l6.1 6.1c.2.2.7.2.9 0l1-1c.3-.3.3-.7 0-1l-6-6c-.2-.2-.2-.5 0-.7z"></path></svg>
+                    </use>
+                </svg>
+            </div>
+        </div>
+        <div class="appx-carousel-media">
+            <div id="theSlider" class="appx-carousel-media-slider appx-carousel-media-slider--efect" style="margin-left: -0px" data-id="theSlider" data-index="0" data-count="3">
+                <div class="appx-carousel-media-boxshadow"></div>
+                <div class="appx-carousel-media-swipe" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); z-index: 1;"></div>
+                <template for:each={assetWrapper} for:item="asset">
+                    <div class="appx-carousel-media-container" key={asset.Id}>				          
+                        <img class="appx-carousel-media-file" src={asset.uri} />
+                        <span class="appx-carousel-media-description">{asset.Caption__c}</span>
+                    </div>
+                </template>
+            </div>  
+        </div>
+        <div class="appx-carousel-navigator">
+            <div onclick={previous} class="appx-carousel-navigator-button--left" data-event="appx-carousel-navigator-left" data-listing-name={record.fields.Name.value} data-carousel-position="1">
+                <svg aria-hidden="true" class="appx-carousel-icon" name="left" >
+                    <use xlink:href="#left">
+                        <svg viewBox="0 0 24 24" id="left"><path d="M17.5 3.8v16.4c0 .4-.6.8-1 .4l-9.8-8c-.3-.3-.3-.9 0-1.2l9.8-8c.4-.4 1-.1 1 .4z"></path></svg>
+                    </use>
+                </svg>			            
+            </div>
+            <div class="appx-carousel-navigator-text">
+                 <span lwc:dom="manual" class="appx-carousel-navigator-description" data-carousel-position="1"></span>
+            </div>
+            <div onclick={next} class="appx-carousel-navigator-button--right" data-event="appx-carousel-navigator-right" data-listing-name="Flow Data Table Free Edition" data-carousel-position="2">
+                <svg aria-hidden="true" class="appx-carousel-icon" name="right" >
+                    <use xlink:href="#right">
+                        <svg viewBox="0 0 24 24" id="right"><path d="M6.5 20.2V3.8c0-.4.6-.8 1-.4l9.8 8c.3.3.3.9 0 1.2l-9.8 8c-.4.4-1 .1-1-.4z"></path></svg>
+                    </use>
+                </svg>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,38 @@
+<aura:component controller="cps_PlaygroundWizardInstallController">
+    <aura:attribute name="jobId" type="String" required="true" />
+    <aura:attribute name="text" type="String" required="true" />
+    <aura:attribute name="stage" type="String" default=""/>
+    <aura:attribute name="failed" type="Boolean" default="false" />
+    <aura:attribute name="checked" type="Boolean" default="false" />
+    <aura:attribute name="loading" type="Boolean" default="false" />
+    <aura:attribute name="class" type="String" required="false" />
+    <aura:attribute name="onclick" type="Object" required="false" />
+    <aura:attribute name="isRetryBtnVisible" type="boolean" default="false" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <li class="{! v.class }" onclick="{! v.onclick }" data-status="{! if(v.checked, 'Completed', if(v.failed, 'Failed', if(v.loading, 'In Progress','Pending'))) }">       
+        <div class="status">
+            <aura:if isTrue="{!v.failed}">
+                <img src="{! $Resource.cps_assets + '/Assets/close.svg' }" />
+            </aura:if>
+            <aura:if isTrue="{! v.checked }">
+                <i data-status="Completed">✓</i>
+            </aura:if>
+            <aura:if isTrue="{! v.loading }"> 
+                <aura:if isTrue="{!and(v.isRetryBtnVisible, or(v.stage=='PostInstallScript', v.stage=='Setup'))}" >
+                    <a style="text-decoration:none;" data-jobId="{!v.jobId}" onclick="{!c.changePlaygroundStatus}"><lightning:icon iconName="utility:refresh" alternativeText="Retry" title="Retry"  size="xx-small" /></a>
+                    <aura:set attribute="else">
+                        <div class="spinner" />
+                    </aura:set>
+                </aura:if>           
+            </aura:if>
+        </div>
+        <p>{! v.text }	</p> 
+        <div class="retry status">
+            <aura:if isTrue="{!v.failed}">
+                <aura:if isTrue="{!or(v.stage=='PostInstallScript', v.stage=='Setup')}">
+                    <a style="text-decoration:none;" data-jobId="{!v.jobId}" onclick="{!c.changePlaygroundStatus}"><lightning:icon iconName="utility:refresh" alternativeText="Retry" title="Retry"  size="xx-small" /></a>
+                </aura:if>
+            </aura:if>
+        </div>
+    </li>
+</aura:component>

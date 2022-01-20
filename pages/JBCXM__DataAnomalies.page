@@ -1,0 +1,58 @@
+<apex:page docType="html-5.0" controller="JBCXM.AdminBroker" extensions="JBCXM.GSCommonBroker" showHeader="true" sidebar="false" title="Data Anomalies">
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js" />
+
+    <script type="text/javascript">
+	    Visualforce.remoting.timeout = 120000; //To set the javascript remoting time out to 2mins.
+	    var GS={};
+	    	GS.remotingEndPoint = '{!$RemoteAction.AdminBroker.adminRequestBroker}';  
+	    GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';  
+	    GS.packageNS            = "{!(pkgNS)}";
+	    GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+	    GS.endPointURL = "{!(endPointUrl)}";
+	    GS.orgId       = "{!$Organization.Id}";
+	    GS.userId      =  "{!$User.Id}";
+	    GS.sessionId   =  "{!(sessionId)}";
+	    GS.userConfig = {
+	      userLocale  : {!(dateTimeFormatByLocale)},
+	      userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+	      userId      : "{!$User.Id}",
+	      emailId     : "{!$User.Email}",
+	      gainsightTabs       : fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+	      isLightningEnabled  : {!(isLightningEnabled)}
+	    };
+	    GS.actionMethod = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+    </script>
+    <div id="gs-app-container">
+    	  <div class="gs-module-container">
+    		<div style="padding-left: 5px; padding-right: 5px" class = "completePageDiv"></div>
+      </div>
+    </div>
+    
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["dataAnomalies/scripts/dataAnomalies.bundle.js"], styles:["dataAnomalies/styles/dataAnomalies.css"]});
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:9091/UI')}/dataAnomalies/styles/dataAnomalies.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "https://localhost:9091/UI")}/dataAnomalies/scripts/dataAnomalies.bundle.js"></script>
+    </apex:outputpanel>
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+    <script>
+        gainsightTrackEvents.pushPageViews('DataAnomalies');
+    </script>
+</apex:page>

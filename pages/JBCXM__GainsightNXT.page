@@ -1,0 +1,88 @@
+<apex:page name="GainsightNXT" docType="html-5.0"
+            Controller="JBCXM.GSCommonBroker" showHeader="true" sidebar="false"
+            title="Gainsight NXT" showChat="false"  tabStyle="GainsightNXT__tab"
+            extensions="JBCXM.AdminBroker,JBCXM.LayoutBroker,JBCXM.Customer360Broker,JBCXM.WorkFlowBroker,JBCXM.VaultBroker">
+
+    <script type="text/javascript" src="/soap/ajax/49.0/connection.js"></script>
+    <script type="text/javascript" src="/support/console/49.0/integration.js"></script>
+
+    <style>
+
+        .bodyDiv, .bodyDiv table, .bodyDiv td, .noSidebarCell{
+          padding:0 !important;
+        }
+
+        .noDataFound {
+            background-color: #F2F2F2;
+            display: table;
+            font-size: 15px;
+            height: 40px;
+            line-height: 40px;
+            margin: 50px auto 0;
+            padding: 0 10px;
+            text-align: center;
+            width: auto;
+        }
+        #gs-app-container{
+          height:100vh;
+          width:100% !important;
+        }
+        #gs-app-container > iframe{
+            height:100% !important;
+            width:100% !important;
+        }
+    </style>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var GS  = GS || {};
+        var hc = fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+
+        GS.appSessionId = hc.appSessionId;
+        GS.appUserId = hc.appUserId;
+        GS.appOrgId = hc.appOrgId;
+        GS.NSURL = hc.nsURL;
+        GS.gatewayURL = hc.gatewayURL;
+        GS.packageNS = hc.packageNS;
+        GS.isPackagedInstance = hc.isPackagedInstance;
+        GS.isLightningEnabled = hc.isLightningEnabled;
+
+        GS.remotingEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}'; //Not required
+        GS.commonRemotingEndPoint       = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.commonRemotingBulkEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        GS.AdminRemotingEndPoint         = '{!$RemoteAction.AdminBroker.adminRequestBroker}';
+        GS.AdminRemotingBulkEndPoint     = '{!$RemoteAction.AdminBroker.adminBulkRequestBroker}';
+        GS.CR360RemotingEndPoint       = '{!$RemoteAction.Customer360Broker.customer360RequestBroker}';
+        GS.CR360RemotingBulkEndPoint   = '{!$RemoteAction.Customer360Broker.customer360BulkRequestBroker}';
+        GS.workflowRemotingEndPoint      = '{!$RemoteAction.WorkFlowBroker.workFlowRequestBroker}';
+        GS.vaultRemotingEndPoint   = '{!$RemoteAction.VaultBroker.vaultRequestBroker}';
+        GS.dashboardRemotingEndPoint = '{!$RemoteAction.LayoutBroker.layoutRequestBroker}';
+        GS.dashboardRemotingBulkEndPoint = '{!$RemoteAction.LayoutBroker.layoutBulkRequestBroker}';
+        GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfig)}');
+    </script>
+
+    <div id="gs-app-container">
+
+    </div>
+
+     <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+             installResources({scripts: ["hybrid/scripts/hybrid.bundle.js"], styles:["hybrid/styles/hybrid.css"], skipNavigationItems: true});
+        </script>
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:8080/UI')}/hybrid/styles/hybrid.css" />
+        <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "https://localhost:8080/UI")}/hybrid/scripts/hybrid.bundle.js"></script>
+    </apex:outputpanel>
+
+    <script>
+        var GSGA = {
+            orgId   : "{!$Organization.Id}",
+            orgName : "{!(JSINHTMLENCODE($Organization.Name))}",
+            userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+        };
+    </script>
+    <script>
+
+    </script>
+</apex:page>

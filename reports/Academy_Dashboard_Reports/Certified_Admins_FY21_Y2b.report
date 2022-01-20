@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Academy_Certification__c.Student_Name__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification__c.Certification_Student__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification__c.Certification_Program__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification__c.Expiration_Date__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification__c.Status__c</field>
+    </columns>
+    <columns>
+        <field>CUST_CREATED_DATE</field>
+    </columns>
+    <currency>EUR</currency>
+    <format>Tabular</format>
+    <name>Certified Admins FY21</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Academy_Certification__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CUST_CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

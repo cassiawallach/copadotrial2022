@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_93306749</developerName>
+        <masterLabel>Lead Source</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>LEAD_SOURCE</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>AppExchange Chat Bot</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>AppExchange</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Watch Demo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>BDR Outbound</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Click Deploy</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Drift</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>G2</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paid Ad</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Trade Show</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Virtual Event</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Web</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Webinar</sourceValue>
+            </sourceValues>
+            <value>Marketing</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Partner Outbound</sourceValue>
+            </sourceValues>
+            <value>Partner</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>AE Outbound</sourceValue>
+            </sourceValues>
+            <value>AE</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>CSM Outbound</sourceValue>
+            </sourceValues>
+            <value>CSM</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_87544136</developerName>
+        <masterLabel>SQL v. SAL</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>STAGE_NAME</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Marketing Qualification</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Prospecting</sourceValue>
+            </sourceValues>
+            <value>SQL</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Discovery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Alignment</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Solution Validation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Proposition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Formal Proposal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Signed Contract Received</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Won</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Closed Lost</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Fully Paid</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Negotiation/Review</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Best Case</sourceValue>
+            </sourceValues>
+            <value>SAL</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_53845762</developerName>
+        <masterLabel>Source Category</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>LEAD_SOURCE</sourceColumnName>
+        <useOther>false</useOther>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>RowCount</column>
+        </chartSummaries>
+        <chartType>VerticalColumn</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>Opportunity.Alliances_Owner__c</groupingColumn>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer,Add-on,New Business Add-on</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>,Marketing Qualification</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Region__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>EMEA,APAC,LACA,LATAM</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.Alliances_Owner__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Month</dateGranularity>
+        <field>Opportunity.SAL_Acceptance_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.Alliances_Owner__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>EMEA Weekly Sales Meeting Alliance SALS</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity.SAL_Acceptance_Date__c</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

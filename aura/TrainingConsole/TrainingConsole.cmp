@@ -1,0 +1,124 @@
+<aura:component controller="TrainingConsole" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="isShow" type="boolean" default="false" />
+    <aura:attribute name="columnName" type="String" />
+    <aura:attribute name="DefaultcolumnName" type="String" />
+    <aura:attribute name="PlaygorudColumns" type="String" />
+    
+    <aura:attribute name="CertificatePrograms" type="String" />
+    <aura:attribute name="ILTEventList" type="list" />
+    <aura:attribute name="ILTClassesList" type="list" />
+    <aura:attribute name="responseData" type="list" />
+    <aura:attribute name="TableData" type="list" />
+    <aura:attribute name="userPlaygroundList" type="list" />
+    <aura:attribute name="eventRegisterUsers" type="list" />
+    <aura:attribute name="EventSelectedValue" type="String" access="PRIVATE"/>
+    <aura:attribute name="ILTClassSelectedValue" type="String" access="PRIVATE"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="AcademyCertificationPrograms" type="list" />
+    <aura:attribute name="APEX_Response" type="list" />
+    <aura:attribute name="APEX_Response_Of_prerequistiteItems" type="list" />
+    <aura:attribute name="APEX_Response_Of_Playgrounds" type="list" />
+    
+    <aura:attribute name="columnSet" type="boolean" default="false"/>
+     <aura:attribute name="Isloaded" type="Boolean" default="false" />
+    
+    <div class="demo-only slds-m-vertical_x-small" style="padding:0.5rem;background:#16325c">
+        <div class="slds-text-color_inverse slds-text-align_center slds-text-heading_medium ">Training Console</div>
+    </div>
+    
+    <lightning:card class="slds-m-around_small">
+        <p class="slds-p-horizontal_small">
+            <div class="slds-m-around_small">
+                <div class="slds-grid slds-gutters slds-m-bottom_large" >
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:select label="Event" class="customselect" name="ILTEvent" aura:id="ILTEvent" value="{!v.EventSelectedValue}" onchange="{!c.handleChangeEvent}">
+                            <option value="" selected="{!v.reset}" >--None--</option>
+                            <aura:iteration items="{!v.ILTEventList}" var="item">
+                                <option value="{!item.Id}" >{!item.Name}</option>
+                            </aura:iteration>
+                        </lightning:select>                    
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:select label="Class" class="customselect" name="ILTClass" aura:id="ILTClass" value="{!v.ILTClassSelectedValue}">
+                            <option value="" selected="{!v.reset}" >--None--</option>
+                            <aura:iteration items="{!v.ILTClassesList}" var="item">
+                                <option value="{!item.Id}" >{!item.Name}</option>
+                            </aura:iteration>
+                        </lightning:select>                   
+                    </div>
+                    
+                    <div class="slds-col slds-size_4-of-12 margin_top_1">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_8-of-2">
+                                <lightning:button class="slds-text-align_right" label="Apply Filter" title="Apply Filter" onclick="{! c.handleApplyFilter }"/>
+                            </div>
+                            <div class="slds-col slds-size_4-of-2">
+                                <!--<lightning:button class="slds-text-align_right" label="Reset" title="Reset" onclick="{! c.handleReset }"/>-->
+                                <lightning:buttonIcon iconName="utility:refresh" class="slds-text-align_right refresh-button" title="Reset" variant="border-filled" alternativeText="reset" iconClass="dark" onclick="{! c.handleReset }" />
+                                
+                            </div>
+                        </div>                  
+                    </div>
+                </div>
+                <aura:if isTrue="{!v.isShow}">
+                    <div class="slds-order-list">
+                        <lightning:datatable aura:id="ClassRoasterTable"
+                                             keyField="Id"
+                                             class="ClassRoasterDataTableClass"
+                                             columns="{!v.columnName}"
+                                             data="{!v.TableData}"
+                                             hideCheckboxColumn="true"
+                                             showRowNumberColumn="true"
+                                             onrowaction="{! c.handleRowAction }"
+                                             />
+                    </div>
+                </aura:if>
+            </div>
+        </p>
+    </lightning:card>
+    
+    <aura:if isTrue="{!v.isOpen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        <div class="demo-only" style="padding:0.5rem;background:#653204">
+                            <div class="slds-text-color_inverse slds-text-title_caps">Playgrounds</div>
+                        </div>
+                        
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-m-top_large slds-child-product-list">
+                        <lightning:datatable aura:id="playgroundsList"
+                                             keyField="Id"
+                                             class="PlaygroundDataTableClass"
+                                             columns="{!v.PlaygorudColumns}"
+                                             data="{!v.userPlaygroundList}"
+                                             hideCheckboxColumn="true"
+                                             showRowNumberColumn="true"
+                                             />
+                    </div> 
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <div class="exampleHolder">
+        <aura:if isTrue="{! v.Isloaded }">
+                <lightning:spinner alternativeText="Loading" />
+        </aura:if>
+    </div>
+</aura:component>

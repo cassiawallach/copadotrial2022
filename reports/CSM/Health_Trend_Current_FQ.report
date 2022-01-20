@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Customer_Success_History__c$Name</field>
+    </columns>
+    <columns>
+        <field>Customer_Success_History__c$Account__c</field>
+    </columns>
+    <columns>
+        <field>Customer_Success_History__c$Account_Health__c</field>
+    </columns>
+    <columns>
+        <field>Customer_Success_History__c$Account_Health_Previous__c</field>
+    </columns>
+    <columns>
+        <field>Customer_Success_History__c$Account_Health_Code_Summary__c</field>
+    </columns>
+    <columns>
+        <field>Customer_Success_History__c$Next_Steps__c</field>
+    </columns>
+    <columns>
+        <field>Customer_Success_History__c$Account_Health_Code_Summary_Previous__c</field>
+    </columns>
+    <columns>
+        <field>Customer_Success_History__c$Next_Steps_Previous__c</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Tabular</format>
+    <name>Health Trend Current FQ</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Customer_Success_Field_History_Tracking__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Customer_Success_History__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

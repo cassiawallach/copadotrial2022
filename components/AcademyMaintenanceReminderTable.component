@@ -1,0 +1,30 @@
+<apex:component id="AcademyMaintenanceReminderTable" controller="AcademyMaintenanceReminderTableCtr" access="global">
+    <apex:slds />
+    <apex:attribute name="contactId" type="String" description="Id of the contact to find related certifications" assignTo="{!contactIdApex}" />
+
+    <table style="border-collapse:collapse;margin-bottom:30px;width:100%;">
+        <thead>
+        <tr>
+            <th style="color:#666662;font-size:13px;font-weight:500;text-align:left;border-top:1px solid #dcdcdc;border-bottom:1px solid #dcdcdc;padding:10px 10px 10px 0px;min-width:70px">Credential</th>
+            <th style="color:#666662;font-size:13px;font-weight:500;text-align:left;border-top:1px solid #dcdcdc;border-bottom:1px solid #dcdcdc;padding:10px 10px 10px 0px">Status</th>
+            <th style="color:#666662;font-size:13px;font-weight:500;text-align:left;border-top:1px solid #dcdcdc;border-bottom:1px solid #dcdcdc;padding:10px 10px 10px 0px">Expiration Date</th>
+            <th style="color:#666662;font-size:13px;font-weight:500;text-align:left;border-top:1px solid #dcdcdc;border-bottom:1px solid #dcdcdc;padding:10px 10px 10px 0px;min-width:100px">Actions to be taken</th>
+        </tr>
+        </thead>
+        <tbody>
+        <apex:repeat value="{!ContactCertifications}" var="cert">
+            <tr>
+                <td style="color:#3e3e3c;border-bottom:1px solid #dcdcdc;padding:8px 10px 15px 0px">{!cert.credentialName}</td>
+                <td style="color:#3e3e3c;border-bottom:1px solid #dcdcdc;padding:8px 10px 15px 0px">{!cert.credentialStatus}</td>
+                <td style="color:#3e3e3c;border-bottom:1px solid #dcdcdc;padding:8px 10px 15px 0px">
+                    <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                        <apex:param value="{!cert.expirationDate}" /> 
+                    </apex:outputText>
+                </td>
+                <td style="color:#3e3e3c;border-bottom:1px solid #dcdcdc;padding:8px 10px 15px 0px">{!cert.actionsToTake}</td>
+            </tr>
+        </apex:repeat>
+        </tbody>
+    </table>
+
+</apex:component>

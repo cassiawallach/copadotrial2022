@@ -1,0 +1,29 @@
+<apex:page standardController="redwing__ILT_Location__c" extensions="ltui.ILTLocationCmpCtrl">
+
+    <apex:includeLightning />
+    <div id="lightning" />
+
+    <apex:form >
+        <apex:actionFunction action="{!cancel}" name="cancelEvent"></apex:actionFunction>
+    </apex:form>
+
+    <script>
+    var eventHandler = function(event) {
+          var opt = JSON.parse(event.getParam("message"));
+          if (opt.action == "cancel") {
+              cancelEvent();
+          }
+        }
+
+        $Lightning.use("{!ns}:ILTOutApp", function() {
+            $Lightning.createComponent("{!ns}:ILTLocationCmp",
+            {
+                "recordId" : '{!redwing__ILT_Location__c.Id}',
+            },
+            "lightning",
+            function(cmp) {
+                $A.eventService.addHandler({ "event": "{!ns}:ILTEvent", "handler" : eventHandler});
+            });
+        });
+    </script>
+</apex:page>

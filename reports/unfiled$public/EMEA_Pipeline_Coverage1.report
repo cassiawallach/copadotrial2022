@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <acrossGroupingContext>BucketField_3559960</acrossGroupingContext>
+        <calculatedFormula>ForecastingQuota.QuotaAmount.CONVERT:SUM/(ForecastingQuota.QuotaAmount.CONVERT:SUM-PREVGROUPVAL(ForecastingItem.ForecastAmount.CONVERT:SUM,BucketField_3559960,1))</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <downGroupingContext>ForecastingQuota$Owner</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Pipeline Coverage</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_3559960</developerName>
+        <masterLabel>Opp Status</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Closed</sourceValue>
+            </sourceValues>
+            <value>Closed</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Omitted</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Pipeline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Best Case</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Commit</sourceValue>
+            </sourceValues>
+            <value>Open</value>
+        </values>
+    </buckets>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota$QuotaAmount.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ForecastingQuota.ForecastingQuotaItems$ForecastAmount.CONVERT</field>
+    </columns>
+    <currency>USD</currency>
+    <description>FY22 EMEA Sales dashboard for AEs</description>
+    <filter>
+        <criteriaItems>
+            <column>ForecastingQuota.ForecastingQuotaItems$ForecastCategoryName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Omitted,Pipeline,Best Case,Commit,Closed</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ForecastingQuota$Owner</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Juan,Johannes,Marcel,Steve Harris</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_3559960</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ForecastingQuota$Owner</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>EMEA - Pipeline Coverage</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>orecasting_Quotas_w_wo_Forecasting_Items__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>ForecastingQuota$StartDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

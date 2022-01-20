@@ -1,0 +1,36 @@
+<!-- *****************************************************************************************************************************************
+*    Name:        		ManageLinesOpportunity
+*    
+*    Description:       This page is used to add/edit Opportunity Product/Service Line items 
+*
+*   Page History:       Created by Kiran Kurella July 22nd 2014
+*
+*   Copyright 2016 Kugamon.  All rights reserved.    
+***************************************************************************************************************************************** -->
+
+<apex:page standardController="Opportunity" extensions="kuga_sub.ManageLinesOpportunityExt" sidebar="false" action="{!checkPricebook}" id="thePage">
+
+	<style>
+		.tertiaryPaletteNew {
+		    background-color: #ddb929 !important;
+		    border-color: #ddb929 !important;
+		}
+	</style>
+
+	<apex:outputPanel rendered="false" >
+		<apex:outputField value="{!Opportunity.Pricebook2Id}" />
+		<apex:outputField value="{!Opportunity.Pricebook2.Name}" />
+	    <apex:outputField value="{!Opportunity.Name}" />
+	    <apex:outputField value="{!Opportunity.Account.Name}" />
+	    <apex:outputField value="{!Opportunity.RecordTypeId}" />
+	    <apex:outputField value="{!Opportunity.RecordType.Name}" />
+	    <apex:outputField value="{!Opportunity.kuga_sub__ServiceDateExpires__c}" />
+	    <!-- 
+	    <apex:outputField value="{!Opportunity.ContractId}" />
+	    <apex:outputField value="{!Opportunity.Contract.StartDate}" />
+	    <apex:outputField value="{!Opportunity.Contract.EndDate}" />
+	    -->
+    </apex:outputPanel>
+
+	<c:ManageLines lineType="Opportunity" manageLinesOppCon="{!ManageLinesOppCon}" id="pageComp"/>
+</apex:page>

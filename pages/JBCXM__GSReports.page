@@ -1,0 +1,86 @@
+<apex:page sidebar="false" title="Gainsight Reports" controller="JBCXM.GSCommonBroker" tabStyle="Administration__tab">
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+            <div class="gainsight-app" style="width:100%">
+                <gs-root></gs-root>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .bPageFooter.noTableFooter {
+            display:none;
+        }
+    </style>
+
+    <script>
+        var hc = eval({!(headerConfig)
+        });
+        var apiEndPoint = hc.gatewayURL;
+        var authorization = "";
+
+        var appSessionId = hc.appSessionId;
+        var appUserId = hc.appUserId;
+        var appOrgId = hc.appOrgId;
+        var GS = GS || {};
+        GS.gainsightTabs = eval({!(GainsightTabs)});
+
+        GS.commonRemotingEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingCommonBulkEndPoint = '{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+        var host = "SALESFORCE";
+        GS.appName = "gainsight-ng-ui/reports/reports";
+
+        var urlParams = window.location.search
+            .substring(1)
+            .split("&")
+            .map(function(v) {
+                return v.split("=");
+            })
+            .reduce(function(acc, arr) {
+                if (acc[arr[0]]) {
+                    if (!Array.isArray(acc[arr[0]])) {
+                        acc[arr[0]] = [acc[arr[0]]]
+                    }
+                    if (arr[0]) {
+                        acc[arr[0]].push(decodeURIComponent(arr[1]))
+                    }
+                } else {
+                    if (arr[0]) {
+                        acc[arr[0]] = decodeURIComponent(arr[1]);
+                    }
+                }
+                return acc;
+            }, {});
+
+    </script>
+    <apex:includeScript value="/support/console/43.0/integration.js"/>
+    <apex:outputpanel rendered="{!If($CurrentPage.parameters.env == null , true, false)}">
+        <c:Features360 moduleName="reports"/>
+        <script>
+            installResources({
+                scripts: [
+                    "runtime-es5.js",
+                    "runtime-es2015.js",
+                    "polyfills-es2015.js",
+                    "polyfills-es5.js",
+                    "main-es2015.js",
+                    "main-es5.js"
+                ],
+                styles : ["styles.css"]
+            });
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel rendered="{!If($CurrentPage.parameters.env == 'dev' , true, false)}">
+        <script>
+            GS.cdnUrl = "https://localhost:4200/";
+        </script>
+        <apex:stylesheet value="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <script type="text/javascript" src="https://localhost:4200/runtime.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/polyfills.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/styles.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/vendor.js"></script>
+        <script type="text/javascript" src="https://localhost:4200/main.js"></script>
+    </apex:outputpanel>
+
+</apex:page>

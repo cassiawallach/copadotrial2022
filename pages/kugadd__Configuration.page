@@ -1,0 +1,605 @@
+<!--/*****************************************************************************************************************************************
+*    Class Name:        ConfigurationPage
+*    
+*    Description:       This page enables the user to set the Synchronization Settings for Kugamon's Account/Contact Sync Application
+*
+*    Dependencies:      Kugadd__Account_Contact_Sync_Settings__c Custom Settings
+*                       ConfigurationController Apex Class
+*                       AccountContactAddressBatcher Apex Class
+*
+*   Page History:       Original Page Created by Kuldip Hillyer 23-Apr-2013 for Configuration(Classic Salesforce View)
+*                       Page was re-written by Gordon Petrie 4-Aug-2016 using new Lightning Compatible elements
+*                       modified to be accessed from VF page by Java Remoting / Remote Action.  All functionality from original
+*                       page has been preserved between Javascript on the page and the related Controller Class
+*
+*   Copyright 2016 Kugamon.  All rights reserved.    
+***************************************************************************************************************************************** -->
+<apex:page showHeader="true" id="pageId" standardStylesheets="false" sidebar="true" applyHtmlTag="true" applyBodyTag="false" docType="html-5.0" Controller="kugadd.ConfigurationController">    
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+<head>
+  <apex:stylesheet value="{!URLFOR($Resource.kugadd__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+<style>
+    p.line-normal {
+        line-height : 120%;
+    }
+    p.line-large {
+        line-height : 130%;
+    }
+    checkboxLabel.label-normal{
+        font-size : 0.8125rem;
+        color : #16325c;
+    }
+    .kugamon .slds-card + .slds-card {
+       margin-top: 0.6rem;
+    }
+</style>      
+</head>
+<body>    
+  <!-- REQUIRED SLDS WRAPPER -->
+    <div class="kugamon">          
+        <!-- - - - - - - - - - - - - - - - - - - - - -  PAGE HEADER  S T A R T  - - - - - - - - - - - - - - - - - - - - - -->
+        <div class="slds-page-header slds-p-horizontal--x-small" role="banner" >  <!-- OUTER FRAME START -->
+            <!-- SETUP ICON  -->
+            <div class="slds-media slds-media--center">
+                <div class="slds-media__figure slds-align-middle slds-p-bottom--x-small">                        
+                    <a target="_blank" href="http://www.kugamon.com" >
+                        <svg aria-hidden="true" class="slds-icon slds-icon-custom-custom3">
+                            <use xlink:href="{!URLFOR($Resource.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom3')}"></use>
+
+                        </svg>
+                    </a>
+                </div> 
+                                
+                <div class="slds-media__body">
+                    <p class="slds-text-heading--label">
+                        <a target="_blank" href="http://www.kugamon.com"><b>kugamon</b></a>
+                    </p>
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle slds-vert-align-top"><b>Account/Contact Sync</b></h1> 
+                </div>                
+            </div>
+            
+          <!-- PAGE NOTIFICATION AREA -->
+            <!-- ERROR NOTIFICATION -->
+            <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture slds-hide" id="errorNotification" role="alert">
+                <button class="slds-button slds-button--icon-inverse slds-notify__close" onclick="closeNotification('Error');">
+                    <svg aria-hidden="false" class="slds-button__icon" onclick="closeNotification('Error');">
+                        <use xlink:href="{!URLFOR($Resource.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#close')}" ></use>
+                    </svg>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <span class="slds-assistive-text" id="errorNotificationIcon">Error</span>
+                <h2>
+                    <svg aria-hidden="false" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                        <use id="errorNotificationURL" xlink:href="{!URLFOR($Resource.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#error')}"></use>
+                    </svg><span id="errorNotificationMessage">Message Here</span>
+                </h2>
+            </div>
+
+            <!-- SUCCESS NOTIFICATION -->
+            <div class="slds-notify slds-notify--alert slds-theme--success slds-theme--alert-texture slds-hide" id="successNotification" role="alert">
+                <button class="slds-button slds-button--icon-inverse slds-notify__close" onclick="closeNotification('Success');">
+                    <svg aria-hidden="false" class="slds-button__icon" onclick="closeNotification('Success');">
+                        <use xlink:href="{!URLFOR($Resource.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#close')}" ></use>
+                    </svg>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <span class="slds-assistive-text" id="successNotificationIcon">Success</span>
+                <h2>
+                    <svg aria-hidden="false" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                        <use id="successNotificationURL" xlink:href="{!URLFOR($Resource.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#success')}"></use>
+                    </svg><span id="successNotificationMessage">Message Here</span>
+                </h2>
+            </div>
+        
+          <!-- INVITE TO EMAIL -->
+            <div class="slds-text-body--regular">
+                <p class="line-normal">
+                    <br/>Please email us at
+                        <a href="mailto:address@kugamon.com?subject=Kugamon Address Customer Question">address@kugamon.com</a>, if you have any feedback to improve the Kugamon Address application. We strive continuously to make it better.   
+                </p>
+                <br/>
+            </div>
+    <!-- - - - - - - - - - - - - - - - - - - - - -  PAGE HEADER  END  - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - -  PAGE BODY START  - - - - - - - - - - - - - - - - - - - - - -->      
+    <!-- PRIMARY CONTENT WRAPPER -->
+            <div class="slds-card slds-p-horizontal--x-small" style="background-color:white;border-style:none">
+                <div class="slds-card" style="border-radius:0px 0px 0px 0px;border-style:none;background-color:white;padding-bottom:8px">
+                   <!-- <div class="slds-box slds-p-horizontal--x-small slds-p-vertical--none" style="border-style:none"> -->
+                    <center>
+                        <div class="slds-text-heading--medium slds-p-around slds-p-around--small" style="color:#16325c;"><b>Configuration</b>
+                        </div>
+                    </center>
+
+                <!--    </div>  -->
+                <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 1 SECTION START  - - - - - - - - - - - - - - - - - - - - - -->
+
+                   <div class="slds-card slds-p-around--xx-small">
+                        <div class="slds-card slds-p-horizontal--x-small slds-p-vertical--xx-small slds-theme--info ">
+                            <div class="slds-col slds-col--padded slds-size--12-of-12">
+                                <span class="slds-text-heading--x-small">Step 1:  Initialize Account/Contact Sync</span>
+                            </div>                    
+                        </div>
+                        
+                        <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                <p class="line-normal">
+                                <br/>Start the automated background process to sync Account and Contact information. If the addresses match or unfilled, sync occurs according to the following rule:
+                                <br/>
+                                <br/>
+                                <b>Account Record:</b>
+                                <br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;1) Account Billing Address to Account Shipping Address
+                                <br/>
+                                <br/>
+                                <b>Contact Record:</b>
+                                <br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;2) Account Billing Address to Contact Mailing Address<br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;3) Account Shipping Address to Contact Other Address<br/>
+                                <br/>
+                                Note: If the addresses do not match, there is no sync.
+                                <br/>
+                                <br/>
+                                </p>  
+                                </div>
+                                    <button class="slds-button slds-button--brand" id="startSyncButton" disabled="" onclick="startSynchProcess();" oncomplete="startSynchProcess();">Start</button>
+                                    <p class="line-normal"><br/></p>
+                            </div>
+                        </div>
+                    </div>
+        <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 1 SECTION END  - - - - - - - - - - - - - - - - - - - - - -->               
+              
+        <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 2 SECTION START  - - - - - - - - - - - - - - - - - - - - - -->
+                    <div class="slds-card slds-p-around--xx-small">
+                        <div class="slds-card slds-p-horizontal--x-small slds-p-vertical--xx-small slds-theme--info ">
+                            <div class="slds-col slds-col--padded slds-size--12-of-12">
+                                <span class="slds-text-heading--x-small">Step 2: Enable Manual Mass Update Feature</span>
+                            </div>                    
+                        </div>
+                        <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                    <p class="line-large">
+                                    <br/>To perform manual mass updates to the Contact records for a particular Account, please add the <b>Contact Address Manager</b> button or link. To add this button or link, please click <b>Setup | Customize</b> under <b>App Setup | Accounts | Page Layouts</b>. Then click on each page layout and add the <b>Contact Address Manager</b> button or link. Click <b>Save</b>." 
+                                    </p>        
+                                </div>
+                                <br/>
+                                <div class="slds-card__body slds-text-align--left slds-text-body--regular">
+                                    <p class="line-normal">Shortcut to
+                                    <a target="_top" href="{! If(OR($User.UIThemeDisplayed == 'Theme1', $User.UIThemeDisplayed == 'Theme2', $User.UIThemeDisplayed == 'Theme3', $User.UIThemeDisplayed == 'PortalDefault', $User.UIThemeDisplayed == 'Webstore' ) == true, '/ui/setup/layout/PageLayouts?type=Account&setupid=AccountLayouts', '/one/one.app?source=aloha#/setup/object/Account?')} ">
+                                      <b>Accounts Page Layouts</b>
+                                    </a>
+                                    </p>
+                                </div>
+                                <p class="line-normal"><br/></p>
+                            </div>
+                        </div>
+                    </div>
+        <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 2 SECTION END  - - - - - - - - - - - - - - - - - - - - - -->
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 3 SECTION START  - - - - - - - - - - - - - - - - - - - - - -->
+                     <div class="slds-card slds-p-around--xx-small">
+                        <div class="slds-card slds-p-horizontal--x-small slds-p-vertical--xx-small slds-theme--info ">
+                            <div class="slds-col slds-text-body--regular slds-col--padded slds-size--12-of-12">
+                                <span class="slds-text-heading--x-small">Step 3: Set Account Sync Behavior</span>                    
+                            </div>
+                        </div>
+
+                       <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                        <p class="line-normal">
+                                            <br/>
+                                        </p>
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-checkbox"> 
+                                                    <input type="checkbox" name="options" id="disableAccountSync" class ="slds-input slds-text-body--regular" onchange="toggleAccountContactDisable('false', 'false');"/>
+                                                    <span class="slds-checkbox--faux"></span>
+                                                    <span class="slds-form-element__label">
+                                                    <checkboxLabel class="label-normal">
+                                                    <b>
+                                                        Disable Account Billing Address to Shipping Address Auto Sync
+                                                    </b>
+                                                    </checkboxLabel>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <p class="line-normal">
+                                            <br/>
+                                        </p>
+                                    </div>       
+                            </div>
+                        </div>
+
+                        <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                    <p class="line-large">
+                                     Note: To disable automatic address update within a particular Account record, please add the <b>Disable Billing/Shipping Address Sync</b> field to the page layout. This will make sure the Billing Address does not change the Shipping Address. To enable this field, please click <b>Setup | Customize</b> under <b>App Setup | Accounts | Page Layouts</b>. Move the <b>Disable Billing/Shipping Address Sync</b> field to underneath the Billing Address and click <b>Save</b>.
+                                     <br/>
+                                     <br/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                    <button class="slds-button slds-button--neutral" disabled=""  id="saveButtonSection3" onclick="actionSave();" oncomplete="enableSaveButtons();">Save</button>
+                                    <p class="line-normal"><br/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 3 SECTION END  - - - - - - - - - - - - - - - - - - - - - -->
+
+
+                <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 4 SECTION START  - - - - - - - - - - - - - - - - - - - - - -->
+                    <div class="slds-card slds-p-horizontal--x-small slds-p-vertical--xx-small">
+                        <div class="slds-card slds-p-horizontal--x-small slds-p-vertical--xx-small slds-theme--info ">
+                            <div class="slds-col slds-text-body--regular slds-col--padded slds-size--12-of-12">
+                                <span class="slds-text-heading--x-small">Step 4: Set Contact Sync Behavior</span>                                
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                    <p class="line-normal">
+                                        <br/>
+                                    </p>
+                                    
+                                    <!-- CHECKBOXES -->
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-checkbox">
+                                                <input type="checkbox" name="options01" id="disableContactSync" onchange="toggleAccountContactDisable('false', 'false');"/>
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-form-element__label"><checkboxLabel class="label-normal"><b class="label-normal">Disable Account Address, Phone, and Fax to Contact Auto Sync</b></checkboxLabel></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-checkbox">
+                                                <input type="checkbox" name="options02" class="cb" id="disableContactPhoneSync" />
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-form-element__label"><checkboxLabel class="label-normal">Disable Account Phone to Contact Auto Sync</checkboxLabel></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-checkbox">
+                                                <input type="checkbox" class="cb" name="options03" id="disableContactFaxSync" />
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-form-element__label"><checkboxLabel class="label-normal">Disable Account Fax to Contact Auto Sync</checkboxLabel></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-text-body--regular">
+                                        <p class="line-large">
+                                            <br/>            
+                                            Note: To disable Account to Contact automatic address, phone and fax update within a particular Contact record, please add the <b>Disable Account to Contact Sync</b> field to the page layout. This will make sure the Mailing Address, Other Address, Phone, and Fax are not updated due to changes in the Account. To enable this field, please click <b>Setup | Customize</b> under <b>App Setup | Contacts | Page Layouts</b>. Move the <b>Disable Account to Contact Sync</b> field to underneath the Mailing Address and click <b>Save</b>.
+                                            <br/>
+                                            <br/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                           
+                        <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                    <button class="slds-button slds-button--neutral" disabled="" id="saveButtonSection4" onclick="actionSave();" oncomplete="enableSaveButtons();">Save</button>
+                                    <p class="line-normal"><br/></p>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+         <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 4 SECTION END  - - - - - - - - - - - - - - - - - - - - - -->
+        
+         <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 5 SECTION START  - - - - - - - - - - - - - - - - - - - - - -->
+            
+                    <div class="slds-card slds-p-horizontal--x-small slds-p-vertical--x-small">
+                        <div class="slds-card slds-p-horizontal--x-small slds-p-vertical--xx-small slds-theme--info ">
+                            <div class="slds-col slds-text-body--regular slds-col--padded slds-size--12-of-12">
+                                <span class="slds-text-heading--x-small">Step 5: Minimize Orphaned Contacts</span>              
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-text-body--regular">
+                            <div class="slds-col--padded slds-size--12-of-12">
+                                <div class="slds-text-align--left slds-text-body--regular">
+                                    <p class="line-large">
+                                    <br/>To help ensure high quality data, make the Account field on the Contact object required. This will make sure you have no orphaned Contacts. To enable the required field, please click <b>Setup | Customize</b> under <b>App Setup | Contacts | Page Layouts</b>. Choose the Account field and select <b>Required</b>. Click <b>Save</b>."
+                                    </p>      
+                                </div>
+                                <br/>
+                                <!-- For Classic: https://na7.salesforce.com/ui/setup/layout/PageLayouts?type=Contact -->
+                                <!-- For Lightning: https://na7.lightning.force.com/one/one.app?source=aloha#/setup/object/Account?-->
+                                <div class="slds-card__body slds-text-align--left slds-text-body--regular"> Shortcut to  
+                                    <a target="_top" href="{! If(OR($User.UIThemeDisplayed == 'Theme1', $User.UIThemeDisplayed == 'Theme2', $User.UIThemeDisplayed == 'Theme3', $User.UIThemeDisplayed == 'PortalDefault', $User.UIThemeDisplayed == 'Webstore' ) == true, '/ui/setup/layout/PageLayouts?type=Contact&setupid=ContactLayouts', '/one/one.app?source=aloha#/setup/object/Contact?')}"><b>Contacts Page Layouts</b></a>
+                                </div>
+                                <p class="line-normal"><br/></p>
+                            </div>  
+                        </div>
+                    </div>
+          <!-- - - - - - - - - - - - - - - - - - - - - -  STEP 5 SECTION END  - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- / PRIMARY CONTENT WRAPPER -->        
+                 
+                </div> 
+            </div>
+        </div> <!-- OUTER FRAME START -->     
+    </div> <!--  END KUGEMON CLASS DIV REQUIRED WRAPPER -->
+</body>
+    <!-- - - - - - - - - - - - - - - - - - - - - -  PAGE BODY END  - - - - - - - - - - - - - - - - - - - - - --> 
+
+    <!--==========================================================================================================
+    =     JAVASCRIPT START
+    ===========================================================================================================-->
+    
+
+<script>
+    //------------------------------------------------------------
+    // CALL TO FUNCTIONS REQUIRED TO INITIALIZE VALUES IN THE PAGE
+    //------------------------------------------------------------
+    window.onload = function() {
+        initializePage();
+    }
+
+    //----------------------------------------------------------------------
+    // PAGE INITIATION FUNCTION - SETS VALUES RETRIEVED FROM CUSTOM SETTING
+    //----------------------------------------------------------------------
+    function initializePage(){
+        // JAVASCRIPT REMOTING CALL TO APEX CONTROLLER
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ConfigurationController.initSettings}',
+            // HANDLE RESPONSE FROM APEX CONTROLLER
+            function(result, event){
+                // HANDLE SUCCESSFUL RESPONSE FROM APEX
+                if (event.status) {
+                    // Get DOM IDs for HTML and assign values
+                    document.getElementById('disableContactPhoneSync').checked = result.kugadd__DisableAccountPhonetoContactSync__c;
+                    document.getElementById('disableContactFaxSync').checked = result.kugadd__DisableAccountFaxtoContactSync__c;
+                    document.getElementById('disableContactSync').checked = result.kugadd__DisableAccountToContactSync__c;
+                    document.getElementById('disableAccountSync').checked = result.kugadd__DisableBillingShippingAddressSync__c;
+                    // Set Warning and Interrelated Checkbox Values If All Synchs are Disabled,
+                    setflags();
+                    toggleAccountContactDisable('true', 'true');
+                }
+                // HANDLE UNSUCCESSFUL RESPONSE FROM APEX 
+                else if (event.type === 'exception') {
+                    var eventErrorMessage = event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                    createMessage(errorClassText, locForWarningIcon, 'Error', eventErrorMessage);  
+                } 
+                // HANDLE ANY OTHER SYSTEM ERROR MESSAGES
+                else {
+                    var eventErrorMessage = event.message;
+                    createMessage(errorClassText, locForWarningIcon, 'Error', eventErrorMessage);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+
+
+    //----------------------------------------------------------------------
+    // GLOBAL VARIABLE DECLARATIONS 
+    //----------------------------------------------------------------------
+    var disableAcctSync = document.getElementById('disableAccountSync').checked;
+    var disableContSync = document.getElementById('disableContactSync').checked;
+    var disableAcctPhoneToContactSync = document.getElementById('disableContactPhoneSync').checked;
+    var disableAcctFaxToContactSync = document.getElementById('disableContactFaxSync').checked;
+
+    var disableWarningMessage = 'Disabling both Step 3 and Step 4 has turned off the Account/Contact Sync application.';
+    var processStartSuccessMessage = 'Account/Contact Sync process has started successfully.';
+    var saveSuccessMessage = 'Account/Contact Sync settings has been saved successfully.';
+
+    var errorClassText = 'slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture slds-visible';
+    var successClassText = 'slds-notify slds-notify--alert slds-theme--success slds-theme--success-texture slds-visible';
+    var hideClassText = 'slds-hide';
+
+    var locForSuccessIcon = "{!URLFOR($Resource.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#success')}";
+    var locForWarningIcon = "{!URLFOR($Resource.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#warning')}";
+
+
+    //-----------------------------------------------------------------------
+    // DATA ACTION FUNCTION - INITIATE THE SYNCH PROCESS
+    //-----------------------------------------------------------------------
+    function startSynchProcess() {
+            document.getElementById('startSyncButton').setAttribute("disabled", "true");
+            createMessage(successClassText, locForSuccessIcon, 'Success', processStartSuccessMessage);
+
+        // JAVASCRIPT REMOTING CALL TO APEX CONTROLLER
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ConfigurationController.startAccountContactSync}',
+            // HANDLE RESPONSE FROM APEX CONTROLLER
+            function(result, event){
+                if (event.status) {
+                } 
+                // HANDLE UNSUCCESSFUL RESPONSE FROM APEX 
+                else if (event.type === 'exception') {
+                    var eventErrorMessage = event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                    createMessage(errorClassText, locForWarningIcon, 'Error', eventErrorMessage);         
+                } 
+                // HANDLE ANY OTHER SYSTEM ERROR MESSAGES
+                else {
+                    var eventErrorMessage = event.message;
+                    createMessage(errorClassText, locForWarningIcon, 'Error', eventErrorMessage);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+
+
+    //-----------------------------------------------------------------------
+    // DATA ACTION FUNCTION - SAVE FUNCTION
+    //-----------------------------------------------------------------------
+    function  actionSave() {
+        // Sets Flags Internally from Page Checkboxes
+        setflags();
+        // JAVASCRIPT REMOTING CALL TO APEX CONTROLLER
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.ConfigurationController.saveSettings}', disableAcctSync, disableContSync, disableAcctPhoneToContactSync, disableAcctFaxToContactSync,
+            // HANDLE RESPONSE FROM APEX CONTROLLER
+            function(result, event){
+                // HANDLE SUCCESSFUL RESPONSE FROM APEX
+                if (event.status) {
+                    createMessage(successClassText, locForSuccessIcon, 'Success', saveSuccessMessage );
+                    toggleAccountContactDisable('true', 'false');
+                } 
+                // HANDLE UNSUCCESSFUL RESPONSE FROM APEX 
+                else if (event.type === 'exception') {
+                    var eventErrorMessage = event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                    createMessage(errorClassText, locForWarningIcon, 'Error', eventErrorMessage);      
+                } 
+                // HANDLE ANY OTHER SYSTEM ERROR MESSAGES
+                else {
+                    var eventErrorMessage = event.message;
+                    createMessage(errorClassText, locForWarningIcon, 'Error', eventErrorMessage);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+
+
+    //------------------------------------------------------------------------------------------
+    // PAGE ACTION FUNCTION - TOGGLES RELATED CHECKBOXES AS NEEDED, AND DISPLAYS MESSAGE WHEN NEEDED
+    //------------------------------------------------------------------------------------------ 
+    function toggleAccountContactDisable(isSave, isInit) {
+        // MAKE SURE ALL VALUES ARE FRESHLY COLLECTED FROM THE PAGE
+               setflags();
+              
+
+              // CONDITION IF ALL SYNCS ARE DISABLED
+              if (disableAcctSync && disableContSync) {
+                  if (isSave == 'true') {
+                      // Create New Message
+                      createMessage(errorClassText, locForWarningIcon, 'Error', disableWarningMessage);
+                      if (isInit == 'false') {
+                        createMessage(successClassText, locForSuccessIcon, 'Success', saveSuccessMessage);
+                       }
+                  }
+                      // Set Related Checkbox Values and Attributes
+                  document.getElementById('disableContactPhoneSync').checked = true;
+                  document.getElementById('disableContactPhoneSync').disabled = true;
+                  document.getElementById('disableContactFaxSync').checked = true;
+                  document.getElementById('disableContactFaxSync').disabled = true;
+
+              }
+              else if (!disableAcctSync && disableContSync) {
+                  // Close any Open Messages
+                  if(isSave == 'true' && isInit == 'false') {
+                    closeNotification('Error');
+                    createMessage(successClassText, locForSuccessIcon, 'Success', saveSuccessMessage);
+                  }
+                  document.getElementById('disableContactPhoneSync').checked = true;
+                  document.getElementById('disableContactPhoneSync').disabled = true;
+                  document.getElementById('disableContactFaxSync').checked = true;
+                  document.getElementById('disableContactFaxSync').disabled = true;
+              }
+               else {
+                if (isSave == 'true' && isInit == 'false') {
+                  // Close any Open Messages
+                  createMessage(successClassText, locForSuccessIcon, 'Success', saveSuccessMessage);
+                }
+                  // Set Related Checkbox Values and Attributes
+                  document.getElementById('disableContactPhoneSync').disabled = false;
+                  document.getElementById('disableContactFaxSync').disabled = false;
+              }
+
+              console.log('val1 = ' + disableContSync);
+              console.log('val2 = ' + document.getElementById('disableContactPhoneSync').checked);
+              console.log('val3 = ' + document.getElementById('disableContactFaxSync').checked);
+            }
+
+
+          //-----------------------------------------------------------------------
+          // HELPER FUNCTION - SETS FLAGS FOR INTERNAL USE BY OTHER FUNCTIONS
+          //-----------------------------------------------------------------------
+          function setflags(){
+             // Set DisableAccountSynch Flag
+             if(document.getElementById('disableAccountSync').checked  == true){
+                disableAcctSync = true;
+              }
+              else{
+                disableAcctSync = false;
+              }
+              // Set DisableAccountSync Flag
+              if(document.getElementById('disableContactSync').checked  == true){
+                disableContSync = true;
+              }
+              else{
+                disableContSync = false;
+              }
+              // Set disableContactPhoneSync Flag
+              if(document.getElementById('disableContactPhoneSync').checked  == true){
+                disableAcctPhoneToContactSync = true;
+              }
+              else{
+                disableAcctPhoneToContactSync = false;
+              }
+              // Set disableContactFaxSync Flag
+              if(document.getElementById('disableContactFaxSync').checked  == true){
+                disableAcctFaxToContactSync = true;
+              }
+              else{
+                disableAcctFaxToContactSync = false;
+              }
+           }
+
+
+          //----------------------------------------------------------------------
+          // HELPER FUNCTION - CREATES PAGE MESSAGES FROM VARIBLES PROVIDED
+          //----------------------------------------------------------------------
+          function createMessage(classDefinition, iconDefinition, messageType, messageDefinition) {
+            if (messageType == 'Error') {
+                // Set the Message Content
+                document.getElementById('errorNotificationMessage').innerHTML = messageDefinition;
+                // Sets the Message Appearance and Visibility
+                document.getElementById('errorNotification').setAttribute('class', classDefinition);
+                // Sets Icon to be Displayed
+                document.getElementById('errorNotificationURL').setAttribute('xlink:href', iconDefinition);
+                // Sets the Message Type
+                document.getElementById('errorNotificationIcon').innerHTML = messageType; 
+
+            }
+            if (messageType == 'Success') {
+                // Set the Message Content
+                document.getElementById('successNotificationMessage').innerHTML = messageDefinition;
+                // Sets the Message Appearance and Visibility
+                document.getElementById('successNotification').setAttribute('class', classDefinition);
+                // Sets Icon to be Displayed
+                document.getElementById('successNotificationURL').setAttribute('xlink:href', iconDefinition);
+                // Sets the Message Type
+                document.getElementById('successNotificationIcon').innerHTML = messageType; 
+            }
+          }
+
+          //----------------------------------------------------------------------
+          // HELPER METHOD - CLOSES / HIDES PAGE MESSAGES
+          //----------------------------------------------------------------------
+         function closeNotification(messageType) {
+            if (messageType == 'Error') {
+                document.getElementById('errorNotification').setAttribute('class', 'slds-hide');
+            }
+            if(messageType == 'Success') {
+                document.getElementById('successNotification').setAttribute('class', 'slds-hide');
+            }
+          }
+        </script>
+    <!--==========================================================================================================
+    =     JAVASCRIPT END
+    ===========================================================================================================-->
+</html>
+</apex:page>

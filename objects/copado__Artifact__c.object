@@ -156,7 +156,6 @@
     <deprecated>false</deprecated>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
@@ -165,16 +164,6 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <fields>
-        <fullName>cmcSf__IsOrgDependent__c</fullName>
-        <defaultValue>false</defaultValue>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Is Org Dependent</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
     <fields>
         <fullName>copado__Artifact_Repository__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
@@ -255,7 +244,6 @@
         <fullName>copado__Description__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>The description of the package</inlineHelpText>
         <label>Description</label>
         <length>131072</length>
         <trackHistory>false</trackHistory>
@@ -291,8 +279,7 @@
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <inlineHelpText>The credential where the metadata of the Artifact is going to be retrieved from, for unlocked packages and 2GP.
-The credential where the unmanaged package is created from.</inlineHelpText>
+        <inlineHelpText>Org Credential where the metadata of the Artifact is going to be retrieved from</inlineHelpText>
         <label>Source Credential</label>
         <referenceTo>copado__Org__c</referenceTo>
         <relationshipLabel>Artifacts</relationshipLabel>
@@ -353,14 +340,8 @@ The credential where the unmanaged package is created from.</inlineHelpText>
                     <label>Second-Generation Package</label>
                 </value>
                 <value>
-                    <fullName>First-Generation Package</fullName>
-                    <default>false</default>
-                    <label>First-Generation Package</label>
-                </value>
-                <value>
                     <fullName>Unmanaged</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>Unmanaged</label>
                 </value>
             </valueSetDefinition>
@@ -625,13 +606,18 @@ The credential where the unmanaged package is created from.</inlineHelpText>
                 </value>
                 <value>
                     <fullName>44.0</fullName>
-                    <default>false</default>
+                    <default>true</default>
                     <label>44.0</label>
                 </value>
                 <value>
                     <fullName>45.0</fullName>
-                    <default>true</default>
+                    <default>false</default>
                     <label>45.0</label>
+                </value>
+                <value>
+                    <fullName>46.0</fullName>
+                    <default>false</default>
+                    <label>46.0</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -664,15 +650,10 @@ The credential where the unmanaged package is created from.</inlineHelpText>
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
-        <columns>copado__Package_Id__c</columns>
-        <columns>copado__Artifact_Version__c</columns>
-        <columns>copado__Package_Namespace__c</columns>
-        <columns>copado__Package_Type__c</columns>
-        <columns>copado__Artifact_Repository__c</columns>
         <columns>RECORDTYPE</columns>
         <columns>copado__Org_Credential__c</columns>
+        <columns>copado__Artifact_Repository__c</columns>
         <columns>copado__Description__c</columns>
-        <columns>copado__Target_Dev_Hub_Org__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
@@ -691,16 +672,16 @@ The credential where the unmanaged package is created from.</inlineHelpText>
         <picklistValues>
             <picklist>copado__Package_Type__c</picklist>
             <values>
-                <fullName>First-Generation Package</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Second-Generation Package</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Unlocked</fullName>
                 <default>true</default>
+            </values>
+            <values>
+                <fullName>Unmanaged</fullName>
+                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -856,6 +837,10 @@ The credential where the unmanaged package is created from.</inlineHelpText>
             <values>
                 <fullName>43%2E0</fullName>
                 <default>false</default>
+            </values>
+            <values>
+                <fullName>44%2E0</fullName>
+                <default>true</default>
             </values>
             <values>
                 <fullName>5%2E0</fullName>
@@ -887,16 +872,16 @@ The credential where the unmanaged package is created from.</inlineHelpText>
         <picklistValues>
             <picklist>copado__Package_Type__c</picklist>
             <values>
-                <fullName>First-Generation Package</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Second-Generation Package</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Unlocked</fullName>
                 <default>true</default>
+            </values>
+            <values>
+                <fullName>Unmanaged</fullName>
+                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -1055,11 +1040,15 @@ The credential where the unmanaged package is created from.</inlineHelpText>
             </values>
             <values>
                 <fullName>44%2E0</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
             <values>
                 <fullName>45%2E0</fullName>
-                <default>true</default>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>46%2E0</fullName>
+                <default>false</default>
             </values>
             <values>
                 <fullName>5%2E0</fullName>
@@ -1091,10 +1080,6 @@ The credential where the unmanaged package is created from.</inlineHelpText>
         <picklistValues>
             <picklist>copado__Package_Type__c</picklist>
             <values>
-                <fullName>First-Generation Package</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Second-Generation Package</fullName>
                 <default>false</default>
             </values>
@@ -1287,49 +1272,7 @@ The credential where the unmanaged package is created from.</inlineHelpText>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts>
-        <customTabListAdditionalFields>copado__Pipeline__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Package_Type__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>OWNER.ALIAS</customTabListAdditionalFields>
-        <customTabListAdditionalFields>RECORDTYPE</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Artifact_Repository__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Artifact_Version__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__DefaultBranch__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__DefaultPath__c</customTabListAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Pipeline__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>OWNER.ALIAS</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Package_Type__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Artifact_Version__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__Artifact_Repository__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__DefaultBranch__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>copado__DefaultPath__c</lookupDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Pipeline__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Package_Type__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>OWNER.ALIAS</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>RECORDTYPE</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Artifact_Repository__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__Artifact_Version__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__DefaultBranch__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>copado__DefaultPath__c</lookupPhoneDialogsAdditionalFields>
-        <searchFilterFields>NAME</searchFilterFields>
-        <searchFilterFields>copado__Pipeline__c</searchFilterFields>
-        <searchFilterFields>copado__Package_Type__c</searchFilterFields>
-        <searchFilterFields>OWNER.ALIAS</searchFilterFields>
-        <searchFilterFields>RECORDTYPE</searchFilterFields>
-        <searchFilterFields>copado__Artifact_Repository__c</searchFilterFields>
-        <searchFilterFields>copado__Artifact_Version__c</searchFilterFields>
-        <searchFilterFields>copado__DefaultBranch__c</searchFilterFields>
-        <searchFilterFields>copado__DefaultPath__c</searchFilterFields>
-        <searchResultsAdditionalFields>copado__Pipeline__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__Package_Type__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>OWNER.ALIAS</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__Artifact_Repository__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__Artifact_Version__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__DefaultBranch__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__DefaultPath__c</searchResultsAdditionalFields>
-    </searchLayouts>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>copado__ArtifactNameCannotChange</fullName>

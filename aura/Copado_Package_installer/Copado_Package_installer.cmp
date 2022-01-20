@@ -1,0 +1,54 @@
+<aura:component Controller="Copado_Package_installer" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="mainHeading" type="string" default="" />
+    <aura:attribute name="SubmitBtnLabel" type="string"  default=""  />
+    <aura:attribute name="footertext" type="string" default="" />
+    <aura:attribute name="DataTableMainHeading" type="string" default="" />
+    <aura:attribute name="isShow" type="boolean" default="" />
+    <aura:attribute name="isDataTableShow" type="boolean" default="" />
+    <aura:attribute name="selectedValue" type="String" />
+    <aura:attribute name="columnName" type="String" />
+    <aura:attribute name="TableData" type="list" />
+    <aura:attribute name="LatestReleaseRecord" type="object" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:if isTrue="{!v.isShow}">
+        <div class="copado-installer-box">
+            <div class="slds-card copado-installer-box-width">
+                <div style="height:6px; width:100%; background:linear-gradient(296.09deg, #4DE8CA 0%, #00E3CF 29.52%, #00B3EE 70.53%, #00B3EF 100%);" />
+                <div class="slds-p-around_medium main-heading">{!v.mainHeading}</div>
+                <div class="package-version-text">{!v.LatestReleaseRecord.copado__Version__c}</div>
+                <div class="package-Release-date-text">{!v.LatestReleaseRecord.copado__Planned_Date__c}</div>
+                <div class="package-Release-note-text"><a href="{!v.LatestReleaseRecord.Documentation_Release_Notes__c}" class="package-Release-link-text" target="_blank" >{!v.LatestReleaseRecord.Release_Note_text}</a></div>
+                <div class="package-Release-select-box">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:select name="select1" label="" variant="label-hidden" value="{!v.selectedValue}">
+                                <option value="Production">Install in Production</option>
+                                <option value="Sandbox">Install in Sandbox</option>
+                            </lightning:select>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:button onclick="{!c.doSubmit}" variant="brand" label="{!v.SubmitBtnLabel}" title="{!v.SubmitBtnLabel}"  class="package-Relase-install-button"></lightning:button>
+                        </div>
+                    </div>
+                </div>
+                <div class="package-version-footer-text"><aura:unescapedHtml value="{!v.footertext}" /></div>
+            </div>
+            <aura:if isTrue="{!v.isDataTableShow}">
+                <div class="copado-installer-release-table" >
+                    <div class="slds-p-around_medium data-table-main-heading">{!v.DataTableMainHeading}</div>
+                	<div class="copado-installer-datatable">
+                     <lightning:datatable aura:id="copado-installer-datatable"
+                                             keyField="Id"
+                                             class="copado-installer-datatableClass"
+                                             columns="{!v.columnName}"
+                                             data="{!v.TableData}"
+                                             hideCheckboxColumn="true"
+                                             showRowNumberColumn="true"
+                                          onrowaction="{! c.handleRowAction }"
+                                             />
+                    </div>
+                </div>
+            </aura:if>
+        </div>
+    </aura:if>
+</aura:component>

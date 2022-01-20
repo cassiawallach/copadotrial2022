@@ -1,0 +1,1534 @@
+<!--
+  @description       : 
+  @author            : Kaustubh.Deolwadkar@avalara.com
+  @group             : 
+  @last modified on  : 08-19-2020
+  @last modified by  : Kaustubh.Deolwadkar@avalara.com
+  Modifications Log 
+  Ver   Date         Author                            Modification
+  1.0   08-19-2020   Kaustubh.Deolwadkar@avalara.com   Initial Version
+-->
+<apex:page showHeader="false" sidebar="false" cache="false" controller="AVA_SFCPQ.MapperUIController" docType="html-5.0">
+    <head> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <apex:stylesheet value="{!$Resource.AVA_SFCPQ__MapperUiCss}"/>
+        <link rel="stylesheet" href="https://assets.avalara.com/s-/1.1.0/css/s-.css"/>
+        <apex:includeScript value="{!$Resource.AVA_SFCPQ__Jquery12}" />
+        <apex:includeScript value="{!$Resource.AVA_SFCPQ__jqueryUi}" />
+        <apex:includeScript value="{!$Resource.AVA_SFCPQ__SvgJs}"/> 
+        <apex:includeScript value="{!$Resource.AVA_SFCPQ__xml2json}"/>
+        <title> AvaTax Mapper Studio | Avalara</title>
+    </head>
+    <body>
+        <s-row>
+            <s-col span="sm-auto auto">
+                <div class="navbar-container">
+                    <nav class="top-bar row">
+                        <ul class="title-area">
+                            <li class="name">
+                                <apex:image id="AvalaraLogo" style="" value="{!$Resource.AVA_SFCPQ__AvalaraLogo}" alt="Avalara"/>
+                            </li>
+                        </ul>
+                        <section class="top-bar-section">
+                            <ul class="right">
+                                <li class="has-dropdown not-click"> 
+                                    <span>
+                                        AvaTax Mapper Studio For Salesforce CPQ+
+                                    </span>
+                                </li>
+                            </ul>
+                        </section>
+                    </nav>
+                    <nav id="af-navigation" class="at-menu-nav">
+                        <ul id="navTabs">
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </s-col> 
+        </s-row>
+        <s-row>
+            <s-col span="10" center="xl">
+                <div>
+                    <span class="page-title page-title-workspace">
+                        <span class="active" id="processHead">
+                            Avalara
+                        </span>
+                    </span> 
+                </div>
+                <h1 id="processType"></h1>
+            </s-col>
+        </s-row>
+        <s-row>
+            <s-col span="10" center="xl">
+                <s-row>
+                    <s-col span="3">
+                        <div id="menuContainer" class="left-menu-container"></div>
+                    </s-col>
+                    <s-col span="9">
+                        <div class="mapper-header">
+                            <h2 class="section-title" id="subProcessType"></h2>
+                            <div style="float:right;">
+                              <button id="saveDataBtn" class="primary" onclick="saveData()" >Save</button>
+                              <span><s-icon name="info-field" title="If you have changed mappings for any object, updated mapping will take effect for respective AvaTax operation. Ensure to update all the mapped fields with appropriate values, before performing AvaTax operations. In case of missing values in any mapped field, AvaTax will follow a default fallback mechanism, wherever applicable."></s-icon></span>                            
+                            </div>
+                        </div>
+                        <div id="mapperContainer" class="mapperContainer">
+                            <div id="newObjectDialog"  title="Select new object name" style="display:none;">                        
+                            </div>
+                            
+                            <div id="dialog-confirm" title="Delete" style="display:none;">
+                                <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>It will remove the association and node gets deleted from XML. Are you sure you want to delete?
+                            </div>
+                            <div id="newFieldDialog" title="Add new field details" style="display:none;">
+                            </div>
+                            <div id="addNewMapperDialog" title="Add new field details" style="display:none;">
+                            </div>
+                            <div id="hooksDialog" title="Hooks" style="display:none;">                          
+                            </div>
+                        </div>
+                    </s-col>
+                </s-row>
+            </s-col>
+        </s-row>
+    </body>
+    <script>
+    var namespace = AVA_SFCPQ; 
+    var controller = (namespace) ? namespace.MapperUIController : MapperUIController;
+    var orgNamespace;
+    controller.fetchOrgNamespace(function(result,event){
+        return orgNamespace = result;
+    });
+    var tabName;
+    var mapperUiJsonData;
+    var mapperData;
+    var headers;
+    window.$j = jQuery.noConflict();
+    $j( document ).ready(function(e) {
+        controller.loadXml(function(result, event){
+            var x2js = new X2JS();
+            var convert = function(convert){
+                return $j("<span />", { html: convert }).text();
+            };
+            if(result != null){
+                var xmlJsonData = convert(result);
+                var xmljsonObj = x2js.xml_str2json( xmlJsonData );
+                var xmlJsonObjString = objToString(xmljsonObj);
+                //Creating session for holding xml-json value throughout document
+                sessionStorage.setItem("mapperXmlUiJson", xmlJsonObjString);
+                getUpdatedMappingClassName();
+                var links = '';              
+                for(tab in xmljsonObj['avatax']){  
+                    links += '<li class="at-navbar" onclick="loadSidePanel(\''+tab+'\')"><a target="" href="#" id="'+tab+'" class="at-navbar">'+tab+'</a></li>';     
+                }
+                $j("ul#navTabs").html(links);
+                $j("ul#navTabs li").first().trigger( "click" );
+            } 
+        });
+        $j('#hooksDialog,#newObjectDialog,#newFieldDialog,#addNewMapperDialog,#dialog-confirm').dialog({
+            autoOpen: false,  
+        });
+    });
+    
+    //new function
+    /********************************Function for loading side panel*****************************************/
+    function loadSidePanel(tab){
+        //Added dummy sql to reload page when session is loggedout;
+        qryString = 'Select id from Account limit 1';
+        controller.verifySql(qryString,function(result, event){
+            if(result != 'Pass'){
+                 if(result == null)	{
+        			location.reload();
+            	}
+            }
+        });
+
+        tabName = tab;
+        $j('div#mapperContainer').empty();
+        $j('#processType').hide();
+        $j('#subProcessType').hide();
+        $j('span#processHead').html(tabName.toUpperCase());
+        mapperUiJsonData = JSON.parse(sessionStorage.getItem("mapperXmlUiJson"));
+        var CustomObjectList = []; 
+        var ChildElements = [];
+        var CustomObjectListData = [mapperUiJsonData.avatax[tabName.toLowerCase()]];
+        
+        for (var i = 0; i < CustomObjectListData.length; i++){
+            for (var key in CustomObjectListData[i]){
+                CustomObjectList.push( key );
+                for(var childType in [mapperUiJsonData['avatax'][tabName.toLowerCase()][key]][0]){
+                    if(childType == "hooks" ) {
+                        ChildElements.push({ parent:key,child:"Hooks"});
+                    } else if(childType == "Header") {
+                        ChildElements.push({ parent:key,child:"Header-Queries"});
+                        for(var subChildType in [mapperUiJsonData['avatax'][tabName.toLowerCase()][key]['Header']['Queries']][0]){
+                            ChildElements.push({ parent:key,child:"Header-Queries",subChild:subChildType});
+                        }
+                    } else if(childType == "Line" ) {
+                        ChildElements.push({ parent:key,child:"Line-Queries"});
+                        for(var subChildType in [mapperUiJsonData['avatax'][tabName.toLowerCase()][key]['Line']['Queries']][0]){
+                            ChildElements.push({ parent:key,child:"Line-Queries",subChild:subChildType});
+                        }
+                    } else if(childType == "Queries" ) {
+                        ChildElements.push({ parent:key,child:childType});
+                        for(var subChildType in [mapperUiJsonData['avatax'][tabName.toLowerCase()][key]['Queries']][0]){
+                            ChildElements.push({ parent:key,child:"Queries", subChild:subChildType});
+                        }
+                    } else {
+                        ChildElements.push({ parent:key,child:childType});
+                    }   
+                }
+            }
+        } 
+        $j('div#menuContainer').empty();
+        var menus = '<div class="menu-header"><h2 class="pad-bottom-xs">Integration Points</h2><s-icon title="Add Integration Points" name="add" onclick="addNewIntegrationObject()" class="margin-right-xs margin-top-xs"></s-icon></div></br>'+
+            '<s-box class="pad-all-xs"><ul class="menu-navigation">';
+        for(var i = 0; i < CustomObjectList.length; i++) {
+            var headerQueryCounter = 0;
+            var lineQueryCounter = 0;
+            for(var child in ChildElements){
+                if(ChildElements[child].parent === CustomObjectList[i]){
+                    if((ChildElements[child].child) === "Hooks"){
+                        generateHooksDialog(ChildElements[child].parent);
+                        menus += '<li class="menu-navigation fixed-name" data-parent="' + CustomObjectList[i] + '"><a target="" href="#" id="' + CustomObjectList[i] + '-parent" class="at-nav-list">' + CustomObjectList[i] + '</a><s-icon name="delete" title="Delete" class="nav-delete-icon" onclick="openDeleteConfirmDialog(\'' + CustomObjectList[i] + '\')"></s-icon>'
+                        if(tabName == 'taxcalculation' || tabName == 'addressvalidation' ) {
+                            menus +='<s-icon name="settings" title="Hooks" class="nav-hook-icon" onclick="openHooksDialog(\''+ChildElements[child].parent+'\')"></s-icon>';
+                        }
+                        if(tabName === "addressvalidation"){
+                            menus +='<s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+ CustomObjectList[i] + '\')"></s-icon>';  
+                        }
+                        menus +='</li>';
+                    } else if((ChildElements[child].child === "Header-Queries" || ChildElements[child].child === "Line-Queries" || ChildElements[child].child === "Queries") && ChildElements[child].subChild ) {
+                        if(ChildElements[child].child === "Header-Queries"  && headerQueryCounter == 0)
+                        {
+                            menus += '<li class="menu-navigation fixed-headers" data-parent="'+ChildElements[child].parent+'"><a target="" href="#" id="' + ChildElements[child].child + '" class="at-nav-list">' + ChildElements[child].child + '</a><s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+ChildElements[child].parent+'\',\''+ChildElements[child].child+'\')"></s-icon></li>';
+                            headerQueryCounter = 1;
+                        }
+                        else if(ChildElements[child].child === "Line-Queries"  && lineQueryCounter == 0)
+                        {
+                            menus += '<li class="menu-navigation fixed-headers" data-parent="'+ChildElements[child].parent+'"><a target="" href="#" id="' + ChildElements[child].child + '" class="at-nav-list">' + ChildElements[child].child + '</a><s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+ChildElements[child].parent+'\',\''+ChildElements[child].child+'\')"></s-icon></li>';
+                            lineQueryCounter = 1;
+                        }
+                            else if(ChildElements[child].child === "Queries"  && headerQueryCounter == 0)
+                            {
+                                menus += '<li class="menu-navigation fixed-headers" data-parent="'+ChildElements[child].parent+'"><a target="" href="#" id="' + ChildElements[child].child + '" class="at-nav-list">' + ChildElements[child].child + '</a><s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+ChildElements[child].parent+'\',\''+ChildElements[child].child+'\')"></s-icon></li>';
+                                headerQueryCounter = 1;
+                            }
+                        if(ChildElements[child].subChild != "toggle") {
+                            menus += '<li class="menu-navigation child" data-parent="'+ChildElements[child].parent+'" data-subheader="'+ChildElements[child].parent+'-'+ChildElements[child].child+'"><a target="" href="#" id="' + ChildElements[child].subChild + '" class="at-nav-list" onClick="loadMapperView(\''+ChildElements[child].subChild+'\',\''+ChildElements[child].parent+'\',\''+ChildElements[child].child+'\')">' + ChildElements[child].subChild + '</a><s-icon name="delete" title="Delete" class="nav-delete-icon" onclick="openDeleteConfirmDialog(\'' +ChildElements[child].subChild + '\',\''+ChildElements[child].parent+'\')"></s-icon></li>';
+                        }
+                    } else if(tabName === "addressvalidation"){
+                        menus += '<li class="menu-navigation child" data-parent="'+ChildElements[child].parent+'"><a href="#" id="'+ ChildElements[child].child +'" onClick="loadMapperView(\''+ChildElements[child].child+'\',\''+ChildElements[child].parent+'\');" class="at-nav-list" >' + ChildElements[child].child + '</a><s-icon name="delete" title="Delete" class="nav-delete-icon" onclick="openDeleteConfirmDialog(\'' + ChildElements[child].child + '\',\''+ChildElements[child].parent+'\')"></s-icon></li>';
+                    }
+                }
+            }
+        }
+        menus +='</ul></s-box>';
+        $j(menus).find('.fixed-headers');
+        $j('div#menuContainer').html(menus);
+    }
+    /********************************End of function for loading side panel**********************************/
+    /***************************Function for opening new dialog for adding new object***********************/
+    function addNewIntegrationObject(){
+        var existingObjectNames = [];
+        $j('div#menuContainer').find('.fixed-name').find('a').each(function() {
+            existingObjectNames.push($j(this).text());
+        });
+        var objectNames = [];
+        controller.displayObjectDetail(function(result, event){
+            if(result != null){
+                Object.keys(result).map(function(key) {
+                    objectNames.push(result[key]);
+                });                
+                var sObjects = arr_diff(objectNames, existingObjectNames);
+                var newObjectForm ='<form id="newObjectForm">'+
+                    '<fieldset>'+
+                    '<div class="input-desc">Choose your standard object / custom object to add</div>'+
+                    '<select id="customobjname">';
+                for(var i=0; i<sObjects.length; i++){
+                    newObjectForm +='<option value=' + sObjects[i] + '>' + sObjects[i] + '</option>';
+                }
+                newObjectForm +='</select><input type="button" class="avabtn" value="Add" onclick="addNewObject(this)"/>'+
+                    '</fieldset>'+
+                    '</form>';
+                $j('#newObjectDialog').empty();
+                $j('#newObjectDialog').append(newObjectForm);
+                $j('#newObjectDialog').dialog({dialogClass: 'modal-header-bg'})
+                $j('#newObjectDialog').dialog('open');
+            }   
+        });        
+    }
+    //function for binding value entered object dialog to side panel
+    function addNewObject($this){
+        var newElemName = $j($this).prev().val();
+        generateHooksDialog(newElemName);
+        var newItem = '<li class="menu-navigation fixed-name" data-parent="' + newElemName + '"><a target="" href="#" id="' + newElemName + '-parent" class="at-nav-list">' + newElemName + '</a><s-icon name="delete" title="Delete" class="nav-delete-icon" onclick="openDeleteConfirmDialog(\'' + newElemName + '\')"></s-icon><s-icon name="settings" title="Hooks" class="nav-hook-icon" onclick="openHooksDialog(\''+newElemName+'\')"></s-icon>';
+        if(tabName === "addressvalidation"){
+            newItem +='<s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+ newElemName + '\')"></s-icon></li>'; 
+        } else {
+            newItem += '</li>';
+        }
+        if(tabName === 'taxcalculation' ) {
+            newItem += '<li class="menu-navigation fixed-headers" data-parent="'+newElemName+'"><a target="" href="#" id="Header-Queries" class="at-nav-list"> Header-Queries</a><s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+newElemName+'\',\'Header-Queries\')"></s-icon></li>';                            
+            newItem += '<li class="menu-navigation fixed-headers" data-parent="'+newElemName+'"><a target="" href="#" id="Line-Queries" class="at-nav-list"> Line-Queries</a><s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+newElemName+'\',\'Line-Queries\')"></s-icon></li>';
+        } else if(tabName != "addressvalidation") {
+            newItem += '<li class="menu-navigation fixed-headers" data-parent="'+newElemName+'"><a target="" href="#" id="Queries" class="at-nav-list"> Queries </a><s-icon name="add" title="Add" class="nav-add-icon" onclick="openNewFieldDialog(\''+newElemName+'\',\'Queries\')"></s-icon></li>';                 
+        }
+        $j('div#menuContainer').find('ul.menu-navigation').append(newItem);
+        $j('div#newObjectDialog').dialog('close');
+    }
+    //function for opening new dialog for adding new component or element or field
+    function openNewFieldDialog(parent,subchild){
+        if(tabName != "addressvalidation"){
+            $j('#newFieldForm').empty();
+            var existingObjectNames = [];
+            var c = $j('li.child[data-subheader$="'+parent+"-"+subchild+'"]').length;
+            for(var i=0; i<c; i++){
+                existingObjectNames.push($j($j('li.child[data-subheader$="'+parent+'-'+subchild+'"]')[i]).find('a').text());
+            }
+            var objectNames = [];
+            controller.displayObjectDetail(function(result, event){
+                if(result != null){
+                    Object.keys(result).map(function(key) {
+                        objectNames.push(result[key]);
+                    });                    
+                    var sObjects = arr_diff(objectNames, existingObjectNames);
+                    
+                    var newFieldForm = '<form id="newFieldform">'+
+                        '<fieldset><lable>Select your object:</lable>'+
+                        '<select id="customfieldname" class="form-control" required="required">';
+                    for(var i=0; i<sObjects.length; i++){
+                        newFieldForm += '<option value=' + sObjects[i] + '>' + sObjects[i] + '</option>';
+                    }
+                    newFieldForm +='</select>'+
+                        '<input type="button" class="avabtn" value="Add" onclick="addNewField(this,\'' + parent + '\',\''+subchild+'\')"/></fieldset></form>'; 
+                    $j( '#newFieldDialog' ).html(newFieldForm);
+                    $j( '#newFieldDialog' ).dialog({dialogClass: 'modal-header-bg'});
+                    $j( '#newFieldDialog' ).dialog("open");
+                }   
+            });
+            
+        } else {
+            $j('#newFieldForm').empty();
+            var newFieldForm = '<form id="newFieldform">'+
+                '<fieldset><lable>Enter more address type :</lable><input type="text" id="customfieldname" class="form-control" required="required"/>'+
+                '<input type="button" class="avabtn" value="Add" onclick="addNewField(this,\'' + parent + '\')"/></fieldset></form>';
+            $j( '#newFieldDialog' ).html(newFieldForm);
+            $j( '#newFieldDialog' ).dialog({dialogClass: 'modal-header-bg'});
+            $j( '#newFieldDialog' ).dialog("open");
+        }
+        
+    }   
+    //function for binding new field to buttons tab
+    function addNewField($this,parent,subchild){
+        var newFieldName = $j($this).prev().val();
+        if(newFieldName === ""){
+            alert('Please enter details before saving');
+            return;
+        }
+        var newXmlJsonData = JSON.parse(sessionStorage.getItem("mapperXmlUiJson"));
+        if(tabName === "addressvalidation"){
+            var c = $j('li.child[data-parent$="'+ parent +'"]').length;
+            if(c !== 0){
+                /*if(typeof newXmlJsonData['avatax'][tabName][parent][newFieldName] == 'undefined'){
+                    newXmlJsonData['avatax'][tabName][parent][newFieldName]= {};
+                }*/
+                //   sessionStorage.setItem('mapperXmlUiJson', JSON.stringify(newXmlJsonData));
+                var lastEle = $j('li.child[data-parent$="'+ parent +'"]')[c-1];
+                $j('<li class="menu-navigation child" data-parent="'+parent+'"><a target="" href="#" id="' +parent+'-'+ newFieldName + '" class="at-nav-list" onClick="loadMapperView(\''+newFieldName+'\',\''+parent+'\')">' + newFieldName + '</a><s-icon name="delete" title="Delete" class="nav-delete-icon" onclick="openDeleteConfirmDialog(\'' + newFieldName + '\',\''+parent+'\')"></s-icon></li>').insertAfter(lastEle);
+                $j('a#'+parent+'-'+newFieldName).trigger('click');
+            } else {
+                //sessionStorage.setItem(newFieldName, newFieldName);
+                
+                $j('<li class="menu-navigation child" data-parent="'+parent+'"><a target="" href="#" id="' +parent+'-'+ newFieldName + '" class="at-nav-list" onClick="loadMapperView(\''+newFieldName+'\',\''+parent+'\')">' + newFieldName + '</a><s-icon name="delete" class="nav-delete-icon" title="Delete" onclick="openDeleteConfirmDialog(\'' + newFieldName + '\',\''+parent+'\')"></s-icon></li>').insertAfter($j('li.fixed-name[data-parent$="'+ parent +'"]'));
+                $j('a#'+parent+'-'+newFieldName).trigger('click');
+            }
+        } else {
+            var c = $j('li.child[data-subheader$="'+parent+"-"+subchild+'"]').length;
+            if(c != 0){
+                if(tabName == 'taxcalculation'){
+                    
+                    if(typeof newXmlJsonData['avatax'][tabName][parent]['Header']['Queries'][newFieldName] == 'undefined'){
+                        newXmlJsonData['avatax'][tabName][parent]['Header']['Queries'][newFieldName]= {};
+                    }   
+                }
+                var lastEle = $j('li.child[data-subheader$="'+parent+'-'+subchild+'"]')[c-1];
+                $j('<li class="menu-navigation child" data-parent="'+parent+'" data-subheader="'+parent+'-'+subchild+'"><a target="" href="#" id="' +parent+'-'+ newFieldName + '" class="at-nav-list" onClick="loadMapperView(\''+newFieldName+'\',\''+parent+'\',\''+subchild+'\')">' + newFieldName + '</a><s-icon name="delete" title="Delete" class="nav-delete-icon" onclick="openDeleteConfirmDialog(\'' + newFieldName + '\',\''+parent+'\')"></s-icon></li>').insertAfter(lastEle);
+                $j('a#'+parent+'-'+newFieldName).trigger('click');
+            } else {
+                $j('<li class="menu-navigation child" data-parent="'+parent+'" data-subheader="'+parent+'-'+subchild+'"><a target="" href="#" id="' +parent+'-'+ newFieldName + '" class="at-nav-list" onClick="loadMapperView(\''+newFieldName+'\',\''+parent+'\',\''+subchild+'\')">' + newFieldName + '</a><s-icon name="delete" title="Delete" class="nav-delete-icon" onclick="openDeleteConfirmDialog(\'' + newFieldName + '\',\''+parent+'\')"></s-icon></li>').insertAfter($j('a#'+subchild).parent('li[data-parent$="'+parent+'"]')); 
+                
+                $j('a#'+parent+'-'+newFieldName).trigger('click');
+            }
+        }
+        $j('div#newFieldDialog').dialog('close');
+    }
+    //function for deleting objects
+    function openDeleteConfirmDialog(key,parent){
+        $j( "#dialog-confirm" ).dialog({
+            dialogClass: 'modal-header-bg',  
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Delete": function() {
+                    if ($j('#'+key) && $j('#'+key).closest('li').hasClass('child') && parent) {
+                        $j('li.child[data-parent$="'+ parent +'"]').each(function(e){
+                            if($j(this).text() == key){
+                                $j(this).remove();
+                            }
+                        });
+                        $j('h2#subProcessType').empty();
+                        $j('#mapperContainer').empty();
+                    }
+                    else {
+                        $j('.menu-navigation').each(function(e){
+                            if($j(this).data('parent') === key ){
+                                $j(this).remove();
+                                $j('h2#subProcessType').empty();
+                                $j('#mapperContainer').empty();
+                            }
+                        });
+                    }
+                    $j( this ).dialog( "close" );
+                },
+                Cancel: function() {
+                    $j( this ).dialog( "close" );
+                }
+            }
+        });
+        $j('#dialog-confirm').dialog('open');
+    }
+    
+    /**********************************************Function for Hooks****************************************/
+    function generateHooksDialog(parent){
+        var hookitems = {};
+        if(mapperUiJsonData['avatax'][tabName][parent]){
+            hookitems[parent] = {};
+            hookitems[parent] = mapperUiJsonData['avatax'][tabName][parent]['hooks'];
+        } else {
+            var customObject;
+            customObject = $j('.menu-navigation').find('li.fixed-name').first().text();
+            hookitems[parent] = {};
+            hookitems[parent] = mapperUiJsonData['avatax'][tabName][customObject]['hooks'];
+        }
+        var hooksDiv = '';
+        if(hookitems){
+            for(var hookParent in hookitems){
+                if($j('#'+tabName+'-'+hookParent+'-Hooks').length != 1 ){
+                    hooksDiv += '<div id="'+tabName+'-'+hookParent+'-'+'Hooks" style="display:none" data-hook="'+hookParent+'"><form id="'+tabName+'-'+hookParent+'-'+'HooksForm"><fieldset>';
+                    for(var hook in hookitems){
+                        hooksDiv += '<label>'+hook+'</label>';
+                        for(var items in hookitems[hook]){
+                            if(hookitems[hook].hasOwnProperty(items)){
+                                hooksDiv +='<label>'+items+'</label><input id="'+hook+'-'+items+'" value='+hookitems[hook][items]+'></input><s-icon name="edit" title="Create Hook Class" onclick="createHookClass(\''+hook+'\',\'' + items + '\')">Create Hook Class</s-icon>';
+                            }
+                        }
+                    }
+                    hooksDiv += '</fieldset></div><div id="'+tabName+'-'+hookParent+'-'+'HooksContainer" style="display:none"></div>';
+                }
+           }
+        } else {
+            hooksDiv +='No Hooks Available';
+        }
+        $j('div#hooksDialog').append(hooksDiv);   
+    }
+    function openHooksDialog(parent,child){
+        $j('#hooksDialog').find('div').each(function(e){
+            $j(this).hide();
+        });
+        $j('#hooksDialog').find('div#'+tabName+'-'+parent+'-Hooks').show();
+        $j('#hooksDialog').find('div#'+tabName+'-'+parent+'-HooksContainer').show();
+        $j('#hooksDialog').dialog({dialogClass : 'reveal-modal-bg' });
+        $j('#hooksDialog').dialog('open');
+    }
+    
+    function closeHookDialog(hook)
+    {
+        $j('#'+tabName+'-'+hook+'-HooksContainer').hide();
+    }
+    function createHookClass(hook,item){
+        $j('div#'+tabName+'-'+hook+'-'+'HooksContainer').empty();
+        $j('div#'+tabName+'-'+hook+'-'+'HooksContainer').show();
+        var hookclassDef = '<div id="hooksDialog" style="background:antiquewhite;margin-left: 103%;margin-top: -50%;width: 150%;border:solid;padding:10px;" title="Create your hook class">'+
+            '<div class="show-error alert alert-danger" id="errorDiv" style="display:none;">'+
+            '</div>'+
+            '<form id="hooksform">'+
+            '<input type="button" class="btn btn-primary" value="Close" style="float:right" onclick="closeHookDialog(\''+hook+'\')"/>'+
+            '<br/><lable>Input your ClassName</lable><input type="text" class="form-control" id="hookclassname" onkeyup="getHookClassName(this,\''+hook+'\')" required="required"/>'+
+            '<div id="hookClassContent" class="hookClassContentClass">'+
+            '<p class="pclass">'+
+            'global class <span id="hClassName"> ClassName </span><span id="changeInterface"> implements AVA_MAPPER.IConfigurationProvider{ <br/>'+
+            'global AVA_MAPPER.ConfigurationBase hookExtension()</span> { <br/>'+
+            '<textarea rows="5" cols="50" id="hookClassDetails" class="form-control txt-hooksClassDetails" required="required">'+
+            '</textarea>'+
+            '<br/>}<br/>'+
+            '}<br/>'+
+            '</p>'+
+            '</div>'+
+            '<input type="button" class="btn btn-primary" value="Save" onclick="generateHooksClass(this,\''+hook+'\',\''+item+'\')"/>'+
+            '</form>'+
+            '</div>';
+        $j('div#'+tabName+'-'+hook+'-'+'HooksContainer').html(hookclassDef);
+        
+        var hookDataObj = {
+            overriderequestline:" implements IOverrideRequestLine{</br>global void hookExtension(LineItemModel model, Map&lt;String,List&lt;SObject&gt;&gt; lines, Id id)</br>",
+            beforetaxcalculation: " implements AVA_MAPPER.IBeforeTaxCalculation {</br>global void hookExtention(AVA_MAPPER.CreateTransactionModel model, Map&lt;String,List&lt;SObject&gt;&gt; headerResults)</br>", 
+            beforeupdate: " implements  IBeforeTaxValidation{</br>global boolean validate(CreateTransactionModel model, Map&lt;String,List&lt;SObject&gt;&gt; header, Map&lt;String,List&lt;SObject&gt;&gt; line)</br>",
+            afterupdate: " implements  IBeforeTaxValidation{</br> void AVA_MAPPER.IAfterUpdate.hookExtention(AVA_MAPPER.TransactionModel)</br>"
+        }; 
+        if(hookDataObj[item]){
+            $j('div#'+tabName+'-'+hook+'-'+'HooksContainer').find("span#changeInterface").empty();
+            $j('div#'+tabName+'-'+hook+'-'+'HooksContainer').find("span#changeInterface").html(hookDataObj[item]);
+        }    
+        
+    }
+    function getHookClassName($this,hook){
+        var value = $j($this).val();
+        $j('div#'+tabName+'-'+hook+'-'+'HooksContainer').find('span#hClassName').html(value);
+    }
+    function generateHooksClass($this,hook,item){ 
+        //alert('classname'+JSON.stringify($j('div#hooksDialog').find('input#hookclassname').val()));
+        var className = $j('div#hooksDialog').find('input#hookclassname').val();
+        //alert('classname'+JSON.stringify($j('div#hooksDialog').find('input#hookclassname').val()));
+        // var className=$j("#hClassName").text();  
+        var nonValidClassName=/^[a-z 0-9]/.test(className);
+        if(nonValidClassName) {
+            error="ClassName should be as per Salesforce naming conventions";
+            alert(error);
+            //document.getElementById('errorDiv').innerHTML=error;
+        } else {
+            var classDef  = $j($this).closest('#hooksDialog').find('div#hookClassContent').text();   
+            var classfunc = $j('div#hookClassContent').find('textarea#hookClassDetails').val();   
+            var indices   = [];
+            for(var i=0; i<classDef.length;i++) {
+                if (classDef[i] === "{") indices.push(i);
+            }
+            var position = indices.pop();
+            var classContent = [classDef.slice(0, position+1), classfunc, classDef.slice(position+1)].join('');
+            
+            controller.generateNewHookClass(className,classContent,function(result, event){
+                if(result.errors){
+                    document.getElementById('errorDiv').innerHTML= result;
+                    alert(result.errors);
+                } else {
+                    alert('class generated successfully');
+                    $j('#'+tabName+'-'+hook+'-Hooks').find('input#'+hook+'-'+item).attr('value',className); 
+                    $j("#hooksDialog").dialog("close"); 
+                }
+            });
+        }
+    }
+    /**************************************End of Hooks Function*********************************************/
+    /********************************Function for converting JSON object to string***************************/
+    function objToString (jsonObj) {
+        return JSON.stringify(jsonObj);
+    }
+    /********************************End of Function for converting JSON object to string********************/
+    function loadMapperView(key,parent,header){
+        $j('h1#processType').html(parent);
+        $j('h1#processType').show();
+        $j('#subProcessType').show();
+        $j('h2#subProcessType').html(key);
+        $j('#saveDataBtn').show();
+        if(tabName != 'addressvalidation') {
+            $j('h2#subProcessType').html(header+'|'+key);
+        } else {
+            $j('h2#subProcessType').html(key); 
+        } 
+        var mapperUi = '<div id="'+key+'"><form>'+
+            '<fieldset><label>Query for '+key+' :</label>'+
+            '<textarea rows="5" cols="85" class="form-control" id="query" required="required"></textarea><br/><br/>'+
+            '<button id="'+key+'-Execute" style="float:right;margin-top: -5px;" type="button" class="primary queryExecute" onClick="executeQuery(\''+key+'\',\''+parent+'\',\''+header+'\')"> Execute</button></br>'+
+            '<label>Query Parameters</label><s-box id="params"><table id="prmTable"><tbody id="'+key+'-tbodyid"></tbody></table></s-box></br>'+
+            '<label>AvaTax Request Mappings</label><s-box id="'+key+'-mapping"><textarea id="av-'+key+'-mapper-output" style="display:none;"></textarea></s-box></br>'+
+            '<label>AvaTax Response Mappings</label><s-box id="'+key+'-updatemapping"><textarea id="av-'+key+'-updatemapper-output" style="display:none;"></textarea></s-box></fieldset></form></div>';
+        $j('div#mapperContainer').html(mapperUi);
+        if(typeof header != 'undefined')
+        {
+            headers = header.split('-');
+        }
+        if(typeof mapperUiJsonData['avatax'][tabName][parent] !== 'undefined')
+        {
+            if(tabName == 'taxcalculation'){
+                if(headers[0] =='Line')
+                {
+                    if(typeof mapperUiJsonData['avatax'][tabName][parent]['Line']['Queries'][key] !== 'undefined'){
+                        bindMapperData(tabName,parent,key,header);
+                    }
+                }
+                else{
+                    if(typeof mapperUiJsonData['avatax'][tabName][parent]['Header']['Queries'][key] !== 'undefined')
+                    {
+                        bindMapperData(tabName,parent,key,header);
+                    }
+                }
+            }
+            else if(tabName == 'addressvalidation'){
+                if(typeof mapperUiJsonData['avatax'][tabName][parent][key] !== 'undefined'){
+                    bindMapperData(tabName,parent,key,header);
+                }
+            }
+                else if(typeof mapperUiJsonData['avatax'][tabName][parent][key] !== 'undefined' || 
+                        typeof mapperUiJsonData['avatax'][tabName][parent]['Queries'][key] !== 'undefined'){
+                    bindMapperData(tabName,parent,key,header);
+                }
+        }
+    }
+    
+    /*******************************Function for binding mapper data*************************/
+    function bindMapperData(tabName,parent,mapperElement,header){
+        //var mapperData = '';
+        if(header){
+            headers = header.split('-');
+            headCount = headers.length;
+            if((headCount > 1)){
+                if(typeof mapperUiJsonData['avatax'][tabName][parent] !== 'undefined' &&
+                   typeof mapperUiJsonData['avatax'][tabName][parent][headers[0]][headers[1]][mapperElement] !== 'undefined'){
+                    mapperData = mapperUiJsonData['avatax'][tabName][parent][headers[0]][headers[1]][mapperElement];
+                }
+            } else {
+                if(typeof mapperUiJsonData['avatax'][tabName][parent] !== 'undefined' &&
+                   typeof mapperUiJsonData['avatax'][tabName][parent][headers][mapperElement] !== 'undefined'){
+                    mapperData = mapperUiJsonData['avatax'][tabName][parent][headers][mapperElement];
+                }
+            }
+        } else {
+            if(typeof mapperUiJsonData['avatax'][tabName][parent] !== 'undefined' &&
+               typeof mapperUiJsonData['avatax'][tabName][parent][mapperElement] !== 'undefined' ){
+                mapperData = mapperUiJsonData['avatax'][tabName][parent][mapperElement];
+            }   
+        }
+        if(typeof mapperData != 'undefined')
+        {
+            if(mapperData['query'] != ''){
+                $j('div#mapperContainer').find('div#'+mapperElement).find('textarea#query').val(mapperData['query']);
+                $j('#'+mapperElement+'-Execute').trigger('click'); 
+            }
+        }
+    }
+    /********************Function for executing Query****************************************/
+    function executeQuery(key,parent,headerValue){
+        var headersValue;
+        if(typeof headerValue != 'undefined')
+        {
+            headersValue = headerValue.split('-');
+        }
+        $j('#contentErrorDiv').hide();
+        var MapperQuery = $j('div#mapperContainer').find('div#'+key).find('textarea#query').val();
+        if(MapperQuery === ""){
+            alert('Please enter your query to execute');
+            return false;
+        }
+        qryString = MapperQuery.toLowerCase().split('where')[0].replace(/ *\{[^\}]*}*/g, '');
+        qryString = qryString+' LIMIT 1';
+
+        controller.verifySql(qryString,function(result, event){
+            if(result != 'Pass'){
+                alert(result);
+                return false; 
+            } else {
+                if(tabName == 'taxcalculation') {
+                    if(typeof mapperUiJsonData['avatax'][tabName][parent] !== 'undefined') {
+                        if(typeof mapperUiJsonData['avatax'][tabName][parent][headersValue[0]]['Queries'][key] === 'undefined') {
+                            mapperData = '';
+                        }
+                    }
+                    else{
+                        mapperData = '';
+                    }
+                } else if(tabName == 'addressvalidation') {
+                    if(typeof mapperUiJsonData['avatax'][tabName][parent] != 'undefined') {
+                        if(typeof mapperUiJsonData['avatax'][tabName][parent][key] === 'undefined') {
+                            mapperData = '';
+                        } 
+                    } else {
+                        mapperData = '';
+                    }
+                } else if(tabName !== 'taxcalculation' || tabName !== 'addressvalidation') {
+                    if(typeof mapperUiJsonData['avatax'][tabName][parent] != 'undefined') {
+                        if(typeof mapperUiJsonData['avatax'][tabName][parent]['Queries'][key] == 'undefined') {
+                            mapperData = '';
+                        } 
+                    }
+                    else{
+                        mapperData = '';
+                    }
+                }
+                var nodeArray = getDynamicNodeValues(MapperQuery);
+                var xmlParamters = (mapperData) ? mapperData['parameters'] : '';
+                var parameters = getParameters(MapperQuery);
+                parametersData = generateParamsTable(parameters,xmlParamters);
+                $j('#params').find('#prmTable').find('#'+key+'-tbodyid').html(parametersData);
+                var mapperId = key+'-mapping';
+                $j('#'+mapperId).find('svg').remove();
+                var mappingData =(mapperData) ? mapperData['Mapping'] : '';     
+                var mapperJson = getMapperDiagramData(nodeArray,mappingData,key,tabName);
+                if(typeof mapperJson != 'undefined') {
+                    var templateMapper = new AvaFieldMapper(mapperId, mapperJson,tabName).initSvg();
+                    var msourceId = 'av-'+key+'-mapper-output';
+                    $j('#'+msourceId).text(JSON.stringify(mapperJson));
+                }
+                var updateMapperId = key+'-updatemapping';
+                $j('#'+updateMapperId).find('svg').remove();
+                
+                //  $j('#'+updateMapperId).html('');
+                var updateMappingData = (mapperData) ? mapperData['UpdateMapping'] : '';
+                var updatemapperJson = getUpdateMapperDiagramData(nodeArray,updateMappingData,key,tabName);
+                if(typeof updatemapperJson != 'undefined') {
+                    var templateUpdateMapper = new AvaFieldMapper(updateMapperId, updatemapperJson,tabName).initSvg();
+                    var umsourceId = 'av-'+key+'-updatemapper-output';
+                    $j('#'+umsourceId).text(JSON.stringify(updatemapperJson));
+                }
+            }
+            
+            return false;
+        },{'buffer': true, 'escape': false, 'timeout': 30000 });
+    }
+    /************************************ Extraxting nodes from Query ************************/
+    function getDynamicNodeValues(query){
+        var tempQuery = query;
+        var fieldValues = [];
+        var fields = '';
+        fieldNodes = query.substring(tempQuery.toLowerCase().indexOf('select ')+6,tempQuery.toLowerCase().indexOf(' from ',tempQuery.toLowerCase().indexOf('select') + 6));
+        var updatedFields = fieldNodes.split(",");
+        for(var field in updatedFields) {
+            var strFieldValue = updatedFields[field];
+            if(strFieldValue != null && typeof(strFieldValue) == "string"){
+                fieldValues.push(strFieldValue.split(/{/)[0].trim(" "));   
+            }
+        }
+        
+        return fieldValues; 
+    }
+    /**************************************End of extracting nodes from Query*****************/ 
+    function getMapperDiagramData(nodes,mappingData,mapperElement,tabName){
+        destinationFields = [];
+        avaTaxFields = getAvaTaXFields(tabName);
+        avaTaxMappedFields = getMappedAvaTaxFieldValue();
+        var inputMapperJSON;
+        if(typeof avaTaxFields != 'undefined'){
+            for (var i = 0; i < avaTaxFields.length; i++){
+                const getKey = (obj,val) => Object.keys(obj).find(key => obj[key] === avaTaxFields[i]);
+                var AvaTaxFieldName = getKey(avaTaxMappedFields,avaTaxFields[i]);
+                if(typeof AvaTaxFieldName === 'undefined'){
+                    AvaTaxFieldName = avaTaxFields[i]; 
+                }
+                destinationFields.push({"name":AvaTaxFieldName});
+            } 
+            sourceFields = [];
+            mappedFields = [];
+            for(var i = 0; i < nodes.length; i++){
+                sourceFields.push({"name":nodes[i]})
+            }
+            for(name in mappingData){
+                const getKey = (obj,val) => Object.keys(obj).find(key => obj[key] === name);
+                var AvaTaxFieldName = getKey(avaTaxMappedFields,name);
+                if(typeof AvaTaxFieldName === 'undefined'){
+                    AvaTaxFieldName = name; 
+                }
+                if(mappingData){
+                    if(nodes.includes(mappingData[name]) == true ){
+                    	var mappedName = mappingData[name].replace(/\./g,"");
+                    	mappedFields.push({ from: mapperElement, fromPort: mappedName, to: 'AvaTax', toPort:AvaTaxFieldName.toLowerCase()});
+                    }
+                }
+            }
+            
+            inputMapperJSON = {
+                "nodeDataArray": [{
+                    "key":mapperElement,
+                    "fields": sourceFields
+                }, {
+                    "key": "AvaTax",
+                    "fields": destinationFields
+                }],
+                "linkDataArray": mappedFields,
+                "linkFromPortIdProperty": "fromPort",
+                "linkToPortIdProperty": "toPort"
+            };
+        }
+        return inputMapperJSON;
+    }
+    function removeDuplicateUsingFilter(arr){
+        let unique_array = arr.filter(function(elem, index, self) {
+            return index == self.indexOf(elem);
+        });
+        return unique_array
+    }
+    
+    function getUpdateMapperDiagramData(nodes,mappingData,mapperElement,tabName){
+        sourceFields = [];
+        AvaTaxFields = getAvaTaXFields(tabName);
+        var xmlUpdateMappingData = (mapperData) ? mapperData['UpdateMapping'] : '';
+        if(typeof xmlUpdateMappingData != 'undefined')
+        {
+            var resultUpdateMapping = [];
+            var keys = Object.keys(xmlUpdateMappingData);
+            if (tabName == 'addressvalidation') {    
+                keys.forEach(function(key){
+                    resultUpdateMapping.push(key); 
+                });
+            } else if(tabName == 'taxcalculation') {
+                keys.forEach(function(key){
+                    resultUpdateMapping.push(xmlUpdateMappingData[key]);
+                });
+            }
+            
+            resultUpdateMapping = removeDuplicateUsingFilter(resultUpdateMapping.concat(AvaTaxFields));        
+            var notPresentInData = arr_diff(AvaTaxFields,resultUpdateMapping);
+            //    var notPresentInData = arr_diff(AvaTaxFields,resultUpdateMapping);//resultUpdateMapping.filter(val => !xmlUpdateMappingData.includes(val));
+            AvaTaxFields = AvaTaxFields.concat(notPresentInData);
+        }
+        
+        AvaTaxMappedFields = getMappedAvaTaxFieldValue();
+        var inputUpdateMapperJSON;
+        if(typeof AvaTaxFields != 'undefined') {
+            for (var i = 0; i < AvaTaxFields.length; i++){
+                const getKey = (obj,val) => Object.keys(obj).find(key => obj[key] === AvaTaxFields[i]);
+                var AvaTaxFieldName = getKey(AvaTaxMappedFields,AvaTaxFields[i]);
+                if(typeof AvaTaxFieldName === 'undefined'){
+                    AvaTaxFieldName = AvaTaxFields[i]; 
+                }
+                sourceFields.push({"name":AvaTaxFieldName});
+            }
+            
+            destinationFields = [];
+            for(var i = 0; i < nodes.length; i++){
+                destinationFields.push({"name":nodes[i]})
+            }
+            
+            mappedFields = [];
+            if(mappingData){
+                for(name in mappingData){
+                    if(tabName == 'addressvalidation') {
+                        const getKey = (obj,val) => Object.keys(obj).find(key => obj[key] === name);
+                        var AvaTaxMapperFieldName = getKey(AvaTaxMappedFields,name);
+                        if(typeof AvaTaxMapperFieldName === 'undefined'){
+                            AvaTaxMapperFieldName = name; 
+                        }
+                        if(nodes.includes(mappingData[name]) == true ){
+                        	mappedFields.push({ from:'AvaTax', fromPort: AvaTaxMapperFieldName.toLowerCase(), to: mapperElement, toPort:mappingData[name]});
+                        }
+                    } else {
+                        const getKey = (obj,val) => Object.keys(obj).find(key => obj[key] === name);
+                        var AvaTaxMapperFieldName = getKey(AvaTaxMappedFields,mappingData[name]);
+                        if(typeof AvaTaxMapperFieldName === 'undefined'){
+                            AvaTaxMapperFieldName = mappingData[name]; 
+                        }
+                        if(nodes.includes(name) == true ){
+                        	mappedFields.push({ from:'AvaTax', fromPort: AvaTaxMapperFieldName.replace(/\./g,""), to: mapperElement, toPort:name.replace(/\./g,"")});
+                        }
+                    }           
+                }
+            }
+            inputUpdateMapperJSON = {
+                "nodeDataArray": [{
+                    "key":"AvaTax",
+                    "fields": sourceFields
+                }, {
+                    "key": mapperElement,
+                    "fields": destinationFields
+                }],
+                "linkDataArray": mappedFields,
+                "linkFromPortIdProperty": "fromPort",
+                "linkToPortIdProperty": "toPort"
+            };
+        }    
+        return inputUpdateMapperJSON;
+    }
+    
+    function getParameters(query){
+        var paramMatches = [];
+        query.replace(/\{(.*?)\}/g, function(_, match){
+            paramMatches.push(match);
+        });
+        return paramMatches;
+    }
+    
+    function generateParamsTable(paramsData,xmlParams){
+        if(paramsData){
+            var paramsTable='<tr><td>Please select appropriate option for parameters</td></tr>';
+            for(i=0;i<paramsData.length;i++){
+                paramsTable +='<tr><td>'+
+                    '<s-row class="pad-all-none"><s-col span="3">'+
+                    '<label><b>'+ paramsData[i] +'</b></label>';
+                var nonId = true; 
+                var optValue = '';
+                var paramValue = xmlParams[paramsData[i]];
+                if(typeof paramValue == 'undefined'){
+                    newParam = 'newParam';
+                    paramValue = paramsData[i];
+                    paramsTable += buildParamData(paramValue,optValue,newParam);
+                }else if(paramValue == 'Id' ) {
+                    nonId = false;
+                    paramsTable += buildParamData(paramValue,optValue,nonId);
+                } else if(paramValue.indexOf('optionalParams') > -1) {
+                    nonId = true;
+                    optValue = paramValue;
+                    paramsTable += buildParamData(paramValue,optValue,nonId);
+                } else {
+                    nonId = true;
+                    optValue = paramValue;
+                    paramsTable += buildParamData(paramValue,optValue,nonId);
+                }
+            }
+            return paramsTable;
+        }
+    }
+    
+    function buildParamData(param,optValue,nonId){
+        var prmData = '';
+        prmData = '<select onchange="showInputParam(\''+param+'\');" id="'+param.replace('.','-')+'-paramSelect" class="paramSelect"';
+        if(nonId == 'newParam') {
+            prmData +='><option id="prmId" value="Id">Id</option>';
+            if(tabName != 'addressvalidation'){
+            prmData +='<option id="optPrm" value="optPrm">OptParams</option>'+
+                '<option id="objectPrm" value="objectPrm">Object</option></select></s-col>'+
+                '<div id='+param.replace('.','-')+'-inputParamDiv style="display: none;"><s-col span="auto"><lable>Enter Param</lable><input type="text" id="inputParam" name="inputParam" class="paramSelect1" required="required" value='+optValue+'></input>'+
+            '</div></s-col>';
+           }
+        }else if(nonId == true){
+            if(optValue.indexOf('optionalParams') > -1){
+                prmData +='disabled="disabled"><option id="prmId" value="Id">Id</option>';
+                if(tabName != 'addressvalidation'){
+                    prmData +='<option id="optPrm" selected="selected" value="optPrm">OptParams</option><option id="objectPrm" value="objectPrm">Object</option></select></s-col>'+
+                    '<div id='+param.replace('.','-')+'-inputParamDiv style="display: inline;"><s-col span="auto"><lable>Enter Param</lable><input type="text" id="inputParam" disabled name="inputParam" class="paramSelect1" required="required" value='+optValue+'></input>'+
+            '</div></s-col>';
+                }
+            } else {
+                prmData +='disabled="disabled"><option id="prmId" value="Id">Id</option>';
+                if(tabName != 'addressvalidation'){
+                    prmData +='<option id="optPrm" value="optPrm">OptParams</option>'+
+                        '<option id="objectPrm" selected="selected" value="objectPrm">Object</option></select></s-col>'+
+                        '<div id='+param.replace('.','-')+'-inputParamDiv style="display: inline;"><s-col span="auto"><lable>Enter Param</lable><input type="text" id="inputParam" disabled name="inputParam" class="paramSelect1" required="required" value='+optValue+'></input>'+
+            '</div></s-col>';
+               }
+            }
+        } else {
+            prmData +='disabled="disabled"><option selected="selected" id="prmId" value="Id">Id</option>';
+            if(tabName != 'addressvalidation'){
+                prmData +='<option id="optPrm" value="optPrm">OptParams</option><option id="objectPrm" value="objectPrm">Object</option></select></s-col>'+
+                '<div id='+param.replace('.','-')+'-inputParamDiv style="display: none;"><s-col span="auto"><lable>Enter Param</lable><input type="text" disabled id="inputParam" name="inputParam" class="paramSelect1" required="required" value='+optValue+'></input>'+
+            '</div></s-col>';
+            }
+        }
+        if(tabName != 'addressvalidation'){
+            prmData += '</s-row></td></tr>';
+        }
+        return prmData;
+    }
+    
+    function showInputParam(param) {
+        var paramDiv = $j('div#'+param.replace('.','-')+'-inputParamDiv');
+        if ($j('#'+param.replace('.','-')+'-paramSelect').val() == "optPrm" || $j('#'+param.replace('.','-')+'-paramSelect').val() == "objectPrm") {
+            $j(paramDiv).css('display','inline-block');
+            $j(paramDiv).css('margin-left','10px'); 
+        } else {
+            $j(paramDiv).css('display','none'); 
+        }
+        
+    }
+    
+    function arr_diff (a1, a2) {
+        var a = [], diff = [];
+        for (var i = 0; i < a1.length; i++) {
+            a[a1[i]] = true;
+        }
+        for (var i = 0; i < a2.length; i++) {
+            if (a[a2[i]]) {
+                delete a[a2[i]];
+            } else {
+                a[a2[i]] = true;
+            }
+        }
+        for(var k in a) {
+            if(a[k] === true){
+                diff.push(k);
+            }
+        }
+        return diff;
+    }
+    
+    /**********************************Start of XML generation*************************************************/
+    function saveData(){
+        var newXmlJsonData = JSON.parse(sessionStorage.getItem("mapperXmlUiJson"));
+        if(tabName){
+            currenttabXmlJsonData = mapperUiJsonData['avatax'][tabName];
+            var navMenu = [];
+            for(var node in currenttabXmlJsonData){
+                navMenu.push(node);
+            }
+            var modifiedNavMenu = [];
+            $j('.menu-navigation').find('.fixed-name').each(function(e){
+                modifiedNavMenu.push($j(this).text());
+            })
+            var diffvalues = arr_diff(navMenu,modifiedNavMenu);
+            for(var i=0; i<diffvalues.length; i++){
+                if(modifiedNavMenu.indexOf(diffvalues[i]) == -1){
+                    delete newXmlJsonData['avatax'][tabName][diffvalues[i]];
+                }
+            }
+            var newChildMenu = {};
+            if(tabName == 'addressvalidation') {
+                $j('.menu-navigation').find('.fixed-name').each(function(e){
+                    var parent = $j(this).text();
+                    newChildMenu[parent] = {};
+                    $j('li.child[data-parent$="'+ parent +'"]').each(function(e){
+                        newChildMenu[parent][$j(this).text()] =$j(this).text();
+                    });
+                });
+            } else if(tabName == 'taxcalculation')  {
+                $j('.menu-navigation').find('.fixed-name').each(function(e){
+                    var parent = $j(this).text();
+                    newChildMenu[parent] = {};
+                    $j('.menu-navigation').find('.fixed-headers').each(function(e){
+                        newChildMenu[parent][$j(this).text()] = {};  
+                        var header = $j(this).text();
+                        $j('li.child[data-parent$="'+ parent +'"]').each(function(e){
+                            if($j(this).data('subheader') == parent+'-'+header){
+                                newChildMenu[parent][header][$j(this).text()] =$j(this).text();
+                            }
+                        });
+                    });   
+                });
+            } else if(tabName != 'addressvalidation' && tabName != 'taxcalculation' ) {
+                $j('.menu-navigation').find('.fixed-name').each(function(e){
+                    var parent = $j(this).text();
+                    newChildMenu[parent] = {};
+                    $j('.menu-navigation').find('li.fixed-headers[data-parent$='+ parent +']').each(function(e){
+                        newChildMenu[parent][$j(this).text()] = {};  
+                        var header = $j(this).text();
+                        $j('li.child[data-subheader$="'+ parent+'-'+header.trim() +'"]').each(function(e){
+                            newChildMenu[parent][header][$j(this).text()] ={};
+                        });
+                    });   
+                });
+            }
+            for(var name in newChildMenu){
+                if(tabName == 'addressvalidation'){
+                    var newMenu = [];
+                    for(var child in newChildMenu[name]){
+                        newMenu.push(child);
+                    }
+                    var oldChildMenu = [];
+                    for(var menu in mapperUiJsonData['avatax'][tabName][name]){
+                        if(menu == 'hooks'){
+                            continue;
+                        } else {
+                            oldChildMenu.push(menu); 
+                        }
+                    }
+                    if(typeof mapperUiJsonData['avatax'][tabName][name] == 'undefined' ){
+                        newXmlJsonData['avatax'][tabName][name] = {};
+                        newXmlJsonData['avatax'][tabName][name]['hooks'] = {};
+                    }
+                    var childiffvalues = arr_diff(oldChildMenu,newMenu);
+                    for(var j=0; j<childiffvalues.length; j++){
+                        if(newMenu.indexOf(childiffvalues[j]) == -1){ 
+                            delete newXmlJsonData['avatax'][tabName][name][childiffvalues[j]];
+                        } else {
+                            if(typeof mapperUiJsonData['avatax'][tabName][childiffvalues[j]] == 'undefined') {
+                                newXmlJsonData['avatax'][tabName][name][childiffvalues[j]] = {};
+                            }
+                        }
+                    }
+                    
+                } else {
+                    for(var child in newChildMenu[name]){ 
+                        if(child == 'Header-Queries'){
+                            var newMenu = [];
+                            for(var header in newChildMenu[name][child]){
+                                newMenu.push(header);
+                            } 
+                            var oldChildMenu = []; 
+                            if(typeof mapperUiJsonData['avatax'][tabName][name] =='undefined' ){ 
+                                continue;
+                            }
+                            var itemQueries = mapperUiJsonData['avatax'][tabName][name]['Header']['Queries'];
+                            for(var menu in itemQueries){
+                                if(menu == 'hooks'){
+                                    continue;
+                                } else {
+                                    oldChildMenu.push(menu); 
+                                }
+                            } 
+                            var childiffvalues = arr_diff(oldChildMenu,newMenu);
+                            for(var j=0; j<childiffvalues.length; j++){
+                                if(newMenu.indexOf(childiffvalues[j]) == -1){ 
+                                    delete newXmlJsonData['avatax'][tabName][name]['Header']['Queries'][childiffvalues[j]];
+                                } else {
+                                    if(typeof mapperUiJsonData['avatax'][tabName][name]['Header']['Queries'][childiffvalues[j]] == 'undefined') {
+                                        newXmlJsonData['avatax'][tabName][name]['Header']['Queries'][childiffvalues[j]] = {};
+                                    }
+                                }
+                            }
+                        } 
+                        else if(child == 'Line-Queries'){
+                            var newMenu = [];
+                            for(var header in newChildMenu[name][child]){
+                                newMenu.push(header);
+                            } 
+                            var oldChildMenu = []; 
+                            if(typeof mapperUiJsonData['avatax'][tabName][name] =='undefined' ){ 
+                                continue;
+                            } 
+                            var itemQueries = mapperUiJsonData['avatax'][tabName][name]['Line']['Queries'];
+                            for(var menu in itemQueries){
+                                if(menu == 'hooks'){
+                                    continue;
+                                } else {
+                                    oldChildMenu.push(menu); 
+                                }
+                            }
+                            var childiffvalues = arr_diff(oldChildMenu,newMenu);
+                            if(typeof childiffvalues !== 'undefined'){
+                                if(childiffvalues.indexOf('toggle') != -1){
+                                    var indexVal = childiffvalues.indexOf('toggle'); 
+                                    childiffvalues.splice(indexVal, 1);
+                                }
+                            }
+                            for(var j=0; j<childiffvalues.length; j++){
+                                if(newMenu.indexOf(childiffvalues[j]) == -1){ 
+                                    delete newXmlJsonData['avatax'][tabName][name]['Line']['Queries'][childiffvalues[j]];
+                                } else {
+                                    if(typeof mapperUiJsonData['avatax'][tabName][name]['Line']['Queries'][childiffvalues[j]] == 'undefined') {
+                                        if(typeof newXmlJsonData['avatax'][tabName][name]['Line']['Queries'] == 'string'){
+                                            delete newXmlJsonData['avatax'][tabName][name]['Line']['Queries'];
+                                            newXmlJsonData['avatax'][tabName][name]['Line']['Queries'] = {};
+                                        }
+                                        newXmlJsonData['avatax'][tabName][name]['Line']['Queries'][childiffvalues[j]] = {};
+                                    }
+                                }
+                            }
+                        } 
+                            else if(child == 'Queries') {
+                                var newMenu = [];
+                                for(var header in newChildMenu[name][child]){
+                                    newMenu.push(header);
+                                } 
+                                var oldChildMenu = [];
+                                if(typeof mapperUiJsonData['avatax'][tabName][name] !='undefined' ){ 
+                                    var itemQueries = mapperUiJsonData['avatax'][tabName][name]['Queries'];
+                                    for(var menu in itemQueries){
+                                        if(menu == 'hooks'){
+                                            continue;
+                                        } else {
+                                            oldChildMenu.push(menu); 
+                                        }
+                                    }
+                                }
+                                var childiffvalues = arr_diff(oldChildMenu,newMenu);
+                                for(var j=0; j<childiffvalues.length; j++){
+                                    if(newMenu.indexOf(childiffvalues[j]) == -1){ 
+                                        delete newXmlJsonData['avatax'][tabName][name]['Queries'][childiffvalues[j]];
+                                    } 
+                                    else if(typeof mapperUiJsonData['avatax'][tabName][name] == 'undefined') {  
+                                    }else {
+                                        if(typeof mapperUiJsonData['avatax'][tabName][name]['Queries'][childiffvalues[j]] == 'undefined') {
+                                            newXmlJsonData['avatax'][tabName][name]['Queries'][childiffvalues[j]] = {};
+                                        }
+                                    }
+                                }
+                            }
+                    }   
+                }
+            }
+        }
+        if(!isNaN($j('#subProcessType').html().charCodeAt(0))){
+            var customObject = $j('#processType').html();
+            
+            if($j('#subProcessType').html().split('|')){
+                if(tabName !== 'addressvalidation'){
+                    tempFieldHeader = $j('#subProcessType').html().split('|');   
+                    tempName = tempFieldHeader[0].split('-');
+                    if(tempFieldHeader){
+                        var customField = tempFieldHeader[1];
+                    }
+                } else {
+                    var customField = $j('#subProcessType').html();
+                }
+            } 
+            if(customField){
+                if(tabName == 'addressvalidation'){
+                    var diagramRenderer = newXmlJsonData['avatax'][tabName][customObject][customField];
+                } else if(tabName == 'taxcalculation') {
+                    var headerNew = tempName[0].toLowerCase().charAt(0).toUpperCase()+ tempName[0].toLowerCase().substr(1);
+                    var qries = tempName[1].toLowerCase().charAt(0).toUpperCase()+ tempName[1].toLowerCase().substr(1);
+                    if(typeof newXmlJsonData['avatax'][tabName][customObject] === 'undefined')
+                    {
+                        newXmlJsonData['avatax'][tabName][customObject] = {};
+                        newXmlJsonData['avatax'][tabName][customObject]['hooks'] = {};
+                        newXmlJsonData['avatax'][tabName][customObject][headerNew] = {};
+                        newXmlJsonData['avatax'][tabName][customObject][headerNew][qries] = {};
+                        if(headerNew == 'Header' && typeof newXmlJsonData['avatax'][tabName][customObject]['Line'] == 'undefined')
+                        {
+                            newXmlJsonData['avatax'][tabName][customObject]['Line'] = {};
+                            newXmlJsonData['avatax'][tabName][customObject]['Line'][qries] = {};
+                        }
+                        else  if(headerNew == 'Line' && typeof newXmlJsonData['avatax'][tabName][customObject]['Header'] == 'undefined')
+                        {
+                            newXmlJsonData['avatax'][tabName][customObject]['Header'] = {};
+                            newXmlJsonData['avatax'][tabName][customObject]['Header'][qries] = {};
+                        }
+                        
+                    }
+                    
+                    var diagramRenderer = newXmlJsonData['avatax'][tabName][customObject][headerNew][qries][customField];
+                    if(diagramRenderer == "" || diagramRenderer == undefined)
+                    {
+                        diagramRenderer = {};
+                    }
+                    
+                } else if(tabName != 'addressvalidation') {
+                    if(typeof newXmlJsonData['avatax'][tabName][customObject] === 'undefined')
+                    {
+                        newXmlJsonData['avatax'][tabName][customObject] = {};
+                        newXmlJsonData['avatax'][tabName][customObject]['hooks'] = {};
+                        newXmlJsonData['avatax'][tabName][customObject]['Queries'] = {};
+                        diagramRenderer = newXmlJsonData['avatax'][tabName][customObject]['Queries'][customField]; 
+                        if(diagramRenderer == "" || diagramRenderer == undefined)
+                        {
+                            diagramRenderer = {};
+                        }
+                    } else if(diagramRenderer == "" || diagramRenderer == undefined)
+                    {
+                        diagramRenderer = {};
+                    }
+                }   
+            }
+            if(diagramRenderer){
+                var hookObj = {}
+                $j('div#hooksDialog').find('div#'+tabName+'-'+customObject+'-'+'Hooks').find('input').each(function(e){
+                    var hookNames = $j(this).attr('id').split('-');
+                    hookObj[hookNames[1]] = $j(this).val(); 
+                });
+                if(typeof newXmlJsonData['avatax'][tabName][customObject]['hooks'] === 'undefined'){
+                    newXmlJsonData['avatax'][tabName][customObject]['hooks'] = {};
+                }
+                newXmlJsonData['avatax'][tabName][customObject]['hooks'] = hookObj;
+                
+                diagramRenderer['query'] = $j('div#mapperContainer').find('div#'+customField).find('textarea#query').val();
+                var Tbody = document.getElementById(customField+'-tbodyid');
+                var arrPrmObj = {};
+                $j(Tbody).find('> tr').each(function () {
+                    if($j(this).find("select").val() == 'optPrm') {
+                        arrPrmObj[$j(this).find('label > b').text()]=$j(this).find('input#inputParam').val();
+                    } else if($j(this).find("select").val() == 'objectPrm'){
+                        arrPrmObj[$j(this).find('label > b').text()]=$j(this).find('input#inputParam').val(); 
+                    } else {
+                        arrPrmObj[$j(this).find('label > b').text()]=$j(this).find("select").val();
+                    }
+                });
+                diagramRenderer['parameters'] =arrPrmObj;
+                if($j('#av-'+customField+'-mapper-output').val()){
+                    var mapperJson = JSON.parse($j('#av-'+customField+'-mapper-output').val()); 
+                    var mappedfields = {};
+                    var mappedOriginalFields = mapperJson["nodeDataArray"][0]["fields"];
+                    for(var mf=0; mf<mappedOriginalFields.length; mf++){
+                        mappedfields[mappedOriginalFields[mf]['name'].replace(/\./g,"").toLowerCase()]=mappedOriginalFields[mf]['name'];
+                    }
+                    var mappedAvaTaxFields = mapperJson["nodeDataArray"][1]["fields"];  
+                    var avaTaxMappedFieldsValues = getMappedAvaTaxFieldValue();
+                    var avaTaxFields = {}
+                    for(var af=0; af<mappedAvaTaxFields.length; af++){
+                        avaTaxFields[mappedAvaTaxFields[af]['name'].replace(/\./g,"").toLowerCase()]=mappedAvaTaxFields[af]['name'];
+                    }
+                    for(field in avaTaxFields) {
+                        avaTaxFields[field] = (avaTaxMappedFieldsValues[avaTaxFields[field]]) ? avaTaxMappedFieldsValues[avaTaxFields[field]] : avaTaxFields[field];
+                    }
+                    var MappedObj = {};
+                    for(var j=0; j<mapperJson["linkDataArray"].length; j++){
+                        MappedObj[
+                            (avaTaxFields[mapperJson["linkDataArray"][j]['toPort'].toLowerCase()]) ? avaTaxFields[mapperJson["linkDataArray"][j]['toPort'].toLowerCase()] : mapperJson["linkDataArray"][j]['toPort'] 
+                        ] = (mappedfields[mapperJson["linkDataArray"][j]['fromPort'].toLowerCase()])?mappedfields[mapperJson["linkDataArray"][j]['fromPort'].toLowerCase()] : mapperJson["linkDataArray"][j]['fromPort']; 
+                    }
+                    diagramRenderer['Mapping']=MappedObj;
+                }
+                //this.getUpdatedMappingClassName();
+                if($j('#av-'+customField+'-updatemapper-output').val()){
+                    var updatemapperJson = JSON.parse($j('#av-'+customField+'-updatemapper-output').val());
+                    var umappedOriginalFields = updatemapperJson["nodeDataArray"][1]["fields"];
+                    var updateMappedObj = {};
+                    for(var j=0; j<updatemapperJson["linkDataArray"].length; j++){
+                        AvaTaxMappedFields = getMappedAvaTaxFieldValue();
+                        var fromField = AvaTaxMappedFields[updatemapperJson["linkDataArray"][j]['fromPort']];                        
+                        var updateClassMappings = sessionStorage.getItem("customClasses");
+                        if(updateClassMappings != null){
+                            var classMappings = updateClassMappings.split(',');
+                            for(var i=0; i<classMappings.length; i++){
+                                var tempClassMapping = classMappings[i];
+                                if( tempClassMapping.replace(/\./g,"") == updatemapperJson["linkDataArray"][j]['fromPort']){
+                                    updatemapperJson["linkDataArray"][j]['fromPort'] = classMappings[i]; 
+                                }
+                            }     
+                        }
+                        if(typeof fromField == 'undefined' ) fromField = updatemapperJson["linkDataArray"][j]['fromPort']; 
+                        if(tabName == 'addressvalidation') {
+                            updateMappedObj[fromField] = updatemapperJson["linkDataArray"][j]['toPort']; 
+                        } else {
+                            updateMappedObj[updatemapperJson["linkDataArray"][j]['toPort']] = fromField;  
+                        }
+                    }
+                    diagramRenderer['UpdateMapping']=updateMappedObj; 
+                }
+                if(tabName == 'taxcalculation'){
+                    newXmlJsonData['avatax'][tabName][customObject][headerNew][qries][customField] = diagramRenderer;
+                }else if(tabName == 'addressvalidation'){
+                    newXmlJsonData['avatax'][tabName][customObject][customField] = diagramRenderer;
+                } else if(tabName != 'taxcalculation' && tabName != 'addressvalidation' ) {
+                    newXmlJsonData['avatax'][tabName][customObject]['Queries'][customField] = diagramRenderer;
+                }
+            }
+            
+        }
+        var objectToXml = function (obj) {
+            var xml = '';
+            for (var prop in obj) {
+                if (!obj.hasOwnProperty(prop)) {
+                    continue;
+                }
+                if (obj[prop] == undefined)
+                    continue;
+                xml += "<" + prop + ">";
+                if (typeof obj[prop] == "object")
+                    xml += objectToXml(new Object(obj[prop]));
+                else
+                    xml += obj[prop];
+                xml += "</" + prop + ">";
+            }
+            return xml;
+        }
+        var xmlJsonData = objectToXml(newXmlJsonData);
+        controller.getXmlString(xmlJsonData,function(result, event){
+            if(result == null){
+                alert('AvaTax configuration updated successfully');
+                window.location.reload();
+            }
+        });
+    }
+    
+    function getUpdatedMappingClassName(){
+         controller.getListofUpdateTaxHelperNames(function(result,event){
+             var updateClassMappings = [];    
+             if(result != null){
+                 Object.keys(result).map(function(key) {
+                     updateClassMappings.push(result[key]);
+                 });
+             }
+             sessionStorage.setItem("customClasses", updateClassMappings);
+         });
+    }
+
+    function getAvaTaXFields(key,item) {
+        if(key == 'addressvalidation') {
+            var arrAvaTaxFields = [];
+            arrAvaTaxFields.push('line1','line2','line3','city','region','country','postalcode','latitude','longitude');
+            return arrAvaTaxFields;
+        } else if (key == 'taxcalculation'){
+            if(headers[0] == 'Header'){
+                var arrAvaTaxFields = [];
+                arrAvaTaxFields.push('code','type','totalTax','companyCode','documentDate','salespersonCode','customerCode','customerUsageType',
+                                     'discount','purchaseOrderNo','exemptionNo','parameters','referenceCode','reportingLocationCode','commit',
+                                     'batchCode','currencyCode','serviceMode','exchangeRate','exchangeRateEffectiveDate','posLaneCode','businessIdentificationNo',
+                                     'isSellerImporterOfRecord','description','email','debugLevel','taxOverride.type','taxOverride.taxAmount',
+                                     'taxOverride.taxDate','taxOverride.reason','addresses.singleLocation.locationCode',
+                                     'addresses.singleLocation.line1','addresses.singleLocation.line2','addresses.singleLocation.line3',
+                                     'addresses.singleLocation.city','addresses.singleLocation.region','addresses.singleLocation.country',
+                                     'addresses.singleLocation.postalCode','addresses.singleLocation.latitude','addresses.singleLocation.longitude',
+                                     'addresses.shipFrom.locationCode',
+                                     'addresses.shipFrom.line1','addresses.shipFrom.line2','addresses.shipFrom.line3',
+                                     'addresses.shipFrom.city','addresses.shipFrom.region','addresses.shipFrom.country',
+                                     'addresses.shipFrom.postalCode','addresses.shipFrom.latitude','addresses.shipFrom.longitude',
+                                     'addresses.shipTo.locationCode',
+                                     'addresses.shipTo.line1','addresses.shipTo.line2','addresses.shipTo.line3',
+                                     'addresses.shipTo.city','addresses.shipTo.region','addresses.shipTo.country',
+                                     'addresses.shipTo.postalCode','addresses.shipTo.latitude','addresses.shipTo.longitude',
+                                     'addresses.pointOfOrderOrigin.locationCode',
+                                     'addresses.pointOfOrderOrigin.line1','addresses.pointOfOrderOrigin.line2','addresses.pointOfOrderOrigin.line3',
+                                     'addresses.pointOfOrderOrigin.city','addresses.pointOfOrderOrigin.region','addresses.pointOfOrderOrigin.country',
+                                     'addresses.pointOfOrderOrigin.postalCode','addresses.pointOfOrderOrigin.latitude','addresses.pointOfOrderOrigin.longitude',  
+                                     'addresses.pointOfOrderAcceptance.locationCode',
+                                     'addresses.pointOfOrderAcceptance.line1','addresses.pointOfOrderAcceptance.line2','addresses.pointOfOrderAcceptance.line3',
+                                     'addresses.pointOfOrderAcceptance.city','addresses.pointOfOrderAcceptance.region','addresses.pointOfOrderAcceptance.country',
+                                     'addresses.pointOfOrderAcceptance.postalCode','addresses.pointOfOrderAcceptance.latitude','addresses.pointOfOrderAcceptance.longitude'  
+                                    );
+                return arrAvaTaxFields;
+            } else if(headers[0] == 'Line'){
+                var arrAvaTaxFields = [];
+                arrAvaTaxFields.push('number','quantity','amount','tax','addresses.singleLocation.locationCode',
+                                     'addresses.singleLocation.line1','addresses.singleLocation.line2','addresses.singleLocation.line3',
+                                     'addresses.singleLocation.city','addresses.singleLocation.region','addresses.singleLocation.country',
+                                     'addresses.singleLocation.postalCode','addresses.singleLocation.latitude','addresses.singleLocation.longitude',
+                                     'addresses.shipFrom.locationCode',
+                                     'addresses.shipFrom.line1','addresses.shipFrom.line2','addresses.shipFrom.line3',
+                                     'addresses.shipFrom.city','addresses.shipFrom.region','addresses.shipFrom.country',
+                                     'addresses.shipFrom.postalCode','addresses.shipFrom.latitude','addresses.shipFrom.longitude',
+                                     'addresses.shipTo.locationCode',
+                                     'addresses.shipTo.line1','addresses.shipTo.line2','addresses.shipTo.line3',
+                                     'addresses.shipTo.city','addresses.shipTo.region','addresses.shipTo.country',
+                                     'addresses.shipTo.postalCode','addresses.shipTo.latitude','addresses.shipTo.longitude',
+                                     'addresses.pointOfOrderOrigin.locationCode',
+                                     'addresses.pointOfOrderOrigin.line1','addresses.pointOfOrderOrigin.line2','addresses.pointOfOrderOrigin.line3',
+                                     'addresses.pointOfOrderOrigin.city','addresses.pointOfOrderOrigin.region','addresses.pointOfOrderOrigin.country',
+                                     'addresses.pointOfOrderOrigin.postalCode','addresses.pointOfOrderOrigin.latitude','addresses.pointOfOrderOrigin.longitude',  
+                                     'addresses.pointOfOrderAcceptance.locationCode',
+                                     'addresses.pointOfOrderAcceptance.line1','addresses.pointOfOrderAcceptance.line2','addresses.pointOfOrderAcceptance.line3',
+                                     'addresses.pointOfOrderAcceptance.city','addresses.pointOfOrderAcceptance.region','addresses.pointOfOrderAcceptance.country',
+                                     'addresses.pointOfOrderAcceptance.postalCode','addresses.pointOfOrderAcceptance.latitude','addresses.pointOfOrderAcceptance.longitude',
+                                     'taxCode','customerUsageType','itemCode','exemptionCode','discounted','taxIncluded',
+                                     'revenueAccount','ref1','ref2','description','businessIdentificationNo','taxOverride.type','taxOverride.taxAmount',
+                                     'taxOverride.taxDate','taxOverride.reason','parameters','hsCode'
+                                    );
+                return arrAvaTaxFields;
+            }
+            
+        } else if (key == 'posttaxcalculation') {
+            var arrAvaTaxFields = [];
+            arrAvaTaxFields.push('commitFlag','companyCode','docType','transactionCode');
+            return arrAvaTaxFields;
+        } else if (key == 'canceltaxcalculation'){
+            var arrAvaTaxFields = [];
+            //arrAvaTaxFields.push('code','companyCode','controller','docType','recordId','transactionCode');
+            arrAvaTaxFields.push('transactionCode');
+            return arrAvaTaxFields;
+        }
+        
+    }
+    
+    function getMappedAvaTaxFieldValue() {
+        var mappedAvaTaxFields = {'CoordinateInfo For Latitude':'CoordinateInfo.latitude',
+                                  'CoordinateInfo For Longitude':'CoordinateInfo.longitude',
+                                  'AddressInfo For Line1':'AddressInfo.line1',
+                                  'AddressInfo For Line2':'AddressInfo.line2',
+                                  'AddressInfo For Line3':'AddressInfo.line3',
+                                  'AddressInfo For City':'AddressInfo.city',
+                                  'AddressInfo For Region':'AddressInfo.region',
+                                  'AddressInfo For Country':'AddressInfo.country',
+                                  'AddressInfo For PostalCode':'AddressInfo.postalcode',
+                                  'AddressInfo For Latitude':'AddressInfo.latitude',
+                                  'AddressInfo For Longitude':'AddressInfo.longitude',
+                                  'Tax Override Type':'taxOverride.type',
+                                  'Tax Override TaxAmount':'taxOverride.taxAmount',
+                                  'Tax Override TaxDate':'taxOverride.taxDate',
+                                  'Tax Override Reason':'taxOverride.reason',
+                                  'Single Location Line1':'addresses.singleLocation.line1',
+                                  'Single Location Line2':'addresses.singleLocation.line2',
+                                  'Single Location Line3':'addresses.singleLocation.line3',
+                                  'Single Location City':'addresses.singleLocation.city',
+                                  'Single Location Region':'addresses.singleLocation.region',
+                                  'Single Location Country':'addresses.singleLocation.country',
+                                  'Single Location PostalCode':'addresses.singleLocation.postalCode',
+                                  'Single Location Latitude':'addresses.singleLocation.latitude',
+                                  'Single Location Longitude':'addresses.singleLocation.longitude',
+                                  'Single Location LocationCode':'addresses.singleLocation.locationCode',
+                                  'ShipFrom Line1':'addresses.shipFrom.line1',
+                                  'ShipFrom Line2':'addresses.shipFrom.line2',
+                                  'ShipFrom Line3':'addresses.shipFrom.line3',
+                                  'ShipFrom City':'addresses.shipFrom.city',
+                                  'ShipFrom Region':'addresses.shipFrom.region',
+                                  'ShipFrom Country':'addresses.shipFrom.country',
+                                  'ShipFrom PostalCode':'addresses.shipFrom.postalCode',
+                                  'ShipFrom Latitude':'addresses.shipFrom.latitude',
+                                  'ShipFrom Longitude':'addresses.shipFrom.longitude',
+                                  'ShipFrom LocationCode':'addresses.shipFrom.locationCode',
+                                  'ShipTo LocationCode':'addresses.shipTo.locationCode',
+                                  'ShipTo Line1':'addresses.shipTo.line1',
+                                  'ShipTo Line2':'addresses.shipTo.line2',
+                                  'ShipTo Line3':'addresses.shipTo.line3',
+                                  'ShipTo City':'addresses.shipTo.city',
+                                  'ShipTo Region':'addresses.shipTo.region',
+                                  'ShipTo Country':'addresses.shipTo.country',
+                                  'ShipTo PostalCode':'addresses.shipTo.postalCode',
+                                  'ShipTo Latitude':'addresses.shipTo.latitude',
+                                  'ShipTo Longitude':'addresses.shipTo.longitude',
+                                  'PointofOrderOrigin LocationCode':'addresses.pointOfOrderOrigin.locationCode',
+                                  'PointofOrderOrigin Line1':'addresses.pointOfOrderOrigin.line1',
+                                  'PointofOrderOrigin Line2':'addresses.pointOfOrderOrigin.line2',
+                                  'PointofOrderOrigin Line3':'addresses.pointOfOrderOrigin.line3',
+                                  'PointofOrderOrigin City':'addresses.pointOfOrderOrigin.city',
+                                  'PointofOrderOrigin Region':'addresses.pointOfOrderOrigin.region',
+                                  'PointofOrderOrigin Country':'addresses.pointOfOrderOrigin.country',
+                                  'PointofOrderOrigin PostalCode':'addresses.pointOfOrderOrigin.postalCode',
+                                  'PointofOrderOrigin Latitude':'addresses.pointOfOrderOrigin.latitude',
+                                  'PointOfOrderOrigin Longitude':'addresses.pointOfOrderOrigin.longitude',  
+                                  'PointOfOrderAcceptance LocationCode':'addresses.pointOfOrderAcceptance.locationCode',
+                                  'pointOfOrderAcceptance Line1':'addresses.pointOfOrderAcceptance.line1',
+                                  'pointOfOrderAcceptance Line2':'addresses.pointOfOrderAcceptance.line2',
+                                  'pointOfOrderAcceptance Line3':'addresses.pointOfOrderAcceptance.line3',
+                                  'pointOfOrderAcceptance City':'addresses.pointOfOrderAcceptance.city',
+                                  'pointOfOrderAcceptance Region':'addresses.pointOfOrderAcceptance.region',
+                                  'pointOfOrderAcceptance Country':'addresses.pointOfOrderAcceptance.country',
+                                  'pointOfOrderAcceptance PostalCode':'addresses.pointOfOrderAcceptance.postalCode',
+                                  'pointOfOrderAcceptance Latitude':'addresses.pointOfOrderAcceptance.latitude',
+                                  'pointOfOrderAcceptance Longitude':'addresses.pointOfOrderAcceptance.longitude'
+                                 };
+        return mappedAvaTaxFields;
+    }
+    
+    function openMapperDialog(mapperDivId) {
+        var updateTaxHelperClassesMappings=[];
+        controller.getListofUpdateTaxHelperNames(function(result,event){
+            if(result != null){
+                Object.keys(result).map(function(key) {
+                    updateTaxHelperClassesMappings.push(result[key]);
+                });         
+                var xmlUpdateMappingData = (mapperData) ? mapperData['UpdateMapping'] : '';
+                var resultUpdateMapping = [];
+                var newKeys = Object.keys(xmlUpdateMappingData);
+                if(tabName == 'taxcalculation') {
+                    newKeys.forEach(function(newKeys){
+                        resultUpdateMapping.push(xmlUpdateMappingData[newKeys]);
+                    });
+                }
+                var notPresentInData = arr_diff(updateTaxHelperClassesMappings,resultUpdateMapping);
+                
+                if(updateTaxHelperClassesMappings.length >0)
+                {
+                    var newMappingFieldForm = '<form id="newFieldform">'+
+                        '<fieldset><lable>Select your object:</lable>'+
+                        '<select id="updateNewFieldM" class="form-control" required="required">';
+                    for(var i=0; i<notPresentInData.length; i++){
+                        if(updateTaxHelperClassesMappings.indexOf(notPresentInData[i]) != -1){
+                            newMappingFieldForm += '<option value=' + notPresentInData[i] + '>' + notPresentInData[i] + '</option>';
+                        }    
+                    }
+                    newMappingFieldForm +='</select>'+
+                        '<input type="button" class="avabtn" value="Add" onclick="updateMapperUi()"/></fieldset></form>'; 
+                    
+                    $j( '#addNewMapperDialog' ).html(newMappingFieldForm);
+                    
+                    $j( '#addNewMapperDialog' ).dialog({dialogClass: 'modal-header-bg'});
+                    
+                    $j( '#addNewMapperDialog' ).dialog("open");
+                    $j( '#addNewMapperDialog' ).data('mapperdivId',mapperDivId);
+                }
+                
+            }
+        });
+    }
+    
+    function updateMapperUi(){
+        var selectedClassName = $j('div#addNewMapperDialog').find('select#updateNewFieldM').val();
+        $j("#addNewMapperDialog").dialog("close");
+        var mapperDivId = $j( '#addNewMapperDialog' ).data('mapperdivId');
+        var mapperElement = mapperDivId.split("-")[0];
+        var divDetails = mapperDivId.split("-")[1];
+        var msourceId = 'av-'+mapperElement+'-updatemapper-output';
+        var mapperJSON = JSON.parse($j('#'+msourceId).val());
+        var mapperId = '';
+        for(var i in mapperJSON['nodeDataArray']){
+            if(mapperJSON['nodeDataArray'][i]['key'] == 'AvaTax'){
+                mapperJSON['nodeDataArray'][i]['fields'].push({"name":selectedClassName});
+            }
+        }
+        mapperId = mapperElement+'-updatemapping'; 
+        $j('#'+mapperDivId).find('svg').remove();
+        var templateMapper = new AvaFieldMapper(mapperId, mapperJSON,tabName).initSvg();
+        
+        $j('#'+msourceId).text(JSON.stringify(mapperJSON)); 
+    }
+    <apex:includeScript value="{!$Resource.AVA_SFCPQ__AvaMapperJs}"/>    
+        </script>
+</apex:page>

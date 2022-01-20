@@ -1,0 +1,623 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose                    :Included as a page in JBara Customer Experience App.
+                                 Displays Application Settings and NPS Settings for api calls.
+----                             User can add app settings to which API calls can be happen.
+----
+---- Other comments (optional)  :
+-->
+<apex:page controller="JBCXM.ApplicationSettings" extensions="JBCXM.GSCommonBroker,JBCXM.NSRemoting" tabStyle="administration__tab" sidebar="false">
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/SurveyJquery/css/redmond/jquery-ui-1.8.18.custom.css"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/NS/NS/newStack/js/restclient/restClient.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/backbone-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery.htmlClean.min.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/core/gsAppContainer.css" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/date.format.js" />
+    <style>
+        body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock{
+           background-color: #FFF;
+           border-radius: 3px;
+           border: 0;
+       }
+       .bPageBlock .detailList tr td, .bPageBlock .detailList tr th,
+       .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+           border-bottom:none;
+       }
+       .empty,.last{
+           display:none;
+       }        
+       .tdlabel{
+           min-width:380px;
+           max-width:380px;
+       }
+       .tdDescription{
+           min-width:300px;
+           max-width:300px;
+           position:fixed;
+       }
+       .apexp .bPageBlock .detailList {
+           width: 40%;
+       }
+       .apexp .bPageBlock .detailList td{
+           height:10px;
+       }
+       #gs-app-container .gs-module-container form{
+           padding: 15px;
+           background-color: #f0f3f6;
+       }
+       #gs-app-container .gs-module-container .gs-api-settingsList{
+           padding: 5px 0 10px;
+       }
+       #gs-app-container .gs-module-container table.gs-ns-settingsList tr{
+           height: 15px;
+       }
+       #gs-app-container .gs-module-container .detailList td.tdDescription + td.dataCol.first{
+           min-width:135px;
+       }
+    </style>
+
+    <script type="text/javascript">
+    	var j$ = $.noConflict();
+        window.jLatest = j$;
+        var GS = GS || {};
+        
+        GS.userConfig = {
+            userLocale  : {!(dateTimeFormatByLocale)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        }; 
+        GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingEndPoint           = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        
+                                                           
+        
+        var existingTreeMapData = fakeEval('{!JSINHTMLENCODE(nsChecksConfig)}')||{};
+        var exisitingColumnsData = fakeEval('{!JSINHTMLENCODE(nsDrillDownConfigMap)}')||{};
+        var isAPICalled = false;        	
+		var selCollectionIdList = new Array();		
+        var collectionColumnMap = {};        
+        var selColumnList = new Array();
+                        
+        j$(document).ready(function() {
+        
+        	//first check if there is a usageDrillDown key is present or not 
+        	if(typeof existingTreeMapData != "undefined") {	
+        		
+        		//that means there was no tree map selected, hence by default there will be a empty dropdown of collection and columns         	      	    
+        		if(existingTreeMapData["usageDrillDown"] === false) {
+        			j$('#collectionDropDown option[value="0"]').attr("selected",true);
+        			j$('#columnDropDown option[value="0"]').attr("selected",true);
+        		}
+        		else if(existingTreeMapData["usageDrillDown"] === true) {        				
+        			//Tree map was selected, Meaning there are already some columns selected 
+        			//Call the API and get all the Collections and their columns and by default select the selected Collection and columns        		        			
+        			if((exisitingColumnsData != '{}') && (typeof  exisitingColumnsData != "undefined")) {
+        				for(var i=0, len= exisitingColumnsData.Collections.length; i<len; i++) {
+	        				var item = exisitingColumnsData.Collections[i];		        			
+	        				selCollectionIdList.push(item.CollectionID);        			
+	        				for(var j=0, len2=item.Return.length; j<len2; j++) {        				        				
+	        					var retColMap = (item.Return[j]);
+	        					selColumnList.push(retColMap["APIName"]);        			
+	        				}        					        					        			
+	        			}        																		        	         	     		               			
+        			}
+        			//Call API to get all the collections and their columns
+        			getAllCollections();		        	        		
+        		}
+        	}        	
+        });
+                
+        
+        //JB-4264      
+        var replist = {};  
+        restClient.config = {remoting:"{!$RemoteAction.NSRemoting.apinsinvoke}",sessionId : "{!NSSessionId}"};                        
+        var hasCollection = !replist.Collections;                                                                       
+
+
+
+        function toggleNSConnection(isChecked, isEditCalled){                     
+            
+            //get all the collections if not already got
+            if(!isAPICalled && isEditCalled && selColumnList.length==0 ){	//Edit should call the API only when there is no previous saved data 
+             	getAllCollections();                	
+            }
+            
+            j$(".newStackGroupParent").removeAttr("disabled");            	            
+            if (isChecked == true || isChecked == 'true') {            	            	            	
+                j$(".newStackGroup").each(function(){
+                	j$(this).removeAttr("disabled");
+                });                                                              	
+            } 
+            else if (isChecked == false || isChecked == 'false'){                
+                j$(".newStackGroup").each(function(){
+                	j$(this).attr("disabled", true).removeAttr("checked");
+                });
+                
+                j$('#collectionDropDown option[value!="0"]').remove();
+                j$('#columnDropDown option[value!="0"]').remove();
+            }                   
+        }
+        
+        function updateNSSettingsFunction() {            
+            var finalCollectionsMap = {};     
+            selCollectionIdList = new Array();                   
+            selColumnList = new Array();
+            if(j$("#collectionDropDown option:selected").length > 0 && j$("#collectionDropDown option:selected").val() != '0' && j$("#columnDropDown option:selected").length > 0) {                 	
+            	            	       
+            	var finalSelColumnList = new Array();
+            	//get all the selected ones. but ignore if NONE is selected
+            	j$("#columnDropDown option:selected").each(function(){
+            		if(j$(this).val() != '0'){            
+            			finalSelColumnList.push({APIName: j$(this).val(), DisplayName: j$(this).text()});
+            			selColumnList.push(j$(this).val());
+            		}            
+            	});
+            	//Means NONE or more than 1 is selected
+            	if(selColumnList.length > 0) {            		
+		            selCollectionIdList.push(j$("#collectionDropDown option:selected").val());
+            		var treeMapDetails =  {};	
+		            treeMapDetails["CollectionID"] = j$("#collectionDropDown option:selected").val();
+		            treeMapDetails["CollectionName"] = j$("#collectionDropDown option:selected").text();            
+		            treeMapDetails["Return"] = finalSelColumnList;
+		                                    		            
+		            var finalSelCollectionsList = new Array();
+		            finalSelCollectionsList.push(treeMapDetails);
+		            finalCollectionsMap["Collections"] = finalSelCollectionsList;
+            	}
+            	else{            	
+            		alert('Please select column for drill down');
+            		enableBtn(j$(".jbaraSaveNSBtn"));
+            		return false;
+            	}            	
+            }
+            
+          	var items = [];         
+
+
+
+
+            j$("input.newStackAreaEnable:checked").each(function(){              
+                var idVal = j$(this).attr("id");
+                idVal = idVal.substring(idVal.lastIndexOf(":")+1, idVal.length);            
+                items.push(idVal);
+            });
+
+            updateNSSettingsAction(JSON.stringify(items), JSON.stringify(finalCollectionsMap));          
+        }
+
+
+        
+        //JB-4264                
+        function getAllCollections() {	            	    	           		  
+	   		if(hasCollection && !isAPICalled)
+			{	
+				//In this call, we'll get all the collections and their repective columns and then call a method to build the dropdowns				
+				restClient.serveRequest("collections/all","GET","",{},false,
+					(function(data){									
+						if(data.result === true && data.data != null) {
+							isAPICalled = true;												
+							replist.collections = data.data.Collections;												
+							var columnList;			
+							//Prepare a map of all collections and their columns 														
+							for(var i = 0, len = replist.collections.length; i<len; i++){													
+								//Prepare the columns list for this collection
+								columnList = new Array();																				
+								for(var j = 0, len2 = replist.collections[i].Columns.length; j<len2; j++) {							
+									columnList.push({DBName: replist.collections[i].Columns[j].DBName, DisplayName: replist.collections[i].Columns[j].DisplayName});
+								}							
+								collectionColumnMap[replist.collections[i].CollectionDetails.CollectionID+'~'+replist.collections[i].CollectionDetails.CollectionName] = columnList;																															
+							}
+							buildUsageMapDrillDown();
+						}	
+																								
+				 	}));				
+			} 
+	   }         
+   	   
+   	   
+   	   function buildUsageMapDrillDown() {
+        	//build the dropwdowns from the selected values list
+        	var collectionIdName;
+        	j$('#collectionDropDown option[value!="0"]').remove();        	
+
+        	for(var key in collectionColumnMap) {	//get all the collections in the map and prepare collection dropdown
+        		collectionIdName = key.split('~'); 
+        		//Collection dropdown will show the selected data       	      
+        		j$('<option>').val(collectionIdName[0]).text(collectionIdName[1]).appendTo('#collectionDropDown');        		
+        	}
+        	        	        	        	
+        	j$('#collectionDropDown').val((selCollectionIdList.length > 0) ? selCollectionIdList : '0');	//set the selected collection
+        	//for this selected collection get all the columns and select the selected ones
+        	if(selCollectionIdList.length > 0)
+        		getCorrespondingColumns(selCollectionIdList, j$('#collectionDropDown option:selected').text());
+        	
+       }
+   	   
+   	   
+   	   function getCorrespondingColumns(collectionVal, collectionText) {		   	
+	   	//make the column list blank first
+	   	j$('#columnDropDown option[value!="0"]').remove();
+	   	//get the selected collection's column list   				
+		if((collectionVal != null) && (typeof collectionVal != "undefined") && (collectionVal !='0')) {			
+			var columnList = new Array();
+			columnList =  collectionColumnMap[collectionVal+'~'+collectionText];
+			columnList.sort(function(a,b) {
+            	  if (a.DisplayName > b.DisplayName) return 1;
+              	else if (a.DisplayName < b.DisplayName) return -1;
+              	else return 0
+        	});
+		
+			for(var i=0, len=columnList.length; i<len; i++) {			
+				j$('<option>').val(columnList[i].DBName).text(columnList[i].DisplayName).appendTo('#columnDropDown');			
+			}
+			j$('#columnDropDown').val(selColumnList.length>0?selColumnList:'0');			
+		}						
+	}        
+        function updateChecksConfig() {
+        	 nsChecksConfig.successSnapshot = j$("#successSnapshot").is(":checked");
+             j$(".hiddenNsCheckConfig").val(JSON.stringify(nsChecksConfig));
+        };
+                 
+                                   
+    </script>           
+    
+    <!-- JB-3813 -->
+    <script type="text/javascript">
+        function hideErrorMsg() {
+            j$(".respons_export_error_div").hide();            
+        }
+        
+        function disableBtn(obj) {
+            j$(obj).attr("disabled", true);
+            j$(obj).removeClass("btn").addClass("btnDisabled");
+        }
+        
+        function enableBtn(obj){
+            j$(obj).removeAttr("disabled");
+            j$(obj).removeClass("btnDisabled").addClass("btn");
+        }                        
+                                
+        function createTenant() {          
+            var isNSConnectionEnabled = j$(".checkboxNSEnableInput").is(":checked");
+            var appOrgName = fakeEval('{!(JSINHTMLENCODE(orgName))}');
+            var data       = fakeEval('{!JSINHTMLENCODE(orgDetails)}');
+            var nsURL      = "{!(newStackURL)}"+"/api/tenants/provision";            
+            var errorMsg   = 'Error in saving. Please try again';			
+            if(isNSConnectionEnabled) { //save the tenant id only if connection is enabled
+                j$.ajax({
+                            
+                        url: nsURL,
+                        type:"POST",
+                        contentType: "application/json",
+                        dataType: "json",
+                        data:JSON.stringify({
+                                auth_content:{
+                                    appSessionId:data.appSessionId,
+                                    appUserId:data.appUserId,
+                                    appOrgId:data.appOrgId
+                                },
+                                appOrgName:appOrgName,
+                        }),                         
+                        success:function(data, status){                             
+                            updateNSSettingsFunction();                                     
+                        },
+                        error:function(data, status){
+                      		var responseText = JSON.stringify(data.responseText);
+                            if(responseText.indexOf('errorCode')>0) {	//this is when a custom error is sent from new stack
+                            	var responseJSON = fakeEval(data.responseText);
+                            	if(responseJSON.errorCode != 'GS_3005') {	     
+                            		if(responseJSON.errorDesc!= '') {
+                            			errorMsg = responseJSON.errorDesc;
+                            		}                       	
+                            		j$(".messageText").html(sanitizeHtml(errorMsg));
+                            		j$(".respons_export_error_div").show(); 
+                            		enableBtn(j$(".jbaraSaveNSBtn"));      
+                            	}
+                            	else{	//this means the tenant is already present!!
+                            		updateNSSettingsFunction();
+                            	}                            
+                            }
+                            else{
+                            	
+                            	if(j$.trim(responseText) !='""') {
+                            		errorMsg = responseText;
+                            	}                            
+                            	j$(".messageText").html(sanitizeHtml(errorMsg));
+                            	j$(".respons_export_error_div").show(); 
+                            	enableBtn(j$(".jbaraSaveNSBtn"));      
+                            }                                                                                         
+                        }                                   
+                });         
+            } //endof-if           
+            else {
+                updateNSSettingsFunction();
+            }                       
+        }          
+    </script>    
+    <div id="gs-app-container">
+    <div class="gs-module-container">
+    <apex:form >
+         <!--Displays page block API Settings-->
+         <apex:pageMessages id="jbaraNPSSettingsErrorMessages" />
+         <apex:pageBlock id="APISettings" title="API Settings"  >
+                <apex:pageblockbuttons location="top" >
+                    <apex:actionFunction name="updateAPISettings" rerender="APISettingsList"/>
+                    <apex:commandButton rendered="{!(!apiInEditState)}" value="Edit" action="{!setAPIInEditMode}" rerender="APISettings" StyleClass="jbaraBtn" />
+                    <apex:commandButton rendered="{!(apiInEditState)}" value="Save" action="{!updateAPISettings}" rerender="APISettings, jbaraAPISettingsErrorMessages" StyleClass="jbaraBtn" />
+                    <apex:commandButton rendered="{!(apiInEditState)}" value="Cancel" action="{!setAPIInViewMode}" rerender="APISettings" StyleClass="jbaraBtn" />
+                </apex:pageblockbuttons>
+
+                <apex:outputPanel id="APISettingsList" >
+                    <div class="gs-api-settingsList">
+                         <span style="min-width:300px;"><b>Account Mapping Field For API Calls</b> (Unique Id Field Recommended)<b>:</b>&nbsp;&nbsp;</span>
+                        <apex:selectList rendered="{!apiInEditState}" value="{!accountMappingField}" size="1" StyleClass="jbaraSelectAccountMapCtrl">
+                            <apex:selectOptions value="{!AccountFields}"/>                           
+                        </apex:selectList>
+                        <apex:outputText rendered="{!(!apiInEditState)}" value="{!IF((accountMappingField == NULL || accountMappingField == ''),'Not Configured','{0}')}">                                                                
+                            <apex:param value="{!accountMappingField}"/>
+                        </apex:outputText>  
+                   </div>
+                </apex:outputPanel>
+
+        </apex:pageBlock>
+
+
+         <!--Displays page block NPS Settings-->
+
+        <apex:pageBlock id="NPSSettings" title="Associate Gainsight CSM With SFDC Object" mode="inlineEdit">
+            
+            <apex:pageblockbuttons id="NPSSettingsActionButtons" location="top" >
+                <apex:actionFunction name="updateApplicationSettings" rerender="NPSSettingsList"/>
+                <apex:commandButton rendered="{!(!npsInEditState)}" value="Edit" action="{!setNPSInEditMode}" rerender="NPSSettings" StyleClass="jbaraBtn" />
+                <apex:commandButton rendered="{!npsInEditState}" value="Save" action="{!updateNPSSettings}" rerender="NPSSettings" StyleClass="jbaraBtn" />
+                <apex:commandButton rendered="{!npsInEditState}" value="Cancel" action="{!setNPSInViewMode}" rerender="NPSSettings" StyleClass="jbaraBtn" />
+            </apex:pageblockbuttons>
+
+            <apex:actionFunction name="getObjectFields" reRender="NPSSettingsList, jbaraNPSSettingsErrorMessages"/>
+            <apex:actionFunction name="restNPSSettings" action="{!resetNPSSettings}" rerender="NPSAssociatedObject, NPSSettingsList"/>
+
+            <apex:pageblocksection id="isNPSAssociated" columns="7">
+                    <tr>
+                        <td class="tdlabel">
+                             <b>Select Gainsight Objects:</b>
+                        </td >
+                        <td >                          
+                            <span class="NPSChkBox">                                                            
+                                <apex:inputCheckbox value="{!isNPSAssociatedToAnotherObj}" disabled="{!(!npsInEditState)}" onchange="restNPSSettings()" StyleClass="jbaraCheckBoxCtrl checkboxNPSAssociatedInput"/>
+                                <apex:outputLabel value="NPS" />
+                                <apex:inputCheckbox value="{!isMilestoneAssociatedToAnotherObj}" disabled="{!(!npsInEditState)}"  onchange="restNPSSettings()" StyleClass="jbaraCheckBoxCtrl checkboxNPSAssociatedInput" />
+                                <apex:outputLabel value="Milestone" /> 
+                            </span>
+                        </td>
+                        
+                    </tr>
+              </apex:pageblocksection>
+              <div style="border-top:1px dashed #000;font-weight:bold;font-size:13px;color:#000;">
+                <br/>
+                Select SFDC Object
+                <br/><br/>
+              </div>    
+              <apex:pageblocksection id="NPSAssociatedObject" columns="2">
+                <tr>
+                    <td class="tdlabel">
+                        <b>Associated Object:</b>
+                    </td>
+                    <td class="tdDescription">
+                        <apex:selectList rendered="{!(canSaveNPSSetting && npsInEditState)}" disabled="{!(!(isNPSAssociatedToAnotherObj && npsInEditState))}" value="{!associatedObject}" size="1" onchange="getObjectFields()" StyleClass="jbaraSelectCtrl">
+                           <apex:selectOptions value="{!objectNames}"/>
+                        </apex:selectList>
+                        <apex:outputText rendered="{!(!canSaveNPSSetting || !npsInEditState)}" value="{!IF((associatedObject == NULL || associatedObject == ''),'Not Configured.','{0}')}">                                                                
+                            <apex:param value="{!associatedObject}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+            </apex:pageblocksection>            
+            <apex:pageblocksection id="NPSSettingsList" columns="2" >
+                <tr>
+                    <td class="tdlabel">
+                        <b>Map Field  For API Calls</b>(Unique Id Field Recommended)<b>:</b>
+                    </td>
+                    <td class="tdDescription">
+                        <apex:selectList rendered="{!(canSaveNPSSetting && npsInEditState)}" disabled="{!(!(isNPSAssociatedToAnotherObj && npsInEditState))}" value="{!associatedObjectMappingField}" size="1" StyleClass="jbaraSelectCtrl">
+                           <apex:selectOptions value="{!ObjectFields}"/>
+                        </apex:selectList>
+                        <apex:outputText rendered="{!(!canSaveNPSSetting || !npsInEditState)}" value="{!IF((associatedObjectMappingField == NULL || associatedObjectMappingField == ''),'Not Configured.','{0}')}">                                                                
+                            <apex:param value="{!associatedObjectMappingField}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tdlabel">
+                        <b>Display Field:</b>
+                    </td>
+                    <td class="tdDescription">
+                        <apex:selectList rendered="{!(canSaveNPSSetting && npsInEditState)}" disabled="{!(!(isNPSAssociatedToAnotherObj && npsInEditState))}" value="{!associatedObjectDisplayField}" size="1" StyleClass="jbaraSelectCtrl">
+                           <apex:selectOptions value="{!ObjectFields}"/>
+                        </apex:selectList>
+                        <apex:outputText rendered="{!(!canSaveNPSSetting || !npsInEditState)}" value="{!IF((associatedObjectDisplayField == NULL || associatedObjectDisplayField == ''),'Not Configured.','{0}')}">                                                                
+                            <apex:param value="{!associatedObjectDisplayField}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tdlabel">
+                        <b>Display Name:</b>
+                    </td>
+                    <td class="tdDescription">
+                        <apex:inputText rendered="{!npsInEditState}" disabled="{!(!(isNPSAssociatedToAnotherObj && npsInEditState))}" value="{!associatedObjectDisplayFieldName}" size="50" maxlength="40" StyleClass="jbaraInputCtrl" />
+                        <apex:outputText rendered="{!(!npsInEditState)}" value="{!IF((associatedObjectDisplayFieldName == NULL || associatedObjectDisplayFieldName == ''),'Not Configured.','{0}')}">                                                                
+                            <apex:param value="{!associatedObjectDisplayFieldName}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+            </apex:pageblocksection>
+
+   </apex:pageBlock> 
+   
+   
+   <!-- External Report -->
+       <apex:pageBlock id="NSSettings" title="Matrix Data Architecture Settings"  >
+           <apex:pageblockbuttons location="top" >
+               <apex:actionFunction name="updateNSSettingsAction" action="{!updateNSSettings}" rerender="NSSettings, NSSettingsList" oncomplete="enableBtn(j$('.jbaraSaveNSBtn')); buildUsageMapDrillDown();">
+                    <apex:param name="opt" value="" assignTo="{!enabledOptions}"/> 
+                    <apex:param name="opt2" value="" assignTo="{!selectedDrillDown}"/> 
+               </apex:actionFunction>
+               
+               <apex:commandButton rendered="{!(!nsInEditState)}" value="Edit" onClick="disableBtn(this);" action="{!setNSInEditMode}" rerender="NSSettings" StyleClass="jbaraEditNSBtn" oncomplete="toggleNSConnection('{!isNSEnabled}', true); enableBtn(j$('.jbaraEditNSBtn')); buildUsageMapDrillDown();"/>
+               <apex:outputPanel rendered="{!(nsInEditState)}" >  
+                    <input type="button" value="Save" onClick="disableBtn(this); updateChecksConfig(); createTenant();" class="btn jbaraBtn jbaraSaveNSBtn" />
+               </apex:outputPanel>               
+               <apex:commandButton rendered="{!(nsInEditState)}" value="Cancel" onClick="disableBtn(this);" action="{!setNSInViewMode}" rerender="NSSettings" StyleClass="jbaraCancelNSBtn" oncomplete="enableBtn(j$('.jbaraSaveNSBtn')); enableBtn(j$('.jbaraCancelNSBtn')); hideErrorMsg(); buildUsageMapDrillDown();"/>
+           </apex:pageblockbuttons>
+
+
+            <div class="respons_export_error_div message infoM3" id="addSurveyParticpantsMessage" style="width:70%; display:none;">
+                <img src="/img/msg_icons/error32.png" alt="Information" class="msgIcon" title="Information" style="vertical-align: middle;"/>
+                <span id="errorMsg" class="messageText" ></span>       
+            </div>
+		    <apex:inputText value="{!nsChecksConfig}" style="display:none;" styleClass="hiddenNsCheckConfig"/>
+		 
+          <apex:outputPanel id="NSSettingsList" >
+              <table style="width:100%;" class="gs-ns-settingsList">
+                   <tbody>      
+                      <tr>
+                         <td colspan="2" class="dataCol">
+                         </td>
+                      </tr>                   
+                      <tr>
+                         <td width="22%">
+                            <b><apex:outputLabel value="{!nsConnectionTitle}"/>:</b>
+                         </td>                       
+                         <td width="50%">
+                            <apex:inputCheckbox id="isNSEnabled" value="{!isNSEnabled}" onClick="toggleNSConnection(this.checked, false);" disabled="true" StyleClass="newStackGroupParent newStackAreaEnable jbaraCheckBoxCtrl checkboxNSEnableInput" />
+                        </td>
+                      </tr>
+
+                      <tr>
+                         <td colspan="2" class="dataCol ">
+                         </td>
+                      </tr>
+                      <tr>
+                         <td width="22%">
+                            <b>Exporting services</b>
+                         </td>                       
+                         <td width="50%">
+                            <apex:inputCheckbox id="isNSExportEnabled" value="{!isNSExportEnabled}" disabled="true" StyleClass="newStackAreaEnable newStackGroup checkboxExportEnableInput" />
+                         </td>
+                      </tr>
+                      
+                      <tr>
+                         <td colspan="2" class="dataCol ">
+                         </td>
+                      </tr>   
+                      <tr>
+                         <td width="22%">
+                            <b>Success Snapshot:</b>
+                         </td>                       
+                         <td width="50%">
+                            <input type = "checkbox" id="successSnapshot" disabled="disabled" class="newStackGroup checkboxExportEnableInput" />
+                        </td>
+                      </tr>
+                      
+                      <tr>
+                         <td colspan="2" class="dataCol ">
+                         </td>
+                      </tr>         
+                       <tr>
+                         <td width="22%">
+                            <b><apex:outputLabel value="{!nsAdoptionTitle}"/>:</b>
+                         </td>                       
+                         <td width="50%">
+                            <apex:inputCheckbox id="isNSAdoptionEnabled" value="{!isNSAdoptionEnabled}" disabled="true" StyleClass="newStackAreaEnable newStackGroup checkboxAdoptionEnableInput" />
+                        </td>
+                      </tr>
+                      <tr>
+                         <td colspan="2" class="dataCol ">
+                         </td>
+                      </tr>
+                       <tr>
+                         <td width="22%">
+                            <b><apex:outputLabel value="{!nsExternalRepTitle}"/>:</b>
+                         </td>                       
+                         <td width="50%">
+                            <apex:inputCheckbox id="isNSReportsEnabled" value="{!isNSReportsEnabled}" disabled="true" StyleClass="newStackAreaEnable newStackGroup checkboxNSReportEnableInput" />
+                        </td>
+                      </tr>
+                      <!-- JB-4264 -->
+                      <tr>
+                         <td colspan="2" class="dataCol ">
+                         </td>
+                      </tr>
+                      <tr>
+                        <td>
+                            <b>Usage map drill down:</b>
+                        </td>                       
+                        <td>
+	                         <table style="width:400;">
+		                         <tr>
+			                         <td width="170" >
+			                            <select id="collectionDropDown" style="valign:middle; width:150px" class="newStackGroup" disabled="true" onchange="getCorrespondingColumns(j$('#collectionDropDown option:selected').val(), j$('#collectionDropDown option:selected').text());">
+											<option value="0">None</option>
+										</select>
+			                         </td>
+			                         <td width="80">
+			                            <b>Row Field:</b>
+			                         </td>
+			                         <td  width="150">
+			                            <select  id="columnDropDown" style="valign:middle; width:150px" class="newStackGroup" disabled="true" >
+											<option value="0">None</option>
+										</select>
+			
+			                         </td>
+		                         </tr>
+	                         </table>
+                        </td>
+                      </tr>                   
+                   </tbody>
+                </table>
+                <br/>
+                <script>
+                	var nsChecksConfig = (j$(".hiddenNsCheckConfig").val() === "") ? {} : j$.parseJSON(j$(".hiddenNsCheckConfig").val());
+    				if(nsChecksConfig && nsChecksConfig.successSnapshot === true) {
+
+		    			j$("#successSnapshot").attr("checked","checked");
+		    		}
+		    		else {
+		    			j$("#successSnapshot").removeAttr('checked');
+		    		}
+                
+                </script>
+          </apex:outputPanel>
+        </apex:pageBlock>
+   <!-- External Report -->
+   
+   
+   </apex:form>
+
+	</div>
+	</div>
+   <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>
+
+    
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+</apex:page>

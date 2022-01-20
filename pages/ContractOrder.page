@@ -1,0 +1,57 @@
+<apex:page id="thePage" standardController="Order" extensions="ContractOrderExtension" action="{!init}" >
+    <apex:sectionHeader title="Copado Solutions" subtitle="New COA Contract submission" description="You will be redirected to the COA Service Order to submit" />
+    
+    <apex:pageMessages id="theMessages"/>
+    
+    <apex:form id="theForm">
+        <apex:inputField value="{!Order.Custom_Salesforce_Org__c}" rendered="false" />
+        
+    	<apex:pageBlock id="pb">
+        	<apex:pageBlockButtons location="bottom">
+            	<apex:commandButton value="Submit" action="{!createOrder}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Customer">
+                <apex:outputField value="{!scust.CHANNEL_ORDERS__Customer_Company_Name__c}" />
+                <apex:outputField value="{!scust.CHANNEL_ORDERS__Customer_Org_ID__c}" />
+                <apex:outputField value="{!scust.CHANNEL_ORDERS__Customer_Street__c}" />
+                <apex:outputField value="{!scust.CHANNEL_ORDERS__Customer_City__c}" />
+                <apex:outputField value="{!scust.CHANNEL_ORDERS__Customer_State__c}" />
+                <apex:outputField value="{!scust.CHANNEL_ORDERS__Customer_ZIP_Postal_Code__c}" />
+                <apex:outputField value="{!scust.CHANNEL_ORDERS__Customer_Country__c}" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Contract Line Items" columns="1">
+            	<apex:pageBlockTable id="tbl" value="{!wois}" var="i">
+                    <apex:column value="{!i.wcli.PricebookEntry.Product2.Name}" />
+                    <apex:column value="{!i.wcli.Quantity}" />
+                	<apex:column value="{!i.wcli.UnitPrice}" />
+                    <apex:column >
+                    	<apex:facet name="header">Monthly (converted)</apex:facet>
+                        <apex:outputText value="EUR {0,number,#,##0.00}">
+                        	<apex:param value="{!i.convertedMonthlyAmount}" />
+                        </apex:outPutText>
+                    </apex:column>
+                    <apex:column >
+                    	<apex:facet name="header">Total Price</apex:facet>
+                        <apex:outputText value="{!i.totalPrice}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Service Order">
+                <apex:inputField value="{!so.CHANNEL_ORDERS__Order_Type__c}" />
+                <apex:outputField value="{!so.CHANNEL_ORDERS__Customer_Org_ID__c}" />
+                <apex:inputField value="{!so.CHANNEL_ORDERS__Service_Start_Date__c}" />
+                <apex:inputField value="{!so.CHANNEL_ORDERS__I_certify__c}" />
+                <apex:inputField value="{!so.CHANNEL_ORDERS__Date_Partner_Received_Customer_Order__c}" />
+                <apex:inputField value="{!so.CHANNEL_ORDERS__Related_Opportunity__c}" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="SO Line Items" columns="1">
+                <apex:pageBlockTable id="tbl" value="{!solis}" var="i">
+                    <apex:column value="{!i.CHANNEL_ORDERS__Product_Name__c}" />
+                    <apex:column value="{!i.CHANNEL_ORDERS__Quantity__c}" />
+                	<apex:column value="{!i.CHANNEL_ORDERS__Customer_Price_Per_Month__c}" />
+                    <apex:column value="{!i.CHANNEL_ORDERS__Product_Line_Description__c}" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,6 @@
+<messaging:emailTemplate subject="{!relatedTo.ILT_Class__r.Name} {!$Label.redwing__alms_email_class} {!$Label.redwing__alms_class_cancelled}" recipientType="User" relatedToType="redwing__ILT_Instructor__c"  language="{!recipient.LanguageLocaleKey}">
+<messaging:htmlEmailBody >
+<c:ILTNotification instructor="{!relatedTo}" notificationName="LearnTrac_Instructor_Class_Cancelled" />
+</messaging:htmlEmailBody>
+<c:ILTNotificationIcsAttachment instructor="{!relatedTo}" notificationName="LearnTrac_Instructor_Class_Cancelled" />
+</messaging:emailTemplate>

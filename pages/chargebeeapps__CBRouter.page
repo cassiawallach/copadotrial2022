@@ -1,0 +1,34 @@
+<apex:page controller="chargebeeapps.CBRouter" action="{!route}" tabStyle="chargebeeapps__CB_Subscription__c">
+<head>
+<style>
+    .noContactError{
+        max-width: 600px;
+        padding: 8px 16px;
+        border-radius: 7px;
+        background-color: #fcefef;
+        color: #cc0505;
+        border-left: 2px solid #f0a4a4;
+    }
+</style>
+</head>
+<apex:stylesheet value="{!URLFOR($Resource.chargebeeapps__CB_LAYOUT)}"/>
+  <apex:sectionHeader title="Contacts" subtitle="Create Subscription" rendered="{! !(action == 'create_quote')}"/> 
+  <apex:sectionHeader title="Contacts" subtitle="Create Quote" rendered="{! action == 'create_quote'}"/>
+    <div class="cb-layout">
+        <apex:form id="theform">
+            <apex:outputPanel rendered="{!error!=null}">
+                <apex:outputText styleClass="noContactError" value="{!error}" escape="false" />
+                <div style="margin-top:30px;">
+                    <apex:commandButton action="{!backToContact}" value="Back"/>
+                    <apex:outputPanel rendered="{!!hideSyncBtn}">
+                        <span style="margin-left:10px;">
+                            <apex:commandButton action="{!syncCustomer}" value="Sync customer with chargebee"/>
+                        </span>
+                    </apex:outputPanel>
+                </div>
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+
+
+</apex:page>

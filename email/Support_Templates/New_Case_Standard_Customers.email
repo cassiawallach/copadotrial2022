@@ -1,0 +1,94 @@
+<style>
+table {
+    width: 800px;
+    font: 15px arial, sans-serif;
+    border: 1px solid black;
+}
+.signature {
+    width: 800px;
+    font: 15px arial, sans-serif;
+    background-color: #575757;
+    font-weight: bold;
+    color: white;
+    border: 0px;
+}
+td {
+    padding: 10px;
+}
+.black-background-hidden-text {
+    color: #575757;
+}
+.blue-background {
+    background-color: #2497D3;
+    font: 20px;
+    font-weight: bold;
+    color: white;
+}
+.grey-background {
+    background-color: #E8E8E8;
+}
+</style>
+<table align="center">
+<tr><td>
+<img src="https://copado--c.eu2.content.force.com/servlet/servlet.ImageServer?id=015b0000005no4X&oid=00Db0000000YN5R&lastMod=1496992954000"/>
+</td></tr>
+<tr><td class="blue-background">
+Copado Support
+</td></tr>
+<tr><td>
+Dear {!Case.Contact}, 
+
+Thanks for contacting Copado support. 
+</td></tr>
+
+<tr><td class="grey-background">
+<b>Case # {!Case.CaseNumber}</b>:<br/>
+"{!Case.Subject}" has been created. 
+</td></tr>
+
+<tr><td class="grey-background">
+<b>Issue definition</b>:<br/>
+{!Case.Description} 
+</td></tr>
+
+<tr><td class="grey-background">
+<b>Scope agreement</b>:<br/>
+Copado Support Team will assist you with your query, upon reviewing your case, and try to find a Solution or Documentation article.
+</td></tr>
+
+<tr><td class="grey-background">
+<b>Communication</b>:<br/>
+This case is Standard Support Level. You will receive an update every 16 hours during our business work week.<br/>
+Please note, we will always contact you by email on the following email address: {!Contact.Email}.
+</td></tr>
+
+<tr><td>
+If you do not agree with the scope, or would like to amend it, please let us know as soon as possible. If you have any questions or concerns, please don’t hesitate to contact us.
+</td></tr>
+
+<tr><td>
+Copado Solutions will never ask for your account password. For your own privacy and security NEVER send your credentials by email. 
+</td></tr>
+
+<tr><td>
+If you need us to reproduce your issue, please grant us login access for 3 days.
+To do so, please go to “My settings” “Grant account login access” and then next to Copado Solution SL support choose 3 days from the picklist. 
+</td></tr>
+<tr><td>
+You can check the status or close your case from the following link: <a href="https://copado.secure.force.com/support/PublicCase?cn={!Case.CaseNumber}&ce={!Contact.Email} ">Case #{!Case.CaseNumber}</a>
+</td></tr>
+<tr><td>
+You can also visit our <a href="http://docs.copa.do/">documentation site</a>, where you will find useful information about Copado.<br/><br/>
+
+Thank you.<br/>
+Copado Support Team
+</td></tr>
+</table>
+
+<table class="signature" align="center">
+<tr><td class="black-background-hidden-text">
+Case tracking Id: {!Case.Thread_Id}
+</td><td align="right">
+Copado Solutions S.L.
+</td></tr>
+</table>

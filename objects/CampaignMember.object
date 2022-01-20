@@ -129,6 +129,496 @@
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>AVA__AVAAI_action_required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This Campaign Member requires some action be taken by a rep</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This Campaign Member requires some action be taken by a rep</inlineHelpText>
+        <label>Conversica Action Required</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_action_required_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This Campaign Member requires some action be taken by a rep</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This Campaign Member requires some action be taken by a rep</inlineHelpText>
+        <label>Conversica Action Required Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_confirmed_phone_1__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This Campaign Member&apos;s phone number as verified or discovered by Conversica</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This Campaign Member&apos;s phone number as verified or discovered by Conversica</inlineHelpText>
+        <label>Conversica Confirmed Phone 1</label>
+        <required>false</required>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_confirmed_phone_2__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This Campaign Member&apos;s phone number as verified or discovered by Conversica</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This Campaign Member&apos;s phone number as verified or discovered by Conversica</inlineHelpText>
+        <label>Conversica Confirmed Phone 2</label>
+        <required>false</required>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversation_stage__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The current stage of the Conversica Conversation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The current stage of the Conversica Conversation</inlineHelpText>
+        <label>Conversation Stage</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversation_stage_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time the current Conversation Stage changed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time the current Conversation Stage changed</inlineHelpText>
+        <label>Conversation Stage Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversation_status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The current status of the Conversica Conversation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The current status of the Conversica Conversation</inlineHelpText>
+        <label>Conversation Status</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversation_status_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time the current Conversation Status was set</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time the current Conversation Status was set</inlineHelpText>
+        <label>Conversation Status Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversation_status_detail__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Deprecated Conversation Status Detail</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversation_status_detail_date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Deprecated Status Detail Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversica_lead_status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The current status of the Campaign Member in Conversica</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The current status of the Campaign Member in Conversica</inlineHelpText>
+        <label>Conversica Lead Status</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_conversica_lead_status_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time the current Conversation status was set</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time the current Conversation status was set</inlineHelpText>
+        <label>Conversica Lead Status Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_date_added__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time Conversica received this Campaign Member</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time Conversica received this Campaign Member</inlineHelpText>
+        <label>Conversica Date Added</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_discovered_email_1__c</fullName>
+        <deprecated>false</deprecated>
+        <description>If a new email address is discovered in a Campaign Member&apos;s response, this field will be populated with the additional email address.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If a new email address is discovered in a Campaign Member&apos;s response, this field will be populated with the additional email address.</inlineHelpText>
+        <label>Conversica Discovered Email 1</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_discovered_email_2__c</fullName>
+        <deprecated>false</deprecated>
+        <description>If a second new email address is discovered in a Campaign Member’s response, this field will be populated with the additional email address</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If a second new email address is discovered in a Campaign Member’s response, this field will be populated with the additional email address</inlineHelpText>
+        <label>Conversica Discovered Email 2</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_discovered_name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>If a new first name is discovered in a Campaign Member’s response, this field will be populated with the preferred first name.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If a new first name is discovered in a Campaign Member’s response, this field will be populated with the preferred first name.</inlineHelpText>
+        <label>Conversica Discovered Name</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_first_message_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time Conversica first sent a message to the Campaign Member</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time Conversica first sent a message to the Campaign Member</inlineHelpText>
+        <label>Conversica First Message Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_further_action__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checked if the Campaign Member is determined by your Conversica Assistant to have further questions or that they are waiting on actions from their assigned contact.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked if the Campaign Member is determined by your Conversica Assistant to have further questions or that they are waiting on actions from their assigned contact.</inlineHelpText>
+        <label>Conversica Further Action</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_further_action_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Date and time the Campaign Member became a Conversica Further Action lead.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date and time the Campaign Member became a Conversica Further Action lead.</inlineHelpText>
+        <label>Conversica Further Action Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_hot_lead__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The Campaign Member is ready to be contacted by a rep</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Campaign Member is ready to be contacted by a rep</inlineHelpText>
+        <label>Conversica Hot Lead</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_hot_lead_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time the Campaign Member became &quot;Hot&quot; in Conversica</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time the Campaign Member became &quot;Hot&quot; in Conversica</inlineHelpText>
+        <label>Conversica Hot Lead Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_last_message_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time Conversica last sent a message to the Campaign Member</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time Conversica last sent a message to the Campaign Member</inlineHelpText>
+        <label>Conversica Last Message Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_last_response_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time Conversica last received a response from the Campaign Member</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time Conversica last received a response from the Campaign Member</inlineHelpText>
+        <label>Conversica Last Response Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_lead_at_risk__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The Campaign Member may lose interest if not contacted soon by a rep</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Campaign Member may lose interest if not contacted soon by a rep</inlineHelpText>
+        <label>Conversica Lead At Risk</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_lead_at_risk_date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date and time the Campaign Member became &quot;At Risk&quot; in Conversica</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date and time the Campaign Member became &quot;At Risk&quot; in Conversica</inlineHelpText>
+        <label>Conversica Lead At Risk Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_lead_profile__c</fullName>
+        <deprecated>false</deprecated>
+        <description>A link to the Conversica Lead Profile page for the selected Campaign Member.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A link to the Conversica Lead Profile page for the selected Campaign Member.</inlineHelpText>
+        <label>Conversica Lead Profile</label>
+        <required>false</required>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_options__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Options field for this object in Conversica</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Options field for this object in Conversica</inlineHelpText>
+        <label>Conversica Options</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Stop</fullName>
+                    <default>false</default>
+                    <label>Stop</label>
+                </value>
+                <value>
+                    <fullName>Skip to follow-up</fullName>
+                    <default>false</default>
+                    <label>Skip to follow-up</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_score__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The Conversica Score of an Conversica lead.</description>
+        <externalId>false</externalId>
+        <label>Deprecated Conversica Score</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Grey</fullName>
+                    <default>false</default>
+                    <label>Grey</label>
+                </value>
+                <value>
+                    <fullName>Green</fullName>
+                    <default>false</default>
+                    <label>Green</label>
+                </value>
+                <value>
+                    <fullName>Yellow</fullName>
+                    <default>false</default>
+                    <label>Yellow</label>
+                </value>
+                <value>
+                    <fullName>Red</fullName>
+                    <default>false</default>
+                    <label>Red</label>
+                </value>
+                <value>
+                    <fullName>Black</fullName>
+                    <default>false</default>
+                    <label>Black</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_sms_opt_out__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checked if the Campaign Member indicates they would no longer like to be messaged via SMS after having previously opted in.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked if the Campaign Member indicates they would no longer like to be messaged via SMS after having previously opted in.</inlineHelpText>
+        <label>Conversica SMS Opt Out</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AVA__AVAAI_status__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Status of an Conversica lead in the Conversica system</description>
+        <externalId>false</externalId>
+        <label>Deprecated Conversica Status</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>In Queue</fullName>
+                    <default>false</default>
+                    <label>In Queue</label>
+                </value>
+                <value>
+                    <fullName>Duplicate</fullName>
+                    <default>false</default>
+                    <label>Duplicate</label>
+                </value>
+                <value>
+                    <fullName>Excluded</fullName>
+                    <default>false</default>
+                    <label>Excluded</label>
+                </value>
+                <value>
+                    <fullName>Undeliverable</fullName>
+                    <default>false</default>
+                    <label>Undeliverable</label>
+                </value>
+                <value>
+                    <fullName>AVA Stopped</fullName>
+                    <default>false</default>
+                    <label>AVA Stopped</label>
+                </value>
+                <value>
+                    <fullName>Client Stopped</fullName>
+                    <default>false</default>
+                    <label>Client Stopped</label>
+                </value>
+                <value>
+                    <fullName>Messaging</fullName>
+                    <default>false</default>
+                    <label>Messaging</label>
+                </value>
+                <value>
+                    <fullName>No Response</fullName>
+                    <default>false</default>
+                    <label>No Response</label>
+                </value>
+                <value>
+                    <fullName>Awaiting Response</fullName>
+                    <default>false</default>
+                    <label>Awaiting Response</label>
+                </value>
+                <value>
+                    <fullName>Completed</fullName>
+                    <default>false</default>
+                    <label>Completed</label>
+                </value>
+                <value>
+                    <fullName>Conversica Stopped</fullName>
+                    <default>false</default>
+                    <label>Conversica Stopped</label>
+                </value>
+                <value>
+                    <fullName>Preparing Lead</fullName>
+                    <default>false</default>
+                    <label>Preparing Lead</label>
+                </value>
+                <value>
+                    <fullName>Sent Engagement</fullName>
+                    <default>false</default>
+                    <label>Sent Engagement</label>
+                </value>
+                <value>
+                    <fullName>Sent Appt.</fullName>
+                    <default>false</default>
+                    <label>Sent Appt.</label>
+                </value>
+                <value>
+                    <fullName>Sent Feedback</fullName>
+                    <default>false</default>
+                    <label>Sent Feedback</label>
+                </value>
+                <value>
+                    <fullName>Sent Social</fullName>
+                    <default>false</default>
+                    <label>Sent Social</label>
+                </value>
+                <value>
+                    <fullName>Received Engagement</fullName>
+                    <default>false</default>
+                    <label>Received Engagement</label>
+                </value>
+                <value>
+                    <fullName>Received Appt.</fullName>
+                    <default>false</default>
+                    <label>Received Appt.</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+                <value>
+                    <fullName>Received Social</fullName>
+                    <default>false</default>
+                    <label>Received Social</label>
+                </value>
+                <value>
+                    <fullName>Messaging Complete</fullName>
+                    <default>false</default>
+                    <label>Messaging Complete</label>
+                </value>
+                <value>
+                    <fullName>Unsubscribed</fullName>
+                    <default>false</default>
+                    <label>Unsubscribed</label>
+                </value>
+                <value>
+                    <fullName>Opt Out</fullName>
+                    <default>false</default>
+                    <label>Opt Out</label>
+                </value>
+                <value>
+                    <fullName>Rep Stopped</fullName>
+                    <default>false</default>
+                    <label>Rep Stopped</label>
+                </value>
+                <value>
+                    <fullName>CRM Stopped</fullName>
+                    <default>false</default>
+                    <label>CRM Stopped</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>AccountId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>CampaignId</fullName>
         <type>Lookup</type>
     </fields>
@@ -143,6 +633,17 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Contact_Owner__c</fullName>
+        <description>Contact Owner on Campaign</description>
+        <externalId>false</externalId>
+        <formula>Contact.Owner.FirstName + &quot; &quot; + Contact.Owner.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact Owner</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Country</fullName>
     </fields>
     <fields>
@@ -150,6 +651,245 @@
     </fields>
     <fields>
         <fullName>DoNotCall</fullName>
+    </fields>
+    <fields>
+        <fullName>EBQ_Added__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ Added</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EBQ_Cadence__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ Cadence</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>A1</fullName>
+                    <default>false</default>
+                    <label>A1</label>
+                </value>
+                <value>
+                    <fullName>A2</fullName>
+                    <default>false</default>
+                    <label>A2</label>
+                </value>
+                <value>
+                    <fullName>A3</fullName>
+                    <default>false</default>
+                    <label>A3</label>
+                </value>
+                <value>
+                    <fullName>A4</fullName>
+                    <default>false</default>
+                    <label>A4</label>
+                </value>
+                <value>
+                    <fullName>A5</fullName>
+                    <default>false</default>
+                    <label>A5</label>
+                </value>
+                <value>
+                    <fullName>B1</fullName>
+                    <default>false</default>
+                    <label>B1</label>
+                </value>
+                <value>
+                    <fullName>B2</fullName>
+                    <default>false</default>
+                    <label>B2</label>
+                </value>
+                <value>
+                    <fullName>B3</fullName>
+                    <default>false</default>
+                    <label>B3</label>
+                </value>
+                <value>
+                    <fullName>B4</fullName>
+                    <default>false</default>
+                    <label>B4</label>
+                </value>
+                <value>
+                    <fullName>B5</fullName>
+                    <default>false</default>
+                    <label>B5</label>
+                </value>
+                <value>
+                    <fullName>C1</fullName>
+                    <default>false</default>
+                    <label>C1</label>
+                </value>
+                <value>
+                    <fullName>C2</fullName>
+                    <default>false</default>
+                    <label>C2</label>
+                </value>
+                <value>
+                    <fullName>C3</fullName>
+                    <default>false</default>
+                    <label>C3</label>
+                </value>
+                <value>
+                    <fullName>C4</fullName>
+                    <default>false</default>
+                    <label>C4</label>
+                </value>
+                <value>
+                    <fullName>C5</fullName>
+                    <default>false</default>
+                    <label>C5</label>
+                </value>
+                <value>
+                    <fullName>D1</fullName>
+                    <default>false</default>
+                    <label>D1</label>
+                </value>
+                <value>
+                    <fullName>D2</fullName>
+                    <default>false</default>
+                    <label>D2</label>
+                </value>
+                <value>
+                    <fullName>D3</fullName>
+                    <default>false</default>
+                    <label>D3</label>
+                </value>
+                <value>
+                    <fullName>D4</fullName>
+                    <default>false</default>
+                    <label>D4</label>
+                </value>
+                <value>
+                    <fullName>D5</fullName>
+                    <default>false</default>
+                    <label>D5</label>
+                </value>
+                <value>
+                    <fullName>E1</fullName>
+                    <default>false</default>
+                    <label>E1</label>
+                </value>
+                <value>
+                    <fullName>E2</fullName>
+                    <default>false</default>
+                    <label>E2</label>
+                </value>
+                <value>
+                    <fullName>E3</fullName>
+                    <default>false</default>
+                    <label>E3</label>
+                </value>
+                <value>
+                    <fullName>E4</fullName>
+                    <default>false</default>
+                    <label>E4</label>
+                </value>
+                <value>
+                    <fullName>E5</fullName>
+                    <default>false</default>
+                    <label>E5</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>EBQ_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ Comments</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>EBQ_Connected__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ Connected</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EBQ_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EBQ_First_Touch__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ First Touch</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EBQ_Next_Step__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ Next Step</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EBQ_Rating__c</fullName>
+        <externalId>false</externalId>
+        <label>EBQ Rating</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>EBQ_Ratings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>EBQ_Rep__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>EBQ Rep</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Campaign_Members</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>EBQ_Touches__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(EBQ_Cadence__c ,
+&apos;A1&apos;, 1,
+&apos;A2&apos;, 2,
+&apos;A3&apos;, 3,
+&apos;A4&apos;, 4,
+&apos;A5&apos;, 5,
+&apos;B1&apos;, 6,
+&apos;B2&apos;, 7,
+&apos;B3&apos;, 8,
+&apos;B4&apos;, 9,
+&apos;B5&apos;, 10,
+&apos;C1&apos;, 11,
+&apos;C2&apos;, 12,
+&apos;C3&apos;, 13,
+&apos;C4&apos;, 14,
+&apos;C5&apos;, 15,
+&apos;D1&apos;, 16,
+&apos;D2&apos;, 17,
+&apos;D3&apos;, 18,
+&apos;D4&apos;, 19,
+&apos;D5&apos;, 20,
+&apos;E1&apos;, 21,
+&apos;E2&apos;, 22,
+&apos;E3&apos;, 23,
+&apos;E4&apos;, 24,
+&apos;E5&apos;, 25,
+NULL)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>EBQ Touches</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Email</fullName>
@@ -180,6 +920,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>LeadOrContactId__c</fullName>
+        <externalId>false</externalId>
+        <formula>If(Left(LeadId &amp; ContactId,3) == &apos;00Q&apos;, CASESAFEID(LeadId), CASESAFEID(ContactId))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead Or Contact Id</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>LeadSource</fullName>
         <type>Picklist</type>
     </fields>
@@ -208,6 +958,16 @@
     </fields>
     <fields>
         <fullName>Title</fullName>
+    </fields>
+    <fields>
+        <fullName>Track_Campaign_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(CampaignId)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Track Campaign Id</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <sharingModel>ControlledByCampaign</sharingModel>
 </CustomObject>

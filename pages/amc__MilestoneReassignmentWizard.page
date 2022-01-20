@@ -1,0 +1,15 @@
+<apex:page standardController="amc__Milestone__c" tabStyle="amc__Milestone__c">
+    <style>
+      html, body, .reassignment{
+        height:100%;
+      }
+    </style>
+    <apex:includeLightning /> 
+    <div id="reassignment" class="reassignment"/>
+    <script>
+        $Lightning.use("amc:ResourceReassignmentApp", function() {
+          $Lightning.createComponent("amc:ReassignmentWizard",{'recordId':'{!Milestone__c.Id}','isClassic': true, 'isLightning':false},"reassignment",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

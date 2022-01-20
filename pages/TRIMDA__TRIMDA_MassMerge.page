@@ -1,0 +1,99 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c" recordSetVar="TRIMDA_MatchingResult__cs" extensions="TRIMDA.TRIMDA_MassMerge" action="{!MassMerge}">
+<apex:sectionHeader title="DataTrim" subtitle="Mass Merge" ></apex:sectionHeader>   
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/> 
+<apex:outputPanel id="All">
+        <apex:pageBlock tabstyle="TRIMDA_MatchingResult__c" title="Mass Merge" rendered="{!NOT MassActionResult}">
+            <apex:pageMessages /> 
+             <apex:form ><apex:commandButton action="/{!ReturnURL}" value="Back" /></apex:form>
+        </apex:pageBlock>
+        <apex:form >
+        <apex:pageBlock id="Header" tabstyle="TRIMDA_MatchingResult__c" title="Mass Merge" rendered="{!MassActionResult}">
+            <apex:pageBlockButtons location="both">
+                
+                <apex:commandButton action="{!MassMergeStep2}" value="Merge (Keep Survivor)" disabled="{!NOT MassActionStep2}" status="ProgressStatus" reRender="All" >
+                    <apex:param name="MergeType" value="2Survivor" assignTo="{!MergeType}"></apex:param>
+                </apex:commandButton>
+                <apex:commandButton action="{!MassMergeStep2}" value="Merge (Keep Duplicate)" disabled="{!NOT MassActionStep2}" status="ProgressStatus" reRender="All" >
+                    <apex:param name="MergeType" value="2Dupe" assignTo="{!MergeType}"></apex:param>
+                </apex:commandButton>
+                <apex:commandButton action="/{!ReturnURL}" value="{!NavText}" />
+                                        
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Merge Settings" columns="1" rendered="{!MassActionStep2}">
+                <apex:pageMessages /> 
+                <!-- put Parameters here -->
+                <apex:panelGrid columns="2" id="theGrid">
+                    <apex:outputLabel >Store duplicate information as:</apex:outputLabel>
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <apex:inputCheckbox value="{!MergeCreateActivity}" id="cbActivity" />Completed Activity
+                    </apex:outputPanel>
+    
+                    <apex:outputLabel ></apex:outputLabel>                              
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <apex:inputCheckbox value="{!MergeAddNote}" id="cbNote" />Note
+                    </apex:outputPanel>
+    
+                    <apex:outputLabel ></apex:outputLabel>  
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <apex:inputCheckbox value="{!MergeAppend2Field}" id="cbField" />Append to field:&nbsp;&nbsp;&nbsp; 
+                            <apex:selectList id="chooseFieldName" value="{!MergeAppendField}" size="1">
+                                <apex:selectOptions value="{!AppendFieldList}"></apex:selectOptions>
+                            </apex:selectList>
+                    </apex:outputPanel>
+                    
+                    <apex:outputLabel value="Merge Multi Pick List values:" id="MPL"/>
+                        <apex:outputPanel layout="block" styleClass="requiredInput">                                                    
+                        <apex:inputCheckbox value="{!MergeMultiPickLists}" id="cbMPL"/>
+                    </apex:outputPanel>
+                
+                </apex:panelGrid>
+            </apex:pageBlockSection>    
+
+            <apex:actionStatus id="ProgressStatus">
+                <apex:facet name="start">
+                    <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Merging..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+                </apex:facet>
+            </apex:actionStatus>
+        
+            <apex:outputPanel id="List" rendered="{!MassActionResult}">
+                <apex:pageMessages /> 
+                   <apex:pageBlock title="Selected Matched Records">
+                   <apex:pageBlockSection columns="1" title="{!SelectedCount} Selected">
+                    <!-- put list of selected pairs here -->
+                    <apex:dataTable width="100%" columns="4" value="{!MassActionList}" var="MAList" id="theTable" rowClasses="odd,even" styleClass="tableClass">
+                        <apex:column width="15%">
+                            <apex:facet name="header">Match Type</apex:facet>
+                            <!-- <apex:outputText value="{!MAList.AlertType}"/> -->
+                            <apex:outputLink value="/{!MAList.mr.id}" title="View Details" target="_new">{!MAList.AlertType}</apex:outputLink>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Survivor</apex:facet>
+                            <!-- <apex:outputText value="{!MAList.Master}"/>-->
+                            <apex:outputLink value="/{!MAList.MasterId}" title="Master Record" target="_new">{!MAList.Master}</apex:outputLink>
+                        </apex:column>
+                        <apex:column width="35px" >
+                             <apex:image id="theImage" title="{!MAList.SurvRule}" url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, MAList.Image)}" height="12"/> 
+                            <!--<apex:outputText value="=="/>-->
+                        </apex:column>      
+                        <apex:column >
+                            <apex:facet name="header">Dupe</apex:facet>
+                            <!-- <apex:outputText value="{!MAList.Secondary}"/> -->
+                            <apex:outputLink value="/{!MAList.SecondaryId}" title="Secondary Record" target="_new">{!MAList.Secondary}</apex:outputLink>
+                        </apex:column>          
+
+                        <apex:column width="30%">
+                            <apex:facet name="header">Result</apex:facet>
+                            <!-- <apex:outputText value="{!MAList.Result}" styleClass="{MAList.ResultStyle}"/> -->
+                            <apex:outputText value="{!MAList.Result}" styleClass="{!MAList.ResultStyle}"/>
+                        </apex:column>
+                    </apex:dataTable>
+                   </apex:pageBlockSection>
+                   </apex:pageBlock>
+            </apex:outputPanel>
+  
+        </apex:pageBlock>
+        </apex:form>
+        
+    </apex:outputPanel>
+    
+ </apex:page>

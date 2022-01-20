@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Opportunity.Account.Name:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_74471583</developerName>
+        <masterLabel>Opportunity Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Opportunity$Type</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <value>New</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>Expansion</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <value>Renewal</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Multi-year</sourceValue>
+            </sourceValues>
+            <value>Multi-year</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Partner</sourceValue>
+            </sourceValues>
+            <value>Partner</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_22093650</developerName>
+        <masterLabel>Product Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__Product__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Advanced Data Deployer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Value Stream Mapping</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>DevOps360</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>DevOps 360 Analytics</sourceValue>
+            </sourceValues>
+            <value>New Products</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Implementation - Custom</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Do it For Me</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Enterprise</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Guide Me</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Jump Start</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Premier</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Relay Tunnel</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Implementation - Standard</sourceValue>
+            </sourceValues>
+            <value>Implementation Products</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA1</column>
+        </chartSummaries>
+        <chartType>HorizontalBarGrouped</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_74471583</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>Opportunity$CloseDate</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>Opportunity$Account</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Account.Owner</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Type</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__Product__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$PS_CPQ_Term_in_Months__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$Name</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity$StageName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed Won,Fully Paid</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notEqual</operator>
+            <value>ClickDeploy - Basic - Annual,ClickDeploy - Premium - Annual,ClickDeploy - Basic - Monthly,ClickDeploy - Premium - Monthly</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_74471583</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Expansion</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>FiscalYear</dateGranularity>
+        <field>Opportunity$CloseDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_22093650</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_74471583</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Copy of CKO - Last 2 Year&apos;s performance</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Opportunities_with_Primary_Quote_and_Quote_Lines__c</reportType>
+    <roleHierarchyFilter>System_Administrator</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_PREVCURFY</interval>
+    </timeFrameFilter>
+</Report>

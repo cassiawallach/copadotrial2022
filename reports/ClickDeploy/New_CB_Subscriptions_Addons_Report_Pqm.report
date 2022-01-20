@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_6891716</developerName>
+        <masterLabel>Product Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Subscription_Plan__c</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Enterprise Biannually</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Monthly - SunGage</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy Enterprise - Monthly License</sourceValue>
+            </sourceValues>
+            <value>Enterprise MTH</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy Enterprise -- Annual License</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Yearly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Yearly - MSDF</sourceValue>
+            </sourceValues>
+            <value>Enterprise - Annual</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Professional Monthly</sourceValue>
+            </sourceValues>
+            <value>Professional - MTH</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Professional Yearly</sourceValue>
+            </sourceValues>
+            <value>Professional - Annual</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__CB_Subscription_Id__c</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__CB_Site__c</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Subscription_status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__MRR__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Next_billing_Amount__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r.chargebeeapps__Subscription_Addons__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.chargebeeapps__CB_Subscriptions__r.chargebeeapps__Subscription_Addons__r$chargebeeapps__Product__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Showing subscription summary of CD product types and revenue</description>
+    <filter>
+        <criteriaItems>
+            <column>Account$Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>ClickDeploy</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.chargebeeapps__CB_Subscriptions__r$chargebeeapps__Subscription_status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>ACTIVE,FUTURE</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_6891716</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Enterprise MTH,Enterprise - Annual,Professional - MTH,Professional - Annual</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Month</dateGranularity>
+        <field>Account.chargebeeapps__CB_Subscriptions__r$CreatedDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_6891716</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>ClickDeploy - Subscriptions Summary</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CB_Subscriptions_Addons__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account.chargebeeapps__CB_Subscriptions__r$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

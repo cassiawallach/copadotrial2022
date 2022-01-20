@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Academy_Certification__c.Certification_Program__c</field>
+    </columns>
+    <columns>
+        <field>FK_$Academy_Certification_Student__c.Contact__c</field>
+    </columns>
+    <columns>
+        <field>FK_$Academy_Certification_Student__c.Student_Email__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Academy_Certification_Examination__c.Grade__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification__c.Earned_Date__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification__c.Status__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification__c.Expiration_Date__c</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Tabular</format>
+    <name>Copy of Academy Certifications - DK</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntityCustomEntity$Academy_Certification__c$Academy_Certification_Examination__c@Academy_Certification_Examination__c.Certification_Student__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Academy_Certification__c.Earned_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

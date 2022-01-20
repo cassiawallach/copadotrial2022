@@ -1,0 +1,15 @@
+<apex:page controller="DL_VC.GroupDealDeskController" sidebar="false">
+    <apex:iframe src="{! url }" scrolling="true" id="groupDealDesk" height="{! height}"/>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:pageMessages >
+                </apex:pageMessages>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="3">
+                <!--<apex:inputText value="{! url}"/>-->
+                <apex:commandButton action="{! PreviousPage }" value="Close"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,80 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account New page
+ -->
+<apex:page standardController="Handwrytten__hndwrtObjAccount__c" extensions="Handwrytten.hndwrtClsRegHelper" title="New Handwrytten Account" tabstyle="hndwrtTabAcnts__tab">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form >
+    
+    <div class="slds">
+        <style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+    
+        <apex:sectionHeader title="Handwrytten" subtitle="New Handwrytten Account" help="/apex/hndwrtPgHelp"/>
+        
+        <apex:pageBlock title="Handwrytten Account New" mode="Edit">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Register" action="{!registerNewAccount}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Handwrytten Account Information" columns="2">
+            
+                 <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Account Nickname" for="itName"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText id="itName" value="{!nickname}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Email" for="itEmail"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputText id="itEmail" value="{!email}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>       
+            
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Password" for="isPw"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputSecret id="isPw" value="{!newpassword}"/> 
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem >  
+                    <apex:outputLabel value="Re-enter Password" for="isConfirmPw"/>
+                    <apex:outputPanel styleClass="requiredInput"  layout="block">                 
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>               
+                        <apex:inputSecret id="isConfirmPw" value="{!reePassword}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>    
+
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Handwrytten Account Settings" columns="2">
+            	<apex:inputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Org_Wide_Account__c}"/>
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Monthly_Budget_Per_User__c}"/>
+                
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Allow_Deletes__c}"/>
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Allow_Gift_Cards__c}"/>
+                
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccount__c.Handwrytten__Log_to_Activity_History__c}"/>
+                
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+  	</div>
+    </apex:form>
+</apex:page>

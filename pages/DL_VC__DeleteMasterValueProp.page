@@ -1,0 +1,16 @@
+<apex:page standardController="DL_VC__Master_Value_Proposition__c" extensions="DL_VC.DeleteMasterValuePropController">
+    <apex:form >
+        <apex:pageBlock title="Master Value Proposition" id="define_block">
+            <apex:pageBlockSection columns="1">
+                <apex:outputField value="{! mvp.Name }" label="Name"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock title="Where would you like to delete this Master Value Proposition?" id="delete_section">
+            <apex:pageBlockButtons location="bottom" >
+                <apex:commandButton value="Delete from Salesforce" action="{! DeleteFromSFDC }"/>
+                <apex:commandButton value="Delete from Salesforce and Value Cloud" action="{! DeleteFromBoth }"/>
+                <apex:commandButton value="Cancel" action="{! PreviousPage }"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

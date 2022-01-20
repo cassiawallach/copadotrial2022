@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <description>Assign to Screen_Info_Message text &quot;User Story Task status changed to completed.&quot;.</description>
+        <name>Message_Change_To_Completed</name>
+        <label>Message Change To Completed</label>
+        <locationX>1130</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>Screen_Info_Message</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>User Story Task status changed to completed.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Work_Log_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign to Screen_Info_Message text &quot;User Story Task status is &quot;Completed&quot;.&quot;.</description>
+        <name>Message_Is_Completed</name>
+        <label>Message Is Completed</label>
+        <locationX>598</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>Screen_Info_Message</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>User Story Task status is &quot;Completed&quot;.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Work_Log_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Status_To_Completed</name>
+        <label>Set Status To Completed</label>
+        <locationX>882</locationX>
+        <locationY>409</locationY>
+        <assignmentItems>
+            <assignToReference>User_Story_Task_Record.copado__Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_User_Story_Task_Record</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_Status_Is_Completed</name>
+        <label>Check Status Is Completed</label>
+        <locationX>590</locationX>
+        <locationY>419</locationY>
+        <defaultConnector>
+            <targetReference>Set_Status_To_Completed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Status is Not Completed</defaultConnectorLabel>
+        <rules>
+            <name>Status_Is_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>User_Story_Task_Record.copado__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Message_Is_Completed</targetReference>
+            </connector>
+            <label>Status Is Completed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Record_Was_Found</name>
+        <label>Record Was Found</label>
+        <locationX>587</locationX>
+        <locationY>222</locationY>
+        <defaultConnector>
+            <targetReference>Check_Status_Is_Completed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Record Found</defaultConnectorLabel>
+        <rules>
+            <name>Record_Not_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>User_Story_Task_Record.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Record_Not_Found_Screen</targetReference>
+            </connector>
+            <label>Record Not Found</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Complete User Story Task {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Complete User Story Task</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <description>Create Work Log for User Story Task</description>
+        <name>Work_Log</name>
+        <label>Work Log</label>
+        <locationX>870</locationX>
+        <locationY>808</locationY>
+        <connector>
+            <targetReference>Work_Log_Created</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Comments__c</field>
+            <value>
+                <elementReference>Comments</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sprint__c</field>
+            <value>
+                <elementReference>User_Story_Task_Record.copado__User_Story__r.copado__Sprint__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Time_Spent_hours__c</field>
+            <value>
+                <elementReference>Time_Spent_hours</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>User_Story_Task__c</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>User_Story_Task_Record</name>
+        <label>User Story Task Record</label>
+        <locationX>595</locationX>
+        <locationY>69</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Record_Was_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>copado__User_Story_Task__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_User_Story_Task_Record</name>
+        <label>Update User Story Task Record</label>
+        <locationX>1130</locationX>
+        <locationY>409</locationY>
+        <connector>
+            <targetReference>Message_Change_To_Completed</targetReference>
+        </connector>
+        <inputReference>User_Story_Task_Record</inputReference>
+    </recordUpdates>
+    <screens>
+        <name>Record_Not_Found_Screen</name>
+        <label>Record Not Found</label>
+        <locationX>292</locationX>
+        <locationY>228</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Display_Record_Not_Found</name>
+            <fieldText>&lt;p&gt;User Story Task Record not found - bad ID or object&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Work_Log_Created</name>
+        <label>Work Log Created</label>
+        <locationX>1041</locationX>
+        <locationY>808</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Work_Log_Created_Message</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Work Log created successfully.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Work_Log_Screen</name>
+        <label>User Story Task Completed</label>
+        <locationX>870</locationX>
+        <locationY>639</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Work_Log</targetReference>
+        </connector>
+        <fields>
+            <name>Message</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!Screen_Info_Message}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>User_Info</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;Create Work Log for User Story Task or close this modal and refresh the record page to apply changes&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Time_Spent_hours</name>
+            <dataType>Number</dataType>
+            <fieldText>Time Spent (hours)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Time Spnt (hours) have to be greater then 0.&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Time_Spent_hours} &gt; 0</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Comments</name>
+            <dataType>String</dataType>
+            <fieldText>Comments</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>User_Story_Task_Record</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Screen_Info_Message</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

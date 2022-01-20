@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Audience xmlns="http://soap.sforce.com/2006/04/metadata">
+    <audienceName>Account Power Users</audienceName>
+    <container>Success</container>
+    <criteria>
+        <criterion>
+            <criteriaNumber>1</criteriaNumber>
+            <criterionValue>
+                <entityField>$User.Account_Power_User__c</entityField>
+                <entityType>User</entityType>
+                <fieldValue>true</fieldValue>
+            </criterionValue>
+            <operator>Equal</operator>
+            <type>FieldBased</type>
+        </criterion>
+    </criteria>
+    <formulaFilterType>AllCriteriaMatch</formulaFilterType>
+    <isDefaultAudience>false</isDefaultAudience>
+    <targets>
+        <target>
+            <groupName>8bd17162-6cec-465a-a46c-783596c9ac87</groupName>
+            <priority>1</priority>
+            <targetType>ExperienceVariation</targetType>
+            <targetValue>My_Team_My_Team_Page</targetValue>
+        </target>
+        <target>
+            <groupName>14bed21e-bd71-4090-b027-50e388fb4e76$#$a7f89661-8d76-4139-a32b-fca60aa5027f</groupName>
+            <priority>1</priority>
+            <targetType>ExperienceVariation</targetType>
+            <targetValue>My_Learning_HTML_Editor_Component</targetValue>
+        </target>
+    </targets>
+</Audience>

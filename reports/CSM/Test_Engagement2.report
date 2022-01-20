@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>IF(CampaignMember_Campaign.HasResponded:SUM&gt;0,5,1)</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Customer Advisory Board Rank</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_10128686</developerName>
+        <masterLabel>Key Personas</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Contact$Title</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>VP CRM</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP CRM &amp; Loyalty systems</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP CRM - Wealth Management</sourceValue>
+            </sourceValues>
+            <value>VP of CRM</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>VP Applications</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP Business Systems</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>VP - Application Development</sourceValue>
+            </sourceValues>
+            <value>VP of Biz Apps</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Contact$Title</field>
+    </columns>
+    <columns>
+        <field>Contact.CampaignMembers$Name</field>
+    </columns>
+    <columns>
+        <field>Contact$Name</field>
+    </columns>
+    <columns>
+        <field>Contact$Account.Vertical__c</field>
+    </columns>
+    <columns>
+        <field>Contact.CampaignMembers$Status</field>
+    </columns>
+    <columns>
+        <field>Contact.CampaignMembers$Type</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Contact.CampaignMembers$HasResponded</field>
+    </columns>
+    <columns>
+        <field>Contact.CampaignMembers$StartDate</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Test - Engagement - Customer Advisory Board</description>
+    <filter>
+        <criteriaItems>
+            <column>Contact.CampaignMembers$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>CAB,Advisory Board</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Contact$Account</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Linde,Sandvik</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Contact$Account.Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Customer</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Contact$Account</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Test - Engagement</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Contacts_with_or_without_Campaigns__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Contact.CampaignMembers$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

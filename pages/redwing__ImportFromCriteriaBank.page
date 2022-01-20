@@ -1,0 +1,24 @@
+<apex:page id="ImportFromCriteriaBank" standardController="redwing__Criterion_Task__c" recordSetVar="items" extensions="redwing.ImportFromCriteriaBankCtrl">
+    <style type="text/css">
+        html{
+            height: 100%;
+        }
+        html body{
+            height: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <apex:includeLightning />
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("{!ns}:TaskOutApp", function() {
+            $Lightning.createComponent("{!ns}:ImportFromCriteriaBank",
+                {
+                    "recordId" : '{!recordId}'
+                },
+                "lightning");
+        });
+    </script>
+</apex:page>

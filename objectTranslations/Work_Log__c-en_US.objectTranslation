@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Work Log</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Work Logs</value>
+    </caseValues>
+    <fields>
+        <label><!-- Comments --></label>
+        <name>Comments__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sprint --></label>
+        <name>Sprint__c</name>
+        <relationshipLabel><!-- Work Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Time that you spent working on this item, provided in hours. --></help>
+        <label><!-- Time Spent (hours) --></label>
+        <name>Time_Spent_hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- User Story Status --></label>
+        <name>User_Story_Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- User Story Task --></label>
+        <name>User_Story_Task__c</name>
+        <relationshipLabel><!-- Work Logs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- User Story --></label>
+        <name>User_Story__c</name>
+        <relationshipLabel><!-- Work Logs --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Work Log Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Time Spent must be at least 1 hour. --></errorMessage>
+        <name>Time_Spent_must_be_at_least_1_hour</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You cannot have a Work Log assigned to both User Story and a User Story Task at the same time. Time spent will be automatically rolled up from User Story Tasks and the User Story itself. --></errorMessage>
+        <name>Work_Log_Single_Lookup</name>
+    </validationRules>
+</CustomObjectTranslation>

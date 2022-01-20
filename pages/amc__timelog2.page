@@ -1,0 +1,35 @@
+<apex:page showHeader="false" standardStylesheets="false">
+   <script type='text/javascript' src='/canvas/sdk/js/publisher.js'/>
+    <apex:includeLightning />
+    <style>
+        span.assistiveText{
+            display:none;
+        }
+        .uiDatePickerGrid--default .calGrid th{
+            font-size:8px;
+        }
+        a.uiDayInMonthCell{
+            font-size:10px;
+        }
+        .uiDatePicker--default .dateBar .monthYear{
+            margin:5px;
+        }
+    </style>
+    <div style="height:650px; overflow-y: auto;">
+        <div id="lightning"/>
+    </div>
+    <script>
+        $Lightning.use("amc:InboxApp", function() {
+            $Lightning.createComponent("amc:InboxAppLogtime",
+            {
+                'id' : '{!$CurrentPage.parameters.id}',
+                'isInbox':false,
+                'standalone':true,
+                'sidebar':true
+            },
+            "lightning",
+            function(cmp) {
+            });
+        });
+    </script>
+</apex:page>

@@ -1,0 +1,57 @@
+<apex:page standardController="amc__Project__c" extensions="amc.ProjectRescheduleController" tabStyle="amc__Project__c">
+   <apex:sectionHeader title="Mission Control" subtitle="Project Rescheduler"/>
+   <apex:form >
+            <apex:inputHidden value="{!amc__Project__c.Name}"/>
+            <apex:pageBlock title="Reschedule Manager">
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="Reschedule" action="{!changeMilestoneDate}" rerender="Outer_Final_Message"/>
+                    <apex:commandButton action="{!home}" value="Close"/>                                
+                </apex:pageBlockButtons>
+                <apex:actionRegion >  
+                <apex:pageBlockSection columns="1" title="Select Project">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Select Project" for="Project"/>
+                        <apex:selectList value="{!ProjectId}" size="1" id="Project">
+                            <apex:selectOptions value="{!projects}"/>
+                            <apex:actionSupport event="onchange" rerender="Milestones_Panel" action="{!buildMilestones}"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>                       
+                </apex:pageBlockSection>
+                </apex:actionRegion>
+                <apex:pageBlockSection columns="1" title="Reschedule Settings">
+                  <apex:pageBlockSectionItem labelTitle="Days to change by" >
+                        <apex:outputLabel value="Days to change by" for="days_change" />
+                        <apex:inputText id="days_change" value="{!daysChange}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                    <apex:outputPanel id="Milestones_Panel" rendered="true">
+                            <apex:pageBlockSection columns="1" id="Milestones_Section">
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Select Milestones" for="Milestone_Options"/>
+                                    <apex:selectList value="{!milestoneIds}" multiselect="true" id="Milestones">
+                                        <apex:selectOptions value="{!Milestones}" id="Milestone_Options"/>
+                                    </apex:selectList>                        
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                    </apex:outputPanel>
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Select Action Status" for="actionStatus"/>
+                        <apex:selectList value="{!actions}" multiselect="true" id="actionStatus">
+                            <apex:selectOptions value="{!Status}" id="Status"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:outputPanel id="Outer_Final_Message" >                    
+                <apex:outputPanel id="Final_Message" rendered="{!msg}">
+                <apex:pageBlockSection >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Records Changed" for="Records_Message" />
+                            <apex:outputText id="Records_Message" value="{!acCount} records have been rescheduled" />
+                        </apex:pageBlockSectionItem>                    
+                </apex:pageBlockSection>    
+                </apex:outputPanel>
+                </apex:outputPanel>                    
+            </apex:pageBlock>
+        </apex:form>
+</apex:page>

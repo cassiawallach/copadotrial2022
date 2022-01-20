@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Contact$Account_Type_Std__c</field>
+    </columns>
+    <columns>
+        <field>Contact.Accounts1__r$Region__c</field>
+    </columns>
+    <columns>
+        <field>Contact.Accounts1__r$Industry</field>
+    </columns>
+    <columns>
+        <field>Contact.Accounts1__r$Name</field>
+    </columns>
+    <columns>
+        <field>Contact.Accounts1__r$AOV_Band__c</field>
+    </columns>
+    <columns>
+        <field>Contact.Accounts1__r$Rating</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Contact.Accounts1__r$TAM__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>TAM Report</description>
+    <format>Tabular</format>
+    <name>TAM Report</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Pizzagate_AE__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Contact.Accounts1__r$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

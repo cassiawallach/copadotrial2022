@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Lookup to the Administrator User, who is the designated User to receive important payment notifications and error messages.
+
+Value can differ from Administrator User on Kugamon Settings. --></help>
+        <label><!-- Administrator User --></label>
+        <name>kugo2p__Admin_User__c</name>
+        <relationshipLabel><!-- Payment Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Enables debugging methods.  This box should be unchecked unless troubleshooting the application. --></help>
+        <label><!-- Debugging Mode --></label>
+        <name>kugo2p__Apex_Test_Mode__c</name>
+    </fields>
+    <fields>
+        <help><!-- When event tasks are created (payments skipped, dispute notifications, etc), this setting determines who each task will be assigned to. --></help>
+        <label><!-- Assign Events To --></label>
+        <name>kugo2p__Assign_Events_To__c</name>
+        <picklistValues>
+            <masterLabel>Admin User</masterLabel>
+            <translation><!-- Admin User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Record Owner</masterLabel>
+            <translation><!-- Record Owner --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- When the Test Mode box is checked, this option allows you to run test transactions without actually sending transactions to payment processor gateway. --></help>
+        <label><!-- Gateway Simulation Mode --></label>
+        <name>kugo2p__Gateway_Simulation_Mode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Kugamon Setting --></label>
+        <name>kugo2p__KugamonSetting__c</name>
+        <relationshipLabel><!-- Payment Settings --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Default tax percentage to display in payment terminal. --></help>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__Tax__c</name>
+    </fields>
+    <fields>
+        <help><!-- Controls the level of detail in log entries for each transaction. --></help>
+        <label><!-- Transaction Logging --></label>
+        <name>kugo2p__Transaction_Logging__c</name>
+        <picklistValues>
+            <masterLabel>Brief</masterLabel>
+            <translation><!-- Brief --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Detailed</masterLabel>
+            <translation><!-- Detailed --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Enables the trigger to auto-update payment-related fields on opportunities. --></help>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__Update_Opp_Fields__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enables the auto-update of related shopping cart items when a payment record is processed. --></help>
+        <label><!-- Deprecated --></label>
+        <name>kugo2p__Update_Shopping_Cart_Items__c</name>
+    </fields>
+    <layouts>
+        <layout>Payment Settings Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Test &amp; Debug --></label>
+            <section>Test &amp; Debug</section>
+        </sections>
+    </layouts>
+    <webLinks>
+        <label><!-- AdvancedSettings --></label>
+        <name>kugo2p__AdvancedSettings</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Download_Relay_Script_Code --></label>
+        <name>kugo2p__Download_Relay_Script_Code</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,24 @@
+<apex:page showHeader="false" controller="amc.ganttmobile" standardStylesheets="false">
+<apex:includeLightning /> 
+<apex:includeScript value="{!URLFOR($Resource.amc__js, '/jquery/dist/jquery.min.js')}"/>
+    <style>
+        .assistiveText{
+            display:none;
+        }
+    </style>
+<script>
+    var j$ = jQuery.noConflict();
+    j$(document).ready(function(){       
+        $Lightning.use("amc:GanttChartApp", function() {
+            $Lightning.createComponent("amc:LightningGantt",
+                {'isLightning':false},
+                "lightning",
+                function(cmp) {}
+            );
+        });
+    });
+
+    
+</script>
+    <div id="lightning"></div>
+</apex:page>

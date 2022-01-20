@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Listing</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Listings</value>
+    </caseValues>
+    <fields>
+        <help><!-- This field helps reduce code complexity in the LWC. --></help>
+        <label><!-- Company Name --></label>
+        <name>Company_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- First Listed --></label>
+        <name>First_Listed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Get It Now Action --></label>
+        <name>Get_It_Now_Action__c</name>
+        <picklistValues>
+            <masterLabel>Download</masterLabel>
+            <translation><!-- Download --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Install</masterLabel>
+            <translation><!-- Install --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Latest Release --></label>
+        <name>Latest_Release__c</name>
+    </fields>
+    <fields>
+        <label><!-- Listing Profile --></label>
+        <name>Listing_Profile__c</name>
+        <relationshipLabel><!-- Listings --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Price --></label>
+        <name>Price__c</name>
+        <picklistValues>
+            <masterLabel>Free</masterLabel>
+            <translation><!-- Free --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid</masterLabel>
+            <translation><!-- Paid --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Published --></label>
+        <name>Published__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field will be populated by code because there is no master-detail relationship to listing reviews. --></help>
+        <label><!-- Rating --></label>
+        <name>Rating__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reviews --></label>
+        <name>Reviews__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>Extension</masterLabel>
+            <translation><!-- Extension --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IDE Plugin</masterLabel>
+            <translation><!-- IDE Plugin --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Integration</masterLabel>
+            <translation><!-- Integration --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Template</masterLabel>
+            <translation><!-- Template --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>Listing Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Details --></label>
+            <section>Details</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- In Order to Publish a Listing the Get It Now Action must be set. --></errorMessage>
+        <name>Get_It_Now_Action_for_Publishing</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The Price must be specified in order to publish the listing. --></errorMessage>
+        <name>Price_for_Publishing</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The Listing Type must be specified in order to publish a listing. --></errorMessage>
+        <name>Type_required_for_Publishing</name>
+    </validationRules>
+</CustomObjectTranslation>

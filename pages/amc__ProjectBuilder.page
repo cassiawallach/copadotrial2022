@@ -1,0 +1,43 @@
+<apex:page standardController="amc__Project__c">
+	<apex:includeLightning />
+	<apex:includeScript value="{!URLFOR($Resource.amc__js, '/jquery/dist/jquery.min.js')}" />
+	<style>
+		html,
+		body {
+			height: 100%;
+
+		}
+	</style>
+	<div id="builder" style="width:100%; height:100%;"></div>
+	<script>
+		$(document).ready(function () {
+			$(window).resize(function () {
+				setHeight();
+
+			});
+			setHeight();
+		});
+		function setHeight(){
+			//window height
+			var winHeight = $('body').height();
+			//footer height
+			var footerHeight = $('div.bPageFooter').outerHeight(true);
+			var headerHeight = $('div.bPageHeader').outerHeight(true);
+			//calculate our window height
+			var plannerHeight = winHeight-footerHeight-headerHeight;
+			$('div#builder').height(plannerHeight);
+		}
+		var projectId = '{!Project__c.Id}';
+		$Lightning.use("amc:ProjectBuilderApp", function () {
+			$Lightning.createComponent("amc:ProjectBuilder",
+				{
+					'recordId': projectId,
+					'isLightning': false
+				},
+				"builder",
+				function (cmp) {
+					//set the page height
+				});
+		});
+	</script>
+</apex:page>

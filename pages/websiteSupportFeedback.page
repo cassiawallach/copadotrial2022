@@ -1,0 +1,45 @@
+<apex:page id="releaseCalendar" showHeader="false" sidebar="false" standardStylesheets="false" controller="SupportFeedback">
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+  <title>Copado Solutions Customer Feedback</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <c:websiteHeadTag />
+  </head>
+  
+  <body class="homepage">
+  <div id="header-wrapper">
+    <c:websiteHeader />
+            
+             <div id="banner">
+                <div class="container">
+                    <section>
+                        <header>
+                            <apex:outputPanel id="Feedback">
+                                <apex:form rendered="{!NOT(updated)}">
+                                    <h2>Please, give us some feedback</h2>
+                                    <br/><br/>
+                                    Reason:&nbsp;&nbsp;<apex:inputText value="{!comment}" id="inputReason" style="width: 600px"/>&nbsp;&nbsp; 
+                                    <apex:commandButton value="Send" action="{!updateCase}" rerender="hiddenBlock,Feedback"/>
+                                </apex:form>
+                                <br/><br/>
+                            </apex:outputPanel>
+                    	</header>
+                    </section>
+                    <section>
+                        <header>
+                            <apex:outputPanel id="hiddenBlock" >
+                            <apex:pageBlock rendered="{!updated}"><h2>
+                                Thanks for contributing to a better Copado!
+                                </h2><br/><br/><br/><br/><br/><br/>
+                            </apex:pageBlock>
+                            </apex:outputPanel>
+                       </header>
+                    </section>
+               </div>
+           </div>
+        </div>
+  <c:websiteFooter />
+  </body>
+  </html>
+</apex:page>

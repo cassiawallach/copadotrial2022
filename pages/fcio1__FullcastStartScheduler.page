@@ -1,0 +1,9 @@
+<apex:page standardcontroller="fcio1__Scheduler__c" recordSetVar="records" extensions="fcio1.FullcastSchedulerController">
+	
+    <apex:pageMessage summary="Starting the scheduler will run all active jobs.                                              To turn on or off a specific job - please use the 'enabled field on the Job.  " severity="Info" strength="2"/>        
+    <apex:pageMessage summary=" Are you sure you want to start the scheduler? " severity="Info" strength="2"/>  
+    <apex:form >        
+        <apex:commandButton value="Confirm" action="{!recUpdate}" />
+        <apex:commandButton value="Back" action="{!cancel}"/>
+    </apex:form>
+</apex:page>

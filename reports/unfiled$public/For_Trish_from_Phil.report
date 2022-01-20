@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ACCOUNT_ID</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>USERS.NAME</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>RATING</field>
+    </columns>
+    <columns>
+        <field>LAST_UPDATE</field>
+    </columns>
+    <columns>
+        <field>Account.Account_score__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Maximum</aggregateTypes>
+        <aggregateTypes>Minimum</aggregateTypes>
+        <field>Account.Salesforce_AOV__c</field>
+    </columns>
+    <columns>
+        <field>Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>ROLLUP_DESCRIPTION</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(VALUE(Account.Account_score__c)&lt;0,1,VALUE(Account.Account_score__c))</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label># Account Score</label>
+        <scale>0</scale>
+    </customDetailFormulas>
+    <filter>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Rockland Trust,DMI Finance Private Limited India,Cuna Mutual Holding Company,Cobank,National Debt Relief,Strategic Financial Solutions,Hancock Whitney Bank,Moneygram Payment Systems,Inc,MUFG Union Bank N.A.,GAIN Capital Group,LLC,Western Union Financial Services,Inc.,First National Bank of Omaha,Morningstar Corporate,Lincoln Financial Group,AFLAC LIFE INSURANCE US,Guaranteed Rate Affinity United States,CIBC Bancorp USA Inc.,Burns &amp; Wilcox,FactSet Research Systems Inc.,Santander Bank,N.A.,LendingPoint LLC.,The Goldman Sachs Group,Hartford Fire Insurance Company,Chubb INA Holdings Inc.,Cambridge Investment Group</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>NYSE Group Inc,Blend,The Hanover Insurance Company,its subsidiaries and affiliates,U.S. Bank National Association,Elevate Credit Service,Llc,S&amp;P Global Ratings,S&amp;P Global Ratings - Analysts,Customers Bank,Globe Life,Home Point Financial,Volvo Financial Services,Axos Bank,C2FO,Aon Service Corporation,First Republic Investment Management,Inc.,Pentegra,American International Group,Equitable Group (Equitable Bank) Toronto,Fisher Asset Management,Llc (D/B/A Fisher Investments),Aon Plc,Icw Group,Aon Service Corp,Brella Insurance,Kemper Corporate Services,Kemper Corporate Services Inc,The Hartford Financial Services Group,Hartford Life,Group Benefits Division,Bank Of The West</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>For Trish from Phil</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>AccountList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$OrgId__c</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$ID__c</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_Orgs__r$Id</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Tabular</format>
+    <name>New Accounts with Salesforce Orgs Report</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_Salesforce_Orgs__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$Community_Login__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,520 @@
+<apex:page cache="false" docType="html-5.0" showHeader="false" sidebar="false" standardStyleSheets="false" action="{!init}" Controller="vtui.MediaUploaderCtrl" language="{!selectedLanguage}">
+
+    <apex:outputPanel rendered="{! !isNewWindow}">
+        <apex:includeScript value="{!URLFOR($Resource.vtui__Components_Library, '/vendor/components/jquery/jquery.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.vtui__Components_Library, '/vendor/components/svg4everybody.min.js')}"/>
+
+        <apex:stylesheet value="{!URLFOR($Resource.vtui__Components_Library, '/css/media-uploader_default.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.vtui__Components_Library, '/css/media-uploader.css')}"/>
+        <!-- <apex:stylesheet value="/resource/ViewTracCustomCss"/> -->
+        <!-- <apex:outputPanel rendered="{! customCss != null}">
+            <apex:stylesheet value="{!URLFOR($Resource[customCss])}"/>
+        </apex:outputPanel> -->
+
+        <script>svg4everybody(); // run it now or whenever you are ready</script>
+        <form class="form_upload" id="uploadForm1" action="{!JSENCODE(urlForUpload)}&OrgID={!orgId}" method="POST" enctype="multipart/form-data">
+            <div class="form-item">
+                <input type="file" name="files[]" id="myFileInput" class="input_hidden"/>
+
+                <apex:outputPanel rendered="{!NOT(isUploadMediaAccessible)}">
+                    <div class="warning__col left">
+                        <div class="warning_icon">
+                            <img src="{!$Resource.Components_Library + '/img/warning.png'}" />
+                        </div>
+                    </div>
+                    <div class="warning__col right">
+                        <div class="warning__head title">You don't have needed permissions to create new Media. Please contact your system administrator</div>
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!isUploadMediaAccessible}">
+                    <label for="myFileInput" id="btn_upload" class="btn_upload slds-button_neutral slds-button active" style="{!customStyle}">
+                        <div><div>{!$Label.Upload}</div></div>
+                    </label>
+                    <div id="preview_upload" class="preview">
+                        <div class="preview__col left">
+                            <div class="preview__head title" id="preview01head">{!$Label.Uploading}</div>
+                            <div id="file_info" class="preview__body info"></div>
+                            <div id="file_size" class="preview__foot size"></div>
+                        </div>
+                        <div class="preview__col right loader">
+                            <div id="loader01" class="loader__img circular-bar slds-x-small-show-only" data-progress="60" style="width:45px;height:45px;float: right;">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                    <g class="arcs">
+                                        <circle cx="50" cy="50" r="49" class="outer-circle" />
+                                        <path d="M50 1 A 49 49, 0, 1, 1, 7.06 73.61, L 50 50 z" d-mask="M50 1 A 49 49, 0, 1, 1, 7.06 73.61, L 50 50 z" class="outer-arc" id="arc1" />
+                                        <circle cx="50" cy="50" r="38" class="inner-circle"  />
+                                        <path d="M50 15 A 35 35, 0, 1, 1, 19.33 66.86" d-mask="M50 15 A 35 35, 0, 1, 1, 19.33 66.86" class="inner-arc" id="arc2" />
+                                    </g>
+                                    <g class="circles">
+                                        <circle cx="50" cy="50" r="49" class="outer-circle" />
+                                        <circle cx="50" cy="50" r="38" class="inner-circle" />
+                                    </g>
+                                    <text x="50" y="58" id="percentage-label"></text>
+                                </svg>
+                            </div>
+                            <div style="float:none;clear:both;"></div>
+                            <div id="error_icon" class="error_icon">
+                                <img src="{!$Resource.Components_Library + '/img/warning.png'}" />
+                            </div>
+                            <a href="javascript:void(0);" id="ajax_abort" class="link link_abort">{!$Label.Cancel}</a>
+                            <a href="javascript:void(0);" id="sent_ok" class="link">{!$Label.Ok}</a>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </form>
+
+        <script>
+            function checkFileType(file) {
+                var fileTypes = {!availableAzureMediaFormats};
+
+                var regx = new RegExp("^("+fileTypes.join("|")+")",'gi');
+                var nameArrs = file.name.split('.');
+                if(nameArrs.length<2) return false;
+                return regx.test('.'+nameArrs[nameArrs.length-1]);
+            }
+
+            function getRelativeCoords(percentage) {
+                var exprBase = ( ( -percentage ) * 2 * Math.PI ) + 0.5 * Math.PI
+                , coordX = Math.cos(exprBase)
+                , coordY = -Math.sin(exprBase)
+                ;
+                return [coordX, coordY];
+            }
+            function getArcCoords(initCoords, radius, percentage) {
+                var relativeCoords = getRelativeCoords(percentage)
+                , coordX = Math.round((relativeCoords[0] * radius + initCoords[0]) * 100) / 100
+                , coordY = Math.round((relativeCoords[1] * radius + initCoords[1]) * 100) / 100
+                ;
+                return [coordX, coordY];
+            }
+            var progressBarInit = function (val) {
+
+                var percentage = val / 100
+                , coordsArc1 = getArcCoords([50, 50], 49, percentage)
+                , coordsArc2 = getArcCoords([50, 50], 35, percentage)
+                , humanPercentage = Math.round(percentage * 100)
+                , revertArc = humanPercentage > 50 ? '1' : '0'
+                , path1Str = $('#arc1').attr('d-mask').split(',')
+                , path2Str = $('#arc2').attr('d-mask').split(',')
+                , useArcs = humanPercentage > 0 && humanPercentage < 100
+                , arcs = $('.arcs')
+                , circles = $('.circles')
+                ;
+
+                arcs.toggle(useArcs);
+                circles.toggle(!useArcs);
+                if (useArcs) {
+                    path2Str[2] = path1Str[2] = revertArc;
+                    path1Str[4] = coordsArc1.join(' ');
+                    path2Str[4] = coordsArc2.join(' ');
+                    $('#arc1').attr('d', path1Str.join(','));
+                    $('#arc2').attr('d', path2Str.join(','));
+                    $('#arc1').attr('d-mask', path1Str.join(','));
+                    $('#arc2').attr('d-mask', path2Str.join(','));
+                } else {
+                    var elClass = circles.attr('class');
+                    if (humanPercentage && ~elClass.indexOf('empty-circles')) {
+                        circles.attr('class', elClass.replace(' empty-circles', ''));
+                    } else if (!humanPercentage && !~elClass.indexOf('empty-circles')) {
+                        circles.attr('class', elClass + ' empty-circles');
+                    }
+                }
+                $('#percentage-label').text(val  + '%');
+            }
+        </script>
+
+
+        <script>
+            function getUrlParameter(name) {
+                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+                var results = regex.exec(location.search);
+                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            };
+            var pDomain;
+            var id = getUrlParameter('id');
+            var chatterUploader = ''+getUrlParameter('chatterUploader');
+            try {
+				if (/iPad|iPhone|iPod/.test(navigator.platform)) {
+                	pDomain = window.parent.location.href;
+                } else {
+                    pDomain = decodeURIComponent(getUrlParameter('originalDomain'));
+                }
+            } catch (e) {
+                pDomain = decodeURIComponent(getUrlParameter('originalDomain'));
+            }
+
+            window.parent.postMessage(JSON.stringify({'onload':"1"}), pDomain);
+            var myOrgId = '{!orgId}';
+            var customCommunityOfLocation = '{!customCommunityOfLocation}';
+            var salesforceOrganizationId = 'OrgID='+myOrgId;
+            var uploadLink = '{!JSENCODE(urlForUpload)}';
+            var parseFileLink = '{!JSENCODE(urlForGetStatus)}';
+            var progressLink = '{!JSENCODE(urlForGetProgress)}';
+            var uploaderId = '{!guid}';
+            var email = '{!JSENCODE(email)}';
+            var emailTemplates = '{!JSENCODE(emailTemplates)}';
+        </script>
+
+        <script>
+            var loaderUi = document.getElementById("preview_upload");
+            var uploadBtnUi = document.getElementById("btn_upload");
+            var fileInfoUi = document.getElementById("file_info");
+            var fileSizeUi = document.getElementById("file_size");
+            var ajaxAbortUi = document.getElementById("ajax_abort");
+
+            var FileUploader = function (chunkSize, uploaderId) {
+                this.uploaderId = uploaderId;
+                this.chunkSize = chunkSize;
+                this.chunk = { start: 0, end: this.chunkSize};
+            };
+            FileUploader.prototype.submit = function (blob, url, method, onprogress, complete, onerror) {
+                var $this = this;
+
+                var formData = new FormData();
+                var reader = new FileReader();
+
+                formData.append('upload-file', new Blob([blob.slice($this.chunk.start, $this.chunk.end+1)], {type : blob.type}), encodeURIComponent(blob.name));
+
+                var xhr = new XMLHttpRequest();
+                xhr.open(method, url, true);
+
+                if(blob.size > this.chunkSize) {
+                    xhr.setRequestHeader('Content-Disposition','attachment; filename="'+encodeURIComponent(blob.name)+'"');
+                    xhr.setRequestHeader('Content-Range','bytes '+$this.chunk.start+'-'+$this.chunk.end+'/'+blob.size);
+                };
+
+                xhr.upload.onprogress = function (event) {
+                    onprogress({loaded:$this.chunk.start + event.loaded, size:blob.size});
+                };
+
+                xhr.onerror = function () {
+                    document.getElementById('error_icon').classList.add('active');
+                    document.getElementById('loader01').classList.add('hide');
+                };
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        $this.chunk.start = $this.chunk.end+1;
+                        $this.chunk.end = $this.chunk.start + $this.chunkSize;
+                        if($this.chunk.end >= blob.size) {
+                            $this.chunk.end -= ($this.chunk.end - blob.size)+1;
+                        }
+                        if($this.chunk.start < blob.size) {
+                            $this.submit(blob, url, method, onprogress, complete, onerror);
+                        }else{
+                            complete(xhr.responseText);
+                        }
+                    }else{
+                        onerror(xhr);
+                    }
+                };
+
+                xhr.send(formData, {binary: true, mask: true});
+
+                return xhr;
+            };
+            FileUploader.prototype.getPassedStatus = function (url, orgId, complete) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.onerror = function () {
+                    console.dir(xhr);
+                    console.log('getPassedStatus ');
+                    document.getElementById('error_icon').classList.add('active');
+                    document.getElementById('loader01').classList.add('hide');
+                };
+                xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+                xhr.setRequestHeader('Accept','*/*');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        console.log(-2)
+                        var result = JSON.parse(xhr.responseText);
+                        console.log(-1)
+                        if(result.TotalCount > 0) {
+                            complete(result);
+                        }
+                    }
+                }
+                xhr.send('uploadId='+this.uploaderId+'&OrgId='+orgId+'&callbackUrl=');
+            }
+
+            FileUploader.prototype.parsingFile = function (url, courseTitle, uploadIndex, fileSize, orgId, email, emailTemplates, complete) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.onerror = function () {
+                    document.getElementById('error_icon').classList.add('active');
+                    document.getElementById('loader01').classList.add('hide');
+                };
+                xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+                xhr.setRequestHeader('Accept','*/*');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var result = JSON.parse(xhr.responseText);
+                        if(result.Error !== true) {
+                            complete(result);
+                        }else{
+                            console.dir(xhr);
+                            document.getElementById('error_icon').classList.add('active');
+                            document.getElementById('loader01').classList.add('hide');
+                        }
+                    }
+                }
+                xhr.send('UploadId='+this.uploaderId+
+                    '&OrgId='+orgId+
+                    '&CourseTitle='+encodeURIComponent(courseTitle)+
+                    '&UploadIndex='+uploadIndex+
+                    '&Size='+fileSize+
+                    '&PrimaryRegion='+customCommunityOfLocation+
+                    '&Email='+encodeURIComponent(email)+
+                    '&EmailTemplates='+encodeURIComponent(emailTemplates)
+                );
+            }
+
+            FileUploader.prototype.getParsingProgress = function (url, uploadIndex, waitFunc, parseChild, complete) {
+                var $this = this;
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+                xhr.setRequestHeader('Accept','*/*');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var result = JSON.parse(xhr.responseText);
+                        if (result.Error != false) {
+                            console.dir(result);
+                            document.getElementById('error_icon').classList.add('active');
+                            document.getElementById('loader01').classList.add('hide');
+                        } else {
+                            /*if(result.Status == 2) {
+                                if(result.ChildParsingResults.length == 0){
+                                    complete(result);
+                                }else{
+                                    parseChild(result);
+                                }
+                            }else */
+                            if(result.Progress != 100) {
+                                waitFunc(result);
+                                setTimeout(function () {
+                                     $this.getParsingProgress(url, uploadIndex, waitFunc, parseChild, complete);
+                                }, 1000);
+                            } else {
+                                waitFunc(result);
+                                complete(result);
+                            }
+                        }
+                    }
+                }
+                xhr.send('UploadKey=' + myOrgId + '_' + this.uploaderId + '_' + uploadIndex);
+            };
+
+            FileUploader.prototype.waitConvertingComplete = function (url, uploadedData, waitFunc, complete) {
+                var $this = this;
+                var file = uploadedData.CanConvert[0];
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+                xhr.setRequestHeader('Accept','*/*');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        console.log(5)
+                        var result = JSON.parse(xhr.responseText);
+                        console.log(6)
+                        if (result.Status != 'Finish') {
+                            setTimeout(function () {
+                                $this.waitConvertingComplete(url, uploadedData, waitFunc, complete);
+                            }, 1000);
+                        }else{
+                            complete(result);
+                        }
+                        waitFunc(result);
+                    }
+                }
+                xhr.send('uploadId='+$this.uploaderId+'&filename='+encodeURIComponent(file.FileName));
+            }
+
+            jQuery(function($){
+                    progressBarInit(0);
+            });
+            window.onload = function () {
+                var loader01 = document.getElementById('loader01');
+                var form = document.getElementById('uploadForm1');
+                var onload = 0;
+                var onProgressConvert = function (result) {
+                    var val = parseFloat(result.Progress) * 0.3;
+                    console.log(result);
+                    progressBarInit((onload+val).toFixed(0));
+                    //window.parent.postMessage(JSON.stringify({'convert':val.toFixed(0)}), window.parent.location.href);
+                };
+                var onProgressUpload = function (result) {
+                    var val = onload = 0;
+                    if(result.size > 0 ){
+                        val = onload = (result.loaded / result.size) * 0.7 * 100;
+                    }
+                    console.log(val);
+                    progressBarInit(val.toFixed(0));
+                    //window.parent.postMessage(JSON.stringify({'upload':val.toFixed(0)}), window.parent.location.href);
+                };
+                var onErrorUpload = function (xhr) {
+                    console.dir(xhr);
+                    if(xhr.status == 500){
+                         document.getElementById('error_icon').classList.add('active');
+                         document.getElementById('loader01').classList.add('hide');
+                    }
+                };
+                var onErrorConvert = function (){
+                console.log('error onErrorConvert ');
+                         document.getElementById('error_icon').classList.add('active');
+                         document.getElementById('loader01').classList.add('hide');
+                };
+                form.querySelector('#myFileInput').addEventListener('change', function (evt) {
+
+                    evt.preventDefault();
+                    var files = form.querySelector('input[type=file]').files;
+                    var index = 0;
+
+                    // class manipulation here:
+                    loaderUi.classList.add('active');
+                    uploadBtnUi.classList.remove('active');
+                    window.parent.postMessage(JSON.stringify({'upload':"1", 'id': id}), pDomain);
+
+                    // check file types
+                    for(var i=0; i<files.length; i++) {
+                        if (checkFileType(files[i]) == false) {
+                            fileInfoUi.innerHTML = files[i].name;
+                            fileSizeUi.innerHTML = "This file type is not supported.";
+                            document.getElementById('preview01head').innerHTML = "";
+                            document.getElementById('error_icon').classList.add('active');
+                            document.getElementById('loader01').classList.add('hide');
+
+                            document.getElementById('ajax_abort').addEventListener('click', function () {
+                                document.getElementById('error_icon').classList.remove('active');
+                                document.getElementById('loader01').classList.remove('hide');
+                                window.parent.postMessage(JSON.stringify({'upload':"1", 'id': id}), pDomain);
+
+                                uploadBtnUi.classList.add('active');
+                                loaderUi.classList.remove('active');
+
+                                document.location.reload(true) || window.location.reload(true);
+                            });
+                            return false;
+                        }
+                    }
+                    // get file info:
+                    fileInfoUi.innerHTML = files[0].name;
+                    fileSizeUi.innerHTML = (files[0].size <= 1000000) ? (files[0].size/1000).toFixed(2)+" kb" : (files[0].size/1000000).toFixed(2)+" mb";
+
+                    var sender = function (file, key) {
+                        document.getElementById('preview01head').innerHTML = '{!$Label.uploading}';
+                        document.getElementById('loader01').classList.remove('hidden');
+
+                        var fileUploader = new FileUploader(1048576*10, uploaderId);
+
+                        var parseChild = function (result) {
+                            console.log(result);
+                            console.dir(result);
+                            for(var i=0; i<result.ChildParsingResults.length; i++){
+                                var itRes = result.ChildParsingResults[i];
+                                if(itRes.Status == 4){
+                                    (function (it) {
+                                        fileUploader.parsingFile(parseFileLink, itRes.CourseName, it, 0, myOrgId, email, emailTemplates, function (res) {
+                                            fileUploader.getParsingProgress(progressLink, it, onProgressConvert, parseChild, function (result) {
+                                                remote();
+                                            });
+                                        });
+                                    })(i+1);
+                                }
+                            }
+                        };
+
+                        var remote = function (courses) {
+                            console.dir(courses);
+                            Visualforce.remoting.Manager.invokeAction(
+                                '{!$RemoteAction.MediaUploaderCtrl.createCourses}',
+                                JSON.stringify(courses),
+                                function(result, event) {
+                                    result = result.replace(/\&quot\;/gm, '"');
+                                    console.dir(result);
+                                    result = JSON.parse(result);
+                                    console.dir(result);
+                                    console.log('success');
+                                    if(key == files.length-1){
+                                        document.getElementById('preview01head').innerHTML = '{!$Label.upload_completed}';
+                                        progressBarInit(100);
+                                        setTimeout(function(){
+                                            document.getElementById('loader01').classList.add('hidden');
+                                        },1000);
+                                        document.getElementById('ajax_abort').classList.add('hidden');
+                                        document.getElementById('sent_ok').classList.add('active');
+                                        document.getElementById('sent_ok').addEventListener('click', function(){
+                                            window.parent.postMessage(JSON.stringify({'result':result, 'id': id}),pDomain);//, 'id': id
+                                        });
+                                        if ('{! JSENCODE($CurrentPage.parameters.immediatelyDone)}' == 'true') {
+                                            window.parent.postMessage(JSON.stringify({'result':result, 'id': id}), pDomain);
+                                        }
+                                    }
+                                },
+                                { buffer: false, escape: true, timeout: 30000 }
+                            );
+                        };
+
+                        var request = fileUploader.submit(file, uploadLink, 'POST', onProgressUpload, function (data) {
+                            fileUploader.parsingFile(parseFileLink, file.name, 1, file.size, myOrgId, email, emailTemplates, function (res) {
+                                console.log('start progress');
+                                fileUploader.getParsingProgress(progressLink, 1,  onProgressConvert, parseChild,  function (result) {
+                                    remote(result.Courses);
+                                });
+                                if(index < files.length-1){
+                                    sender(files[++index], index);
+                                }
+                            });
+                        }, onErrorUpload);
+
+                        document.getElementById('ajax_abort').addEventListener('click', function () {
+                            console.log('uploading aborted.');
+                            request.abort();
+
+                            document.getElementById('error_icon').classList.remove('active');
+                            document.getElementById('loader01').classList.remove('hide');
+                            window.parent.postMessage(JSON.stringify({'upload':"1", 'id': id}), pDomain);
+
+                            uploadBtnUi.classList.add('active');
+                            loaderUi.classList.remove('active');
+
+                            document.location.reload(true) || window.location.reload(true);
+                        });
+                    };
+                    sender(files[index], index);
+                });
+
+                try {
+                    if (/Mac|iPad|iPhone|iPod/.test(navigator.platform)) {
+                        document.getElementById("myFileInput").accept = "*";
+                    } else {
+                        var availableFormats = {!availableAzureMediaFormats};
+
+                        document.getElementById("myFileInput").accept = availableFormats.join(', ');
+                    }
+                } catch(err) {
+                    console.log('myFileInput ' + err.message);
+                }
+            };
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!isNewWindow}">
+        <apex:includeLightning />
+        <a href="{!backURL}" class="linkBack"> &lt;&lt;&lt; Back </a>
+        <div id="lightningUpload" class="lightningCmp"/>
+        <script>
+        var recordId = "{!recordId}";
+        var isCreateMedia = "{!isCreateMedia}";
+        $Lightning.use("vtui:UploaderApp", function() {
+            $Lightning.createComponent("vtui:MediaUploader",{"recordId" : recordId,
+                                                            "isCreateMediaContent" : isCreateMedia
+                                                        },
+                                       "lightningUpload",
+                                       function(cmp) {
+                                       });
+        });
+        </script>
+    </apex:outputPanel>
+</apex:page>

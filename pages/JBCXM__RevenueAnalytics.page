@@ -1,0 +1,1376 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose                    : Included as a tab in JBara Customer Experience App.
+----                              Displays all Transactions for all Customers in a list.
+----                              User can perform CRUD operations on Transactions.
+---- Other comments (optional)  : User can export all the Transactions from list.
+----
+-->
+<apex:page showHeader="false" sidebar="false" Controller="JBCXM.RevenueReports" extensions="JBCXM.GSCommonBroker" title="MRR Trend Analysis" readOnly="true">
+    <!-- Static Resource Includes: Jquery,Jqgrid,Character limit plugin and css files  -->
+    
+    
+    <!-- Static Resource Includes: Highcharts libraries  -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/date.format.js" />
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+
+    <style type="text/css">
+        .gs-moreactions-drop .gs-moreopt-cnt ul li
+        {
+             text-align:left !important;
+        }
+        .filterControls {
+              background-color: #FFFFFF;
+              border: 1px solid #BBBBBB;
+              margin-bottom: 3px;
+              padding: 5px;
+        }
+        .modal_footer .apply-opt{
+             padding:3px 15px !important;
+            }
+        td {
+           color: color: #4A4A56;
+        }
+        .bPageTitle {
+              padding-bottom:0px !important;
+              margin-bottom: 0px !important;
+        }
+
+        body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock {
+                background-color: #FFF;
+                border-bottom: 1px solid #EAEAEA;
+                border-left: 1px solid #EAEAEA;
+                border-radius: 4px 4px 4px 4px;
+                border-right: 1px solid #EAEAEA;
+        }
+        .container {
+            border:1px solid #A6C9E2;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px 6px 6px 6px;  /* for some reason you have to declare all corners in ie*/
+        }
+        .header {
+            height: 24px;
+            background:#
+            padding: 3px;
+            vertical-align: middle;
+            -moz-border-radius:5px 5px 0px 0px;
+            -webkit-border-radius:5px 5px 0px 0px;
+            border-radius: 5px 5px 0px 0px;  /* for some reason you have to declare all corners in ie*/
+        }
+        .jbarashowListButton {
+             background-image: url("../images/arrow-orn.png") !important;
+             background-position: right center !important;
+             background-repeat: no-repeat !important;
+             margin-top: 3px;
+          }
+        .jbarahideListButton {
+            background-image: url("../images/arrow-orn.png") !important;
+            background-position: right center !important;
+            background-repeat: no-repeat !important;
+            margin-top: 3px;
+          }
+
+        select {
+            -moz-border-radius:4px;
+            -moz-box-shadow:1px 1px 5px #cfcfcf inset;
+            border:1px solid #cfcfcf;
+            vertical-align:middle;
+            background-color:#FFFFFF;
+        }
+        option:hover {
+            cursor:pointer;
+        }
+        select option, select optgroup {
+                font-size: 100%;
+                border-right:2px solid #BEBEBE;
+        }
+
+     .HeaderTransacationsTabs {
+        background:none;
+     }
+    
+    .dummyMRRTADateSelectionOptionsFilters{
+        height: auto;
+        min-width: 100px;
+        width: auto;
+        padding: 10px;
+        border: 1px solid #d3d6d9;
+     }
+
+    #containerMRRByMonthTableList .ui-corner-bottom, #containerASVByMonthTableList .ui-corner-bottom,
+    #containerCustomersByMonthTableList .ui-corner-bottom, #containerUsersByMonthTableList .ui-corner-bottom {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    .pageTitleIconRevenuePerformance{
+        background-image: url("/img/icon/reports16.png");
+        background-position: 0 0;
+        height: 16px;
+        width: 16px;
+        display: inline-block;
+    }
+    
+    #IdTorenderMRRScatterChart {
+        border: 1px solid #dbdbdb;
+        margin: 0px auto;
+        width: 100%;
+        height: 520px;
+    }
+    #containerASVByMonthTableList, #containerASVByMonthTableList, #containerCustomersByMonthTableList, #containerUsersByMonthTableList{
+       margin-top:10px;
+    }
+    .gs-moreactions-drop{
+    margin-bottom:5px;}
+    .gainsightLoadingIcon{
+                background : url({!URLFOR($Resource.GSAppCSS)}/images/64x64.gif) no-repeat;
+                width: 70px;
+                height: 70px;
+                position:absolute;
+                margin : auto;
+                left: 0px;
+                right : 0px;
+                bottom :0px;
+                top : 0px;
+            }
+    </style>
+
+    <script type="text/javascript" language="javascript">
+        
+        j$(".btnRevenueExport").click(function(event) {
+            if(j$(".gs-revenue-exportContainer").filter(":hidden")){
+                event.stopPropagation();
+                j$(".gs-revenue-exportContainer").show();
+            }
+         });
+         j$(".btnRevenueDrilldownExport").click(function(event) {
+            if(j$(".gs-revenue-drillExport").filter(":hidden")){
+                event.stopPropagation();
+                j$(".gs-revenue-drillExport").show();
+            }
+         });
+         
+        var traillingMonths, returnDataArray;
+        //var transactionOrderTypes       = new Array('New Business', 'Upsell', 'Renewal with Upsell', 'Downsell', 'Renewal with Downsell', 'Debook', 'Churn', 'Closing');
+        //var OrderTypeColors             = {'New Business' : '#00FF00', 'Upsell' : '#CCFF33', 'Renewal with Upsell' : '#CCFF33', 'Downsell' : '#FF6600', 'Renewal with Downsell' : '#FF6600', 'Debook' : '#FC8383', 'Churn' : '#FF0000', 'Closing' : '#FFFF00'};
+        //var OrderTypeStackDetails       = {'New Business' : 'MRR InCrease', 'Upsell' : 'MRR InCrease', 'Renewal with Upsell' : 'MRR InCrease', 'Downsell' : 'MRR Decrease', 'Renewal with Downsell' : 'MRR Decrease', 'Debook' : 'MRR Decrease', 'Churn' : 'MRR Decrease', 'Closing' : 'spline'};
+        var dataArrayForScatterChart, xAxisLabels, dummyXAxisLabels, dataSeriesForScatterChart, dataArrayForMRRByMonth, dataArrayForASVByMonth;
+        var dataArrayForCustomersByMonth, dataArrayForUsersByMonth, changedColumnModel, usersChangedColumnModel, listOfTransactionsData;
+        var totalMRR, totalASV, closingMRR, closingASV, closingUserCount, totalCustomerCount, totalUserCount, mrrGridLabels;
+
+        var mrrTrendDataByPeriodSelection, mrrTrendDataUptoPeriodSelection, renewalWithUpsellTransData, customerCountDataUptoPeriodSel, newBusinessTransDetailsByPeriodSel, allCustDetailsMap;
+        var renewalTransWithUpsellOrDownsell, transactionsListByDateRange, selectedPeriodsList, dummyNBDetailsArray;
+        var selTimeFrameOption, selDateFieldTitle, dummyTitle;
+        var dateTimeFormatByUserLocale = fakeEval('{!JSINHTMLENCODE(dateTimeFormatByLocaleStr)}');
+        
+        //To handle the currency symbol.
+        var currencyConfigObject =  fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+               
+        var raTransOrderTypeNameBySysName       = {};
+        var raTransOrderTypeDetailsBySysName    =   {};
+        var raTransOrderTypeDetailsBySysName    = fakeEval('{!JSINHTMLENCODE(orderTypeDetialsMapByIdJson)}');
+        var reTransOrderTypeSysNamesListByDO    = fakeEval('{!JSINHTMLENCODE(OrderTypeSystemNamesListByDisplayOrderJson)}');
+        var transOrderTypeSysNameByName         = {};
+        
+        var transactionOrderTypes   = new Array();
+        transactionOrderTypes = (reTransOrderTypeSysNamesListByDO.length > 0) ? reTransOrderTypeSysNamesListByDO : new Array('New Business', 'Upsell', 'Renewal with Upsell', 'Renewal', 'Renewal with Downsell', 'Downsell', 'Debook', 'Churn');
+        var OrderTypeColors         = {};
+        var OrderTypeStackDetails   = {};
+        var rtMapDetails        = {};
+        
+        j$.each(raTransOrderTypeDetailsBySysName, function(key, val) { 
+            raTransOrderTypeNameBySysName[key]      = val['DN'];
+            OrderTypeColors[key]                    = ((val['Color'] != '') ? val['Color'] : ('#00FF00'));
+            OrderTypeStackDetails[key]              = ((val['MN'] == 'New Business' || val['MN'] == 'Upsell' || val['MN'] == 'Renewal with Upsell') ? 'MRR InCrease' : ((val['MN'] == 'Renewal') ? 'Neutral' : 'MRR Decrease'));
+            transOrderTypeSysNameByName[val['DN']]  = key;
+            rtMapDetails[key]                       = val['MN'];
+        });
+        
+        transactionOrderTypes.push('Closing');
+        OrderTypeColors['Closing']          = '#FFFF00';
+        OrderTypeStackDetails['Closing']    = 'spline';
+        
+        //date formating options.
+        //var userLocalDateFormatRA         = 'm/d/yyyy';
+        //var srcDateFormatByUserLocalRA = userLocalDateFormatRA.replace('yyyy', 'Y');
+
+        function buildingTransactionMRRAnalytics() {
+            dataArrayForScatterChart                = new Array();
+            xAxisLabels                             = new Array();
+            dummyXAxisLabels                        = new Array();
+            dataSeriesForScatterChart               = new Array();
+            dataArrayForMRRByMonth                  = new Array();
+            dataArrayForASVByMonth                  = new Array();
+            dataArrayForCustomersByMonth            = new Array();
+            dataArrayForUsersByMonth                = new Array();
+            mrrGridLabels                           = new Array();
+            listOfTransactionsData                  = new Array();
+            returnDataArray                         = new Array();
+            allCustDetailsMap                       = new Object();
+
+            var downsellUserCountOnRWU, upsellUserCountOnRWD; //To handle the UserCount in Renewal with upsell and renewal with downsell.
+
+            //To get the Starting MRR
+            var startMRR = 0;
+            var startASV = 0;
+            var startCustomersCount = 0;
+            var startUsersCount = 0;
+            var startOneTime = 0;
+            var newCustCntByPeriod;
+
+            if(mrrTrendDataUptoPeriodSelection.length > 0) {
+                for(var b = 0; b < mrrTrendDataUptoPeriodSelection.length; b++) {
+                    startMRR += parseFloat(mrrTrendDataUptoPeriodSelection[b].mrr);
+                    startASV += parseFloat(mrrTrendDataUptoPeriodSelection[b].asv);
+                    startOneTime += parseFloat(mrrTrendDataUptoPeriodSelection[b].otr);
+                    startUsersCount += parseFloat(mrrTrendDataUptoPeriodSelection[b].users);
+                }
+                var dummyCustomerCountArray = new Array();
+                                
+                dummyCustomerCountArray = j$.grep(mrrTrendDataUptoPeriodSelection, function (dt) {
+                                                return (dt.orderType == "Churn");
+                                          });
+                var churnCustomers  = (dummyCustomerCountArray.length > 0) ? dummyCustomerCountArray[0].transCount : 0;
+                var newCustomers    = customerCountDataUptoPeriodSel.length;
+                startCustomersCount += (newCustomers-churnCustomers);
+            }
+            
+            //This is the extra step(Overhead) and we have to think about smart logic for alter native.
+            for(var inx = 0; inx < customerCountDataUptoPeriodSel.length; inx++) {
+                allCustDetailsMap[customerCountDataUptoPeriodSel[inx].acc] = customerCountDataUptoPeriodSel[inx].acc; 
+            }
+            
+
+            closingMRR = startMRR;
+            closingASV = startASV;
+            closingUserCount = startUsersCount;
+
+            //Code to Provide to see the MRR, ASV, And Users Information In chart.
+            var stackColumnChartOptions = new Array('MRR', 'ASV', 'Users');
+            var pushIngValue;
+            dataArrayForScatterChart[transactionOrderTypes[transactionOrderTypes.length-1]] = new Array();
+            for(var scco = 0; scco < stackColumnChartOptions.length; scco++) {
+                dataArrayForScatterChart[transactionOrderTypes[transactionOrderTypes.length-1]][stackColumnChartOptions[scco]] = new Array();
+                pushIngValue = (stackColumnChartOptions[scco] == "MRR") ? closingMRR : ((stackColumnChartOptions[scco] == "ASV") ? closingASV : closingUserCount);
+                dataArrayForScatterChart[transactionOrderTypes[transactionOrderTypes.length-1]][stackColumnChartOptions[scco]].push(roundNumber(pushIngValue, 0));
+            }
+
+            var dummyMRRDataArrayByMonth = new Array();
+            var dummyASVDataArrayByMonth = new Array();
+            dummyMRRDataArrayByMonth['Starting']            = new Array();
+            dummyMRRDataArrayByMonth['Starting']['name']    = "Starting {!JSENCODE(customLabelsMap['MRR'])}("+currencyConfigObject.symbol+")";
+            dummyMRRDataArrayByMonth['Closing']             = new Array();
+            dummyMRRDataArrayByMonth['Closing']['name']     = "End {!JSENCODE(customLabelsMap['MRR'])}("+currencyConfigObject.symbol+")";
+
+            dummyASVDataArrayByMonth['Starting']            = new Array();
+            dummyASVDataArrayByMonth['Starting']['name']    = "Starting {!JSENCODE(customLabelsMap['ASV'])}("+currencyConfigObject.symbol+")";
+            dummyASVDataArrayByMonth['Closing']             = new Array();
+            dummyASVDataArrayByMonth['Closing']['name']     = "End {!JSENCODE(customLabelsMap['ASV'])}("+currencyConfigObject.symbol+")";
+
+            var dummydataArrayForCustomersAndUsersByMonth = new Array();            
+
+            dummydataArrayForCustomersAndUsersByMonth['Starting Customers']             = new Array();
+            dummydataArrayForCustomersAndUsersByMonth['Starting Customers']['name']     = "Starting Customer Count";
+            dummydataArrayForCustomersAndUsersByMonth['Closing Customers']              = new Array();
+            dummydataArrayForCustomersAndUsersByMonth['Closing Customers']['name']      = "Ending Customer Count";
+            dummydataArrayForCustomersAndUsersByMonth['Starting Users']                 = new Array();
+            dummydataArrayForCustomersAndUsersByMonth['Starting Users']['name']         = "Starting {!JSENCODE(customLabelsMap['Users'])} Count";
+            dummydataArrayForCustomersAndUsersByMonth['Closing']                        = new Array();
+            dummydataArrayForCustomersAndUsersByMonth['Closing']['name']                = "Ending {!JSENCODE(customLabelsMap['Users'])} Count";
+
+
+            changedColumnModel = new Array();
+            changedColumnModel.push('{"name":"name", "fixed" : "true", "width":140, "sortable": false}');
+
+            usersChangedColumnModel = new Array();
+            usersChangedColumnModel.push('{"name":"name", "fixed" : "true", "width":140, "sortable": false}');
+            
+            //To get the Order Types MRR details based on the month.
+            for(var i = 0; i < mrrTrendDataByPeriodSelection.length; i++) {
+                changedColumnModel.push('{"name":"'+mrrTrendDataByPeriodSelection[i].Label+'", "align":"right", "formatter":"currency", "sortable": false, "formatoptions":{"thousandsSeparator": ",", "decimalPlaces": 2}}');
+                usersChangedColumnModel.push('{"name":"'+mrrTrendDataByPeriodSelection[i].Label+'", "align":"right", "formatter":"currency", "sortable": false, "formatoptions":{"thousandsSeparator": ",", "decimalPlaces": 0}}');
+
+                xAxisLabels.push(mrrTrendDataByPeriodSelection[i].Label);
+                dummyXAxisLabels.push(mrrTrendDataByPeriodSelection[i].Label.replace("@y2", ""));
+
+                dummyMRRDataArrayByMonth['Starting'][mrrTrendDataByPeriodSelection[i].Label] = closingMRR;
+                dummyASVDataArrayByMonth['Starting'][mrrTrendDataByPeriodSelection[i].Label] = closingASV;
+
+                dummydataArrayForCustomersAndUsersByMonth['Starting Customers'][mrrTrendDataByPeriodSelection[i].Label] = parseInt(startCustomersCount);
+                dummydataArrayForCustomersAndUsersByMonth['Starting Users'][mrrTrendDataByPeriodSelection[i].Label]     = parseInt(startUsersCount);
+                downsellUserCountOnRWU = 0;
+                upsellUserCountOnRWD = 0;
+                for(var r=0; r < transactionOrderTypes.length-1; r++) {
+                    if(i == 0) {
+                        dataArrayForScatterChart[transactionOrderTypes[r]] = new Array();
+                        for(var scco = 0; scco < stackColumnChartOptions.length; scco++) {
+                            dataArrayForScatterChart[transactionOrderTypes[r]][stackColumnChartOptions[scco]] = new Array();
+                            dataArrayForScatterChart[transactionOrderTypes[r]][stackColumnChartOptions[scco]].push(0);
+                        }
+
+                        dummyMRRDataArrayByMonth[transactionOrderTypes[r]] = new Array();
+                        dummyASVDataArrayByMonth[transactionOrderTypes[r]] = new Array();
+
+                        dummydataArrayForCustomersAndUsersByMonth[transactionOrderTypes[r]] = new Array();
+
+                        dummyMRRDataArrayByMonth[transactionOrderTypes[r]]['name'] = raTransOrderTypeNameBySysName[transactionOrderTypes[r]]+"("+currencyConfigObject.symbol+")";
+                        dummyASVDataArrayByMonth[transactionOrderTypes[r]]['name'] = raTransOrderTypeNameBySysName[transactionOrderTypes[r]]+"("+currencyConfigObject.symbol+")";
+
+                        dummydataArrayForCustomersAndUsersByMonth[transactionOrderTypes[r]]['name'] = raTransOrderTypeNameBySysName[transactionOrderTypes[r]]+" {!JSENCODE(customLabelsMap['Users'])}";
+
+                        if(rtMapDetails[transactionOrderTypes[r]] == "New Business" || rtMapDetails[transactionOrderTypes[r]] == "Churn") {
+                            dummydataArrayForCustomersAndUsersByMonth[''+transactionOrderTypes[r]+' Customers'] = new Array();
+                            dummydataArrayForCustomersAndUsersByMonth[''+transactionOrderTypes[r]+' Customers']['name'] = (rtMapDetails[transactionOrderTypes[r]] == "New Business") ? "New Customers" : ""+raTransOrderTypeNameBySysName['Churn']+" Customers";
+                        }
+                    }
+
+                   returnDataArray = j$.grep(mrrTrendDataByPeriodSelection[i].Data, function(dt) {
+                        return ((rtMapDetails[transactionOrderTypes[r]] == "Renewal") ? (dt.orderType == transactionOrderTypes[r] || dt.orderType == 'Renewal with Upsell' || dt.orderType == 'Renewal with Downsell') : (dt.orderType == transactionOrderTypes[r]));
+                    });
+
+                    //to get the customer data.
+                    totalCustomerCount = 0;
+                    if(rtMapDetails[transactionOrderTypes[r]] == "Churn") {
+                        totalCustomerCount += ((returnDataArray.length > 0) ? ((rtMapDetails[transactionOrderTypes[r]] == "New Business") ? returnDataArray[0].transCount : (-1*(returnDataArray[0].transCount))) : 0);
+                        dummydataArrayForCustomersAndUsersByMonth[''+transactionOrderTypes[r]+' Customers'][mrrTrendDataByPeriodSelection[i].Label] = ((returnDataArray.length > 0) ? returnDataArray[0].transCount : 0);
+                    }
+
+                    if(rtMapDetails[transactionOrderTypes[r]] == "New Business") {
+                        newCustCntByPeriod = 0;
+                        if(newBusinessTransDetailsByPeriodSel.length > 0) {
+                            dummyNBDetailsArray = new Array();
+                            dummyNBDetailsArray = j$.grep(newBusinessTransDetailsByPeriodSel, function(dt) {
+                                return ((new Date((dt.td).replace(/-/g, '/'))) >= (new Date(JBARAformatDate(new Date(JBARA_getDateFromFormat(mrrTrendDataByPeriodSelection[i].S_D, dateTimeFormatByUserLocale.DateFormat)), 'yyyy/M/d')))
+                                                    && (new Date((dt.td).replace(/-/g, '/'))) <= (new Date(JBARAformatDate(new Date(JBARA_getDateFromFormat(mrrTrendDataByPeriodSelection[i].E_D, dateTimeFormatByUserLocale.DateFormat)), 'yyyy/M/d'))));
+                            });
+                            for(var idx = 0; idx < dummyNBDetailsArray.length; idx++) {
+                                if(!allCustDetailsMap[dummyNBDetailsArray[idx].acc]) {
+                                    newCustCntByPeriod +=1;
+                                    allCustDetailsMap[dummyNBDetailsArray[idx].acc] = dummyNBDetailsArray[idx].acc;
+                                }
+                            }
+                            totalCustomerCount += newCustCntByPeriod;
+                            dummydataArrayForCustomersAndUsersByMonth[''+transactionOrderTypes[r]+' Customers'][mrrTrendDataByPeriodSelection[i].Label] = newCustCntByPeriod;
+                        }
+                    }
+
+
+                    startCustomersCount += totalCustomerCount;
+
+                    totalMRR = 0;
+                    totalUserCount = 0;
+                    totalASV = 0;
+                    if(returnDataArray.length > 0) {
+                        for(var j=0; j < returnDataArray.length; j++) {
+                            totalMRR        += (rtMapDetails[transactionOrderTypes[r]] != "Renewal") ? parseFloat(returnDataArray[j].mrr) : parseFloat(returnDataArray[j].mrrTot);
+                            totalASV        += (rtMapDetails[transactionOrderTypes[r]] != "Renewal") ? parseFloat(returnDataArray[j].asv) : parseFloat(returnDataArray[j].asvTot);
+                            totalUserCount  += (rtMapDetails[transactionOrderTypes[r]] != "Renewal") ? parseInt(returnDataArray[j].users) : parseFloat(returnDataArray[j].usersTot);
+                        }
+                    }
+
+                    dummyMRRDataArrayByMonth[transactionOrderTypes[r]][mrrTrendDataByPeriodSelection[i].Label] = (totalMRR < 0) ? (totalMRR*-1) : totalMRR;
+                    dummyASVDataArrayByMonth[transactionOrderTypes[r]][mrrTrendDataByPeriodSelection[i].Label] = (totalASV < 0) ? (totalASV*-1) : totalASV;
+
+                    dummydataArrayForCustomersAndUsersByMonth[transactionOrderTypes[r]][mrrTrendDataByPeriodSelection[i].Label] = (totalUserCount < 0) ? totalUserCount*-1 : totalUserCount;
+                    if(rtMapDetails[transactionOrderTypes[r]] != "Renewal") {
+                        closingMRR += totalMRR;
+                        closingASV += totalASV;
+                        closingUserCount += totalUserCount;
+
+                        startUsersCount += parseInt(totalUserCount);
+                    }
+
+                    totalMRR = (totalMRR < 0) ? roundNumber((-1*totalMRR), 0) : roundNumber(totalMRR, 0);
+                    totalASV = (totalASV < 0) ? roundNumber((-1*totalASV), 0) : roundNumber(totalASV, 0);
+                    totalUserCount = (totalUserCount < 0) ? (-1*totalUserCount) : totalUserCount;
+
+                    for(var scco = 0; scco < stackColumnChartOptions.length; scco++) {
+                        pushIngValue = (stackColumnChartOptions[scco] == "MRR") ? totalMRR : ((stackColumnChartOptions[scco] == "ASV") ? totalASV : totalUserCount);
+                        dataArrayForScatterChart[transactionOrderTypes[r]][stackColumnChartOptions[scco]].push(roundNumber(pushIngValue, 0));
+                    }
+
+                }
+
+                for(var scco = 0; scco < stackColumnChartOptions.length; scco++) {
+                    pushIngValue = (stackColumnChartOptions[scco] == "MRR") ? closingMRR : ((stackColumnChartOptions[scco] == "ASV") ? closingASV : closingUserCount);
+                    dataArrayForScatterChart[transactionOrderTypes[transactionOrderTypes.length-1]][stackColumnChartOptions[scco]].push(roundNumber(pushIngValue, 0));
+                }
+
+                dummyMRRDataArrayByMonth['Closing'][mrrTrendDataByPeriodSelection[i].Label] = closingMRR;
+                dummyASVDataArrayByMonth['Closing'][mrrTrendDataByPeriodSelection[i].Label] = closingASV;
+
+                dummydataArrayForCustomersAndUsersByMonth['Closing Customers'][mrrTrendDataByPeriodSelection[i].Label] = parseInt(startCustomersCount);
+                dummydataArrayForCustomersAndUsersByMonth['Closing'][mrrTrendDataByPeriodSelection[i].Label] = (startUsersCount < 0) ? parseInt(startUsersCount*-1) : parseInt(startUsersCount);
+            }
+
+            changedColumnModel = ''+changedColumnModel.join(",")+'';
+            changedColumnModel = fakeEval('[' + changedColumnModel + ']');
+
+            usersChangedColumnModel = ''+usersChangedColumnModel.join(",")+'';
+            usersChangedColumnModel = fakeEval('[' + usersChangedColumnModel + ']');
+
+
+
+            //To build the Data series for the scatter chart and Grids.
+            dataArrayForCustomersByMonth.push(dummydataArrayForCustomersAndUsersByMonth['Starting Customers']);
+            dataArrayForCustomersByMonth.push(dummydataArrayForCustomersAndUsersByMonth['New Business Customers']);
+            dataArrayForCustomersByMonth.push(dummydataArrayForCustomersAndUsersByMonth['Churn Customers']);
+            dataArrayForCustomersByMonth.push(dummydataArrayForCustomersAndUsersByMonth['Closing Customers']);
+
+            dataArrayForUsersByMonth.push(dummydataArrayForCustomersAndUsersByMonth['Starting Users']);
+            dataArrayForMRRByMonth.push(dummyMRRDataArrayByMonth['Starting']);
+            dataArrayForASVByMonth.push(dummyASVDataArrayByMonth['Starting']);
+
+            var dummySeriesDataArray;
+            for(var scco = 0; scco < stackColumnChartOptions.length; scco++) {
+                dataSeriesForScatterChart[stackColumnChartOptions[scco]] = new Array();
+                for(var r=0; r < transactionOrderTypes.length; r++) {
+                    dummySeriesDataArray  = new Array();
+                    dummySeriesDataArray['name'] = (transactionOrderTypes[r] == 'Closing') ? transactionOrderTypes[r] : raTransOrderTypeNameBySysName[transactionOrderTypes[r]];
+                    dummySeriesDataArray['data'] = dataArrayForScatterChart[transactionOrderTypes[r]][stackColumnChartOptions[scco]];
+                    dummySeriesDataArray['color'] = OrderTypeColors[transactionOrderTypes[r]];
+                    if(transactionOrderTypes[r] != "Closing") {
+                        dummySeriesDataArray['stack'] = OrderTypeStackDetails[transactionOrderTypes[r]];
+                    }
+                    else {
+                        dummySeriesDataArray['name'] = stackColumnChartOptions[scco];
+                        dummySeriesDataArray['type'] = OrderTypeStackDetails[transactionOrderTypes[r]];
+                    }
+
+                    dataSeriesForScatterChart[stackColumnChartOptions[scco]].push(dummySeriesDataArray);
+                    if(scco == 0) {
+                        if(rtMapDetails[transactionOrderTypes[r]] != "Renewal") {
+                            dataArrayForMRRByMonth.push(dummyMRRDataArrayByMonth[transactionOrderTypes[r]]);
+                            dataArrayForASVByMonth.push(dummyASVDataArrayByMonth[transactionOrderTypes[r]]);
+                            dataArrayForUsersByMonth.push(dummydataArrayForCustomersAndUsersByMonth[transactionOrderTypes[r]]);
+                        }
+                    }
+
+                }
+            }
+
+            mrrGridLabels = dummyXAxisLabels;
+
+            //to render the MRR Composition, Customer, User composition by month.
+            bindMRRByMonthTableGrid(dataArrayForASVByMonth, 'containerASVByMonthTableList', mrrGridLabels, 'ASV');
+            bindMRRByMonthTableGrid(dataArrayForMRRByMonth, 'containerMRRByMonthTableList', mrrGridLabels, 'MRR');
+            bindMRRByMonthTableGrid(dataArrayForCustomersByMonth, 'containerCustomersByMonthTableList', mrrGridLabels, 'Customers');
+            bindMRRByMonthTableGrid(dataArrayForUsersByMonth, 'containerUsersByMonthTableList', mrrGridLabels, 'Users');
+            //To render the scatter chart.
+            j$.trim(j$(".MRRTrendChartFilterOptionsSelectCtrl").val());
+
+            //To reset the user state details.
+            //if(statePreservString != undefined) {
+                var usrStateSSF = (statePreservString.ServerSideFilters__c) ? j$.parseJSON(statePreservString.ServerSideFilters__c) : {};
+                if(!j$.isEmptyObject(usrStateSSF)) {
+                    usrStateSSF     = (usrStateSSF['Transactions-Analytics']) ? usrStateSSF['Transactions-Analytics'] : {};
+                    if(!j$.isEmptyObject(usrStateSSF)) {
+                        usrStateSSF     = (usrStateSSF['TimeFrame']) ? usrStateSSF['TimeFrame'] : [];
+                        if(usrStateSSF.length > 0) {
+                            j$(".MRRTrendChartFilterOptionsSelectCtrl").val(usrStateSSF[0].operator);
+                        }
+                    }
+                }
+            //}
+
+            renderMRRScatterChart(dummyXAxisLabels, dataSeriesForScatterChart[j$.trim(j$(".MRRTrendChartFilterOptionsSelectCtrl").val())], j$.trim(j$(".MRRTrendChartFilterOptionsSelectCtrl").val()));
+
+            j$("#MRRTrendAnalyticsNSummary_Section, .dummyGridTitleBarAnalyticsByDateRange").show();
+            j$(".MrrTrendAjaxLoadingButton").hide();
+        }
+
+        /**
+        *This function rerender MRRTrend chart based on the selected option.
+        */
+        function reRenderTrendAnalyticsGraphBySelectin(thisPointer) {
+            renderMRRScatterChart(dummyXAxisLabels, dataSeriesForScatterChart[j$.trim(j$(thisPointer).val())], j$.trim(j$(thisPointer).val()));
+            j$("span.dummyFilteredMeasureValue").html(sanitizeHtml(j$.trim(j$(thisPointer).find("option:selected").text())));
+
+            //To build the Server side filter details for User state
+            var selFrmDate = j$.trim(j$(".jbaraDummyMRRTAStartDateInput").val());
+            var selToDate = j$.trim(j$(".jbaraDummyMRRTAEndDateInput").val());
+            selFrmDate = JBARAformatDate(new Date(JBARA_getDateFromFormat(selFrmDate, dateTimeFormatByUserLocale.DateFormat)), 'M/d/yyyy');
+            selToDate = JBARAformatDate(new Date(JBARA_getDateFromFormat(selToDate, dateTimeFormatByUserLocale.DateFormat)), 'M/d/yyyy');
+            populateTimeFrameStateDetails(selFrmDate, selToDate, j$("#jBTFDateRangeSelection").val(), j$(".jbaraDummyTFDateFieldSelectControl").val(),
+                                        j$(".jbaraDummySummerizedOptionSelectControl").val(), j$(thisPointer).val());
+        }
+
+        /***
+        *@Param "sd" represents the start date.
+        *@Param "ed" represents the end date.
+        *@Param "dRKey" represents the date range key for example:- JBcustom, JBcurfy,...
+        *@Param "fltrFld" represents the on which field we are applying filters for example Date__c, RecRevStartDate__c.
+        *@Param "summerizedBy" represents the Summerized by month of quarter or year.
+        *@Param "reportOn" represents the report based on the MRR, ASV or Users.
+        **/
+        function populateTimeFrameStateDetails(sd, ed, dRKey, fltrFld, summerizedBy, reportOn) {
+            if(isSameUserSessionExists == "false") {
+                statePreservString.SortColumns__c = {};
+                statePreservString.ClientSideFilter__c = {};
+            }
+            var dummyServerSideFitlers = (statePreservString.ServerSideFilters__c) ? j$.parseJSON(statePreservString.ServerSideFilters__c) : {}
+            //activeTabName = j$(".HeaderTransacationsTabs .ui-tabs-selected").find("a").attr('href'); commented by sekhar
+
+            activeTabName   = j$('#tabs').find('li.active').find('a').attr('href');
+            activeTabName = activeTabName.substr(1);
+
+            var ssFilDetails = [];
+            var dummySSFilDetails = {}
+            dummySSFilDetails.name = fltrFld;
+            dummySSFilDetails.value = (dRKey == "JBcustom") ? sd +'^'+ed : dRKey;
+            dummySSFilDetails.objectName = "TransHeader__c";
+            dummySSFilDetails.fieldType = (dRKey == "JBcustom") ? "TimeFrameCustomDate" : "TimeFrameNormalDate";
+            dummySSFilDetails.logicalOperator = summerizedBy;
+            dummySSFilDetails.operator      = reportOn;
+            ssFilDetails.push(dummySSFilDetails);
+
+            dummyServerSideFitlers[activeTabName] = (dummyServerSideFitlers[activeTabName]) ? dummyServerSideFitlers[activeTabName] : {};
+            dummyServerSideFitlers[activeTabName].TimeFrame = ssFilDetails;
+            statePreservString.ServerSideFilters__c = dummyServerSideFitlers;
+            processEntireState();
+        }
+
+        /**
+        *This function renders the MRR Summary grid.
+        */
+        function bindMRRByMonthTableGrid(data, containerId, columnLabels, MeasureType) {
+            var listData = data;
+            var arrCols = getMRRByMonthTableColumns(columnLabels, MeasureType);
+            var screenWidth = screen.width - 64.5;
+
+            var gridParam = {
+                'Id': ''+containerId+'_Id',
+                'colnames': arrCols[0],
+                'colmodel': arrCols[1],
+                'data': listData,
+                'sort': {
+                            'name': '',
+                            'order': ''
+                        },
+                'disableAutofilter':true,
+                'sortable':false,
+                'width': screenWidth,
+                'height': '100%'
+            }
+            j$("#"+containerId+"_Id").html("");
+            buildjqGrid(containerId, gridParam);
+            j$(".ui-pg-div").hide();
+            j$("#gbox_"+containerId+"_Id").removeClass("ui-corner-all").addClass("ui-corner-bottom");
+
+            j$(".dummyGridTitleBarAnalyticsByDateRange, .dummyTransListByDateRangeIWithFYD").css({"width": parseInt(screenWidth)});
+
+            j$('#'+containerId+' div.ui-widget-content').css('border', '1px solid #A6C9E2'); //To show the content border.
+            j$("#plist_"+containerId+"").find("#plist_"+containerId+"_center").hide();
+            j$("#plist_"+containerId+"").find("#plist_"+containerId+"_right").hide();
+
+            j$("#"+containerId+" .ui-jqgrid tr.ui-row-ltr td").css({
+                "overflow": "hidden",
+                "white-space": "pre-line"
+            });
+        }
+
+        /**
+        *This function builds the column model to render MRR Summary grid.
+        */
+        function getMRRByMonthTableColumns(columnLabels, measureType) {
+            var colArray=new Array();
+            var  colNames,colModel;
+            var dummyColLabels = new Array();
+            dummyColLabels[0] = (measureType == "MRR" || measureType == 'ASV') ? ""+getCustomLabelText(measureType)+" "+currencyConfigObject.symbol+" in 000's" : ""+getCustomLabelText(measureType)+"";
+            dummyColLabels = dummyColLabels.concat(columnLabels);
+            colNames = dummyColLabels;
+            colModel = (measureType == "MRR" || measureType == 'ASV') ? changedColumnModel : usersChangedColumnModel;
+            sort={};
+            colArray.push(colNames);
+            colArray.push(colModel);
+            colArray.push(sort);
+            return colArray;
+        }
+
+
+        /**
+        *This function renders the MRR trend graph.
+        */
+        function renderMRRScatterChart(dummyXAxisLabels, dataSereies, chartTitle) {
+            var xAxiesData = new Array(' ');
+            xAxiesData = xAxiesData.concat(dummyXAxisLabels);
+            var chart;
+            j$(document).ready(function() {
+
+                chart = new Highcharts.Chart({
+
+                    chart: {
+                        renderTo: 'IdTorenderMRRScatterChart',
+                        defaultSeriesType: 'column',
+                        width: screen.width - 95.5,
+                        backgroundColor:'rgba(255, 255, 255, 0)',
+                        marginRigtht: 50,
+                        style: {
+                            fontFamily: 'HelveticaNeueRegular'
+                        }
+                    },
+                    title: {
+                        text: 'Revenue Performance - '+j$(".MRRTrendChartFilterOptionsSelectCtrl option:selected").text()+' Trend',
+                        style: {
+                            color: '#333',
+                            fontFamily: 'HelveticaNeueRegular'
+                        },
+                    },
+                    xAxis: {
+                        lineColor: '#333',
+                        lineWidth: 1,
+                        gridLineColor: '#f2f2f2',
+                        categories: xAxiesData,
+                        startOnTick:true,
+                        labels: {
+                            rotation: (j$.browser.opera==true) ? 0 : 315, //If you give some rotation value then graph is not work in Opera.
+                            y:30,
+                            style: {
+                                color:'#333',
+                                fontFamily: 'HelveticaNeueRegular'
+                            }
+                        }
+
+                    },
+                    yAxis: {
+                        lineColor: '#333',
+                        gridLineColor: '#f2f2f2',
+                        allowDecimals: false,
+                        min: 0,
+                        title: {
+                            text: j$(".MRRTrendChartFilterOptionsSelectCtrl option:selected").text(),
+                            style: { color: '#333', fontFamily: 'HelveticaNeueRegular'}
+                        },
+                        labels: {
+                            style: { color: '#333', fontFamily: 'HelveticaNeueRegular'}
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#f4f4f4',
+                        style: { fontFamily: 'HelveticaNeueRegular', padding: 10,color:'#374351'},
+                        shadow: false,
+                        borderRadius: 3,
+                        borderWidth : 1,
+                        borderColor: '#dbdbdb',
+                        formatter: function() {
+                            var currencyfmt = (chartTitle == "Users") ? '#' : currencyConfigObject.symbol;
+                            var yAxisFrmt = thousandSeparator(this.y);
+                            if (this.series.name == dataSereies[dataSereies.length-1].name) {
+                                if(this.x == ' ') {
+                                return 'Starting '+j$(".MRRTrendChartFilterOptionsSelectCtrl option:selected").text()+': '+currencyfmt+' '+ yAxisFrmt;
+                                }
+                                else {
+                                    return '<b>'+ this.x +'</b><br/>'+
+                                        getCustomLabelText(this.series.name) +': '+currencyfmt+' '+ yAxisFrmt;
+                                }
+                            }
+                            else {
+                                var stackTotalFrmt = thousandSeparator(this.point.stackTotal);
+                                return '<b>'+ this.x +'</b><br/>'+
+                                 getCustomLabelText(this.series.name) +': '+currencyfmt+' '+ yAxisFrmt +'<br/>'+
+                                 'Total: '+currencyfmt+' '+ stackTotalFrmt;
+                            }
+                        }
+
+                    },
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal'
+                        },
+                        series: {
+                            cursor: 'pointer',
+                            shadow: false,
+                            point: {
+                                events: {
+                                    click: function() {
+                                        showTransactionsBasedOnDateRangeAndType( xAxisLabels[parseInt(this.x)-1], this.category, this.series.name)
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        itemStyle: {
+                           color: '#333',
+                           fontFamily: 'HelveticaNeueRegular'
+                        },
+                        itemHoverStyle: {
+                            color: '#999',
+                            fontFamily: 'HelveticaNeueRegular'
+                        },
+                        labelFormatter: function() {
+                            return getCustomLabelText(this.name);
+                        }
+                    },
+                    series: dataSereies
+                });
+
+                j$('.MRRTrendChartFilterOptionsSelectCtrl').multiselect({
+                multiple: false,
+                header:false,
+                selectedList: 1,
+                minWidth:150,
+                height:'auto',
+                beforeopen : function() {
+                    j$(".dummyMRRTADateSelectionOptionsFilters").hide();
+                }
+            });
+            // chart doesn't display by fefault so resorting to timeout
+            setTimeout(function() {
+                j$(window).trigger("resize");
+            });
+            });
+        }
+
+        function getCustomLabelText(strLabel){
+            if(strLabel=='ASV'){
+                return '{!JSENCODE(customLabelsMap['ASV'])}';
+            }
+            else if(strLabel=='MRR'){
+                return '{!JSENCODE(customLabelsMap['MRR'])}';
+            }
+            else if(strLabel=='Users'){
+                return '{!JSENCODE(customLabelsMap['Users'])}';
+            }
+            else {
+                return strLabel;
+            }
+        }
+        /**
+        *Function for Round the number.
+        */
+        function roundNumber(num, dec) {
+            var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+            return result;
+        }
+
+        /**
+        *This function is used to list the transactions by date range and booking type.
+        */
+        function showTransactionsBasedOnDateRangeAndType(monthLabel, displayML, transOrderType) {
+            var selOrderType;
+            var filteredTransactionsList = new Array();
+            if(monthLabel !=  null) {
+                //alert(transOrderType+' '+monthLabel+' '+displayML);
+                j$(".AjaxLoadingButtonForShowTransList").show();
+                j$(".dummyTransListByDateRangeIWithFYD").hide();
+                j$("#transactionsContainerList").html('');
+
+                filteredTransactionsList = j$.grep(mrrTrendDataByPeriodSelection, function(dt) {
+                                                return (dt.Label == monthLabel);
+                                            });
+                selOrderType    = (j$.trim(transOrderType) == "MRR" || j$.trim(transOrderType) == "ASV" || j$.trim(transOrderType) == "Users") ? "All" : transOrderTypeSysNameByName[j$.trim(transOrderType)];
+
+                j$(".jbaraDummyTransListFilterBookingType").val(selOrderType);
+
+                j$(".jbaraDummyTransListStartDateInput").val(filteredTransactionsList[0].S_D);
+                j$(".jbaraDummyTransListEndDateInput").val(filteredTransactionsList[0].E_D);
+                renderTransactionsGridBasedOnDateRangeAndType();
+                transOrderType = (j$.trim(transOrderType) == "MRR" || j$.trim(transOrderType) == "ASV" || j$.trim(transOrderType) == "Users") ? "" : ""+j$.trim(transOrderType)+" in ";
+                j$("span.dummyTransListTitleByDateRangeIWithFYD").html(sanitizeHtml("Transactions ("+transOrderType+""+displayML+")"));
+                j$(".drillExportContainer").show();
+            }
+        }
+
+        /**
+        *The below code for Formatting the Time Frame and event handling on the screen.
+        */
+
+        var applyMultiSelectFlag = false;
+        j$(document).ready(function() {
+            j$(".dummyMRRTADateSelectionOptions").css({'padding' : '6px 0px', 'background-color' : "#fff !important"}); //To format the "TimeFrame" toggle text.
+
+            j$(".dummyRIDateSelectionHideFilterIcon").unbind().bind("click", function() {
+                if(!applyMultiSelectFlag)
+                {
+                    j$('.jbaraDummyTFDateFieldSelectControl, .jbaraDummySummerizedOptionSelectControl').multiselect({
+                        multiple: false,
+                        header:false,
+                        selectedList: 1,
+                        minWidth:150,
+                        height:'auto'
+                    });
+                    j$('.jBTFDateRangeSelection').multiselect({
+                        multiple: false,
+                        header:false,
+                        selectedList: 1,
+                        minWidth:197,
+                        height:'auto'
+                    });
+                    applyMultiSelectFlag = true;
+                }
+
+                 j$(".dummyMRRTADateSelectionOptionsFilters").slideToggle("slow");
+                 j$(".dummyMRRTADateSelectionOptionsFilters").unbind().bind("click", function(e) {
+                     e.stopPropagation();
+                 });
+
+             });
+
+             j$(".dummyMRRTADateSelectionOptionsFilters").css({
+                 'z-index': '6000',
+                 'position': 'absolute',
+                 'background-color': '#f8F8F8',
+             });
+
+             j$("body").click(function(e) {
+
+                if (j$(e.target).closest(".ui-multiselect-menu").length > 0)
+                    return;
+
+                if (!j$(e.target).hasClass('dummyRIDateSelectionHideFilterIcon')) {
+                    j$(".dummyMRRTADateSelectionOptionsFilters").hide();
+                }
+             });
+       });
+
+       /**
+        *This function was called from time frame component.
+        */
+        function populateMRRTrendAnalyticsBySelDateRange(dateFieldName, selDRSD, selDRED, selectedTimeFrameRange, selectedDateFieldTitle) {
+            //alert("Date Field: "+dateFieldName+" SD: "+selDRSD+" ED: "+selDRED);
+            selTimeFrameOption = selectedTimeFrameRange;
+            selDateFieldTitle = selectedDateFieldTitle;
+            j$(".jbaraDummyMRRTAFilterDateSelectControl").val(dateFieldName);
+            j$(".jbaraDummyMRRTAStartDateInput").val(selDRSD);
+            j$(".jbaraDummyMRRTAEndDateInput").val(selDRED);
+        }
+
+        /**
+        *This function returns the number of datys between two dates.
+        */
+        function dummyJBDaysBetweenTwoDates(date1, date2) {
+            var numOfDays = ( (parseInt(new Date(date2).getTime())-parseInt(new Date(date1).getTime()))/(1000*60*60*24)+1 );
+            return numOfDays;
+        }
+
+        /**
+        *This function was called when you click on the go button.
+        */
+        function funToReRenderMrrTrendAnalyticsUsingTrans() {
+
+            var selFrmDate = j$.trim(j$(".jbaraDummyMRRTAStartDateInput").val());
+            var selToDate = j$.trim(j$(".jbaraDummyMRRTAEndDateInput").val());
+            selFrmDate = JBARAgetValidDateFormat(selFrmDate, dateTimeFormatByUserLocale.DateFormat);
+            j$(".jbaraDummyMRRTAStartDateInput").val(selFrmDate);
+            selToDate = JBARAgetValidDateFormat(selToDate, dateTimeFormatByUserLocale.DateFormat);
+            j$(".jbaraDummyMRRTAEndDateInput").val(selToDate);
+
+            if(!JBARAisDate(selFrmDate, dateTimeFormatByUserLocale.DateFormat) || !JBARAisDate(selToDate, dateTimeFormatByUserLocale.DateFormat)) {
+                if(!JBARAisDate(selFrmDate, dateTimeFormatByUserLocale.DateFormat) && !JBARAisDate(selToDate, dateTimeFormatByUserLocale.DateFormat)) {
+                    alert("From and To dates are invalid.");
+                }
+                else if(!JBARAisDate(selFrmDate, dateTimeFormatByUserLocale.DateFormat)) {
+                    alert("Invalid From date.");
+                }
+                else {
+                    alert("Invalid to date.");
+                }
+                return false;
+            }
+            else {
+                selFrmDate = JBARAformatDate(new Date(JBARA_getDateFromFormat(selFrmDate, dateTimeFormatByUserLocale.DateFormat)), 'M/d/yyyy');
+                selToDate = JBARAformatDate(new Date(JBARA_getDateFromFormat(selToDate, dateTimeFormatByUserLocale.DateFormat)), 'M/d/yyyy');
+                var numberOfDaysInSelectedPeriod = dummyJBDaysBetweenTwoDates(selFrmDate, selToDate);
+                if(numberOfDaysInSelectedPeriod <= 0) {
+                    alert("From date is less than the To date. Please enter a valid From and/or To dates.");
+                    return false;
+                }
+                else if((numberOfDaysInSelectedPeriod > 732) && (j$.trim(j$(".jbaraDummySummerizedOptionSelectControl").val()) == 'byMonth') ) {
+                    alert("Month level reports cannot be run for more than two years at a time.\nPlease revise the time periods selected.");
+                    return false;
+                }
+                else if((numberOfDaysInSelectedPeriod > 1098) && (j$.trim(j$(".jbaraDummySummerizedOptionSelectControl").val()) == 'byQuarter') ) {
+                    alert("Quarter level reports cannot be run for more than three years at a time.\nPlease revise the time periods selected.");
+                    return false;
+                }
+                else if((numberOfDaysInSelectedPeriod > 1464) && (j$.trim(j$(".jbaraDummySummerizedOptionSelectControl").val()) == 'byYear') ) {
+                    alert("Year level reports cannot be run for more than four years at a time.\nPlease revise the time periods selected.");
+                    return false;
+                }
+                else {
+                    j$(".dummyTransListByDateRangeIWithFYD, .dummyGridTitleBarAnalyticsByDateRange").hide();
+                    //To hide the time frame.
+                    j$(".dummyMRRTADateSelectionOptionsFilters").hide();
+                    j$("#Transacations-Analytics .datePicker").hide(); //To hide the date picker.
+
+                    j$("#IdTorenderMRRScatterChart, #transactionsContainerList, #containerMRRByMonthTableList").html('');
+                    j$("#MRRTrendAnalyticsNSummary_Section").hide();
+                    j$(".MrrTrendAjaxLoadingButton").show();
+                    j$(".NOCustomFYEnabled").hide();
+
+                    //To build the Server side filter details for User state
+                    populateTimeFrameStateDetails(selFrmDate, selToDate, j$("#jBTFDateRangeSelection").val(), j$(".jbaraDummyTFDateFieldSelectControl").val(),
+                                        j$(".jbaraDummySummerizedOptionSelectControl").val(), j$(".MRRTrendChartFilterOptionsSelectCtrl").val());
+
+                    reRenderMrrTrendAnalyticsUsingTrans();
+
+                }
+
+            }
+        }
+
+        /**
+        *This function assigns the Fiscal year details based on the booking date or Subscription start date.
+        */
+        function buildTransactionGridWithFiscalYearDetails() {
+            var listOfTransactionsData = new Array();
+            var dummyTraillingPeriods = new Array();
+            var transPropertiesClassObj;
+
+
+            for(var l = 0; l < transactionsListByDateRange.length; l++) {
+                dummyTraillingPeriods = j$.grep(selectedPeriodsList, function(dt) {
+                                            return ((j$(".jbaraDummyMRRTAFilterDateSelectControl").val() == "Date__c") ?
+                                                        ( ((new Date(dt.S_D)) <= (new Date((transactionsListByDateRange[l].td).replace(/-/g, '/')))) &&
+                                                            ((new Date(dt.E_D)) >= (new Date((transactionsListByDateRange[l].td).replace(/-/g, '/')))) ) :
+                                                        ( ((new Date(dt.S_D)) <= (new Date((transactionsListByDateRange[l].sd).replace(/-/g, '/')))) &&
+                                                            ((new Date(dt.E_D)) >= (new Date((transactionsListByDateRange[l].sd).replace(/-/g, '/')))) ) );
+                                        });
+
+                transPropertiesClassObj = new transPropertiesClass({
+                    Customer_link: ('<a href=\'CustomerSuccess360?cid='+ transactionsListByDateRange[l].aid +'\' target=\'_top\'>'+ transactionsListByDateRange[l].cn +'</a>'),
+                    CustomerName_c : (transactionsListByDateRange[l].cn != null) ? transactionsListByDateRange[l].cn : '',
+                    Term_c: ((transactionsListByDateRange[l].trm != null) ? transactionsListByDateRange[l].trm : 0),
+                    Subscription_Start_Date_c: ((transactionsListByDateRange[l].sd != null) ? transactionsListByDateRange[l].sd : ''),
+                    Subscription_End_Date_c: ((transactionsListByDateRange[l].ed != null) ? transactionsListByDateRange[l].ed : ''),
+                    ASV_c: ((transactionsListByDateRange[l].asv != null) ? transactionsListByDateRange[l].asv : 0),
+                    MRR_c: ((transactionsListByDateRange[l].mrr != null) ? transactionsListByDateRange[l].mrr : 0),
+                    Users_c:((transactionsListByDateRange[l].urs != null) ? transactionsListByDateRange[l].urs : 0),
+                    ASVTotal_c: ((transactionsListByDateRange[l].asvTot != null) ? transactionsListByDateRange[l].asvTot : 0),
+                    MRRTotal_c: ((transactionsListByDateRange[l].mrrTot != null) ? transactionsListByDateRange[l].mrrTot : 0),
+                    UsersTotal_c:((transactionsListByDateRange[l].ursTot != null) ? transactionsListByDateRange[l].ursTot : 0),
+                    OneTimeRevenue_c: ((transactionsListByDateRange[l].otr!= null) ? transactionsListByDateRange[l].otr: 0),
+                    Date_c: ((transactionsListByDateRange[l].td != null) ? transactionsListByDateRange[l].td : ''),
+                    NextRenewalDate_c: ((transactionsListByDateRange[l].nrd != null) ? transactionsListByDateRange[l].nrd : ''),
+
+                    OrderType_r: ((transactionsListByDateRange[l].ort != null) ? transactionsListByDateRange[l].ort : ''),
+                    OrderTypeSys_Name: ((transactionsListByDateRange[l].orsn != null) ? transactionsListByDateRange[l].orsn : ''),
+                    ChurnReason_r_name: ((transactionsListByDateRange[l].cr != null) ? transactionsListByDateRange[l].cr : ''),
+                    Comment_c : '',
+                    LastModifiedBy_Name: ((transactionsListByDateRange[l].lmn != null) ? transactionsListByDateRange[l].lmn : ''),
+                    Fiscal_Year: dummyTraillingPeriods[0].F_Y,
+                    Fiscal_Quarter: dummyTraillingPeriods[0].F_Q,
+                    Fiscal_Month: dummyTraillingPeriods[0].F_M
+                });
+                listOfTransactionsData.push(transPropertiesClassObj);
+            }
+
+            buildTransactionsGrid(listOfTransactionsData, 'transactionsContainerList');
+            j$(".AjaxLoadingButtonForShowTransList").hide();
+            j$(".dummyTransListByDateRangeIWithFYD").show();
+
+        }
+
+        /**
+        *Javascript Object to store the transaction properties.
+        */
+        function transPropertiesClass(data)  {
+            this.Customer_link                      = data.Customer_link;
+            this.CustomerName_c                     = data.CustomerName_c;
+            this.Term_c                             = data.Term_c;
+            this.Subscription_Start_Date_c          = data.Subscription_Start_Date_c;
+            this.Subscription_End_Date_c            = data.Subscription_End_Date_c;
+            this.Users_c                            = data.Users_c;
+            this.ASV_c                              = data.ASV_c;
+            this.MRR_c                              = data.MRR_c;
+            this.UsersTotal_c                       = data.UsersTotal_c;
+            this.ASVTotal_c                         = data.ASVTotal_c;
+            this.MRRTotal_c                         = data.MRRTotal_c;
+            this.OneTimeRevenue_c                   = data.OneTimeRevenue_c;
+            this.Date_c                             = data.Date_c;
+            this.NextRenewalDate_c                  = data.NextRenewalDate_c;
+            this.OrderType_r                        = data.OrderType_r;
+            this.OrderTypeSys_Name                  = data.OrderTypeSys_Name;
+            this.ChurnReason_r_name                 = data.ChurnReason_r_name;
+            this.Comment_c                          = data.Comment_c;
+            this.LastModifiedBy_Name                = data.LastModifiedBy_Name;
+            this.Fiscal_Year                        = data.Fiscal_Year;
+            this.Fiscal_Quarter                     = data.Fiscal_Quarter;
+            this.Fiscal_Month                       = data.Fiscal_Month;
+        }
+
+         /**
+        *This function builds the transaction list grid by date range and booking type.
+        */
+        function buildTransactionsGrid(data, gridContainerId) {
+            //var screenWidth = screen.width - 95.5;
+            var screenWidth = screen.width - 64.5;
+            var arrCols = getTransactionGridColumnsWithFYDetails();
+            var listData = data;
+            var gridParam = {
+                    'Id': ''+gridContainerId+'_Id',
+                    'colnames': arrCols[0],
+                    'colmodel': arrCols[1],
+                    'data': listData,
+                    'pagerId': 'plist_'+gridContainerId+'',
+                    'sort': {
+                        'name': arrCols[2].name,
+                        'order': arrCols[2].order
+                    },
+                    'width': screenWidth,
+                    'height': 250,
+                    'footerrow':true,
+                    'sumColumns':['Customer_link','ASV_c','MRR_c','OneTimeRevenue_c','Users_c'],
+                     'userLocaleDateFormatMap' : userLocaleDateFormatMap
+                }
+            buildjqGrid(gridContainerId, gridParam);
+            j$(".ui-pg-div").hide();
+            j$(".ui-jqgrid tr.ui-row-ltr td").css({
+                "overflow": "hidden",
+                "white-space": "nowrap"
+            });
+
+            j$("#gbox_"+gridContainerId+"_Id").removeClass("ui-corner-all").addClass("ui-corner-bottom");
+        }
+
+        /**
+        *This function builds the column model to render transactions list grid.
+        */
+        function getTransactionGridColumnsWithFYDetails() {
+            var colArray=new Array();
+            var  colNames,colModel;
+            colNames=['Customer', 'Booking Type', 'Booking Date', 'Sub Start Date', 'Sub End Date', '{!JSENCODE(customLabelsMap['RenewalDate'])}', 'Term', '{!JSENCODE(customLabelsMap['ASV'])}', '{!JSENCODE(customLabelsMap['MRR'])}', '{!JSENCODE(customLabelsMap['Users'])}', '{!JSENCODE(customLabelsMap['OneTime'])}', '{!JSENCODE(customLabelsMap['ASV'])} &delta;', '{!JSENCODE(customLabelsMap['MRR'])} &delta;', '{!JSENCODE(customLabelsMap['Users'])} &delta;', (''+raTransOrderTypeNameBySysName['Churn']+' Reason'), 'Month', 'FQ', 'FY', 'Modified By'];
+            colModel=[
+                      {name:'Customer_link',index:'Customer_link', width:150,searchoptions :{sopt:['cn']}},
+                      {name:'OrderType_r',index:'OrderType_r', width:140,searchoptions :{sopt:['cn']}},
+                      {name:'Date_c', width:110,sorttype:'date',formatter:'date',"datefmt":"ISO8601Long",
+                            formatoptions:{srcformat: "ISO8601Long", newformat: jqGridDateFormat}},
+                      {name:'Subscription_Start_Date_c', width:110,sorttype:'date',formatter:'date',"datefmt":"ISO8601Long",
+                            formatoptions:{srcformat: "ISO8601Long", newformat: jqGridDateFormat}},
+                      {name:'Subscription_End_Date_c', width:110,sorttype:'date',formatter:'date',"datefmt":"ISO8601Long",
+                            formatoptions:{srcformat: "ISO8601Long", newformat: jqGridDateFormat}},
+                      {name:'NextRenewalDate_c', width:110,sorttype:'date',formatter:'date',"datefmt":"ISO8601Long",
+                            formatoptions:{srcformat: "ISO8601Long", newformat: jqGridDateFormat}},
+                      {name:'Term_c',index:'Term_c', width:70,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                              decimalPlaces: 0}},
+
+                      {name:'ASVTotal_c',index:'ASVTotal_c', width:110,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                             thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                      {name:'MRRTotal_c',index:'MRRTotal_c', width:100,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                             thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                      {name:'UsersTotal_c',index:'UsersTotal_c',align:'right',sorttype:'number',width:80,searchoptions :{sopt:['cn']}},
+                      {name:'OneTimeRevenue_c',index:'OneTimeRevenue_c', width:100,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                             thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+
+                      {name:'ASV_c',index:'ASV_c', width:120,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                             thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                      {name:'MRR_c',index:'MRR_c', width:110,align:'right',sorttype:'float',formatter:'currency',formatoptions:{
+                             thousandsSeparator: ",", decimalPlaces: 0, prefix: currencyConfigObject.symbol+" "}},
+                      {name:'Users_c',index:'Users_c',align:'right',sorttype:'number',width:80,searchoptions :{sopt:['cn']}},
+                      {name:'ChurnReason_r_name',index:'ChurnReason_r_name', width:150,searchoptions :{sopt:['cn']}, hidden:true},
+                      {name:'Fiscal_Month',index:'Fiscal_Month', width:100, searchoptions :{sopt:['cn']}},
+                      {name:'Fiscal_Quarter',index:'Fiscal_Quarter', width:100, searchoptions :{sopt:['cn']}},
+                      {name:'Fiscal_Year',index:'Fiscal_Year', align:'right', sorttype:'number', width:70, searchoptions :{sopt:['cn']}},
+                      {name:'LastModifiedBy_Name',hidden:true,index:'LastModifiedBy_Name', width:90,searchoptions :{sopt:['cn']}}
+            ];
+            sort={'name':'Date_c','order':'desc'};
+            colArray.push(colNames);
+            colArray.push(colModel);
+            colArray.push(sort);
+            return colArray;
+        }
+
+        /**
+        *Function to export transactions list grid data.
+        */
+        function transactionAnalyticsExportClicked() {
+            j$(".DateToExport").val(getExportDataString("transactionsContainerList_Id", j$("span.dummyTransListTitleByDateRangeIWithFYD ").text()));
+            bringToExportPage();
+        }
+
+         /**
+        *Function to export MRR Summary data.
+        */
+        function MRRCompositionExportClicked() {
+            var rpsTitle = "Revenue Performance Summary: <br />"+j$("span.TitleForRPS").text()+"";
+            var dummyHtmlExportString = '';
+            dummyHtmlExportString += getMRRNASVExportDataString("containerMRRByMonthTableList_Id", rpsTitle, 'dummyHiddenCellValue');
+            dummyHtmlExportString += getMRRNASVExportDataString("containerASVByMonthTableList_Id", "", 'dummyHiddenCellValue');
+            dummyHtmlExportString += getMRRNASVExportDataString("containerCustomersByMonthTableList_Id", "");
+            dummyHtmlExportString += getMRRNASVExportDataString("containerUsersByMonthTableList_Id", "");
+            j$(".DateToExport").val(dummyHtmlExportString);
+            bringToExportPage();
+        }
+
+        /**
+        *This function returns the data string to Export.
+        *@param "objGridId" represents the Id  of the jQgrid that you are going to Export.
+        *@param "gridTitle" represents the title of the jQgrid that you are going to Export.
+        */
+        function getMRRNASVExportDataString(objGridId, gridTitle, classToGetVal) {
+            var _exportHeader = j$("#gbox_" + objGridId).find(".ui-jqgrid-htable").clone();
+            _exportHeader = "<table><tr>"+ j$(_exportHeader).find("thead tr:first").html()+ "</tr></table>";
+            _exportHeader = j$(sanitizeHtml(_exportHeader));
+
+            var strStyle;
+            j$(_exportHeader).find("tr th").each(function() {
+            if(j$(this).attr("style")!=undefined)
+            {
+                strStyle=j$(this).attr("style");
+                if(strStyle.toLowerCase().search('display: none')>-1 || strStyle.toLowerCase().search('display:none')>-1)
+                    j$(this).addClass("removeThisColumn");
+            }
+            });
+            //To remove the multiselect checkbox.
+            j$(_exportHeader).find("tr th input:checkbox").parent().parent().addClass("removeThisColumn");
+
+            var _exportBody = j$("#" + objGridId).clone();
+            _exportBody = j$(_exportBody);
+            j$(_exportBody).find("tbody tr:first").remove();
+            j$(_exportBody).find("tr").each(function(idx) {
+                if (idx == 0) {
+                    j$(this).find("td[hideOnExport ='true']").each(function() {
+                                j$(_exportHeader)
+                                        .find("tr th:eq("+ j$(this).index()+ ")").addClass("removeThisColumn");
+                    });
+                }
+                j$(this).find("td").each(function() {
+                    if(j$(this).attr("style")!=undefined)
+                    {
+                        strStyle=j$(this).attr("style");
+                        if(strStyle.toLowerCase().search('display: none')>-1 || strStyle.toLowerCase().search('display:none')>-1)
+                            j$(this).addClass("removeThisColumn");
+                    }
+                    if(j$(this).attr("hideOnExport")!=undefined)
+                    j$(this).addClass("removeThisColumn");
+                });
+
+                j$(this).find("td[hideOnExport ='true']").addClass("removeThisColumn");
+                //To remove the multiselect checkbox.
+                j$(this).find("td input:checkbox").parent().addClass("removeThisColumn");
+            });
+            j$(_exportHeader).find(".removeThisColumn").remove();
+            j$(_exportBody).find(".removeThisColumn").remove();
+
+            var dataTableString = "<table><tr><td colspan='6'><b>"+gridTitle+"</b><td><tr>";
+            j$(_exportHeader).find('th').each(function() {
+            dataTableString += '<td><b>'+j$.trim(j$(this).text()).replace("Term","Term(In months)").replace(""+currencyConfigObject.symbol+" in 000's", "")+'</b></td>';
+            })
+            dataTableString += "</tr>";
+            j$(_exportBody).find('tr').each(function() {
+            dataTableString += '<tr>';
+            var dummyCellVal;
+            j$(this).find('td').each(function(indx) {
+                dummyCellVal = ((classToGetVal == undefined) ? j$.trim(j$(this).text()) : ((j$(this).find("span").hasClass(""+classToGetVal+"")) ? j$.trim(j$(this).find("span."+classToGetVal+"").text()) : j$.trim(j$(this).text())) );
+                dataTableString += (indx == 0) ? '<td><b>'+dummyCellVal+'<b></td>' : '<td>'+jBaraCustomJSEncode(dummyCellVal)+'</td>';
+            });
+            dataTableString +='</tr>';
+            });
+            dataTableString += "</table>";
+            return dataTableString;
+        }
+
+
+    </script>
+    <!--
+    <div style="width: 100%;">
+        <div style='width:40%'>
+             <apex:sectionHeader title="Transactions" /><br />
+        </div>
+    </div>
+     -->
+    <apex:form >
+    <!-- Action functions to handle events . -->
+        <!-- Action function to export the data code start. -->
+        <apex:actionFunction name="bringToExportPage" action="{!goToExportPage}"/>
+        <apex:inputTextarea id="ExportDataString" value="{!exportDataString}" styleClass="DateToExport" style="display:none"/>
+        <!-- Action function to export the data code end. -->
+
+    <apex:inputText maxlength="100" value="{!dateFieldName}" styleClass="jbaraDummyMRRTAFilterDateSelectControl" style="display:none"/>
+    <apex:inputText value="{!startDate}" maxlength="10" styleClass="jbaraDummyMRRTAStartDateInput" style="display:none"/>
+    <apex:inputText value="{!endDate}" maxlength="10" styleClass="jbaraDummyMRRTAEndDateInput" style="display:none"/>
+    <apex:actionFunction name="reRenderMrrTrendAnalyticsUsingTrans"  action="{!virtualFunCall}" reRender="ReRenderMrrTrendAnalyticsUsingTransByDateRange" />
+
+    <apex:inputText maxlength="100" value="{!selOrderType}" styleClass="jbaraDummyTransListFilterBookingType" style="display:none"/>
+    <apex:inputText value="{!gStartDate}" maxlength="10" styleClass="jbaraDummyTransListStartDateInput" style="display:none"/>
+    <apex:inputText value="{!gEndDate}" maxlength="10" styleClass="jbaraDummyTransListEndDateInput" style="display:none"/>
+    <apex:actionFunction name="renderTransactionsGridBasedOnDateRangeAndType"  action="{!resetRenderTransactionListByDateRangeNTypeValue}" reRender="RenderTheTransListByDateRangeANDBookingType" />
+
+
+    <div class="TransacationsTabs" style="display: inline; width:99%; height: auto; min-height: 500px;">
+       <div id="Transacations-Analytics" style="align:center;">
+
+           <!-- Graph Containers -->
+
+                       <div class="dummyMRRCompositionGraphDetail" style='padding:10px 0px;'>
+
+                           <div class="TimeFrameSelectionWidgetForMrrAnalytics" style="margin-bottom:-14px; max-width:112px;">
+                               <div class = "dummyMRRTADateSelectionOptions ui-state-default ui-corner-top"  style="font-weight:normal; background-color:#fff !important ;">
+                                     <h2 class = "dummyRIDateSelectionHideFilterIcon gs-drop-name" style="cursor: pointer; padding: 0px 21px 0px 5px;" >Time Frame</h2>
+
+                                </div>
+                                <div class = "dummyMRRTADateSelectionOptionsFilters ui-tabs-panel ui-widget-content ui-corner-bottom" style="display:none;background-color:#fff !important;">
+                                    <table cellspacing="0" cellpadding="0" border="0"><tbody><tr>
+                                        <td>
+                                            <c:JBTimeFrame callBackFunName="populateMRRTrendAnalyticsBySelDateRange" fromLabel="From" toLabel="To"
+                                                dateFieldSelectionList="{!timeFrameDateSelectionList}"
+                                                dateRangeSelectionOptionsList="{!timeFrameDateRangeSelectionOptionsList}"
+                                                defaultDateRangeSelection="{!defaultTimeSel}"
+                                                tfSD="{!startDate}" tfED="{!endDate}" />
+                                        </td>
+                                        <td valign="top" style="padding-left:10px;"> Summarize by:<br/>
+                                            <apex:selectList value="{!summarizingBy}" size="1" StyleClass="jbaraDummySummerizedOptionSelectControl">
+                                                <apex:selectOptions value="{!SummarizedByOptionList}"/>
+                                            </apex:selectList>
+                                        </td>
+                                        <td style="padding-left:10px; vertical-align:top; padding-top:12px;" align="center">
+                                         <span class="styleCustomGo modal_footer" style="position:relative; margin-left:5px;">
+                                         <input type="button"  value="Go" class="apply-opt" onClick="funToReRenderMrrTrendAnalyticsUsingTrans()"/></span>
+                                        </td>
+                                    </tr></tbody></table>
+                                </div>
+                            </div>
+                            <span class="TrendAnalysisDetails" style="position:relative; left:120px; bottom:8px;"></span>
+                            <div style="float:right; bottom:13px; position:relative;">
+                            <select class="MRRTrendChartFilterOptionsSelectCtrl" onChange="reRenderTrendAnalyticsGraphBySelectin(this)">
+                              <option value="MRR">{!customLabelsMap['MRR']}</option>
+                              <option value="ASV">{!customLabelsMap['ASV']}</option>
+                              <option value="Users">{!customLabelsMap['Users']}</option>
+                            </select>
+                            </div>
+
+                           <div class="dummyContainerForSpace" style="clear:both;width:100%"></div>
+                           <!-- Container to render the MRR trend chart -->
+                           <div class="MrrTrendAjaxLoadingButton" align="center" style="margin:100px 0px 100px 0px">
+                                <div class="waitingHolder gainsightLoadingIcon" style="width: 74px; top: 25.8px;">
+                                    <span class="waitingDescription"></span>
+                                </div>
+                           </div>
+                           <div class="NOCustomFYEnabled" align="center" style="margin : 100px 0px 100px 0px; display : none; font-style:bold;">
+                                <b>No Fiscal Years configured in the selected date range.</b>
+                           </div>
+
+                           <div id="MRRTrendAnalyticsNSummary_Section" style="display:none;" align="center">
+                                <div id="IdTorenderMRRScatterChart" style="height:400px; margin:0 auto" align="center"></div>
+                                <br/>
+                                <div class="dummyContainerForSpace" style="clear:both;width:100%"></div>
+
+                                <!-- Container to render the transactions list grid -->
+                                <div class="dummyMRRDistribution">
+                                    <div class="AjaxLoadingButtonForShowTransList" align="center" style="margin:0px 0px 100px 0px; display:none;">
+                                        <div class="waitingHolder gainsightLoadingIcon" style="width: 74px; top: -500px;">
+                                            <span class="waitingDescription"></span>
+                                        </div>
+                                   </div>
+                                    <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top dummyTransListByDateRangeIWithFYD" style="font-size:0.9em; height:20px; display:none;padding-top: 7px;">
+                                        <span class="dummyTransListTitleByDateRangeIWithFYD dummyIEFilterDisplay" style="float:left; font-size:1.1em;"></span>
+                                   </div>
+                                    <div class="gs-moreactions-drop drillExportContainer" style="display:none;">
+                                        <div class="gs-moreopt-btn btnRevenueDrilldownExport" title="More..." ></div>
+                                         <div class="gs-moreopt-cnt gs-revenue-drillExport" style="display:none;">
+                                          <div class="gs-arowblue"></div>
+                                            <ul>
+                                                 <li><a href="#" class="gs-export-new" onclick="transactionAnalyticsExportClicked()">Export</a></li>
+
+                                            </ul>
+                                        </div>
+                                   </div>
+                                    <!-- Container to render the Graph -->
+                                    <div id="transactionsContainerList" align="center" style="clear:both;"></div>
+                                </div>
+
+                                <div class="dummyContainerForSpace" style="clear:both;width:100%"></div>
+                                <!-- Container to render the MRR Summary grid-->
+                                <div class="dummyMRRSummaryAnalysis" style='padding:4px 0px 2px 0px'>
+
+
+                                    <div class="gs-moreactions-drop">
+                                        <div class="gs-moreopt-btn btnRevenueExport"></div>
+                                         <div class="gs-moreopt-cnt gs-revenue-exportContainer" style="display:none;">
+                                          <div class="gs-arowblue"></div>
+                                            <ul>
+                                              <li><a href="#" class="gs-export-new" onclick="MRRCompositionExportClicked()">Export</a></li>
+                                            </ul>
+                                        </div>
+                                   </div>
+
+                                    <div id="containerMRRByMonthTableList" align="center" style="clear:both;"></div>
+                                    <div id="containerASVByMonthTableList" align="center"></div>
+                                    <div id="containerCustomersByMonthTableList" align="center"></div>
+                                    <div id="containerUsersByMonthTableList" align="center"></div>
+                                </div>
+                           </div>
+                       </div>
+       </div>
+
+    </div>
+    </apex:form>
+
+    <apex:outputpanel id="ReRenderMrrTrendAnalyticsUsingTransByDateRange">
+        <script type="text/javascript" language="javascript">
+            mrrTrendDataByPeriodSelection       = fakeEval('{!JSINHTMLENCODE(TransactionInformationByDateSelection)}');
+            mrrTrendDataUptoPeriodSelection     = fakeEval('{!JSINHTMLENCODE(TransactionInformationUptoDateSelection)}');
+            customerCountDataUptoPeriodSel      = fakeEval('{!JSINHTMLENCODE(NewBusinessTranactioncountByCustomer)}');
+            newBusinessTransDetailsByPeriodSel  = fakeEval('{!JSINHTMLENCODE(NewBusinessTranactioncountByCustomerNDateRange)}');
+
+            if(mrrTrendDataByPeriodSelection.length > 0) {
+                buildingTransactionMRRAnalytics();
+                j$(".NOCustomFYEnabled").hide();
+            }
+            else {
+                j$(".MrrTrendAjaxLoadingButton").hide();
+                j$(".NOCustomFYEnabled").show();
+            }
+
+
+            //To display time frame details.
+            dummyTitle = 'Showing: <span class="dummyFormatVal dummyFilteredMeasureValue" >'+j$(".MRRTrendChartFilterOptionsSelectCtrl option:selected").text()+'</span> | <span class="TitleForRPS">By <span class="dummyFormatVal">'+selDateFieldTitle+'</span> | ';
+            dummyTitle += 'Time periods: <span class="dummyFormatVal">'+selTimeFrameOption+'</span>(<span class="dummyFormatVal">'+(j$(".jbaraDummyMRRTAStartDateInput").val())+' - '+(j$(".jbaraDummyMRRTAEndDateInput").val())+'</span>)';
+            dummyTitle += ' by <span class="dummyFormatVal">'+(j$(".jbaraDummySummerizedOptionSelectControl option:selected").text())+'</span></span>';
+
+            j$(".TrendAnalysisDetails").html(sanitizeHtml(dummyTitle));
+            j$("span.dummyFormatVal").css({"font-weight": "bold"});
+
+            //To format the Zero's in MRR Summary grids.
+            var gridIdTextValue;
+            j$("#containerMRRByMonthTableList tr.ui-widget-content, #containerASVByMonthTableList tr.ui-widget-content").each(function() {
+                j$(this).find("td").each(function(indx){
+                    if(indx > 0) {
+                        if(parseFloat(j$(this).text()) == 0) {
+                            j$(this).attr('title', ' ');
+                            j$(this).text('');
+                        }
+                        else {
+                            gridIdTextValue = '<span class="dummyHiddenCellValue" style="display:none;">'+j$(this).text()+'</span><span class="dummyShowCellValue">'+( (roundNumber((parseFloat(j$(this).text().replace(/,/g, ''))/1000), 0) == 0) ? '' : thousandSeparator(roundNumber((parseFloat(j$(this).text().replace(/,/g, ''))/1000), 0),','))+'</span>';
+                            j$(this).attr('title', ''+( (roundNumber((parseFloat(j$(this).text().replace(/,/g, ''))/1000), 0) == 0) ? '' : thousandSeparator(roundNumber((parseFloat(j$(this).text().replace(/,/g, ''))/1000), 0),','))+'');
+                            j$(this).html(sanitizeHtml(gridIdTextValue));
+                        }
+                    }
+
+                });
+            });
+
+            j$("#containerCustomersByMonthTableList tr.ui-widget-content, #containerUsersByMonthTableList tr.ui-widget-content").each(function() {
+                j$(this).find("td").each(function(indx){
+                    if(indx > 0) {
+                        gridIdTextValue = (parseFloat(j$(this).text()) == 0) ? ' ' : j$(this).text();
+                        if(parseFloat(j$(this).text()) == 0) {
+                            j$(this).attr('title', '');
+                        }
+                        j$(this).html(sanitizeHtml(gridIdTextValue));
+                    }
+                });
+            });
+
+        </script>
+    </apex:outputpanel>
+
+    <apex:outputpanel id="RenderTheTransListByDateRangeANDBookingType">
+        <apex:outputPanel rendered="{!renderTransactionListByDateRangeNType}">
+        <script type="text/javascript" language="javascript">
+            transactionsListByDateRange = fakeEval('{!JSINHTMLENCODE(TransactionsListByPeriodSelection)}');
+            selectedPeriodsList         = fakeEval('{!JSINHTMLENCODE(periodDetailsList)}');
+            for(var i = 0; i < selectedPeriodsList.length; i++) {
+                selectedPeriodsList[i].S_D = JBARAformatDate(new Date(JBARA_getDateFromFormat(selectedPeriodsList[i].S_D, userLocaleDateFormatMap.DateFormat)),"M/d/yyyy");
+                selectedPeriodsList[i].E_D = JBARAformatDate(new Date(JBARA_getDateFromFormat(selectedPeriodsList[i].E_D, userLocaleDateFormatMap.DateFormat)),"M/d/yyyy");
+            }
+            buildTransactionGridWithFiscalYearDetails();
+        </script>
+        </apex:outputPanel>
+    </apex:outputpanel>
+
+</apex:page>

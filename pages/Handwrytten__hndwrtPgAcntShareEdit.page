@@ -1,0 +1,42 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Account Share Edit page
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjAccountAccess__c" extensions="Handwrytten.hndwrtClsAcntShareEdit" title="Handwrytten Account Share Edit" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:form id="theForm" >
+    	<div class="slds">
+    	<style>
+            input.btn { 
+                color:#1f1f2e; 
+                background-color:#fed; 
+                border:1px solid; 
+                border-color: #b34700 #e65c00 #e65c00 b34700; 
+            }
+        </style> 
+        
+        <apex:sectionHeader title="Handwrytten" subtitle="Share Handwrytten Account"/>
+        
+        <apex:pageBlock title="Handwrytten Account Share Edit" mode="Edit">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!saveShare}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Handwrytten Share Information" columns="2">
+                
+                <apex:outputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Handwrytten_Account__c}"/>
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__User__c}" required="true"/>
+                
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Maximum_Monthly_Budget__c}"/>
+                <apex:inputField value="{!Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Allow_Gift_Cards__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        </div>
+    </apex:form>
+    
+    
+</apex:page>

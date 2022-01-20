@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Elemento de atributos</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Elementos de atributos</value>
+    </caseValues>
+    <fields>
+        <help>Seleccione Verdadero para aplicar inmediatamente los cambios a esta opción. Utilícese con moderación para evitar la ralentización de la experiencia de los usuarios.</help>
+        <label><!-- Apply Immediately --></label>
+        <name>SBQQ__AppliedImmediately__c</name>
+        <picklistValues>
+            <masterLabel>False</masterLabel>
+            <translation>Falso</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>True</masterLabel>
+            <translation>Verdadero</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Seleccione Verdadero para aplicar la selección de atributos de configuración a opciones de productos.</help>
+        <label><!-- Apply To Product Options --></label>
+        <name>SBQQ__ApplyToProductOptions__c</name>
+        <picklistValues>
+            <masterLabel>False</masterLabel>
+            <translation>Falso</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>True</masterLabel>
+            <translation>Verdadero</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Attribute Set --></label>
+        <name>SBQQ__AttributeSet__c</name>
+        <relationshipLabel><!-- Attribute Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>La configuración global a la que pertenece este atributo de producto.</help>
+        <label><!-- Configuration Attribute --></label>
+        <lookupFilter>
+            <errorMessage><!-- The related configuration attribute must be global --></errorMessage>
+        </lookupFilter>
+        <name>SBQQ__Attribute__c</name>
+        <relationshipLabel><!-- Attribute Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Establezca el valor de este atributo cuando se agregue un producto desde una función dinámica empleando el valor del campo coincidente del producto.</help>
+        <label><!-- Auto-Select --></label>
+        <name>SBQQ__AutoSelect__c</name>
+        <picklistValues>
+            <masterLabel>False</masterLabel>
+            <translation>Falso</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>True</masterLabel>
+            <translation>Verdadero</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Las columnas constan de una lista de selección (de 1, 2 o 3) para cada atributo de configuración. Se permite un máximo de 3 columnas.</help>
+        <label><!-- Column Order --></label>
+        <name>SBQQ__ColumnOrder__c</name>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation>1</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2</masterLabel>
+            <translation>2</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation>3</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Si no hay orden de visualización asociado con un atributo de configuración, el orden viene determinado por el nombre del contenido relacionado.</help>
+        <label><!-- Row Order --></label>
+        <name>SBQQ__DisplayOrder__c</name>
+    </fields>
+    <fields>
+        <help>Especifique la función en el que se debe ingresar este atributo.</help>
+        <label><!-- Feature --></label>
+        <name>SBQQ__Feature__c</name>
+        <relationshipLabel><!-- Attribute Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Ingrese valores desde el campo de lista de selección correspondiente en el objeto Opción de producto que desee que se oculte en este paquete.</help>
+        <label><!-- Hidden Values --></label>
+        <name>SBQQ__HiddenValues__c</name>
+    </fields>
+    <fields>
+        <help>Si está marcado como oculto, el atributo de configuración no aparecerá en la página del configurador de productos.</help>
+        <label><!-- Hidden --></label>
+        <name>SBQQ__Hidden__c</name>
+        <picklistValues>
+            <masterLabel>False</masterLabel>
+            <translation>Falso</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>True</masterLabel>
+            <translation>Verdadero</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Especifique la opción de producto en la que se debe ingresar este atributo.</help>
+        <label><!-- Option --></label>
+        <name>SBQQ__Option__c</name>
+        <relationshipLabel><!-- Attribute Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Especifique la posición de este atributo. Superior aparece por encima de las opciones. Inferior lo hace por debajo.</help>
+        <label><!-- Position --></label>
+        <name>SBQQ__Position__c</name>
+        <picklistValues>
+            <masterLabel>Bottom</masterLabel>
+            <translation>Inferior</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Top</masterLabel>
+            <translation>Superior</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Especifique el producto en el que está creando el atributo.</help>
+        <label><!-- Product --></label>
+        <name>SBQQ__Product__c</name>
+        <relationshipLabel><!-- Attribute Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Especifique si este atributo requiere un valor.</help>
+        <label><!-- Required --></label>
+        <name>SBQQ__Required__c</name>
+        <picklistValues>
+            <masterLabel>False</masterLabel>
+            <translation>Falso</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>True</masterLabel>
+            <translation>Verdadero</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Sequence --></label>
+        <name>SBQQ__Sequence__c</name>
+    </fields>
+    <fields>
+        <help>Ingrese valores desde el campo de lista de selección correspondiente en el objeto Opción de producto que desee que se muestre en este paquete.</help>
+        <label><!-- Shown Values --></label>
+        <name>SBQQ__ShownValues__c</name>
+    </fields>
+    <fields>
+        <label><!-- Target Field --></label>
+        <name>SBQQ__TargetField__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Product Attribute Layout</layout>
+        <sections>
+            <label>Vínculos personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Número de artículo</nameFieldLabel>
+</CustomObjectTranslation>

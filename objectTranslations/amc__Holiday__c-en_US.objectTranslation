@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies whether this holiday / absence has been approved --></help>
+        <label><!-- Approval Status --></label>
+        <name>amc__Approval_Status__c</name>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending</masterLabel>
+            <translation><!-- Pending --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected</masterLabel>
+            <translation><!-- Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Submitted</masterLabel>
+            <translation><!-- Submitted --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the Current User Is the User required to approve this holiday --></help>
+        <label><!-- Approver Current User --></label>
+        <name>amc__Approver_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the person responsible for approving this Holiday (The Role&apos;s Timesheet Approver) --></help>
+        <label><!-- Approver --></label>
+        <name>amc__Approver__c</name>
+    </fields>
+    <fields>
+        <help><!-- Specify the number of days taken (working days only) --></help>
+        <label><!-- Days Taken --></label>
+        <name>amc__Days_Taken__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>amc__End_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Time --></label>
+        <name>amc__End_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Frequency --></label>
+        <name>amc__Frequency__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Holiday Allowance record this Holiday relates to --></help>
+        <label><!-- Holiday Allowance --></label>
+        <name>amc__Holiday_Allowance__c</name>
+        <relationshipLabel><!-- Holidays --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the total number of hours taken during this holiday / absence --></help>
+        <label><!-- Hours Taken --></label>
+        <name>amc__Hours_Taken__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Recurring --></label>
+        <name>amc__Is_Recurring__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number of Recurrences --></label>
+        <name>amc__Number_of_Recurrences__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the reason this holiday / absence was rejected --></help>
+        <label><!-- Rejection Comments --></label>
+        <name>amc__Rejection_Comments__c</name>
+    </fields>
+    <fields>
+        <label><!-- Role --></label>
+        <name>amc__Role__c</name>
+        <relationshipLabel><!-- Holidays --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>amc__Start_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Time --></label>
+        <name>amc__Start_Time__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the type of holiday / absence --></help>
+        <label><!-- Type --></label>
+        <name>amc__Type__c</name>
+        <picklistValues>
+            <masterLabel>Annual Leave</masterLabel>
+            <translation><!-- Annual Leave --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Maternity Leave</masterLabel>
+            <translation><!-- Maternity Leave --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paternity Leave</masterLabel>
+            <translation><!-- Paternity Leave --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Public Holiday</masterLabel>
+            <translation><!-- Public Holiday --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sick Leave</masterLabel>
+            <translation><!-- Sick Leave --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Study Leave</masterLabel>
+            <translation><!-- Study Leave --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Time Off in Lieu</masterLabel>
+            <translation><!-- Time Off in Lieu --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>Holiday Layout</layout>
+        <sections>
+            <label><!-- Approval Status --></label>
+            <section>Approval Status</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You cannot approve your own holiday requests --></errorMessage>
+        <name>amc__Cannot_Approve_Own_Holidays</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The Holiday Allowance does not have sufficient days remaining for the numbrer of days you&apos;re requesting --></errorMessage>
+        <name>amc__Ensure_HA_Remaining_Sufficient</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must select a Holiday Allowance for this Holiday --></errorMessage>
+        <name>amc__Ensure_Holiday_Allowance_Specified</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must set the Recurring Frequency --></errorMessage>
+        <name>amc__Recurring_Validation_Frequency</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must set the Number of Recurrences --></errorMessage>
+        <name>amc__Recurring_Validation_Number</name>
+    </validationRules>
+</CustomObjectTranslation>

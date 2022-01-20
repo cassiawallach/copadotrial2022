@@ -1,0 +1,387 @@
+<apex:page tabStyle="administration__tab" sidebar="false" Controller="JBCXM.OpportunityMap" extensions="JBCXM.GSCommonBroker">
+
+	<!-- Static Resource Includes: Jquery and css files  -->
+   
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/backbone-min.js"/>
+	<script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+	<apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/appStyles/main.css" />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/core/gsAppContainer.css" />
+	<!-- <apex:sectionHeader title="JBara Opportunity - Transactions Settings" />
+	<a href="/apex/Administration?sfdc.tabName={!JSENCODE($CurrentPage.parameters.tabId)}#Administration-Opportunity" style="text-decoration:none;">&nbsp;«&nbsp;Back</a>
+	 -->
+	<style>
+	
+		select option,select optgroup {
+			border-right: none;
+			font-size: 100%;
+		}		
+		.rounded-corner {
+		    background-color: #FFFFFF;
+		    border: 1px solid #D4DADC;
+		}
+		.rounded-corner tr{
+		    background-color: #FFFFFF;
+		    border: 0;
+		    border-bottom: 1px solid #d3d6d9;
+		    font-size: 14px;
+		}
+		.btn:hover{
+          opacity: 0.7;
+          border-radius: 3px;
+      }
+      .btn.btnCancelClick{
+          background-color: #fff !important;
+          border: 1px solid #d3d6d9 !important;
+          color: #374353 !important;
+       }
+       .btn, .btnDisabled {
+          display: inline-block;
+          line-height: 18px;
+          cursor: pointer;
+          background: #00b4e5 !important;
+          padding: 6px 15px !important;
+          color: #fff !important;
+          font-weight: normal !important;
+          text-transform: uppercase !important;
+          border: 0 !important;
+          height: 30px !important;
+          font: 15px "Proxima Nova Rg",sans-serif !important;
+      }
+       body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock{
+           background-color: #FFF;
+           border-radius: 3px;
+           border: 0;
+           padding-bottom:7px;
+     }
+     .bPageBlock .detailList tr td, .bPageBlock .detailList tr th,
+     .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+         border-bottom:none;
+     }
+     .tdlabel{
+         min-width:380px;
+         max-width:380px;
+     }
+     .tdDescription{
+         min-width:300px;
+         max-width:300px;
+         position:fixed;
+     }
+     .apexp{margin: 20px !important;}
+     .apexp .bPageBlock .detailList {
+         width: 100%;
+     }
+     .apexp .bPageBlock .detailList td{
+         height:10px;
+     }
+     #gs-app-container .gs-module-container{
+         background-color: #f0f3f6;
+     }
+     .ui-tabs .ui-tabs-panel{
+         padding-left:3em;
+         background-color: #f0f3f6;
+     }
+     .bPageBlock.brandSecondaryBrd{
+            border:0 !important;
+            background: #fff;
+      }
+     .pbHeader{
+          background: #f0f3f6 !important;
+          border:none !important;
+      }
+      .pbHeader table{
+          border: none !important;
+      }
+      .pbBody{
+          margin: 0 !Important;
+      }
+      .pbBody table{
+          border: none !important;
+      }
+      .pbBody table th{
+          height: 40px;
+          background-color: #fff !important;
+          border:0 !Important;
+          border-bottom: 2px solid #d3d6d9 !important;
+          font-size: 15px !important;
+          padding: 0 10px !important;
+      }
+      .pbBody table tbody tr{
+          height: 30px;
+      }
+       .pbBody td{
+		padding: 3px 10px !important;
+       }
+		.pbBody table th.labelCol.vfLabelColTextWrap{
+          border-bottom: 0 !important;
+          font-size: 14px !important;
+          font-weight:normal !important;
+          font-family: "Proxima Nova Semibold";
+		}
+		.pbBottomButtons table tr td:first-child{
+         display: none;
+		}
+		.btn.btnCancelClick{
+          background-color: #fff !important;
+          border: 1px solid #d3d6d9 !important;
+          color: #374353 !important;
+        }
+        select {
+            height: 25px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #d3d6d9;
+            border-radius: 0;
+            outline: none;
+            font-weight:normal;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            width: auto;
+            color: #374353;
+       }
+       .bPageBlock .buttons{
+			padding: 7px 20px 0 !important;
+       }
+       td.pbTitle {
+			padding: 10px 0 10px 10px !important;
+       }
+	</style>
+
+
+	<script>
+		var j$ = $.noConflict();
+        window.jLatest = j$;
+        var GS = GS || {};
+
+        GS.userConfig = {
+            userLocale  : {!(dateTimeFormatByLocale)},
+            userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+            isLightningEnabled: {!(isLightningEnabled)}
+        };
+        GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.remotingEndPoint           = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+
+        function generateOverayForm(){
+         	var overLayHeight = j$(document).height();
+            var overLayWidth = j$(window).width()
+            j$(".jbaraDummyOverLayForm").css({
+                'z-index': '4999',
+                'left': 0,
+                'position': 'fixed',
+                'width': overLayWidth,
+                'height': overLayHeight + 350,
+
+            }).show();            
+         }
+               
+        function cancelClick(){
+	       	window.top.location.href='/apex/Administration#Administration-Opportunity';
+	    }
+	    function jbaraAfterSaveAdminOppConnectorClick(){
+			window.top.location.href='/apex/Administration#Administration-Opportunity';
+		}
+	    
+	    //This function is to build header and line items for opportunity select items.
+	    function buildTableForHeaderAndLineItems(headerlineItems,classToAppend){
+	    	var tableHtml ='';
+			var optHtml = '<option value="">Select Field Name</option>';
+			var fieldListJSON = fakeEval('{!JSINHTMLENCODE(OpportunityFieldsForEdit)}');
+			for(var i = 0; i < fieldListJSON.length; i++) {
+				if(fieldListJSON[i] != "Id") {
+	        		optHtml += '<option value="'+escapeHTML(sanitizeHtml(fieldListJSON[i]))+'">'+sanitizeHtml(fieldListJSON[i])+'</option>';
+	        	}
+	        }	
+	        
+	        j$("."+classToAppend).html("");
+	        
+	        for(var i = 0; i < headerlineItems.length; i++) {
+	           	tableHtml = '<tr><td style="width:39%;">';
+	        	tableHtml += escapeHTML(sanitizeHtml(headerlineItems[i].jBaraFieldLabel));
+	        	tableHtml += '<input type="hidden" class="headerFieldName" value="'+headerlineItems[i].jBaraField+'"/>';
+	        	tableHtml += '</td><td>';
+	        	tableHtml += '<select class="existingHeaderAndLineFields '+ i +'">'+sanitizeHtml(optHtml)+'</select>';
+	        	tableHtml += '</td></tr>';
+	        	j$("."+classToAppend).append(tableHtml);
+	        	if(headerlineItems[i].opportunityField != ''){
+	        		j$("."+i).val(sanitizeHtml(headerlineItems[i].opportunityField));
+	        	}
+	        }
+	        //makes button disabled
+	        j$(".dummyOppSettingsBtn").removeAttr("disabled");
+		    j$(".dummyOppSettingsBtn").removeClass("btnDisabled").addClass("btn");
+	    }
+	</script>
+
+	<div id="gs-app-container">
+		<!-- Header Items Container Starts Here  rendered="{!IF($CurrentPage.parameters.showPnl == '',true,false)}"-->
+		<div class="gs-module-container">
+	<apex:form >
+		<apex:pageBlock title="Transactions Settings - Gainsight Header Field" id="JBaraHeaderFieldIdBlock" rendered="{!IF($CurrentPage.parameters.showPnl == '',true,false)}">
+
+			<apex:outputPanel id="panelNewAdminJBaraHeaderFieldForm">
+				<div class="" style="">
+
+					<div class="middle" style="min-width: 680px; min-height: 280px;">
+						<div id="InlineEditDialogContent" class="innerContent">
+							<div class="activeField">
+								<div class="inlineEditCompoundDiv">
+									<apex:pageMessages id="jbaraAdminJBaraHeaderItemsErrorMessages" />
+										<table cellspacing="0" cellpadding="0" border="0" class="list ">
+										    <colgroup span="2"></colgroup>
+										    <thead class="rich-table-thead">
+										        <tr class="headerRow ">
+										            <th colspan="1" scope="col" class="headerRow  " style="width:39%;">
+										                <div>Gainsight Field</div>
+										            </th>
+										            <th colspan="1"  scope="col" class="headerRow  ">
+										                <div >Opportunity Field</div>
+										            </th>
+										        </tr>
+										    </thead>
+	                               	</table>
+									<table class="rounded-corner jBaraHeaderFields" width="100%">
+									</table>
+
+								</div>
+							</div>
+							<div style="display: none;"></div>
+							<div class="buttons" id="InlineEditDialog_buttons">
+								<input type="button" onclick="generateOverayForm();saveAdminJBaraHeaderTypes()" value="Save" class="btn dummyAllAdminJBaraHeaderSaveBtn dummyOppSettingsBtn" />
+								<input type="button" onclick="cancelClick()" value="Cancel" class="btn btnCancelClick" />
+								<apex:actionFunction name="actionSaveAdminHeaderFieldNames" action="{!saveExistingOrderHeaderFieldItem}"
+									reRender="jsPanelJBaraHeaderType, JBaraHeaderFieldIdBlock" oncomplete="return jbaraAfterSaveAdminOppConnectorClick();">
+								<apex:param name="opportunityFieldMapType"	value="JBara Header Field" />
+								</apex:actionFunction>
+							</div>
+						</div>
+					</div>
+					<div class="bottomRight">
+						<div class="bottomLeft"></div>
+					</div>
+				</div>
+			</apex:outputPanel>
+		</apex:pageBlock>
+
+		<!-- Header Items Container Ends Here-->
+		<!-- Line Items Form Container Starts Here rendered="{!IF($CurrentPage.parameters.showPnl != '',true,false)}"-->
+		<apex:pageBlock title="Transactions Settings - Gainsight Line Item" id="JBaraLineItemIdBlock" rendered="{!IF($CurrentPage.parameters.showPnl != '',true,false)}">
+			<apex:outputPanel id="panelNewAdminLineItemForm">
+				<div class="" style="">
+					<div class="middle" style="min-width: 680px; min-height: 280px;">
+						<div id="InlineEditDialogContent" class="innerContent">
+							<div class="activeField">
+								<div class="inlineEditCompoundDiv">
+									<apex:pageMessages id="jbaraAdminLineItemsErrorMessages" />
+									<table cellspacing="0" cellpadding="0" border="0" class="list ">
+								    	<colgroup span="2"></colgroup>
+									    <thead class="rich-table-thead">
+									        <tr class="headerRow ">
+									            <th colspan="1" scope="col" class="headerRow  " style="width:39%;">
+									                <div>Gainsight Field</div>
+									            </th>
+									            <th colspan="1"  scope="col" class="headerRow  ">
+									                <div >Opportunity Field</div>
+									            </th>
+									        </tr>
+									    </thead>
+	                               	</table>
+
+									<table class="rounded-corner jBaraLineItemFields" width="100%">
+
+									</table>
+								</div>
+							</div>
+							<div style="display: none;"></div>
+							<div class="buttons" id="InlineEditDialog_buttons">
+								<input type="button" onclick="generateOverayForm();saveAdminLineItemTypes()" value="Save" class="btn dummyAllAdminLineItemSaveBtn dummyOppSettingsBtn" />
+								<input type="button" onclick="cancelClick()" value="Cancel" class="btn btnCancelClick" />
+								<apex:actionFunction name="actionSaveAdminLineItemNames" action="{!saveExistingOrderHeaderFieldItem}"
+									reRender="jsPanelLineItemType, JBaraLineItemIdBlock" oncomplete="return jbaraAfterSaveAdminOppConnectorClick();">
+								<apex:param name="opportunityFieldMapType" value="JBara Line Item" />
+								</apex:actionFunction>
+							</div>
+						</div>
+					</div>
+					<div class="bottomRight">
+						<div class="bottomLeft"></div>
+					</div>
+				</div>
+			</apex:outputPanel>
+		</apex:pageBlock>
+		<!-- Line Items Container Ends Here-->
+
+		<apex:inputTextArea value="{!existingHeaderFieldNames}" style="display: none;" styleClass="jbaraDummyHeaderFieldNames" />
+
+		<!-- Overlay Container Starts Here-->
+		<div class="overlayBackground jbaraDummyOverLayForm" style="position: absolute; display: none;"></div>
+
+		<apex:outputPanel id="jsPanelJBaraHeaderType" rendered="{!IF($CurrentPage.parameters.showPnl == '',true,false)}">
+			<script type="text/javascript">
+				j$(document).ready(function() {
+
+
+
+				    var headerListJSON = fakeEval('{!JSINHTMLENCODE(CustomOpportunityJBHeaderListJSON)}');
+					buildTableForHeaderAndLineItems(headerListJSON,'jBaraHeaderFields');
+				});
+
+				function saveAdminJBaraHeaderTypes(){
+					var headerFieldList='';
+					j$(".jBaraHeaderFields tr").each(function(idx) {
+					   headerFieldList += (idx > 0) ? '&#'+j$(this).find(".headerFieldName").val() : j$(this).find(".headerFieldName").val() ;
+					   headerFieldList += '~'+j$(this).find(".existingHeaderAndLineFields option:selected").val();
+					});
+
+					j$(".jbaraDummyHeaderFieldNames").val(sanitizeHtml(headerFieldList));
+					actionSaveAdminHeaderFieldNames();
+				}
+
+			</script>
+		</apex:outputPanel>
+
+		<apex:outputPanel id="jsPanelLineItemType" rendered="{!IF($CurrentPage.parameters.showPnl != '',true,false)}">
+			<script type="text/javascript">
+				j$(document).ready(function() {
+					var lineItemJSON = JSON.parse('{!(JSENCODE(CustomOpportunityLineItemListJSON))}');
+			       	buildTableForHeaderAndLineItems(lineItemJSON,'jBaraLineItemFields');
+			 	});
+				function saveAdminLineItemTypes(){
+				    var lineItemList='';
+			        j$(".jBaraLineItemFields tr").each(function(idx) {
+			           lineItemList += (idx > 0) ? '&#'+j$(this).find(".headerFieldName").val() : j$(this).find(".headerFieldName").val() ;
+			           lineItemList += '~'+j$(this).find(".existingHeaderAndLineFields option:selected").val();
+			        });
+				    j$(".jbaraDummyHeaderFieldNames").val(sanitizeHtml(lineItemList));
+				    actionSaveAdminLineItemNames();
+				}
+			</script>
+		</apex:outputPanel>
+	</apex:form>
+	</div>
+	</div>
+	<apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>
+
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+</apex:page>

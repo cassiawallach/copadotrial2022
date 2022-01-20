@@ -1,0 +1,341 @@
+<!--
+ - Created by eva on 7/10/17.
+ -->
+
+<apex:page id="Error_Log_Summary" controller="sixsense.Error_LogsVFC" showHeader="true" sidebar="false" readOnly="true">
+    <apex:stylesheet value="{!URLFOR($Resource.sixsense__SLDS0121, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.sixsense__jQuery, 'jquery.min.js')}" />
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <script>
+        $(function(){
+            // Prevent Cross-Frame Scripting attacks
+            if ( self == top ) {
+                document.documentElement.style.display = 'block';
+            }
+            else {
+                top.location = self.location;
+            }
+            //if (window.location !== window.top.location)
+              //  window.top.location = window.location;
+
+            $('.panel-toggle').on('click', function(){
+                $(this).toggleClass('rotate');
+                $(this).closest('.slds-card').find('.slds-card__body').slideToggle(500);
+            });
+        })
+
+         function resetButton(a,b){
+            if (!document.getElementById(a).classList.contains('button_selected') ){
+                document.getElementById(a).classList.add('button_selected');
+            }
+            if (document.getElementById(b).classList.contains('button_selected') ){
+                document.getElementById(b).classList.remove('button_selected');
+            }
+        }
+
+        function passValue(){
+            var e = document.getElementById("{!$Component.page_size}");
+            var selected_size = e.options[e.selectedIndex].value;
+            console.log("selected:"+selected_size);
+            passPageSize(selected_size);
+        }
+
+    </script>
+
+    <style>
+            .rotate {
+                -ms-transform: rotate(180deg);
+                /* IE 9 */
+                -webkit-transform: rotate(180deg);
+                /* Chrome, Safari, Opera */
+                transform: rotate(180deg);
+            }
+
+            .animate {
+                -webkit-transition-duration: .5s;
+                /* Safari */
+                transition-duration: .5s;
+            }
+
+            .slds h3 {
+                font-weight: bold;
+            }
+
+            .slds p {
+                margin-bottom: 1rem;
+            }
+
+            .slds-dropdown__item {
+                padding: .5rem;
+                text-align: left;
+            }
+
+            .slds .slds-page-header {
+                border: 1px solid #d8dde6;
+            }
+
+            .slds svg.super-special-list-item {
+                /*I dont know why we have to do this*/
+                margin-right: 8px;
+            }
+
+            .slds-button-group .slds-toggle-visibility:not([disabled]) {
+                background-color: red;
+            }
+
+            .slds button.slds-dropdown-trigger:hover {
+                color: #0070d2;
+            }
+
+            .slds input.tenREM {
+                width: 10rem;
+            }
+
+            .dropdown__item {
+            padding:0.1rem;
+            padding-left:0.5rem;
+            padding-right:0.5rem;
+        }
+        .dropdown__item:hover {
+            visibility: visible;
+        opacity: 1;
+        -webkit-transition: opacity 0.1s linear, visibility 0.1s linear;
+                transition: opacity 0.1s linear, visibility 0.1s linear;
+            color:#f4f6f9;
+        }
+
+        .dropdown_space {
+           padding-top:1rem
+        }
+        .button_right {
+           float:right;
+           margin-right:10px;
+           margin-bottom:10px;
+        }
+        .button_selected {
+            background-color:#e5e9f1 !important;
+        }
+        .button_f2 {
+            width:150px;
+            display:inline-block;
+            text-align:left;
+        }
+        </style>
+    <apex:form >
+        <!-- header-->
+        <apex:outputPanel >
+        <div class = "slds">
+        <div class = "slds-card">
+            <div class="slds-card__header slds-grid slds-wrap">
+                <div class="slds-media__figure">
+                    <svg aria-hidden="true" class="slds-icon slds-icon-action-log-a-call">
+                        <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/action-sprite/svg/symbols.svg#log_event')}"></use>
+                    </svg>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate">Error Logs</h2>
+                </div>
+                <div class="slds-no-flex">
+                    <svg aria-hidden="true" class="panel-toggle animate slds-icon slds-icon-text-default slds-icon--small">
+                        <use xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/utility-sprite/svg/symbols.svg#chevrondown')}"></use>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- error logs stats table -->
+            <apex:outputPanel layout="block" styleclass="slds-card__body">
+                <apex:outputPanel layout="none" id="error_header" >
+                    <div class = "button_right">
+                        <button class="slds-button slds-button--neutral slds-dropdown-trigger " >
+                            <apex:outputPanel id="filter_chosen" >
+                                <div class="button_f2">
+                                    <span class = "slds-icon-text-default " >{!filter2}</span>
+                                </div>
+                            </apex:outputPanel>
+                            <svg aria-hidden="true" class="slds-button__icon slds-icon-text-default" >
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.SLDS0121, 'assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                            </svg>
+                            <span class="slds-assistive-text">View More</span>
+                            <apex:outputPanel id="dropdown">
+                                <div class="slds-dropdown slds-dropdown--right slds-dropdown--small">
+                                    <ul class="dropdown__list " >
+                                        <li class="slds-dropdown__item dropdown__item dropdown_space slds-has-icon--left " aria-selected="true">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="All" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="All" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="false">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="All Syncs" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="All Syncs" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                                <!-- <apex:outputpanel onclick="resetFilter2('All Sync');return false;">All Sync</apex:outputpanel>-->
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="false">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="All Updates" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="All Updates" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Sync Account Scores" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Sync Account Scores" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Sync Contact Scores" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Sync Contact Scores" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                                <a></a>
+                                            </p>
+                                        </li>
+
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="true">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Sync Lead Scores" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Sync Lead Scores" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="true">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Sync Company Scores" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Sync Company Scores" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="true">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Sync New Companies" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Sync New Companies" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="true">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Update Accounts" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Update Accounts" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="true">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Update Contacts" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Update Contacts" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+                                        <li class="slds-dropdown__item dropdown__item slds-has-icon--left" aria-selected="true">
+                                            <p class="slds-truncate">
+                                                <apex:commandLink action="{!setfilter2}" value="Update Leads" rerender="dropdown,filter_chosen,errorLogsPnl,switch_page">
+                                                    <apex:param name="filter2" value="Update Leads" assignTo="{!filter2}"/>
+                                                </apex:commandLink>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </apex:outputPanel>
+                        </button>
+                    </div>
+                    <div class="slds-button-group slds-no-flex button_right" role="group" >
+                        <button id="b_date" class="slds-button slds-button--neutral button_selected"  onclick = "resetButton('b_date','b_job')">
+                            <apex:commandLink action="{!setFilter1}" value="Today" rerender="filter_chosen, errorLogsPnl,switch_page">
+                                <apex:param name="filter1" value="Date" assignTo="{!filter1}"/>
+                            </apex:commandLink>
+                        </button>
+
+                        <button id="b_job" class="slds-button slds-button--neutral" onclick = "resetButton('b_job','b_date')">
+                            <apex:commandLink action="{!setFilter1}" value="Latest Job" rerender="filter_chosen, errorLogsPnl,switch_page">
+                                <apex:param name="filter1" value="Job" assignTo="{!filter1}"/>
+                            </apex:commandLink>
+                        </button>
+                    </div>
+                </apex:outputPanel>
+
+                <apex:actionFunction action="{!setFilter2}" name="resetFilter2" reRender="error_header">
+                    <apex:param name="filter2" value="" />
+                </apex:actionFunction>
+                <apex:actionFunction action="{!setFilter1}" name="resetFilter1" reRender="error_logs">
+                    <apex:param name="filter1" value="" />
+                </apex:actionFunction>
+
+
+                <apex:outputPanel id="errorLogsPnl">
+                    <table class="slds-table slds-table--bordered">
+                        <thead>
+                        <tr>
+                            <th class="slds-text-heading--label slds-size--1-of-12" scope="col">Job Type</th>
+                            <th class="slds-text-heading--label slds-size--9-of-12" scope="col">Errors Seen</th>
+                            <th class="slds-text-heading--label slds-size--1-of-12" scope="col">Count</th>
+                            <th class="slds-text-heading--label slds-size--1-of-12" scope="col">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <apex:repeat value="{!errorLogs}" var="errorLog" >
+                            <tr class="slds-hint-parent">
+                                <td class="slds-size--1-of-12 slds-truncate" data-label="JobType"><apex:outputText value="{!errorLog.jobName}" /></td>
+                                <td class="slds-size--9-of-12 slds-truncate" data-label="ErrorsSeen"><apex:outputLink value="/apex/Error_Group_Detail?hashcode={!errorLog.hashcode}"><apex:outputText value="{!errorLog.ErrorMessage}" /></apex:outputLink></td>
+                                <td class="slds-size--1-of-12 slds-truncate" data-label="Count"><apex:outputText value="{!errorLog.errorCount}" /></td>
+                                <td class="slds-size--1-of-12 slds-truncate" data-label="Date"><apex:outputText value="{!errorLog.lastModifiedDate}" /></td>
+                            </tr>
+                        </apex:repeat>
+                        </tbody>
+
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </apex:outputPanel>
+            </apex:outputPanel>
+
+            <!-- pagination setting-->
+            <div class="slds-card__footer slds-grid slds-grid--pull-padded">
+                <div  class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+                    <div class="slds-grid slds-wrap slds-grid--pull-padded">
+                        <apex:outputPanel id="switch_page" styleClass="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-3">
+                            <div class="slds-button-group" role="group">
+                                <apex:commandButton styleClass="slds-button slds-button--neutral" value="|<" action="{!firstPage}" reRender="switch_page, errorLogsPnl"/>
+                                <apex:commandButton id="pre_page" styleClass="slds-button slds-button--neutral" value="<" action="{!previousPage}" reRender="switch_page, errorLogsPnl" rendered="{!hasPrevious}" />
+                                <apex:commandButton id="next_page" styleClass="slds-button slds-button--neutral" value=">" action="{!nextPage}" reRender = "switch_page, errorLogsPnl" rendered = "{!hasNext}"  />
+                                <apex:commandButton styleClass="slds-button slds-button--neutral" value=">|" action="{!lastPage}" reRender = "switch_page, errorLogsPnl" />
+                            </div>
+                        </apex:outputPanel>
+                        <div class="slds-col slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-3">
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList id="page_size" value="{!pageSize}" size="1" styleClass="slds-select">
+                                        <apex:selectOption itemValue="20" itemLabel="20 Records"/>
+                                        <apex:selectOption itemValue="50" itemLabel="50 Records"/>
+                                        <apex:selectOption itemValue="100" itemLabel="100 Records"/>
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                        </div>
+                        <div  class="slds-col slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-3">
+                            <apex:commandButton styleClass="slds-button slds-button--neutral" action="{!setPageSize}"  onclick="passValue()" reRender="switch_page, errorLogsPnl" value="Update Page Size" />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+
+                </div>
+            </div>
+            <!--function-->
+            <apex:actionFunction action="{!setPageSize}" name="passPageSize" reRender="">
+                <apex:param name="pageSize" value="" assignTo="{!pageSize}"/>
+            </apex:actionFunction>
+
+        </div>
+        </div>
+        </apex:outputPanel>
+    </apex:form>
+    </html>
+</apex:page>

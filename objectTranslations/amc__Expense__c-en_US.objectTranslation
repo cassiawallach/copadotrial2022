@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Identifies the value of the Expense Claim --></help>
+        <label><!-- Amount Claimed --></label>
+        <name>amc__Amount_Claimed__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the amount being claimed (if not mileage) --></help>
+        <label><!-- Amount --></label>
+        <name>amc__Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date the Expense was approved. --></help>
+        <label><!-- Approval Date Stamp --></label>
+        <name>amc__Approval_Date_Stamp__c</name>
+    </fields>
+    <fields>
+        <help><!-- Approval date for this Time Log --></help>
+        <label><!-- Approval Date --></label>
+        <name>amc__Approval_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the status of the Expense approval --></help>
+        <label><!-- Approval Status --></label>
+        <name>amc__Approval_Status__c</name>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending</masterLabel>
+            <translation><!-- Pending --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected</masterLabel>
+            <translation><!-- Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Submitted</masterLabel>
+            <translation><!-- Submitted --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the Current User is the User required to approve this Expense --></help>
+        <label><!-- Approver Current User --></label>
+        <name>amc__Approver_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Role responsible for approving the Expense --></help>
+        <label><!-- Approver --></label>
+        <name>amc__Approver__c</name>
+    </fields>
+    <fields>
+        <help><!-- Links to the Billing Event Item record this Expense was invoiced on --></help>
+        <label><!-- Billing Event Item --></label>
+        <name>amc__Billing_Event_Item__c</name>
+        <relationshipLabel><!-- Expenses --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Budget Item this record relates to --></help>
+        <label><!-- Budget Item --></label>
+        <name>amc__Budget_Item__c</name>
+        <relationshipLabel><!-- Expenses --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Category this Expense relates to --></help>
+        <label><!-- Category --></label>
+        <name>amc__Category__c</name>
+        <picklistValues>
+            <masterLabel>Accommodation</masterLabel>
+            <translation><!-- Accommodation --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Entertaining</masterLabel>
+            <translation><!-- Entertaining --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Equipment Fees</masterLabel>
+            <translation><!-- Equipment Fees --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Miscellaneous</masterLabel>
+            <translation><!-- Miscellaneous --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Postage</masterLabel>
+            <translation><!-- Postage --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Printing</masterLabel>
+            <translation><!-- Printing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Professional Fees</masterLabel>
+            <translation><!-- Professional Fees --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Stationery</masterLabel>
+            <translation><!-- Stationery --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Subscriptions</masterLabel>
+            <translation><!-- Subscriptions --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Training</masterLabel>
+            <translation><!-- Training --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Travel</masterLabel>
+            <translation><!-- Travel --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- If the Project currency is different from the Expense currency, this field will contain the converted value. --></help>
+        <label><!-- Converted Amount --></label>
+        <name>amc__Converted_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- If the Project currency is different from the Expense currency, this field will contain the converted value. --></help>
+        <label><!-- Converted Cost Amount --></label>
+        <name>amc__Converted_Cost_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- If the Project currency is different from the Expense currency, this field will contain the converted value. --></help>
+        <label><!-- Converted Cost Tax Amount --></label>
+        <name>amc__Converted_Cost_Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- If the Project currency is different from the Expense currency, this field will contain the converted value. --></help>
+        <label><!-- Converted Cost ex-Tax Amount --></label>
+        <name>amc__Converted_Cost_ex_Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- The currency code associated with the Converted Amount. --></help>
+        <label><!-- Converted Currency --></label>
+        <name>amc__Converted_Currency__c</name>
+    </fields>
+    <fields>
+        <label><!-- Converted Tax Amount --></label>
+        <name>amc__Converted_Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Converted ex-Tax Amount --></label>
+        <name>amc__Converted_ex_Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the cost amount being claimed (if not mileage) --></help>
+        <label><!-- Cost Amount --></label>
+        <name>amc__Cost_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the cost tax amount of the Expense --></help>
+        <label><!-- Cost Tax Amount --></label>
+        <name>amc__Cost_Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Calculates the Cost ex-Tax Amount based on &apos;Cost Amount&apos; - &apos;Cost Tax Amount&apos; --></help>
+        <label><!-- Cost ex Tax Amount --></label>
+        <name>amc__Cost_ex_Tax_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- This Percent can be used to override the Project Mark Up % --></help>
+        <label><!-- Custom Mark Up % --></label>
+        <name>amc__Custom_Mark_Up__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the date the Expense was incurred --></help>
+        <label><!-- Date --></label>
+        <name>amc__Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the number of Kilometres / Miles being claimed --></help>
+        <label><!-- Distance (Km / Miles) --></label>
+        <name>amc__Distance_Km_Miles__c</name>
+    </fields>
+    <fields>
+        <help><!-- Detailed Notes about the Expense --></help>
+        <label><!-- Expense Notes --></label>
+        <name>amc__Expense_Notes_RT__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies any supporting notes as to why the Expense was incurred --></help>
+        <label><!-- Expense Notes --></label>
+        <name>amc__Expense_Notes__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the Current User is the Person Who Incurred the Expense. --></help>
+        <label><!-- Incurred By Current User --></label>
+        <name>amc__Incurred_By_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Role who incurred the Expense --></help>
+        <label><!-- Incurred By --></label>
+        <name>amc__Incurred_By__c</name>
+        <relationshipLabel><!-- Expenses --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Indicates if the Expense has been included in a Billing Event --></help>
+        <label><!-- Invoiced --></label>
+        <name>amc__Invoiced__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies if this Expense should have a Mark Up applied --></help>
+        <label><!-- Mark Up Required --></label>
+        <name>amc__Mark_Up_Required__c</name>
+    </fields>
+    <fields>
+        <help><!-- Formula: Identifies the Mark Up % applied to this Expense --></help>
+        <label><!-- Mark Up % --></label>
+        <name>amc__Mark_Up__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the amount being claimed for the Distance --></help>
+        <label><!-- Mileage Amount --></label>
+        <name>amc__Mileage_Amount__c</name>
+    </fields>
+    <fields>
+        <help><!-- The Milestone this Expense relates to. --></help>
+        <label><!-- Milestone --></label>
+        <name>amc__Milestone__c</name>
+        <relationshipLabel><!-- Expenses --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Expenses marked as Non Billable will not be included in Billing Events/Items. --></help>
+        <label><!-- Non Billable --></label>
+        <name>amc__Non_Billable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Status of the Expense. Note: It is recommended you do not edit or remove these values --></help>
+        <label><!-- Payment Status --></label>
+        <name>amc__Payment_Status__c</name>
+        <picklistValues>
+            <masterLabel>Outstanding</masterLabel>
+            <translation><!-- Outstanding --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid</masterLabel>
+            <translation><!-- Paid --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Used by Expense Trigger. Identifies if Project Owner Approval is required for this Expense --></help>
+        <label><!-- Project Owner Approval Required --></label>
+        <name>amc__Project_Owner_Approval_Required__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Approval Status of the Project Owner for this Expense --></help>
+        <label><!-- Project Owner Approval Status --></label>
+        <name>amc__Project_Owner_Approval_Status__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Role record for the person that is the Project Owner responsible for approving this Expense --></help>
+        <label><!-- Project Owner Approver --></label>
+        <name>amc__Project_Owner_Approver__c</name>
+        <relationshipLabel><!-- Expenses (Project Owner Approver) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the Current User is the User required to approve this Expense as the Project Owner --></help>
+        <label><!-- Project Owner Current User --></label>
+        <name>amc__Project_Owner_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the reason the Project Owner rejected the Expense --></help>
+        <label><!-- Project Owner Rejection Comments --></label>
+        <name>amc__Project_Owner_Rejection_Comments__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Project the Expense record relates to --></help>
+        <label><!-- Project --></label>
+        <name>amc__Project__c</name>
+        <relationshipLabel><!-- Expenses --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Purchase Order this Expense relates to --></help>
+        <label><!-- Purchase Order --></label>
+        <name>amc__Purchase_Order__c</name>
+        <relationshipLabel><!-- Expenses --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies the reason the Approver rejected the Expense --></help>
+        <label><!-- Rejection Comments --></label>
+        <name>amc__Rejection_Comments__c</name>
+    </fields>
+    <fields>
+        <help><!-- Used by Expense Trigger. Identifies if Role Manager Approval is required for this Expense --></help>
+        <label><!-- Role Manager Approval Required --></label>
+        <name>amc__Role_Manager_Approval_Required__c</name>
+    </fields>
+    <fields>
+        <label><!-- Role Manager Approval Status --></label>
+        <name>amc__Role_Manager_Approval_Status__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the Role record for the person that is the Role Manager responsible for approving this Expense --></help>
+        <label><!-- Role Manager Approver --></label>
+        <name>amc__Role_Manager_Approver__c</name>
+        <relationshipLabel><!-- Expenses (Role Manager Approver) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Identifies if the Current User is the User required to approve this Expense as the Role Manager --></help>
+        <label><!-- Role Manager Current User --></label>
+        <name>amc__Role_Manager_Current_User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Identifies the reason the Role Manager rejected the Expense --></help>
+        <label><!-- Role Manager Rejection Comments --></label>
+        <name>amc__Role_Manager_Rejection_Comments__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source --></label>
+        <name>amc__Source__c</name>
+        <picklistValues>
+            <masterLabel>Cash</masterLabel>
+            <translation><!-- Cash --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Credit Card - Company</masterLabel>
+            <translation><!-- Credit Card - Company --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Credit Card - Personal</masterLabel>
+            <translation><!-- Credit Card - Personal --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Purchase Order</masterLabel>
+            <translation><!-- Purchase Order --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Tax Amount --></label>
+        <name>amc__Tax_Amt__c</name>
+    </fields>
+    <fields>
+        <label><!-- ex-Tax Amount --></label>
+        <name>amc__ex_Tax_Amt__c</name>
+    </fields>
+    <layouts>
+        <layout>Expense Layout</layout>
+        <sections>
+            <label><!-- Approval Status --></label>
+            <section>Approval Status</section>
+        </sections>
+        <sections>
+            <label><!-- Billing Event Information --></label>
+            <section>Billing Event Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Expense Info --></label>
+            <section>Expense Info</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You cannot approve your own expenses --></errorMessage>
+        <name>amc__Cannot_Approve_Own_Expenses</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- If Mark Up Required = TRUE, Cost Amount and Cost Tax Amount must contain values --></errorMessage>
+        <name>amc__Enforce_Cost_Values</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can only enter Distance (Km / Miles) OR Amount, not both. --></errorMessage>
+        <name>amc__Only_Distance_or_Amount_can_be_entered</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Mark Up Required cannot be TRUE if Distance (Km / Miles) is greather than 0 --></errorMessage>
+        <name>amc__Prevent_Mark_Up_Required</name>
+    </validationRules>
+</CustomObjectTranslation>

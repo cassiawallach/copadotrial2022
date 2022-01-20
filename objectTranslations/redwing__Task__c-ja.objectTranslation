@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>タスク</value>
+    </caseValues>
+    <fields>
+        <help>このオプションを有効にすると、コンテキストパラメータが外部リソースURLに渡されます。(例: https://someurl.com/?aid=ASSIGNMENT_ID&amp;tid=TPLAN_ID)</help>
+        <label><!-- Add training parameters to URL --></label>
+        <name>redwing__Add_training_parameters_to_URL__c</name>
+    </fields>
+    <fields>
+        <help>このフィールドは、タスクの追加の説明を提供する場合に使用します</help>
+        <label><!-- Additional Description --></label>
+        <name>redwing__Description_RTA__c</name>
+    </fields>
+    <fields>
+        <help>このタスクの説明</help>
+        <label><!-- Description --></label>
+        <name>redwing__Description__c</name>
+    </fields>
+    <fields>
+        <help>このタスクへのユーザーのコメント入力を防ぎたい場合は、このオプションを有効にします</help>
+        <label><!-- Disable Comments --></label>
+        <name>redwing__Disable_Comments__c</name>
+    </fields>
+    <fields>
+        <help>「完了済み」とマークされたタスクをユーザーが再び開くことがないようにする場合は、このオプションを有効にします</help>
+        <label><!-- Disable Undo for Completed Tasks --></label>
+        <name>redwing__Disable_Undo__c</name>
+    </fields>
+    <fields>
+        <help>このオプションを有効にすると、ユーザーはタスクを完了するために画像をアップロードするように求められます</help>
+        <label><!-- Enable Image Upload --></label>
+        <name>redwing__Enable_Image_Upload__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable Ratings --></label>
+        <name>redwing__Enable_Ratings__c</name>
+    </fields>
+    <fields>
+        <help>このオプションを有効にすると、ユーザーはタスクを完了するために動画をアップロードするように求められます</help>
+        <label><!-- Enable Video Upload --></label>
+        <name>redwing__Enable_Video_Upload__c</name>
+    </fields>
+    <fields>
+        <help>外部リソースURLのフレンドリー名。ブランクにすると、外部リソースURLが表示されます</help>
+        <label><!-- External Resource Name --></label>
+        <name>redwing__External_Resource_Name__c</name>
+    </fields>
+    <fields>
+        <help>外部リソースURLを表示するターゲットウィンドウ。[ブランク]を選択すると新しいタブ/ウィンドウが開かれ、[セルフ]を選択すると現在のタブ/ウィンドウが使用されます</help>
+        <label><!-- External Resource Target --></label>
+        <name>redwing__External_Resource_Target__c</name>
+        <picklistValues>
+            <masterLabel>blank</masterLabel>
+            <translation>ブランク</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>self</masterLabel>
+            <translation>セルフ</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>タスクの完了方法をユーザーに説明する外部リソースのURL</help>
+        <label><!-- External Resource URL --></label>
+        <name>redwing__External_Resource_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Learning --></label>
+        <name>redwing__Learning__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>タスク送信試行の最大回数。空のままにすると、試行回数は制限されません。</help>
+        <label><!-- Max Attempts --></label>
+        <name>redwing__Max_Attempts__c</name>
+    </fields>
+    <fields>
+        <help>承認を得るための最小の評定率を決定する、0から100の間の数</help>
+        <label><!-- Passing Rating --></label>
+        <name>redwing__Passing_Rating__c</name>
+    </fields>
+    <fields>
+        <help>タスクを完了するためにマネージャーの承認を求めたい場合は、このオプションを有効にします。このオプションは、ユーザーオブジェクトの標準の[マネージャー]フィールドを使用します</help>
+        <label><!-- Requires Manager Approval to Complete --></label>
+        <name>redwing__Requires_Manager_Approval__c</name>
+    </fields>
+    <layouts>
+        <layout>Task Layout</layout>
+        <sections>
+            <label>追加情報</label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label>カスタムリンク</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>オプション情報</label>
+            <section>Optional Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>タスクタイトル</nameFieldLabel>
+    <webLinks>
+        <label><!-- Ratings_Management --></label>
+        <name>redwing__Ratings_Management</name>
+    </webLinks>
+</CustomObjectTranslation>

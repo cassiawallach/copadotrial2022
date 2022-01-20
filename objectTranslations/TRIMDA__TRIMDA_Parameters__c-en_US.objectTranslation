@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Match Level for Account Dupe-Detection (DD) upon Entry --></help>
+        <label><!-- Account Dupe Detection, Match Level --></label>
+        <name>TRIMDA__Account_DD_Trigger_Match_Level__c</name>
+        <picklistValues>
+            <masterLabel>Exact</masterLabel>
+            <translation><!-- Exact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SuperTight</masterLabel>
+            <translation><!-- SuperTight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tight</masterLabel>
+            <translation><!-- Tight --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Select Match Level to filter which Matched Records to include when presenting the Dupe Status.
+Default (None), will include ALL Matched records (excluding Resolved and False dupes) --></help>
+        <label><!-- Account Dupe Status, Match Level --></label>
+        <name>TRIMDA__Account_DS_Match_Level__c</name>
+        <picklistValues>
+            <masterLabel>Exact</masterLabel>
+            <translation><!-- Exact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Loose</masterLabel>
+            <translation><!-- Loose --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SuperTight</masterLabel>
+            <translation><!-- SuperTight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tight</masterLabel>
+            <translation><!-- Tight --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Enable/Disable the Dupe Account Detection upon Account Entry --></help>
+        <label><!-- Dupe Detection on Account Entry --></label>
+        <name>TRIMDA__Account_Enable_DD_Trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- Disable/Enable to Hide/Show the Merge and Convert Links on the Dupe Status component for Accounts. --></help>
+        <label><!-- Account: Show Action Link --></label>
+        <name>TRIMDA__Account_Show_ActionLink__c</name>
+    </fields>
+    <fields>
+        <help><!-- By default the Activity being created will be set with Status: &apos;Completed&apos;. To change this value to another (custom) value, enter the Status here --></help>
+        <label><!-- Activity Closed Status --></label>
+        <name>TRIMDA__Activity_Closed_Status__c</name>
+    </fields>
+    <fields>
+        <help><!-- Additional (multiple) Notification Email Address. Separate several addresses by semi-comma (;), no spaces --></help>
+        <label><!-- AdditionalNotification CC Email Address --></label>
+        <name>TRIMDA__AddlNotification_Email_Address__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable/disable Beta features --></help>
+        <label><!-- Beta On --></label>
+        <name>TRIMDA__BetaOn__c</name>
+    </fields>
+    <fields>
+        <help><!-- Match Level for Contact Dupe-Detection (DD) upon Entry --></help>
+        <label><!-- Contact Dupe Detection, Match Level --></label>
+        <name>TRIMDA__Contact_DD_Trigger_Match_Level__c</name>
+        <picklistValues>
+            <masterLabel>Exact</masterLabel>
+            <translation><!-- Exact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SuperTight</masterLabel>
+            <translation><!-- SuperTight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tight</masterLabel>
+            <translation><!-- Tight --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Select Match Level to filter which Matched Records to include when presenting the Dupe Status.
+Default (None), will include ALL Matched records (excluding Resolved and False dupes) --></help>
+        <label><!-- Contact Dupe Status, Match Level --></label>
+        <name>TRIMDA__Contact_DS_Match_Level__c</name>
+        <picklistValues>
+            <masterLabel>Exact</masterLabel>
+            <translation><!-- Exact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Loose</masterLabel>
+            <translation><!-- Loose --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SuperTight</masterLabel>
+            <translation><!-- SuperTight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tight</masterLabel>
+            <translation><!-- Tight --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Enable/Disable the Dupe Contact Detection upon Contact Entry --></help>
+        <label><!-- Dupe Detection on Contact Entry --></label>
+        <name>TRIMDA__Contact_Enable_DD_Trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- Disable/Enable to Hide/Show the Merge and Convert Links on the Dupe Status component for Contacts. --></help>
+        <label><!-- Contact, Show Action Link --></label>
+        <name>TRIMDA__Contact_Show_ActionLink__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set the Default Converted Status for the Lead when converted. Check the Lead Status field for details. (Default: Qualified) --></help>
+        <label><!-- Converted Status --></label>
+        <name>TRIMDA__ConvStatus__c</name>
+    </fields>
+    <fields>
+        <label><!-- Mass Convert Batch Size (Max.) --></label>
+        <name>TRIMDA__Convert_Batch_Size_Max__c</name>
+    </fields>
+    <fields>
+        <help><!-- (Lightning Only) Set the DataTrim Merge Wizard as the default Merge option, if unchecked, the DataTrim Quick Merge Featuer will display. --></help>
+        <label><!-- Use Merge Wizard as Default --></label>
+        <name>TRIMDA__Default_isDTMergeWizard__c</name>
+    </fields>
+    <fields>
+        <help><!-- (Classic Only) Set the DataTrim Quick Merge Wizard as the default Merge option (over the std.salesforce merge Wizard).
+Note if you have enabled clickjack protection the Quick Merge automatically becomes the default merge option regardless of this setting --></help>
+        <label><!-- Use Quick Merge as Default --></label>
+        <name>TRIMDA__Default_isQMerge__c</name>
+    </fields>
+    <fields>
+        <help><!-- When a mass convert is succesfully completed, shall the Matched Record be deleted? --></help>
+        <label><!-- Delete Matched Records After Convert --></label>
+        <name>TRIMDA__DeleteMRAfterConvert__c</name>
+    </fields>
+    <fields>
+        <help><!-- When a mass merge is succesfully completed, shall the Matched record be deleted? --></help>
+        <label><!-- Delete Matched Records After Merge --></label>
+        <name>TRIMDA__DeleteMRAfterMerge__c</name>
+    </fields>
+    <fields>
+        <help><!-- Activates the possibility to merge records in Batch mode. Batch Mode will automatically be imposed if the selected number of records is higher than the value set in &apos;Mass Merge Batch Size (Max.)&apos; --></help>
+        <label><!-- Enable Batch --></label>
+        <name>TRIMDA__Enable_Batch__c</name>
+    </fields>
+    <fields>
+        <help><!-- The setting here should correspond to the setting in your Session Settings (salesforce setup) under: Enable clickjack protection for non-setup customer Visualforce pages.
+By enabeling this, The Merge Wizards will all open in new windows/tabs --></help>
+        <label><!-- Enable clickjack protection-Visualforce --></label>
+        <name>TRIMDA__Enable_clickjack_protection_Visualforce__c</name>
+    </fields>
+    <fields>
+        <help><!-- The setting here should correspond to the setting in your Session Settings (salesforce setup) under: Enable clickjack protection for non-setup Salesforce page.
+By enabeling this, the DataTrim Quick Merge will become your default merge wizard --></help>
+        <label><!-- Enable clickjack protection-salesforce --></label>
+        <name>TRIMDA__Enable_clickjack_protection__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable/Disable to Include/Exclude Leads which are duplicates of the Account (Lead-Accounts) --></help>
+        <label><!-- Account: Include Leads to Convert --></label>
+        <name>TRIMDA__Enhanced_Display_DupeStatusAccount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable/Disable to Include/Exclude Leads which are duplicates of the Account (Lead-Contacts) --></help>
+        <label><!-- Contact: Include Leads to Convert --></label>
+        <name>TRIMDA__Enhanced_Display_DupeStatusContact__c</name>
+    </fields>
+    <fields>
+        <help><!-- Allow you to hide/show the inline Console on the DataTrim Dupe Alerts Tab --></help>
+        <label><!-- Hide Console --></label>
+        <name>TRIMDA__Hide_Console__c</name>
+    </fields>
+    <fields>
+        <help><!-- Match Level for Lead Dupe-Detection (DD) upon Entry --></help>
+        <label><!-- Lead Dupe Detection, Match Level --></label>
+        <name>TRIMDA__Lead_DD_Trigger_Match_Level__c</name>
+        <picklistValues>
+            <masterLabel>Exact</masterLabel>
+            <translation><!-- Exact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SuperTight</masterLabel>
+            <translation><!-- SuperTight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tight</masterLabel>
+            <translation><!-- Tight --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Select Match Level to filter which Matched Records to include when presenting the Dupe Status.
+Default (None), will include ALL Matched records (excluding Resolved and False dupes) --></help>
+        <label><!-- Lead Dupe Status, Match Level --></label>
+        <name>TRIMDA__Lead_DS_Match_Level__c</name>
+        <picklistValues>
+            <masterLabel>Exact</masterLabel>
+            <translation><!-- Exact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Loose</masterLabel>
+            <translation><!-- Loose --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SuperTight</masterLabel>
+            <translation><!-- SuperTight --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tight</masterLabel>
+            <translation><!-- Tight --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Enable/Disable the Dupe Lead Detection upon Lead Entry --></help>
+        <label><!-- Dupe Detection on Lead Entry --></label>
+        <name>TRIMDA__Lead_Enable_DD_Trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- Disable/Enable to Hide/Show the Merge and Convert Links on the Dupe Status component for Leads. --></help>
+        <label><!-- Lead, Show Action Link --></label>
+        <name>TRIMDA__Lead_Show_ActionLink__c</name>
+    </fields>
+    <fields>
+        <label><!-- License No --></label>
+        <name>TRIMDA__LicenseNo__c</name>
+    </fields>
+    <fields>
+        <label><!-- License Type --></label>
+        <name>TRIMDA__License_Type__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable to insert Merged data as a Note which is attacehd to the surviving record --></help>
+        <label><!-- Add Merged data as Note --></label>
+        <name>TRIMDA__MergeAddNote__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable to allow the merged data to be appended to a field on the surviving record --></help>
+        <label><!-- Append Merge Data to a Field --></label>
+        <name>TRIMDA__MergeAppend2Field__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default field to use when appending merged data to a field on the surviving record --></help>
+        <label><!-- Merge Append Field --></label>
+        <name>TRIMDA__MergeAppendField__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable to insert Merged data as an Activity which is attacehd to the surviving record --></help>
+        <label><!-- Create Activity for Merged Data --></label>
+        <name>TRIMDA__MergeCreateActivity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Merge Field Exclusions (Account) --></label>
+        <name>TRIMDA__MergeExclFields_Acc__c</name>
+    </fields>
+    <fields>
+        <label><!-- Merge Field Exclusions (Contact) --></label>
+        <name>TRIMDA__MergeExclFields_Con__c</name>
+    </fields>
+    <fields>
+        <label><!-- Merge Field Exclusions (Lead) --></label>
+        <name>TRIMDA__MergeExclFields_Lead__c</name>
+    </fields>
+    <fields>
+        <help><!-- When enabled, multi pick lists are consolidated during merge --></help>
+        <label><!-- Merge Multi Pick-lists --></label>
+        <name>TRIMDA__MergeMultiPickLists__c</name>
+    </fields>
+    <fields>
+        <help><!-- Advanced Merge Options/Rules for Merging Accounts.
+Please consult the User Guide for further details --></help>
+        <label><!-- Merge Rules (Account) --></label>
+        <name>TRIMDA__MergeRules_Acc__c</name>
+    </fields>
+    <fields>
+        <help><!-- Advanced Merge Options/Rules for Merging Contacts.
+Please consult the User Guide for further details --></help>
+        <label><!-- Merge Rules (Contact) --></label>
+        <name>TRIMDA__MergeRules_Con__c</name>
+    </fields>
+    <fields>
+        <help><!-- Advanced Merge Options/Rules for Merging Leads
+Please consult the User Guide for further details --></help>
+        <label><!-- Merge Rules (Lead) --></label>
+        <name>TRIMDA__MergeRules_Lead__c</name>
+    </fields>
+    <fields>
+        <label><!-- Mass Merge Batch Size (Max.) --></label>
+        <name>TRIMDA__Merge_Batch_Size_Max__c</name>
+    </fields>
+    <fields>
+        <help><!-- Default direction of Mass Merge --></help>
+        <label><!-- Merge Type --></label>
+        <name>TRIMDA__Merge_Type__c</name>
+        <picklistValues>
+            <masterLabel>2Dupe</masterLabel>
+            <translation><!-- 2Dupe --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2Survivor</masterLabel>
+            <translation><!-- 2Survivor --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Enter the Email Address to which the Notification Email is sent.
+If left blank the Notification Email is sent to the Alert Owner (Default) --></help>
+        <label><!-- Notification Email Address --></label>
+        <name>TRIMDA__Notification_Email_Address__c</name>
+    </fields>
+    <fields>
+        <label><!-- OnBoarding Option --></label>
+        <name>TRIMDA__OnBoarding_Option__c</name>
+        <picklistValues>
+            <masterLabel>Reusing an existing salesforce License</masterLabel>
+            <translation><!-- Reusing an existing salesforce License --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Using a Specific DataTrim user</masterLabel>
+            <translation><!-- Using a Specific DataTrim user --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Select the naming convention to be used when Creating and Naming Opportunities (Default: New) --></help>
+        <label><!-- Oppty. Naming Convention --></label>
+        <name>TRIMDA__OpptyName__c</name>
+        <picklistValues>
+            <masterLabel>Account Name</masterLabel>
+            <translation><!-- Account Name --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Account Name - New</masterLabel>
+            <translation><!-- Account Name - New --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Account Name, Contact Name - New</masterLabel>
+            <translation><!-- Account Name, Contact Name - New --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>New</masterLabel>
+            <translation><!-- New --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Leave blank to make the current user the owner of the created Activity, or select a default owner --></help>
+        <label><!-- Default Owner of Activity --></label>
+        <name>TRIMDA__Owner_of_Activity__c</name>
+        <relationshipLabel><!-- DataTrim Dupe Alerts Parameters (Default Owner of Activity) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Leave blank to make the current user the owner of the created Note, or select a default owner --></help>
+        <label><!-- Default Owner of Note --></label>
+        <name>TRIMDA__Owner_of_Note__c</name>
+        <relationshipLabel><!-- DataTrim Dupe Alerts Parameters (Default Owner of Note) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- SOQL Count Query (Max.) --></label>
+        <name>TRIMDA__SOQL_Count_Query__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable/disable to have an Email sent automatically when the deduplications are completed. --></help>
+        <label><!-- Send Notification on Complete --></label>
+        <name>TRIMDA__Send_Notification_on_Complete__c</name>
+    </fields>
+    <fields>
+        <label><!-- ServerURL --></label>
+        <name>TRIMDA__ServerURL__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Facebook field on Accounts --></help>
+        <label><!-- Account: Facebook --></label>
+        <name>TRIMDA__SocialCRM_Account_Facebook__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Google+ field on Accounts --></help>
+        <label><!-- Account: Google+ --></label>
+        <name>TRIMDA__SocialCRM_Account_GooglePlus__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for LinkedIn field on Accounts --></help>
+        <label><!-- Account: LinkedIn --></label>
+        <name>TRIMDA__SocialCRM_Account_LinkedIn__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Twitter field on Accounts --></help>
+        <label><!-- Account: Twitter --></label>
+        <name>TRIMDA__SocialCRM_Account_Twitter__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Facebook field on Contacts --></help>
+        <label><!-- Contact: Facebook --></label>
+        <name>TRIMDA__SocialCRM_Contact_Facebook__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Google+ field on Contacts --></help>
+        <label><!-- Contact: Google+ --></label>
+        <name>TRIMDA__SocialCRM_Contact_GooglePlus__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for LinkedIn field on Contacts --></help>
+        <label><!-- Contact: LinkedIn --></label>
+        <name>TRIMDA__SocialCRM_Contact_LinkedIn__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Twitter field on Contacts --></help>
+        <label><!-- Contact: Twitter --></label>
+        <name>TRIMDA__SocialCRM_Contact_Twitter__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Facebook field on Leads --></help>
+        <label><!-- Lead: Facebook --></label>
+        <name>TRIMDA__SocialCRM_Lead_Facebook__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Google+ field on Leads --></help>
+        <label><!-- Lead: Google+ --></label>
+        <name>TRIMDA__SocialCRM_Lead_GooglePlus__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for LinkedIn field on Leads --></help>
+        <label><!-- Lead: LinkedIn --></label>
+        <name>TRIMDA__SocialCRM_Lead_LinkedIn__c</name>
+    </fields>
+    <fields>
+        <help><!-- API field reference for Twitter field on Leads --></help>
+        <label><!-- Lead: Twitter --></label>
+        <name>TRIMDA__SocialCRM_Lead_Twitter__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable to prevent an Opportunity to be create for each converted Lead. Disable to create the opportunities. --></help>
+        <label><!-- Do Not Create opportunity --></label>
+        <name>TRIMDA__donotCreateOppty__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable to overwrite the contaacts Lead source with the value from the Lead (Default: UnChecked)) --></help>
+        <label><!-- Overwrite Lead Source --></label>
+        <name>TRIMDA__overwriteLeadSource__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enable to send an Email notification to the Owner (Default: UnChecked) --></help>
+        <label><!-- Send Notification to Owner --></label>
+        <name>TRIMDA__sendNoti__c</name>
+    </fields>
+    <layouts>
+        <layout>DataTrim Dupe Alerts Setup Layout</layout>
+        <sections>
+            <label><!-- Account Matching --></label>
+            <section>Account Matching</section>
+        </sections>
+        <sections>
+            <label><!-- Advanced Merge Options --></label>
+            <section>Advanced Merge Options</section>
+        </sections>
+        <sections>
+            <label><!-- Console --></label>
+            <section>Console</section>
+        </sections>
+        <sections>
+            <label><!-- Contact Matching --></label>
+            <section>Contact Matching</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- DataTrim Convert Parameters --></label>
+            <section>DataTrim Convert Parameters</section>
+        </sections>
+        <sections>
+            <label><!-- DataTrim Merge Parameters --></label>
+            <section>DataTrim Merge Parameters</section>
+        </sections>
+        <sections>
+            <label><!-- Dupe Detection upon Entry --></label>
+            <section>Dupe Detection upon Entry</section>
+        </sections>
+        <sections>
+            <label><!-- Dupe Status Controls --></label>
+            <section>Dupe Status Controls</section>
+        </sections>
+        <sections>
+            <label><!-- Email Notifications --></label>
+            <section>Email Notifications</section>
+        </sections>
+        <sections>
+            <label><!-- Lead Matching --></label>
+            <section>Lead Matching</section>
+        </sections>
+        <sections>
+            <label><!-- License Information --></label>
+            <section>License Information</section>
+        </sections>
+        <sections>
+            <label><!-- Limits derived by salesforce Governor Rules --></label>
+            <section>Limits derived by salesforce Governor Rules</section>
+        </sections>
+        <sections>
+            <label><!-- Other --></label>
+            <section>Other</section>
+        </sections>
+        <sections>
+            <label><!-- Review Wizard Parameters --></label>
+            <section>Review Wizard Parameters</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Invalid License Number, enter your License number, or contact DataTrim to get registered. --></errorMessage>
+        <name>TRIMDA__License_No_Validation</name>
+    </validationRules>
+</CustomObjectTranslation>

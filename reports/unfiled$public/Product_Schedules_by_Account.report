@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_14964237</developerName>
+        <masterLabel>Licensing Model</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>PRODUCT_NAME</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Branch Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Branch Management (DUP)</sourceValue>
+            </sourceValues>
+            <value>Legacy Platform</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Standard Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Professional Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Enterprise Edition</sourceValue>
+            </sourceValues>
+            <value>Current Platform</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Biannually</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Enterprise Yearly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Change Management</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Agile Delivery</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Change Manager</sourceValue>
+            </sourceValues>
+            <value>Legacy User</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Admin</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado User</sourceValue>
+            </sourceValues>
+            <value>Current User</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Advanced Data Deployer</sourceValue>
+            </sourceValues>
+            <value>Legacy Add-On</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>DevOps360</sourceValue>
+            </sourceValues>
+            <value>Current Add-on</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Copado_AOV__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>REVENUE_AMOUNT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>SCHEDULE_QUANTITY</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.MRR__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Show me amount over time by Account and Licensing Model</description>
+    <filter>
+        <criteriaItems>
+            <column>ACCOUNT_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Coca-Cola European Partners Ltd</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Month</dateGranularity>
+        <field>REVENUE_DATE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ACCOUNT_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Product Schedules by Account</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closedwon</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>OpportunitySchedule@Opportunity.SBQQ__PrimaryQuote__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

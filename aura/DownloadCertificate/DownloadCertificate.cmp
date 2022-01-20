@@ -1,0 +1,68 @@
+<aura:component controller="downloadCertifiedLogoImage" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="staticResourceUrl" type="String" />
+    <aura:attribute name="Certifications" type="list" />
+    <aura:attribute name="isShow" type="boolean" default="false" />
+    <aura:if isTrue="{!v.isShow}">
+        <div class="slds-box" >
+            <div class="slds-border--bottom slds-p-bottom--medium slds-m-bottom--large slds-text-heading--medium slds-truncate cmp-header">
+                <div class="cmp-header-label">Certifications</div>
+            </div>
+            <div class="slds-grid slds-wrap ">
+                <table class="slds-table slds-table_cell-buffer slds-table_header-hidden">
+                    <tr style="padding:0.5rem;background:#525252;">
+                        <th class="" scope="col"><div class="slds-truncate slds-text-heading_small slds-text-title slds-text-color_inverse Heading-padding6">Certifications</div></th>
+                        <th class="" scope="col"><div class="slds-truncate slds-text-heading_small slds-text-title slds-text-color_inverse slds-text-align_center Heading-padding6">Download Logo</div></th>
+                        <th class="" scope="col"><div class="slds-truncate slds-text-heading_small slds-text-title slds-text-color_inverse slds-text-align_center Heading-padding6">Download Certificate</div></th>
+                        <th class="" scope="col"><div class="slds-truncate slds-text-heading_small slds-text-title slds-text-color_inverse slds-text-align_center Heading-padding6">Share</div></th>
+                    </tr>
+                    <aura:iteration items="{!v.Certifications}" var="data">
+                        <tr>
+                            <td>
+                                <div class="slds-truncate">
+                                    
+                                    <img src="{!data.CertificateLogoDownloadUrl}" alt="image not found" width="60" height="60"  />
+                                    &nbsp; &nbsp; {!data.CertificateName}  
+                                    <span class="active-bg-color"> 
+                                        <aura:if isTrue="{!data.Status=='Valid'}">
+                                            <span class="active-green-icon">&nbsp;</span> &nbsp; Active
+                                            <aura:set attribute="else">
+                                                <span class="inactive-green-icon">&nbsp;</span> &nbsp; Expired
+                                            </aura:set>
+                                        </aura:if>
+                                    </span>
+                                    <p class="certificate-issue-dt">{!data.Earned_Date} - 
+                                        <aura:if isTrue="{!data.Status=='Valid'}">
+                                            Present
+                                            <aura:set attribute="else">
+                                                {!data.Expiration_Date}
+                                            </aura:set>
+                                        </aura:if>
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate slds-text-align_center">
+                                    <aura:if isTrue="{!data.isLogoDownloadIcon}">
+                                        <a href="{!data.CertificateLogoDownloadUrl}" target="_self" download="{!data.CertificateName + ' Certificate Logo'}" ><lightning:icon iconName="utility:download" size="small" class="download-icon" alternativeText="download" title="{!data.CertificateName + ' Certificate Logo'}"  /></a>
+                                    </aura:if>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate slds-text-align_center">
+                                    <a href="{!data.CertificateDownloadUrl}" target="_self" download="{!data.CertificateName + ' Certificate'}"  ><lightning:icon iconName="utility:download" size="small" class="download-icon" alternativeText="download" title="{!data.CertificateName + ' Certificate'}" /></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate slds-text-align_center">
+                                    <a href="{!data.TwitterShareUrl}" target="_blank"><img src="{!$Resource.Community + '/CommunityResources/socialIcons/TwitterLogo.png'}" class="social-img" alt="Twitter" title='Share on Twitter'/></a>
+                                    <a href="{!data.LinkedinShareUrl}" target="_blank"><img src="{!$Resource.Community + '/CommunityResources/socialIcons/LinkedinLogo.png'}" class="social-img slds-m-left_xx-small" alt="Linkedin" title='Share on Linkedin'/></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </table>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

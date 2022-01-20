@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label><!-- Date Available to Promise --></label>
+        <name>kugo2p__DateAvailabletoPromise__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date Required --></label>
+        <name>kugo2p__DateRequired__c</name>
+    </fields>
+    <fields>
+        <label><!-- Early Number of Days --></label>
+        <name>kugo2p__EarlyNumberofDays_del__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Scheduled Quantity --></label>
+        <name>kugo2p__InvoiceScheduledQuantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoice Unscheduled Quantity --></label>
+        <name>kugo2p__InvoiceUnscheduledQuantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Invoiced Quantity --></label>
+        <name>kugo2p__InvoicedQuantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Packages --></label>
+        <name>kugo2p__Packages__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product Line Quantity --></label>
+        <name>kugo2p__ProductLineQuantity__c</name>
+    </fields>
+    <fields>
+        <help><!-- Product Name used in the Order Product Line --></help>
+        <label><!-- Product Name --></label>
+        <name>kugo2p__ProductName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product --></label>
+        <name>kugo2p__Product__c</name>
+        <relationshipLabel><!-- Shipment Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Quantity Invoiced to Date --></label>
+        <name>kugo2p__QuantityInvoicedToDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quantity --></label>
+        <name>kugo2p__Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Record Status --></label>
+        <name>kugo2p__RecordStatus__c</name>
+    </fields>
+    <fields>
+        <label><!-- Order Product Line --></label>
+        <name>kugo2p__SalesOrderProductLine__c</name>
+        <relationshipLabel><!-- Shipment Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Order Number --></label>
+        <name>kugo2p__SalesOrder__c</name>
+        <relationshipLabel><!-- Shipment Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Shipment Date --></label>
+        <name>kugo2p__ShipmentDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipment Number --></label>
+        <name>kugo2p__Shipment__c</name>
+        <relationshipLabel><!-- Shipment Lines --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>kugo2p__Status__c</name>
+    </fields>
+    <layouts>
+        <layout>Shipment Detail Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Order Information --></label>
+            <section>Order Information</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- Shipped Quantity must be greater than 0. If you&apos;re updating the line to avoid shipping this product, delete the Shipment Line. --></errorMessage>
+        <name>kugo2p__Quantity_Must_be_Greater_than_0</name>
+    </validationRules>
+</CustomObjectTranslation>

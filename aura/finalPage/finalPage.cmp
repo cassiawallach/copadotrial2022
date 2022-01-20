@@ -1,0 +1,20 @@
+<aura:component description="finalPage" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <div class="cCps_wizard">
+        
+        <div id="progressIndicator">
+            <lightning:progressIndicator currentStep="TrialOrgCreated" type="base" hasError="false" variant="base">
+                <lightning:progressStep label="Start" value="Start"/>
+                <lightning:progressStep label="Trial Org Created" value="TrialOrgCreated"/>
+                <lightning:progressStep label="Create Playground" value="Create Playground"/>
+            </lightning:progressIndicator>
+        </div>
+        
+        <c:cps_wizard_body>
+            <c:cps_wizard_heading id="finishTitle">Your Trial Org has been created.</c:cps_wizard_heading>
+            <h3>Please look for a Salesforce Login Confirmation Email.</h3>
+            <img src="{! $Resource.cps_assets + '/Assets/playground_ready.png' }" style="width:181px; height:151px;" />
+
+            <c:cps_Button id="btnFinish" onclick="{! c.gotoPlayground }">Take me to the Playground Creation Wizard</c:cps_Button>
+        </c:cps_wizard_body>
+    </div>
+</aura:component>

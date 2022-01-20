@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>redwing__ILT_Roster__c$redwing__User__c.Contact.Account.Ultimate_Parent__c</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Roster__c$redwing__User__c</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Roster__c$redwing__ILT_Class__c</field>
+    </columns>
+    <columns>
+        <field>redwing__ILT_Roster__c$redwing__Registered_Date__c</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(CONTAINS(redwing__ILT_Roster__c.redwing__ILT_Class__c.Name,&quot;Consultant&quot;) || CONTAINS(redwing__ILT_Roster__c.redwing__ILT_Class__c.Name,&quot;Implement&quot;),&quot;Consultant&quot;,
+IF(CONTAINS(redwing__ILT_Roster__c.redwing__ILT_Class__c.Name,&quot;Developer&quot;), &quot;Developer&quot;,
+IF(CONTAINS(redwing__ILT_Roster__c.redwing__ILT_Class__c.Name,&quot;Admin&quot;),&quot;Admin&quot;,&quot;Other&quot;)))</calculatedFormula>
+        <dataType>Text</dataType>
+        <developerName>CDF1</developerName>
+        <label>Workshop</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <filter>
+        <criteriaItems>
+            <column>redwing__ILT_Roster__c$redwing__Attended__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>redwing__ILT_Roster__c$redwing__User__c.Contact.Account.Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Partner</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CDF1</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>redwing__ILT_Roster__c$redwing__ILT_Class__c.redwing__Start_Date__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Partner Attended Workshops</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ILT_Registrations__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>redwing__ILT_Roster__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

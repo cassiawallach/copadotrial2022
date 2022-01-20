@@ -1,0 +1,132 @@
+<apex:page id="thePage" controller="ROIcalculatorController" sidebar="false" showHeader="false" standardStylesheets="true" action="{!init}">
+    <head>
+        <meta charset="utf-8" />
+        <title>Copado ROI Calculator</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="{!$Resource.ROIcalculator}"></script>
+    </head>
+    <div id="logo">
+        <img alt="Home" src="{!URLFOR($Resource.WebsitePack, '/Images/CopadoLogo.png')}"/>
+    </div>
+    <div class="clear"> </div>
+    
+    <div style="max-width:900px;">
+        <apex:pageBlock id="pb" mode="edit">
+            <apex:pageBlockButtons location="bottom" >
+                <button id="submit" onclick="copado.doCalculations();">Calculate ROI</button>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1" collapsible="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Currency</apex:outputLabel>
+                    <select id="currency" onChange="copado.currency.changeCurrency(this.value);copado.doCalculations();">
+                        <option value="USD">USD</option>
+                        <option value="GBP">GBP</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Your Hourly Resource Cost</apex:outputLabel>
+                    <input type="number" id="hourlyResourceCost" value="75" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Enterprise Edition ROI" columns="2" collapsible="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Nr of sprints/quarter</apex:outputLabel>
+                    <input type="number" id="SprintsPerQuarter" value="6" onChange="copado.doCalculations()"/>                    
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Hours saved/sprint/EE user</apex:outputLabel>
+                    <input type="number" id="TimeSavedPerSprintUser" value="7" onChange="copado.doCalculations()"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Nr of EE users</apex:outputLabel>
+                    <input type="number" id="eeUsers" value="4" onChange="copado.doCalculations()"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" collapsible="false">
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <tr class="headerRow">
+                        <th class="noRowsHeader"></th>
+                        <th class="noRowsHeader">Quarterly</th>
+                        <th class="noRowsHeader">Yearly</th>
+                    </tr>
+                    <tr>
+                        <td>Total Time Savings</td>
+                        <td><label id="EE_QuarterlyTotalTimeSavings" value="" ></label></td>
+                        <td><label id="EE_YearlyTotalTimeSavings" value="" ></label></td>
+                    </tr>
+                    <tr>
+                        <td>License Costs (at List Price)</td>
+                        <td><label id="EE_QuarterlyLicenseCosts" value="" ></label></td>
+                        <td><label id="EE_YearlyLicenseCosts" value="" ></label></td>
+                    </tr>
+                    <tr>
+                        <td>Net Productivity Increase</td>
+                        <td><label id="net_QuarterlyProductivityIncrease" value="" ></label></td>
+                        <td><label id="net_YearlyProductivityIncrease" value="" ></label></td>
+                    </tr>
+                </table>
+                Net Productivity Increase = (Hourly Resource cost * Time Savings per Sprint * Number of Sprints) - Period License Cost;
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Branch Management ROI" columns="1" collapsible="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Sync Time without Branch Management</apex:outputLabel>
+                    <input type="number" id="syncTime_WithoutCBM" value="7" onChange="copado.stats.updateCBMsyncTime(this.value);copado.doCalculations();" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Sync Time with Branch Management</apex:outputLabel>
+                    <apex:outputPanel >
+                        <input type="number" id="syncTime_WithCBM" value="1" step="0.1" onChange="copado.doCalculations()"/>
+                        Our customers have seen up to a 90% reduction in sandbox synchronisation times.
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Orgs to Sync</apex:outputLabel>
+                    <input type="number" id="syncOrgs" value="5" onChange="copado.stats.updateCBMlicensesRequired(this.value);copado.doCalculations();" />
+                </apex:pageBlockSectionItem>         
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" collapsible="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Branch Management Licenses required</apex:outputLabel>
+                    <label id="CBM_LicensesRequired" value="5" ></label>
+                </apex:pageBlockSectionItem>
+                
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <tr class="headerRow">
+                        <th class="noRowsHeader"></th>
+                        <th class="noRowsHeader">Monthly</th>
+                        <th class="noRowsHeader">Yearly</th>
+                    </tr>
+                    <tr>
+                        <td>Total Time Savings</td>
+                        <td><label id="CBM_MonthlyTotalTimeSavings" value="" ></label></td>
+                        <td><label id="CBM_YearlyTotalTimeSavings" value="" ></label></td>
+                    </tr>
+                    <tr>
+                        <td>License Costs (at List Price)</td>
+                        <td><label id="CBM_MonthlyLicenseCosts" value="" ></label></td>
+                        <td><label id="CBM_YearLicenseCosts" value="" ></label></td>
+                    </tr>
+                    <tr>
+                        <td>Net Productivity Increase</td>
+                        <td><label id="CBM_MonthlyNetProductivityIncrease" value="" ></label></td>
+                        <td><label id="CBM_YearlyNetProductivityIncrease" value="" ></label></td>
+                    </tr>
+                </table>
+                Net Productivity Increase = Time Savings * Hourly Resource cost - Period License Cost
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+    </div>
+    
+    
+    <script type="text/javascript">
+        var copadoApp = {
+            pricelistEE: '{!eePrices}',
+            pricelistCBM: '{!cbmPrices}'
+        };
+        copado.loadPage();
+    </script>
+
+</apex:page>

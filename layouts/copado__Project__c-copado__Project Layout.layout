@@ -9,10 +9,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>copadoccmint__Copado_Integration_Setting__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
@@ -62,6 +58,7 @@
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>Project Summary</label>
+        <layoutColumns/>
         <layoutColumns>
             <layoutItems>
                 <reportChartComponent>
@@ -69,14 +66,13 @@
                     <contextFilterableField>FK_CUSTENT_ID</contextFilterableField>
                     <hideOnError>true</hideOnError>
                     <includeContext>true</includeContext>
-                    <reportName>Story_Point_totals_by_Project_and_Status</reportName>
+                    <reportName>Project_Workload_Assignment</reportName>
                     <showTitle>true</showTitle>
                     <size>SMALL</size>
                 </reportChartComponent>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
-        <style>TwoColumnsLeftToRight</style>
+        <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -113,7 +109,6 @@
         <fields>copado__Start_Date__c</fields>
         <fields>copado__End_Date__c</fields>
         <fields>copado__Status__c</fields>
-        <fields>copadoccmint__Copado_Integration_Setting__c</fields>
     </miniLayout>
     <relatedLists>
         <fields>NAME</fields>
@@ -126,14 +121,13 @@
     <relatedLists>
         <customButtons>copado__Mass_Add_User_Stories</customButtons>
         <fields>NAME</fields>
+        <fields>copado__Sprint__c</fields>
+        <fields>copado__Developer__c</fields>
         <fields>copado__User_Story_Title__c</fields>
         <fields>copado__userStory_Role__c</fields>
         <fields>copado__userStory_need__c</fields>
         <fields>copado__userStory_reason__c</fields>
         <fields>copado__Status__c</fields>
-        <fields>copado__Story_Points_SFDC__c</fields>
-        <fields>copado__Story_Points_Other__c</fields>
-        <fields>copado__Parent_Epic_Title__c</fields>
         <fields>copado__Promote_Change__c</fields>
         <relatedList>copado__User_Story__c.copado__Project__c</relatedList>
     </relatedLists>
@@ -166,10 +160,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>copado__Status__c</fields>
-        <fields>copado__Source_Environment__c</fields>
-        <fields>copado__Source_Org_Credential__c</fields>
-        <fields>copado__Destination_Environment__c</fields>
-        <fields>copado__Destination_Org_Credential__c</fields>
         <relatedList>copado__Promotion__c.copado__Project__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
@@ -178,7 +168,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h24000001ec7S</masterLabel>
+        <masterLabel>00hb0000004DmvP</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

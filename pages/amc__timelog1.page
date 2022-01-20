@@ -1,0 +1,48 @@
+<apex:page showHeader="false" standardStylesheets="false" showQuickActionVfHeader="false">   
+    <script type='text/javascript' src='/canvas/sdk/js/publisher.js'/>
+    <apex:includeLightning />
+    <apex:slds />
+    <style>
+        span.assistiveText{
+            display:none;
+        }
+        .uiDatePickerGrid--default .calGrid th{
+            font-size:8px;
+        }
+        a.uiDayInMonthCell{
+            font-size:10px;
+        }
+        .uiDatePicker--default .dateBar .monthYear{
+            margin:5px;
+        }
+    </style>
+    <div class="slds-scope">
+        <header class="slds-global-header_container slds-p-bottom--small" style="position: relative;">
+            <div class="slds-global-header slds-grid slds-grid--align-spread">
+                <div class="slds-global-header__item">
+                    <button class="slds-button slds-button--neutral" onclick="closePage();">Close</button>
+                </div>
+            </div>
+    </header>
+    </div>
+    <div id="lightning"/>
+    <script>
+        $Lightning.use("amc:InboxApp", function() {
+            $Lightning.createComponent("amc:InboxAppLogtime",
+            {
+                'id' : '{!$CurrentPage.parameters.id}',
+                'isInbox':false,
+                'standalone':true,
+                'sf1':true
+            },
+            "lightning",
+            function(cmp) {
+            });
+        });
+
+        function closePage(){
+            Sfdc.canvas.publisher.publish({name: "publisher.close",
+            payload:{ refresh:"true"}});
+        }
+    </script>
+</apex:page>

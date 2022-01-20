@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Playground Sandbox</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Playground Sandboxes</value>
+    </caseValues>
+    <fields>
+        <help><!-- Wether the record is active or not. --></help>
+        <label><!-- Active --></label>
+        <name>Active__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field determines the order the sandboxes are displayed. --></help>
+        <label><!-- Order --></label>
+        <name>Order__c</name>
+    </fields>
+    <fields>
+        <help><!-- Type of Sandbox. --></help>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>DEVELOPER</masterLabel>
+            <translation><!-- DEVELOPER --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DEVELOPER_PRO</masterLabel>
+            <translation><!-- DEVELOPER_PRO --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>FULL</masterLabel>
+            <translation><!-- FULL --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PARTIAL</masterLabel>
+            <translation><!-- PARTIAL --></translation>
+        </picklistValues>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Name can&apos;t be longer than 10 characters. --></errorMessage>
+        <name>MasterLabelLessThan10Characters</name>
+    </validationRules>
+</CustomObjectTranslation>

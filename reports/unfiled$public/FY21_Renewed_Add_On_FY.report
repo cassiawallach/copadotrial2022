@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_77325614</developerName>
+        <masterLabel>Renewal Group</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>TYPE</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Credit Order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Auto-recharge</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Recurly order</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Existing Business</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free credits</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Free minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Partner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Growth</sourceValue>
+            </sourceValues>
+            <value>Copado Renewal</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Basic - Annual</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Premium - Annual</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Basic - Monthly</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>ClickDeploy - Premium - Monthly</sourceValue>
+            </sourceValues>
+            <value>ClickDeploy Renewal</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.ARR__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Opportunity.Default</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Existing Business,Renewal,Add-on</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>FISCAL_QUARTER</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_77325614</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>FY21 Renewed &amp; Add-On FY</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>closedwon</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CLOSE_DATE</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

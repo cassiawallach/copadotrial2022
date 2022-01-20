@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Academy_Certification_Student__c$Contact__c.Account</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification_Student__c.Academy_Certifications__r$Certification_Program__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification_Student__c$Contact__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification_Student__c$Student_Email__c</field>
+    </columns>
+    <columns>
+        <field>Academy_Certification_Student__c.Academy_Certifications__r$Expiration_Date__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>Academy_Certification_Student__c.Academy_Certifications__r$Expiration_Date__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>TODAY</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Academy_Certification_Student__c$Contact__c.Account</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>change partner</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>EB - Partner User Active Certifications</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Contacts_with_Certification_Grades__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Academy_Certification_Student__c.Academy_Certifications__r$Earned_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

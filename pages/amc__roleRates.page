@@ -1,0 +1,19 @@
+<apex:page sidebar="false" standardController="amc__Role__c">
+    <style>
+      html, body{
+        height:100%;
+      }
+  </style>
+    <apex:includeLightning /> 
+    <div id="managerates" style="height:100%; width:100%"/>
+    <script>
+        $Lightning.use("amc:ManageRatesApp", function() {
+          $Lightning.createComponent("amc:ManageRates",
+          {'recordId':'{!amc__Role__c.Id}',
+          'recordType':'amc__Role__c',
+          'isClassic':true},
+        "managerates",
+          function(cmp) {});
+        });
+    </script>
+</apex:page>

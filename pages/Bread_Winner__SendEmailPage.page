@@ -1,0 +1,567 @@
+<apex:page sidebar="false" standardController="Bread_Winner__Invoice__c" extensions="Bread_Winner.Invoice_RecordInfoExtension" showHeader="true" title="Email the {!Invoice.Bread_Winner__Type__c}" >
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:variable value="{!OR($User.UIThemeDisplayed == 'Theme4d', $User.UIThemeDisplayed == 'Theme4t')}" var="isLightning" />
+        <head>
+            <apex:stylesheet value="{!URLFOR($Resource.Bread_Winner__Breadwinner_Xero, 'Breadwinner_Xero/SLDS/assets/styles/salesforce-lightning-design-system-vf.min.css')}" ></apex:stylesheet>
+            <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/jquery-1.11.3.js')}"></script>
+            <script src="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/JS/select2.full.min.js')}" />
+            <link href="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/CSS/select2.min.css')}" rel="stylesheet" type="text/css"/>
+            <apex:slds />
+            <meta charset="utf-8" />
+            <script>
+            if(document.getElementsByTagName("title") && document.getElementsByTagName("title")[0]){
+                document.getElementsByTagName("title")[0].innerHTML="Email the {!Invoice.Bread_Winner__Type__c}";
+            }    
+            var j$ = jQuery.noConflict();
+            function HideStyleSheet() {
+                j$("link.user[href$='elements.css']").each(function() {
+                    j$(this).removeAttr("href");
+                });               
+                
+            }
+            
+            function message() {
+                j$(".infoM6, .infoM4, .infoM3, .infoM2, .infoS1").addClass("slds-notify slds-notify_alert slds-theme_inverse-text  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","border-radius":"4px"} );
+                j$(".errorM6, .errorM4, .errorM3, .errorM2, .errorS1").addClass("slds-notify slds-notify_alert slds-theme_error  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css({"font-weight":"500","line-height":"1.4","word-spacing":"1px","border-radius":"4px"});
+                j$(".warningM6, .warningM4, .warningM3, .warningM2, .warningS1").addClass("slds-notify slds-notify_alert slds-theme_warning  slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","border-radius":"4px"} ) ;
+                j$(".confirmM6, .confirmM4, .confirmM3, .confirmM2, .confirmS1").addClass("slds-notify slds-notify_alert slds-theme_success slds-text-align_left slds-text-heading_small slds-m-bottom_small").css( {"font-weight":"500","line-height":"1.4","word-spacing":"1px","border-radius":"4px"} ) ;
+                
+                j$("div .messageText h4").css( "color", "white" );
+                j$("div[class*='warning'] div.messageText h4").css( "color", "black" );
+                j$("table.messageTable td").css({"color" : "white"});
+                j$("div[class*='warning'] table.messageTable td").css( "color", "black" );
+            }
+            function addallfuncs(){
+                HideStyleSheet();
+                message();
+            }
+            j$(function(){
+                addallfuncs();
+                downloadInvoice();
+                select2Init();
+                if('{!JSENCODE(bwSettingWrapper.Default_CC_Email_Addresses)}' != '') ccShow();
+                if('{!JSENCODE(bwSettingWrapper.Default_BCC_Email_Addresses)}' != '') bccShow();
+            });
+
+            function ccShow(){
+                //j$("#ccsection").show();
+                if(j$('span[id$=\"ccsection\"]').css('display') == 'inline')
+                {
+                    j$('textarea[id$=\"CCInput\"]').val("");
+                }
+                j$('span[id$=\"ccsection\"]').toggle();
+                ccMethod();
+            }
+
+            function bccShow(){
+                if(j$('span[id$=\"bcsection\"]').css('display') == 'inline')
+                {
+                    j$('textarea[id$=\"BCInput\"]').val("");
+                }
+                j$('span[id$=\"bcsection\"]').toggle();
+                bccMethod();
+            }
+
+            function identifyfield(elementt, helptext, TopMinusparam,LeftMinusParam) {
+        
+                var x = j$(elementt).offset();
+                var islightningparam='{!isLightning}';
+                if(islightningparam=='true'){
+                    LeftMinusParam=LeftMinusParam-9;
+                    TopMinusparam=TopMinusparam-105;
+                }
+                var ToSetleft = x.left - LeftMinusParam;
+                j$("#help p").text(helptext);
+                var ToSetheight = x.top - TopMinusparam;
+                var heptextdiv = document.getElementById("help");
+                j$(heptextdiv).css({
+                    top: ToSetheight + 'px',
+                    left: ToSetleft + 'px',
+                    display: ""
+                })
+                
+            }
+    
+            function mouseoutclose() {
+                var heptextdiv = document.getElementById("help");
+                j$(heptextdiv).css({
+                    top: "0px",
+                    left: "0px",
+                    display: "none"
+                });
+            }
+
+            function select2Init() {
+                j$(".ccSelect,.bccSelect").select2({
+                    tags: true,                    
+                    maximumSelectionLength: 25,                    
+                    createTag: function (params) {                        
+                        var x=params.term;  
+                        var atposition=x.indexOf("@");  
+                        var dotposition=x.lastIndexOf(".");  
+                        if (atposition<1 || dotposition<atposition+2 || dotposition+2>=x.length){  
+                            return null;  
+                        }
+                        return {                                
+                            id: params.term,
+                            text: params.term
+                        }
+                    }
+                });                
+
+                j$(".ccSelect").on('select2:select', function (e) {
+                    var data = e.params.data;
+                    var ccEmail = data.id;
+                    ccMethod(ccEmail,'adding');
+                });
+
+                j$(".ccSelect").on('select2:unselect', function (e) {
+                    var data = e.params.data;
+                    var ccEmail = data.id;
+                    ccMethod(ccEmail,'removing');
+                });
+
+                j$(".bccSelect").on('select2:select', function (e) {
+                    var data = e.params.data;
+                    var bccEmail = data.id;
+                    bccMethod(bccEmail,'adding');
+                });
+
+                j$(".bccSelect").on('select2:unselect', function (e) {
+                    var data = e.params.data;
+                    var bccEmail = data.id;
+                    bccMethod(bccEmail,'removing');
+                });
+            }
+            var URL_string = document.URL;
+            var n = URL_string.search(".com");
+            var lexOrigin =URL_string.substring(0, n+4);
+            j$(document).keydown (
+                function(event){                   
+                var code = event.keyCode || event.which;
+                if (code == 27 && URL_string.includes("invcollection")) {
+                    closeModalByEsc();                    
+                }
+            });
+            
+            function closeModalByEsc(){
+                console.log('window url' +lexOrigin);                
+                var message = 'Esc';
+                parent.postMessage(message, lexOrigin);
+            }
+            </script>
+            
+            <style>
+                
+                .msgIcon {
+                display: none;
+                }                
+                .message .messageText {
+                margin: 0px;
+                }                
+                .message .messageText h4 {
+                font-weight: inherit;
+                display: initial;
+                }                
+                
+                @media (min-width: 60em){
+                .slds-scope .slds-form_horizontal {
+                text-align: right;
+                margin-left: 10%;
+                margin-right: 30%;
+                }}
+                @media (max-width: 48em){
+                .slds-scope .slds-form_horizontal {
+                margin-left: 10%;
+                margin-right: 10%;
+                }}
+                 .slds-spinner_brand .slds-spinner__dot-a:after, .slds-spinner_brand .slds-spinner__dot-a:before, .slds-spinner_brand .slds-spinner__dot-b:after, .slds-spinner_brand .slds-spinner__dot-b:before, .slds-spinner_brand.slds-spinner:after, .slds-spinner_brand.slds-spinner:before {
+                background-color: white;
+                }
+                .slds-spinner-displaytext {
+                top: 54%;
+                position: absolute;
+                left: 45%;
+                }
+                .slds-scope .slds-spinner_container{
+                position: fixed;
+                z-index: 9999;
+                }
+
+                .select2-container--default .select2-selection--multiple {
+                    border: solid #d8dde6 1px;
+                    padding-bottom: 5px;
+                }
+                .select2-container--default.select2-container--focus .select2-selection--multiple {
+                    border: solid #1589ee 1px;
+                    box-shadow: 0 0 3px #0070D2;
+                }
+                .select2-dropdown{
+                    border: 1px solid #1589ee;
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+                .select2-results__option {
+                    margin-left:0;
+                    line-height:7px !important;
+                    font-family: "Salesforce Sans",Arial,sans-serif;
+                    font-size: .8125rem;
+                    color: #3e3e3c;
+                    white-space: nowrap;
+                }
+                .select2-container--default .select2-results__option--highlighted[aria-selected]{
+                    background-color: #2692FB;
+                }
+                .select2-container--default .select2-selection--multiple .select2-selection__choice {
+                    background-color: #fff;
+                    color: #16325c;
+                    border: 1px solid #d8dde6;
+                    border-radius: 3px;
+                    white-space: normal;
+                }
+                .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+                    font-weight: 700;
+                    font-size: 17px;
+                }
+                .select2-container .select2-search--inline .select2-search__field {
+                    margin-top: 6px;
+                    line-height: 24px;
+                }
+                .select2-results__message{
+                    color: red;
+                    font-weight: bold;
+                }
+                .select2-container--default.select2-container--disabled .select2-selection--multiple {
+                    background-color: #e0e5ee;
+                    border-color: #a8b7c7;
+                    cursor: not-allowed;
+                }
+                .form{
+                    margin-left: 0%;
+                    margin-right: 18%;
+                }              
+            </style>
+            
+        </head>
+        <body>
+            <apex:outputPanel layout="block" styleclass="slds-scope" id="email-page" >
+                <apex:actionstatus id="actStatusId">
+                        <apex:facet name="start">
+                            <div class="slds-spinner_container">
+                                <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_medium">
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>   
+                                <div class="slds-spinner-displaytext slds-align_absolute-center" role="alert"> 
+                                    <P>
+                                        Sending the Mail..... Please Wait....
+                                    </P>
+                                </div>  
+                            </div>
+                        </apex:facet>
+                </apex:actionstatus>
+                <apex:actionstatus id="actStatusId1">
+                    <apex:facet name="start">
+                            <div class="slds-spinner_container">
+                                <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_medium">
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>
+                                <div class="slds-spinner-displaytext slds-align_absolute-center" role="alert"> 
+                                    <P>
+                                        Please wait while we get the latest {!Invoice.Type__c} PDF from Xero
+                                    </P>
+                                </div>   
+                            </div>
+                    </apex:facet>
+                </apex:actionstatus>
+                <apex:actionstatus id="actStatusId2">
+                    <apex:facet name="start">
+                            <div class="slds-spinner_container">
+                                <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_medium">
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>
+                                <div class="slds-spinner-displaytext slds-align_absolute-center" role="alert"> 
+                                    <P>
+                                        Marking the Mail Sent To Contact as True....
+                                    </P>
+                                </div>
+                            </div>
+                    </apex:facet>
+                </apex:actionstatus>
+                <apex:actionstatus id="actStatusId3">
+                        <apex:facet name="start">
+                            <div class="slds-spinner_container">
+                                <div role="alert" class="slds-spinner slds-spinner_brand slds-spinner_medium">
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>
+                            </div>
+                        </apex:facet>
+                </apex:actionstatus>
+
+                <div id="help" class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" aria-live="polite" style="display:none;position:absolute;top:0px;left:0px;">
+                    <div class="slds-popover__body slds-text-longform">
+                        <p>Help text will come here dynamically</p>
+                    </div>
+                </div>
+                
+                <div class="slds-page-header" role="banner">
+                    <div class="slds-media">
+                        <div class="slds-media__body">
+                            <p class="slds-page-header__title slds-truncate">Email the {!Invoice.Bread_Winner__Type__c}</p>
+                            <p class="slds-text-body_small">Breadwinner • Xero </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-m-top_small slds-m-horizontal_small">
+                    <apex:pageMessages id="pm" />
+                
+                <apex:pageMessage severity="info" rendered="{!showMessage}" summary="We are displaying the first 1000 Salesforce Contacts associated with this Salesforce Account"></apex:pageMessage>
+                <apex:pageMessage severity="info" rendered="{!isReadOnlyMode}" summary="You are using Breadwinner in Xero Read Only Mode. While Breadwinner reads data from Xero, no changes will be made to Xero. Xero is in Read-Only mode and will not be altered in any way."></apex:pageMessage>
+                <apex:pageMessage summary="The Xero Org {!invoice.Bread_Winner__Xero_Org_Name__c} related to this Invoice is not connected to Breadwinner. Please connect it from Breadwinner Tab." severity="WARNING" strength="1" rendered="{!Not(isXeroOrgConnected)}" />                 
+                <apex:pageMessage summary="You cannot send a PDF Email via Breadwinner on your current Breadwinner Subscription.
+                                           Please Contact Breadwinner to enquire about upgrading." severity="INFO" strength="1" rendered="{!if(!isProfessionalOrHigher,true,false)}" />
+                </div>
+                <apex:form rendered="{!AND(isActiveOrganization,NOT(isMailSentSuccessfully))}" styleClass="slds-m-horizontal_small">
+                    <apex:pageMessage id="Contactemailnotfound" summary="There were no Contacts with Email found for the related Account <a href=/{!invoice.Xero_Contact__r.Bread_Winner__Salesforce_Account__c} target=_blank>{!invoice.Xero_Contact__r.Salesforce_Account__r.Name}</a>." escape="false" severity="error" strength="1" rendered="{!AND(invoice.Xero_Contact__r.Bread_Winner__Salesforce_Account__c!=null,if(toContactsList.size >0,false,true),isProfessionalOrHigher)}" />
+                    <apex:pageMessage summary="This Xero Contact is not yet matched to any of the Salesforce Accounts yet, if you want to match this, please match this Xero Contact to one of the Salesforce Accounts by visting the Setup section on Breadwinner tab." escape="false" severity="WARNING" strength="1" rendered="{!invoice.Xero_Contact__r.Bread_Winner__Salesforce_Account__c=null}" />
+                    <apex:pageMessage summary=" Only plain-text email templates are supported. Only merge fields on the Invoice, Salesforce Account, Salesforce Contact, and the Salesforce Opportunity (if the Opportunity lookup is populated on the Invoice) are supported." severity="info" rendered="{!AND(isBusinessOrHigher,toContactsList.size > 0)}" />
+                    <apex:actionFunction action="{!sendEmailValidation}" name="downloadInvoice" rerender="AttactmentName, Button,pm,buttons" oncomplete="addallfuncs();" status="actStatusId1"/>
+                    <div class="slds-form_horizontal slds-m-top_medium form">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" >To</label>
+                            <div class="slds-form-element__control">
+                            <div class="slds-select_container">
+                                <apex:selectList value="{!conID}" size="1" disabled="{!if(!isProfessionalOrHigher,true,false)}" styleClass="slds-select" onchange="callsettingValuesFromTemplate();">
+                                    <apex:selectOptions id="conslist" value="{!toContactsList}"></apex:selectOptions>
+                                </apex:selectList>
+                            </div>
+                            </div>
+                            <apex:outputPanel rendered="{!isBusinessOrHigher}">
+                                <a onclick="ccShow();">Cc </a>
+                                <a onclick="bccShow();">Bcc </a> 
+                            </apex:outputPanel>
+                        </div>
+                        
+                        <div class="slds-form-element">
+                            <apex:outputPanel id="ccsection" style="display: none;">
+                                <apex:outputPanel rendered="{!isBusinessOrHigher}">
+                                    <label class="slds-form-element__label" style="vertical-align: top;">Cc</label>
+                                    <div class="slds-form-element__control">
+                                        <apex:outputPanel rendered="{!if(toContactsList.size > 0,true,false)}">
+                                            <select class="form-control slds-select slds-input ccSelect" multiple="multiple" style="width: 100%;" id="ccList">
+                                                <apex:outputPanel rendered="{!allContacts.size>0}">
+                                                    <optgroup label="SF Contacts">
+                                                        <apex:repeat value="{!allContacts}" var="c">
+                                                            <option value="{!c.Email}">{!c.Name} ({!c.Email})</option>
+                                                        </apex:repeat>
+                                                    </optgroup>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!allContactPersons.size>0}">
+                                                    <optgroup label="Xero - Additional Contacts">
+                                                        <apex:repeat value="{!allContactPersons}" var="cp">
+                                                            <option value="{!cp.EmailAddress}">{!cp.FirstName} {!cp.LastName} ({!cp.EmailAddress}) ({!cp.IncludeInEmails})</option>
+                                                        </apex:repeat>
+                                                    </optgroup>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!allUsers.size>0}">
+                                                    <optgroup label="Users">
+                                                        <apex:repeat value="{!allUsers}" var="u">
+                                                            <option value="{!u.Email}">{!u.Name} ({!u.Email})</option>
+                                                        </apex:repeat>
+                                                    </optgroup>
+                                                </apex:outputPanel>
+                                                <optgroup label="Others">
+                                                    <apex:repeat value="{!defaultCCEmailAddresses}" var="c" id="newcc">
+                                                        <apex:outputPanel rendered="{!if(c.isSelected,true,false)}">
+                                                            <option value="{!c.emailAddress}" selected="selected">{!c.emailAddress}</option>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!!if(c.isSelected,true,false)}">
+                                                            <option value="{!c.emailAddress}">{!c.emailAddress}</option>
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                </optgroup>
+                                            </select>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!if(toContactsList.size > 0,false,true)}">
+                                            <select class="form-control ccSelect" multiple="multiple" style="width: 100%;" disabled="true"></select>
+                                        </apex:outputPanel>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:actionFunction name="ccMethod" action="{!ccEmailsMethod}" reRender="newcc">
+                                <apex:param name="ccEmail" assignTo="{!ccEmail}" value=""/>
+                                <apex:param name="emailType" assignTo="{!emailType}" value=""/>
+                            </apex:actionFunction>
+                        </div>
+
+                        <div class="slds-form-element">
+                            <apex:outputPanel id="bcsection" style="display: none;">
+                                <apex:outputPanel rendered="{!isBusinessOrHigher}">
+                                    <label class="slds-form-element__label" style="vertical-align: top;">Bcc</label>
+                                    <div class="slds-form-element__control">
+                                        <apex:outputPanel rendered="{!if(toContactsList.size > 0,true,false)}">
+                                            <select class="form-control slds-input bccSelect" multiple="multiple" style="width: 100%;" id="bccList">
+                                                <apex:outputPanel rendered="{!allContacts.size>0}">
+                                                    <optgroup label="SF Contacts">
+                                                        <apex:repeat value="{!allContacts}" var="c">
+                                                            <option value="{!c.Email}">{!c.Name} ({!c.Email})</option>
+                                                        </apex:repeat>
+                                                    </optgroup>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!allContactPersons.size>0}">
+                                                    <optgroup label="Xero - Additional Contacts">
+                                                        <apex:repeat value="{!allContactPersons}" var="cp">
+                                                            <option value="{!cp.EmailAddress}">{!cp.FirstName} {!cp.LastName} ({!cp.EmailAddress}) ({!cp.IncludeInEmails})</option>
+                                                        </apex:repeat>
+                                                    </optgroup>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!allUsers.size>0}">
+                                                    <optgroup label="Users">
+                                                        <apex:repeat value="{!allUsers}" var="u">
+                                                            <option value="{!u.Email}">{!u.Name} ({!u.Email})</option>
+                                                        </apex:repeat>
+                                                    </optgroup>
+                                                </apex:outputPanel>
+                                                <optgroup label="Others">
+                                                    <apex:repeat value="{!defaultBCCEmailAddresses}" var="c" id="newbcc">
+                                                        <apex:outputPanel rendered="{!if(c.isSelected,true,false)}">
+                                                            <option value="{!c.emailAddress}" selected="selected">{!c.emailAddress}</option>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!!if(c.isSelected,true,false)}">
+                                                            <option value="{!c.emailAddress}">{!c.emailAddress}</option>
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                </optgroup>
+                                            </select>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!if(toContactsList.size > 0,false,true)}">
+                                            <select class="form-control bccSelect" multiple="multiple" style="width: 100%;" disabled="true"></select>
+                                        </apex:outputPanel>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:actionFunction name="bccMethod" action="{!bccEmailsMethod}" reRender="newbcc" >
+                                <apex:param name="bccEmail" assignTo="{!bccEmail}" value=""/>
+                                <apex:param name="emailType" assignTo="{!emailType}" value=""/>
+                            </apex:actionFunction>
+                        </div>
+
+                        <div class="slds-form-element">
+                        <apex:outputPanel rendered="{!isBusinessOrHigher}">    
+                            <label class="slds-form-element__label" >From</label>
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList value="{!fromEmailID}" size="1" disabled="{!if(toContactsList.size >0,false,true)}" styleClass="slds-select" >
+                                        <apex:selectOptions value="{!OrgWideEmailAddresses}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </div>
+                            </div>    
+                        </apex:outputPanel>
+                        </div>
+
+                        <div class="slds-form-element">
+                        <apex:outputPanel rendered="{!isBusinessOrHigher}">
+                            <label class="slds-form-element__label" >Email Templates</label>
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList id="SelectTemplate" value="{!EmailTemplateSelected}" size="1" styleClass="slds-select" onchange="callsettingValuesFromTemplate();" disabled="{!if(toContactsList.size >0,false,true)}" >
+                                        <apex:selectOptions value="{!EmailTemplates}" ></apex:selectOptions>
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                            <apex:actionFunction action="{!settingValuesFromTemplate}" name="callsettingValuesFromTemplate" reRender="Subject,Body,pm,AttactmentName" oncomplete="HideStyleSheet();message();" status="actStatusId3"/>
+                            </apex:outputPanel>
+                        </div>
+                        
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" >Subject
+                                <apex:outputPanel rendered="false">
+                                            <div class="slds-form-element__icon">
+                                                <a href="javascript:void(0);">
+                                                    <svg aria-hidden="true" class="slds-icon slds-icon_x-small slds-icon-text-default" onmouseover="identifyfield(this,'If the Subject is provided, this would override the Subject and Body of the Email Template that is Selected.','180','25')" onmouseout="mouseoutclose();">
+                                                        <use xlink:href="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/SLDS/assets/icons/utility-sprite/svg/symbols.svg#info')}"></use>
+                                                    </svg>
+                                                    <span class="slds-assistive-text">Help</span>
+                                                </a>
+                                            </div>
+                                        </apex:outputPanel>
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputText id="Subject" value="{!emailSubject}" styleClass="slds-input" disabled="{!OR(if(!isProfessionalOrHigher,true,false),if(toContactsList.size >0,false,true))}"/>
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" >Body
+                                <apex:outputPanel rendered="false">
+                                            <div class="slds-form-element__icon">
+                                                <a href="javascript:void(0);">
+                                                    <svg aria-hidden="true" class="slds-icon slds-icon_x-small slds-icon-text-default" onmouseover="identifyfield(this,'If the Body is provided, this would override the Subject and Body of the Email Template that is Selected.','180','25')" onmouseout="mouseoutclose();">
+                                                        <use xlink:href="{!URLFOR($Resource.Breadwinner_Xero, 'Breadwinner_Xero/SLDS/assets/icons/utility-sprite/svg/symbols.svg#info')}"></use>
+                                                    </svg>
+                                                    <span class="slds-assistive-text">Help</span>
+                                                </a>
+                                            </div>
+                                </apex:outputPanel>
+                            </label>
+                            <div class="slds-form-element__control" id="BodyDiv">
+                                <apex:inputTextarea id="Body" styleClass="slds-input" richText="false" value="{!emailBody}" rows="10" disabled="{!OR(if(!isProfessionalOrHigher,true,false),if(toContactsList.size >0,false,true))}"/>
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element">
+                            <apex:outputPanel id="AttactmentName">
+                            <label class="slds-form-element__label" style="vertical-align: top;">Attachments</label>
+                                <div class="slds-form-element__control">
+                                    <apex:outputText escape="false" value="{!AttachmentName}"/>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                        
+                        <apex:outputPanel layout="block" styleClass="slds-form-element" rendered="{!OR(AND(invoice.Bread_Winner__Type__c == 'Invoice'  , invoice.Bread_Winner__Total__c == invoice.Bread_Winner__Amount_Due__c , invoice.Bread_Winner__Status__c == 'AUTHORISED') , AND(invoice.Bread_Winner__Type__c == 'Purchase Order' , OR(invoice.Bread_Winner__Status__c == 'AUTHORISED' , invoice.Bread_Winner__Status__c == 'BILLED')))}">
+                            
+                            <label class="slds-form-element__label" >Mark this Invoice as sent in Xero</label>
+                            <div class="slds-form-element__control" style="margin-top: 3px;">
+                                <label class="slds-checkbox">
+                                    <apex:inputCheckbox value="{!isSentToContactUpdate}" disabled="{!OR(if(!isProfessionalOrHigher,true,false),invoice.Xero_Contact__r.Bread_Winner__Status__c=='ARCHIVED',isReadOnlyMode)}"/> 
+                                    <span class="slds-checkbox_faux" title="{!if(invoice.Xero_Contact__r.Status__c=='ARCHIVED','The Contact you are going to edit is Archived. Breadwinner can not make it as TRUE for Archived Xero Contacts currently as per Xero API.','')}"></span>
+                                </label>
+                            </div>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" styleClass="slds-form-element" rendered="{!AND(invoice.Bread_Winner__Type__c == 'Invoice'  , OR(AND(invoice.Bread_Winner__Amount_Paid__c != null,invoice.Bread_Winner__Amount_Paid__c > 0), AND(invoice.Bread_Winner__Amount_Credit__c != null,invoice.Bread_Winner__Amount_Credit__c > 0), invoice.Bread_Winner__Status__c == 'DRAFT'))}">
+                            <label class="slds-form-element__label" ></label>
+                            <div class="slds-form-element__control" style="padding-top: 10px;">
+                                <div class="slds-text-body_small"> Due to Xero limitations, Invoices with Draft status or which has Credit Notes or Payments applied cannot be marked as Sent.</div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="block" styleClass="slds-form-element" rendered="{!AND(invoice.Bread_Winner__Type__c == 'Purchase Order', invoice.Bread_Winner__Status__c == 'DRAFT')}">
+                            <label class="slds-form-element__label" ></label>
+                            <div class="slds-form-element__control" style="padding-top: 10px;">
+                                <div class="slds-text-body_small"> Due to Xero limitations, Purchase Orders with Draft status cannot be marked as Sent.</div>
+                            </div>
+                        </apex:outputPanel>
+                        
+                    </div>
+                    <apex:outputPanel layout="block" styleclass="slds-text-align_center slds-m-top_large slds-m-bottom_medium" id="buttons" >
+                        <apex:commandButton value="Send Email" action="{!sendEmail}" styleClass="slds-button slds-button_brand" status="actStatusId" disabled="{!OR(if(toContactsList.size >0,false,true),!isProfessionalOrHigher,!isXeroOrgConnected,AppUnauthorized)}" oncomplete="CallWebService_JS();" id="Button">
+                            <apex:param name="atmnId" value="{!base64Value}" assignTo="{!atmnt2_base64}"/>
+                        </apex:commandButton>
+                        <apex:actionFunction action="{!CallWebService}" name="CallWebService_JS" status="actStatusId2"  oncomplete="CallupdateInvoice();"/>
+                        <apex:actionFunction action="{!UpdateInvoice}" name="CallupdateInvoice" oncomplete="addallfuncs();" reRender="email-page,pm"/>
+                        <apex:actionFunction action="{!cancel}" name="CallCancel" />
+                        <apex:commandButton value="Cancel" action="{!cancel}" rendered="{!NOT(isFromInvoiceCollection = 'true')}" styleClass="slds-button slds-button_neutral"/>
+                    </apex:outputPanel>
+                    <div align="center">
+                        <apex:outputLabel style="font-style:italic;font-weight:bold;font-size:16px" rendered="{!isReadOnlyMode}">You are using Breadwinner in Xero Read Only Mode. While Breadwinner reads data from Xero, no changes will be made to Xero. Xero is in Read-Only mode and will not be altered in any way.</apex:outputLabel>
+                    </div>
+                </apex:form>
+            </apex:outputPanel>            
+        </body>
+    </html>
+</apex:page>

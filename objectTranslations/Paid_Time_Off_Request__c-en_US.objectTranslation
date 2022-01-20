@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Paid Time Off Request</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Paid Time Off Requests</value>
+    </caseValues>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>End_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- For half days add 0.5 --></help>
+        <label><!-- Number of days --></label>
+        <name>Number_of_days__c</name>
+    </fields>
+    <fields>
+        <label><!-- Paid Time Off Allowance --></label>
+        <name>Paid_Time_Off_Allowance__c</name>
+        <relationshipLabel><!-- Paid Time Off Requests --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>Start_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Cancelled</masterLabel>
+            <translation><!-- Cancelled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected</masterLabel>
+            <translation><!-- Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Requested</masterLabel>
+            <translation><!-- Requested --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- User --></label>
+        <name>User__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check this tickbox if you are requesting to work on a holiday.  This will credit your holiday allowance. --></help>
+        <label><!-- Working Holiday --></label>
+        <name>Working_Holiday__c</name>
+    </fields>
+    <layouts>
+        <layout>Paid Time Off Request Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- New Section --></label>
+            <section>New Section</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <label><!-- Approved --></label>
+        <name>Approved</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Default --></label>
+        <name>Default</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Please ensure that each holiday worked is a single day (StartDate and EndDate must be the same day) and that the number is set to -1. --></errorMessage>
+        <name>Negative_Number_of_Days_Worked_Holidays</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Number of Days must be greater than 0 if it is a holiday request.  Only requests for working on holidays, may have a negative number. --></errorMessage>
+        <name>Negative_Number_of_Days_only_for_holiday</name>
+    </validationRules>
+</CustomObjectTranslation>

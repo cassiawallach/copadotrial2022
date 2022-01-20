@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Contacts$Name</field>
+    </columns>
+    <columns>
+        <field>Account.Contacts$Email</field>
+    </columns>
+    <crossFilters>
+        <criteriaItems>
+            <column>Type</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CloseDate</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>LAST_90_DAYS</value>
+        </criteriaItems>
+        <operation>with</operation>
+        <primaryTableColumn>Account$Id</primaryTableColumn>
+        <relatedTable>Opportunity</relatedTable>
+        <relatedTableJoinColumn>Account</relatedTableJoinColumn>
+    </crossFilters>
+    <currency>USD</currency>
+    <description>Use this as suppression for new accounts within the last 90 days - all contacts whose account had a new buyer oppt within last 90 days</description>
+    <format>Tabular</format>
+    <name>Ctcs from new accounts last 90 days</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Accounts_with_Contacts1__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

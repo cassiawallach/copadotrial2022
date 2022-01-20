@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>A list of records containing the name of each Sandbox to be created and wether if it is active or not.</description>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Wether the record is active or not.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Wether the record is active or not.</inlineHelpText>
+        <label>Active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>This field determines the order the sandboxes are displayed.</inlineHelpText>
+        <label>Order</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <description>Type of Sandbox.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Type of Sandbox.</inlineHelpText>
+        <label>Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>DEVELOPER</fullName>
+                    <default>true</default>
+                    <label>DEVELOPER</label>
+                </value>
+                <value>
+                    <fullName>DEVELOPER_PRO</fullName>
+                    <default>false</default>
+                    <label>DEVELOPER_PRO</label>
+                </value>
+                <value>
+                    <fullName>PARTIAL</fullName>
+                    <default>false</default>
+                    <label>PARTIAL</label>
+                </value>
+                <value>
+                    <fullName>FULL</fullName>
+                    <default>false</default>
+                    <label>FULL</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Playground Sandbox</label>
+    <listViews>
+        <fullName>All_with_active_field</fullName>
+        <columns>MasterLabel</columns>
+        <columns>DeveloperName</columns>
+        <columns>Order__c</columns>
+        <columns>Type__c</columns>
+        <columns>Active__c</columns>
+        <columns>NamespacePrefix</columns>
+        <filterScope>Everything</filterScope>
+        <label>All with active field</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>Playground Sandboxes</pluralLabel>
+    <validationRules>
+        <fullName>MasterLabelLessThan10Characters</fullName>
+        <active>true</active>
+        <errorConditionFormula>LEN(DeveloperName) &gt; 10</errorConditionFormula>
+        <errorDisplayField>Active__c</errorDisplayField>
+        <errorMessage>Name can&apos;t be longer than 10 characters.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

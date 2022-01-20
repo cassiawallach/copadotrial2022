@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Status_Completed</name>
+        <label>Status = Completed</label>
+        <locationX>1295</locationX>
+        <locationY>485</locationY>
+        <assignmentItems>
+            <assignToReference>StatusVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Job_Completed</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Status_Failed</name>
+        <label>Status = Failed</label>
+        <locationX>1563</locationX>
+        <locationY>796</locationY>
+        <assignmentItems>
+            <assignToReference>StatusVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Failed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Job_Completed</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Status_In_Progress</name>
+        <label>Status = In Progress</label>
+        <locationX>925</locationX>
+        <locationY>490</locationY>
+        <assignmentItems>
+            <assignToReference>StatusVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In progress</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_IM_Validation_Step_Execution</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Status_Pending</name>
+        <label>Status = Pending</label>
+        <locationX>691</locationX>
+        <locationY>490</locationY>
+        <assignmentItems>
+            <assignToReference>StatusVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Pending</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Job_in_Progress</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Is_Job_Failed</name>
+        <label>Is Job Failed</label>
+        <locationX>691</locationX>
+        <locationY>50</locationY>
+        <defaultConnectorLabel>No Playground Job failed</defaultConnectorLabel>
+        <rules>
+            <name>Job_not_failed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IMValidationStepExecution.ExecutionStatus__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Failed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Status_Starting</targetReference>
+            </connector>
+            <label>Job not failed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Job_Completed</name>
+        <label>Job Completed</label>
+        <locationX>1287</locationX>
+        <locationY>798</locationY>
+        <defaultConnector>
+            <targetReference>Update_IM_Validation_Step_Execution</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Job not yet completed</defaultConnectorLabel>
+        <rules>
+            <name>Job_already_Completed</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>IMValidationStepExecution.ExecutionStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IMValidationStepExecution.ExecutionStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Failed</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Job already Completed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Job_in_Progress</name>
+        <label>Job in Progress</label>
+        <locationX>683</locationX>
+        <locationY>795</locationY>
+        <defaultConnectorLabel>Job in Progress</defaultConnectorLabel>
+        <rules>
+            <name>Job_not_in_Progress</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IMValidationStepExecution.ExecutionStatus__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>In progress</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_IM_Validation_Step_Execution</targetReference>
+            </connector>
+            <label>Job not in Progress</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Status_Failure</name>
+        <label>Status = Failure</label>
+        <locationX>1555</locationX>
+        <locationY>185</locationY>
+        <defaultConnectorLabel>Status not Failure</defaultConnectorLabel>
+        <rules>
+            <name>Is_Failure</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PlatformJobExecution.copado1p__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Failure</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Status_Failed</targetReference>
+            </connector>
+            <label>Is Failure</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Status_Running</name>
+        <label>Status = Running</label>
+        <locationX>916</locationX>
+        <locationY>184</locationY>
+        <defaultConnector>
+            <targetReference>Status_Success</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Status not Running</defaultConnectorLabel>
+        <rules>
+            <name>Is_Running</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PlatformJobExecution.copado1p__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Running</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Status_In_Progress</targetReference>
+            </connector>
+            <label>Is Running</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Status_Starting</name>
+        <label>Status = Starting</label>
+        <locationX>682</locationX>
+        <locationY>184</locationY>
+        <defaultConnector>
+            <targetReference>Status_Running</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Status not Starting</defaultConnectorLabel>
+        <rules>
+            <name>Is_Starting</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PlatformJobExecution.copado1p__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Starting</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Status_Pending</targetReference>
+            </connector>
+            <label>Is Starting</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Status_Success</name>
+        <label>Status = Success</label>
+        <locationX>1283</locationX>
+        <locationY>185</locationY>
+        <defaultConnector>
+            <targetReference>Status_Failure</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Status not Success</defaultConnectorLabel>
+        <rules>
+            <name>Is_Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PlatformJobExecution.copado1p__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Success</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Status_Completed</targetReference>
+            </connector>
+            <label>Is Success</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Update IM Validation Step Execution {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update IM Validation Step Execution</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Platform_Job_Execution_Record</name>
+        <label>Get Platform Job Execution Record</label>
+        <locationX>415</locationX>
+        <locationY>48</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Related_IM_Validation_Step_Execution</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentRecord</elementReference>
+            </value>
+        </filters>
+        <object>copado1p__Platform_Job_Execution__c</object>
+        <outputReference>PlatformJobExecution</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>copado1p__Copado_Job_ID__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Related the IM Validation Step Execution</description>
+        <name>Get_Related_IM_Validation_Step_Execution</name>
+        <label>Get Related IM Validation Step Execution</label>
+        <locationX>565</locationX>
+        <locationY>48</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Job_Failed</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Job_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PlatformJobExecution.copado1p__Copado_Job_ID__c</elementReference>
+            </value>
+        </filters>
+        <object>Interactive_Validation_Step_Execution__c</object>
+        <outputReference>IMValidationStepExecution</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ExecutionStatus__c</queriedFields>
+        <queriedFields>Platform_Job_Execution__c</queriedFields>
+        <sortField>LastModifiedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the IM Validation Step Execution</description>
+        <name>Update_IM_Validation_Step_Execution</name>
+        <label>Update IM Validation Step Execution</label>
+        <locationX>1054</locationX>
+        <locationY>796</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Job_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PlatformJobExecution.copado1p__Copado_Job_ID__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ExecutionStatus__c</field>
+            <value>
+                <elementReference>StatusVariable</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Platform_Job_Execution__c</field>
+            <value>
+                <elementReference>PlatformJobExecution.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Interactive_Validation_Step_Execution__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_Platform_Job_Execution_Record</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>IMValidationStepExecution</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Interactive_Validation_Step_Execution__c</objectType>
+    </variables>
+    <variables>
+        <name>PlatformJobExecution</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>copado1p__Platform_Job_Execution__c</objectType>
+    </variables>
+    <variables>
+        <name>StatusVariable</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>StepExecution</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Step_Execution__c</objectType>
+    </variables>
+</Flow>

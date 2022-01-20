@@ -1,0 +1,131 @@
+<apex:page id="thePage" standardController="Opportunity" extensions="CreateInvoiceFromOpportunityExtension">
+    
+    <apex:sectionHeader title="Copado Solutions" subtitle="Create Invoice from Opportunity"/>
+    
+    <apex:form id="theForm">
+        <apex:pageMessages id="theMessages"/>
+        <apex:pageBlock id="pb">
+            <apex:pageBlockButtons location="bottom">
+            	<apex:commandButton value="Create Invoice" action="{!createInvoice}" />
+            </apex:pageBlockButtons>
+        	<apex:pageBlockSection id="pbs1" columns="2">
+                <apex:outputField value="{!opportunity.Name}" />
+                <apex:outputField value="{!opportunity.Amount}" />
+                <apex:pageBlockSectionItem >
+                        <apex:outputLabel >Invoice Account</apex:outputLabel>
+                    	<apex:outputPanel >
+                        	<apex:inputField value="{!dummyInvoice.Account__c}" />
+                            <apex:commandButton value="Reload Account" title="Reload Account" action="{!refresh}" reRender="theForm" />
+                        </apex:outputPanel>
+                </apex:pageBlockSectionItem>                
+                <apex:outputField value="{!opportunity.currencyIsoCode}" />
+            </apex:pageBlockSection>
+            
+            <apex:actionRegion id="actRegion1">
+                <apex:pageBlockSection id="pbs2" title="Account Information" columns="1">
+                    <apex:outputField value="{!account.Name}" />
+                    <apex:inputField value="{!account.Billing_Name__c}" />
+                    <apex:inputField value="{!account.VAT_Number__c}" />
+                    <apex:inputField value="{!account.BillingStreet}" />
+                    <apex:inputField value="{!account.BillingCity}" />
+                    <apex:inputField value="{!account.BillingState}" />
+                    <apex:inputField value="{!account.BillingPostalCode}" />
+                    <apex:inputField value="{!account.BillingCountry}" />
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >Billing Contact</apex:outputLabel>
+                        <apex:outputPanel >
+                            <apex:inputField value="{!account.Billing_Contact__c}" />
+                            <apex:commandButton value="Create Billing Contact" action="{!showCreateAcountsPayableContact}" immediate="true" reRender="theForm" />
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputPanel ></apex:outputPanel>
+                        <apex:outputPanel >
+                            <apex:commandButton action="{!updateAccount}" value="Update Account" status="accountStatus" reRender="pbs2,pbs3" />
+                            <apex:actionStatus id="accountStatus">
+                                <apex:facet name="start">Updating...</apex:facet>
+                            </apex:actionStatus>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            
+            	<apex:pageBlockSection id="pbs3" title="Billing Contact" columns="1" rendered="{!showAccountsPayableFields}">
+                    <apex:inputField value="{!accsPayableContact.FirstName}" />
+                    <apex:inputField value="{!accsPayableContact.LastName}" />
+                    <apex:inputField value="{!accsPayableContact.Email}" />
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel ></apex:outputLabel>
+                        <apex:commandButton value="Save" action="{!saveAccsPayableContact}" status="accountStatus" reRender="theForm"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:actionRegion>
+                
+            <apex:pageBlockSection id="pbs4" title="Invoice Details" columns="1">
+                <apex:outputField value="{!invoice.Account__c}" />
+                <apex:outputField value="{!invoice.PO_number__c}" />
+                <apex:inputField value="{!invoice.Invoice_Date__c}" />
+                <apex:inputField value="{!invoice.Due_Date__c}" />
+
+
+                <apex:inputField value="{!invoice.Status__c}" required="true"/>
+                <apex:inputField value="{!invoice.Payment_method__c}" required="true" />
+                <apex:pageBlockSectionItem >
+                	<apex:outputPanel ></apex:outputPanel>
+                    <apex:outputPanel >
+                    	<apex:inputCheckbox value="{!createVATitem}" onclick="refreshPreview">
+                            <apex:actionSupport event="onchange" rerender="theForm" action="{!createPreviewData}"/>
+                        </apex:inputCheckbox>
+                            Create VAT Item
+                        <apex:actionStatus id="refreshStatus">
+                            <apex:facet name="start">Updating...</apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockTable id="pbt" value="{!ilis}" var="ili">
+                <apex:column >
+                    <apex:facet name="header">Line Item Name</apex:facet>
+                    <apex:inputField value="{!ili.Name}" style="width:400px" />
+                </apex:column>		
+                <apex:column >
+                    <apex:facet name="header">Quantity</apex:facet>
+                    <apex:outputField value="{!ili.Quantity__c}" />
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Sales Price</apex:facet>
+                    <apex:outputField value="{!ili.Unit_Price__c}" />
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Total Price</apex:facet>
+                    <apex:outputField value="{!ili.Total_Price__c}" />
+                </apex:column>
+            </apex:pageBlockTable>
+            <apex:pageBlockSection id="pbs5" columns="2">
+                <apex:outputPanel ></apex:outputPanel>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Sub Total" />
+                    <apex:outputPanel >
+                    	<apex:outputText value="{!invoice.CurrencyIsoCode} {!invSubTotal}" />
+                        <apex:outputPanel rendered="{!opportunity.Amount==invSubTotal}">&nbsp;&nbsp;<img src="/img/msg_icons/confirm16.png"/></apex:outputPanel>
+                        <apex:outputPanel rendered="{!opportunity.Amount!=invSubTotal}">&nbsp;&nbsp;<img src="/img/msg_icons/warning16.png"/></apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:outputPanel ></apex:outputPanel>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="VAT Amount" />
+                    <apex:outputText value="{!invoice.CurrencyIsoCode} {!invVatTotal}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:outputPanel ></apex:outputPanel>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Total Amount" />
+                    <apex:outputText value="{!invoice.CurrencyIsoCode} {!invTotal}" />
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

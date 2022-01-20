@@ -1,0 +1,358 @@
+<apex:page standardController="kugo2p__PaymentX__c" extensions="kugo2p.PaymentManagementController" showHeader="false" sidebar="false" standardStyleSheets="true">
+<style>
+    body {
+       font-size:.75em;
+    }
+    p {
+       margin:6px 0px 6px 0px;
+       padding:0;    
+    }
+    .pmt_mgt_inner {
+        padding:4px;
+    }
+    .pbBody {
+     /*   background:#f3f3ec; */
+    }
+    .reasonbox {
+        width:400px;
+    }
+    .pmt_mgt_button_bar {
+        background-color:#e0e0e0;
+        border: solid 1px #a4a4a4;
+        padding:4px;
+    }
+    
+    .modalProgressBox {
+        display: block;
+        position: absolute;
+        z-index: 999;
+        text-align: center; 
+        width: 100%;
+        height: 100%;
+        background-color: #FFF;
+        top: 0px;
+        left: 0px;
+        filter:alpha(opacity=50);
+        -moz-opacity:0.5;
+        -khtml-opacity: 0.5;
+        opacity: 0.5;
+        color: black;
+        font-size: 14pt;
+    }
+    
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+    <script type="text/javascript"> 
+
+    
+    function promptForCancel() {
+        var reason = prompt("Enter a reason (option) and click 'OK' to cancel this recurring payment:");
+    }
+
+
+    </script>
+<apex:form id="paymentManagementForm" > 
+
+<apex:pageBlock mode="edit" title="Payment Management">
+
+<apex:pageBlockButtons styleClass="kugamon">
+    <apex:commandButton value="Capture"  action="{!payPalCapturePaymentView}" styleClass="slds-button slds-button--neutral" status="formActionStatus"  rendered="{!processor=='PayPal' }" disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Status__c =='Authorized',false,true)}"  rerender="contentArea"/>
+    <apex:commandButton value="Capture"  action="{!authNetCapturePaymentView}" styleClass="slds-button slds-button--neutral" status="formActionStatus"  rendered="{!processor=='Authorize.Net'}" disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Status__c =='Authorized',false,true)}"  rerender="contentArea"/>
+    <apex:commandButton value="Void"  action="{!authNetVoidPaymentView}" styleClass="slds-button slds-button--neutral" rendered="{!processor=='Authorize.Net'}" status="formActionStatus"  disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Status__c =='Authorized' || kugo2p__PaymentX__c.kugo2p__Status__c =='Completed',false, true)}"  rerender="contentArea"/>
+    <apex:commandButton value="Void"  action="{!payPalVoidPaymentView}" styleClass="slds-button slds-button--neutral" rendered="{!processor=='PayPal'}" status="formActionStatus"  disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Status__c =='Authorized' || kugo2p__PaymentX__c.kugo2p__Status__c =='Completed',false,true)}"  rerender="contentArea"/>
+    <apex:commandButton value="Refund"  action="{!payPalRefundPaymentView}" styleClass="slds-button slds-button--neutral" status="formActionStatus" rendered="{!processor=='PayPal'}" disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Status__c =='Completed' && kugo2p__PaymentX__c.kugo2p__Transaction_Type__c == 'Payment',false,true)}"  rerender="contentArea"/>
+    <apex:commandButton value="Refund"  action="{!authNetRefundPaymentView}" styleClass="slds-button slds-button--neutral" status="formActionStatus" rendered="{!processor=='Authorize.Net'}" disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Transaction_Type__c == 'Payment' && kugo2p__PaymentX__c.kugo2p__Status__c =='Completed',false, true)}" rerender="contentArea"/>
+    <apex:commandButton value="Refund"  action="{!eWayRefundPaymentView}" styleClass="slds-button slds-button--neutral" status="formActionStatus" rendered="{!processor=='eWay AU XML'}" disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Transaction_Type__c == 'Payment' && kugo2p__PaymentX__c.kugo2p__Status__c =='Completed',false, true)}" rerender="contentArea"/>
+    <apex:commandButton value="Refund"  action="{!manualRefundPaymentView}" styleClass="slds-button slds-button--neutral" status="formActionStatus" rendered="{!ISBLANK(processor)}" disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Transaction_Type__c == 'Payment' && kugo2p__PaymentX__c.kugo2p__Status__c =='Completed',false, true)}" rerender="contentArea"/>
+    <apex:commandButton value="Payment Details" action="{!payPalGetPaymentDetailsView}" styleClass="slds-button slds-button--neutral" status="formActionStatus" rendered="{!processor=='PayPal'}" disabled="{!IF(kugo2p__PaymentX__c.kugo2p__Transaction_Id__c =='',true,false)}"  rerender="contentArea"/>
+    <apex:actionStatus id="formActionStatus" >
+         <apex:facet name="start" > 
+           <apex:outputPanel > 
+             &nbsp;
+             <!-- <apex:image value="{!URLFOR($Resource.PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." /> -->
+             <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />
+             &nbsp;Updating </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+
+</apex:pageBlockButtons>
+
+    <apex:outputPanel id="contentArea" >
+    <div style="height:150px;overflow:auto;">
+    <div style="margin:4px;">
+    <apex:pageMessages /> 
+    </div>
+
+    <apex:actionStatus id="modalActionStatus" >
+        <apex:facet name="start" > 
+            <apex:outputPanel styleClass="modalProgressBox">&nbsp; 
+                <br/><br/><br/>
+                <!-- <apex:image value="{!URLFOR($Resource.PaymentConnect, 'images/spinner_med.gif')}"  style="vertical-align:middle;" alt="busy..." /> -->
+                <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />
+                &nbsp;Processing Request
+            </apex:outputPanel>
+         </apex:facet> 
+         <apex:facet name="stop">
+         </apex:facet>
+    </apex:actionStatus>
+
+    <apex:outputPanel id="authNetCapturePaymentView" rendered="{!IF(currentAction == 'AuthNetCapturePayment',true,false)}">
+        <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Capture Amount" />
+                    <apex:inputText value="{!captureAmount}" />
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem > 
+                    <apex:outputText value="" />
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Capture Payment" action="{!authNetCapturePayment}" styleClass="slds-button slds-button--brand" status="modalActionStatus"  rerender="contentArea"/>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+
+        
+        </apex:pageBlockSection> 
+    </apex:outputPanel>
+    
+    
+    <apex:outputPanel id="authNetVoidPaymentView" rendered="{!IF(currentAction == 'AuthNetVoidPayment',true,false)}">
+         <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Reason for void"/>
+                    <apex:inputText value="{!reason}"/>
+                </apex:pageBlockSectionItem> 
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>  
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Void Payment" action="{!authNetVoidPayment}" styleClass="slds-button slds-button--brand" status="modalActionStatus"  rerender="contentArea"/>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>  
+
+        </apex:pageBlockSection>        
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="authNetRefundPaymentView" rendered="{!IF(currentAction == 'AuthNetRefundPayment',true,false)}">
+        <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Refund Amount" />
+                    <apex:inputText value="{!refundAmount}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Last 4 of Credit Card"/>
+                    <apex:inputText value="{!last4}"/>
+                </apex:pageBlockSectionItem>                
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Reason"/>
+                    <apex:inputText value="{!reason}"/>
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="" />
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Refund Payment" action="{!authNetRefundPayment}" styleClass="slds-button slds-button--brand" status="modalActionStatus" rerender="contentArea"/>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="payPalCapturePaymentView" rendered="{!IF(currentAction == 'PayPalCapturePayment',true,false)}">
+        <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Capture Amount" />
+                    <apex:inputText value="{!captureAmount}" />
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Notes"/>
+                    <apex:inputText value="{!comments}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="" />
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Capture Payment" action="{!payPalCapturePayment}" styleClass="slds-button slds-button--brand" status="modalActionStatus" rerender="contentArea"/>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+
+         
+        </apex:pageBlockSection>
+    </apex:outputPanel>
+ 
+     <apex:outputPanel id="payPalVoidPaymentView" rendered="{!IF(currentAction == 'PayPalVoidPayment',true,false)}">
+         <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Reason for void"/>
+                    <apex:inputText value="{!reason}"/>
+                </apex:pageBlockSectionItem> 
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>  
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Void Transaction" action="{!payPalVoidPayment}" styleClass="slds-button slds-button--brand" status="modalActionStatus"  rerender="contentArea"/>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>  
+
+        </apex:pageBlockSection>        
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="payPalRefundPaymentView" rendered="{!IF(currentAction == 'PayPalRefundPayment',true,false)}">
+        <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Refund Amount" />
+                    <apex:inputText value="{!refundAmount}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>                
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Reason"/>
+                    <apex:inputText value="{!reason}"/>
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="" />
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Refund Payment" action="{!payPalRefundPayment}"  styleClass="slds-button slds-button--brand" status="modalActionStatus" rerender="contentArea"/>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="eWayRefundPaymentView" rendered="{!IF(currentAction == 'eWayRefundPayment',true,false)}">
+        <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Refund Amount" />
+                    <apex:inputText value="{!refundAmount}" />
+                </apex:pageBlockSectionItem>
+
+                <!-- 
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Last 4 of Credit Card"/>
+                    <apex:inputText value="{!last4}"/>
+                </apex:pageBlockSectionItem>
+                -->
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Reason"/>
+                    <apex:inputText value="{!reason}"/>
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="" />
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Refund Payment" action="{!eWayRefundPayment}" styleClass="slds-button slds-button--brand" status="modalActionStatus" rerender="contentArea" />
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="manualRefundPaymentView" rendered="{!IF(currentAction == 'manualRefundPayment',true,false)}">
+        <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Refund Amount" />
+                    <apex:inputText value="{!refundAmount}" />
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value=""/>
+                    <apex:outputText value=""/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="" />
+                    <apex:outputPanel styleClass="kugamon" >
+                        <apex:commandButton value="Refund Payment" action="{!manualRefundPayment}" styleClass="slds-button slds-button--brand" status="modalActionStatus" rerender="contentArea" />
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:outputPanel>
+ 
+    <apex:outputPanel id="payPalPayPalDetailsView" rendered="{!IF(currentAction == 'PayPalPaymentDetails',true,false)}">
+        <apex:repeat value="{!transactionDetails}" var="value">
+            <div style="width:45%;float:left;margin-left:4px;">{!value}</div>
+        </apex:repeat> 
+        <div style="height:5px;clear:both;"/>
+        <apex:outputPanel styleClass="kugamon" >
+            <apex:commandButton value="Get Payment Details" action="{!payPalGetPaymentDetails}" styleClass="slds-button slds-button--neutral" status="modalActionStatus" rerender="contentArea"/>
+        </apex:outputPanel> 
+    </apex:outputPanel>
+                   
+    <apex:outputPanel id="introView" rendered="{!IF(currentAction == '',true,false)}">
+        <div class="pmt_mgt_inner">
+        <apex:outputPanel ><p>Use the button(s) above to manage this Payment.</p></apex:outputPanel>
+        </div>
+
+    </apex:outputPanel>
+    <apex:outputPanel id="reloadView" rendered="{!IF(currentAction == 'ReloadPage',true,false)}">
+        <div class="pmt_mgt_inner">
+            <p>It may be necessary to reload the current page to see the latest updates to this payment record.</p><br/>
+            <apex:outputPanel styleClass="kugamon" >
+                <apex:commandButton value="Reload Page" action="{!clearCurrentAction}" status="modalActionStatus" oncomplete="window.parent.location='/{!Id}'" styleClass="slds-button slds-button--neutral" />&nbsp;
+                <apex:commandButton value="View Refund" action="{!clearCurrentAction}" status="modalActionStatus" oncomplete="window.parent.location='/{!refundPaymentId}'" rendered="{!refundPaymentId != null}" styleClass="slds-button slds-button--brand" />
+            </apex:outputPanel>         
+        </div>
+    </apex:outputPanel>
+    
+    </div>
+    </apex:outputPanel>
+</apex:pageBlock>
+</apex:form>
+
+</apex:page>

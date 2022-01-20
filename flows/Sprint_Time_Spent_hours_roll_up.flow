@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <name>Add_Time_Spent_hours_to_sum</name>
+        <label>Sum Up Hours Spent on Sprint</label>
+        <locationX>545</locationX>
+        <locationY>586</locationY>
+        <assignmentItems>
+            <assignToReference>Total_Hours_Spent</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Count_Sprint_Work_Log_Hours.Time_Spent_hours__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Count_Sprint_Work_Log_Hours</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Get Sprint, assigned to current User Story.</description>
+        <name>Assign_User_Story_Sprint</name>
+        <label>Assign User Story Sprint</label>
+        <locationX>176</locationX>
+        <locationY>363</locationY>
+        <assignmentItems>
+            <assignToReference>Sprint</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.copado__Sprint__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Sprint_Work_Logs_Records</targetReference>
+        </connector>
+    </assignments>
+    <description>After US Time Spent (hours) is changed, Time Spent (hours) for Sprint is recalculated.</description>
+    <interviewLabel>Sprint Time Spent (hours) roll up {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Sprint Time Spent (hours) roll up</label>
+    <loops>
+        <description>Count Total Time Spent from Work Logs assigned to Sprint</description>
+        <name>Count_Sprint_Work_Log_Hours</name>
+        <label>Count Sprint Work Log Hours</label>
+        <locationX>547</locationX>
+        <locationY>363</locationY>
+        <collectionReference>WorkLogList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Time_Spent_hours_to_sum</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Sprint</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get all Work Logs, assigned to Sprint.</description>
+        <name>Get_Sprint_Work_Logs_Records</name>
+        <label>Get Sprint Work Logs Records</label>
+        <locationX>352</locationX>
+        <locationY>363</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Count_Sprint_Work_Log_Hours</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Sprint__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Sprint</elementReference>
+            </value>
+        </filters>
+        <object>Work_Log__c</object>
+        <outputReference>WorkLogList</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Time_Spent_hours__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update Time Spent on Sprint</description>
+        <name>Update_Sprint</name>
+        <label>Update Sprint</label>
+        <locationX>819</locationX>
+        <locationY>364</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Sprint</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Time_Spent_Hours__c</field>
+            <value>
+                <elementReference>Total_Hours_Spent</elementReference>
+            </value>
+        </inputAssignments>
+        <object>copado__Sprint__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Assign_User_Story_Sprint</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Time_Spent_hours__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>copado__User_Story__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Sprint assigned to Work Log.</description>
+        <name>Sprint</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Sum of Time Spent from Work Logs associated to Sprint.</description>
+        <name>Total_Hours_Spent</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>WorkLogList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Work_Log__c</objectType>
+    </variables>
+</Flow>

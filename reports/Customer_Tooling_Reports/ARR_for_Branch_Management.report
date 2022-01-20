@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_47930028</developerName>
+        <masterLabel>Module</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>SBQQ__Subscription__c.SBQQ__ProductName__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Selenium Minutes</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Selenium User</sourceValue>
+            </sourceValues>
+            <value>Selenium</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Enterprise Edition</sourceValue>
+            </sourceValues>
+            <value>Core</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Advanced Data Deployer</sourceValue>
+            </sourceValues>
+            <value>ADD</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Compliance Hub Package</sourceValue>
+            </sourceValues>
+            <value>CCH</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Change Management</sourceValue>
+            </sourceValues>
+            <value>CCM</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Agile Delivery</sourceValue>
+            </sourceValues>
+            <value>CAD</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Branch Management</sourceValue>
+            </sourceValues>
+            <value>CBM</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Service Hours</sourceValue>
+            </sourceValues>
+            <value>Services</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Admin</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Admin Certification</sourceValue>
+            </sourceValues>
+            <value>Training</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Success</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Success Add-On Existing Licenses</sourceValue>
+            </sourceValues>
+            <value>Support</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Copado Standard Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Professional Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Pilot</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado Enterprise Edition</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Copado User</sourceValue>
+            </sourceValues>
+            <value>Bundles</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Relay Tunnel</sourceValue>
+            </sourceValues>
+            <value>Relay Tunnel</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>SBQQ__Subscription__c.SBQQ__CustomerPrice__c.CONVERT</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Average</aggregate>
+            <axisBinding>y2</axisBinding>
+            <column>SBQQ__Subscription__c.SBQQ__CustomerPrice__c.CONVERT</column>
+        </chartSummaries>
+        <chartType>VerticalColumnLine</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_47930028</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_TOP</location>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Large</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__ProductName__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>SBQQ__Subscription__c.SBQQ__CustomerPrice__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__ListPrice__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__RegularPrice__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__NetPrice__c.CONVERT</field>
+    </columns>
+    <columns>
+        <field>SBQQ__Subscription__c.SBQQ__SpecialPrice__c.CONVERT</field>
+    </columns>
+    <currency>EUR</currency>
+    <filter>
+        <criteriaItems>
+            <column>FK_CTRC_STATUS</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Activated</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_47930028</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Services,Training,Support,Relay Tunnel</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_47930028</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>CBM</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <aggregateType>Sum</aggregateType>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_47930028</field>
+        <sortByName>SBQQ__Subscription__c.SBQQ__CustomerPrice__c.CONVERT</sortByName>
+        <sortOrder>Desc</sortOrder>
+        <sortType>Aggregate</sortType>
+    </groupingsDown>
+    <name>ARR for Branch Management</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$SBQQ__Subscription__c@SBQQ__Subscription__c.SBQQ__Contract__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>SBQQ__Subscription__c.SBQQ__SubscriptionStartDate__c</dateColumn>
+        <interval>INTERVAL_PREVCURFY</interval>
+    </timeFrameFilter>
+</Report>

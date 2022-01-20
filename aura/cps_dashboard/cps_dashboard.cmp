@@ -1,0 +1,90 @@
+<aura:component
+  implements="forceCommunity:availableForAllPageTypes"
+  controller="cps_PlaygroundWizardController"
+>
+  <aura:attribute name="playgrounds" type="Object[]" />
+  <aura:attribute name="listedPlaygrounds" type="Object[]" />
+  <aura:attribute name="allowedPlaygrounds" type="Integer" default="0" />
+  <aura:attribute name="createdPlaygrounds" type="Integer" default="0" />
+  <aura:attribute name="activePlaygrounds" type="Integer" default="0" />
+  <aura:attribute name="inprogressPlaygrounds" type="Integer" default="0" />
+  <aura:attribute name="failedPlaygrounds" type="Integer" default="0" />
+  <aura:attribute name="expiredPlaygrounds" type="Integer" default="0" />
+
+  <aura:attribute name="playgroundIdToDelete" type="String" />
+  <aura:attribute name="playgroundNameToDelete" type="String" />
+  <aura:attribute name="displayDeletePlaygroundDialog" type="Boolean" />
+  <aura:attribute name="arePlaygroundsUnderMaintenance" type="Boolean" default="true" />
+  <aura:attribute name="isPlaygroundWizardUnderMaintenance" type="Boolean" default="false" />
+
+  <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+
+  <aura:if isTrue="{! v.arePlaygroundsUnderMaintenance }">
+    <div style="background-color: #FFCC00; padding: 10px; text-align:center">
+      {!$Label.c.Playgrounds_Under_Maintenance}
+    </div>
+    <aura:set attribute="else">
+      <aura:if isTrue="{! v.isPlaygroundWizardUnderMaintenance }">
+        <div style="background-color: #FFCC00; padding: 10px; text-align:center">	
+          {!$Label.c.New_Playgrounds_Under_Maintenance}
+        </div>
+      </aura:if>
+
+      <div class="flex col">
+        <div class="flex row">
+          <div class="flex col info">
+            <h3 id="allowedCount">{! v.createdPlaygrounds } / {! v.allowedPlaygrounds }</h3>
+
+            <ul>
+              <li><a id="dashboardFilterByActivated" onclick="{!c.filterList}" class="activated" data-filter="Activated">{! v.activePlaygrounds } Activated</a></li>
+              <li><a id="dashboardFilterByInprogress" onclick="{!c.filterList}" class="inprogress" data-filter="In Progress">{! v.inprogressPlaygrounds } In Progress</a></li>
+              <li><a id="dashboardFilterByFailed" onclick="{!c.filterList}" class="failed" data-filter="Failed">{! v.failedPlaygrounds } Failed</a></li>
+              <li><a id="dashboardFilterByExpired" onclick="{!c.filterList}" class="expired" data-filter="Expired">{! v.expiredPlaygrounds } Expired</a></li>
+            </ul>
+          </div>
+          <div class="actions">
+            <aura:if isTrue="{! and(v.allowedPlaygrounds - v.createdPlaygrounds > 0, !v.isPlaygroundWizardUnderMaintenance) }">
+              <div id="dashboardNewPlayground" class="new-playground" onclick="{! c.goToCreationPage }">
+                <p>New Playground</p>
+                <i>+</i>
+              </div>
+            </aura:if>
+          </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="content">
+          <aura:if isTrue="{! and(v.createdPlaygrounds == 0, !v.isPlaygroundWizardUnderMaintenance) }">
+            <c:cps_welcome />
+          </aura:if>
+
+          <aura:if isTrue="{! v.createdPlaygrounds  > 0 }">
+            <div style="display: flex; flex-wrap: wrap">
+              <aura:iteration items="{! v.listedPlaygrounds }" var="playground">
+                <c:cps_playground_item
+                  playgroundId="{! playground.Id }"
+                  name="{! playground.Name }"
+                  status="{! playground.Status__c }"
+                  configuration="{!playground.Playground_Configuration__c}"
+                  isContinueShow="{! !v.isPlaygroundWizardUnderMaintenance}"
+                  onRemove="{! c.showDeleteDialog }"
+                />
+              </aura:iteration>
+            </div>
+          </aura:if>
+        </div>
+
+        <aura:if isTrue="{! v.displayDeletePlaygroundDialog }">
+          <div class="lights-out">
+            <c:cps_dialog_deletePlayground
+              playgroundName="{! v.playgroundNameToDelete }"
+              onCancel="{! c.hideDeleteDialog }"
+              onAccept="{! c.deletePlayground }"
+            />
+          </div>
+        </aura:if>
+      </div>
+      </aura:set>
+  </aura:if>
+</aura:component>

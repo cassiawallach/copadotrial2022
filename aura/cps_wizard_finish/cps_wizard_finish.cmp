@@ -1,0 +1,11 @@
+<aura:component controller="cps_PlaygroundWizardFinishController">
+  <aura:attribute name="playground" type="Object" required="true" />
+
+  <c:cps_wizard_body>
+    <c:cps_wizard_heading id="finishTitle">{! $Label.c.CPS_Finish_Heading }</c:cps_wizard_heading>
+    <h3>{! $Label.c.CPS_Finish_Subtitle }</h3>
+    <img src="{! $Resource.cps_assets + '/Assets/playground_ready.png' }" style="height:115px; width:181px;" />
+
+    <c:cps_Button id="btnFinish" onclick="{! c.activatePlayground }">{! $Label.c.CPS_Finish_Enjoy }</c:cps_Button>
+  </c:cps_wizard_body>
+</aura:component>

@@ -1,0 +1,78 @@
+<apex:page standardController="TRIMDA__TRIMDA_DupeAlerts__c" extensions="TRIMDA.TRIMDA_DupeAlert_Extension" >
+<apex:includeScript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/>
+   
+    <apex:form > 
+    <apex:actionFunction name="CheckAlert" oncomplete="actionComplete('{!CheckSuccess}')" action="{!Check}" reRender="CheckResult" status="ProgressStatus" />    
+          <script language="JavaScript">
+              function actionComplete(msg)
+              {
+                  //alert(msg);
+              }
+              var previousOnload = window.onload;        
+              window.onload = function() {
+                  if (previousOnload) {
+                      previousOnload();
+                      CheckAlert();
+                  }
+              }
+          </script> 
+        <apex:actionStatus id="ProgressStatus">
+            <apex:facet name="start">
+                <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Checking..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+     </apex:form>  
+    
+    <div class="slds">        
+                
+        <article class="slds-post">
+             
+          <header class="slds-post__header slds-media">
+            <div class="slds-media__figure">
+              <a href="mailto:support@datatrim.com" title="DataTrim Support" class="slds-avatar slds-avatar--circle slds-avatar--medium">
+                <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'support1.png')}" alt="DataTrim Support" />
+              </a>
+            </div>
+            <div class="slds-media__body">
+              <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                <p><a href="mailto:support@datatrim.com" title="DataTrim Support">DataTrim Support</a></p>
+                <!--<button class="slds-button slds-button--icon-border slds-button--icon-x-small" aria-haspopup="true"  title="More Options">
+                  <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'user.png')}" />
+                  <span class="slds-assistive-text">More Options</span>
+                  </button>
+				-->
+              </div>
+              <p class="slds-text-body--small">Just Now</p>
+            </div>
+          </header>
+          <div class="slds-post__content slds-text-longform">
+            <p>
+              <apex:outputpanel Id="CheckResult" title="Checking Alert" layout="block">
+                <apex:outputpanel title="Checking Alert Failed" rendered="{!Not CheckSuccess}" >
+                    <p>
+                        Checking Alert Failed:<br />
+                        <apex:outputpanel rendered="{!FilterError != ''}" style="color:red;font-weight:bold;">Error: {!FilterError}<br /></apex:outputpanel>
+                        <apex:outputpanel rendered="{!FilterWarning != ''}" >{!FilterWarning}<br /></apex:outputpanel>
+                    </p>
+                  </apex:outputpanel>
+                 <apex:outputpanel >  
+                     <apex:outputpanel rendered="{!FilterInfo != ''}" ><img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'info20x20.png')}" alt="Info" />{!FilterInfo}</apex:outputpanel>
+					<!--{!lSecondary} Records (Secondary, New and Changed) will be matched against {!lMaster} records (Master)-->
+                  </apex:outputpanel>
+                  
+                  <apex:outputpanel title="Checking Alert Failed" rendered="{!CheckSuccess}" >
+                      
+                  </apex:outputpanel>
+                  
+                </apex:outputpanel>
+              </p>
+          </div>
+           
+        </article>
+    
+    </div>
+ 
+</apex:page>

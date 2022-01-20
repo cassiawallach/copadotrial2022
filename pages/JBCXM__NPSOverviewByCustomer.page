@@ -1,0 +1,599 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.
+---- Purpose					:Displays NPS data for a customer.
+----
+---- Other comments (optional)	:
+-->
+<apex:page controller="JBCXM.NPSExtension" tabStyle="NPS__tab" extensions="JBCXM.GSCommonBroker" title="NPS® Overview By Customer" sidebar="false">
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+	<apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/js/jquery-ui-1.8.13.custom.min.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+   	<apex:includeScript value="/support/console/43.0/integration.js"/>
+	<apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/module/nps/NPSOverviewByCustomer.css"/>
+	
+	<script>
+  	  	var GS = {};
+      	GS.packageNS            = "{!(pkgNS)}";
+      	GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+      	GS.commonRemotingEndPoint     = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+      	GS.userConfig = {
+           userLocale  : {!(userLocaleDateFormatMap)},
+           userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+           userId      : "{!$User.Id}",
+           emailId     : "{!$User.Email}",
+           profilePhoto : "{!(profilePhoto)}",
+           userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+           gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+           isLightningEnabled: {!(isLightningEnabled)}
+      	};
+      	GS.isSFConsole = sforce.console.isInConsole();
+  </script>
+	
+	<apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>  
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+	
+    <style>
+	.gainsightLoadingIcon{
+        background : url({!URLFOR($Resource.GSAppCSS)}/images/64x64.gif) no-repeat;
+        width: 70px;
+        height: 70px;
+        position:relative;
+        margin : auto;
+        left: 0px;
+        right : 0px;
+        bottom :0px;
+        top : 0px;
+     }
+    .gs-loader-image-16 {
+        background: url("{!URLFOR($Resource.GSAppCSS)}/images/16x16.gif") no-repeat scroll 0 0 ;
+        display: none;
+        height: 16px;
+        padding-right: 20px;
+        vertical-align: middle;
+        width: 16px;
+     }
+     .gs-feature-content {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+         }
+         .gs-feature-error {
+             display: flex;
+             align-items: center;
+             height: 100%;
+             justify-content: center;
+          }
+         .gs-module-content-wrapper {
+             height: 100%;
+          }
+     	.gs-feature-disabled.gs-deprecated-error .gs-feature-content {
+           display: none;
+         }
+         .gs-feature-disabled.gs-deprecated-error .gs-feature-error {
+           display: block;
+         }
+     </style>	
+	
+	<script type="text/javascript" language="javascript">
+     	
+	    var j$ = jQuery.noConflict();
+	    window.jLatest = j$;
+	    var NPSTabSelected;
+
+	    var statePreservString        = sanitizeHtml('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+        statePreservString        =  j$("<\div>").html(statePreservString).text();
+        statePreservString        =  JSON.parse(gsEncodeHtml(statePreservString));
+		var isSameUserSessionExists = '{!(isSameUserSessionNPS)}';
+		var clientSideFltDetails = (statePreservString.ClientSideFilter__c) ? j$.parseJSON(statePreservString.ClientSideFilter__c) : {};
+		var triggerOnComplete = false;
+		var isPackagedVersion = "{!(isPkgInstance)}";
+		 var hc= eval({!(headerConfig)});
+
+	    var statePreservString        = sanitizeHtml('{!(JSINHTMLENCODE(userStateDetailsJsonNPS))}');
+        statePreservString        =  j$("<\div>").html(statePreservString).text();
+        statePreservString        =  JSON.parse(gsEncodeHtml(statePreservString));
+        var firstRender = false;   
+        var defaultTabloadDetails = (statePreservString.SubSection__c) ? j$.parseJSON(statePreservString.SubSection__c) : {};
+       	var tabIndexToSelect = j$.isEmptyObject(defaultTabloadDetails) ? 0 : parseInt(defaultTabloadDetails.index);
+
+        /* API call for NPS deprecate */
+           function npsDeprecate() {
+               var headers = {
+                               'Content-Type':'application/json',
+                               'appOrgId':hc.appOrgId,
+                               'appUserId':hc.appUserId,
+                               'appSessionId':hc.appSessionId
+                             };
+               j$.ajax({
+                                 type: 'GET',
+                                 url: hc.gatewayURL + '/v1/surveys/featureFlag/SURVEY_V1_DEPRECATED',
+                                 headers: headers,
+                                 success: function(res) {
+                                 j$('.gs-module-content-wrapper').show();
+                                 j$('.gs-feature-disabled').removeClass('gs-deprecated-error');
+                                    if(res.data) {
+                                      j$('#NPSSummaryTabs').hide();
+                                      j$('.gs-feature-disabled').show();
+                                    } else {
+                                        j$('#NPSSummaryTabs').show();
+                                        j$('.gs-feature-disabled').hide();
+                                    }
+                                },
+                                  error: function(err) {
+                                    j$('.gs-module-content-wrapper').hide();
+                                       j$('#NPSSummaryTabs').hide();
+                                        j$('.gs-feature-disabled').show();
+                                        j$('.gs-feature-disabled').addClass('gs-deprecated-error');
+                                        j$('.gs-feature-error').show().text(err.responseJSON.message);
+                                }
+                               });
+           }
+
+         npsDeprecate();
+
+         var npsV2URL;
+         if(hc.isLightningEnabled) {
+            npsV2URL = '/lightning/n/'+ (GS.packageNS || '') +'NPSV2';
+         } else {
+            npsV2URL = '/apex/'+  (GS.packageNS || '') +'SurveyInsights';
+         }
+
+           function redirectFeature() {
+              window.open(npsV2URL, '_blank');
+           }
+
+
+        function moduleNavRenderer(appContainer) {
+           var moduleNavInterface = {
+             getNavMenuOptions: function() {
+                 return [{
+                     label: 'NPS<sup>&reg;</sup>',
+                     "clickable": false,
+                     metadata: {
+                         "menuItem": "LIST"
+                     },
+                     children: [{
+                         label: 'Summary',
+                         selected: tabIndexToSelect === 0 ? true : false, //Default tab should be loaded
+                         disabled: true, //based on permission, should be shown
+                         metadata: {
+                             "tabIndex" : 0
+                         }
+                     	}, 
+                     	{
+                         label: 'Feed',
+                         selected: tabIndexToSelect === 1 ? true : false, //based on permission, should be shown
+                         metadata: {
+                             "tabIndex" : 1
+                         }
+                        },
+                        {
+                         label: 'By Survey',
+                         selected: tabIndexToSelect === 2 ? true : false, //based on permission, should be shown
+                         metadata: {
+                             "tabIndex" : 2
+                         }
+                        },
+                        {
+                         label: 'By Customer',
+                         selected: tabIndexToSelect === 3 ? true : false, //based on permission, should be shown
+                         metadata: {
+                             "tabIndex" : 3
+                         }
+                     }]
+                 }];
+             },
+             triggerNavClick: function(obj) {
+                 if (obj.tabIndex === 0) {
+                     j$("a[href='#NPSSummary']").click();
+                 }else if (obj.tabIndex === 1) {
+                     j$("a[href='#NPSFeed']").click();
+                 }else if (obj.tabIndex === 2) {
+                     j$("a[href='#NPSBySurvey']").click();
+                 }else if (obj.tabIndex === 3) {
+                     j$("a[href='#NPSByCustomer']").click();
+                 }
+             }
+         };
+         if ( !firstRender ) {
+           if ( tabIndexToSelect === 0 ) {
+               appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "Summary");
+               firstRender = true; 
+           }
+         }
+         if ( tabIndexToSelect === 1 ) {
+           appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "Feed");
+         }else if ( tabIndexToSelect === 2 ) {
+           appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Survey");
+         }else if ( tabIndexToSelect === 3 ) {
+           if(GS.relationshipEnabled){
+               appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Customer or Relationship");
+           }else{
+               appContainer.registerModule(moduleNavInterface, "NPS<sup>&reg;</sup>", "By Customer");
+           }
+         }
+       }
+             
+		/***
+		*This function reset the State preservation string and page redirect based on the tab selection.
+		*/
+		function redirectPageByTabSelection(latestUsrStateJSON, latestUsrSessionFlag) {
+			statePreservString = latestUsrStateJSON;
+			isSameUserSessionExists = latestUsrSessionFlag;
+			if(triggerOnComplete) {
+				var NPSTabSelected = j$("#NPSSummaryTabs li.active").find("a").attr('href');
+		        var href = j$('#'+(NPSTabSelected.substr(1))+'').attr('href');
+		        if(GS.isSFConsole === true){
+		          var url = window.location.href;
+		          var rem = (url.indexOf('NPSOverviewByCustomer?') !== -1) ? 'NPSOverviewByCustomer?' : 'NPSOverviewByCustomer';
+		          url = getSideNavUrl(rem, href, window.location.href);
+		          url = removeParam('cid', url);
+		          url = removeParam('cname', url);
+		          url = removeParam('rid', url);
+		          url = removeParam('rname', url);
+		          window.location.href = url;
+		        }else{
+		          window.location.href = '/apex/'+href;
+		        }
+			}   
+		}
+
+    function getSideNavUrl(host, appendURL, sourceURL){
+      var url = sourceURL.substring(0,sourceURL.indexOf(host))+appendURL;
+      url += (url.indexOf('?') === -1) ? '?' : '&';
+      return url+sourceURL.substring(sourceURL.indexOf(host)+host.length);
+    }
+
+    function removeParam(key, sourceURL) {
+        var rtn = sourceURL.split("?")[0],
+            param,
+            params_arr = [],
+            queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+        if (queryString !== "") {
+            params_arr = queryString.split("&");
+            for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                param = params_arr[i].split("=")[0];
+                if (param === key) {
+                    params_arr.splice(i, 1);
+                }
+            }
+            rtn = rtn + "?" + params_arr.join("&");
+        }
+        return rtn;
+    }
+		
+		/**
+         *This function is used to save the user state.
+         */
+        var actionTimer;
+		function processEntireState() {
+			clearTimeout(actionTimer);
+			statePreservString.Name = 'NPS';
+		 	statePreservString.ClientSideFilter__c = (statePreservString.ClientSideFilter__c) ? ((typeof statePreservString.ClientSideFilter__c == "string") ? statePreservString.ClientSideFilter__c : JSON.stringify(statePreservString.ClientSideFilter__c)) :  JSON.stringify({});
+		 	statePreservString.SortColumns__c = (statePreservString.SortColumns__c) ? ((typeof statePreservString.SortColumns__c == "string") ?  statePreservString.SortColumns__c : JSON.stringify(statePreservString.SortColumns__c)) :  JSON.stringify({});
+		 	statePreservString.ReportParams__c = (statePreservString.ReportParams__c) ? ((typeof statePreservString.ReportParams__c == "string") ? statePreservString.ReportParams__c : JSON.stringify(statePreservString.ReportParams__c)) :  JSON.stringify({});
+		 	statePreservString.UIViewId__c = (statePreservString.UIViewId__c) ? ((typeof statePreservString.UIViewId__c == "string") ? statePreservString.UIViewId__c : JSON.stringify(statePreservString.UIViewId__c)) :  JSON.stringify({});
+		 	statePreservString.ServerSideFilters__c = ((statePreservString.ServerSideFilters__c) ? ((typeof statePreservString.ServerSideFilters__c == "string") ? (statePreservString.ServerSideFilters__c) : JSON.stringify(statePreservString.ServerSideFilters__c)) : JSON.stringify({}));
+		 	actionTimer = setTimeout(function() {
+				var dmyStr = (isPackagedVersion == "true") ? JSON.stringify(pushStatePreservationJbaraNameSpace(statePreservString)) : JSON.stringify(statePreservString);
+        		if(GS.isSFConsole === true){
+          			actionUpdateStatePreservation(dmyStr);
+        		}else{
+  					var dmlFrame = document.getElementById("childDMLOperationIframe");
+  					dmlFrame.contentWindow.loadUserStateByTab(dmyStr, "{!(userSessionIdStr)}", "NPS");
+        		}
+			}, 4000);
+		 }
+	 	var self = this;
+	    j$(document).ready(function() {
+	  
+            var isRelationshipEnabled = {!(isRelationshipEnabled)};
+            if(isRelationshipEnabled == true){
+                var surveyTypes = 'Search ';
+                surveyTypes += '<select class="typeSelector" style="width:100px">';
+                surveyTypes += '<option value="customer" selected>Customer</option>';
+                surveyTypes += '<option value="relationship">Relationship</option>';
+                surveyTypes += '</select> : ';
+                j$('.surveyTypeSelector').html(sanitizeHtml(surveyTypes));
+            }else{
+                j$('.surveyTypeSelector').html('<div style="width:120px">  Search Customer :  </div>');
+                j$('.AccountRelationshipResults').css('left', '155px');
+            }
+            setPreviousParams();
+	    	j$('.lookupIconOn').parent().hide();  		
+	    	var tabIndex = 3;
+	    	j$('.NPSSummaryTabPage').eq(tabIndex).show();
+            var feedDetails = (clientSideFltDetails['NPSFeed']) ? clientSideFltDetails['NPSFeed'] : {};
+            if(!j$.isEmptyObject(feedDetails)) {
+                var url = 'NPSFeed';
+                if(feedDetails['relType'] && feedDetails['relType'] != ''){
+                    url += url.indexOf('?')>=0 ? '&' : '?';
+                    url += 'relType='+feedDetails['relType'];
+                }
+                j$('#NPSFeed').attr('href', encodeURI(url));
+            }
+            else {
+	    	j$('#NPSFeed').attr('href', encodeURI('NPSFeed'));
+            }
+	    		    		    	
+            var summaryDetails = (clientSideFltDetails['NPSSummary']) ? clientSideFltDetails['NPSSummary'] : {};
+            if(!j$.isEmptyObject(summaryDetails)) {
+                var url = 'NPSSummary';
+                if(summaryDetails['relType'] && summaryDetails['relType'] != ''){
+                    url += url.indexOf('?')>=0 ? '&' : '?';
+                    url += 'relType='+summaryDetails['relType'];
+                }
+                j$('#NPSSummary').attr('href', encodeURI(url));
+            }
+            else {
+                j$('#NPSSummary').attr('href', encodeURI('NPSSummary'));
+            }                        
+	    	var surOverviewDetails = (clientSideFltDetails['NPSBySurvey']) ? clientSideFltDetails['NPSBySurvey'] : {};
+            if(!j$.isEmptyObject(surOverviewDetails)) {
+                var url = 'NPSOverview';
+                if(surOverviewDetails['SurveyCode']){
+                    url += '?SurveyCode='+surOverviewDetails['SurveyCode']+'';
+                }
+                if(surOverviewDetails['relType'] && surOverviewDetails['relType'] != ''){
+                    url += url.indexOf('?')>=0 ? '&' : '?';
+                    url += 'relType='+surOverviewDetails['relType'];
+                }
+                j$('#NPSBySurvey').attr('href', encodeURI(url));
+  			}
+  			else {
+  				j$('#NPSBySurvey').attr('href', encodeURI('NPSOverview'));
+  			}
+			
+			//operations based on the tab selection.
+			j$("#NPSSummaryTabs").delegate('a.tab', 'click', function(event) {
+				
+				var currentElmnt = j$(event.currentTarget);
+				var tabIndexToSelect = j$(currentElmnt).attr('_ind');
+				event.preventDefault();
+				
+				if(tabIndexToSelect == tabIndex) {
+					return;
+				}
+				tabIndex = tabIndexToSelect;
+				j$("#ajaxRedirectingIcon").show();
+				j$("#NPSByCustomer").hide();
+				j$("#NPSSummaryTabs").find('li').removeClass('active');
+				j$(currentElmnt).parent().addClass('active');
+				
+				//select cuurent tab container
+				j$('.NPSSummaryTabPage').hide();
+				j$('.NPSSummaryTabPage').eq(tabIndex).show(); 
+				
+				statePreservString.ClientSideFilter__c   = (statePreservString.ClientSideFilter__c) ? statePreservString.ClientSideFilter__c : {}; 
+				statePreservString.SubSection__c   = '{"name" : "'+(j$(currentElmnt).attr('href')).substr(1)+'", "index" : '+tabIndexToSelect+'}';
+				triggerOnComplete = true;
+				processEntireState();
+			});    
+	       
+            j$(".AccountRelationshipSearch").keypress(function(event) {
+                var value = j$(this).val();
+                if (value.length>0 && event.keyCode == 13) {
+                   var surveyType = (j$('.typeSelector') && j$('.typeSelector').val()) || null;
+                   surveyType = surveyType ? surveyType : 'customer';
+                   self.getSearchResults(surveyType, value);
+                }
+            });
+            
+            j$('.typeSelector').unbind().bind('change', function() {
+                j$('.AccountRelationshipSearch').val('');
+                j$('.AccountRelationshipResults').hide();
+            });
+            
+            j$('.AccountRelationshipResults').on("click", ".tableSelector td", function(e) {
+                onCustomerChange(j$(this).attr('sType'),j$(this).text(),j$(this).attr('id'));
+            });
+           
+            j$('body').on("click", ".NPSSummaryTabPage", function(e) {
+                j$('.AccountRelationshipResults').hide();
+            });
+           
+	        if(j$(".theHiddenCustomerId").val()==''){
+	        	j$(".SurveyResponsescontainer").hide();
+        	}
+	        
+	        
+	    });
+	   
+        function getKey(key){
+            return GS.packageNS + key;
+        }
+        
+        function openGSConsolePTab(ele) {
+          if ( GS.isSFConsole === true ) {
+            var _console = window.sforce.console || window.parent.sforce.console;
+            if(_console && _console.openPrimaryTab) {
+              _console.openPrimaryTab(null, ele.href, true, ele.innerHTML, function () {}, ele.innerHTML);
+            }
+          } else {
+              window.open(ele.href,'_blank');
+          }
+      }
+
+        function buildResults(surveyType,results){
+            if(results.length>0){
+                var html = '<table class="tableSelector"><tbody>';
+                for(var i=0;i<results.length;i++){
+                    html += '<tr class="rows"><td sType="'+surveyType+'" id="'+results[i].Id+'">'+results[i].Name+'</td></tr>';
+                }
+                html += '</tbody></table>';
+                j$('.AccountRelationshipResults').html(sanitizeHtml(html));
+                j$('.AccountRelationshipResults').show();
+            }
+        }
+        
+          function getSearchResults(surveyType, input){
+              var action = "globalSearch.getSearchAccounts";
+              var data = {};
+              data.filterText = input;
+              data.excludeCustomers = false;
+              if(surveyType == 'relationship'){
+                  action = "config.searchRelationship";
+                  data = {};
+                  data.querystring = "FIND '*"+input+"*' IN ALL FIELDS RETURNING "+getKey('GSRelationship__c')+" (Id, Name ORDER BY Name ASC) LIMIT 20 "
+              }
+              j$('.gs-loader-image-16').show();
+              var self = this;
+              new AjaxCommand({
+              }).excecute({
+                 data : data,
+                 action:action
+              },false,false,false,{remotingEndPoint:GS.commonRemotingEndPoint}).done(function(result){
+                 j$('.gs-loader-image-16').hide();
+                 if(result != 'fail'){
+                 if(surveyType == 'relationship'){
+                     buildResults(surveyType,result.data[0]);
+                 }else{
+                     buildResults(surveyType,result);
+                 }
+                 }
+              }).fail(function(){
+                j$('.gs-loader-image-16').hide();
+              });
+          }
+          function setPreviousParams(){
+              var isRelationshipEnabled = {!(isRelationshipEnabled)};
+              var url = window.location.href;
+              if(url.indexOf('cid')>0){
+                  isRelationshipEnabled ? j$('.typeSelector').val('customer') : null;
+                  j$('.AccountRelationshipSearch').val("{!JSENCODE($CurrentPage.parameters.cname)}");
+              }else if(url.indexOf('rid')>0){
+                  j$('.typeSelector').val('relationship');
+                  j$('.AccountRelationshipSearch').val("{!JSENCODE($CurrentPage.parameters.rname)}");
+              }
+          }
+          function onCustomerChange(surveyType,custName,custId){
+	        if(custName=='' || custId=='') {
+	                  alert("Please select a customer.");
+	                  return false;
+	            }
+	        j$(".theHiddenCustomerName").val(custName);	
+            j$(".theHiddenCustomerId").val(custId);
+            custName=replaceAll(custName,'&','%20;');
+            var url = window.location.href;
+            url = removeParam('cid', url);
+            url = removeParam('cname', url);
+            url = removeParam('rid', url);
+            url = removeParam('rname', url);
+            if(url.indexOf('?')>0){
+                url += '&';
+            }else{
+                url += '?';
+            }
+            if(surveyType == 'relationship'){
+              url += "rid="+custId+'&rname='+encodeURI(custName);
+            }else{
+              url += "cid="+custId+'&cname='+encodeURI(custName);
+	          }
+            window.location.href = url;
+        }
+	    function replaceAll(txt, replace, with_this) {
+		  return txt.replace(new RegExp(replace, 'g'),with_this);
+		}
+	 </script>
+	 <div id="gs-app-container"> 
+         <div class="gs-module-container">
+         <div class="gs-module-content-wrapper" style="display: none">
+          <div class="gs-feature-disabled" style="display: none">
+          <div class="gs-feature-content">
+             <div class="gs-feature-image"></div>
+                 <h1>Page no longer exists</h1>
+                 <p>NPS 1.0 is retired and is no longer available. Gainsight offers NPS 2.0 to address all of your needs</p>
+                 <a href="javascript:;" target="_blank" onclick="redirectFeature()"  class="gs-btn-raised gs-feature-redirect">Go to NPS 2.0</a>
+             </div>
+                                       </div>
+			<div id="NPSSummaryTabs">
+			  <div class="HeaderNPSTabs row customer_tabs customerAnalytics" style="display:none;"> 
+				<ul class="nav nav-tabs adp_tabs">
+					  <li class="gs-user-img"><img alt="user image" src="{!profilePhoto}" /></li>
+					  <li ><span class="gs-tab-name">{!userDisplayName}</span><span class="gs-arrow">&nbsp;</span></li>
+					  <li><a href="#NPSSummary" class="tab" _ind='0' target="_top">Summary</a></li>
+			      	  <li><a href="#NPSFeed" class="tab" _ind='1' target="_top">Feed</a></li>
+			          <li><a href="#NPSBySurvey" class="tab" _ind='2' target="_top">By Survey</a></li>
+			          <li class='active'><a class="tab" _ind='3' target="_top">By Customer</a></li>	
+				</ul> 
+			  </div>
+				    
+			    <!-- NPS Summary Tab Starts Here -->
+			    <div id="NPSSummary" class="NPSSummaryTabPage" style="align:center;">
+			   	
+				</div>
+				<!-- NPS Summary Tab Ends Here -->
+				
+				<!-- NPS Feed Tab Starts Here -->
+			    <div id="NPSFeed" class="NPSSummaryTabPage" style="align:center;">
+			    	
+			    		
+				</div>
+				<!-- NPS Feed Tab Ends Here -->
+				
+				<!-- NPS By Survey Tab Starts Here -->
+			    <div id="NPSBySurvey" class="NPSSummaryTabPage" style="align:center;">
+			    	
+				</div>
+				<!-- NPS By Survey Tab Ends Here -->
+				
+				<!-- NPS By Customer Starts Here -->
+			    <div id="NPSByCustomer" class="NPSSummaryTabPage" style="align:center;">
+			    
+				
+					<div class="SurveySelectionOptionscontainer">
+						<div>
+                             <div class='surveyTypeSelector' style="float: left;display:inline-block; text-align:left;"></div>
+                             <input type="text" class="AccountRelationshipSearch"></input>
+                             <span class='gs-loader-image-16'></span>
+                             <div class="AccountRelationshipResults"></div>
+				        </div>     
+		            </div>
+		            <br/>
+					<div class="SurveyResponsescontainer" >
+	    			<c:NPS360 customerId="{!JSINHTMLENCODE($CurrentPage.parameters.cid)}" associatedRecordId="" showNPSHeader="true"></c:NPS360>
+			    	</div>
+				</div>
+				<!-- NPS By Customer Tab Ends Here -->
+			</div>
+			</div>
+            <div class="gs-feature-error" style="display: none"></div>
+		</div>
+	</div>
+	<iframe src="apex/FramePageForDML?callAfterStateSave=redirectPageByTabSelection"
+			width="0" height="0" frameborder="0" id="childDMLOperationIframe"></iframe>
+  <apex:form >
+    <apex:actionFunction name="actionUpdateStatePreservation" action="{!saveExistingNPSUserState}" reRender="UserStatePanel" oncomplete="redirectPageByTabSelection();" >
+       <apex:param name="stateJSON" value="" />
+    </apex:actionFunction>
+  </apex:form>
+	<script>
+    	var GSGA = {
+			orgId: "{!$Organization.Id}",
+			orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+			userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+		};
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	</script>
+	<script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js"></script>
+	<script>
+		gainsightTrackEvents.pushPageViews('NPS - By Customer');
+	</script>
+	<div id="ajaxRedirectingIcon" align="center" style="margin:1px 0px 1px 0px; display:none;">
+	   	<div class="waitingHolder gainsightLoadingIcon" style="width: 254px; top: 25.8px;">
+	      	<br/><span class="waitingDescription"></span>
+	    </div> 
+	</div>
+</apex:page>

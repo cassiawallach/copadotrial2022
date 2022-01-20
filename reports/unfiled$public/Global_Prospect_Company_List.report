@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Prospect_Company__c.Company__c</field>
+    </columns>
+    <columns>
+        <field>Prospect_Company__c.Country__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Prospect_Company__c.Employees__c</field>
+    </columns>
+    <columns>
+        <field>Prospect_Company__c.Industry__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Prospect_Company__c.Licenses__c</field>
+    </columns>
+    <currency>USD</currency>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>FK_$Prospect_Company__c.Company__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Global Prospect Company List</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Prospect_Company__c@Prospect_Company__c.Parent__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn>Prospect_Company__c.Employees__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Prospect_Company__c.Initiation_Date_with_SFDC__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

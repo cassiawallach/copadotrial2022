@@ -1,0 +1,66 @@
+<apex:page id="LearningPlanAnnouncement" standardController="redwing__Training_Plan__c" extensions="LearningPlanAnnouncementExtension">
+    <apex:slds />
+    <script>
+        function sendEmailPromt(){
+            var result = prompt('Are you sure about sending email to the students? If you are sure write SEND');
+            if(result === 'SEND'){
+                console.log('Sending Emails');
+                sendEmailToStudents();
+            }
+        }
+
+
+    </script>
+    <apex:outputPanel id="mainPanel">
+        <apex:form id="theForm" rendered="{!currentPlan.Id != null}">
+            <apex:pageMessages id="warningMessages" />
+            <apex:actionFunction name="sendEmailToStudents" id="sendEmailToStudents" action="{!sendEmailToCertifiedUsers}" reRender="mainPanel, warningMessages" />
+            <div class="slds-box">
+                Announce Maintenance for {!currentPlan.Name} <br />
+                Total number certifications needs current maintenance: {!certifications.size}
+            </div>
+            <apex:outputPanel rendered="{!emailSent}">
+                Total success count: {!totalSuccess} <br />
+                Total error count: {!totalError} <br />
+                {!errorMessages}
+            </apex:outputPanel>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Student Name">Student Name</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Student Email">Student Email</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <apex:repeat value="{!certificationsToShow}" var="crt">
+                    <tr class="slds-hint-parent">
+                        <th data-label="Student Name" scope="row">
+                            <div class="slds-truncate" title="{!crt.Certification_Student__r.Contact__r.Name}">{!crt.Certification_Student__r.Contact__r.Name}
+                            </div>
+                        </th>
+                        <td data-label="Student Email">
+                            <div class="slds-truncate" title="{!crt.Certification_Student__r.Contact__r.Email}">{!crt.Certification_Student__r.Contact__r.Email}</div>
+                        </td>
+                    </tr>
+                </apex:repeat>
+
+                </tbody>
+
+            </table>
+            <div id="buttonGroup" class="slds-align--absolute-center">
+                <apex:commandButton value="Back to Learning Plan" action="{!cancel}" styleClass="slds-button slds-button_brand" />
+                <apex:outputPanel rendered="{!AND(NOT(emailSent), currentPlan.Id != null)}">
+                    <button onclick="sendEmailPromt();" class="slds-button slds-button_neutral" type="button">Send Email for Announcement</button>
+                </apex:outputPanel>
+            </div>
+        </apex:form>
+
+        <apex:outputPanel rendered="{!AND(emailSent, currentPlan.Id == null)}">
+            Email already sent!
+        </apex:outputPanel>
+    </apex:outputPanel>
+</apex:page>

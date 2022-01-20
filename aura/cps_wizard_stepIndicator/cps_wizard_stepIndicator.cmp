@@ -1,0 +1,15 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="currentStage" type="String" access="public"/>
+    <aura:attribute name="hasError" type="Boolean" default="false" />
+
+    <div>
+        <lightning:progressIndicator currentStep="{! v.currentStage }" type="base" hasError="{! v.hasError }" variant="base">
+            <lightning:progressStep label="Start" value="Start"/>
+            <lightning:progressStep label="Create Trial Org" value="Create Trial Org"/>
+            <lightning:progressStep label="Connect" value="Connect"/>
+            <lightning:progressStep label="Install" value="PostInstallScript"/>
+            <lightning:progressStep label="Setup" value="Setup"/>
+            <lightning:progressStep label="Review" value="Review"/>
+        </lightning:progressIndicator>
+    </div>
+</aura:component>

@@ -1,0 +1,40 @@
+<aura:component controller="cps_InteractiveModule_Utils" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" access="global"/>
+    <aura:attribute name="parent" type="Aura.Component" required="true"/>
+
+    <aura:attribute name="instructions" type="String" />
+    <aura:attribute name="btnlabel" type="String" />
+
+    <aura:attribute name="lstPlaygrounds" type="Object[]" />
+    <aura:attribute name="hasPlaygrounds" type="Boolean" default="false" />
+    <aura:attribute name="lstPlaygroundsEnv" type="Object[]" />
+    <aura:attribute name="isPlaygroundEnvShow" type="Boolean" default="false" />
+    <aura:attribute name="selectedPlaygroundValue" type="String" />
+
+    <aura:if isTrue="{! !v.hasPlaygrounds}">
+        <c:tms_PlaygroundNotFoundError />
+    </aura:if>
+
+    <aura:if isTrue="{! v.hasPlaygrounds}">
+        <div>{!v.instructions}</div>
+        <div class="slds-grid slds-wrap slds-size--1-of-1 items-list">
+            <div class="slds-grid slds-wrap slds-size--1-of-1 slds-m-top_x-small open-env">
+                <lightning:select name="playgroundSelect" label="" aura:id="playgroundSelect" value="{!v.selectedPlaygroundValue}" onchange="{! c.changePlayground }">
+                    <aura:iteration items="{!v.lstPlaygrounds}" var="option">
+                        <option text="{!option.Name}" value="{!option.Id}" selected="{!option.Id == v.selectedPlaygroundValue}"/>
+                    </aura:iteration>
+                </lightning:select>
+                <lightning:button class="slds-m-left_x-small" label="{! v.btnlabel}" variant="neutral" onclick="{!c.startProcess}"/>
+            </div>
+            <aura:if isTrue="{! v.isPlaygroundEnvShow}">
+                <div class="slds-grid slds-wrap slds-size--1-of-1 slds-m-top_x-small">
+                    <aura:iteration var="pe" items="{!v.lstPlaygroundsEnv}">
+                        <div class="slds-m-top_x-small slds-m-right_x-small" onclick="{!c.openEnvironment}" data-peid="{!pe.Id}">
+                            <lightning:button label="{!pe.Name}" variant="brand" value="{!pe.Name}"/>
+                        </div>
+                    </aura:iteration>
+                </div>
+            </aura:if>
+        </div>
+    </aura:if>
+</aura:component>

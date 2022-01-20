@@ -1,0 +1,65 @@
+<apex:page id="thePage" showHeader="false" sidebar="false" standardStylesheets="false" controller="WebsiteCustomerReviewsController" action="{!init}">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+		<head>
+			<title>Copado Solutions Customer Reviews</title>
+			<meta name="description" content="" />
+			<meta name="keywords" content="" />
+			<c:websiteHeadTag />
+        </head>
+		<body class="homepage" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<div id="top-wrapper">
+					<c:websiteHeader />
+					<script>setActiveTab('CustomerReviews');</script>			           
+					 <section>
+							<header>
+							   <div class="container">
+								<h2>Customer Reviews</h2>
+								</div>
+							</header>
+						</section>
+				</div>
+	
+				<div id="main">
+					<div class="container"> 
+						<div class="row">
+							<section class="11u">
+								<apex:outputPanel id="pnlMain" layout="block">
+									<div class="alert, alert-info">
+                                        <apex:pageMessages id="theMessages"></apex:pageMessages>
+									</div>
+                                    <b>Industry:</b> <select id="industries" onchange="selectIndustry();">
+                                        <apex:repeat id="rptIndustries" value="{!industries}" var="i">
+                                            <option value="{!i}">{!i}</option>    
+                                        </apex:repeat>
+                                    </select>
+									<br /><br />
+									<apex:repeat id="rptReviews" value="{!reviews}" var="r">
+                                        <p>
+                                        {!r.Review__c}<br />
+                                        <b>{!r.Contact__r.FirstName} {!r.Contact__r.LastName}, {!r.Contact__r.Account.Name}</b>
+                                        </p>
+                                        <hr />
+									</apex:repeat>
+                                </apex:outputPanel>               
+							</section>
+						</div>
+					</div>
+				</div>
+	
+				<c:websiteFooter id="footer" />
+                                    <script>
+                						    
+                                        function selectIndustry(){
+                                            var i = document.getElementById('industries').value;
+                                        	window.location = '/CustomerReviews?industry='+i; 
+                                        }
+            							if('{!industry}'==''){
+                                        	document.getElementById('industries').value = 'All';
+                                        }
+                    					else{
+                                        	document.getElementById('industries').value = '{!industry}';
+                                        }
+                                    </script>
+		</body>
+	</html>
+</apex:page>

@@ -5,7 +5,6 @@
         <name>copado__Automatically_Merge_and_Deploy__c</name>
     </fields>
     <fields>
-        <help><!-- Git branch linked to the source environment. --></help>
         <label><!-- Branch --></label>
         <name>copado__Branch__c</name>
     </fields>
@@ -32,7 +31,7 @@
         <relationshipLabel><!-- Pipeline Connections --></relationshipLabel>
     </fields>
     <fields>
-        <help><!-- Value updated automatically by Copado. This is defined in the Deployment Flow Step of the Destination Environment. --></help>
+        <help><!-- This is the Git branch linked to the destination environment. This Git branch is defined in another deployment flow step record where the current destination environment is the source environment. --></help>
         <label><!-- Destination Branch --></label>
         <name>copado__Destination_Branch__c</name>
     </fields>
@@ -144,7 +143,6 @@
         </picklistValues>
     </fields>
     <fields>
-        <help><!-- Recommended Test Level: &quot;Run Local Tests&quot; --></help>
         <label><!-- Test Level --></label>
         <name>copado__Test_Level__c</name>
         <picklistValues>
@@ -164,6 +162,17 @@
             <translation><!-- Run Specified Tests --></translation>
         </picklistValues>
     </fields>
+    <layouts>
+        <layout>Deployment Flow Step Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Updated by Copado --></label>
+            <section>Updated by Copado</section>
+        </sections>
+    </layouts>
     <validationRules>
         <errorMessage><!-- Platform for pipeline and Environment must match --></errorMessage>
         <name>copado__EnvironmentAndPipelinePlatformMustBeSame</name>

@@ -1,0 +1,40 @@
+<apex:page standardController="TRIMDA__TRIMDA_MatchingResult__c"  extensions="TRIMDA.TRIMDA_DupeAlertMatchedRecord_Extension">
+<apex:form >
+    <apex:outputPanel id="Header">
+        <apex:pageBlock tabStyle="Lead" title="Convert Lead(s)">
+            <apex:pageMessages /> 
+            <apex:outputPanel id="Paramters" >
+                
+                
+                    <apex:pageBlock title="Mass Convert Selected Pairs" tabStyle="Lead">
+                            <apex:pageBlockButtons location="top">
+                                <apex:commandButton action="{!StatusTest}" value="StatusTest" status="ProgressStatus" reRender="List" />                                            
+                            </apex:pageBlockButtons>
+                            <apex:pageBlockSection title="Convert Settings" columns="1">
+
+                        </apex:pageBlockSection>    
+                    </apex:pageBlock>
+
+       
+            </apex:outputPanel>
+
+        </apex:pageBlock>
+
+
+
+</apex:outputPanel>
+<!-- <apex:outputText value="Counter: {!progressCounter}" id="counter"/>   -->
+<apex:actionStatus id="ProgressStatus">
+    <apex:facet name="start">
+        <!-- <c:TRIMDA_ProgressBar BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="250px" ImageUrl="{!URLFOR($Resource.DataTrimDupeAlerts, 'loaderA32.gif')}"  Message="Converting Leads ({!progressCounter})..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/> -->
+        <c:TRIMDA_ProgressBar BackColor="#efefef" BorderColor="#6965b0" borderSize="2" height="75px" width="170px" ImageUrl="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrimProgressBar.gif')}"  Message="Please Wait..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+    </apex:facet>
+</apex:actionStatus>
+<!-- <apex:actionPoller action="{!UpdateProgressCounter}" rerender="counter" interval="5" /> -->
+ </apex:form>
+ <!-- 
+<apex:outputPanel id="List" rendered="{!MassActionResult}">
+</apex:outputPanel>
+-->
+
+</apex:page>

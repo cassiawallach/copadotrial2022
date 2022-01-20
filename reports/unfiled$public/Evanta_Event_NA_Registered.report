@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Active_Opportunity__c</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>USERS.NAME</field>
+    </columns>
+    <columns>
+        <field>Account.AOV_Band__c</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_AE__c</field>
+    </columns>
+    <columns>
+        <field>Account.Salesforce_RVP__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <booleanFilter>(1 AND 2) AND (3 OR 4 OR 5)</booleanFilter>
+        <criteriaItems>
+            <column>Account.Region__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>AMER</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>USERS.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notContain</operator>
+            <value>FunnelBeam Integration</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>startsWith</operator>
+            <value>Royal Dutch Shell,McKesson Corporation,Daimler,Walgreens Boots Alliance,GE Power,Koch Industries,Deutsche Telekom,Target,Johnson &amp; Johnson,Sony,Panasonic,American Honda Motor Company,ENGIE Canada,Procter &amp; Gamble,PepsiCo Inc,European Central Bank,Cisco Systems,Lenovo,Nestle USA,Liberty Mutual,Honeywell,Caterpillar,GSK,Enbridge Energy Partners,Mars,Nike,Toshiba International,Optum,Penske,CHS,The Travelers Companies Inc,TD Bank Group,Johnson Controls,Inc.,Compass Group,Compass Group USA,Subaru of America,Rite Aid,ViacomCBS,SAP North America,The Kraft Heinz Company,Bank of Montreal,ABB AG,LafargeHolcim,Cummins,Schlumberger,Southern Company,Ascension,Bristol-Myers Squibb,DuPont,McDonald&apos;s,Rolls-Royce,The Hartford,H.I.G. Capital,Kimberly-Clark Corporation,QBE North America,QBE,Emerson Electric,General Mills,Siemens Healthineers,Schaeffler AG,Salesforce,Cognizant Technology Solutions Corp,JLL,Aramark,C.H. Robinson,NTT Global Data Centers Americas,Texas Instruments,Waste Management,Louis Vuitton,Nordea,Jacobs,Telenor Group,Booking Holdings,Covestro US,US Steel</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>startsWith</operator>
+            <value>ITW,Arconic,Stanley Black &amp; Decker,Textron,Nidec,Land O&apos;Lakes,KBC Groep,Estee Lauder,Covestro,TechnipFMC,Brenntag AG,Expedia Group,GKN,Securitas,Toyota Financial Services,Unum,Novelis,Grainger,Keurig Dr Pepper,Lam Research,University of Pennsylvania,Conagra Brands,Mazda Motor of North America,BorgWarner,SHI International,Campbell&apos;s,DCP Midstream,Teck,PVH,Tata Consultancy Services,Federated Co-op Limited (FCL),BDO,Brighthouse Financial,Collins Aerospace,Vanguard Group,Coca-Cola Hellenic,Freudenberg &amp; Co.,Intact Insurance,Great American Insurance Group,SUEZ Water Technologies &amp; Solutions,SSAB,Lulu Group International,HD Supply,Celanese,Olin,Wayfair,General Dynamics Information Technology,Millipore Sigma,Regeneron Pharmaceuticals,Northern Trust,NCR,Advanced Micro Devices,Beacon Roofing,NCH,NetApp,YIT,Babcock International Group,Graphic Packaging,Shaw Industries,Continental Automotive,SEWS-E,Orkla,Lexmark,Patterson Companies,Kelly Services,Southwire,Fortune Brands Home &amp; Security,Invesco,CNH Industrial America,Aon Corporation US,Resideo,Axalta Coating Systems,Skechers,SAIC,Landstar System,Bain &amp; Co,Keysight Technologies,Berlitz</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACCOUNT.NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>startsWith</operator>
+            <value>Coyote Logistics,Church &amp; Dwight,BorgWarner,ConocoPhillips - Norway,Paradies Lagardere,Nexteer,Nissan North America,Beam Suntory,DKV,Black &amp; Veatch,Faurecia,Albemarle,Cabot Corp,Bell Flight,Clean Harbors,Colliers International,Mallinckrodt Pharmaceuticals,Digi-Key,Varian Medical Systems,Velux,Brinker International,Lufthansa Cargo AG,Ledcor,Employbridge,Armada Supply Chain Solutions,Holman Enterprises,Ventura Foods,Day &amp; Zimmermann Group,Epson America,HNI,Fremantle,AEG Worldwide,Ghabbour Auto,National Spirit Group,Neoris,Teladoc Inc,TEAM,Jet Aviation,AmSty,Byline Bank,Zenuity,Netskope,Public Library of Science</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.Vertical__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Evanta Event_NA Registered</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>AccountList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>ACCOUNT.NAME</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,352 @@
+<!-- 
+    Author: Phase One First, LLC
+    Email: info@phaseonefirst.com [SFDC licensed username]
+    Handwrytten Automated Message
+ -->
+<apex:page id="thePage" standardController="Handwrytten__hndwrtObjNote__c" title="Handwrytten Automated Notes" extensions="Handwrytten.hndwrtClsAutomatedNote" tabstyle="hndwrtTabAcnts__tab" lightningStylesheets="true">
+	<apex:stylesheet value="{!URLFOR($Resource.Handwrytten__SLDS232, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <apex:sectionHeader title="" subtitle="Automated Notes"/>
+    
+    <apex:pageMessages /> 
+    
+    <apex:form id="theform"> 
+        <div class="slds">
+        	<style>
+            	input.btn { 
+                  color:#1f1f2e; 
+                  background-color:#fed; 
+                  border:1px solid; 
+                  border-color: #b34700 #e65c00 #e65c00 b34700; 
+            	}
+        	</style>  
+            
+            <apex:pageBlock id="thePageBlock"> 
+        
+            	<apex:pageBlockButtons location="both" id="theButtons">
+                	<apex:commandButton value="Next" action="{!getCards}" disabled="{!hndwrtAcntSelected}"/>
+                	<apex:commandButton value="Save" action="{!save}" disabled="{!NOT(hndwrtAcntSelected && cardSelected)}"/>
+                    <apex:commandButton value="Cancel" action="{!cancel}"/>
+            	</apex:pageBlockButtons> 
+                
+                <apex:pageBlockSection title="Automated Note" columns="1">
+                    <apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Automated_Note_Name__c}" style="width: 360px;"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Handwrytten Account / Address Type" columns="2">
+            
+                	<apex:selectList value="{!handwryttenAccountId}" size="1" id="slhAcnts" label="Handwrytten Account" disabled="{!hndwrtAcntSelected}">
+                    	<apex:selectOptions value="{!handwryttenAcnts}"/> 
+                	</apex:selectList>
+                    <apex:pageBlockSectionItem />
+                    
+                    <apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Automated_Note_Type__c}"/>
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Address_Type__c}"/>
+                    <!-- 
+                    <apex:outputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Automated_Note_Type__c}" rendered="{!hndwrtAcntSelected}"/>
+                	<apex:outputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Address_Type__c}" rendered="{!hndwrtAcntSelected}"/>
+					-->
+            	</apex:pageBlockSection> 
+                
+                <apex:pageBlockSection title="Credit Card" columns="1" rendered="{!hndwrtAcntSelected}">
+                    <apex:selectList label="Credit Card" value="{!selectedCcId}" size="1" id="slCC"> 
+                    	<apex:selectOptions value="{!CCs}"/>
+                	</apex:selectList>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Return Address" columns="2" rendered="{!hndwrtAcntSelected}">
+            
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Name__c}"/>
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Business_Name__c}"/>
+                
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Address__c}"/>
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Address_Line_2__c}"/>
+                
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_City__c}"/>
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_State__c}"/>
+                
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Zip__c}"/>
+                	<apex:inputField value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Sender_Country__c}"/>
+                
+            	</apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Card Selection" columns="1" rendered="{!hndwrtAcntSelected && NOT(cardSelected)}"> 
+
+                	<apex:selectList value="{!selectedCategory}" size="1" id="slCardCategories" label="Category">
+                    	<apex:actionSupport event="onchange" action="{!categoryChanged}" reRender="dtCards" status="loadstatus1" />
+                    	<apex:selectOptions value="{!categories}"/>
+                	</apex:selectList>
+                
+                	<apex:actionStatus id="loadstatus1">
+                    	<apex:facet name="start"> <img src="{!$Resource.hndwrtLoading}"/> &nbsp;Loading cards, please wait...</apex:facet>                               
+                	</apex:actionStatus>
+
+                	<apex:dataTable value="{!cardsLst}" var="c" align="center" rules="rows" cellpadding="5" id="dtCards">
+                    
+                    	<apex:column style="text-align:right;">
+                        	<apex:image value="{!c.cover}" style="max-width:400px;max-height:400px;"/>
+						</apex:column>
+                    
+                    	<apex:column >
+                        	<b>Name: </b><apex:outputText >{!c.name}</apex:outputText>
+                        	<br/>   
+                        	<b>Description: </b><apex:outputText >{!c.description}</apex:outputText>  
+                        	<br/>
+                        	<b>Price: </b>
+                        	<apex:outputText value="{0,number,$#,###,###.00}">
+                            	<apex:param value="{!c.price}" />
+                        	</apex:outputText>
+                        	<br/>
+                        	<br/> 
+                            
+                            <apex:commandLink value="Choose this card" action="{!setSelectedCard}" status="loadstatus2" rerender="thePageBlock" styleClass="btn" style="padding: 4px; text-decoration: none; background:#e6f9ff;"> 
+                            	<apex:param name="selectedCard" value="{!c.id}" assignTo="{!selectedCard}"/>
+                        	</apex:commandLink> 
+                        	<br/>
+                        	<br/>
+                        
+                        	<apex:actionStatus id="loadstatus2">
+                            	<apex:facet name="start"><img src="{!$Resource.hndwrtLoading}"/> &nbsp;Processing, Please wait...</apex:facet>                               
+                        	</apex:actionStatus>
+                    	</apex:column>
+                    
+                	</apex:dataTable>
+                
+				</apex:pageBlockSection> 
+
+            	<apex:pageBlockSection title="Selected Card" columns="1" rendered="{!hndwrtAcntSelected && cardSelected}">
+            
+                	<apex:outputText value="{!cardName}" label="Card Name"/>
+                	<apex:outputText value="{!cardDescription}" label="Card Description"/>
+                	<apex:outputText value="{0,number,$#,###,###.00}" label="Card Price">
+                    	<apex:param value="{!cardPrice}" />
+                	</apex:outputText>
+
+                	<apex:image value="{!cardCover}" style="max-width:400px;max-height:400px;"/>
+					<apex:commandLink value="Show additional images" rendered="{!NOT(showAdditionalImages)}"/>
+                	<apex:commandLink value="Hide additional images" rendered="{!showAdditionalImages}"/>
+                
+                	<apex:outputPanel id="tbShowHide"/>
+                
+                		<apex:outputPanel id="additionalImages" rendered="{!showAdditionalImages}"> 
+                
+                    		<apex:outputPanel id="portrait" rendered="{!cardOrientation='P'}">
+                    			<table>
+                        			<tr>
+                            			<td style="text-align:center">
+                                			<b>Envelope</b> <br/>
+                                			<apex:image value="{!imgEnvelope}" width="300" height="215" alt="No Envelope Image Available"/> 
+                            			</td>
+                            			<td style="text-align:center">
+                                			<b>Inside</b> <br/>
+                                			<apex:image value="{!imgInside}" width="460" height="325" rendered="{!cardOrientation='P'}" alt="No Inside Image Available"/> 
+                                			<apex:image value="{!imgInside}" width="325" height="230" rendered="{!cardOrientation='L'}" alt="No Inside Image Available"/>
+                            			</td>
+                            			<td style="text-align:center">
+                                			<b>Back</b> <br/>
+                                			<apex:image value="{!imgBack}" width="230" height="325" rendered="{!cardOrientation='P'}" alt="No Back Image Available"/> 
+                                			<apex:image value="{!imgBack}" width="325" height="230" rendered="{!cardOrientation='L'}" alt="No Back Image Available"/>
+                            			</td>
+                        			</tr>
+                    			</table>
+                    		</apex:outputPanel>
+                    
+                    		<apex:outputPanel id="landscape" rendered="{!cardOrientation='L'}">
+                    			<table>
+                        			<tr>
+                            			<td style="text-align:center">
+                                			<b>Envelope</b> <br/>
+                                			<apex:image value="{!imgEnvelope}" width="300" height="215" alt="No Envelope Image Available"/>  <br/>
+                                
+                                			<b>Back</b> <br/>
+                                			<apex:image value="{!imgBack}" width="325" height="230" alt="No Back Image Available"/>
+                            			</td>
+                            
+                            			<td style="text-align:center">
+                                			<b>Inside</b> <br/>
+                                			<apex:image value="{!imgInside}" width="325" height="460" alt="No Inside Image Available"/>
+                            			</td>
+                        			</tr>
+                    			</table>
+                    		</apex:outputPanel>
+      
+                		</apex:outputPanel>
+
+            	</apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Inserts" columns="2" rendered="{!hndwrtAcntSelected && cardSelected}">
+                
+                <apex:selectList value="{!selectedInsert}" size="1" id="slInserts" label="Inserts">
+                    <apex:actionSupport event="onchange" action="{!insertChanged}" reRender="iPrice" />
+                    <apex:selectOptions value="{!Inserts}"/>
+                </apex:selectList>
+
+                    	<apex:outputText value="${0, number, ###,###,###,##0.00}" Label="Insert Price" Id="iPrice">  
+                    		<apex:param value="{!insertPrice}"/>  
+                		</apex:outputText>  
+            </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Gift Card (Optional)" columns="1" rendered="{!hndwrtAcntSelected && cardSelected && hndwrtAcnt.Handwrytten__Allow_Gift_Cards__c}">
+          	
+                <apex:selectList value="{!selectedGiftCard}" size="1" id="slGiftCards" label="Gift Cards" rendered="{!hndwrtAcnt.Handwrytten__Allow_Gift_Cards__c}">
+                    <apex:actionSupport event="onchange" action="{!giftCardChanged}" reRender="opGftCrds,pbsSummary" status="loadstatus3" />
+                    <apex:selectOptions value="{!GiftCards}"/>
+                </apex:selectList>
+                
+                <apex:actionStatus id="loadstatus3">
+                    <apex:facet name="start">
+                        <img src="{!$Resource.hndwrtLoading}"/> &nbsp;Loading gift card options, please wait...    
+                    </apex:facet>                               
+                </apex:actionStatus>
+                
+                <apex:outputPanel id="opGftCrds">  
+                    <apex:image id="gftCrdImg" value="{!gftCrdUrl}" width="400" height="225" rendered="{!gftCrdUrlSet}"/>   
+                    
+                    <apex:selectRadio value="{!selectedGiftCardAmt}" rendered="{!gftCrdUrlSet}">
+                        <apex:actionSupport event="onchange" action="{!giftCardAmountChanged}" reRender="pbsSummary"/>
+                        <apex:selectOptions value="{!GiftCardDenominations}"/>
+                    </apex:selectRadio>
+                
+                </apex:outputPanel>
+                
+            </apex:pageBlockSection> 
+
+            <apex:pageBlockSection title="Wryting Style" columns="1" rendered="{!hndwrtAcntSelected && cardSelected}">
+
+                <apex:selectList value="{!selectedFont}" size="1" id="slFonts" label="Writing Styles">
+                    <apex:actionSupport event="onchange" action="{!fontChanged}" reRender="opFonts" status="loadstatus4"/>
+                    <apex:selectOptions value="{!Fonts}"/>
+                </apex:selectList>
+                
+                <apex:actionStatus id="loadstatus4">
+                    <apex:facet name="start">
+                        <img src="{!$Resource.hndwrtLoading}"/> &nbsp;Loading font style image, please wait...    
+                    </apex:facet>                               
+                </apex:actionStatus>
+                
+                <apex:outputPanel id="opFonts">  
+                    <apex:image id="fontImg" value="{!fontUrl}" width="600" height="275" rendered="{!fontURLSet}"/>   
+                </apex:outputPanel>
+                
+			</apex:pageBlockSection> 
+            
+            <apex:pageBlockSection title="Message" columns="1" id="pbsMessage" rendered="{!hndwrtAcntSelected && cardSelected}">
+            
+                <apex:panelGrid columns="2" id="pgBtns" rendered="{!NOT(showTemplateSelection)}"> 
+                    <apex:commandButton action="{!showLoadFromTemplate}" status="loadstatus" reRender="pbsMessage" value="Load Message From Template"/>
+                    <apex:commandbutton action="{!showSaveAsTemplate}" status="loadstatus" reRender="pbsMessage" value="Save Message As Template"/>  
+                </apex:panelGrid>
+            
+                <apex:outputPanel rendered="{!NOT(showTemplateSelection)}">
+                    <i>Use merge fields to personalize your message content. The merge field value will be replaced
+                            by the corresponding field value when the bulk order is processed.</i> Select contact field, copy 
+                            and paste the merge field value into your message below.
+
+                    <table style="border:1px solid black">
+                        <tr>
+                            <th>Selected Field</th>
+                            <th>Copy Merge Field Value</th> 
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:selectList value="{!selectedMergeFld}" size="1"  label="Select Field">
+                                    <apex:actionSupport event="onchange" action="{!mergeFieldChanged}" reRender="otMergeFld" />
+                                    <apex:selectOptions value="{!MergeFields}"/>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:inputText value="{!mergeFldVal}" label="Copy Merge Field Value" id="otMergeFld"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="otCreateTemplate" rendered="{!showSaveAsTemplate}">
+                    <apex:outputLabel value="Please enter template name: " for="itTmplNm"/>
+                    <apex:inputText id="itTmplNm" value="{!tmplNm}"/>
+                     <apex:commandButton action="{!saveTemplate}" status="loadstatus5" reRender="pbsMessage" value="Create Template" />
+                     <apex:commandButton action="{!hideSaveAsTemplate}" status="loadstatus5" reRender="pbsMessage" value="Cancel" />
+                    <br/>
+                    <table style="width:600px;"> 
+                        <tr> <td>
+                            <apex:pageMessage title="Create Template Failed" summary="{!msgTemplateSaveError}" severity="error" strength="3" rendered="{!showTemplateSaveErrors}" />
+                        </td> </tr> 
+                    </table> 
+                </apex:outputPanel>
+                
+                <apex:actionStatus id="loadstatus5">
+                    <apex:facet name="start">
+                        <img src="{!$Resource.hndwrtLoading}"/> &nbsp;Processing, Please wait...    
+                    </apex:facet>                               
+                </apex:actionStatus>
+                
+                <apex:pageBlockSectionItem rendered="{!NOT(showTemplateSelection)}">
+                        <apex:outputLabel value="Message" for="theMsg"/>
+   
+                        <apex:inputField id="theMsg" value="{!Handwrytten__hndwrtObjNote__c.Handwrytten__Message__c}"
+                            style="width: 360px; height: 260px"
+                            onKeyUp="textCounter(this,'charCt' ,{!maxLen})"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!NOT(showTemplateSelection)}">
+                        <apex:outputPanel id="charCounter">
+                            Approximate characters remaining for your message: <input id="charCt" name="charCt" style="background: transparent;border: none;read-only:true" value="{!msgCnt}" readonly="true"/>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!showTemplateSelection}">
+                
+                    <apex:outputLabel value="Templates" for="slTemplates"/>
+                    <apex:selectList value="{!selectedTemplate}" size="1" label="Select a template" id="slTemplates">
+                        <apex:actionSupport event="onchange" action="{!templateChanged}" reRender="theMsg,thePreview,charCounter,pgSelTmplBtns" />
+                        <apex:selectOptions value="{!Templates}"/>
+                    </apex:selectList>
+                
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!showTemplateSelection}">
+                <apex:outputLabel value="Template Preview" for="thePreview"/>
+                    <apex:outputText id="thePreview" label="Preview" value="{!templatePreview}" style="width: 360px; height: 260px" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:panelGrid columns="2" rendered="{!showTemplateSelection}" id="pgSelTmplBtns">   
+                    <apex:commandButton value="Choose Template" action="{!templateChoosen}" status="loadstatus" reRender="pbsMessage" disabled="{!NOT(TemplateSelected)}" />
+                    <apex:commandButton action="{!templateCancel}" status="loadstatus" reRender="pbsMessage" styleclass="btn" value="Cancel"/>
+                </apex:panelGrid>
+
+            </apex:pageBlockSection> 
+                
+            
+            
+
+                
+            </apex:pageBlock>
+            
+            
+        </div>
+        
+        <script>
+
+    		function textCounter(field,cnt,maxlimit) {         
+            	var cntfield = document.getElementById(cnt) 
+             	if (field.value.length > maxlimit) 
+                	field.value = field.value.substring(0, maxlimit);
+            	else 
+                	cntfield.value = maxlimit - field.value.length;
+    		}
+    
+    		function getSelectedFont(font){
+        		SetSelectedFont(font);
+    		}
+    
+    	function afterShowHideImageFocus() {
+        	document.getElementById('tbShowHide').focus();
+    	}
+    
+		function SubmitOnClick (objSubmitBtn) {
+        	objSubmitBtn.disabled = true;
+    	}
+
+    </script>
+    </apex:form>
+</apex:page>

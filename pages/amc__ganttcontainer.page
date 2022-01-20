@@ -1,0 +1,36 @@
+<apex:page standardStylesheets="false" standardController="amc__Project__c" tabStyle="amc__Project__c" extensions="amc.ganttController">
+    <apex:includeLightning /> 
+    <apex:includeScript value="{!URLFOR($Resource.amc__js, '/jquery/dist/jquery.min.vf.js')}"/>
+    <apex:pageMessages />
+    
+    <div id="ganttChart" style="height:0px; width:100%"/>
+    <style>
+    .assistiveText{
+            display:none;
+		}
+    </style>
+    <script>
+    	$Lightning.use("amc:GanttChartApp", function() {
+    		$Lightning.createComponent("amc:LightningGantt",
+        	{recordId : '{!projectId}',fixedProject:{!fixedProject}, isClassic:true, 'isLightning':false},
+        	"ganttChart",
+        	function(cmp) {
+				//set div height based on page
+				var ganttDiv = document.getElementById('ganttChart');
+				//get it's position in the window.
+				var viewportOffset = ganttDiv.getBoundingClientRect();
+				var ganttTop = viewportOffset.top;
+				//get it's botton position
+				var winHeight = window.innerHeight
+				var footerHeight = 0;
+				var footerEles = document.getElementsByClassName("bPageFooter");
+				if(footerEles && footerEles.length > 0){
+					footerHeight = footerEles[0].offsetHeight;
+				}
+				//work out the gantt height with this
+				//30 px for padding in vf container
+				ganttDiv.style.height = winHeight-ganttTop-footerHeight-30+'px';
+        	});
+      	});
+    </script>    
+</apex:page>

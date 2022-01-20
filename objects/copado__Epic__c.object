@@ -128,11 +128,14 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Epic_Record_Page1</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -155,7 +158,7 @@
     <deprecated>false</deprecated>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -163,6 +166,167 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Module__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Module</label>
+        <referenceTo>Module__c</referenceTo>
+        <relationshipLabel>Epics</relationshipLabel>
+        <relationshipName>Epics</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Epic_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Parent_Epic__r.copado__Epic_Title__c</formula>
+        <label>Parent Epic Name</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parent_Epic__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Parent Epic</label>
+        <referenceTo>copado__Epic__c</referenceTo>
+        <relationshipLabel>Epics</relationshipLabel>
+        <relationshipName>Epics</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Priority__c</fullName>
+        <description>Epic Priority</description>
+        <externalId>false</externalId>
+        <label>Priority</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project_Execution_Order__c</fullName>
+        <externalId>false</externalId>
+        <label>Project Execution Order</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Size__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Small 1 week or less /
+Medium 2 weeks or less /
+Large 4 weeks or less /
+XLarge +4 weeks /
+XXL +12 weeks (?)</inlineHelpText>
+        <label>Size</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>S</fullName>
+                    <default>false</default>
+                    <label>S</label>
+                </value>
+                <value>
+                    <fullName>M</fullName>
+                    <default>false</default>
+                    <label>M</label>
+                </value>
+                <value>
+                    <fullName>L</fullName>
+                    <default>false</default>
+                    <label>L</label>
+                </value>
+                <value>
+                    <fullName>XL</fullName>
+                    <default>false</default>
+                    <label>XL</label>
+                </value>
+                <value>
+                    <fullName>XXL</fullName>
+                    <default>false</default>
+                    <label>XXL</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Status_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Status Notes</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Theme__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Theme</label>
+        <referenceTo>copado__Theme__c</referenceTo>
+        <relationshipLabel>Epics</relationshipLabel>
+        <relationshipName>Epics</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Time_Spent_hours__c</fullName>
+        <description>Total time spent on this Epic in hours</description>
+        <externalId>false</externalId>
+        <label>Time Spent (hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Vendor_Contact_Name__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Vendor Contact Name</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Epics</relationshipLabel>
+        <relationshipName>Epics</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
     <fields>
         <fullName>copado__Application__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
@@ -173,6 +337,7 @@
         <relationshipLabel>Epics</relationshipLabel>
         <relationshipName>Epics</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -183,6 +348,7 @@
         <label>Cancelled Reason</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -193,6 +359,7 @@
         <externalId>false</externalId>
         <label>Description</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Html</type>
         <visibleLines>25</visibleLines>
@@ -203,6 +370,7 @@
         <externalId>false</externalId>
         <label>Epic Details</label>
         <length>131072</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>10</visibleLines>
@@ -214,6 +382,7 @@
         <label>Epic Title</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -228,6 +397,7 @@
         <relationshipLabel>Epics</relationshipLabel>
         <relationshipName>Epics</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -237,6 +407,7 @@
         <externalId>false</externalId>
         <label>Status</label>
         <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -276,35 +447,497 @@
         <externalId>false</externalId>
         <label>Technical Assumptions</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Html</type>
         <visibleLines>25</visibleLines>
     </fields>
+    <fields>
+        <fullName>copadometrics__Completion__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Completion %</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
     <label>Epic</label>
+    <listViews>
+        <fullName>ALM_Integration_Epics_TDX_21</fullName>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>copadometrics__Completion__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Parent_Epic__c</field>
+            <operation>equals</operation>
+            <value>E0000690</value>
+        </filters>
+        <filters>
+            <field>Parent_Epic__c</field>
+            <operation>equals</operation>
+            <value>E0000703</value>
+        </filters>
+        <label>ALM Integration Epics TDX 21</label>
+    </listViews>
+    <listViews>
+        <fullName>Active_Epics</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>Theme__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>copado__Application__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>equals</operation>
+            <value>Rachel WOng</value>
+        </filters>
+        <label>Active Epics</label>
+    </listViews>
+    <listViews>
+        <fullName>BAU_Epics</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed</value>
+        </filters>
+        <filters>
+            <field>Theme__c</field>
+            <operation>equals</operation>
+            <value>BAU - Business As Usual</value>
+        </filters>
+        <label>BAU Epics</label>
+        <sharedTo>
+            <role>Product_Manager</role>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Beta_Squad_Epics_All_Active</fullName>
+        <columns>NAME</columns>
+        <columns>Priority__c</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>Theme__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>notContain</operation>
+            <value>rachel,pinett,patricia,carmen</value>
+        </filters>
+        <filters>
+            <field>Module__c</field>
+            <operation>contains</operation>
+            <value>Value Stream Maps,DevOps Analytics</value>
+        </filters>
+        <label>Beta Squad Epics -- All Active</label>
+    </listViews>
+    <listViews>
+        <fullName>CCH</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Theme__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Epic_Title__c</field>
+            <operation>contains</operation>
+            <value>CCH</value>
+        </filters>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <label>CCH - Open</label>
+    </listViews>
+    <listViews>
+        <fullName>Copy_of_Easy_Squad_Epics_Immediate</fullName>
+        <columns>NAME</columns>
+        <columns>Priority__c</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>Theme__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>notContain</operation>
+            <value>rachel,pinett,patricia,carmen</value>
+        </filters>
+        <filters>
+            <field>Module__c</field>
+            <operation>contains</operation>
+            <value>Copado DX,Copado CLI,SFDX Source Format,User Story Bundle</value>
+        </filters>
+        <filters>
+            <field>Priority__c</field>
+            <operation>lessThan</operation>
+            <value>10</value>
+        </filters>
+        <label>Easy Squad Epics -- Immediate</label>
+    </listViews>
+    <listViews>
+        <fullName>Copy_of_Easy_Squad_Epics_Next_Up</fullName>
+        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Priority__c</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>Theme__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>notContain</operation>
+            <value>rachel,pinett,patricia,carmen</value>
+        </filters>
+        <filters>
+            <field>Module__c</field>
+            <operation>contains</operation>
+            <value>Copado DX,Copado CLI,SFDX Source Format,User Story Bundle</value>
+        </filters>
+        <filters>
+            <field>Priority__c</field>
+            <operation>lessThan</operation>
+            <value>20</value>
+        </filters>
+        <filters>
+            <field>Priority__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>10</value>
+        </filters>
+        <label>Easy Squad Epics -- Next Up</label>
+    </listViews>
+    <listViews>
+        <fullName>Easy_Squad_Epics_Active</fullName>
+        <columns>NAME</columns>
+        <columns>Priority__c</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>Theme__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>notContain</operation>
+            <value>rachel,pinett,patricia,carmen</value>
+        </filters>
+        <filters>
+            <field>Module__c</field>
+            <operation>contains</operation>
+            <value>Copado DX,Copado CLI,SFDX Source Format,User Story Bundle</value>
+        </filters>
+        <label>Easy Squad Epics -- All Active</label>
+    </listViews>
+    <listViews>
+        <fullName>Easy_Squad_Epics_Q4_2020</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>Module__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>Priority__c</columns>
+        <columns>Theme__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Epic_Title__c</field>
+            <operation>contains</operation>
+            <value>Easy-Squad</value>
+        </filters>
+        <label>Easy Squad Epics Q4 2020</label>
+    </listViews>
+    <listViews>
+        <fullName>Multi_Cloud</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Theme__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Module__c</field>
+            <operation>equals</operation>
+            <value>Multi-Cloud</value>
+        </filters>
+        <label>Multi-Cloud</label>
+    </listViews>
+    <listViews>
+        <fullName>Performance</fullName>
+        <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Epic_Details__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Theme__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Status__c</field>
+            <operation>notEqual</operation>
+            <value>Completed,Cancelled</value>
+        </filters>
+        <filters>
+            <field>Parent_Epic__c</field>
+            <operation>equals</operation>
+            <value>E0000389</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>equals</operation>
+            <value>E0000389</value>
+        </filters>
+        <label>Performance</label>
+    </listViews>
+    <listViews>
+        <fullName>Robert_s_Epics</fullName>
+        <booleanFilter>(1 OR 2)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>Theme__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <columns>Size__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CREATEDBY_USER</field>
+            <operation>equals</operation>
+            <value>Robert Sösemann</value>
+        </filters>
+        <filters>
+            <field>OWNER.ALIAS</field>
+            <operation>equals</operation>
+            <value>Robert Sösemann</value>
+        </filters>
+        <label>Robert&apos;s Epics</label>
+    </listViews>
+    <listViews>
+        <fullName>TDX21_Epics</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>Size__c</columns>
+        <columns>Theme__c</columns>
+        <columns>Module__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Release__c</field>
+            <operation>equals</operation>
+            <value>v18,v17.4,v17.5,v17.6,v17.7,v17.8,v17.9,v17.10</value>
+        </filters>
+        <label>TDX21 Epics</label>
+    </listViews>
+    <listViews>
+        <fullName>TDX_ALM_Integrations</fullName>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>Parent_Epic_Name__c</columns>
+        <columns>Parent_Epic__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Parent_Epic__c</field>
+            <operation>equals</operation>
+            <value>E0000703</value>
+        </filters>
+        <filters>
+            <field>Parent_Epic__c</field>
+            <operation>equals</operation>
+            <value>E0000690</value>
+        </filters>
+        <label>TDX - ALM Integrations</label>
+    </listViews>
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
         <columns>copado__Epic_Title__c</columns>
-        <columns>copado__Status__c</columns>
         <columns>copado__Release__c</columns>
-        <columns>copado__Application__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>CREATED_DATE</columns>
         <columns>OWNER.FIRST_NAME</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>Module__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Time_Spent_hours__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
-        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>v19_Winter_22</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Epic_Title__c</columns>
+        <columns>copado__Release__c</columns>
+        <columns>copado__Status__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>Module__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Release__c</field>
+            <operation>equals</operation>
+            <value>v19 - Winter &apos;22</value>
+        </filters>
+        <label>v19 - Winter &apos;22</label>
     </listViews>
     <nameField>
         <displayFormat>E{0000000}</displayFormat>
         <label>Epic Ref</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Epics</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypes>
+        <fullName>Copado_Work_Management_Epic</fullName>
+        <active>true</active>
+        <label>Copado Work Management Epic</label>
+        <picklistValues>
+            <picklist>Size__c</picklist>
+            <values>
+                <fullName>L</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>M</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>XL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>XXL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>copado__Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
     <searchLayouts>
         <customTabListAdditionalFields>copado__Epic_Title__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>copado__Epic_Details__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>copado__Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Release__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>copado__Application__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>OWNER.FIRST_NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CREATED_DATE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>LAST_UPDATE</customTabListAdditionalFields>
         <excludedStandardButtons>Accept</excludedStandardButtons>
         <lookupDialogsAdditionalFields>copado__Epic_Title__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__Epic_Details__c</lookupDialogsAdditionalFields>

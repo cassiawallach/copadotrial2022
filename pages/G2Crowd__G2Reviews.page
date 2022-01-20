@@ -1,0 +1,143 @@
+<apex:page controller="G2Crowd.G2ReviewAttribution" sidebar="false" tabStyle="G2_Review_Attribution__tab">
+  <apex:slds />
+  <c:G2_Base_Includes />
+  <c:Segment seg_pageName="Review Attribution"></c:Segment>
+
+  <apex:includeScript value="{!$Resource.G2Crowd__reviews_js}" />
+
+  <script type="text/javascript">
+    (function () {
+      if (G2 && G2.app && G2.$) {
+        G2.Reviews = {};
+        G2.Reviews.vars = {};
+        G2.Reviews.callouts = {
+          attributeReviewToAccount: '{!$RemoteAction.G2ReviewAttribution.attributeReviewToAccount}',
+          getReviews: '{!$RemoteAction.G2ReviewAttribution.getReviews}'
+        }
+
+        var event = new Event('readyReviews');
+        document.dispatchEvent(event);
+      }
+    })()
+  </script>
+
+  <div class="slds-scope">
+    <div ng-app="G2Crowd" class='G2Crowd' style="margin-top: 0;">
+      <div ng-controller="G2CrowdReviewAttribution">
+        <c:G2Notice />
+        <div ng-if='loading' class='loading-mask'>
+          <div class="demo-only" style="height: 6rem;">
+            <div class="slds-spinner_container slds-is-fixed">
+              <div role="status" class="slds-spinner slds-spinner_large">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a target='_blank' href='https://www.g2crowd.com' style='position: absolute; top: 18px; right: 36px; z-index: 1;'>
+          <img src='{!$Resource.G2Logo}' style='height: 30px;' />
+        </a>
+        <div class="slds-page-header">
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container slds-icon-standard-opportunity" title="Description of icon when needed">
+                <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#list')}"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Unattributed Public Reviews">Unattributed Public Reviews</h1>
+              <p class="slds-text-body_small slds-line-height_reset">List of public reviews that are not tied to an account</p>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if='Reviews.length === 0 && (data.companyName == undefined || data.companyName == "")' class='slds-text-heading_medium'>
+          All of your reviews are attributed to an account.
+        </div>
+        <div class='headerBar' style='justify-content: baseline;'>
+          <div class='search-bar'>
+            <div class='search-icon'>
+              <svg viewBox="0 0 24 24" id="search" width="100%" height="100%">
+                <title></title>
+                <path d="M22.9 20.9l-6.2-6.1c1.3-1.8 1.9-4 1.6-6.4-.6-3.9-3.8-7.1-7.8-7.4C5 .4.4 5 1 10.5c.3 4 3.5 7.3 7.4 7.8 2.4.3 4.6-.3 6.4-1.5l6.1 6.1c.3.3.7.3 1 0l.9-1c.3-.3.3-.7.1-1zM3.7 9.6c0-3.2 2.7-5.9 5.9-5.9 3.3 0 6 2.7 6 5.9 0 3.3-2.7 6-6 6-3.2 0-5.9-2.6-5.9-6z"></path>
+              </svg>
+            </div>
+            <div class='search-input-wrapper'>
+              <input class='search-input' ng-model="data.companyName" placeholder='Search Company Name' />
+            </div>
+          </div>
+          <button class='slds-button slds-button_neutral' style='margin-left: 16px;' ng-click="onSearch()">Search</button>
+          <button class='slds-button slds-button_neutral' style='margin-left: 16px;' ng-click="data.companyName = ''; onSearch();">Clear</button>
+        </div>
+
+        <div ng-if='Reviews.length > 0' class='slds-text-heading_large'>
+          <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-text-body_regular" ng-if='Reviews.length > 0'>
+            <thead>
+              <tr class="slds-text-title_caps">
+                <th scope="col">
+                  <div class="slds-truncate" title=""></div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" title="Name">Name</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" title="Company">Company</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" title="Title">Title</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" title="Map"></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody ng-repeat="review in Reviews">
+              <tr>
+                <td data-label="" style='max-width: 25%;' class='slds-truncate_container_75'>
+                  <img class="g2-user-image" width='40px' height='40px' style='height: 40px; width: 40px;' fallback-src='true' src="{{review.G2Crowd__User_Image__c || 'https://s3.amazonaws.com/sf-app-build/g2crowd__avatar.png'}}"
+                    alt="{{review.G2Crowd__User_Name__c}}" />
+                </td>
+                <td data-label="Name">
+                  <div class="slds-truncate" title="Name">
+                    {{review.G2Crowd__User_Name__c}}
+                  </div>
+                </td>
+                <td data-label="Company">
+                  <div class="slds-truncate" title="Company">
+                    {{review.G2Crowd__User_Company__c}}
+                  </div>
+                </td>
+                <td data-label="Title">
+                  <div class="slds-truncate" title="Title">
+                    <a target='_blank' href='{{review.G2Crowd__G2_URL__c}}'>
+                      {{review.G2Crowd__Title__c}}
+                    </a>
+                  </div>
+                </td>
+                <td data-label="Favorite" class='slds-truncate_container_75'>
+                  <button class="slds-button slds-button_neutral" ng-click='mapAccount(review.Id)'>Account</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <c:Pagination />
+        <div class='lookup-html' style='opacity: 0;'>
+          <input class='accountName' ng-model='selection.accountName' />
+          <input class='accountId' ng-model='selection.accountId' />
+          <apex:form >
+            <div class="acct-lookup-form" watch-id='true' id-type='account'>
+              <apex:outputLabel >Account </apex:outputLabel>
+              <apex:inputField html-ng-model="selection.defaultAccountName" value="{!review.G2Crowd__AccountId__c}" />
+            </div>
+          </apex:form>
+        </div>
+      </div>
+    </div>
+  </div>
+</apex:page>

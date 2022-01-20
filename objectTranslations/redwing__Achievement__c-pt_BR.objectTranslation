@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Badge</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Badges</value>
+    </caseValues>
+    <fields>
+        <label><!-- Certification Program --></label>
+        <name>Certification_Program__c</name>
+        <relationshipLabel><!-- Achievements --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Reputation Points --></label>
+        <name>ReputationPoints__c</name>
+    </fields>
+    <fields>
+        <label><!-- Achievement Category --></label>
+        <name>redwing__Achievement_Category__c</name>
+        <relationshipLabel><!-- Achievements --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Acquired Image --></label>
+        <name>redwing__Acquired_Image__c</name>
+    </fields>
+    <fields>
+        <label><!-- Eligible Image --></label>
+        <name>redwing__Eligible_Image__c</name>
+    </fields>
+    <fields>
+        <help>Lançar URL de Impressão de badges ao clicar na Badge Adquirida</help>
+        <label><!-- Enable Printing --></label>
+        <name>redwing__Enable_Printing__c</name>
+    </fields>
+    <fields>
+        <help>Badges vencidas não serão exibidas na página de perfil dos usuários</help>
+        <label><!-- Expiration Date --></label>
+        <name>redwing__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Expiration Term Basis --></label>
+        <name>redwing__Expiration_Term_Basis__c</name>
+        <picklistValues>
+            <masterLabel>Days</masterLabel>
+            <translation>Dias</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Months</masterLabel>
+            <translation>Meses</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Weeks</masterLabel>
+            <translation>Semanas</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Years</masterLabel>
+            <translation>Anos</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Expiration Term --></label>
+        <name>redwing__Expiration_Term__c</name>
+    </fields>
+    <fields>
+        <help>Se marcada, a badge não será exibida na página de perfil do usuário</help>
+        <label><!-- Hidden --></label>
+        <name>redwing__Hidden__c</name>
+    </fields>
+    <fields>
+        <help>Se marcada, a badge não será exibida para usuários externos</help>
+        <label><!-- Is Internal --></label>
+        <name>redwing__Is_Internal__c</name>
+    </fields>
+    <fields>
+        <help>Ao anular o status concluído, as Atribuições de Badge vão para &quot;Status de Anulação&quot; definido, em vez de &quot;Adquirido&quot;. Cabe a você passar para o status &quot;Adquirido&quot; quando esse recurso for utilizado.</help>
+        <label><!-- Override Completed Status --></label>
+        <name>redwing__Override_Completed_Status__c</name>
+        <picklistValues>
+            <masterLabel>In Review</masterLabel>
+            <translation>Em Revisão</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Especifique um valor se você quiser que os usuários acessem esta URL ao clicar na Imagem Badge. Isso pode ser usado para redirecionar para uma página personalizada na qual você gerencia etapas adicionais antes de alterar o status &quot;Badge&quot; para &quot;Adquirido&quot;.</help>
+        <label><!-- Override URL --></label>
+        <name>redwing__Override_URL__c</name>
+    </fields>
+    <fields>
+        <help>Selecione esta opção para mostrar a Badge no Perfil mesmo se ela tiver expirado</help>
+        <label><!-- Show If Expired --></label>
+        <name>redwing__Show_If_Expired__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>redwing__Type__c</name>
+        <picklistValues>
+            <masterLabel>Achievements</masterLabel>
+            <translation>Badges</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Certifications</masterLabel>
+            <translation>Certificações</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Giver --></label>
+        <name>redwing__Work_Badge_Giver__c</name>
+        <relationshipLabel><!-- Achievements --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Id --></label>
+        <name>redwing__Work_Badge_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Image URL --></label>
+        <name>redwing__Work_Badge_Image_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Work.com Badge Message --></label>
+        <name>redwing__Work_Badge_Message__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Achievement Layout</layout>
+        <sections>
+            <label>Badge Personalizada</label>
+            <section>Custom Badge</section>
+        </sections>
+        <sections>
+            <label>Links Personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Informações de Atribuições Opcionais</label>
+            <section>Optional Assignment Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Nome da Badge</nameFieldLabel>
+    <validationRules>
+        <errorMessage><!-- All External Badges must have Reputation Points. If this is an Internal Badge, flag the &quot;Is Internal&quot; checkbox. --></errorMessage>
+        <name>Reputation_Points_in_External_Badges</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Add_Work_com_Badge --></label>
+        <name>redwing__Add_Work_com_Badge</name>
+    </webLinks>
+</CustomObjectTranslation>

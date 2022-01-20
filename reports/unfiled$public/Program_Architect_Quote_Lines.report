@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Opportunity.Account.Name:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Opportunity.Id:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Opportunities</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_51457808</developerName>
+        <masterLabel>Oppty Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Opportunity.SBQQ__Quotes2__r$Opportunity_Type__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>New Customer</sourceValue>
+            </sourceValues>
+            <value>1. New</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Add-on</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>New Business Add-on</sourceValue>
+            </sourceValues>
+            <value>2. Expansion</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Renewal</sourceValue>
+            </sourceValues>
+            <value>3. Renewal</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <axisBinding>y</axisBinding>
+            <column>FORMULA2</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>Opportunity$IsWon</column>
+        </chartSummaries>
+        <chartType>VerticalColumnGroupedLine</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>Opportunity$CloseDate</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_51457808</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>true</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <colorRanges>
+        <aggregate>Sum</aggregate>
+        <columnName>Opportunity$IsWon</columnName>
+        <highColor>#FFFFFF</highColor>
+        <lowBreakpoint>0.0</lowBreakpoint>
+        <lowColor>#FF9897</lowColor>
+        <midColor>#FFFFFF</midColor>
+    </colorRanges>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__NetTotal__c.CONVERT</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Minimum</aggregateTypes>
+        <field>Opportunity.SBQQ__Quotes2__r$PS_CPQ_Term_in_Months__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity$IsWon</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__EffectiveStartDate__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__EffectiveEndDate__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__Quantity__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$T_Cs__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$T_C_S_is_Blank__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$Special_Notes_and_Instructions__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r$Opportunity_Type__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SBQQ__Quotes2__r.SBQQ__LineItems__r$SBQQ__Product__c</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <currency>USD</currency>
+    <customDetailFormulas>
+        <calculatedFormula>IF(
+
+    OR(
+    
+    and(text(Opportunity.Type)=&quot;New Customer&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;),
+
+        and(text(Opportunity.Type)=&quot;Renewal&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;),
+
+        and(text(Opportunity.Type)=&quot;New Business Add-on&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;),
+
+        and(text(Opportunity.Type)=&quot;Add-on&quot;, 
+        SBQQ__QuoteLine__c.SBQQ__Product__c.Name=&quot;Program Architect&quot;)
+
+        ),1,0)</calculatedFormula>
+        <dataType>Double</dataType>
+        <developerName>CDF1</developerName>
+        <label>PA Data Filter</label>
+        <scale>0</scale>
+    </customDetailFormulas>
+    <filter>
+        <booleanFilter>(3 AND 1 AND 2) OR (3 AND 1 AND 4)</booleanFilter>
+        <criteriaItems>
+            <column>Opportunity.SBQQ__Quotes2__r$SBQQ__Primary__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$IsWon</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity$StageName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Formal Proposal,Negotiation,Signed Contract Received</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <formattingRules>
+        <aggregate>Sum</aggregate>
+        <columnName>Opportunity$IsWon</columnName>
+        <values>
+            <backgroundColor>#FF9897</backgroundColor>
+            <rangeUpperBound>0.0</rangeUpperBound>
+        </values>
+    </formattingRules>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity$Account</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>FiscalQuarter</dateGranularity>
+        <field>Opportunity$CloseDate</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_51457808</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>PA - Formal Proposal to Won</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Opportunities_with_Primary_Quote_and_Quote_Lines__c</reportType>
+    <roleHierarchyFilter>System_Administrator</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

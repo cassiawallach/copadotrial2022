@@ -1,0 +1,423 @@
+<apex:page standardController="kugo2p__PaymentX__c" extensions="kugo2p.PaymentTerminalController,kugo2p.KugamonPaymentTerminalControllerExt,kugo2p.PaymentTerminalManualController">
+<style>
+
+.labelColumn {
+    text-align:right;
+    width:150px;
+    font-weight:normal; 
+}
+
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+<!-- Title Bar -->
+<apex:outputPanel rendered="{!(paymentType!='manual')}">
+<!-- 
+<div class="bPageTitle" style="margin-bottom: 0px">
+    <div class="ptBody secondaryPalette">
+        <div class="content" style="float: left; width:300px">
+            <img title="Payment Terminal" class="pageTitleIcon" alt="Payment Terminal" src="/s.gif"/>
+            <h1 class="pageType">Payment Terminal<span class="titleSeparatingColon">:</span></h1>
+            <h2 class="pageDescription">Transaction Review</h2>
+        </div>
+        <div style="float: left; margin-left: 100px">
+            <apex:form id="selectProcessor">
+                <apex:actionFunction name="afSubmitPayment" action="{!submitPayment}" />
+                <span style="color:white;">Processor Connection: &nbsp;<apex:selectList size="1" multiselect="false" value="{!processorConnectionId}" disabled="true">
+                    <apex:actionSupport event="onchange" rerender="cardType, paymentTypePanel, currencyCode, paymentTypePanels" status="formActionStatus"/>
+                    <apex:selectOptions id="processorOptions" value="{!processorConnectionOptions}" />
+                </apex:selectList>
+                <apex:outputLink target="_blank"
+                        value="">
+                        <apex:image style="vertical-align:text-top;" url="{!URLFOR($Resource.KugamonImages, 'images/help.png')}" />
+                    </apex:outputLink>
+                    </span>
+            </apex:form>        
+        </div>
+    </div>
+</div>
+-->
+
+<c:PageHeader title="Payment Terminal" subtitle="Transaction Review" pathname="custom" icon="custom5" description="Please review the transaction details below and click 'Submit Transaction' to process this payment." >
+    <apex:form id="selectProcessor">
+        <apex:selectList size="1" multiselect="false" value="{!processorConnectionId}" disabled="true">
+            <apex:actionSupport event="onchange" rerender="cardType, paymentTypePanel, currencyCode, paymentTypePanels" status="formActionStatus"/>
+            <apex:selectOptions id="processorOptions" value="{!processorConnectionOptions}" />
+        </apex:selectList>
+    </apex:form>
+</c:PageHeader>
+
+</apex:outputPanel>
+
+<apex:form id="terminalForm">
+
+<apex:actionFunction name="afSubmitPayment" action="{!submitPayment}" />
+
+<apex:pageMessage summary="Payment processing is currently in gateway simulation mode. In this mode, transactions will result in a simulated responses from your payment processor and by-pass actual credit card charges, refunds, etc. To run live transactions, have your Salesforce administrator turn gateway simulation mode off." severity="Info" strength="2" rendered="{!simulationMode && paymentType!='manual'}"/>
+<apex:pageMessages /><!-- <br/> -->
+
+<apex:outputPanel layout="block" styleClass="kugamon" style="text-align:center;" rendered="{!(paymentType=='manual')}" >
+    <br/>
+    <apex:commandButton id="NewPayment" value="New Payment" styleClass="slds-button slds-button--brand" action="{!gotoSelectNewPayment}" rendered="{!showSelectNewPayment}" />
+    <apex:commandButton value="View {!IF(forInvoice,'Invoice','Order')}" action="{!gotoParent}" styleClass="slds-button slds-button--brand"/>
+    <apex:commandButton value="View Payment" action="{!gotoPayment}" styleClass="slds-button slds-button--neutral" />&nbsp;
+</apex:outputPanel>
+
+<apex:outputPanel rendered="{!(paymentType!='manual')}">
+<apex:outputPanel id="heading">
+    <!-- 
+    <apex:outputPanel rendered="{!(submitStatus == 'ready')}">
+        <p>Please review the transaction details below and click 'Submit Transaction' to process this payment.</p> 
+    </apex:outputPanel>
+    --> 
+    <apex:outputPanel rendered="{!(submitStatus == 'failed')}">
+        <h1>Transaction Failed</h1>
+        <p>Click the 'Back' button to make any required changes to this transaction and re-submit.</p> 
+    </apex:outputPanel>
+    <!-- 
+    <apex:outputPanel rendered="{!(submitStatus == 'completed')}">
+        <h1>Transaction Completed</h1>
+    </apex:outputPanel>
+    --> 
+</apex:outputPanel>
+
+<apex:outputPanel rendered="false">
+    <apex:outputField id="opportunity" value="{!kugo2p__PaymentX__c.kugo2p__Opportunity__c}" />
+    <apex:outputField id="tax" value="{!kugo2p__PaymentX__c.kugo2p__Tax__c}" />
+    <apex:outputText id="shippingAmount" value="{!kugo2p__PaymentX__c.kugo2p__Shipping__c}" />
+    <apex:outputText value="{!preTaxAmount}" />
+</apex:outputPanel>
+
+<apex:pageBlock >
+<table >
+    <tr style="">
+        <td class="labelColumn" style="vertical-align:middle;{!IF(forInvoice,'','display: none')}"><apex:outputLabel for="invoice">Invoice:</apex:outputLabel>
+        </td>
+        <td><apex:outputField id="invoice" value="{!kugo2p__PaymentX__c.kugo2p__Invoice__c}" />
+        </td>
+    </tr>
+    <tr style="{!IF(forSalesOrder,'','display: none')}">
+        <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="order">Sales Order:</apex:outputLabel>
+        </td>
+        <td><apex:outputField id="order" value="{!kugo2p__PaymentX__c.kugo2p__SalesOrder__c}" />
+        </td>
+    </tr>
+    <tr >
+        <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="account">Account:</apex:outputLabel>
+        </td>
+        <td><apex:outputField id="account" value="{!kugo2p__PaymentX__c.kugo2p__Account__c}" />
+        </td>
+    </tr>
+    <tr >
+        <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="contact">Contact:</apex:outputLabel>
+        </td>
+        <td><apex:outputField id="contact" value="{!kugo2p__PaymentX__c.kugo2p__Contact__c}" />
+        </td>
+    </tr>
+    <tr><td>&nbsp;</td><td></td></tr>
+    <tr >
+        <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="contact">Payment Name:</apex:outputLabel>
+        </td>
+        <td><apex:outputField id="name" value="{!kugo2p__PaymentX__c.name}" />
+        </td>
+    </tr>
+    <tr >
+        <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="totalAmount">Total Amount:</apex:outputLabel>
+        </td>
+        <td>
+            <apex:outputPanel rendered="{!(!isMultiCurrencyEnabled)}">
+                <apex:outputField id="totalAmount" value="{!kugo2p__PaymentX__c.kugo2p__Amount__c}" />&nbsp;<apex:outputField id="currencyCode" value="{!kugo2p__PaymentX__c.kugo2p__Currency_ISO_Code__c}" />
+            </apex:outputPanel>
+            <apex:outputText value="{!ISOCurrencyCode}{0, number, ###,##0.00}" rendered="{!(isMultiCurrencyEnabled)}">
+                <apex:param value="{!kugo2p__PaymentX__c.kugo2p__Amount__c}" />
+            </apex:outputText>
+        </td>
+    </tr>
+    </table>
+    <br/>
+    
+    <!-- <apex:outputPanel id="cardInfo" rendered="{!(paymentType == 'creditcard' || paymentType == 'creditcardauth' || paymentType == 'storedCreditCard')}"> -->
+    <apex:outputPanel id="cardInfo" rendered="{!((paymentType == 'creditcard' && selectedPaymentMethodType == 'new') || paymentType == 'creditcardauth' || paymentType == 'storedCreditCard')}">
+        <table>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="paymentType">Payment Type:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="paymentType" value="{!IF(paymentType == 'creditcard' || paymentType == 'storedCreditCard','Credit Card', 'Credit Card Authorization')}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="transactionType_CC">Transaction Type:</apex:outputLabel>
+                </td>
+                <!-- auth_capture   auth_only -->
+                <td><apex:outputText id="transactionType_CC" value="{!IF(selectedTransType=='auth_capture','Charge', 'Authorize')}" rendered="{!(paymentType=='creditcard' || paymentType == 'storedCreditCard')}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardType">Card Type:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="cardType" value="{!cardType}"/>
+                </td>
+            </tr>            
+            <tr style="{!IF(creditCardNumber != null && creditCardNumber != '','','display: none')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="ccNumber">Credit Card Number:</apex:outputLabel>
+                </td>
+                <td>
+                    <apex:outputText id="ccNumber" value="************{!kugo2p__PaymentX__c.kugo2p__Last_4_Digits__c}" rendered="{!(paymentType== 'creditcard' || paymentType == 'storedCreditCard')}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardExp">Card Expiration:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="expMonth" value="{!expirationMonth}"/>&nbsp;/&nbsp;<apex:outputText id="expYear" value="{!expirationYear}"/>
+                </td>
+            </tr>
+            <tr style="{!IF(((paymentType == 'creditcard' || paymentType == 'creditcardauth') && cvvMask != null && cvvMask != ''),'','display: none')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cvvNumber">Security Code:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="cvvNumber" value="{!cvvMask}" />
+                </td>
+            </tr>            
+        </table>
+    </apex:outputPanel>
+    
+    <!-- <apex:outputPanel id="echeckInfo" rendered="{!(paymentType == 'echeck')}"> -->
+    <apex:outputPanel id="echeckInfo" rendered="{!(paymentType == 'echeck' && selectedPaymentMethodType == 'new')}">
+            <table>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="paymentType2">Payment Type:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="paymentType2" value="eCheck"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="accountType">Account Type:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="accountType" value="{!selectedBankAccountType}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="echeckType">eCheck Type:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="echeckType" value="{!selectedECheckType}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="bankName">Bank Name:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="bankName" value="{!bankName}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="bankAccountNumber">Bank Account Number:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="bankAccountNumber" value="{!bankAccountNumber}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="bankRoutingNumber">Bank Routing Number:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="bankRoutingNumber" value="{!bankRoutingNumber}" />
+                </td>
+            </tr>
+            <tr style="display:{!IF(ISBLANK(kugo2p__PaymentX__c.kugo2p__Check_Number__c), 'none', '')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="checkNumber">Check Number:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="checkNumber" value="{!kugo2p__PaymentX__c.kugo2p__Check_Number__c}" />
+                </td>
+            </tr>
+            </table>
+    </apex:outputPanel>
+    
+    <!--  
+    <apex:outputPanel id="profileInfo" rendered="{!(paymentType == 'cimProfile' || paymentType == 'payPalReferenceTransaction' || paymentType == 'eWayProfile')}">
+        <table>
+            <tr style="{!IF(paymentMethodRecord.Profile_Id__c != null && paymentMethodRecord.Profile_Id__c != '','','display: none')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="paymentType_spm">Payment Type:</apex:outputLabel>
+                </td>
+                <!-- <td><apex:outputText id="paymentType_spm" value="{!IF(paymentType == 'cimProfile','AuthNet CIM Profile', 'PayPal Reference Transaction')}"/> -- >
+                <!-- <td><apex:outputText id="paymentType_spm" value="{!IF(paymentType == 'cimProfile','AuthNet CIM Profile', IF(paymentType == 'payPalReferenceTransaction', 'PayPal Reference Transaction', 'eWay Stored Payment Profile'))}"/> -- >
+                <td><apex:outputText id="paymentType_spm" value="Stored Payment Method"/>
+                </td>
+            </tr>
+            <tr >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="transactionType_spm">Transaction Type:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="transactionType_spm" value="{!IF(selectedTransType=='auth_capture','Charge', 'Authorize Only')}" />
+                </td>
+            </tr>
+
+            <tr style="{!IF(paymentMethodRecord.Profile_Id__c != null && paymentMethodRecord.Profile_Id__c != '','','display: none')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="profileId">Profile Id:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="profileId" value="{!paymentMethodRecord.kugo2p__Profile_Id__c}"/>
+                </td>
+            </tr>            
+            <tr style="{!if(expirationYear != null && expirationYear != '', 'display:none;', '')}"> <!-- style="{!if(paymentType == 'payPalReferenceTransaction', 'display:none;', '')}" -- >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardExp_spm">Card Expiration:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="expMonth_spm" value="{!expirationMonth}"/>&nbsp;/&nbsp;<apex:outputText id="expYear_spm" value="{!expirationYear}"/>
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>
+    -->
+    
+    <apex:outputPanel id="storedPayment" rendered="{!(selectedPaymentMethodType == 'storedPayment')}">  <!-- rendered="{!(paymentType == 'storedPayment')}" -->
+        <table>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="paymentType">Payment Type:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="paymentType_sp" value="Saved Payment Method"/> <!-- {!IF(paymentType == 'creditcard' || paymentType == 'storedCreditCard','Credit Card', 'Credit Card Authorization')} -->
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="transactionType_CC">Transaction Type:</apex:outputLabel>
+                </td>
+                <!-- auth_capture   auth_only -->
+                <td><apex:outputText id="transactionType_CC_sp" value="{!IF(selectedTransType=='auth_capture','Charge', 'Authorize')}" />   <!-- rendered="{!(paymentType=='creditcard' || paymentType == 'storedCreditCard')}" -->
+                </td>
+            </tr>
+            <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardType">Card Type:</apex:outputLabel>
+                </td>
+                <td>
+                    <!-- <apex:outputText id="cardType_sp" value="{!cardType}"/> -->
+                    <apex:outputText id="cardType_sp" value="{!if(ISBLANK(cardType), 'Echeck', cardType)}"/>
+                </td>
+            </tr>            
+            <tr style="{!IF(PaymentX__c.Last_4_Digits__c != null && PaymentX__c.Last_4_Digits__c != '','','display: none')}">   <!-- style="{!IF(creditCardNumber != null && creditCardNumber != '','','display: none')}" -->
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="ccNumber">Credit Card Number:</apex:outputLabel>
+                </td>
+                <td>
+                    <apex:outputText id="ccNumber_sp" value="************{!kugo2p__PaymentX__c.kugo2p__Last_4_Digits__c}" />    <!-- rendered="{!(paymentType== 'creditcard' || paymentType == 'storedCreditCard')}" -->
+                </td>
+            </tr>
+            <!-- <tr style="{!IF(paymentType == 'creditcard' || paymentType == 'creditcardauth','','display: none')}"> --> <!-- style="{!IF(cvvMask != null && cvvMask != '','','display: none')}" -->
+            <tr style="{!IF(((paymentType == 'creditcard' || paymentType == 'creditcardauth') && cvvMask != null && cvvMask != ''),'','display: none')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cvvNumber">Security Code:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="cvvNumber_sp" value="{!cvvMask}" />
+                </td>
+            </tr>
+            <tr style="{!IF(paymentMethodRecord.kugo2p__Profile_Id__c != null && paymentMethodRecord.kugo2p__Profile_Id__c != '','','display: none')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="profileId">Profile Id:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="profileId_sp" value="{!paymentMethodRecord.kugo2p__Profile_Id__c}"/>
+                </td>
+            </tr>                        
+            <tr style="{!IF(expirationMonth != null && expirationYear != null,'','display: none')}">
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardExp">Card Expiration:</apex:outputLabel>
+                </td>
+                <td><apex:outputText id="expMonth_sp" value="{!expirationMonth}"/>&nbsp;/&nbsp;<apex:outputText id="expYear_sp" value="{!expirationYear}"/>
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>
+    
+    <br/>
+    <table>
+        <tr >
+            <td class="labelColumn" style="vertical-align:top;"><apex:outputLabel for="billingaddress">Billing Address:</apex:outputLabel>
+            </td>
+            <td><apex:outputText id="billingaddress" value="{!billingstreet}" />
+            </td>
+            <!-- 
+            <td class="labelColumn" style="vertical-align:top;"><apex:outputLabel for="shippingaddress">Shipping Address:</apex:outputLabel>
+            </td>
+            <td><apex:outputText id="shippingaddress" value="{!PaymentX__c.Ship_To_Street__c}" />
+            </td>
+            -->
+        </tr>
+        <tr >
+            <td class="labelColumn" style="vertical-align:middle;">
+            </td>
+            <td><apex:outputText id="billingcity" value="{!billingcity}" />,&nbsp;<apex:outputText id="billingstate" value="{!billingstate}" />&nbsp;<apex:outputText id="billingpostalcode" value="{!billingpostalcode}" />
+            </td>
+            <!-- 
+            <td class="labelColumn" style="vertical-align:middle;">
+            </td>
+            <td><apex:outputText id="shippingcity" value="{!PaymentX__c.Ship_To_City__c}" />, <apex:outputText id="shippingstate" value="{!PaymentX__c.Ship_To_State__c}" />&nbsp;<apex:outputText id="shippingpostalcode" value="{!PaymentX__c.Ship_To_Postal_Code__c}" />
+            </td>
+            -->
+        </tr>
+        <tr >
+            <td  class="labelColumn" style="vertical-align:middle;">
+            </td>
+            <td><apex:outputText id="billingcountry" value="{!billingcountry}" />
+            </td>
+            <!-- 
+            <td class="labelColumn" style="vertical-align:middle;">
+            </td>
+            <td><apex:outputText id="shippingcountry" value="{!PaymentX__c.Ship_To_Country__c}" />
+            </td>
+            -->
+        </tr>
+    </table>
+    <br/>
+    
+    <apex:outputPanel id="savePmtMethodPanel" rendered="{!AND(savePmtDetailsEnabled, selectedPaymentMethodType!='storedPayment', submitStatus == 'completed')}">
+        <apex:panelGrid columns="2" columnClasses="labelColumn, valueColumn" >
+            <apex:outputText value=""/>
+            <apex:outputPanel layout="inline">
+                <apex:inputCheckbox value="{!savePmtDetails}"  >
+                <apex:actionSupport event="onchange"  />
+                </apex:inputCheckbox>
+                <apex:outputText value="Save Payment Method" />
+            </apex:outputPanel>
+
+            <apex:outputText value="" rendered="{!eWayTokensEnabled}"/>
+            <apex:outputPanel style="padding-left:25px;" rendered="{!eWayTokensEnabled}">
+                <apex:outputText value="Profile billing name: "/>
+                <apex:inputField value="{!contact.Salutation}"/>&nbsp;{!billingName}
+            </apex:outputPanel>
+
+            <apex:outputText value=""/>
+            <apex:outputPanel layout="inline">
+                <apex:inputCheckbox value="{!setPmtMethodAsDefault}"  />
+                <apex:outputText value="Set as Default Payment Method for {!contact.Name}" />
+            </apex:outputPanel>
+
+        </apex:panelGrid>
+    </apex:outputPanel>
+
+    <table>
+        <tr> 
+            <td class="labelColumn">
+            </td>
+            <td><apex:outputPanel id="buttons" layout="block" styleClass="kugamon">
+                        <apex:outputPanel rendered="{!(submitStatus == 'ready')}">
+                            <apex:commandButton id="back_1" value="Back" action="{!cancelFromConfirmation}" styleClass="slds-button slds-button--neutral" />&nbsp;
+                            <apex:commandButton id="submitPayment" value="Submit Transaction" styleClass="slds-button slds-button--brand" disabled="false" onclick="submitPayment(this); return false;" />&nbsp;    <!-- action="{!submitPayment}" -->
+                            <apex:commandButton id="cancel_1" value="Cancel" disabled="false" action="{!deletePaymentAndCancelFromTerminal}" styleClass="slds-button slds-button--neutral" />
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!(submitStatus == 'failed')}">
+                            <apex:commandButton id="back_2" value="Back" styleClass="slds-button slds-button--destructive" action="{!cancelFromConfirmation}"/>&nbsp;
+                            <apex:commandButton id="cancel_2" value="Cancel" action="{!cancelFromTerminal}" styleClass="slds-button slds-button--neutral" />
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!(submitStatus == 'completed')}">
+                            <!-- <apex:commandButton id="BackToOrder" value="Back to {!IF(forInvoice,'Invoice','Order')}" styleClass="btnImportant" action="{!cancelFromTerminal}" /> 
+                            <apex:commandLink id="BackToOrder" value="Back to {!IF(forInvoice,'Invoice','Order')}" styleClass="btn btnImportant" style="text-decoration:none;height: 21px;" action="{!continueFromTerminal}" >
+                                <apex:param value="1" name="redirectToParent" />
+                            </apex:commandLink>-->
+                            <apex:commandButton id="NewPayment" value="New Payment" styleClass="slds-button slds-button--brand" action="{!newPayment}" rendered="{!allowNewPayment}" />
+                            <apex:commandButton id="BackToOrder" value="View {!IF(forInvoice,'Invoice','Order')}" styleClass="slds-button slds-button--brand" action="{!SavePaymentMethod}" />
+                            <apex:commandButton id="ProceedToPayment" value="View Payment" action="{!continueFromTerminal}" styleClass="slds-button slds-button--neutral" />&nbsp;
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+            </td>
+        </tr>
+    </table>
+    </apex:pageBlock>
+</apex:outputPanel>    
+</apex:form>
+
+<script type='text/javascript'>
+    function submitPayment(ele) {
+        //debugger;
+        ele.disabled = true;
+        ele.nextElementSibling.disabled = true;
+        afSubmitPayment();
+    }
+</script>
+
+</apex:page>

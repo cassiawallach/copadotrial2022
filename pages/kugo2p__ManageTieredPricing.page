@@ -1,0 +1,438 @@
+<apex:page tabstyle="Product2" standardcontroller="kugo2p__TieredPricing__c" extensions="kugo2p.ManageTieredPricingExt" cache="true" id="pageId">
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+    <style>
+        .rightalign {
+            text-align:right;
+        }
+    
+        .paddingleft15 {
+            padding-left:15px !important;
+        }
+    
+        .Tiers {
+            //width:90% !important;
+            //margin-left:2% !important;
+        }
+    </style>
+    <apex:stylesheet value="{!URLFOR($Resource.kugo2p__SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+    <script>
+        window.onkeypress = handleKeyPress;
+        function handleKeyPress(e) {
+            //debugger;
+            var eventInstance = window.event ? event : e;
+            var keyCode = eventInstance.charCode ? eventInstance.charCode : eventInstance.keyCode;    
+            if (keyCode == 13) {
+                afSave();
+                return false;
+            }
+        }
+
+        /*function keywordEnterKey(e) {
+             var key;      
+             if(window.event)
+                  key = window.event.keyCode; //IE
+             else
+                  key = e.which; //firefox      
+
+             if(key==13) {
+                SaveHeaderJS();
+             }
+
+             return (key != 13);
+        }*/ 
+    
+    
+        function delConfirmation() {
+            return confirm('Are you sure you want to delete the Tier?');
+        }
+        
+        var actionCol = 0;
+        var qtyStartCol = 1;
+        var discountCol = 2;
+        var tierPriceCol = 3;
+
+        function focusLastRowQuantity() {
+            //debugger;
+            var tierTable = document.getElementById("{!$Component.formId.pbTiers.pbtTiers}");           
+
+            var initRow = tierTable.rows.length - 2;
+            var qtyField = tierTable.rows[initRow].cells[1].getElementsByTagName("input")[0];
+            while (qtyField == null) {
+                initRow = initRow - 1;
+                qtyField = tierTable.rows[initRow].cells[1].getElementsByTagName("input")[0];
+            }
+            qtyField.focus();
+        }
+
+        function focusTierPrice(row) {
+            //debugger;
+            row.cells[tierPriceCol].getElementsByTagName("input")[0].focus();
+        }
+
+        function focusTierPricingName() {
+            document.getElementById("{!$Component.formId.pbTieredPricing.pbsectionHeader.TierPricingName}").focus();
+        }
+
+        function calcTierprice(elem, row) {
+            //debugger;
+            var listPrice = convertToFloat(row.cells[discountCol].getElementsByTagName("span")[0].innerHTML);
+            var discount = convertToFloat(elem.value);
+            if (listPrice > 0 && discount > 100) {
+                alert('Discount (%) must be less than or equal to 100.');
+                discount = 100.00;
+                row.cells[discountCol].getElementsByTagName("input")[0].focus();
+            }
+            row.cells[discountCol].getElementsByTagName("input")[0].value = formatNum(discount);
+            
+            var tierPrice = roundNum(listPrice * (1-(discount/100)), 2);
+            //if (listPrice == 0) tierPrice = discount / 100; 
+            row.cells[tierPriceCol].getElementsByTagName("input")[0].value = formatNum(tierPrice);
+        }
+        
+        function calcTierDiscount(elem, row) {
+            //debugger;
+
+            var tierPrice = convertToFloat(elem.value);
+            if (tierPrice < 0) {
+               alert('Tier Price must be greater than or equal to zero.');
+               tierPrice = 0;
+               row.cells[tierPriceCol].getElementsByTagName("input")[0].focus();
+            }
+            row.cells[tierPriceCol].getElementsByTagName("input")[0].value = formatNum(tierPrice);
+            
+            var listPrice = convertToFloat(row.cells[discountCol].getElementsByTagName("span")[0].innerHTML);
+
+            var discount = listPrice==0 ? (tierPrice * 100.00) : (roundNum((1 - (listPrice > 0 ? (tierPrice / listPrice) : 0)) * 100, 2));
+            row.cells[discountCol].getElementsByTagName("input")[0].value = discount;
+        }
+
+        function roundNum(n, p) {
+            return Math.round(n * Math.pow(10, p)) / Math.pow(10, p);
+        }
+        
+        function convertToFloat(inStr) {
+            var inStrValue = parseFloat(inStr.replace(/,/g,''));
+            if(isNaN(inStrValue)) inStrValue = 0;
+            return inStrValue;
+        }
+        
+        // Format Number Eg: 100000 is formatted as 100,000
+        function formatNum(nStr) {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            //x2 = x.length > 1 ? '.' + x[1] : '';
+            x2 = x.length > 1 ? '.' + x[1] : '.00';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+    </script>
+
+    <!-- 
+    <apex:outputPanel layout="block" styleClass="bPageTitle" id="pageTitle">    
+    <apex:sectionHeader title="Tiered Pricing {!if(isEditModeheader, 'Edit', '')}" rendered="{!pricebookOptions.size > 0}"
+        subtitle="{!if(isBlank(tieredPricing.Id), 'New Tiered Pricing', tieredPricing.Name)}" help="https://help.salesforce.com/htviewhelpdoc?err=1&id=co_edit.htm&siteLang=en_US" >
+        <apex:outputPanel rendered="{!(NOT(ISBLANK(tieredPricing.Id)) && isEditModeHeader==false && isEditModeDetail==false)}">
+            <div class="ptBreadcrumb">&nbsp;«&nbsp;
+                <apex:outputLink value="/{!tieredPricing.kugo2p__Product__c}" >Back to Product:&nbsp;{!tieredPricing.Product__r.Name}</apex:outputLink>
+            </div>          
+        </apex:outputPanel>         
+    </apex:sectionHeader>
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!pricebookOptions.size > 0}">
+        <div class="bOverviewSearch">
+            <div class="view">
+                Manage tiered pricing by Price Book. Only one Active tiered pricing is allowed per Price Book.
+            </div>
+        </div>
+    </apex:outputPanel>
+    -->
+
+    <apex:outputPanel rendered="{!pricebookOptions.size > 0}" id="pageTitle">
+        <c:PageHeader title="Tiered Pricing {!if(isEditModeheader, 'Edit', '')}" subtitle="{!if(isBlank(tieredPricing.Id), 'New Tiered Pricing', tieredPricing.Name)}" pathname="standard" icon="pricebook" 
+                        description="Manage tiered pricing by Price Book. Only one Active tiered pricing is allowed per Price Book." 
+                        addLineBreak="{! NOT( (NOT(ISBLANK(tieredPricing.Id)) && isEditModeHeader==false && isEditModeDetail==false) )}" />
+
+        <apex:outputPanel rendered="{!(NOT(ISBLANK(tieredPricing.Id)) && isEditModeHeader==false && isEditModeDetail==false)}">
+            <div class="kugamon">&nbsp;«&nbsp;
+                <apex:outputLink value="/{!tieredPricing.kugo2p__Product__c}" >Back to Product:&nbsp;{!tieredPricing.Product__r.Name}</apex:outputLink>
+            </div>
+        </apex:outputPanel>
+    </apex:outputPanel>
+        
+    <apex:form id="formId">
+    <apex:pageMessages id="pageMsg" escape="false"/>
+
+        <apex:actionFunction name="afSave" action="{!save}" rerender="pageTitle,pageMsg,pbTieredPricing,pbTiersdetailOP" status="saveStatusHeader" />
+        <apex:outputPanel layout="block" style="text-align:center;" styleClass="kugamon" rendered="{!(pricebookOptions.size==0 && tieredPricing.Id==null)}" >
+            <br></br>
+            <apex:commandButton value="Back" action="{!cancel}" styleClass="slds-button slds-button--neutral" immediate="true" />
+        </apex:outputPanel>
+
+    <apex:pageBlock id="pbTieredPricing" title="Tiered Pricing {!if(isEditModeheader, 'Edit', 'Detail')}" mode="{!if(isEditModeHeader, 'edit', 'maindetail')}" rendered="{!pricebookOptions.size > 0 || tieredPricing.Id!=null}">
+        <apex:pageBlockButtons id="pbButtonsTop" location="top" styleClass="kugamon">
+            <apex:commandButton value="Edit" action="{!EditTieredPricing}" rerender="pageTitle,pbTieredPricing,pageMsg" styleClass="slds-button slds-button--neutral" status="saveStatusHeader" rendered="{!NOT(isEditModeheader)}" oncomplete="focusTierPricingName(); return false;" />
+            <apex:commandButton value="Delete" action="{!deleteRecord}" rerender="pageTitle,pbTieredPricing,pageMsg" styleClass="slds-button slds-button--neutral" status="saveStatusHeader" rendered="{!AND(NOT(isEditModeheader), NOT(ISBLANK(tieredPricing.Id)))}" />
+
+            <c:multiSelectButton uniqueId="Clone" buttonText="Clone" rendered="{!AND(NOT(isEditModeheader), NOT(ISBLANK(tieredPricing.Id)))}">
+
+                <!-- 
+                <apex:commandLink value="Clone with Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" >
+                    <apex:param name="cloneTiers" value="1" />
+                </apex:commandLink>
+                <apex:commandLink value="Clone without Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" >
+                    <apex:param name="cloneTiers" value="0" />
+                </apex:commandLink>
+                -->
+
+                <ul class="slds-dropdown__list" role="menu">
+                    <li class="slds-dropdown__item" role="presentation">
+                        <apex:commandLink value="Clone with Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" html-role="menuitem" tabindex="0">
+                            <apex:param name="cloneTiers" value="1" />
+                        </apex:commandLink>
+                    </li>
+
+                    <li class="slds-dropdown__item" role="presentation">
+                        <apex:commandLink value="Clone without Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" html-role="menuitem" tabindex="-1">
+                            <apex:param name="cloneTiers" value="0" />
+                        </apex:commandLink>
+                    </li>
+                </ul>
+            </c:multiSelectButton>
+
+            <apex:commandButton value="{!if(tieredPricing.kugo2p__IsActive__c, 'Deactivate', 'Activate')}" action="{!resetActive}" styleClass="slds-button slds-button--brand" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" rendered="{!AND(NOT(isEditModeheader), NOT(ISBLANK(tieredPricing.Id)))}" />
+        
+            <apex:commandButton value="Save" action="{!saveHeader}" styleClass="slds-button slds-button--brand" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" rendered="{!isEditModeheader}" />
+            <apex:commandButton value="Cancel" id="cancel" action="{!cancel}" styleClass="slds-button slds-button--neutral" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" immediate="true" rendered="{!AND(isEditModeheader, ISBLANK(tieredPricing.Id))}"/>
+            <apex:commandButton value="Cancel" id="cancelEditHeader" action="{!cancelEditHeader}" styleClass="slds-button slds-button--neutral" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" immediate="true" rendered="{!AND(isEditModeheader, NOT(ISBLANK(tieredPricing.Id)))}"/>
+            
+            &nbsp;
+            <apex:actionStatus id="saveStatusHeader" >
+                <apex:facet name="start">                                       
+                    <!-- <img src="/img/loading32.gif" width="18" height="18"/>&nbsp;<b>Processing...</b> -->
+                    <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:pageBlockButtons>
+        
+        <apex:pageBlockButtons id="pbButtonsBottom" location="bottom" styleClass="kugamon">
+            <apex:commandButton value="Edit" action="{!EditTieredPricing}" rerender="pageTitle,pbTieredPricing,pageMsg" styleClass="slds-button slds-button--neutral" status="saveStatusHeader" rendered="{!NOT(isEditModeheader)}" />
+            <apex:commandButton value="Delete" action="{!deleteRecord}" rerender="pageTitle,pbTieredPricing,pageMsg" styleClass="slds-button slds-button--neutral" status="saveStatusHeader" rendered="{!AND(NOT(isEditModeheader), NOT(ISBLANK(tieredPricing.Id)))}" />
+
+            <c:multiSelectButton uniqueId="CloneBottom" buttonText="Clone" rendered="{!AND(NOT(isEditModeheader), NOT(ISBLANK(tieredPricing.Id)))}">
+                <!-- 
+                <apex:commandLink value="Clone with Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" >
+                    <apex:param name="cloneTiers" value="1" />
+                </apex:commandLink>
+                <apex:commandLink value="Clone without Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" >
+                    <apex:param name="cloneTiers" value="0" />
+                </apex:commandLink>
+                --> 
+                
+                <ul class="slds-dropdown__list" role="menu">
+                    <li class="slds-dropdown__item" role="presentation">
+                        <apex:commandLink value="Clone with Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" html-role="menuitem" tabindex="0">
+                            <apex:param name="cloneTiers" value="1" />
+                        </apex:commandLink>
+                    </li>
+
+                    <li class="slds-dropdown__item" role="presentation">
+                        <apex:commandLink value="Clone without Tiers" action="{!cloneRecord}" rerender="pageTitle,pbTieredPricing,pbTiersdetailOP,pageMsg" status="saveStatusHeader" html-role="menuitem" tabindex="-1">
+                            <apex:param name="cloneTiers" value="0" />
+                        </apex:commandLink>
+                    </li>
+                </ul>
+            </c:multiSelectButton>
+
+            <apex:commandButton value="{!if(tieredPricing.kugo2p__IsActive__c, 'Deactivate', 'Activate')}" action="{!resetActive}" styleClass="slds-button slds-button--brand" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" rendered="{!AND(NOT(isEditModeheader), NOT(ISBLANK(tieredPricing.Id)))}" />
+        
+            <apex:commandButton value="Save" action="{!saveHeader}" styleClass="slds-button slds-button--brand" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" rendered="{!isEditModeheader}" />
+            <apex:commandButton value="Cancel" id="cancel" action="{!cancel}" styleClass="slds-button slds-button--neutral" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" immediate="true" rendered="{!AND(isEditModeheader, ISBLANK(tieredPricing.Id))}"/>
+            <apex:commandButton value="Cancel" id="cancelEditHeader" action="{!cancelEditHeader}" styleClass="slds-button slds-button--neutral" rerender="pageTitle,pbTieredPricing,pageMsg" status="saveStatusHeader" immediate="true" rendered="{!AND(isEditModeheader, NOT(ISBLANK(tieredPricing.Id)))}"/>
+            
+        </apex:pageBlockButtons>
+
+        <apex:pageBlockSection columns="2" title="Information" rendered="{!isEditModeheader}" id="pbsectionHeader">
+            <apex:inputField value="{!tieredPricing.Name}" required="true" id="TierPricingName" /> <!-- onKeyPress="return keywordEnterKey(event);" -->
+            
+            <apex:outputField value="{!tieredPricing.kugo2p__Product__c}" rendered="{!(ISBLANK(tieredPricing.Id))}"/>
+            <apex:pageBlockSectionItem rendered="{!NOT(ISBLANK(tieredPricing.Id))}">
+                <apex:outputLabel value="Product" />
+                <apex:outputText value="{!tieredPricing.Product__r.Name}" rendered="{!NOT(ISBLANK(tieredPricing.Id))}"/>
+            </apex:pageBlockSectionItem>    
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Price Book Name" for="pricebook"/>
+                <apex:outputPanel >
+                <apex:selectList value="{!tieredPricing.kugo2p__Pricebook2Id__c}" id="pricebook" size="1" required="true" rendered="{!ISBLANK(tieredPricing.Id)}">
+                    <apex:selectOptions value="{!pricebookOptions}" />
+                </apex:selectList>
+                <apex:outputField value="{!tieredPricing.kugo2p__PriceBookName__c}" rendered="{!NOT(ISBLANK(tieredPricing.Id))}"/> 
+                <!-- <apex:outputLink rendered="{!NOT(ISBLANK(tieredPricing.Id))}" value="/{!tieredPricing.kugo2p__Pricebook2Id__c}" >{!tieredPricing.kugo2p__PriceBookName__c}</apex:outputLink>-->
+                </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+
+            <apex:inputField value="{!tieredPricing.kugo2p__Type__c}" required="true" id="TierPricingType" />
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection columns="2" rendered="{!NOT(isEditModeheader)}" >
+            <apex:outputField value="{!tieredPricing.Name}" />
+            <apex:outputField value="{!tieredPricing.kugo2p__Product__c}" />
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Price Book Name" for="pricebook"/>
+                <apex:outputLink id="pricebook" value="/{!tieredPricing.kugo2p__Pricebook2Id__c}" >{!tieredPricing.kugo2p__PriceBookName__c}</apex:outputLink>
+            </apex:pageBlockSectionItem>                
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputText value=""/>
+                <apex:outputText value=""/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:outputField value="{!tieredPricing.kugo2p__IsActive__c}" />
+            <!-- 
+            <apex:pageBlockSectionItem >
+                <apex:outputText value=""/>
+                <apex:outputText value=""/>
+            </apex:pageBlockSectionItem>
+            -->
+            <apex:outputField value="{!tieredPricing.kugo2p__Type__c}" id="TierPricingType" />
+
+            <apex:pageBlockSectionItem >
+                <br/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <br/>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Created By" for="createdBy"/>
+                <apex:outputPanel >
+                    <apex:outputLink id="createdBy" value="/{!tieredPricing.CreatedById}" >{!tieredPricing.CreatedBy.Name}</apex:outputLink>,&nbsp;<apex:outputField value="{!tieredPricing.CreatedDate}" />
+                </apex:outputPanel>                 
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Last Modified By" for="lastModifiedBy"/>
+                <apex:outputPanel >
+                    <apex:outputLink id="lastModifiedBy" value="/{!tieredPricing.LastModifiedById}" >{!tieredPricing.LastModifiedBy.Name}</apex:outputLink>,&nbsp;<apex:outputField value="{!tieredPricing.LastModifiedDate}" />
+                </apex:outputPanel>                 
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+
+    <apex:outputPanel styleClass="Tiers" layout="block" id="pbTiersdetailOP" >
+    <apex:pageBlock id="pbTiers" title="Tiers" mode="edit" rendered="{!tieredPricing.Id!=null}">
+        <apex:pageBlockButtons id="pbButtonsDetail" styleClass="kugamon">
+            <apex:commandButton value="Edit" action="{!EditTiers}" styleClass="slds-button slds-button--neutral" rerender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" rendered="{!NOT(isEditModeDetail)}" />
+
+            <apex:commandButton value="Save" action="{!saveDetail}" styleClass="slds-button slds-button--brand" rerender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" rendered="{!isEditModeDetail}"/>
+            <apex:commandButton value="Cancel" action="{!cancelEditDetail}" styleClass="slds-button slds-button--neutral" rerender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" immediate="true" rendered="{!isEditModeDetail}"/>
+            
+            &nbsp;
+            <apex:actionStatus id="saveStatusTiers" >
+                <apex:facet name="start">                                       
+                    <!-- <img src="/img/loading32.gif" width="18" height="18"/>&nbsp;<b>Processing...</b> -->
+                    <img src="{!URLFOR($Resource.kugo2p__SLDS, '/assets/images/spinners/slds_spinner_brand.gif')}" height="32" width="32" alt="Processing..." />
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:pageBlockButtons>
+
+         <script>
+         </script>
+
+        <apex:pageBlockTable value="{!tiersWrapper}" var="tw" id="pbtTiers" style="width:100%">
+                <apex:column headerValue="Action" title="Action" styleclass="actionColumn" rendered="{!NOT(isEditModeDetail)}" >
+                    <apex:facet name="header">Action</apex:facet>
+                   <apex:commandLink value="Edit" action="{!EditTiers}" styleClass="actionLink" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" rendered="{!(NOT(tw.isListTier) && tw.parentIndex==null)}">
+                   </apex:commandLink>
+                   <apex:outputPanel rendered="{!(NOT(tw.isListTier) && tw.parentIndex==null)}"> &nbsp;|&nbsp; </apex:outputPanel>
+                   <apex:commandLink value="Del" action="{!deleteTier}" styleClass="actionLink" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" rendered="{!(NOT(tw.isListTier) && tw.parentIndex==null)}" onclick="if(!delConfirmation()) return;"> <!-- onclick="if(!delConfirmation()) return;" -->
+                       <apex:param name="tierId" value="{!tw.tier.Id}" />
+                       <apex:param name="tierIndex" value="{!tw.index}" />
+                       <apex:param name="delete" value="1" />
+                   </apex:commandLink>
+                </apex:column>
+            
+                <apex:column headerValue="Action" title="Action" styleclass="actionColumn" rendered="{!isEditModeDetail}" >
+                    <apex:facet name="header">Action</apex:facet>
+                    <!-- 
+                    <apex:commandLink value="Del" action="{!deleteTier}" styleClass="btn" style="text-decoration:none;" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" rendered="{!(NOT(tw.isListTier) && tw.parentIndex==null)}">
+                        <apex:param name="tierId" value="{!tw.tier.Id}" />
+                        <apex:param name="tierIndex" value="{!tw.index}" />
+                        <apex:param name="delete" value="0" />
+                    </apex:commandLink>
+                    --> 
+
+                    <apex:commandLink action="{!deleteTier}" title="Delete" style="text-decoration:none;" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" rendered="{!(NOT(tw.isListTier) && tw.parentIndex==null)}">
+                        <i class="fa fa-trash-o fa-lg" style="padding-left: 7px;"></i>  <!-- style="padding-right: 2px;" -->
+
+                        <apex:param name="tierId" value="{!tw.tier.Id}" />
+                        <apex:param name="tierIndex" value="{!tw.index}" />
+                        <apex:param name="delete" value="0" />
+                    </apex:commandLink>                   
+
+                   <apex:facet name="footer" >
+                        <!--
+                        <apex:outputpanel style="text-align:center;" >                       
+                            <apex:commandButton value=" + " action="{!addTier}" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" oncomplete="focusLastRowQuantity(); return false;" >
+                            </apex:commandButton>
+                        </apex:outputpanel>
+                        -->
+
+                        <apex:commandLink action="{!addTier}" title="Add Tier" style="text-decoration:none" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" oncomplete="focusLastRowQuantity(); return false;" >
+                            <i class="fa fa-plus-square fa-lg" style="padding-left: 5px;"></i>  <!-- style="text-align:center;" style="padding-right: 2px;" --> 
+                        </apex:commandLink>                     
+                   </apex:facet>
+                </apex:column>
+                
+                <apex:column headerValue="Quantity Start" title="Quantity Start" headerClass="rightalign" styleClass="rightalign">
+                    <apex:inputField value="{!tw.Tier.kugo2p__QuantityStart__c}" styleClass="rightalign" rendered="{!(isEditModeDetail && NOT(tw.isListTier) && tw.parentIndex==null)}" />
+                    <apex:outputField value="{!tw.Tier.kugo2p__QuantityStart__c}" rendered="{!(NOT(isEditModeDetail) && NOT(tw.isListTier) && tw.parentIndex==null)}" /><apex:outputPanel rendered="{!(NOT(isEditModeDetail) && NOT(tw.isListTier))}">&nbsp;</apex:outputPanel>                     
+                    <apex:outputPanel rendered="{!tw.isListTier}"><apex:outputText value="0" />&nbsp;</apex:outputPanel>
+                </apex:column>
+
+                <apex:column headerValue="Discount (%)" title="Discount (%)" headerClass="rightalign" styleClass="rightalign">
+                    <apex:outputText value="{!tw.pbListPrice}" style="display:none;visibility:hidden;" />
+                    <apex:inputText value="{!tw.discount}" onchange="calcTierprice(this, this.parentNode.parentNode);" styleClass="rightalign" 
+                                    rendered="{!(NOT(isMultiCurrencyEnabled) && isUSLocale && isEditModeDetail && NOT(tw.isListTier))}" />
+
+                    <apex:inputText value="{!tw.discount}" styleClass="rightalign" rendered="{!( (isMultiCurrencyEnabled || NOT(isUSLocale) ) && isEditModeDetail && NOT(tw.isListTier))}" >
+                        <apex:actionSupport event="onchange" action="{!tw.calcTierprice}" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" oncomplete="focusTierPrice(this.parentNode.parentNode);"/>
+                    </apex:inputText>
+                    <apex:outputText value="{!tw.discount}" rendered="{!(NOT(isEditModeDetail) || tw.isListTier)}" /><apex:outputPanel rendered="{!(NOT(isEditModeDetail) || tw.isListTier)}">&nbsp;</apex:outputPanel>
+                </apex:column>
+
+                <apex:column headerValue="Tier Price" title="Tier Price" headerClass="rightalign" styleClass="rightalign">
+                    <apex:outputPanel rendered="{!(isEditModeDetail && NOT(tw.isListTier))}">
+                        <apex:outputText value="{!tw.RecordCurrencyCode}" />&nbsp;
+                        <apex:inputField value="{!tw.Tier.kugo2p__TierPrice__c}" onchange="calcTierDiscount(this, this.parentNode.parentNode.parentNode);" styleClass="rightalign" 
+                                        rendered="{!(NOT(isMultiCurrencyEnabled) && isUSLocale && isEditModeDetail && NOT(tw.isListTier))}" />  <!-- onfocus="this.select();" -->
+
+                        <apex:inputField value="{!tw.Tier.kugo2p__TierPrice__c}" styleClass="rightalign" rendered="{!( (isMultiCurrencyEnabled || NOT(isUSLocale) ) && isEditModeDetail && NOT(tw.isListTier))}" >
+                            <apex:actionSupport event="onchange" action="{!tw.calcTierDiscount}" reRender="pageTitle,pbTiersdetailOP,pageMsg" status="saveStatusTiers" />
+                        </apex:inputField>
+                    </apex:outputPanel>
+
+                    <apex:outputField value="{!tw.Tier.kugo2p__TierPrice__c}" rendered="{!(NOT(isEditModeDetail) || tw.isListTier)}" /><apex:outputPanel rendered="{!(NOT(isEditModeDetail) || tw.isListTier)}">&nbsp;</apex:outputPanel>
+                </apex:column>
+
+                <apex:column headerValue="Last Modified By" rendered="{!NOT(isEditModeDetail)}" headerClass="paddingleft15" styleClass="paddingleft15">
+                    <apex:facet name="header">Last Modified By</apex:facet>
+                    <apex:outputPanel rendered="{!(NOT ISBLANK(tw.Tier.LastModifiedById))}">
+                        <apex:outputLink id="lastModifiedBy" value="/{!tw.Tier.LastModifiedById}" >{!tw.Tier.LastModifiedBy.Name}</apex:outputLink>,&nbsp;<apex:outputField value="{!tw.Tier.LastModifiedDate}" />
+                    </apex:outputPanel>
+                </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    </apex:outputPanel>
+
+    </apex:form>
+</apex:page>

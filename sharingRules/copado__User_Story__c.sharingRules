@@ -1,3 +1,331 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata"/>
-
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Share_APO_User_Stories</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Share APO User Stories</label>
+        <sharedTo>
+            <group>APO_Release_Team</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>APO User Story</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Academy</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Academy</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Head_of_Academy</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Head_of_Academy</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Academy_with_CTO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Academy with CTO</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Head_of_Academy</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Academy_with_Success</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Academy with Success</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Head_of_Academy</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>All_Internals_Read_Only</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>All Internals Read Only</label>
+        <sharedTo>
+            <group>Custom_Internal_Users</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Custom_Internal_Users</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>CS_with_CTO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>CS with CTO</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Customer_Support_Manager</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>CTO_to_Customer_Support</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>CTO to Customer Support</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Customer_Support_Manager</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Customer_Success_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Customer Success Sharing</label>
+        <sharedTo>
+            <roleAndSubordinates>Customer_Support_Manager</roleAndSubordinates>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Customer_Support_Manager</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Customer_Success_with_Academy</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Customer Success with Academy</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Head_of_Academy</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Customer_Success_with_Implementation</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Customer Success with Implementation</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Implementation_Manager</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Full_Access_Dev_Organization</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>All internal Dev users get access to User Stories.</description>
+        <label>Full Access Dev Organization</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>IT_Ops_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>IT Ops Sharing</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Director_IT_Ops</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Director_IT_Ops</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>IT_Ops_Sharing_to_Engineering</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>IT Ops Sharing to Engineering</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Director_IT_Ops</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>IT_Ops_visibility_to_All_User_Stories</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>IT Ops visibility to All User Stories</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Director_IT_Ops</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Implementation</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Implementation</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Implementation_Manager</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Implementation_Manager</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Implementation_with_CSO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Implementation with CSO</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CSO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Implementation_Manager</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Implementation_with_CTO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Implementation with CTO</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Implementation_Manager</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Implementation_with_Success</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Implementation with Success</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Implementation_Manager</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Integration_All</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Integration_All</label>
+        <sharedTo>
+            <role>Z_Integrations</role>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinates>CEO</roleAndSubordinates>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Internal_Users_can_Edit_Z_External_Stories</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Internal users (custom Public Group) may see User Stories owned by  users in the Z-External role.</description>
+        <label>Internal Users can Edit Z-External Stories</label>
+        <sharedTo>
+            <group>Custom_Internal_Users</group>
+        </sharedTo>
+        <sharedFrom>
+            <role>Z_External</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>SE_with_CTO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>SE_with_CTO</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>VP_Sales_Engineering</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>SE_with_Support</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Users stories owned by the Sales Engineers are shared with the Support Team members.</description>
+        <label>SE with Support</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>VP_Sales_Engineering</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Support_Team</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Users stories owned by the Support Team members are shared with the Support Team members.</description>
+        <label>Support Team</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Support_Team_with_SE</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Users stories owned by the Support Team members are shared with the Sales Engineers</description>
+        <label>Support Team with SE</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>VP_Sales_Engineering</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Support_with_Tech</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Support with Tech</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Tech_with_CSO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Tech with CSO</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CSO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Tech_with_Support</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Tech with Support</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>VP_Customer_Success</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>CTO</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Temp_for_Estela</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>While the Director of Development reportees report to Estela</description>
+        <label>Temp for Estela</label>
+        <sharedTo>
+            <role>Agile_QA_Manager</role>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Director_Development</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Z_External_can_edit_each_other_s_User_Stories</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Z-External can edit each other&apos;s User Stories</label>
+        <sharedTo>
+            <role>Z_External</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>Z_External</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

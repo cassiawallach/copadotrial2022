@@ -1,0 +1,1 @@
+Name,Locale Code,Locale DateTime FormatEnglish (United Kingdom),en_GB,dd/MM/yyyyEnglish (United States),en_US,MM/dd/yyyyFrench (Canada),fr_CA,yyyy-MM-dd"German (Germany, Euro)",de_DE_EURO,dd.MM.yyyyJapanese (Japan),ja_JP,yyyy/MM/dd

@@ -1,0 +1,45 @@
+<aura:component controller="cps_PlaygroundWizardStartController" implements="forceCommunity:availableForAllPageTypes">
+  <aura:attribute name="screen" type="Integer" default="0" />
+  <aura:attribute name="hasAgreed" type="Boolean" default="false" />
+  <aura:attribute name="playgroundName" type="String" />
+  <aura:attribute name="playgroundConfiguration" type="String" />
+  <aura:attribute name="invalidPlaygroundName" type="Boolean" default="true" />
+  <aura:attribute name="verifyingPlaygroundName" type="Boolean" default="false" />
+  <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+  <aura:attribute name="configOptions" type="List" />
+  <aura:handler name="change" value="{! v.playgroundName }" action="{! c.handlePlaygroundNameChange }" />
+  <aura:registerEvent name="stepChange" type="c:cps_wizard_stepChange" />
+
+  <aura:if isTrue="{! v.screen == 0 }">
+    <c:cps_wizard_body>
+      <c:cps_wizard_heading id="agreementTitle">{! $Label.c.CPS_Start_Agreement_Title }</c:cps_wizard_heading>
+      <c:cps_Agreement style="margin: 16px auto" />
+      <a style="text-align: center;" href="{! $Label.c.CPS_Start_Legal_Agreement_Link }" target="_blank">{! $Label.c.CPS_Start_Legal_Agreement_Link }</a>
+
+      <div class="flex checkbox">
+        <input id="wizardStartAgree" type="checkbox" onchange="{! c.handleAgreeChange }" />
+        <label for="wizardStartAgree">{! $Label.c.CPS_Start_Agreement_Checkbox }</label>
+      </div>
+
+      <c:cps_Button id="wizardStartNextView" disabled="{! !v.hasAgreed }" onclick="{! c.handleAgreeClick }">{! $Label.c.CPS_Start_Agree_Button }</c:cps_Button>
+    </c:cps_wizard_body>
+  </aura:if>
+
+  <aura:if isTrue="{! v.screen == 1 }">
+    <c:cps_wizard_body>
+      <c:cps_wizard_heading id="gettingStartedTitle">{! $Label.c.CPS_Start_Get_Started_Title }</c:cps_wizard_heading>
+      <c:cps_wizard_text id="gettingStartedSubtitle">{! $Label.c.CPS_Start_Get_Started_Subtitle }</c:cps_wizard_text>
+      <c:cps_wizard_textInput id="playgroundName" aura:id="playgroundName" value="{! v.playgroundName }" placeholder="Your Playground Name" disabled="{! v.verifyingPlaygroundName }" pattern="[a-zA-Z0-9_-]+" />
+        <c:cps_wizard_picklistInput id="playgroundConfiguration" aura:id="playgroundConfiguration" label="Select the Configuration for your playground" value="{!v.playgroundConfiguration}" options="{!v.configOptions}"/> 
+      <aura:if isTrue="{! v.playgroundConfiguration == 'Light Configuration' }">
+        <div class="slds-m-top_x-small slds-grid slds-grid_align-center">
+          <p class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning slds-size_1-of-2" style="width: auto;">
+            {! $Label.c.CPS_LConfig_Warning_Message }
+          </p>
+        </div>
+      </aura:if>
+      <c:cps_wizard_text id="gettingStartedFootnote">{! $Label.c.CPS_Start_Get_Started_Footnote }</c:cps_wizard_text>
+      <c:cps_Button id="wizardStartContinue" disabled="{! or(v.invalidPlaygroundName, v.verifyingPlaygroundName) }" onclick="{! c.handleContinueClick }">{! $Label.c.CPS_Continue_Button }</c:cps_Button>
+    </c:cps_wizard_body>
+  </aura:if>
+</aura:component>

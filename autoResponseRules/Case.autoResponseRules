@@ -1,3 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AutoResponseRules xmlns="http://soap.sforce.com/2006/04/metadata"/>
-
+<AutoResponseRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <autoResponseRule>
+        <fullName>New case</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email,Sales Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <senderEmail>help@copa.do</senderEmail>
+            <senderName>Copado Solutions</senderName>
+            <template>Support_Templates/Email_to_Case_Notification</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Academy</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Playground</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>support@copa.do</replyToEmail>
+            <senderEmail>help@copa.do</senderEmail>
+            <senderName>Copado Solutions</senderName>
+            <template>unfiled$public/Auto_Response_for_Academy_Cases</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Support Case</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>support@copa.do</replyToEmail>
+            <senderEmail>help@copa.do</senderEmail>
+            <senderName>Copado Solutions</senderName>
+            <template>Support_Templates/Auto_Response_for_Copado_Support_Cases</template>
+        </ruleEntry>
+        <ruleEntry>
+            <formula>true</formula>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>support@copa.do</replyToEmail>
+            <senderEmail>help@copa.do</senderEmail>
+            <senderName>Copado Solutions</senderName>
+            <template>Support_Templates/New_Case_Standard_no_Contact</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.SuppliedEmail</field>
+                <operation>notEqual</operation>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>support@copa.do</replyToEmail>
+            <senderEmail>help@copa.do</senderEmail>
+            <senderName>Copado Solutions</senderName>
+            <template>Support_Templates/New_Case_Standard_no_Contact</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Is_Premier_Support__c</field>
+                <operation>equals</operation>
+                <value>False</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>support@copa.do</replyToEmail>
+            <senderEmail>help@copa.do</senderEmail>
+            <senderName>Copado Solutions</senderName>
+            <template>Support_Templates/New_Case_Standard_Customers</template>
+        </ruleEntry>
+    </autoResponseRule>
+</AutoResponseRules>

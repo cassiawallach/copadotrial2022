@@ -25,11 +25,19 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>copado__Run_all_tests__c</field>
+                <field>copado__Branch__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>copado__Automated_Behaviour__c</field>
+                <field>copado__Git_Repository__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Commit_Id__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__Attachment_Id__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -47,7 +55,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>copado__Manual_Task_Notified__c</field>
+                <field>copado__Automated_Behaviour__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -80,6 +88,19 @@
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>false</detailHeading>
+        <editHeading>false</editHeading>
+        <label>New Section</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>copado__dataJson__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>OneColumn</style>
+    </layoutSections>
+    <layoutSections>
         <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
@@ -108,23 +129,6 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Json Step Data</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__dataJson__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>copado__Commit_Name__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>OneColumn</style>
-    </layoutSections>
     <relatedLists>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
@@ -135,6 +139,24 @@
         <relatedList>copado__Deployment_Job__c.copado__Step__c</relatedList>
         <sortField>copado__Status__c</sortField>
         <sortOrder>Asc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>copado__Blocker__c</fields>
+        <fields>copado__Bugs__c</fields>
+        <fields>copado__Code_Smells__c</fields>
+        <relatedList>copado__Static_Code_Analysis_Result__c.copado__Deployment_Step__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>copado__Status__c</fields>
+        <fields>copado__Findings__c</fields>
+        <fields>copado__Highest_Severity__c</fields>
+        <fields>copado__Highest_Rule_Action__c</fields>
+        <fields>copado__Scan_Start__c</fields>
+        <fields>copado__Scan_End__c</fields>
+        <fields>copado__Environment__c</fields>
+        <relatedList>copado__Compliance_Scan_Result__c.copado__Deployment_Step__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
@@ -158,27 +180,13 @@
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>copado__Environment__c</fields>
-        <fields>CREATED_DATE</fields>
-        <fields>copado__Status__c</fields>
-        <relatedList>copado__Compliance_Scan_Result__c.copado__Deployment_Step__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>CREATED_DATE</fields>
-        <fields>copado__Score_v11__c</fields>
-        <fields>copado__Number_of_Violations__c</fields>
-        <relatedList>copado__Static_Code_Analysis_Result__c.copado__Deployment_Step__c</relatedList>
-    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
     <showInteractionLogPanel>true</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h09000009vC3N</masterLabel>
+        <masterLabel>00hb0000000bl1F</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

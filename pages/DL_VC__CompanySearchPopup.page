@@ -1,0 +1,71 @@
+<apex:page controller="DL_VC.CompanySearchPopupController" docType="html-5.0">
+    <script type="text/javascript">
+        function closeWin() {
+            if (window.parent) {
+                window.parent.opener.location.href = window.parent.opener.location.href;
+                window.parent.close();
+
+            } else {
+                window.opener.location.href = window.opener.location.href;
+                window.close();
+
+            }
+        }
+
+        function closeWindow_NoAction() {
+            window.close();
+        }
+    </script>
+    <apex:form >
+        <apex:pageBlock title="Search Accounts" id="accounts_list" rendered="{! first_pass }">
+            <apex:outputPanel layout="block" style="overflow: auto; width:750px;height:250px">
+                <table style="width: 100%">
+                    <tr>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:input value="{! search_term }" id="search_term" />
+                            <br/>
+                        </td>
+                        <td>
+                            <apex:selectRadio value="{! search_option }">
+                                <apex:selectOption itemValue="1" itemLabel="Company/Keyword" />
+                                <apex:selectOption itemValue="3" itemLabel="Ticker" />
+                            </apex:selectRadio>
+                        </td>
+                        <td>
+                            <apex:commandButton value="Search"></apex:commandButton>
+                        </td>
+                        <td align="right">
+                            <apex:selectList label="Sort By:" size="1" value="{! sort_order }">
+                                <apex:selectOption itemLabel="Company" itemValue="Company" />
+                                <apex:selectOption itemLabel="Ticker" itemValue="Ticker" />
+                                <apex:selectOption itemLabel="Revenue" itemValue="Revenue" />
+                                <apex:actionSupport event="onchange" reRender="accounts_list" />
+                            </apex:selectList>
+                        </td>
+                    </tr>
+                </table>
+                <apex:pageBlockTable value="{! accounts }" var="acct">
+                    <apex:column >
+                        <apex:commandLink value="Select" action="{! validateAccount }">
+                            <apex:param name="company_id" value="{! acct.VC_Company_Id__c }" assignTo="{! company_id }" />
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column value="{! acct.Name }" headerValue="Company" />
+                    <apex:column value="{! acct.TickerSymbol }" headerValue="Ticker" />
+                    <apex:column value="{! acct.AnnualRevenue }" headerValue="Revenue (M)" />
+                </apex:pageBlockTable>
+            </apex:outputPanel>
+            <apex:pageBlockSection >
+                <apex:pageMessages >
+                </apex:pageMessages>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{! NOT( first_pass ) }">
+            <apex:pageBlockSection >
+                <apex:messages />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

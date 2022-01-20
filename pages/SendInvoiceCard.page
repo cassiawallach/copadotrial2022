@@ -1,0 +1,148 @@
+<apex:page docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" cache="true" showHeader="false" standardStylesheets="false" standardController="Invoice__c" extensions="SendInvoiceCard">
+<!--Include Stylsheets for the Mobile look and feel -->
+      <apex:stylesheet value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/css/app.min.css')}"/>
+      <apex:includeScript value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/js/jQuery2.0.2.min.js')}"/>
+      <apex:includeScript value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/js/jquery.touchwipe.min.js')}"/>
+      <apex:includeScript value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/js/main.min.js')}"/>
+                
+      <script type='text/javascript' src='/canvas/sdk/js/publisher.js'></script>
+      
+      <style>
+          /* default S1 color styles */
+          .list-view-header, .data-capture-buttons a {
+                background: -webkit-linear-gradient(#2a93d5,#107abb);
+                background: linear-gradient(#2a93d5,#107abb);
+                box-shadow: 0 1px 3px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.21);
+                color: white;
+                font-weight: bold;
+          }
+          
+          #resultPage, #confirmPage {
+              padding-bottom: 50px;
+          }
+      </style>
+
+
+
+
+
+    <script>
+        $(document).ready(function(){
+             Sfdc.canvas.publisher.publish({name: "publisher.setValidForSubmit", payload:"true"});
+            $("#confirmPage").show();
+            $("#resultPage").hide();
+        });
+
+        function sendInvoice() {
+            console.log('SubmitData')
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.SendInvoiceCard.sendInvoiceAction}',
+                '{!Invoice__c.Id}',
+                function(result, event){
+                    if (event.status) {
+                        Sfdc.canvas.publisher.publish({name: "publisher.setValidForSubmit", payload:"false"});
+                        $("#confirmPage").hide();
+                        $("#resultPage").show();
+                    } else if (event.type === 'exception') {
+                        alert('Exception: '+event.message)
+                    } else {
+                        alert('Error: '+event.message)
+                    }
+                }, 
+                {escape: true}
+            );
+        }
+    
+        //If the user wants to go back to the search without inserting the line item, the invoice with 0 line items needs to be deleted
+        function goBack(){
+            // Success - close the publisher and refresh the feed
+            Sfdc.canvas.publisher.publish({name: "publisher.close", payload:{ refresh:"false"}});
+        }
+    </script>
+
+
+<apex:form id="form">
+        <!-- this is the view for the inital search page -->
+        <div id="confirmPage">
+            <div id="searchInputSection">
+            <div class="list-view-header">Send invoice</div>
+            <div>
+                <!-- this is the section of the view to enter the search criteria -->
+                <section class="border-bottom">
+                 <div class="content">
+                  <h3>Billing Contact Person</h3>
+                  <div class="form-control-group">
+                   <div class="form-control form-control-text">
+                    <apex:outputLabel value="{!Invoice__c.Account__r.Billing_Contact__r.Name}"/>
+                   </div>
+                  </div>
+                 </div>
+
+                 <div class="content">
+                  <h3>Billing Contact Email</h3>
+                  <div class="form-control-group">
+                   <div class="form-control form-control-text">
+                    <apex:outputLabel value="{!Invoice__c.Account__r.Billing_Contact__r.Email}"/>
+                   </div>
+                  </div>
+                 </div>
+
+                 <div class="content">
+                  <h3>Invoice number</h3>
+                  <div class="form-control-group">
+                   <div class="form-control form-control-text">
+                    <apex:outputLabel value="{!Invoice__c.Name}"/>
+                   </div>
+                  </div>
+                 </div>
+
+                 <div class="content">
+                  <h3>Total amount</h3>
+                  <div class="form-control-group">
+                   <div class="form-control form-control-text">
+                    <apex:outputLabel value="{!Invoice__c.Total_Amount__c}"/>
+                   </div>
+                  </div>
+                 </div>
+                </section>
+          </div> 
+          </div> <!-- end searchInputSection --> 
+        </div> 
+        <!-- this page displays the form to add order criteria -->
+        <div id="resultPage">
+        <div class="list-view-header">Congratulations!</div>
+            <div>
+                <section class="border-bottom">
+                 <div class="content">
+                  <h3>Confirmation</h3>
+                  <div class="form-control-group">
+                   <div class="form-control form-control-text">
+                    <h1>Invoice sent successfully to {!Invoice__c.Account__r.Billing_Contact__r.Email}</h1>
+                   </div>
+                  </div>
+                 </div>
+                </section>
+                <section class="data-capture-buttons one-buttons">
+                    <div class="content">
+                        <section class="data-capture-buttons one-buttons">
+                             <a href="#" id="goBack" onClick="goBack();" >back</a>
+                        </section>
+                    </div>
+                </section>
+          </div> 
+        </div> <!-- end result page -->
+        </apex:form>
+        
+        <script type='text/javascript'>  
+            Sfdc.canvas.publisher.subscribe({name: "publisher.post", onData:function(e) {
+                // This subscribe fires when the user hits 'Submit' in the publisher
+                sendInvoice();
+             }});                                           
+         </script>
+
+
+</apex:page>

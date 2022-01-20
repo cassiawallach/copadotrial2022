@@ -1,0 +1,289 @@
+<apex:page standardController="TRIMDA__TRIMDA_Parameters__c" extensions="TRIMDA.TRIMDA_DupeAlertsSetup_Controller" tabStyle="TRIMDA__TRIMDA_DupeAlerts__c">
+<style>
+    .DTaction {
+        color:#000000;
+        font-weight: bold;
+    }
+    .DTNews {
+        color:#6666FF;
+        font-weight: bold;
+    }
+    .OBOpt{
+        margin: 0px auto;
+        width: 100%;
+    }
+    .OBOpt.td{
+        width: 50%;
+    }
+    .OBOpt input, .OBOpt label{
+        float:none;
+        display:inline;
+        width: 30px;
+    }
+    
+</style>
+<apex:form >
+<apex:outputPanel id="setup" >
+    <apex:pageBlock id="setupPB" title="DataTrim Dupe Alerts Setup" mode="detail" rendered="{!showSetup}" >
+    
+    <table border="0" width="100%" >
+    <tr>
+        <apex:outputPanel id="menu" rendered="{!showSidebar}" >
+        <td width="180px" style="vertical-align: top;">
+            <table border="0" >
+            <tr><td><apex:outputLink styleClass="DTaction" value="/apex/TRIMDA__TRIMDA_DupeAlertsSetup"  title="Home" ><strong>Home</strong></apex:outputLink></td></tr>
+            <tr><td><apex:outputLink styleClass="DTaction" value="/apex/TRIMDA__TRIMDA_Initialize"  title="Initialize" ><strong>Initialize</strong></apex:outputLink></td></tr>
+            <tr><td><apex:outputLink styleClass="DTaction" value="https://www.datatrim.com/downloads/DataTrimDupeAlertsUserGuide.pdf#zoom=80" target="Blank" title="DataTrim Dupe Alerts Setup and User Guide" ><strong>Setup and User Guide</strong></apex:outputLink></td></tr>
+            <tr height="10px"><td></td></tr> 
+            
+            <tr><td style="color:#6666FF; font-weight: bold;">Installation and Setup</td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayLicNoUpdate}" value="License No. update" rerender="main" /></td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayOnBoarding}" value="OnBoarding Process" rendered="{!OnBoardingOption != 1}" rerender="main" /></td></tr>
+            <tr><td><apex:outputLink styleClass="DTaction" value="https://blog.datatrim.com/?p=123" title="Add the DataTrim IP addresses to you Network Access list" target="Blank" >Update Network Access</apex:outputLink></td></tr>
+            <tr height="10px"><td></td></tr>
+            <tr><td style="color:#6666FF; font-weight: bold;" >Matching</td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayMatchingSetup}" value="Social CRM Settings" rerender="main" /></td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayDDSetup}" value="Dupe Detection Upon Entry" rerender="main" /></td></tr>
+
+            <!--
+            <tr height="10px"><td></td></tr>
+            <tr><td style="color:#6666FF; font-weight: bold;" >Merging and Converting</td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayMergeOptions}" value="Merge Settings" rerender="main" /></td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayConvertOptions}" value="Convert Settings" rerender="main" /></td></tr>
+            --->
+            <!-- 
+            <tr><td><apex:outputText styleClass="DTaction" value="Dupe Status" /></td></tr>
+            <tr><td style="padding-left: 20px"><apex:commandLink styleClass="DTaction" action="{!displayDSLead}" value="-Lead" rerender="main" /></td></tr>
+            <tr><td style="padding-left: 20px"><apex:commandLink styleClass="DTaction" action="{!displayDSAccount}" value="-Account" rerender="main" /></td></tr>
+            <tr><td style="padding-left: 20px"><apex:commandLink styleClass="DTaction" action="{!displayDSContact}" value="-Contact" rerender="main" /></td></tr>
+            <tr height="10px"><td></td></tr>
+             -->
+
+            <tr height="10px"><td></td></tr>
+            <tr><td style="color:#6666FF; font-weight: bold;" >Merge and Convert</td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayMergeOptions}" value="Merge and Mass Merge" rerender="main" /></td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayConvertOptions}" value="Convert and Mass Convert" rerender="main" /></td></tr>
+
+
+            <tr height="10px"><td></td></tr>
+            <tr><td style="color:#6666FF; font-weight: bold;" >Dupe Status</td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayDupeStatus}" value="Display Options" rerender="main" /></td></tr>
+            
+            <tr height="10px"><td></td></tr>
+            <tr><td style="color:#6666FF; font-weight: bold;">Other</td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displaywizard}" value="Default Wizard" rerender="main" /></td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displaywizard}" value="Clickjack protection" rerender="main" /></td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayNotification}" value="Email Notification" rerender="main" /></td></tr>
+            <tr><td><apex:commandLink styleClass="DTaction" action="{!displayParameters}" value="All Setup Parameters" rerender="main" /></td></tr>
+            <tr height="10px"><td></td></tr>
+            </table>
+        </td>
+        </apex:outputPanel>
+        <td style="vertical-align: top;">
+            <apex:outputPanel id="main" >
+                 <apex:outputPanel rendered="{!showSplash}">
+                    <apex:panelgroup id="splash"  > 
+                        <apex:include pagename="TRIMDA__TRIMDA_SetupSplashPage" id="thesplashpage"  /> 
+                    </apex:panelgroup>
+                 </apex:outputPanel>
+
+                <apex:outputPanel rendered="{!showOnBoarding}" >
+                    <apex:pageBlockSection id="onboardingInfo" title="Providing DataTrim access to your data" columns="1" > 
+                    In order for the DataTrim Dupe Alert solution to perform the de-duplication of your data you must grant us access
+                    to it.<br /><br />
+                    There are 2 alternatives for granting us access to your data.<br />
+                    <b>Alternative 1: Create a Specific DataTrim user</b><br />
+                    <b>Alternative 2: Reusing an existing salesforce License</b><br />
+                    <br />
+                    <b>Alternative 1</b> is the optimal solution, as it gives less implication while delivering the service to
+                    you. We and our solution will be able to reset the password when it expires, and you can
+                    setup a specific profile for this user, limiting the DataTrim user to having access to the
+                    relevant data only.<br />
+                    <b>Alternative 2</b> however, has the benefit of saving you from buying another license from
+                    salesforce, but we would have to manually go through the OnBoarding process each time the
+                    shared user changes the password.<br />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection id="onboardingOption" title="Your OnBoarding Options" columns="1" > 
+                        <apex:selectRadio value="{!OBOption}" styleClass="OBOpt">
+                           <apex:selectOptions value="{!OBOptions}"/>
+                        </apex:selectRadio>
+                        <apex:commandButton value="Confirm" action="{!confirmOBOption}" rerender="main" />
+                    </apex:pageBlockSection>
+                    <apex:outputPanel id="OBsup" rendered="{!OBOption='Alt2'}">
+                        <apex:pageBlockSection id="onboarding" title="DataTrim OnBoarding Process" columns="1" > 
+                            <apex:pageBlockSectionItem ><apex:outputLabel Value="License No" /><apex:inputText value="{!licenseno}" id="licenseno" maxLength="18" style="width:250px"/></apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem ><apex:outputLabel Value="User Name" /><apex:inputText value="{!username}" id="username" maxLength="50" style="width:250px"/></apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem ><apex:outputLabel Value="Password" /><apex:inputSecret value="{!pwd}" id="pwd" style="width:250px"/></apex:pageBlockSectionItem>
+                             <!-- OnBoardingKey:<apex:outputText value="{!OnBoardingKey}" id="OnBoardingKey"/> -->
+                        </apex:pageBlockSection>
+                            By clicking the OnBoarding button below, you will be forwarding an OnBoarding Key to DataTrim.<br /> 
+                            With this key the DataTrim Dupe Alerts application will be able to access your data using your login and profile.<br />
+                            The information being sent will be encrypted, so no credentials will be exposed in clear text at any point in the process.<br />
+                            Information sharing during the OnBoarding process is covered by our standard:&nbsp;<apex:outputLink value="http://www.datatrim.com/lp/nda.htm" id="NDALink" >Non-Disclosure Agreement</apex:outputLink><br />
+                        <apex:inputCheckbox value="{!accept}"><b>I accept to share this information with DataTrim! </b></apex:inputCheckbox><br />
+                        <apex:commandButton action="{!onboarding}" value="OnBoarding"/>
+                        
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <apex:pageBlockSection id="LicNoUpdate" title="License Number Update" columns="1" rendered="{!showLicNoUpdate}" > 
+                    <apex:inputField value="{!P.TRIMDA__LicenseNo__c}"  />
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection id="Notify" title="Email Notifications on Complete" columns="2" rendered="{!showNotify}" > 
+                    <apex:inputField value="{!P.TRIMDA__Send_Notification_on_Complete__c}" />
+                    <apex:inputField value="{!P.TRIMDA__Notification_Email_Address__c}"  />
+                    &nbsp;
+                    <apex:inputField value="{!P.TRIMDA__AddlNotification_Email_Address__c}"  />
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:pageBlockSection>
+                
+
+                
+                <apex:pageBlockSection id="Wizard" title="Wizard Settings" columns="2" rendered="{!showWizard}" > 
+                    <apex:outputPanel id="WizardHelp" rendered="{!showWizard}">
+                        This App, provides multiple options for chosing your favorite Merge facility when working with the Review Wizard<br />
+                            1) the standard salesforce merge facility (Classic Only)<br />
+                            2) The Datatrim Merge Wizard (Lightning Only)<br />
+                            3) the Quick Merge facility (Classic and Lightning)<br />
+                            <br />
+                	</apex:outputPanel>
+                    &nbsp;
+                    <apex:outputPanel rendered="{!showWizard}">LIGHTNING you can choose between the DataTrim Merge Wizard and the Quick Merge, by default the Merge Wizard is selected.</apex:outputPanel>
+                    &nbsp;
+                    <apex:inputField value="{!P.TRIMDA__Default_isDTMergeWizard__c}" />
+                     &nbsp;
+                    <apex:outputPanel rendered="{!showWizard}">CLASSIC; The Quick Merge facility is the default merge facility, due to limitations set by te Click-Jack protection settings which is part of the salesforce security settings.<br />
+                       If you have enabled these protection settings, please replicate yoru setting here, and our App will adopt.</apex:outputPanel>
+                    &nbsp;
+                    <apex:inputField value="{!P.TRIMDA__Default_isQMerge__c}" />
+                    <apex:inputField value="{!P.TRIMDA__Enable_clickjack_protection__c}"  />
+                    &nbsp;
+                    <apex:inputField value="{!P.TRIMDA__Enable_clickjack_protection_Visualforce__c}"  />
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:pageBlockSection>
+
+                <apex:outputPanel id="DSSetup" rendered="{!showDSSetup}">
+                    <apex:pageBlockSection title="Dupe Status - Accounts" columns="2" > 
+                        <apex:inputField value="{!P.TRIMDA__Account_Show_ActionLink__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Enhanced_Display_DupeStatusAccount__c}" />
+                        &nbsp;
+                        <apex:inputField value="{!P.TRIMDA__Account_DS_Match_Level__c}"/>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Dupe Status - Contacts" columns="2"  > 
+                        <apex:inputField value="{!P.TRIMDA__Contact_Show_ActionLink__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Enhanced_Display_DupeStatusContact__c}" />
+                        &nbsp;
+                        <apex:inputField value="{!P.TRIMDA__Contact_DS_Match_Level__c}"/>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Dupe Status - Leads" columns="2"  > 
+                        <apex:inputField value="{!P.TRIMDA__Lead_Show_ActionLink__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Lead_DS_Match_Level__c}"/>
+                        &nbsp;
+                    </apex:pageBlockSection>
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="DDSetup" rendered="{!showDDSetup}">
+                    
+                    <apex:pageBlockSection title="Dupe Detection upon Entry - Accounts" columns="2" > 
+                        <apex:inputField value="{!P.TRIMDA__Account_Enable_DD_Trigger__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Account_DD_Trigger_Match_Level__c}" />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Dupe Detection upon Entry - Contacts" columns="2"  > 
+                        <apex:inputField value="{!P.TRIMDA__Contact_Enable_DD_Trigger__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Contact_DD_Trigger_Match_Level__c}" />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Dupe Detection upon Entry - Leads" columns="2"  > 
+                        <apex:inputField value="{!P.TRIMDA__Lead_Enable_DD_Trigger__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Lead_DD_Trigger_Match_Level__c}" />
+                    </apex:pageBlockSection>
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:outputPanel>
+
+                <apex:outputPanel id="MatchSetup" rendered="{!showMatchingSetup}">
+                    <apex:pageBlockSection title="Social CRM Match Settings: Account" columns="2"  > 
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Account_Facebook__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Account_LinkedIn__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Account_Twitter__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Account_GooglePlus__c}" />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Social CRM Match Settings: Contact" columns="2" > 
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Contact_Facebook__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Contact_LinkedIn__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Contact_Twitter__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Contact_GooglePlus__c}" />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Social CRM Match Settings: Lead" columns="2"  > 
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Lead_Facebook__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Lead_LinkedIn__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Lead_Twitter__c}" />
+                        <apex:inputField value="{!P.TRIMDA__SocialCRM_Lead_GooglePlus__c}" />
+                    </apex:pageBlockSection>
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:outputPanel>
+
+
+                <apex:outputPanel id="MergeSetup" rendered="{!showMergeOptions}">
+                    <apex:pageBlockSection title="General Merge Settings (Quick Mass and Batch Merge)" columns="2"  > 
+                        
+                        <apex:inputField value="{!P.TRIMDA__MergeCreateActivity__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Owner_of_Activity__c}" />
+                        &nbsp;
+                        <apex:inputField value="{!P.TRIMDA__Activity_Closed_Status__c}" />
+                        <apex:inputField value="{!P.TRIMDA__MergeAddNote__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Owner_of_Note__c}" />
+                        <apex:inputField value="{!P.TRIMDA__MergeAppend2Field__c}" />
+                        <apex:inputField value="{!P.TRIMDA__MergeAppendField__c}" />
+                        <apex:inputField value="{!P.TRIMDA__MergeMultiPickLists__c}" />&nbsp;
+                        <apex:inputField value="{!P.TRIMDA__DeleteMRAfterMerge__c}" />&nbsp;
+                        <apex:inputField value="{!P.TRIMDA__Merge_Type__c}" />&nbsp;
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Batch Merge" columns="1"  > 
+                        <apex:inputField value="{!P.TRIMDA__Enable_Batch__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Merge_Batch_Size_Max__c}" />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Merge Field Exclusion:" columns="1" > 
+                        <apex:inputField value="{!P.TRIMDA__MergeExclFields_Acc__c}" style="width:600px" />
+                        <apex:inputField value="{!P.TRIMDA__MergeExclFields_Con__c}" style="width:600px" />
+                        <apex:inputField value="{!P.TRIMDA__MergeExclFields_Lead__c}" style="width:600px" />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Merge Rules" columns="1"  > 
+                        <apex:inputField value="{!P.TRIMDA__MergeRules_Acc__c}" style="width:600px" />
+                        <apex:inputField value="{!P.TRIMDA__MergeRules_Con__c}" style="width:600px" />
+                        <apex:inputField value="{!P.TRIMDA__MergeRules_Lead__c}" style="width:600px" />
+                    </apex:pageBlockSection>
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="ConvertSetup" rendered="{!showConvertOptions}">
+                    <apex:pageBlockSection title="Mass Convert" columns="1"  > 
+                        <apex:inputField value="{!P.TRIMDA__donotCreateOppty__c}" />
+                        <apex:inputField value="{!P.TRIMDA__OpptyName__c}" />
+                        <apex:inputField value="{!P.TRIMDA__overwriteLeadSource__c}" />
+                        <apex:inputField value="{!P.TRIMDA__sendNoti__c}"  />
+                        <apex:inputField value="{!P.TRIMDA__ConvStatus__c}"  />
+                        <apex:inputField value="{!P.TRIMDA__DeleteMRAfterConvert__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Enable_Batch__c}" />
+                        <apex:inputField value="{!P.TRIMDA__Convert_Batch_Size_Max__c}" />
+                    </apex:pageBlockSection>
+                    <apex:commandButton action="{!saveParameters}" value="Save" />
+                </apex:outputPanel>
+
+                 <apex:outputPanel rendered="{!showParameters}" >
+                    <apex:panelgroup id="AllParameters"  > 
+                        <!-- <apex:iframe src="/{!ParameterURL}" scrolling="true" id="theDetailIframe"  /> -->
+                        <!-- <apex:detail subject="{!ParameterURL}" title="true" id="theAllDetails" inlineEdit="true" /> for API=21+-->
+                        <apex:detail subject="{!ParameterURL}" title="true" id="theAllDetails" inlineEdit="true" /> 
+                    </apex:panelgroup>
+                 </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:pageMessages /> 
+        </td>
+    </tr>
+    </table>
+    </apex:pageBlock>
+</apex:outputPanel>
+</apex:form>
+</apex:page>

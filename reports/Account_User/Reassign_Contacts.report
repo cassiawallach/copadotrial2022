@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_54597751</developerName>
+        <masterLabel>Team</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>OWNER_FULL_NAME</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Alberto Ojedo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Alberto Roces</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andre Scott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Sabrina Martinez</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ryan Nebuda</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Cristina Garrido Lema</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Daniel Davis</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>David Pinett</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>David Rosales Benito</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Edward Elliott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Erez Akiva</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jaime Djuric</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patricia Fernandez</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Nolan Gray</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Philipp Rackwitz</sourceValue>
+            </sourceValues>
+            <value>Reassign</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Victoria Murillo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Sanjay Gidwani</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Sabine Gillert</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Galina Knop</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Martin Ryder</sourceValue>
+            </sourceValues>
+            <value>CSM</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Eddy Perez</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Denyce Kehoe</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Vera Rossi</sourceValue>
+            </sourceValues>
+            <value>Alliance</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Rafael Ruiz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Maria Jimenez</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Joaquin de Larrea Pombo</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Ivan Minaya</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andrew Yip</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andrew Given</sourceValue>
+            </sourceValues>
+            <value>Alumni</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>FIRST_NAME</field>
+    </columns>
+    <columns>
+        <field>LAST_NAME</field>
+    </columns>
+    <columns>
+        <field>TITLE</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>PHONE1</field>
+    </columns>
+    <columns>
+        <field>PHONE3</field>
+    </columns>
+    <columns>
+        <field>EMAIL</field>
+    </columns>
+    <columns>
+        <field>BucketField_54597751</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>Account.AOV_Band__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>$25M+,$10M-25M,$5M-10M,$1M-5M,$600k-1M,$200k-600k</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_54597751</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Reassign,CSM,Alliance,Alumni</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>OWNER_FULL_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Reassign Contacts</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ContactList</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

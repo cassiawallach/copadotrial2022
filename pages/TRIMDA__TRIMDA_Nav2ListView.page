@@ -1,0 +1,159 @@
+<apex:page controller="TRIMDA.TRIMDA_ListView_Controller" action="{!invoke_gotoListView}" docType="html-5.0">
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/> 
+    <style>
+         .trimda_header{
+            background-color:#ff9a9a;
+            background: linear-gradient(#ff9a9a, #d80210);
+            color:white;
+            border-radius: 0.25rem 0.25rem 0 0;
+            padding:0.5rem;
+        }
+        .step_header{
+            border-color: #3366FF;
+            width:100%;
+            cellpadding:2px; 
+            box-shadow:5px 5px 50px 0 #333;
+            border-radius:10px;
+            margin-top:-0.5rem;
+            overflow:hidden;"
+        }
+        
+    </style>
+    
+<div class="slds" id="myPage">
+    <apex:form >
+        <apex:pageBlock title="Review Dupes From Alert / Result " tabStyle="DataTrim_Dupe_Alert_Admin__tab">
+           <apex:facet name="header" >
+               <apex:panelGrid id="header1" columns="2" style="padding-top:0px;padding-bottom:0px;">
+                   <apex:panelGrid id="header2" columns="2" style="border:1px;padding-top:0px;padding-bottom:0px">
+                       <img class="dt_classic" src="{!URLFOR($Resource.DataTrimDupeAlerts, 'DupeAlertResults60x60_NL.gif')}" style="height:32px" />
+                       <span style="padding-top:0px;padding-bottom:0px;width:250px;font-weight:bold;" >
+                           &nbsp;Review Dupes From Alert / Result&nbsp;</span>
+                   </apex:panelGrid>
+                   <apex:panelGroup >
+                       <div class="slds-button-group" role="group">
+                           <apex:panelGroup rendered="{!retURL != null}">
+                               <button class="slds-button slds-button--neutral">
+                                   <a href="{!retURL}" class="slds-truncate" style="text-decoration:none;" title="Navigate back" >Back</a>  
+                               </button>
+                            </apex:panelGroup>
+                           <!--
+                           <apex:panelGroup rendered="{!ok2go}">
+                               <button class="slds-button slds-button--neutral">
+                                   <a  onclick="gotoListView()" style="color:inherit;text-decoration:inherit;" >Review Potential Dupes</a>
+                               </button>
+                           </apex:panelGroup>
+                            -->
+                       </div>
+                   </apex:panelGroup>
+                   
+                   <apex:panelGroup rendered="{!AND (remoteSiteOk == false, ErrorCode==1)}">
+                         <div class="slds-grid slds-wrap" >
+                            <div class="slds-col slds-size--1-of-1 " >
+                                <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                        <div class="slds-grid trimda_header " >
+                                            <div class="slds-col slds-has-flexi-truncate" style="font-size:1rem;">
+                                            <p>Could not create the Dynamic List View, make sure you have set up the Remote Site for Webservice API calls.</p>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-2 slds-align-middle" style="padding:1rem;font-size:0.8rem;background-color:white;">
+                                    <div class="slds-grid slds-grid--align-center">
+                                    <div class="slds-container--center slds-container--medium">
+                                        <div class="slds-form-element"  >
+                                            <strong>Remote Site / Web Server</strong>
+                                          <div class="slds-form-element__control">
+                                            <apex:commandlink action="/0rp?setupid=SecurityRemoteProxy" value="Do it Now!" title="Do it Now (Classic)!" style="width:12rem;" id="btnRemoteSite" target="_new" styleClass="slds-button slds-button--brand dt_classic" />
+                                            <a href="/lightning/setup/SecurityRemoteProxy/home" title="Do it Now (Lightning)!" style="width:12rem;" target="_blank" class="slds-button slds-button--brand dt_ltng">Do it Now!</a>
+                                          <span style="font-size:90%;"> 
+                                                <br />-or Go to: Setup <br />&nbsp;-> Administration Setup<br />&nbsp;&nbsp; -> Security Controls<br />&nbsp;&nbsp; -> All Remote Sites
+                                            </span>
+                                          </div>
+                                        </div>
+                                     </div>
+                                     </div>
+                                </div>
+                                <div class="slds-col slds-size--1-of-2 " style="padding:1rem;font-size:0.8rem;background-color:white;">
+                                    To dynamically create list views in the standard salesforce environment, our App needs be able to connect to the salesforce Webservice API<br />
+                                    This Webservice is residing on salesforce servers, but need to be listed as a Remote site (simply because the domain name may be different).<br />
+                                    In case you have been moved to a new server, the server name <strong>{!thisInstance}</strong> may be new.<br />
+                                    <br />
+                                    Add or verify that the following Remote Site is in your list of Remote Sites :<br />
+                                    <div class="slds-grid slds-wrap" style="font-weight:bold;">
+                                        <div class="slds-col slds-size--1-of-3" >Remote Site Name:<br />Remote Site URL:<br />Description:</div>
+                                        <div class="slds-col slds-size--2-of-3" >TRIMDA<br /><strong>https://{!thisInstance}.visual.force.com</strong><br />DataTrim</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-1 slds-grid--align-center" style="margin-top:2rem;">
+                                <div class="slds-grid slds-grid--align-center">
+                                    <div  class="slds-col slds-size--1-of-1"><strong>When done you should see the following details in your Remote Site List:<br />(OBS: the value 'trimda.na6' should be replaced with the value for your salesforce instance - see your browser URL):</strong></div>
+                                    <div  class="slds-col slds-size--1-of-1">
+                                        <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'RemoteSite.png')}"  title="RemoteSite" style="border:1px;max-width:700px;" />
+                                    </div>
+                                </div>
+                            </div>
+                   </apex:panelGroup>
+                   
+                   <!--MODIFYALLDATA error -->
+                   <apex:panelGroup rendered="{!AND (remoteSiteOk == false, ErrorCode==2)}">
+                         <div class="slds-grid slds-wrap" >
+                            <div class="slds-col slds-size--1-of-1 " >
+                                <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                        <div class="slds-grid trimda_header " >
+                                            <div class="slds-col slds-has-flexi-truncate" style="font-size:1rem;">
+                                            <p>Could not create the Dynamic List View, You do not have the <strong>Modify All Data</strong> permission</p>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of- slds-align-middle" style="padding:1rem;font-size:0.8rem;background-color:white;">
+                                <!--LicenseType: {!LicenseType} <br />   -->
+                                You do not have sufficient Permissions to create <strong>List Views</strong> dynamically.<br />
+                                <apex:panelGroup rendered="{!LicenseType != 'Salesforce Platform'}">
+                                In order to create create List Views dynamically you must have the <strong>Modify All Data</strong> permissions, in the Administrative Permissions of your profile.<br />
+                                </apex:panelGroup>     
+                                <apex:panelGroup rendered="{!LicenseType == 'Salesforce Platform'}">
+                                    <br />Your License: <strong>Salesforce Platform</strong>, is limited and does not have this permission setting. <br />
+                                    Ask your System Administrator, to create the Views, and you will be able to <strong>navigate</strong> to the existing views next time.
+                                </apex:panelGroup>
+                                
+                            </div>
+                       </div>
+                   </apex:panelGroup>
+
+               </apex:panelGrid>
+            </apex:facet>
+            <apex:pageMessages />
+            <!-- default is Classic, setting = true => Lighting -->
+            <script type="text/javascript">
+            
+                function isLightningExperienceOrSalesforce1() {
+                    return((typeof sforce != 'undefined') && sforce && (!!sforce.one));
+                }
+            
+                var myE_classic = document.querySelectorAll(".dt_classic");
+                var myE_ltng = document.querySelectorAll(".dt_ltng");
+              
+        
+                if(isLightningExperienceOrSalesforce1() == true) {
+                    /* lightning Experience */
+                    for (var i = 0; i < myE_classic.length; i++) {myE_classic[i].style.display = "none";}
+            		for (var i = 0; i < myE_ltng.length; i++) {myE_classic[i].style.display = "";}
+                }else{
+                    /* Classic View */
+                    for (var i = 0; i < myE_classic.length; i++) {myE_classic[i].style.display = "";}
+                    for (var i = 0; i < myE_ltng.length; i++) {myE_ltng[i].style.display = "none";}
+                }
+        
+            </script>
+        </apex:pageBlock>
+        
+        <apex:actionFunction action="{!invoke_gotoListView}" name="gotoListView" rerender="myPage">
+        </apex:actionFunction>
+        
+    </apex:form>
+ </div>
+ </apex:page>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_4904170</developerName>
+        <masterLabel>Enterprise vs GB</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>RATING</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Tier 1</sourceValue>
+            </sourceValues>
+            <value>Enterprise</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Tier 2</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Tier 3</sourceValue>
+            </sourceValues>
+            <value>GB</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_54965278</developerName>
+        <masterLabel>Event</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>CAMPAIGN_SOURCE</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Conversica: London WT Booth &amp; Theater Scans</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Post Event: WT London 2019</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>World Tour Toronto 2019</sourceValue>
+            </sourceValues>
+            <value>London WT</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Conversica: NYC WT 2019 Booth</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>EBQ Pre Event: NYC WT Spring 2019</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Full Attendee List: NYC Spring 2019</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Post Event: NYC WT 2019</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zach WT Follow Up</sourceValue>
+            </sourceValues>
+            <value>NYC WT</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Conversica: TDX 2019</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Post Event: TrailheaDX 2019</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>EBQ Post Event: TDX 19</sourceValue>
+            </sourceValues>
+            <value>TDX 19</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Post Event: Madrid BC 2019</sourceValue>
+            </sourceValues>
+            <value>Madrid Basecamp</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>CAMPAIGN_SOURCE</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Lead_Source_Detail__c</field>
+    </columns>
+    <columns>
+        <field>STAGE_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>AMOUNT.CONVERT</field>
+    </columns>
+    <columns>
+        <field>FULL_NAME</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>WON</field>
+    </columns>
+    <columns>
+        <field>OPPORTUNITY_NAME</field>
+    </columns>
+    <columns>
+        <field>CREATED_DATE</field>
+    </columns>
+    <columns>
+        <field>BucketField_4904170</field>
+    </columns>
+    <columns>
+        <field>Opportunity.EBQ_Set__c</field>
+    </columns>
+    <columns>
+        <field>LEAD_SOURCE</field>
+    </columns>
+    <columns>
+        <field>TYPE</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>EXP_AMOUNT</field>
+    </columns>
+    <columns>
+        <field>CLOSE_DATE</field>
+    </columns>
+    <columns>
+        <field>NEXT_STEP</field>
+    </columns>
+    <columns>
+        <field>FISCAL_QUARTER</field>
+    </columns>
+    <columns>
+        <field>AGE</field>
+    </columns>
+    <columns>
+        <field>ROLLUP_DESCRIPTION</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT_NAME</field>
+    </columns>
+    <columns>
+        <field>RATING</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>TYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>New Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>LEAD_SOURCE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Trade Show</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_54965278</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Event Opps By Week</name>
+    <params>
+        <name>terr</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>open</name>
+        <value>all</value>
+    </params>
+    <params>
+        <name>probability</name>
+        <value>&gt;0</value>
+    </params>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Opportunity</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>STAGE_NAME</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_THISWEEK</interval>
+    </timeFrameFilter>
+</Report>

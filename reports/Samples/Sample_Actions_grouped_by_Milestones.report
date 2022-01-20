@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>amc__Project__c$Name</field>
+    </columns>
+    <columns>
+        <field>amc__Project__c.amc__Milestones__r$Name</field>
+    </columns>
+    <columns>
+        <field>amc__Project__c.amc__Milestones__r.amc__Actions__r$amc__Action_Name__c</field>
+    </columns>
+    <currency>USD</currency>
+    <filter>
+        <criteriaItems>
+            <column>amc__Project__c$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Standard Copado Implementation Demo</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>amc__Project__c$Id</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Sample: Actions grouped by Milestones</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>amc__Projects_with_Milestones_with_Actions__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>amc__Project__c.amc__Milestones__r$Name</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>amc__Project__c$amc__Baseline_Start_Date__c</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

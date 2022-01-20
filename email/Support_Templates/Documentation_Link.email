@@ -1,0 +1,13 @@
+Dear {!Contact.FirstName},
+
+We have found the following article on our documentation site that might help you to solve this case.
+
+Please click here: <<paste-url-from-copado-website-here>>
+
+Let us know if this works.
+
+Kind regards,
+
+{! IF(User.Username=='support_team@copa.do', '', User.Name) }
+
+{!Case.Thread_Id}

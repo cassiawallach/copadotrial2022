@@ -1,0 +1,402 @@
+<apex:page doctype="HTML-5.0" controller="TRIMDA.TRIMDA_Initialize_Controller" tabStyle="TRIMDA__TRIMDA_DupeAlerts__c" showHeader="false" sidebar="false">
+<apex:includeScript value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/js/jquery-2.1.1.min.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'DataTrim_DupeAlerts.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, '/css/styles/salesforce-lightning-design-system-ltng.css')}"/> 
+
+<style>
+     .back{
+     background-image:url( {!URLFOR($Resource.DataTrimDupeAlerts, 'Washer7.png')});
+     background-repeat:no-repeat;
+     background-position:center;
+     background-position:top;
+     width:100%;
+     }
+     .DL{
+         color: #3366FF;
+         font-size: 28px;
+         text-align: right;
+         font-weight: bold;
+     }
+     .DA{
+         color: #3366FF; 
+         font-weight: bold;
+         font-size: 42px;
+     }
+     .trimda_header{
+        background-color:#ff9a9a;
+        background: linear-gradient(#ff9a9a, #d80210);
+        color:white;
+        border-radius: 0.25rem 0.25rem 0 0;
+        padding:0.5rem;
+    }
+    .step_header{
+        border-color: #3366FF;
+        width:100%;
+        cellpadding:2px; 
+        box-shadow:5px 5px 50px 0 #333;
+        border-radius:10px;
+        margin-top:-0.5rem;
+        overflow:hidden;"
+    }
+    
+</style>
+
+<div class="slds">
+    
+    
+&#171;<apex:outputLink styleClass="DTaction" value="/apex/TRIMDA__TRIMDA_DupeAlerts"  title="DataTrim Dupe Alerts" style="font-size:11px" ><strong>Back</strong></apex:outputLink>
+<apex:outputpanel id="detail" >
+<div class="slds">
+    <div class="back" style="margin-top:-1rem;">
+        <div class="slds-container--center slds-container--small">
+            <div class="slds-container--left DA">
+                DataTrim Dupe&nbsp;Alerts
+            </div>
+            <div class="slds-container--right DL">
+                Initialization and Setup
+            </div>
+        </div>
+        <apex:form >
+            <div class="slds-container--center slds-container--medium">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <div class="slds-page-header" role="banner" style="padding:0rem 0rem;">
+                            <div class="slds-grid trimda_header ">
+                                <div class="slds-col slds-has-flexi-truncate">
+                                    <div class="slds-media">
+                                    <div class="slds-media__figure">
+                                      <img src="{!URLFOR($Resource.DataTrimDupeAlerts, 'DupeAlerts60x60_NL.gif')}" style="height:2.5rem;Margin-top:-1.5rem;" title="DataTrim Dupe Alerts Console" />
+                                    </div>
+                                    <div class="slds-media__body">
+                                      <div class="slds-grid">
+                                        <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Alert Results">Initialization and Setup in 5 steps...</h1>
+                                      </div>
+                                    </div>
+                                  </div>
+                                    
+                                </div>
+                                <div class="slds-col slds-has-flexi-truncate">
+                                    <apex:commandButton value="Back" title="Back" id="btnBack" action="{!back}"  styleClass="slds-button slds-button--brand" disabled="{!Step = 1}" rerender="detail"/>
+                                    <apex:commandButton value="Next" title="Next" id="btnNext" action="{!next}"  styleClass="slds-button slds-button--brand" rendered="{!OR(Step ==4, AND(Step == 3,OBOption='Alt1'))}" rerender="detail"/>
+                                    <apex:commandButton value="Done" title="Done" id="btnSave" action="{!saveMe}"  styleClass="slds-button slds-button--brand" rendered="{!Step = 5}" rerender="detail"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+
+            
+<!-- STEP 1 License No -->
+                <apex:outputPanel id="Step1" rendered="{!OR(Step == 1,showall='all')}">
+                <div class="slds-grid slds-wrap step_header" >
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                <div class="slds-grid trimda_header " >
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                    <p>Step 1: License Number Update</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <apex:pageMessages />
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 slds-align-middle" style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-container--center slds-container--medium" >
+                            <div class="slds-form-element"  >
+                             <label class="slds-form-element__label" for="licenseno_1">License no.:</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputText id="licenseno_1" value="{!setup.TRIMDA__LicenseNo__c}" style="width:12rem;" title="License No." html-placeholder="License No."  styleclass="slds-input" />
+                              </div>
+                              <div class="slds-form-element__control">
+                                <apex:commandButton value="Next" title="Continue" id="btnNext1" action="{!next}" style="width:12rem;"  styleClass="slds-button slds-button--brand" disabled="{!Step = 3}" rerender="detail"/>
+                              </div>
+                            </div>
+                         </div>
+                         </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 " style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        You should automatically receive a 18 character license number in an email from DataTrim.<br /> .<br /> 
+                        Please check your mailbox, it might take a few minutes for it to get there.<br />.<br /> 
+                        If you haven't received the license number, please reach out to us at <a href="mailto:support@datatrim.com?subject=Please resend license number for {!$Organization.Name},  Org id: {!$Organization.Id}" >support@datatrim.com</a> to request the license number to be resent.<br />
+                    </div>
+                </div>
+               </apex:outputPanel>
+                
+<!-- STEP 2 OnBoarding Choise -->
+                <apex:outputPanel id="Step2" rendered="{!OR(Step == 2,showall='all')}">
+                <div class="slds-grid slds-wrap step_header" >
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                <div class="slds-grid trimda_header " >
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                    <p>Step 2: Providing DataTrim access to your data</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <apex:pageMessages />
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 slds-align-middle" style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-container--center slds-container--medium" >
+                            <div class="slds-form-element"  >
+                             <label class="slds-form-element__label" for="licenseno_1">OnBoarding Options:</label>
+                              <div class="slds-form-element__control">
+                                <apex:selectRadio value="{!OBOption}"  layout="pageDirection">
+                                       <apex:selectOptions value="{!OBOptions}" />
+                                </apex:selectRadio>
+                              </div>
+                              <div class="slds-form-element__control">
+                                <apex:commandButton value="Confirm" action="{!confirmOBOption}" style="width:12rem;" styleClass="slds-button slds-button--brand" rerender="detail" />
+                              </div>
+                            </div>
+                         </div>
+                         </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 " style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        In order for the DataTrim Dupe Alert solution to perform the de-duplication of your data you must grant us access
+                        to it.<br /><br />
+                        There are 2 alternatives for granting us access to your data.<br />
+                        <b>Alternative 1: Create a Specific DataTrim user</b><br />
+                        <b>Alternative 2: Reusing an existing salesforce License</b><br />
+                        <br />
+                        <b>Alternative 1</b> is the optimal solution, as it gives less implication while delivering the service to
+                        you. We and our solution will be able to reset the password when it expires, and you can
+                        setup a specific profile for this user, limiting the DataTrim user to having access to the
+                        relevant data only.<br />
+                        <b>Alternative 2</b> however, has the benefit of saving you from buying another license from
+                        salesforce, but we would have to manually go through the OnBoarding process each time the
+                        shared user changes the password.<br />
+                     </div>
+                </div>
+                </apex:outputPanel>
+                
+<!-- STEP 3a OnBoarding Create a Specific DataTrim user -->
+                <apex:outputPanel id="Step3a" rendered="{!OR(AND(Step == 3,OBOption='Alt1'),showall='all')}">
+                <div class="slds-grid slds-wrap step_header" >
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                <div class="slds-grid trimda_header " >
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                    <p>Step 3: Using a Specific DataTrim user</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        1.  Create a user: <strong>DataTrim@yourcompanyname.com</strong> (replace <strong>“yourcompanyname”</strong> with your usual <strong>Domain Name</strong>).<br />
+                        2.  Set this users e-mail address to <strong>dataLaundry@datatrim.com</strong><br />
+                        3.  Make sure that this user has full access to the DataTrim Dupe Alerts Application, Objects and Tabs, and that the user has Read access to the Lead, Contact and Account tables.<br />
+                        <br /> 
+                        Assign or create a new Profile to this user, to control what the application has access to. <br />
+                        See <a href="https://www.datatrim.com/downloads/DataTrimDupeAlertsUserGuide.pdf#zoom=80" title="Datatrim Dupe Alerts User Guide" target="_blank">Appendix E: DataTrim User Profil in the User Guide</a>for more details.
+                    </div>
+                </div>
+                </apex:outputPanel>
+                
+<!-- STEP 3b OnBoarding Reusing an existing salesforce Licenser -->
+                <apex:outputPanel id="Step3b" rendered="{!OR(AND(Step == 3, OBOption='Alt2'),showall='all')}">
+                <div class="slds-grid slds-wrap step_header" >
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                <div class="slds-grid trimda_header " >
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                    <p>Step 3: Reusing an existing salesforce License</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <apex:pageMessages />
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 slds-align-middle" style="padding:1rem;font-size:90%;background-color:white;">
+                        <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-container--center slds-container--medium" >
+                            <div class="slds-form-element"  >
+                                <label class="slds-form-element__label" for="licenseno2">License No.:</label>
+                              <div class="slds-form-element__control">
+                                    <apex:inputText id="licenseno2" value="{!licenseno}"  html-placeholder="License Number" style="width:15rem;" styleclass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element"  >
+                              <label class="slds-form-element__label" for="username2">User Name:</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputText id="username2" value="{!username}"  html-placeholder="User Name" style="width:15rem;" styleclass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element"  >
+                              <label class="slds-form-element__label" for="pwd2">Password:</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputSecret id="pwd2" value="{!pwd}"  html-placeholder="Password" style="width:15rem;" styleclass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element" style="font-size:0.65rem;"> 
+                                <apex:inputCheckbox value="{!accept}"  >I accept to share this information with DataTrim! </apex:inputCheckbox>
+                            </div>
+                              <div class="slds-form-element__control">
+                                <apex:commandButton action="{!onboarding}" value="OnBoarding" style="width:15rem;" styleClass="slds-button slds-button--brand" rerender="detail" />
+                              </div>
+                         </div>
+                         </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 " style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        By clicking the OnBoarding button below, you will be forwarding an OnBoarding Key to DataTrim.<br /> <br /> 
+                        With this key the DataTrim Dupe Alerts application will be able to access your data using your login and profile.<br /><br /> 
+                        The information being sent will be encrypted, so no credentials will be exposed in clear text at any point in the process.<br /><br /> 
+                        Information sharing during the OnBoarding process is covered by our standard:&nbsp;<apex:outputLink value="https://www.datatrim.com/lp/nda.htm" id="NDALink" target="_new" >Non-Disclosure Agreement</apex:outputLink><br />
+                    </div>
+                </div>
+                </apex:outputPanel>
+                
+<!-- STEP 4 Network Access -->
+                <apex:outputPanel id="Step4" rendered="{!OR(Step == 4,showall='all')}">
+                <div class="slds-grid slds-wrap step_header" >
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                <div class="slds-grid trimda_header " >
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                    <p>Step 4: Network Access</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <apex:pageMessages />
+                    </div> 
+                    <div class="slds-col slds-size--1-of-2 slds-align-middle" style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-container--center slds-container--medium">
+                            <div class="slds-form-element"  >
+                              <strong>Setup Network Access</strong>
+                              <div class="slds-form-element__control">
+                                <div class="dt_ltng">
+                                    <a href="/one/one.app?source=aloha#/setup/NetworkAccess/home"  target="_blank"  style="width:12rem;" class="slds-button slds-button--brand" title="Open Network Access">Do it Now!</a>
+                                </div>
+                                <div class="dt_classic"> 
+                                    <apex:commandlink action="/05G?setupid=NetworkAccess" value="Do it Now!" style="width:12rem;" id="btnNewworkAccess" target="_blank" styleClass="slds-button slds-button--brand" />
+                                </div>  
+                                <span style="font-size:90%;"> 
+                                    <br />-or Go to: Setup <br />&nbsp;-> Administration Setup<br />&nbsp;&nbsp; -> Security Controls<br />&nbsp;&nbsp; -> Network Access
+                                </span>
+                              </div>
+                            </div>
+                         </div>
+                         </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 " style="padding:1rem;font-size:0.8rem;background-color:white;">
+                        To ensure a secure connection between salesforce and the servers which are running the matching processes, the IP addresses of the servers needs to be added to your list of trusted IP connections:<br />
+                        <br />
+                        Add the following IP ranges to your Trusted IP Range list:<br />
+                        <div class="slds-grid slds-wrap" style="font-weight:bold;">
+                            <div class="slds-col slds-size--1-of-3" >Start IP Address:<br />72.32.205.65<br />88.167.180.0</div>
+                            <div class="slds-col slds-size--1-of-3" >Start IP Address:<br />72.32.205.70<br />88.167.180.255</div>
+                            <div class="slds-col slds-size--1-of-3" >Description:<br />DataTrim<br />DataTrim</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size--1-of-1 slds-grid--align-center" style="margin-top:2rem;">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div  class="slds-col slds-size--1-of-1"><strong>When done you should see the following details in your Network Access list.</strong></div>
+                        <div  class="slds-col slds-size--1-of-1">
+                            <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'NetworkAccess.png')}"  title="Network Access" style="border:1px;max-width:700px;" />
+                        </div>
+                    </div>
+                </div>
+                </apex:outputPanel>
+
+                
+<!-- STEP 5 Remote Sites -->
+                <apex:outputPanel id="Step5" rendered="{!OR(Step == 5,showall='all')}">
+                <div class="slds-grid slds-wrap step_header" >
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <div class="slds-page-header " role="banner" style="padding:0rem 0rem;">
+                                <div class="slds-grid trimda_header " >
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                    <p>Step 5: Remote Sites</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 " >
+                        <apex:pageMessages />
+                    </div> 
+                    <div class="slds-col slds-size--1-of-2 slds-align-middle" style="padding:1rem;font-size:0.8rem;background-color:white;">
+                            <div class="slds-grid slds-grid--align-center">
+                            <div class="slds-container--center slds-container--medium">
+                                <div class="slds-form-element"  >
+                                    <strong>Remote Site / Web Server</strong>
+                                  <div class="slds-form-element__control">
+                                    <div class="dt_ltng">
+                                        <a href="/one/one.app?source=aloha#/setup/SecurityRemoteProxy/home"  target="_blank"  style="width:12rem;" class="slds-button slds-button--brand" title="Open Remote Site">Do it Now!</a>
+                                    </div>
+                                    <div class="dt_classic"> 
+	                                  <apex:commandlink action="/0rp?setupid=SecurityRemoteProxy" value="Do it Now!" style="width:12rem;" id="btnRemoteSite" target="_blank" styleClass="slds-button slds-button--brand" />
+    				                </div>
+                                    <span style="font-size:90%;"> 
+                                        <br />-or Go to: Setup <br />&nbsp;-> Administration Setup<br />&nbsp;&nbsp; -> Security Controls<br />&nbsp;&nbsp; -> All Remote Sites
+                                    </span>
+                                  </div>
+                                </div>
+                             </div>
+                             </div>
+                        </div>
+                        <div class="slds-col slds-size--1-of-2 " style="padding:1rem;font-size:0.8rem;background-color:white;">
+                            To dynamically create list vies in the standard salesforce environment, our App needs be able to connect to the salesforce Webservice API<br />
+                            This Webservice is residing on salesforce servers, but need to be listed as a Remote site (simply because the domain name may be different).<br />
+                            <br />
+                            Add the following Remote Site to your list of Remote Sites:<br />
+                            <div class="slds-grid slds-wrap" style="font-weight:bold;">
+                                <div class="slds-col slds-size--1-of-3" >Remote Site Name:<br />Remote Site URL:<br />Description:</div>
+                                <div class="slds-col slds-size--2-of-3" >TRIMDA<br /><strong>https://trimda.{!thisInstance}.visual.force.com</strong><br />DataTrim</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 slds-grid--align-center" style="margin-top:2rem;">
+                        <div class="slds-grid slds-grid--align-center">
+                            <div  class="slds-col slds-size--1-of-1"><strong>When done you should see the following details in your Remote Site List:<br />(OBS: na6 may be replaced with the value for your salesforce instance):</strong></div>
+                            <div  class="slds-col slds-size--1-of-1">
+                                <apex:image url="{!URLFOR($Resource.TRIMDA__DataTrimDupeAlerts, 'RemoteSite.png')}"  title="RemoteSite" style="border:1px;max-width:700px;" />
+                            </div>
+                        </div>
+                    </div>
+                    </apex:outputPanel>
+            </div>
+            
+             <script type="text/javascript">
+			function isLightningExperienceOrSalesforce1() {
+			    return((typeof sforce != 'undefined') && sforce && (!!sforce.one));
+			}
+			</script>
+            <script type="text/javascript">
+            	var myE_classic = document.querySelectorAll(".dt_classic");
+				var myE_ltng = document.querySelectorAll(".dt_ltng");
+            
+				if(isLightningExperienceOrSalesforce1() ) {
+				    // Do something for Lightning Experience
+				    for (var i = 0; i < myE_classic.length; i++) {myE_classic[i].style.display = "none";}
+					for (var i = 0; i < myE_ltng.length; i++) {myE_ltng[i].style.display = "initial";}
+				}
+				else {
+				    // Use classic Visualforce
+				    for (var i = 0; i < myE_classic.length; i++) {myE_classic[i].style.display = "";}
+					for (var i = 0; i < myE_ltng.length; i++) {myE_ltng[i].style.display = "none";}
+				}
+			</script>
+        </apex:form>
+    </div>
+</div>
+</apex:outputpanel>
+</div>    
+
+<div class="slds">
+    <div class="slds-grid slds-wrap">   
+        <div class="slds-col slds-size--1-of-1" >
+            <!-- COPYRIGHT -->
+            <div style="text-align:center;font-size:xx-small;font-family:Arial;margin-top:2rem;">Copyright © 2007-<script>document.write(new Date().getFullYear())</script> DataTrim Dupe Alerts by d2b International ApS, All rights reserved. </div>
+         </div>
+    </div>
+</div>  
+</apex:page>

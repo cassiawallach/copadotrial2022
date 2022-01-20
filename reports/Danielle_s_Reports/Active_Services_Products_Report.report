@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>NAME</field>
+    </columns>
+    <columns>
+        <field>PRICEBOOK_DESCRIPTION</field>
+    </columns>
+    <columns>
+        <field>ENTRY_ACTIVE</field>
+    </columns>
+    <columns>
+        <field>UNIT_PRICE</field>
+    </columns>
+    <columns>
+        <field>PRODUCT_NAME</field>
+    </columns>
+    <columns>
+        <field>PRODUCT_ACTIVE</field>
+    </columns>
+    <columns>
+        <field>CUSTOMER_PRODUCT_ID</field>
+    </columns>
+    <columns>
+        <field>PRODUCT_DESCRIPTION</field>
+    </columns>
+    <currency>USD</currency>
+    <description>A list of all active products in the Services and Training product families</description>
+    <filter>
+        <criteriaItems>
+            <column>ACTIVE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>FAMILY</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Services,Training,Renewable Services</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Active Services Products Report</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>PricebookProduct</reportType>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,35 @@
+<apex:page id="thankYou" showHeader="false" sidebar="false" standardStylesheets="false">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+		<head>
+			<title>Copado Solutions - Thank you</title>
+			<meta name="description" content="" />
+			<meta name="keywords" content="" />
+            <c:websiteHeadTag />          
+        </head>
+        
+		<body class="homepage">
+
+            <div id="header-wrapper">
+                <c:websiteHeader />
+    
+                <div id="banner">
+                    <div class="container">
+                        <section>
+                            <header>
+                                <h2>Thank you for getting in touch</h2>
+                                <span class="byline">A member of our <span id="kw"></span> team will be with you shortly</span>
+                            </header>
+                            <br />
+                        </section>	
+                    </div>
+                </div>
+            </div>
+            <c:websiteFooter />
+            <script type="text/javascript">
+            	var mp = location.search.split('kw=')[1] ? location.search.split('kw=')[1] : '';
+            	if(mp!='sales' && mp!='support')mp='';
+				document.getElementById('kw').innerHTML = mp;            	
+            </script>
+		</body>
+	</html>
+</apex:page>

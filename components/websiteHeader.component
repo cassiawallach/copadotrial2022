@@ -1,0 +1,35 @@
+<apex:component id="websiteHeader" >
+    <div id="header">
+        <div class="container">
+            
+            <!-- Logo -->
+            <div id="logo">
+                <a href="/">
+                    <img src="{!URLFOR($Resource.WebsitePack, 'Images/CopadoLogo.png')}" />
+                </a>
+            </div>
+            
+            <!-- Nav -->
+            <nav id="nav">
+                <ul>
+                    <li id="nav-features" class="jsNav"><a href="Features">Features</a></li>
+                    <li id="nav-pricing" class="jsNav"><a href="Pricing">Pricing</a></li>
+                    <li id="nav-AboutUs" class="jsNav"><a href="AboutUs">About Us</a></li>
+                    <li id="nav-Support" class="jsNav"><a href="Support">Support</a></li>
+                    <li id="nav-contactUs" class="jsNav"><a href="ContactUs">Contact Us</a></li>
+                    <li id="nav-install" class="jsNav"><a href="Install">Install</a></li>
+                </ul>
+            </nav>
+            <script>
+            	function setActiveTab(page){
+                    var es = document.getElementsByClassName('active');
+                    for(var i=0; i<es.length; i++){
+                        es[i].className = 'jsNav';
+                    }
+                	var t = document.getElementById('nav-'+page);
+                    if(t)t.className = 'active';
+                }
+            </script>
+        </div>
+    </div>
+</apex:component>

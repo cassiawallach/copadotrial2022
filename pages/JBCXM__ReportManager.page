@@ -1,0 +1,89 @@
+<apex:page docType="html-5.0" controller="JBCXM.ReportBroker" sidebar="false" title="Success Snapshot" tabStyle="Administration__tab" extensions="JBCXM.NSRemoting,JBCXM.GSCommonBroker">
+    
+    <apex:form ></apex:form>
+
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+    <script>
+        var nsParams = fakeEval('{!JSINHTMLENCODE(nsParams)}');
+        var GS = GS || {};
+        GS.gainsightTabs = eval({!(GainsightTabs)});
+        GS.remotingEndPoint         = '{!$RemoteAction.ReportBroker.reportRequestBroker}';
+        GS.remoting                 = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+        GS.commonRemotingEndPoint =  '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+        GS.sessionId                = "{!NSSessionId}";
+        GS.isScorecardEnabled       = {!(isScorecardEnabled)};
+        GS.nsURL                    = nsParams.url;
+        GS.isNSEnabled = (nsParams.nsenabled == "true" || nsParams.nsenabled == true);
+        GS.operatorsListMap     = fakeEval('{!JSINHTMLENCODE(operatorsListMap)}');
+
+        GS.usageConfigInfo          = fakeEval('{!JSINHTMLENCODE(UsageConfigInfo)}');
+        GS.packageNS            = "{!(pkgNS)}";
+        GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+        GS.customLookUpConfig       = fakeEval('{!JSINHTMLENCODE(customLookUpConfigMap)}');
+        GS.userConfig = {
+          userLocale        : {!(dateTimeFormatByLocale)},
+          userName          : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+          userId            : "{!$User.Id}",
+          emailId           : "{!$User.Email}",
+          profilePhoto      : "{!(profilePhoto)}",
+          userDisplayName   : "{!(JSINHTMLENCODE(userDisplayName))}",
+          gainsightTabs: fakeEval('{!JSINHTMLENCODE(gainsightTabs)}'),
+          isLightningEnabled: {!(isLightningEnabled)}
+        };
+
+        GS.customLabels         = fakeEval('{!JSINHTMLENCODE(customLabelsMap)}');
+        GS.operatorsListMap     = fakeEval('{!JSINHTMLENCODE(operatorsListMap)}');
+        GS.fiscalYrEnabled      = {!(IsCustomFiscalYearSettingsEnabled)};
+        GS.churnLabelMap        = fakeEval('{!JSINHTMLENCODE(churnLabelMap)}');
+        GS.currencyConfig       = fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+        GS.generalPageSize      = 500;
+        GS.scmuPageSize         = 100;
+        GS.honourTimezonePreferences = true; // Only in few pages needs to honor, timezone needs to honored for sfdc data
+        GS.displayTimezone = true; // Display Timezone on UI (Especially in the Grid)
+    </script>
+
+    <div id="gs-app-container">
+        <div class="gs-module-container">
+             <div class="qbr_ctn gs_homepage_cont">
+                <div class="container-fluid .gs_table_cont">
+                    <div class="QBR_Report_Setting_ctn" style="display:none">
+                    </div>
+                    <div class = "editReportCont" style="display:none">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+            installResources({scripts: ["successsnapshot/scripts/successsnapshot.bundle.js"], styles:["successsnapshot/styles/successsnapshot.css"]});
+        </script>
+     </apex:outputpanel>
+
+
+        <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+            <!-- System.js approach -->
+            <c:Alerts360 />
+            <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "http://127.0.0.1:8080")}/successsnapshot/styles/successsnapshot.css" />
+
+            <script type="text/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath), "http://127.0.0.1:8080")}/successsnapshot/scripts/successsnapshot.bundle.js"></script>
+        </apex:outputpanel>
+
+
+    <!--QBR Report Setting-->
+
+<!--
+  <button onclick="fm.open();">Browse</button> -->
+
+    <script type = "template" id = "uiBlocker">
+        <div class = "ui-blocker-gs">
+            &nbsp;
+        </div>
+        <div class = "blocker-Text">
+            <div class="blocker-Text-loader"></div>
+            <div class="blocker-message" style = "display: inline-block;position: relative;"></div>
+        </div>
+    </script>
+</apex:page>

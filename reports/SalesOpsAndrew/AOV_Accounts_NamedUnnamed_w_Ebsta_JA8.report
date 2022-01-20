@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>Account.Id:UNIQUE</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF(Opportunity.Id:UNIQUE=1,0,Opportunity.Id:UNIQUE)</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Opps</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>Account.Id:UNIQUE-Account.Active_Opportunity__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <developerName>FORMULA3</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel># of Accounts without Active Opps</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_98701570</developerName>
+        <masterLabel>AOV Group</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Account$AOV_Band__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>$1M-5M</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$600k-1M</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$200k-600k</sourceValue>
+            </sourceValues>
+            <value>&lt;$5M</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>$25M+</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$10M-25M</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>$5M-10M</sourceValue>
+            </sourceValues>
+            <value>$5M+</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_21529778</developerName>
+        <masterLabel>Account Type</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Account$Type</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>ClickDeploy</sourceValue>
+            </sourceValues>
+            <value>ClickDeploy</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Prospect</sourceValue>
+            </sourceValues>
+            <value>Prospect</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Customer</sourceValue>
+            </sourceValues>
+            <value>Customer</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_59105393</developerName>
+        <masterLabel>Ebsta Score Range (Account)</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Account$ebsta1__Ebsta_Score__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>0</to>
+            </sourceValues>
+            <value>0</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>0</from>
+                <to>20</to>
+            </sourceValues>
+            <value>1-20</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>20</from>
+            </sourceValues>
+            <value>20+</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>number</bucketType>
+        <developerName>BucketField_63557846</developerName>
+        <masterLabel>Ebsta Score Range (Opportunity)</masterLabel>
+        <nullTreatment>z</nullTreatment>
+        <sourceColumnName>Account.Opportunities$ebsta1__Ebsta_Score__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <to>0</to>
+            </sourceValues>
+            <value>0</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>0</from>
+                <to>20</to>
+            </sourceValues>
+            <value>1-20</value>
+        </values>
+        <values>
+            <sourceValues>
+                <from>20</from>
+            </sourceValues>
+            <value>20+</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_91814141</developerName>
+        <masterLabel>Sales Team</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Other</otherBucketLabel>
+        <sourceColumnName>Account$Owner</sourceColumnName>
+        <useOther>true</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Simon Bishop</sourceValue>
+            </sourceValues>
+            <value>APAC Sales</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Johannes Roesen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Juan Pablo Heitz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Marcel Assaraf</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Phil Lelliott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Steve Harris</sourceValue>
+            </sourceValues>
+            <value>EMEA Sales</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Andrew Wishner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Caitlin Ursini</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Dan McDevitt</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Harrison Genson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kris Jacobs</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Kyle Phelan</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Leigh Motheral</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Maci Hansen</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Doerfler</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Scott Larson</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Andrew Kline</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Brad Benz</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matt Sterner</sourceValue>
+            </sourceValues>
+            <value>Select Sales</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Gabriel Deupree</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Jeff Shemano</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>LeRoy Brown</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Matthew Maiuri</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Patrick Boyle</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Paul Litterer</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Russell Lott</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Stephen Oliver</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Todd Shelton</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Zachary Bayer</sourceValue>
+            </sourceValues>
+            <value>Summit Sales</value>
+        </values>
+    </buckets>
+    <columns>
+        <field>Account$Owner</field>
+    </columns>
+    <columns>
+        <field>Account$Name</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Average</aggregateTypes>
+        <field>Account$ebsta1__Ebsta_Score__c</field>
+    </columns>
+    <columns>
+        <field>Account.Opportunities$Name</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Need to add # of SALs</description>
+    <filter>
+        <criteriaItems>
+            <column>Account$AOV_Band__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>$25M+,$10M-25M,$5M-10M,$1M-5M,$600k-1M,$200k-600k</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_21529778</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Prospect,Customer</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_91814141</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_59105393</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>AOV Accounts Named/Unnamed w/ Ebsta</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>Accounts_Short__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account.Opportunities$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

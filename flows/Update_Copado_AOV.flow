@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Add_ACV</name>
+        <label>Add ACV</label>
+        <locationX>635</locationX>
+        <locationY>108</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Next_Renewal_Opportunity.SRB__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Addtional_Base_ACV</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Opportunity</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_Opportunity_Record</name>
+        <label>Check Opportunity Record</label>
+        <locationX>389</locationX>
+        <locationY>164</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Next_Renewal_Opportunity</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_ACV</targetReference>
+            </connector>
+            <label>Is Not Null</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Update Copado AOV {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Copado AOV</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get the next renewal opportunity in order to increment the SRB base</description>
+        <name>Get_Next_Renewal_Opportunity</name>
+        <label>Get Next Renewal Opportunity</label>
+        <locationX>238</locationX>
+        <locationY>176</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Opportunity_Record</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3 ) AND 4</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Closed Won</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Fully Paid</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Renewal</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Opportunity</name>
+        <label>Update Opportunity</label>
+        <locationX>764</locationX>
+        <locationY>211</locationY>
+        <inputReference>Get_Next_Renewal_Opportunity</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_Next_Renewal_Opportunity</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Account Id of the Renewal Opportunity</description>
+        <name>AccountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Addtional Base ACV to add to Copado AOV</description>
+        <name>Addtional_Base_ACV</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+</Flow>

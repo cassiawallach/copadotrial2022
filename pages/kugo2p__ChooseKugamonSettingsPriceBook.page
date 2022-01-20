@@ -1,0 +1,18 @@
+<apex:page standardController="kugo2p__KugamonSetting__c" title="Choose Price Book | Kugamon" applyBodyTag="false" sidebar="false" docType="html-5.0">
+
+    <script>
+        //debugger;
+        const settingsId = "{!JSENCODE(kugo2p__KugamonSetting__c.Id)}";
+
+        const appName = 'ChoosePriceBookApp';
+        const cmpName = 'ChoosePriceBook';
+        const cmpParams = {
+                            recordId: settingsId,
+                            objectType: 'KugamonSettings',
+                            isModal: true,
+                            isLightningMode: {!$User.UIThemeDisplayed == 'Theme4d'}
+                        };
+    </script>
+
+    <c:BaseLightningOut />
+</apex:page>

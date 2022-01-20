@@ -1,0 +1,13 @@
+<apex:page sidebar="false" showHeader="false" title="Survey submission preview">
+    <script type="text/javascript">
+       var surveyId ='{!JSINHTMLENCODE($CurrentPage.parameters.surveyId)}';
+       var participantId ='{!JSINHTMLENCODE($CurrentPage.parameters.participantId)}';
+       var pId ='{!JSINHTMLENCODE($CurrentPage.parameters.pId)}';
+       if (participantId.length > 1) {
+       	window.location.href = "SurveyResponse?mode=REPORT_PREVIEW&surveyId="+surveyId+"&participantId="+participantId+"";
+       }
+       else if (pId.length > 1) {
+       	window.location.href = "SurveyResponse?mode=REPORT_PREVIEW&surveyId="+surveyId+"&pId="+pId+"";
+       }
+    </script>
+</apex:page>

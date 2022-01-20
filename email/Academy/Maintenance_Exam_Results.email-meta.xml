@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>This email template will be sent when a customer passes the certification exam</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Maintenance Exam Results</name>
+    <style>none</style>
+    <subject>You&apos;ve passed the Copado Certification Maintenance Exam!</subject>
+    <textOnly>Hello {!Receiving_User.Name},
+
+You&apos;ve successfully completed the {!redwing__Learning_Assignment__c.redwing__Training_Plan__c} in order to maintain your credentials.
+
+Student Name: {!redwing__Learning_Assignment__c.redwing__Contact__c}
+Exam: {!redwing__Learning_Assignment__c.redwing__Training_Plan__c}
+Evaluation Result: {!redwing__Learning_Assignment__c.redwing__Evaluation_Result__c}
+Completed On: {!redwing__Learning_Assignment__c.redwing__Completed_On__c}
+
+
+Best Regards,
+The Academy Team</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

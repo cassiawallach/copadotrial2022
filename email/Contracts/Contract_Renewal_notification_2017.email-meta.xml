@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Sales_Email_Letterhead</letterhead>
+    <name>Contract Renewal notification 2017</name>
+    <style>freeForm</style>
+    <subject>Copado contract up for renewal</subject>
+    <textOnly>Hi {!Contact.FirstName},
+
+Your contract renewal is approaching and I hope that you have enjoyed your use of Copado.
+
+Contract end date: {!DAY(Contract.EndDate)}{!CASE(MONTH(Contract.EndDate),1,&quot;-JAN-&quot;,2,&quot;-FEB-&quot;,3,&quot;-MAR-&quot;,4,&quot;-APR-&quot;,5,&quot;-MAY-&quot;,6,&quot;-JUN-&quot;,7,&quot;-JUL-&quot;,8,&quot;-AUG-&quot;,9,&quot;-SEP-&quot;,10,&quot;-OCT-&quot;,11,&quot;-NOV-&quot;,12,&quot;-DEC-&quot;,&quot;-???-&quot;)}{!YEAR(Contract.EndDate)}
+
+Since you have signed up with us, we have added many new features to the system, and we have many more exciting features planned in the coming months.
+
+Below is a brief description of some of the new features. If you would like a demo of these, or have any questions, please feel free to contact me so that we can arrange a demo.
+
+Change Management
+Copado Change Management (CCM) is an extension on top of the existing Copado feature set.  CCM is designed to help customers better manage the release management process of requirements from one or multiple sandboxes to production.
+
+Branch Management
+Branch Management takes a predefined deployment flow and allows for the changes that are tracked in Git for the various branches, to be merged, validated in Git, and then validated in Salesforce before performing a deployment that deploys such changes to the next (or previous) org within the deployment flow and merges the branch information; thereby ensuring that Git and Salesforce remain in sync.
+With Branch Management set up using webhooks from your Git Repository, Branch Management will continuously check for changes and perform a validation deployment of the merged changes.
+
+Automated regression testing using Selenium
+Selenium testing allows customers to validate on a continuous basis or on an automated basis, the validation of configuration or development changes within their various Salesforce orgs. This can be to validate regulate processes or enhance quality delivery as part of the release management process.
+
+The Copado family (the #1 rated application on the AppExchange for deployments and release management) is an ever growing community and we look forward to our continued partnership.
+
+Kind regards
+
+{!User.FirstName}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

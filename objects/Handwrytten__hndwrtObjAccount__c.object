@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Handwrytten__Account_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Owner of the Handwrytten Account. Lookup(User), required field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Handwrytten Account owner</inlineHelpText>
+        <label>Account Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Handwrytten_Account</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Active__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>NOT(ISPICKVAL( Handwrytten__Status__c , &apos;Inactive&apos;))</formula>
+        <label>Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Allow_Deletes__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Allow Completed Handwrytten Orders to be deleted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Allows completed handwrytten orders to be deleted</inlineHelpText>
+        <label>Allow Deletes</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Allow_Gift_Cards__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Enables the gift cards feature for the handwrytten account</inlineHelpText>
+        <label>Allow Gift Cards</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Email__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>Required field, Handwrytten account login/user name</description>
+        <externalId>true</externalId>
+        <inlineHelpText>Handwrytten account login</inlineHelpText>
+        <label>Email</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Log_to_Activity_History__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Handwrytten Orders are logged to the Activity History as completed tasks.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Log completed handwrytten orders to the activity history as completed tasks</inlineHelpText>
+        <label>Log to Activity History</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Monthly_Budget_Per_User__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Total amount the user can spend in a given month</inlineHelpText>
+        <label>Monthly Budget Per User</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Org_Wide_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Grants all users in the Salesforce.com org access to the account</inlineHelpText>
+        <label>Org Wide Account</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Password_Reenter__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Please re-enter your password.</inlineHelpText>
+        <label>Re-enter Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Password__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Public__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Setting the handwrytten account to public grants access to all users in the Salesforce.com org to use the account to process orders and modify templates. Please use caution when setting an account to public.</inlineHelpText>
+        <label>Public</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Shared_Account_Budgets__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Shared Account Budgets</label>
+        <summaryFilterItems>
+            <field>Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Maximum_Monthly_Budget__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Handwrytten_Account__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Shared_Account__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Formula field, indicates an account is shared with other users</description>
+        <externalId>false</externalId>
+        <formula>(Handwrytten__Shared_Count__c - 1 &gt; 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Indicates the account is shared with other users in the Salesforce.com org</inlineHelpText>
+        <label>Shared Account</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Shared_Count__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Roll-up Summary field, counts the users that the account is shared with</description>
+        <externalId>false</externalId>
+        <label>Shared Count</label>
+        <summaryForeignKey>Handwrytten__hndwrtObjAccountAccess__c.Handwrytten__Handwrytten_Account__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Signup_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Signup Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Active</fullName>
+                    <default>true</default>
+                    <label>Active</label>
+                </value>
+                <value>
+                    <fullName>Inactive</fullName>
+                    <default>false</default>
+                    <label>Inactive</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__Unique_Name__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>Unique account nickname, this field is used to ensure the account nickname is unique.</description>
+        <externalId>false</externalId>
+        <label>Unique Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__uid__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>uid</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Handwrytten__user_id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>user_id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Handwrytten Account</label>
+    <nameField>
+        <label>Account Nickname</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Handwrytten Account</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Handwrytten__VR_Budget_Greater_Zero</fullName>
+        <active>true</active>
+        <description>Monthly Budget Per User must be greater than zero</description>
+        <errorConditionFormula>AND ( 
+ NOT ( ISBLANK(Handwrytten__Monthly_Budget_Per_User__c) ),
+ Handwrytten__Monthly_Budget_Per_User__c &lt; 0
+)</errorConditionFormula>
+        <errorDisplayField>Handwrytten__Monthly_Budget_Per_User__c</errorDisplayField>
+        <errorMessage>Monthly Budget Per User must be greater than zero</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Handwrytten__VR_Budget_Org_Wide_Required</fullName>
+        <active>true</active>
+        <description>Monthly Budget Per User can only be set for an Org Wide Account</description>
+        <errorConditionFormula>AND (
+ NOT( Handwrytten__Org_Wide_Account__c ),
+ NOT ( ISBLANK(Handwrytten__Monthly_Budget_Per_User__c) ),
+ Handwrytten__Monthly_Budget_Per_User__c &gt; 0
+)</errorConditionFormula>
+        <errorDisplayField>Handwrytten__Monthly_Budget_Per_User__c</errorDisplayField>
+        <errorMessage>Monthly Budget Per User can only be set for an Org Wide Account</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Handwrytten__VR_Nickname_Required</fullName>
+        <active>false</active>
+        <description>Account nickname is required.</description>
+        <errorConditionFormula>OR (
+ ISBLANK(Name),
+ ISNULL(Name),
+ Name = &apos;&apos;
+)</errorConditionFormula>
+        <errorMessage>Account nickname is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Handwrytten__VR_Password_Required</fullName>
+        <active>true</active>
+        <description>Password is required.</description>
+        <errorConditionFormula>OR (
+ ISNULL( Handwrytten__Password__c ), 
+ Handwrytten__Password__c = &apos;&apos;
+)</errorConditionFormula>
+        <errorDisplayField>Handwrytten__Password__c</errorDisplayField>
+        <errorMessage>Password is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Handwrytten__VR_Passwords_Must_Match</fullName>
+        <active>true</active>
+        <description>Password field must equal re-enter password field.</description>
+        <errorConditionFormula>Handwrytten__Password__c !=  Handwrytten__Password_Reenter__c</errorConditionFormula>
+        <errorDisplayField>Handwrytten__Password__c</errorDisplayField>
+        <errorMessage>Passwords entered must be equal.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

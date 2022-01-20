@@ -1,0 +1,38 @@
+<apex:page standardController="Release_Communication__c" extensions="ReleaseCommunicationExtension" id="thePage">
+
+    <apex:sectionHeader title="Release Communication" subtitle="{!Release_Communication__c.Name}" />
+    
+    <apex:form id="theForm">
+        
+        <apex:pageMessages />
+        
+        <apex:pageBlock id="theBlock">
+            <apex:pageBlockButtons id="theButtons">
+                <apex:commandButton value="Send emails" action="{!sendEmails}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="pbs1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Email template"/>
+                    <apex:outputPanel id="pnl1">
+                        <apex:selectList id="templateList" value="{!selectedEmailTemplateId}" onchange="dochange();" multiselect="false" size="1" >
+                            <apex:selectOptions value="{!emailTemplates}"/>
+                        </apex:selectList>
+                        <script>
+                        function dochange(){
+                            document.getElementById('previewLink').href = '/'+document.getElementById('{!$Component.templateList}').value+'?recipient_type_id=&related_to_id={!Release_Communication__c.Id}';   
+                        }
+                        </script>
+                        <a id="previewLink" href="" target="_blank">Preview</a>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" title="Email content">
+                <apex:outputField value="{!Release_Communication__c.Package_Version__c}"/>
+                <apex:outputField value="{!Release_Communication__c.What_is_changing__c}"/>
+                <apex:outputField value="{!Release_Communication__c.How_will_this_change_impact_me__c}"/>
+                <apex:outputField value="{!Release_Communication__c.What_action_do_I_need_to_take__c}"/>
+                <apex:outputField value="{!Release_Communication__c.How_can_I_get_more_information__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

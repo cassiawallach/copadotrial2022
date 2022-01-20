@@ -1,0 +1,54 @@
+<apex:page sidebar="false" title="Email Preferences" controller="JBCXM.GSCommonBroker" extensions="JBCXM.NSRemoting" tabStyle="Administration__tab">
+
+         <div id="gs-app-container">
+           <div class="gs-module-container">
+              <div class="gainsight-app">
+                <gs-root></gs-root>
+               </div>
+             </div>
+         </div>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js"></script>
+        <script>
+            var hc= fakeEval('{!JSINHTMLENCODE(headerConfig)}');
+            var apiEndPoint = hc.gatewayURL;
+            var authorization= "";
+
+            var appSessionId = hc.appSessionId;
+            var appUserId = hc.appUserId;
+            var appOrgId = hc.appOrgId;
+            var GS = GS || {};
+            GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.gainsightTabs = fakeEval('{!JSINHTMLENCODE(GainsightTabs)}');
+
+            GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+            GS.remotingCommonBulkEndPoint  ='{!$RemoteAction.GSCommonBroker.gsCommonBulkRequestBroker}';
+            var host = "SALESFORCE";
+            GS.appName = "emailpreference";
+
+
+        </script>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:Features360 />
+        <script>
+                installResources({
+                                  scripts: [
+                                      "gainsight-ng-ui/communication/emailpreference/runtime",
+                                      "gainsight-ng-ui/communication/emailpreference/polyfills",
+                                      "gainsight-ng-ui/communication/emailpreference/main"
+                                  ],
+                                  styles: ["gainsight-ng-ui/communication/emailpreference/styles"]
+                              });
+        </script>
+    </apex:outputpanel>
+        <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+        <apex:stylesheet value="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:4200')}/styles.css" />
+        <script>
+            GS.cdnUrl ="https://localhost:4200/";
+        </script>
+        <script type="application/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:4200')}/runtime.js"></script>
+        <script type="application/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:4200')}/polyfills.js"></script>
+        <script type="application/javascript" src="{!IF($CurrentPage.parameters.apppath!=null,$CurrentPage.parameters.apppath,'https://localhost:4200')}/styles.js"></script>
+        <script type="application/javascript" src="{!IF(JSINHTMLENCODE($CurrentPage.parameters.apppath)!=null,JSINHTMLENCODE($CurrentPage.parameters.apppath),'https://localhost:4200')}/main.js"></script>
+        <script type="application/javascript" src="{!IF($CurrentPage.parameters.apppath!=null,$CurrentPage.parameters.apppath,'https://localhost:4200')}/vendor.js"></script>
+    </apex:outputpanel>
+</apex:page>

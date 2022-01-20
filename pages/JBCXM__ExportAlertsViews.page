@@ -1,0 +1,139 @@
+<apex:page controller="JBCXM.GSCommonBroker" title="Change Feature Settings" sidebar="false" showHeader="false" standardStylesheets="false">
+    
+    <script>
+        var GS = window.GS || {};
+   		GS.info = {!(HeaderConfig)};
+        GS.apiSessionId = "{!($Api.Session_ID)}";
+    </script>
+    <script src="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jsforce.min.js"></script>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/bootstrap/bootstrap.css"/>
+    
+    <h1>
+        Update And Create Feature Settings here !!
+    </h1>
+    
+    <div id = "my_app_ctn">
+        
+    </div>
+   
+    <script>
+    	var conn = new jsforce.Connection({ accessToken: GS.apiSessionId });
+
+        function getKey(item) {
+            return (GS.info.packageNS || "") + item; 
+        }
+        conn.query(
+            `SELECT Id, Name, ${getKey("Config__c")}, ${getKey("Feature__c")} FROM ${getKey("GSFeatureSettings__c")}`,
+            function(err, res) {
+        
+                console.log(res);
+        
+                if (err) {
+                    return alert(err);
+                }
+                
+                var $ctn = document.querySelector("#my_app_ctn");
+                var formStr = "";
+                res.records.forEach(record => {
+                    formStr += returnRow(record);
+                });
+        
+                $ctn.innerHTML = formStr + getNewRow();
+            }
+        );
+        
+        //<form class="form-inline"></form>
+        
+        function onSaveFunction(recordId) {
+            recordId = recordId.trim();
+            var ele = document.querySelector("#" + recordId);
+            conn
+                .sobject(getKey("GSFeatureSettings__c"))
+                .update({ Id : recordId, [getKey("Config__c")] : ele.value.trim()}, function(err, ret) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        alert("saved success !! Now go tell Azhar a big thank you ..");
+                    }
+                });
+        }
+        
+        
+        function returnRow(record) {
+            return `
+                <div class="form-group mb-2">
+                    <label>${record[getKey("Feature__c")]} : </label>
+                    <input type="text" class="form-control" id="${
+                                    record.Id
+                                }" placeholder="Password" value = '${record[getKey("Config__c")]}' />
+                    <button type="submit" class="btn btn-primary mb-2" onclick="onSaveFunction('${
+                                    record.Id
+                                }')">Save</button>
+                </div>
+            
+            `;
+        }
+        
+        function saveNewRecord() {
+        
+            var t = document.querySelector("#typeselect");
+            var v = document.querySelector("#typevalue");
+            
+            conn
+            .sobject(getKey("GSFeatureSettings__c"))
+            .create({ [getKey("Feature__c")] : t.value, [getKey("Config__c")] : v.value.trim()}, getKey("Feature__c"), function(err, ret) {
+                if (err) {
+                    alert(err);
+                } else {
+                    alert("saved success !! Now go tell Azhar a big thank you ..");
+                    window.location.reload();
+                }
+            });
+            
+        
+        
+        }
+        
+        function getNewRow() {
+            return `
+                    <hr />
+                    <br />
+                    <h2>Enter New Feature Settings Record </h2>
+        
+                    <br />
+                    <label for="customRange2">Select Feature</label>
+        
+                    <select class="custom-select" id = "typeselect">
+                        <option value="CS360_ACCOUNT_HIERARCHY_CONFIG">CS360_ACCOUNT_HIERARCHY_CONFIG</option>
+                        <option value="SFDC_BASE_URL">SFDC_BASE_URL</option>
+                        <option value="CDN_DOMAIN">CDN_DOMAIN</option>
+                        <option value="CDN_VERSION">CDN_VERSION</option>
+                        <option value="MISSING_NPS_RES_SCHEDULER_LAST_RUN_TIME">MISSING_NPS_RES_SCHEDULER_LAST_RUN_TIME</option>
+                        <option value="CS360_LAYOUT_ATTRIBUTE_MAPPING">CS360_LAYOUT_ATTRIBUTE_MAPPING</option>
+                        <option value="CS360_LAYOUT_CRITERIA">CS360_LAYOUT_CRITERIA</option>
+                        <option value="CUSTOMER_SEARCH_CONFIG">CUSTOMER_SEARCH_CONFIG</option>
+                        <option value="RESPECT_SHARING_SETTINGS">RESPECT_SHARING_SETTINGS</option>
+                        <option value="ANT_CONFIGS">ANT_CONFIGS</option>
+                        <option value="API_GATEWAY_URL">API_GATEWAY_URL</option>
+                        <option value="CS360_SPONSOR_TRACKING_CONFIG">CS360_SPONSOR_TRACKING_CONFIG</option>
+                    </select>
+        
+                    <label for="customRange2">Enter Value</label>
+                    <input type="text" class="form-control" id="typevalue" placeholder="Enter Value for feature setting" value="" />
+        
+                    <br />
+        
+                    <button type="submit" class="btn btn-primary mb-2" onclick="saveNewRecord()">Save</button>
+        
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+            `
+        }
+                        
+    </script>
+</apex:page>

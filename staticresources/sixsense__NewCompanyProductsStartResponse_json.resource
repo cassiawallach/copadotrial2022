@@ -1,0 +1,1 @@
+{"name":"new_company/products","total":1000,"nextOffset":1,"lastTxnId":1,"data":[{"txn_id":1,"buying_stage":"Target","intent_score":0,"company_id":"0047cc8aa5527d2-0047cc8aa5527d2","product_id":"app_cloud","profile_fit":"Moderate","profile_score":79,"product_name":"App Cloud"}]}

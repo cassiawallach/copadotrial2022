@@ -1,0 +1,22 @@
+<template>
+    <div class="container">
+        <template if:true={listing.data}>
+            <div class="appx-content-inner">
+                <c-listing-detail-header record={listing.data}></c-listing-detail-header>
+                <div class="appx-listing-detail">
+                    <div class="appx-detail-carousel-container">
+                        <c-listing-detail-carousel record={listing.data} assets={listingAssets.data} communityname={communityname}></c-listing-detail-carousel>
+                    </div>
+                    <div class="appx-headline-details">
+                        <c-listing-detail-headline-details record={listing.data} communityname={communityname}></c-listing-detail-headline-details>
+                    </div>
+                </div>
+                <div class="reviews">
+                    <!-- <c-listing-detail-tabs record={listing.data}></c-listing-detail-tabs>-->
+                    <div class="appx-listing-overview-header slds-text-title_caps">Overview</div>
+                    <lightning-formatted-text value={listing.data.fields.Description__c.value} linkify></lightning-formatted-text>                    
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

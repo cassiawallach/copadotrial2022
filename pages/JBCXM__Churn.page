@@ -1,0 +1,1818 @@
+<!-- Copyright (c) 2011 JBara Software, Inc.  
+---- Purpose                    : Included in Churn page to display Churn transactions data.
+----                              Displays graphs by aggregating measures like churn reasons and customer lifetime.
+----                              Displays all Churn transactions of all Customers in a list.
+----                              User can perform CRUD operations on Churn Transactions.
+----                             
+---- Other comments (optional)  : User can export all the Churn transactions from list. 
+-->
+<apex:page Controller="JBCXM.Dashboards" sidebar="false" extensions="JBCXM.TransactionController,JBCXM.NSRemoting,JBCXM.GSCommonBroker" title="{!churnPageTitle}">
+
+    <!-- Static Resource Includes: Jquery,Jqgrid libraries,Character limit plugin  and css files  -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/latest/jquery-migrate.js" />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/appStyles/main.css" />
+    <apex:includeScript value="{!JSENCODE(URLFOR($Resource.JBCXM__JSONUtil))}" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/jquery/jquery-UI-1.10/js/jquery.ui.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/underscore-min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/jqGridLatest/js/i18n/grid.locale-en.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/jqGridLatest/js/jquery.jqGrid.min.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/js/jqgrid.Custom.Utility.js"/>
+
+
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/miscscripts/jquery.limit-1.2.source.js"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/jqGrid/css/ui.jqgrid.css" />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/JQuery/css/redmond/jquery-ui-1.8.11.custom.css"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/jbaraCustomUtility.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/HTMLSanitizer.js" />
+
+
+
+    <!-- Static Resource Includes: Highcharts libraries  -->
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/highcharts.src.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/themes/gray.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/HighchartsJS/8.x/modules/stock.js"/>
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/date.format.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/reportParams.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/GS.User_State.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/multiple-select/jquery.multiple.select.js" />
+    <apex:includeScript value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSVendor/js/vendor/multiple-select/jquery.multiselect.filter.js" />
+
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/Styles/css/core/gsAppContainer.css" />
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/css/CS360/gsApps-new.css"/>
+    <apex:stylesheet value="{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/GSAppCSS/css/churn.css"/>
+
+    <apex:form >
+        <script type="text/javascript">
+          var statePreservStringChurn, isSameUserSessionExists, churnGridState;
+          var reportParamsUIViewJSON;
+          var j$ = jQuery.noConflict();
+          var GS = GS || {};
+          GS.packageNS            = "{!(pkgNS)}";
+          GS.isPackagedInstance   = (GS.packageNS) ? "true" : "false";
+          GS.userConfig = {
+            userLocale  : {!(userLocaleDateFormatMap)},
+          userName    : "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}",
+            userId      : "{!$User.Id}",
+            emailId     : "{!$User.Email}",
+            profilePhoto : "{!(profilePhoto)}",
+            userDisplayName : "{!(JSINHTMLENCODE(userDisplayName))}",
+            gainsightTabs: {!(churngainsightTabs)},
+          isLightningEnabled: {!(isLightningEnabled)}
+          };
+          GS.remoting                     = "{!$RemoteAction.NSRemoting.apinsinvoke}";
+          GS.commonRemotingEndPoint   = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+          GS.remotingEndPoint         = '{!$RemoteAction.GSCommonBroker.gsCommonRequestBroker}';
+
+          j$.jgrid.no_legacy_api = true;
+          j$.jgrid.useJSON = true;
+          var userLocaleDateFormatMap,jqGridDateFormat,jqGridDateTimeFormat, transOrderTypeNameBySysName;
+          var atleastOneViewExists = '{!renderChurnUISelectionList}';
+
+          function reSetWrapLinesIcon (){
+            j$("#churnAnalyticsChkWrapText").removeClass("gs-wrap-active").addClass("gs-wrap-lines");
+          }
+
+          function afterReportParamApplied(){
+            reSetWrapLinesIcon();
+            buildChurnAnalyticsGrid();
+          }
+          /*
+          *To Show the Report params light box.
+          */
+          function showReportParams(thisPointer, uiViewId) {
+            var pos = j$(thisPointer).position();
+            var hiddenFldForJson = 'reportParamsFilterOptionsJSON';
+            var reportParamsContainerCls = 'reportParamsContainerDiv';
+            j$('body').append('<div class="modalOverlayReportParams ui-widget-overlay"></div>');
+            var selectedViewText = j$(".jbaraDummyChurnUIViewsSelectControl option:selected").text();
+            buildAndShowReportParams(thisPointer, uiViewId, hiddenFldForJson,reportParamsContainerCls,selectedViewText);
+            j$('.dummyReportParamsOptionsFilter').css({'left': pos.left -531, 'top' : pos.top + 29});
+          }
+
+          //To handle the currency symbol.
+          var currencyConfigObject =  fakeEval('{!JSINHTMLENCODE(currencyConfigJSON)}');
+
+          var isThisPackagedVersion = "{!(isPkgInstanceChrn)}"; //Clienside
+
+          //To Change the labels of Churn and Downsell based on the ordre type label changes.
+          transOrderTypeNameBySysName = {};
+          transOrderTypeNameBySysName = fakeEval('{!JSINHTMLENCODE(orderTypeDetialsMapByIdJson)}');
+
+          var totalRecCnt,queryLmt;
+          function displayQueryLimit(totalRecCnt,appliedLimit,jBaraRecLmtCls){
+            if(totalRecCnt != undefined ){
+              if(parseInt(totalRecCnt[0].totalRecordCount) > parseInt(appliedLimit)){
+                j$("."+jBaraRecLmtCls).html('Showing :'+ appliedLimit + ' Of ' + totalRecCnt[0].totalRecordCount);
+              }
+              else{
+                j$("."+jBaraRecLmtCls).html("");
+              }
+            }
+          }
+          var churnReasonsList, blnShowFilterData, filteredCustName, idToRenderChurnList, selectedUIViewId;
+          var viewColumnList, alertsFieldViewList;
+          var isChurnUiViewExists = false;
+          var renderChurnListByUIView = false;
+          var scfo = ['MRR', 'ASV', 'Users']; //scfo = scatter Chart Filter Options.
+          var scdk = {'MRR' : 'MRR__c', 'ASV' : 'ASV__c', 'Users' : 'Users__c'}; //scdk = scatter Chart Data Keys.
+          var customerLifeTimeChartData;
+          var customerLifeTimeChartAVGData;
+
+          var buildReportParamsJSON = false;
+          var setClientSideGridFiltersByUIView = true;
+          var flagToDumpUS = false;
+          selectedUIViewId      = '{!(defaultChurnUIViewId)}';
+          idToRenderChurnList     = "ChurnAnalyticsList_IdOf"+selectedUIViewId+"";
+          statePreservStringChurn     = fakeEval('{!JSINHTMLENCODE(userStateDetailsJsonChrn)}');
+          isSameUserSessionExists     = '{!(isSameUserSessionChrn)}';
+          var actionTimer;
+          function processEntireState() {
+            clearTimeout(actionTimer);
+            statePreservStringChurn.Name = 'Churn';
+            statePreservStringChurn.ClientSideFilter__c = JSON.stringify(churnGridState.getData('ClientSideFilter__c'));
+            statePreservStringChurn.SortColumns__c = JSON.stringify(churnGridState.getData('SortColumns__c'));
+            statePreservStringChurn.ReportParams__c = JSON.stringify(churnGridState.getData('ReportParams__c'))
+            statePreservStringChurn.UIViewId__c = JSON.stringify(churnGridState.getData('UIViewId__c'));
+            statePreservStringChurn.SubSection__c = JSON.stringify(churnGridState.getData('SubSection__c'));
+            actionTimer = setTimeout(function() {
+              var dmyStr = (isThisPackagedVersion == "true") ? JSON.stringify(pushStatePreservationJbaraNameSpace(statePreservStringChurn)) : JSON.stringify(statePreservStringChurn);
+              actionUpdateStatePreservation(dmyStr);
+            }, 2000);
+
+          }
+          //Initializing User state object.
+          churnGridState = new GS.User_State({
+            "gridId" : idToRenderChurnList,
+            "tabName" : "Churn",
+            "data" :statePreservStringChurn,
+            "areaName" : "Customers",
+            "checkFieldName" : "dummy",
+            "isSameUserSessionExists" : isSameUserSessionExists,
+            "callback" : processEntireState,
+            "uiViewId" : selectedUIViewId,
+            "appReportParams" : buildReportParamsJSON,
+            "flagToDumpUS" : flagToDumpUS,
+            "setCSGFByUIV" : setClientSideGridFiltersByUIView,
+            "gridContainer" : "containerChurnAnalyticsList",
+            "uiviewsclass" : "jbaraDummyChurnUIViewsSelectControl",
+            "tabId" : "Churn", // For jquery Tabs
+            "checkBoxClass": "dummyChkChurnFilterBType",
+            "appCSFilters" : true
+          });
+
+
+
+          // Gets churn  transaction by reasons
+          function getchurnDataByCategory(reasonData, reasonName) {
+            var filertByCategory = j$.grep(reasonData, function(dt) {
+              return (dt.ChurnReasonSystemName == reasonName);
+            });
+            return filertByCategory.length;
+          }
+
+          //Generates churn reason column chart.
+          function churnReasonChartRender(id, jsonData) {
+            var churnReasonTypes = new Array();
+            var churnReasonColor = new Array();
+            var dataByReason = new Array();
+            for (var Idx = 0; Idx < churnReasonsList.length; Idx++) {
+              var churnReasonData = getchurnDataByCategory(jsonData, churnReasonsList[Idx].systemName);
+              if(churnReasonData > 0){
+                churnReasonTypes.push(churnReasonsList[Idx].shortName);
+                dataByReason.push({name:churnReasonsList[Idx].shortName,y:churnReasonData,color:churnReasonsList[Idx].color});
+              }
+            }
+
+            churnReasonChart = new Highcharts.Chart({
+              chart: {
+                renderTo: id,
+                defaultSeriesType: 'column',
+                backgroundColor : 'rgba(255, 255, 255, 0)'
+              },
+              title: {
+                text: '{!JSENCODE(dbTransOTPLNameBySysNameMap['Churn'])} Reason',
+                style: {
+                  color: '#333'
+                }
+              },
+              credits: {
+                enabled: false
+              },
+              xAxis: {
+                categories: churnReasonTypes,
+                gridLineColor: '#f2f2f2',
+                lineColor: '#333',
+                lineWidth: 1,
+                labels: {
+                  style: {
+                    color: '#333',
+                    fontFamily: 'HelveticaNeueRegular'
+                  }
+                }
+              },
+              legend: {
+                enabled: false,
+                itemStyle: {
+                  fontFamily: 'HelveticaNeueRegular'
+                },
+                itemHoverStyle: {
+                  fontFamily: 'HelveticaNeueRegular'
+                }
+              },
+              yAxis: {
+                gridLineColor: '#f2f2f2',
+                min: 0,
+                allowDecimals: false,
+                title: {
+                  text: '# Customers',
+                  style: {
+                    color: '#333',
+                    fontFamily: 'HelveticaNeueRegular'
+                  }
+                },
+                labels: {
+                  style: {
+                    color: '#333',
+                    fontFamily: 'HelveticaNeueRegular'
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: '#f4f4f4',
+                style: { fontFamily: 'HelveticaNeueRegular', padding: 10,color:'#374351'},
+                shadow: false,
+                borderRadius: 3,
+                borderWidth : 1,
+                borderColor: '#dbdbdb',
+                formatter: function() {
+                  return '' + this.x + ': ' + this.y;
+                }
+              },
+              plotOptions: {
+                column: {
+                  pointPadding: 0.2,
+                  borderWidth: 0,
+                  color: '#99FFFF',
+                  shadow: false,
+                }
+              },
+              series: [{
+                name: '{!JSENCODE(dbTransOTPLNameBySysNameMap['Churn'])} Reason',
+                data: dataByReason
+
+              }]
+            });
+          }
+
+          var downsellColor = '#eba638';
+          var churnColor = '#e95253 ';
+          //Gets customerLifetimeChart
+          function populateCustomerLifeTimeSeriesData(lifetimeData, selectedId) {
+            var seriesDataArray = new Array();
+            var colval = churnColor;
+            var custLifeData;
+            lifetimeData = fakeEval(lifetimeData);
+            var customerLink;
+            var custNameFromLink;
+            var defaultRadius = 3;
+
+            //To populate the series data by MRR, ASV and Users.
+            customerLifeTimeChartData = new Array();
+            customerLifeTimeChartAVGData = new Array();
+            for(var i = 0; i < scfo.length; i++) {
+              customerLifeTimeChartData[scfo[i]] = new Array();
+              customerLifeTimeChartAVGData[scfo[i]] = new Array();
+              customerLifeTimeChartAVGData[scfo[i]]['maxVal'] = 0;
+            }
+            var totalMonthsCount = 0;
+            var maxMonths = 0;
+
+            for (var idx = 0; idx < lifetimeData.length; idx++) {
+
+              //To AVG, Max details.
+
+              totalMonthsCount += parseInt(lifetimeData[idx].Lifetime);
+              maxMonths = (maxMonths < (parseInt(lifetimeData[idx].Lifetime))) ? parseInt(lifetimeData[idx].Lifetime) : maxMonths;
+
+              defaultRadius = 3;
+              colval = (lifetimeData[idx].OrderType__r == transOrderTypeNameBySysName['Churn']['DN']) ? churnColor : downsellColor;
+              defaultRadius = (selectedId==null) ? defaultRadius :(selectedId==idx+1)? defaultRadius+4: defaultRadius;
+              linecolval = (selectedId==null) ? colval :(selectedId==idx+1)? colval : colval;
+
+              colval = (selectedId==null) ? colval :(selectedId==idx+1) ? '#FFFFFF': colval;
+
+              //customerLink = j$(lifetimeData[idx].Customer_link);
+              custNameFromLink = lifetimeData[idx].cust_name_c;
+              for(var i = 0; i < scfo.length; i++) {
+                customerLifeTimeChartAVGData[scfo[i]]['maxVal'] = (customerLifeTimeChartAVGData[scfo[i]]['maxVal'] < Math.round(lifetimeData[idx][scdk[scfo[i]]])) ? Math.round(lifetimeData[idx][scdk[scfo[i]]]) : customerLifeTimeChartAVGData[scfo[i]]['maxVal'];
+
+                custLifeData = new customerLifeTimeClass({
+                  customerName:custNameFromLink,
+                  colorVal : colval,
+                  xVal: lifetimeData[idx].Lifetime,
+                  yVal: Math.round(lifetimeData[idx][scdk[scfo[i]]])
+                },defaultRadius,linecolval);
+
+                customerLifeTimeChartData[scfo[i]].push(custLifeData);
+              }
+            }
+
+            for(var i = 0; i < scfo.length; i++) {
+              customerLifeTimeChartAVGData[scfo[i]]['avgMonths'] = (totalMonthsCount > 0) ? Math.round(totalMonthsCount / lifetimeData.length) : 0;
+              customerLifeTimeChartAVGData[scfo[i]]['maxMonths'] = maxMonths;
+            }
+          }
+
+          //Construct class to pass parameters to chart series.
+          function customerLifeTimeClass(data,markerRadius,linecolval) {
+            this.name = data.customerName;
+            this.color = data.colorVal;
+            this.x = data.xVal;
+            this.y = data.yVal;
+            this.marker =  {fillColor:data.colorVal,
+              radius: markerRadius,
+              lineWidth: 1,
+              lineColor: linecolval,
+              states: {
+                hover: {
+                  enabled: true,
+                  fillColor:data.colorVal,
+                  radius: markerRadius+2
+                }
+              }};
+          }
+
+          /**
+           *This function fires when change the customer life time filter options(MRR, ASV, Users).
+           **/
+          function reRenderCustomerLifeTimeBySelection(thisPointer) {
+            customerLifetimeChartRender("customerLifetimeGraphContainer", j$.trim(j$(thisPointer).val()), j$.trim(j$(thisPointer).find("option:selected").text()))
+            var dVar = churnGridState.getData('ClientSideFilter__c');
+            if(dVar && dVar.Churn[selectedUIViewId]) {
+              dVar.Churn[selectedUIViewId]['typefilter'] = captureCustomerLifeTimeChartDetails();
+              churnGridState.setDataByIndex('ClientSideFilter__c',dVar);
+              processEntireState();
+            }
+          }
+          //Generates the lifetime scatter chart and avg lifetime line in the scatter chart.
+          function customerLifetimeChartRender(id, dataKey, gridTitle) {
+            customerLifetimeChart = new Highcharts.Chart({
+              chart: {
+                renderTo: id,
+                defaultSeriesType: 'scatter',
+                zoomType: 'xy',
+                backgroundColor : 'rgba(255, 255, 255, 0)'
+
+              },
+              title: {
+                text: 'Customer Lifetime',
+                style: {
+                  color: '#333'
+                },
+              },
+              legend: {
+                enabled: false
+              },
+              xAxis: {
+                min: 0,
+                tickInterval:6,
+                max: customerLifeTimeChartAVGData[dataKey]['maxMonths'] + 6,
+                lineColor: '#333',
+                lineWidth: 1,
+                title: {
+                  enabled: true,
+                  text: 'Lifetime (Months)',
+                  style: {
+                    color: '#333',
+                    fontFamily: 'HelveticaNeueRegular'
+                  }
+                },
+                labels: {
+                  style: {
+                    color: '#333',
+                    fontFamily: 'HelveticaNeueRegular'
+                  }
+                },
+                plotLines: [{
+                  color: '#e95253 ',
+                  width: 4,
+                  value: customerLifeTimeChartAVGData[dataKey]['avgMonths']
+                }]
+              },
+              yAxis: {
+                min: 0,
+                max: customerLifeTimeChartAVGData[dataKey]['maxVal'],
+                gridLineColor: '#f2f2f2',
+                title: {
+                  text: gridTitle,
+                  style: {
+                    color: '#333',
+                    fontFamily: 'HelveticaNeueRegular'
+                  }
+                },
+                labels: {
+                  style: {
+                    color: '#333',
+                    fontFamily: 'HelveticaNeueRegular'
+                  }
+                }
+              },
+              credits: {
+                enabled: false
+              },
+              tooltip: {
+                backgroundColor: '#f4f4f4',
+                style: { fontFamily: 'HelveticaNeueRegular', padding: 10,color:'#374351'},
+                shadow: false,
+                borderRadius: 3,
+                borderWidth : 1,
+                borderColor: '#dbdbdb',
+                formatter: function() {
+                  if (this.series.name == 'Lifetime') {
+                    var yAxisFrmt = (dataKey == "Users") ? formatNumber(this.y, "#") : formatNumber(this.y, (currencyConfigObject.symbol+" "));
+                    return '' + gsEncodeHtml(this.point.name) + '<br/>Lifetime: ' + this.x + ' Months <br/>'+gridTitle+': ' + yAxisFrmt;
+                  } else {
+                    return '' + 'Avg Months :' + customerLifeTimeChartAVGData[dataKey]['avgMonths'];
+                  }
+                }
+              },
+              plotOptions: {
+                scatter: {
+                  marker: {
+                    radius:5,
+                    states: {
+                      hover: {
+                        enabled: true,
+                        lineColor: '#e95253 '
+                      }
+                    }
+                  },
+                  states: {
+                    hover: {
+                      marker: {
+                        enabled: false
+                      }
+                    }
+                  }
+                }
+              },
+              series: [{
+                name: 'Lifetime',
+                data: customerLifeTimeChartData[dataKey]
+
+              }, {
+                name: 'Avg',
+                color: '#e95253 ',
+                type: 'scatter',
+                lineWidth: 2,
+                data: [
+                  [customerLifeTimeChartAVGData[dataKey]['avgMonths'], 0],
+                  [customerLifeTimeChartAVGData[dataKey]['avgMonths'], customerLifeTimeChartAVGData[dataKey]['maxVal']]
+                ]
+              }]
+            });
+
+          }
+
+          //Fires when the user selects on churn analytics grid tooltip will render on chart for the selected customer.
+          function highlightCustomerOnLifetime(custName, renderReasonGraph, selectedId) {
+            var foundCustomer = false;
+            var lastIdx;
+            for (var idx = 0; idx < customerLifetimeChart.series[0].data.length; idx++) {
+              if (customerLifetimeChart.series[0].data[idx].name.toLowerCase().indexOf(custName.toLowerCase()) != -1) {
+                foundCustomer = true;
+                lastIdx = idx;
+                break;
+              }
+            }
+
+            populateCustomerLifeTimeSeriesData(j$("#"+idToRenderChurnList+"").getRowData(), selectedId); //To populate the customer life time by MRR, ASV and Users.
+            customerLifetimeChartRender('customerLifetimeGraphContainer', j$.trim(j$(".customerLifeTimeChartFilterOptionsSelectCtrl").val()), j$.trim(j$(".customerLifeTimeChartFilterOptionsSelectCtrl option:selected").text()));
+
+            customerLifetimeChart.tooltip.refresh(customerLifetimeChart.series[0].data[lastIdx]);
+          }
+
+          //Rerender the graphs when there is any data changed in churn analytics grid.
+          function renderChurnGraphs(jsonData, renderReasonGraph, selectedId) {
+            j$('#churnReasonGraphContainer').show();
+            j$('#customerLifetimeGraphContainer').show();
+            if (renderReasonGraph) {
+              churnReasonChartRender('churnReasonGraphContainer', jsonData);
+            }
+
+            populateCustomerLifeTimeSeriesData(jsonData, selectedId); //To populate the customer life time by MRR, ASV and Users.
+            customerLifetimeChartRender('customerLifetimeGraphContainer', j$.trim(j$(".customerLifeTimeChartFilterOptionsSelectCtrl").val()), j$.trim(j$(".customerLifeTimeChartFilterOptionsSelectCtrl option:selected").text()));
+          }
+          //function to filterFY
+          function getByFiscalYear(jsonData) {
+            var returnDataByFiscalYear = jsonData;
+            return returnDataByFiscalYear;
+          }
+
+          function getLabelsForFilters() {
+            var trailRecord;
+            var lblHtml = ''
+            return lblHtml;
+          }
+
+
+        </script>
+
+        <script type='text/javascript'>
+          var j$ = jQuery.noConflict();
+          window.jLatest = j$;
+          var AllChurnAnalyticsJsonData;
+          var allChurnTransactionslist, commentsDataByChurnTransaction, OCDforCustomer, churnAFM;
+
+          //Builds grid.
+          j$(document).ready(function() {
+
+
+            j$(document).click(function() {
+              j$(".gs-moreopt-cnt").hide();
+            });
+            j$(".ajaxLoadingButtonChurnGrid").show();
+            j$(".btnShowActions").show();
+            j$(".rptParamMainDiv").show();
+            j$(".ChurnUIViewsSelectionList").show();
+            j$(".scatterChartToggleOptions").show();
+            j$(".btnShowActions").unbind("click").bind("click",function(event){
+              if(j$(".gs-moreopt-cnt").filter(":hidden")){
+                event.stopPropagation();
+                j$(".gs-moreopt-cnt").show();
+              }
+
+            });
+            j$('.jbaraDummyChurnUIViewsSelectControl').multiselect({
+              multiple: false,
+              header:false,
+              selectedList: 1,
+              minWidth:150,
+              height:'auto',
+            });
+
+            j$('.customerLifeTimeChartFilterOptionsSelectCtrl').multiselect({
+              multiple: false,
+              header:false,
+              selectedList: 1,
+              height:'auto'
+            });
+
+            //To Change the labels of Churn and Downsell based on the ordre type label changes.
+            j$('span.transOTChurnToFilter').html(transOrderTypeNameBySysName['Churn']['DN']);
+            j$('span.transOTDSToFilter').html(transOrderTypeNameBySysName['Downsell']['DN']);
+            j$('span.transOTRWDSToFilter').html(transOrderTypeNameBySysName['Renewal with Downsell']['DN']);
+            j$(".bPageTitle .pageType").html(transOrderTypeNameBySysName['Churn']['DN']);
+
+
+
+            blnShowFilterData = false;
+            if(j$.browser.msie && j$.browser.version == '7.0'){
+              j$('.dummyIEFilterDisplay').css({'float':'left'});
+            }
+            userLocaleDateFormatMap = fakeEval('{!JSINHTMLENCODE(userLocaleDateFormatMap)}');
+            jqGridDateFormat         =JBARAjqGridDateFormat(userLocaleDateFormatMap);
+            jqGridDateTimeFormat     =JBARAjqGridDateTimeFormat(userLocaleDateFormatMap);
+            churnReasonsList = fakeEval('{!JSINHTMLENCODE(ChurnReasonJson)}');
+            //The below condition is to render nothing when no UIView is configured
+            if(atleastOneViewExists == 'true') {
+              buildChurnAnalyticsGrid();
+            }
+            else {
+              j$(".noUIViewExistMsg").show();
+              j$(".customerLifeTimeChartFilterOptionsSelectCtrl").hide();
+              j$(".dummyChurnAnalyticsDetail").hide();
+            }
+
+
+
+          });
+
+          //To capture the customer life time toggle information.
+          function captureCustomerLifeTimeChartDetails() {
+            var customerLifeTimeToggleOption = j$(".customerLifeTimeChartFilterOptionsSelectCtrl").val();
+            var dummyFilterType = {};
+            dummyFilterType[customerLifeTimeToggleOption] = customerLifeTimeToggleOption;
+            return dummyFilterType;
+          }
+
+          function bindEventsForFilters(){
+            j$("#churnAnalyticsChkWrapText").unbind("click").bind("click", function() {
+              setChurnAnalyticsGridWrapping(true);
+            });
+
+          }
+          var otherFiltersChurn = {
+            chartoptions: []
+          };
+
+
+          function getFilterDataByYearAndBookingTypes(){
+            var returnData = getByFiscalYear(AllChurnAnalyticsJsonData);
+            bindActualChurnGrid(returnData);
+          }
+
+          //Filters the Churn customers when the user clicks on checkboxes
+          function getfilterChurnCustomersData() {
+            return getByFiscalYear(AllChurnAnalyticsJsonData);
+          }
+
+          //Reset filters when the user clicks on allcustomers
+
+
+          //Adds z-index on mouseover on help text in overlay form.
+          function setHelpZindexChurnAnalytics() {
+            j$(".helpText").css({
+              'z-index': '6000',
+              'position': 'fixed'
+            })
+          }
+
+          //This function gets called when you click on the "Export" link from the grid.
+          function exportChurnAnalytics() {
+            var selectedView = j$(".jbaraDummyChurnUIViewsSelectControl").val();
+            /*if( selectedView  == "JBaraStandardView" || selectedView  == undefined ){
+                var exportChurnAnalyticsWindow = window.open('apex/ExportChurnAnalytics');
+            }else{
+                exportChurnCustomViewData();
+            }*/
+            exportChurnCustomViewData();
+          }
+
+          //To hide the overlay form.
+          function jbaraCloseTransactionInputForm() {
+            j$(".jbaraDummyOverLayForm").hide();
+            j$(".jbaraDummyTransactionInputForm").hide();
+          }
+
+
+
+          // new code added for linking to new transaction form
+          function loadTransactionForm(transactionId) {
+            j$(".mainPanelDiv").hide();
+            j$(".gs-module-container").css({
+              "height": "auto"
+            });
+            actionShowTransactionForm(transactionId);
+          }
+
+          function jbaraCallBackAfterTransactionFormSave() {
+            //j$(".ajaxLoadingButton").show();
+            j$('.transFormcls').hide();
+            afterSave();
+          }
+
+          function jbaraCallBackAfterTransactionFormCancel() {
+            j$(".mainPanelDiv").show();
+            afterCancel();
+            if ( !window["GS"].userConfig.isLightningEnabled ) {
+              j$(".gs-module-container").css({
+                "height": window.innerHeight - 98 - 51
+              });
+            }
+          }
+
+
+
+          /**
+           *Class to build the Churn information details.
+           **/
+          var churnTransactionPropertiesClass, transactionPropertiesClassObj,todaysDate;
+          function transactionPropertiesClass(data)  {
+            this.Action                             = data.Action;
+            this.Customer_link                      = data.Customer_link;
+            this.cust_name_c                              = data.cust_name_c;
+            this.account_id_c                              = data.account_id_c;
+            this.accountId                          = data.accountId;
+            this.OrderType__r                       = data.OrderType__r;
+            this.ChurnReason__r__name               = data.ChurnReason__r__name;
+            this.OriginalContractDate__c            = data.OriginalContractDate__c;
+            this.Date__c                            = data.Date__c;
+            this.RevRecStartDate__c                 = data.RevRecStartDate__c;
+            this.Lifetime                           = data.Lifetime;
+            this.ASV__c                             = data.ASV__c;
+            this.MRR__c                             = data.MRR__c;
+            this.Users__c                           = data.Users__c;
+            this.Comment__c                         = data.Comment__c;
+            this.CreatedByName                      = data.CreatedByName;
+            this.CreatedDate                        = data.CreatedDate;
+            this.LastModifiedByName                 = data.LastModifiedByName;
+            this.LastModifiedDate                   = data.LastModifiedDate;
+            this.ChurnReasonSystemName              = data.ChurnReasonSystemName;
+            this.fyMonth                            = data.fyMonth;
+            this.fyQuarter                          = data.fyQuarter;
+            this.fyYear                             = data.fyYear;
+            this.CustomerLifetimeInMonths__c        = data.Lifetime;
+          }
+
+          /**
+           *function to calculate the life time of the customer.
+           */
+          function getCustLifeTimeInMonths(startDate, endDate) {
+            if(isExists(startDate) && isExists(endDate)) {
+              startDate = startDate.replace(/-/g, '/');
+              endDate = endDate.replace(/-/g, '/');
+              return getMonthsBetweenTwoDates(new Date(startDate), new Date(endDate));
+            }
+            else {
+              return "";
+            }
+
+          }
+          //Utility method to check if value exists
+
+          function isExists(inp) {
+
+            return inp != null && inp != '' && inp != undefined;
+          }
+          /**
+           *function to get months between two dates.
+           */
+          function getMonthsBetweenTwoDates(sd, ed) {
+            var months = (ed.getFullYear()- sd.getFullYear()) * 12;
+            months -= sd.getMonth() + 1;
+            months += ed.getMonth() + 1;
+            return months;
+          }
+          //Bind the grid using data and grid columns.
+
+          function bindActualChurnGrid(data) {
+            //churnGridState.init();
+            var customDateFrmt = 'm/d/Y';
+            var listData = data;
+
+            var arrCols = getChurnDetailsGridColumnByTabView();
+
+            var screenWidth = j$(window).width() - 64.5;
+
+            var dummyUsrStateSort = churnGridState.getData('SortColumns__c');
+            dummyUsrStateSort = (dummyUsrStateSort['Churn']) ? ((dummyUsrStateSort['Churn'][selectedUIViewId]) ? dummyUsrStateSort['Churn'][selectedUIViewId] : {}) : {};
+            dummyUsrStateSort = (dummyUsrStateSort[idToRenderChurnList]) ? dummyUsrStateSort[idToRenderChurnList] : {};
+            var sscn = (isSameUserSessionExists == 'true') ? ((!j$.isEmptyObject(dummyUsrStateSort)) ? dummyUsrStateSort.name : arrCols[2].name) : arrCols[2].name;
+            var ssco = (isSameUserSessionExists == 'true') ? ((!j$.isEmptyObject(dummyUsrStateSort)) ? dummyUsrStateSort.order : arrCols[2].order) : arrCols[2].order;
+            var gridParam = {
+              'Id': idToRenderChurnList,
+              'colnames': arrCols[0],
+              'colmodel': arrCols[1],
+              'data': listData,
+              'pagerId': 'plistActualChurn',
+              'sort': {
+                'name': sscn,
+                'order':ssco
+              },
+              'width': screenWidth+10,
+              'height': '100%',
+              'footerrow':true,
+              'gridComplete':gridCompleteTransactionList,
+              'sumColumns': arrCols[3],
+              'userLocaleDateFormatMap' : userLocaleDateFormatMap
+            }
+            j$("#"+idToRenderChurnList+"").html("");
+            j$(".churnGridGaphsDisplayDiv").show();
+            buildjqGrid('containerChurnAnalyticsList', gridParam);
+            j$(".ui-pg-div").hide();
+            j$('.ui-jqgrid-sdiv').hide();
+            j$("#"+idToRenderChurnList+"").find("td").css({
+              "overflow": "hidden",
+              "white-space": "nowrap"
+            });
+            j$("#gbox_"+idToRenderChurnList+"").removeClass("ui-corner-all").addClass("ui-corner-bottom");
+            j$(".dummyGridTitleBarChurnAnalytics").css({
+              "width": parseInt(screenWidth)
+            });
+            j$("#"+idToRenderChurnList+"").setGridParam({
+              'onSelectRow': function(id) {
+                var custName = j$("#"+idToRenderChurnList+"").jqGrid('getCell', id, 'cust_name_c');
+                //custName = j$(custName).text();
+                highlightCustomerOnLifetime(custName,false,id);
+              }
+            });
+            j$("#"+idToRenderChurnList+"").parents('div.ui-jqgrid-bdiv').css({
+              "max-height":"300px", "position": "relative",
+              "margin": "0em", "padding":"0","overflow-x":"auto",
+              "overflow-y":"auto","text-align":"left"
+            });
+
+            j$(".ajaxLoadingButtonChurnGrid").hide();
+
+            //To set the grid fitlers by UIView.
+            if(isSameUserSessionExists == 'true' && setClientSideGridFiltersByUIView) {
+              churnGridState.dataSetter();
+            }
+          }
+
+
+
+          //Grid complete functions for calcluating footers.
+
+
+          function gridCompleteTransactionList() {
+            setChurnAnalyticsGridWrapping(false);
+            renderChurnGraphs(j$("#"+idToRenderChurnList+"").getRowData(), true, null);
+            blnShowFilterData = true;
+            if(isSameUserSessionExists == 'false' && churnGridState.flagToDumpUS) { //To clear the client side filters, sorting details.
+              churnGridState.setDataByIndex('ClientSideFilter__c', {});
+              churnGridState.setDataByIndex('SortColumns__c', {});
+            }
+            churnGridState.preLoad();
+            j$(".ajaxLoadingButtonChurnGrid").hide();
+          }
+
+          //Attach click event to toggle wrapping in grid.
+          function setChurnAnalyticsGridWrapping(blnAddClass) {
+            if (j$("#churnAnalyticsChkWrapText").hasClass("gs-wrap-lines")) {
+              j$("#"+idToRenderChurnList+"").find("td").css({
+                "overflow": "hidden",
+                "white-space": "pre-line"
+              });
+              if(blnAddClass){
+                j$("#churnAnalyticsChkWrapText").addClass("gs-wrap-active").removeClass("gs-wrap-lines");
+              }
+            } else {
+              j$("#"+idToRenderChurnList+"").find("td").css({
+                "overflow": "hidden",
+                "white-space": "nowrap"
+              });
+              if(blnAddClass){
+                j$("#churnAnalyticsChkWrapText").addClass("gs-wrap-lines").removeClass("gs-wrap-active");
+              }
+
+            }
+          }
+
+          //Rebuilds the grid when the user cliks on delete link.
+          function jbaraAfterDeleteChurnTransaction() {
+            var positionTop= j$(window).scrollTop();
+            buildChurnAnalyticsGrid();
+            j$(window).scrollTop(positionTop);
+          }
+
+          //Confirmation dialog before deleting
+          function confirmChurnTransactionDelete(id, ordTypeSysName, aid, custStatus) {
+            if(ordTypeSysName=='Renewal with Downsell' || ordTypeSysName=='Downsell') {
+              isCustomerChurned = false;
+              isCustomerChurnedOrActive(aid); //To check we can add the transactions to the customer or not.
+              if(custStatus == 'ChurnCustomer') {
+                alert('Customer "'+filteredCustName+'" is a churned customer and transaction cannot be deleted. \n If you need to delete the transactions, reactivate the customer by deleting the '+transOrderTypeNameBySysName['Churn']['DN']+' transaction');
+                return false;
+              }
+              else {
+                getTransactionOperationValidation(aid, "Delete", transOrderTypeNameBySysName[ordTypeSysName]['MN'], id, transOrderTypeNameBySysName[ordTypeSysName]['DN']);
+              }
+
+            }
+            else {
+              //if (confirm("You are trying to delete a "+transOrderTypeNameBySysName['Churn']['DN']+" Transaction. This will reactivate the Customer with the last {!JSENCODE(customLabelsMap['MRR'])} and {!JSENCODE(customLabelsMap['ASV'])}. \n Are you sure ?")) { deleteChurnTransaction(id); }
+              getTransactionOperationValidation(aid, "Delete", transOrderTypeNameBySysName[ordTypeSysName]['MN'], id, transOrderTypeNameBySysName[ordTypeSysName]['DN']);
+            }
+
+          }
+
+          //This function was called when you edit the churn transaction.
+          var isCustomerChurned, numberOfTransactionsHaving;
+          function editChurnAnalytics(transactionId, bookingOrderType, accountId) {
+            if(bookingOrderType != "Churn") {
+              isCustomerChurned = false;
+              isCustomerChurnedOrActive(accountId); //To check we can add the transactions to the customer or not.
+              if(isCustomerChurned) {
+                alert('Customer "'+filteredCustName+'" is a churned customer and transaction cannot be edited. \n If you need to edit the transactions, reactivate the customer by deleting the '+transOrderTypeNameBySysName['Churn']['DN']+' transaction');
+              }
+              else {
+                getTransactionOperationValidation(accountId, "Edit", transOrderTypeNameBySysName[bookingOrderType]['MN'], transactionId, transOrderTypeNameBySysName[bookingOrderType]['DN']);
+              }
+            }
+            else {
+              loadTransactionForm(transactionId);
+            }
+          }
+
+          //Function to check customer was churned or not.
+          function isCustomerChurnedOrActive(accountId) {
+            var filteredTransactionsByCustomer = j$.grep(AllChurnAnalyticsJsonData, function (transData) {
+              return transData.accountId == accountId;
+            });
+            for(var indx = 0; indx < filteredTransactionsByCustomer.length; indx++) {
+              if(filteredTransactionsByCustomer[indx].OrderType__r == transOrderTypeNameBySysName['Churn']['DN']) {
+                filteredCustName = filteredTransactionsByCustomer[indx].cust_name_c;//j$(filteredTransactionsByCustomer[indx].Customer_link).text();
+                isCustomerChurned = true;
+                break;
+              }
+            }
+            numberOfTransactionsHaving = filteredTransactionsByCustomer.length;
+          }
+
+          //get fiscal years
+          function getchurnBOPFiscalYears(churnBOPFiscalYears){
+            var fiscalyears = new Array();
+            for(var i = 0 ; i <churnBOPFiscalYears.length ; i++ ){
+              fiscalyears.push(churnBOPFiscalYears[i].fiscalYear);
+            }
+            return fiscalyears;
+          }
+
+          //Disable the button when new or save buttons clicked.
+          function disableBtn(obj) {
+            j$(obj).attr("disabled", true);
+            j$(obj).removeClass("btn").addClass("btnDisabled");
+          }
+
+          //Rebuilds the grid when the user cliks on save button.
+          function jbaraChurnTransactionAfterSaveClick() {
+            var positionTop= j$(window).scrollTop();
+            j$(".btnShowActions").show();
+            j$(".btnShowActions").unbind("click").bind("click",function(event){
+              if(j$(".gs-moreopt-cnt").filter(":hidden")){
+                event.stopPropagation();
+                j$(".gs-moreopt-cnt").show();
+              }
+
+            });
+            j$("#churnAnalyticsChkWrapText").bind("click", function() {
+              setChurnAnalyticsGridWrapping(false);
+            });
+            j$(".scatterChartToggleOptions").show();
+            j$(".rptParamMainDiv").show();
+            j$(".ChurnUIViewsSelectionList").show();
+            buildChurnAnalyticsGrid();
+            j$(window).scrollTop(positionTop);
+          }
+
+          function getCustomLabelText(strLabel){
+
+            if(strLabel=='ASV ($)'){
+              return "{!JSENCODE(customLabelsMap['ASV'])} ("+currencyConfigObject.symbol+")";
+            }
+            else if(strLabel=='MRR ($)'){
+              return "{!JSENCODE(customLabelsMap['MRR'])}  ("+currencyConfigObject.symbol+")";
+            }
+            else if(strLabel=='# Users'){
+              return "# {!JSENCODE(customLabelsMap['Users'])}";
+            }
+            else {
+              return strLabel;
+            }
+          }
+
+
+          //To build the Churn analytics table.
+          var churnTableHtml;
+          var listofMeasures =  new Array('ASV ($)', 'MRR ($)', '# Customers', '# Users');
+          var MeasureValues =  new Array('ASV', 'MRR', 'customers', 'users');
+          function buildChurnBOPTable(fiscalyears, churnBOPResultsByFiscalYears, renewalTransInfoByRange, churnBOPval, renewalInChurnbln, downsellInChurnbln, showRenewalBasedOnChurn) {
+            var dummyChurnTransDataByOrderType = new Array();
+            var dummyReductionTransDataByOrderType  = new Array();
+            var dummyRenewalTransInfo = new Array();
+            var churnValue, reductionValue, totalChurnValue, renewalDueVal, dummyChurnTotal;
+            churnTableHtml =  '';
+
+            churnTableHtml += '<table cellspacing="0" class="churnStatsTable container" style="width: 100%;border-collapse: collapse;">';
+            churnTableHtml += '<tbody><tr align="center"> <td style="width: 180px; background: #fafafa;font-weight:bold;">Churn Analytics</td>';
+
+            var yearLabelRow = '<tr> <td style="width: 180px;">Year</td>';
+            var churnRow = '<tr class="churnStatsTableData"> <td style="font-size:14px;width: 180px;">'+transOrderTypeNameBySysName['Churn']['DN']+'</td>';
+            var reductionsRow = (renewalInChurnbln || downsellInChurnbln ) ? '<tr class="churnStatsTableData"><td style="font-size:14px;width: 180px;">Reductions</td>' : '';
+            var reductionsPlusChurnRow = (renewalInChurnbln || downsellInChurnbln ) ? '<tr class="churnStatsTableData"><td><b style="font-size:15px;width: 180px;">Total '+transOrderTypeNameBySysName['Churn']['DN']+' </b></td>' : '';
+            var churnPercentageRow = '<tr class="churnStatsTableData"> <td style="font-size:14px;width: 180px;">'+transOrderTypeNameBySysName['Churn']['DN']+' <b>%</b></td>';
+            var churnBOPRow = '<tr class="churnStatsTableData"><td style="font-size:14px;width: 180px;"> Beginning of Period</td>';
+            var renewalDueRow = (showRenewalBasedOnChurn) ? '<tr class="churnStatsTableData"><td style="font-size:14px;width: 180px;">'+transOrderTypeNameBySysName['Renewal']['DN']+' Due</td>' : '';
+            var churnPercentageRowOnRenewal = (showRenewalBasedOnChurn) ? '<tr class="churnStatsTableData" style="font-weight: bold;background:#E5E5E5"><td style="font-size:15px;width: 180px;">'+transOrderTypeNameBySysName['Churn']['DN']+' <b>%</b> on '+transOrderTypeNameBySysName['Renewal']['DN']+'</td>' : '';
+
+            for(var i = 0 ; i <  listofMeasures.length ; i++ ){
+              churnTableHtml += '<td style="background:#f0f1f5;color:#333;text-align: center;font-size:14px; font-weight:bold;" colspan="3" >';
+              if(listofMeasures[i]=="ASV ($)"){
+                churnTableHtml +=getCustomLabelText(listofMeasures[i])+'</td>';
+              }else if(listofMeasures[i]=="MRR ($)"){
+                churnTableHtml +=getCustomLabelText(listofMeasures[i])+'</td>';
+              }else if(listofMeasures[i]=="# Customers"){
+                churnTableHtml +=listofMeasures[i]+'</td>';
+              }else{
+                churnTableHtml +=getCustomLabelText(listofMeasures[i])+'</td>';
+              }
+
+              for(var j = 0 ; j < fiscalyears.length ; j++ ) {
+                yearLabelRow += '<td style="text-align: center;font-size:14px;">'+fiscalyears[j]+'</td>';
+
+                dummyChurnDataByYear = j$.grep(churnBOPResultsByFiscalYears, function (dt) {
+                  return (dt.fyear ==fiscalyears[j]); });
+
+                dummyChurnBOPAmounts = j$.grep(churnBOPval, function (dt) {
+                  return (dt.year ==fiscalyears[j]); });
+
+                reductionValue = 0;
+                churnValue = 0;
+                totalChurnValue = 0;
+                churnPercentValue = 0;
+                churnBOPValue = 0;
+                renewalDueVal = 0;
+                dummyRenewalTransInfo = (showRenewalBasedOnChurn) ? j$.grep(renewalTransInfoByRange, function (dt) {
+                  return (dt.fyear == fiscalyears[j]); }) : dummyRenewalTransInfo;
+                renewalDueVal = (dummyRenewalTransInfo.length > 0) ? dummyRenewalTransInfo[0][MeasureValues[i]] : 0;
+
+                if(dummyChurnDataByYear.length > 0) {
+                  var filterByData = "";
+                  filterByReductionData = (renewalInChurnbln && downsellInChurnbln) ? 'dt.ordType == "Downsell" || dt.ordType == "Renewal with Downsell"' : ((renewalInChurnbln) ? 'dt.ordType == "Renewal with Downsell"' :'dt.ordType == "Downsell"' ) ;
+
+                  if((renewalInChurnbln || downsellInChurnbln )){
+                    dummyReductionTransDataByOrderType = j$.grep(dummyChurnDataByYear, function(dt) {
+                      return ((renewalInChurnbln && downsellInChurnbln) ? (dt.ordType == "Downsell" || dt.ordType == "Renewal with Downsell") :
+                        ((renewalInChurnbln) ? (dt.ordType == "Renewal with Downsell") :(dt.ordType == "Downsell") ));
+                    });
+
+                    for(var r = 0; r< dummyReductionTransDataByOrderType.length ; r++ ) {
+                      reductionValue +=dummyReductionTransDataByOrderType[r][MeasureValues[i]];
+                    }
+                  }
+
+                  dummyChurnTransDataByOrderType = j$.grep(dummyChurnDataByYear, function(dt) {
+                    return (dt.ordType == "Churn");
+                  });
+
+                  churnValue = (dummyChurnTransDataByOrderType.length > 0) ?
+                    (dummyChurnTransDataByOrderType[0][MeasureValues[i]] < 0) ? (-1)*(dummyChurnTransDataByOrderType[0][MeasureValues[i]]) : (dummyChurnTransDataByOrderType[0][MeasureValues[i]]) : 0;
+
+                  reductionValue = (reductionValue < 0) ? (-1)*reductionValue : reductionValue;
+                  totalChurnValue = churnValue+reductionValue;
+                }
+
+                churnBOPValue = (dummyChurnBOPAmounts.length > 0) ? dummyChurnBOPAmounts[0][MeasureValues[i]] : 0;
+
+                if(renewalInChurnbln || downsellInChurnbln ) {
+                  churnPercentValue = (totalChurnValue > 0 && churnBOPValue > 0) ? parseFloat(totalChurnValue*100/churnBOPValue).toFixed(2) : 0;
+                }else{
+                  churnPercentValue = (churnValue > 0 && churnBOPValue > 0) ? parseFloat(churnValue*100/churnBOPValue).toFixed(2) : 0;
+                }
+
+                dummyChurnTotal = (renewalInChurnbln || downsellInChurnbln ) ? totalChurnValue : churnValue;
+
+                churnRow += '<td>'+ thousandSeparator(Math.round(churnValue),',') +'</td>';
+                reductionsRow += (renewalInChurnbln || downsellInChurnbln ) ? '<td>'+ thousandSeparator(Math.round(reductionValue),',')  +'</td>' : '';
+                reductionsPlusChurnRow +=  (renewalInChurnbln || downsellInChurnbln ) ?  '<td><b>'+ thousandSeparator(Math.round(totalChurnValue),',')+'</b></td>' : '';
+                churnPercentageRow += '<td >'+ churnPercentValue +'<b>%</b> </td>';
+                churnBOPRow += '<td>'+ thousandSeparator(Math.round(churnBOPValue),',') +'</td>';
+                renewalDueRow += (showRenewalBasedOnChurn) ? '<td>'+ thousandSeparator(Math.round(renewalDueVal),',')  +'</td>' : '';
+                churnPercentageRowOnRenewal += (showRenewalBasedOnChurn) ? '<td>'+ ((dummyChurnTotal > 0 && renewalDueVal > 0) ? (parseFloat(dummyChurnTotal*100/renewalDueVal).toFixed(2)) : 0)  +'<b>%</b> </td>' : '';
+              }
+            }
+            churnTableHtml +='</tr>';
+            yearLabelRow +='</tr>';
+            churnRow +='</tr>';
+            reductionsRow += (renewalInChurnbln || downsellInChurnbln ) ? "</tr>" :"";
+            reductionsPlusChurnRow += (renewalInChurnbln || downsellInChurnbln ) ? "</tr>" :"";
+            churnBOPRow += "</tr>";
+            churnPercentageRow += "</tr>";
+            renewalDueRow += (showRenewalBasedOnChurn) ? '</tr>' : '';
+            churnPercentageRowOnRenewal += (showRenewalBasedOnChurn) ? '</tr>' : '';
+
+            churnTableHtml += ''+yearLabelRow+''+churnRow+''+reductionsRow+''+reductionsPlusChurnRow+''+churnPercentageRow+''+churnBOPRow+''+churnPercentageRowOnRenewal+''+renewalDueRow+'';
+            churnTableHtml += '</tbody></table>';
+
+            j$(".churnBOPTable").html(churnTableHtml);
+
+          }
+
+          var fyProperties, traillingQuarters;
+          function getChurnDataFYProperties() {
+            var filteredData = new Array();
+            var filterDataBySysName = new Array();
+            var dataArray = new Array();
+            var orderTypeList = new Array('Downsell', 'Churn');
+            var totMRR, totUsers,totASV;
+            for(var i=0;i< fyProperties.length; i++) {
+              filteredData = j$.grep(AllChurnAnalyticsJsonData, function (dt) {
+                return ((new Date(dt.Date__c)) >= (new Date(fyProperties[i].S_D)) && (new Date(dt.Date__c)) <= (new Date(fyProperties[i].E_D)));
+              });
+
+              for(var j=0; j< orderTypeList.length; j++) {
+                if(i==0){
+                  dataArray[orderTypeList[j]] = new Array();
+                  dataArray[orderTypeList[j]]['Customers'] = new Array();
+                  dataArray[orderTypeList[j]]['Users'] = new Array();
+                  dataArray[orderTypeList[j]]['MRR'] = new Array();
+                  dataArray[orderTypeList[j]]['ASV'] = new Array();
+                }
+
+                filterDataBySysName = j$.grep(filteredData, function (dt) {
+                  return ( ((orderTypeList[j] == "Churn") ? dt.OrderType__r == transOrderTypeNameBySysName[orderTypeList[j]]['DN'] : (dt.OrderType__r == transOrderTypeNameBySysName[orderTypeList[j]]['DN'] || dt.OrderType__r == transOrderTypeNameBySysName['Renewal with Downsell']['DN']) ));
+                });
+                totMRR = 0;
+                totUsers = 0;
+                totASV = 0;
+                if(filterDataBySysName.length > 0){
+                  for(var c=0; c < filterDataBySysName.length; c++){
+                    totMRR += parseFloat(filterDataBySysName[c].MRR__c);
+                    totASV += parseFloat(filterDataBySysName[c].ASV__c);
+                    totUsers += parseFloat(filterDataBySysName[c].Users__c);
+                  }
+                }
+                dataArray[orderTypeList[j]]['Customers'].push(filterDataBySysName.length);
+                dataArray[orderTypeList[j]]['MRR'].push(totMRR);
+                dataArray[orderTypeList[j]]['ASV'].push(totASV);
+                dataArray[orderTypeList[j]]['Users'].push(totUsers);
+
+              }
+
+            }
+            return dataArray;
+          }
+
+          /**
+           *Dynamic building of churn columns based on Custom UI View Selection.
+           **/
+          function getChurnDetailsGridColumnByTabView() {
+            var isMRRExist = false;
+            var isASVExist = false;
+            var isUsersExist = false;
+
+            //viewColumnList, custFieldViewList
+            churnViewColumnModel = new Array();
+            footerColumnList        = new Array();
+            churnViewGridLabels = new Array("Action", "Customer", 'OTR', 'LT', 'CRSN', 'C_Name', 'Acc_Id');
+
+
+
+
+            viewColumnList.sort(function(a,b) { return parseFloat(a.displayOrder) - parseFloat(b.displayOrder) } );
+
+            churnViewColumnModel.push('{"name":"Action", "align":"center", "width":100, "sortable":false, "search":false,"classes":"hideInViewExport"}');
+            churnViewColumnModel.push('{"name":"Customer_link", "index":"Customer_link", "width":150, "searchoptions" : {"sopt":["cn"]}}');
+            churnViewColumnModel.push('{"name":"OrderType__r", "index":"OrderType__r", "classes":"hideInColChooser", "width":100, "searchoptions" : {"sopt":["cn"]}, "hidden" : true}');
+            //churnViewColumnModel.push('{"name":"Lifetime", "index":"Lifetime", "width":100,"classes":"hideInColChooser",  "searchoptions" : {"sopt":["cn"]}, "hidden" : true}');
+            churnViewColumnModel.push('{"name":"ChurnReasonSystemName","classes":"hideInColChooser", "index":"ChurnReasonSystemName", "width":100, "searchoptions" : {"sopt":["cn"]}, "hidden" : true}');
+            churnViewColumnModel.push('{"name":"Lifetime","index":"Lifetime", "hidden":true, "width":100, "searchoptions" : {"sopt":["cn"]}}');
+            churnViewColumnModel.push('{"name":"cust_name_c", "index":"cust_name_c", "hidden":true, "width":10, "searchoptions" : {"sopt":["cn"]}}');
+            churnViewColumnModel.push('{"name":"account_id_c", "index":"account_id_c", "hidden":true,"width":10, "searchoptions" : {"sopt":["cn"]}}');
+            footerColumnList.push('Action');
+            var colPrefix;
+            var colHidden, colDataType, selFieldName;
+
+            for(var c = 0; c < viewColumnList.length; c++) {
+              //to Build the fooler columns
+              isMRRExist      = ((viewColumnList[c].objectName == "TransHeader__c") && viewColumnList[c].name == 'MRR__c') ? true : isMRRExist;
+              isASVExist      = ((viewColumnList[c].objectName == "TransHeader__c") && viewColumnList[c].name == 'ASV__c') ? true : isASVExist;
+              isUsersExist    = ((viewColumnList[c].objectName == "TransHeader__c") && viewColumnList[c].name == 'Users__c') ? true : isUsersExist;
+              colHidden = (viewColumnList[c].visibilityMode) ? false : true;
+              //to Build the fooler columns
+              if((viewColumnList[c].objectName == "TransHeader__c") && (viewColumnList[c].name == 'MRR__c' || viewColumnList[c].name == 'ASV__c' )) {
+                footerColumnList.push(viewColumnList[c].name);
+              }
+              churnViewGridLabels.push(viewColumnList[c].label);
+              colDataType = viewColumnList[c].fieldType.toLowerCase();
+              colDataType = (colDataType == "double" || colDataType == "integer") ? "number" : colDataType;
+              selFieldName =  (viewColumnList[c].objectName == "Account") ? 'ACC__'+viewColumnList[c].name+'' : viewColumnList[c].name;
+              selFieldName = (selFieldName.indexOf(".") > 0) ? selFieldName.replace(/\./g, "_") : selFieldName;
+
+
+              if(colDataType == 'string' || colDataType == 'picklist') {
+                churnViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "width":100, "searchoptions" : {"sopt":["cn"]}, "hidden":'+colHidden+'}');
+              }
+              else if(colDataType == 'number' || colDataType == 'currency') {
+                colPrefix = (colDataType == 'currency') ? currencyConfigObject.symbol+' ' : '';
+                churnViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "sorttype":"number", "align":"right", "width":65, "formatter":"'+colDataType+'", "formatoptions":{"decimalPlaces":0, "thousandsSeparator":",",  "prefix": "'+colPrefix+'" }, "hidden":'+colHidden+'}');
+              }
+              else if(colDataType == 'date') {
+                churnViewColumnModel.push('{"name":"'+selFieldName+'", "width":90, "sorttype":"date","datefmt":"ISO8601Long", "align":"center", "formatter":"date", "formatoptions":{"srcformat": "ISO8601Long", "newformat":"'+jqGridDateFormat+'" }, "hidden":'+colHidden+'}');
+              }
+              else if(colDataType == 'datetime') {
+                churnViewColumnModel.push('{"name":"'+selFieldName+'", "width":150, "sorttype":"datetime", "datefmt":"ISO8601Long","align":"center","formatter":"date","formatoptions":{"srcformat": "ISO8601Long", "newformat":"'+jqGridDateTimeFormat+'"}, "searchoptions" : {"sopt":["cn"]}, "hidden":'+colHidden+'}');
+              }
+              else {
+                churnViewColumnModel.push('{"name":"'+selFieldName+'", "index":"'+selFieldName+'", "width":100, "searchoptions" : {"sopt":["cn"]}, "hidden":'+colHidden+'}');
+              }
+            }
+
+            if(!isMRRExist) {
+              churnViewColumnModel.push('{"name":"MRR__c", "index":"MRR__c", "width":80, "classes":"hideInColChooser",  "searchoptions" : {"sopt":["cn"]}, "hidden" : true}');
+              churnViewGridLabels.push('MRR');
+            }
+            if(!isASVExist) {
+              churnViewColumnModel.push('{"name":"ASV__c", "index":"ASV__c", "width":80, "classes":"hideInColChooser",  "searchoptions" : {"sopt":["cn"]}, "hidden" : true}');
+              churnViewGridLabels.push('ASV');
+            }
+            if(!isUsersExist) {
+              churnViewColumnModel.push('{"name":"Users__c", "index":"Users__c", "width":80, "classes":"hideInColChooser",  "searchoptions" : {"sopt":["cn"]}, "hidden" : true}');
+              churnViewGridLabels.push('Users');
+            }
+
+
+
+            churnViewColumnModel = ''+churnViewColumnModel.join(",")+'';
+            churnViewColumnModel = fakeEval('[' + churnViewColumnModel + ']');
+
+            footerColumnList = (footerColumnList.length > 1) ? footerColumnList : new Array();
+
+            var colArray = new Array();
+            sort = {
+              'name': 'Customer_link',
+              'order': 'desc'
+            };
+
+            colArray.push(churnViewGridLabels);
+            colArray.push(churnViewColumnModel);
+            colArray.push(sort);
+            colArray.push(footerColumnList);
+            return colArray;
+          }
+
+          /**
+           *To Build the transaction data based on the Custome Churn View
+           **/
+          function getChurnDetailedInformationByTabView(churnTransInfo, cmtsDataByChuen, custOCDInfo) {
+            var filteredChurnDataByViewList  = new Array();
+            var filteredChurnDataByView  = new Array();
+            var dummyKey, colDataType, colFieldName;
+            var dummyFyProperty;
+            for(var i = 0; i < churnTransInfo.length; i++) {
+
+              filteredChurnDataByView  = new Object();
+              dummyFyProperty = j$.grep(fyProperties, function (dt) {
+                return (new Date((churnTransInfo[i].Date__c).replace(/-/g, '/'))) >= (new Date(dt.S_D)) && (new Date((churnTransInfo[i].Date__c).replace(/-/g, '/'))) <= (new Date(dt.E_D));
+              });
+
+              filteredChurnDataByView['Action']                   =  ('<a class = "editIconTiny commonSpecsIcons" href=\'#\' onclick=\'editChurnAnalytics(\"'+ churnTransInfo[i].tid +'\", \"'+ churnTransInfo[i].orsn +'\", \"'+ churnTransInfo[i].aid +'\"); return false;\'>Edit</a>&nbsp;&nbsp;<a class = "deleteIconTiny commonSpecsIcons" href=\'#\' onclick=\'confirmChurnTransactionDelete(\"'+ churnTransInfo[i].tid +'\",  \"'+ churnTransInfo[i].orsn +'\", \"'+ churnTransInfo[i].aid +'\", \"'+ ((custOCDInfo[churnTransInfo[i].aid]) ? ((custOCDInfo[churnTransInfo[i].aid]['cssName']) ? custOCDInfo[churnTransInfo[i].aid]['cssName'] : '') : '') +'\"); return false;\'>Delete</a>');
+              filteredChurnDataByView['Customer_link']            =  ('<a href=\'CustomerSuccess360?cid='+ churnTransInfo[i].aid +'\' target=\'_top\'>'+ gsEncodeHtml(churnTransInfo[i].Name) +'</a>');
+              filteredChurnDataByView['cust_name_c']                    = gsEncodeHtml(churnTransInfo[i].Name);
+              filteredChurnDataByView['account_id_c']                    = gsEncodeHtml(churnTransInfo[i].aid);
+              filteredChurnDataByView['Date__c']                  =  ((churnTransInfo[i].Date__c != null) ? churnTransInfo[i].Date__c : '');
+              filteredChurnDataByView['ASV__c']                   = ((churnTransInfo[i].ASV__c != null) ? parseFloat(churnTransInfo[i].ASV__c)*-1 : 0);
+
+              filteredChurnDataByView['ChurnReason__r__name']     =  (churnTransInfo[i].ChurnReason__r_Name != null) ? gsEncodeHtml(churnTransInfo[i].ChurnReason__r_Name) : '';
+              filteredChurnDataByView['MRR__c']                   = ((churnTransInfo[i].MRR__c != null) ? parseFloat(churnTransInfo[i].MRR__c)*-1 : 0);
+              filteredChurnDataByView['Users__c']                 = ((churnTransInfo[i].Users__c != null) ? parseFloat(churnTransInfo[i].Users__c)*-1 : 0);
+              filteredChurnDataByView['ChurnReasonSystemName']    = ((churnTransInfo[i].crsn != null) ? gsEncodeHtml(churnTransInfo[i].crsn) : '');
+              filteredChurnDataByView['OrderType__r']             = ((churnTransInfo[i].OrderType__r_Name != null) ? gsEncodeHtml(churnTransInfo[i].OrderType__r_Name) : '');
+              filteredChurnDataByView['fyMonth']                  = (dummyFyProperty.length > 0) ? dummyFyProperty[0].F_M : '';
+              filteredChurnDataByView['fyQuarter']                = (dummyFyProperty.length > 0) ? dummyFyProperty[0].F_Q : '';
+              filteredChurnDataByView['fyYear']                   = (dummyFyProperty.length > 0) ? dummyFyProperty[0].F_Y : '';
+              filteredChurnDataByView['accountId']                = (churnTransInfo[i].aid != null) ? churnTransInfo[i].aid : '';
+              filteredChurnDataByView['Lifetime']=  ((custOCDInfo[churnTransInfo[i].aid]) ? ((custOCDInfo[churnTransInfo[i].aid]['cDate'] != null && custOCDInfo[churnTransInfo[i].aid]['OriginalContractDate__c'] != null) ? getCustLifeTimeInMonths(custOCDInfo[churnTransInfo[i].aid]['OriginalContractDate__c'], custOCDInfo[churnTransInfo[i].aid]['cDate']) : getCustLifeTimeInMonths(custOCDInfo[churnTransInfo[i].aid]['OriginalContractDate__c'], todaysDate.replace(/-/g, '/'))) : 0);
+              filteredChurnDataByView['CustomerLifetimeInMonths__c']=  ((custOCDInfo[churnTransInfo[i].aid]) ? ((custOCDInfo[churnTransInfo[i].aid]['cDate'] != null && custOCDInfo[churnTransInfo[i].aid]['OriginalContractDate__c'] != null) ? getCustLifeTimeInMonths(custOCDInfo[churnTransInfo[i].aid]['OriginalContractDate__c'], custOCDInfo[churnTransInfo[i].aid]['cDate']) : getCustLifeTimeInMonths(custOCDInfo[churnTransInfo[i].aid]['OriginalContractDate__c'], todaysDate.replace(/-/g, '/'))) : 0);
+              var accIndx;
+              for(var c = 0; c < viewColumnList.length; c++) {
+                colDataType = viewColumnList[c].fieldType.toLowerCase();
+                colDataType = (colDataType == "double" || colDataType == "integer") ? "number" : colDataType;
+
+                if(viewColumnList[c].objectName == 'Account') {
+                  colFieldName = viewColumnList[c].name;
+                  accIndx = 'ACC__'+(viewColumnList[c].name).replace(/\./g, "_");
+                  if(colDataType == 'date') {
+                    filteredChurnDataByView[accIndx] = (churnTransInfo[i][churnAFM[colFieldName]] != null) ? churnTransInfo[i][churnAFM[colFieldName]] : '';
+                  }
+                  else if(colDataType == 'datetime') {
+                    filteredChurnDataByView[accIndx] = ((cmtsDataByChuen[churnTransInfo[i].tid]) ? ((cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][colFieldName] != null) ? ((cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][colFieldName].indexOf("M") > 0) ? JBARAAddOffSetTime(cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][colFieldName],userLocaleDateFormatMap) : JBARAAddOffSetTime(cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][colFieldName],userLocaleDateFormatMap)) : '') : '');
+                  }
+                  else {
+                    if(viewColumnList[c].isGroupable || (!viewColumnList[c].isGroupable && (colDataType == "number" || colDataType == "currency"))) {
+                      if(colFieldName == 'Name') {
+                        filteredChurnDataByView[accIndx] = (churnTransInfo[i][colFieldName] != null) ? churnTransInfo[i][colFieldName] : '';
+                      }
+                      else {
+                        filteredChurnDataByView[accIndx] = (churnTransInfo[i][churnAFM[colFieldName]] != null) ? churnTransInfo[i][churnAFM[colFieldName]] : ((colDataType == "number" || colDataType == "currency") ? '0' : '');
+                      }
+                    }
+                    else {
+                      if(colFieldName.indexOf('__r') > 0 || colFieldName.indexOf('.')>0){
+                        splitColName = colFieldName.split('.');
+                        filteredChurnDataByView[accIndx]= ((cmtsDataByChuen[churnTransInfo[i].tid]) ? ((cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][splitColName[0]] != null) ? (cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][splitColName[0]][splitColName[1]]!=null ? cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][splitColName[0]][splitColName[1]] :'') : '') : '');
+                      }
+                      else{
+                        filteredChurnDataByView[accIndx] = ((cmtsDataByChuen[churnTransInfo[i].tid]) ? ((cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][colFieldName] != null) ? cmtsDataByChuen[churnTransInfo[i].tid]['Account__r'][colFieldName] : '') : '');
+                      }
+                    }
+                  }
+                  filteredChurnDataByView[accIndx] = gsEncodeHtml(filteredChurnDataByView[accIndx]);
+                }
+                else if (viewColumnList[c].objectName == 'TransHeader__c') {
+                  if((viewColumnList[c].name != "MRR__c" && viewColumnList[c].name != "ASV__c" && viewColumnList[c].name != "Users__c" && viewColumnList[c].name != "Date__c")) {
+                    dummyKey = (viewColumnList[c].name).replace(/\./g, "_");
+                    if(colDataType == 'date') {
+                      filteredChurnDataByView[dummyKey] = (churnTransInfo[i][dummyKey] != null) ? churnTransInfo[i][dummyKey] : '';
+                    }
+                    else if(colDataType == 'datetime') {
+                      filteredChurnDataByView[dummyKey] = ((cmtsDataByChuen[churnTransInfo[i].tid]) ? ((cmtsDataByChuen[churnTransInfo[i].tid][viewColumnList[c].name] != null) ? ((cmtsDataByChuen[churnTransInfo[i].tid][viewColumnList[c].name].indexOf("M") > 0) ? JBARAAddOffSetTime(cmtsDataByChuen[churnTransInfo[i].tid][viewColumnList[c].name],userLocaleDateFormatMap) : JBARAAddOffSetTime(cmtsDataByChuen[churnTransInfo[i].tid][viewColumnList[c].name],userLocaleDateFormatMap)) : '') : '');
+                    }
+                    else {
+                      if(viewColumnList[c].isGroupable || (!viewColumnList[c].isGroupable && (colDataType == "number" || colDataType == "currency"))) {
+                        filteredChurnDataByView[dummyKey] = (churnTransInfo[i][dummyKey] != null) ? churnTransInfo[i][dummyKey] : ((colDataType == "number" || colDataType == "currency") ? '0' : '');
+                      }
+                      else {
+                        filteredChurnDataByView[dummyKey] = ((cmtsDataByChuen[churnTransInfo[i].tid]) ? ((cmtsDataByChuen[churnTransInfo[i].tid][viewColumnList[c].name] != null) ? cmtsDataByChuen[churnTransInfo[i].tid][viewColumnList[c].name] : '') : '');
+                      }
+
+                    }
+                  }
+                  filteredChurnDataByView[dummyKey] = gsEncodeHtml(filteredChurnDataByView[dummyKey]);
+                }
+                else{
+                  if(colDataType == 'date') {
+                    filteredChurnDataByView[(viewColumnList[c].name).replace(/\./g, "_")] = ((custOCDInfo[churnTransInfo[i].aid]) ? ((custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name] != null) ? custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name] : '') : '');
+
+                  }
+                  else if(colDataType == 'datetime') {
+                    filteredChurnDataByView[(viewColumnList[c].name).replace(/\./g, "_")] = ((custOCDInfo[churnTransInfo[i].aid]) ? ((custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name] != null) ? ((custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name].indexOf("M") > 0) ? JBARAAddOffSetTime(custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name],userLocaleDateFormatMap) : JBARAAddOffSetTime(custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name],userLocaleDateFormatMap)) : '') : '');
+                  }
+                  else if(viewColumnList[c].name != "CustomerLifetimeInMonths__c"){
+                    filteredChurnDataByView[(viewColumnList[c].name).replace(/\./g, "_")] = ((custOCDInfo[churnTransInfo[i].aid]) ? ((custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name] != null) ? custOCDInfo[churnTransInfo[i].aid][viewColumnList[c].name] : ((colDataType == "number" || colDataType == "currency") ? '0' : '')) : ((colDataType == "number" || colDataType == "currency") ? '0' : ''));
+                  }
+                  filteredChurnDataByView[(viewColumnList[c].name).replace(/\./g, "_")]  = gsEncodeHtml(filteredChurnDataByView[(viewColumnList[c].name).replace(/\./g, "_")]);
+                }
+              }
+              filteredChurnDataByViewList.push(filteredChurnDataByView);
+            }
+            return filteredChurnDataByViewList;
+          }
+
+          function eventChangedChurnUiView() {
+            var viewWidth = j$(".jbaraDummyChurnUIViewsSelectControl").width();
+            j$("body").find(".dummyreportParamsOptionsFilter").remove();
+            j$("#containerChurnAnalyticsList").html('');
+            j$(".ajaxLoadingButtonChurnGrid").show();
+            j$(".churnGridGaphsDisplayDiv").hide();
+            churnGridState.flagToDumpUS     = true;
+            churnGridState.setCSGFByUIV     = true;
+            churnGridState.appCSFilters     = false;
+            changeChurnUIView();
+            j$(".jbaraDummyChurnUIViewsSelectControl").css("width", viewWidth);
+          }
+          /**
+           *Functions regarding to render the Churn data grid under Analytics tab.
+           */
+          function exportChurnCustomViewData() {
+            j$(".churnCustomDataToExport").val(getExportDataString(idToRenderChurnList,"Churn"));
+            bringChurnToExportPage();
+          }
+          function refreshPassedConditionsJSON() {
+            churnGridState.appReportParams      = true;
+            churnGridState.flagToDumpUS     = true;
+            churnGridState.setCSGFByUIV     = false;
+            applyReportParamsToChurnList();
+          }
+        </script>
+
+        <apex:outputPanel id="jsPanelChurnAnalytics">
+            <script type='text/javascript'>
+
+              j$('.jbaraDummyChurnUIViewsSelectControl').multiselect({
+                multiple: false,
+                header:false,
+                selectedList: 1,
+                minWidth:150,
+                height:'auto'
+              });
+
+              j$('.customerLifeTimeChartFilterOptionsSelectCtrl').multiselect({
+                multiple: false,
+                header:false,
+                selectedList: 1,
+                height:'auto'
+              });
+
+              selectedUIViewId      = '{!(defaultChurnUIViewId)}';
+              renderChurnListByUIView = "{!(renderChurnListByView)}";
+              idToRenderChurnList     = "ChurnAnalyticsList_IdOf"+selectedUIViewId+"";
+
+              //Assgment
+              churnGridState.gridId = idToRenderChurnList;
+              churnGridState.uiViewId  = selectedUIViewId;
+
+              //Builds churn anlaytics grid.
+              function buildChurnAnalyticsGrid() {
+                isChurnUiViewExists = "{!(churnDataListByView)}";
+
+
+                allChurnTransactionslist        = sanitizeHtml('{!(JSINHTMLENCODE(AllChurnTransactionsJson))}');
+                allChurnTransactionslist        = j$("<\div>").html(allChurnTransactionslist).text();
+                allChurnTransactionslist        = JSON.parse(allChurnTransactionslist);
+
+
+                commentsDataByChurnTransaction        = sanitizeHtml('{!(JSINHTMLENCODE(CommentsDataByChurnTransaction))}');
+                commentsDataByChurnTransaction        =  gsEncodeHtml(j$("<\div>").html(commentsDataByChurnTransaction).text());
+                commentsDataByChurnTransaction        = JSON.parse(gsRemoveNameSpace(commentsDataByChurnTransaction));
+
+
+                OCDforCustomer        = sanitizeHtml('{!(JSINHTMLENCODE(OCDByCustomer))}');
+                OCDforCustomer        =  j$("<\div>").html(OCDforCustomer).text();
+                OCDforCustomer        = JSON.parse(OCDforCustomer);
+
+
+                todaysDate                      = "{!JSENCODE(todaysDate)}";
+                fyProperties                    = fakeEval('{!JSINHTMLENCODE(TransactionDataBySelection)}');
+                traillingQuarters               = fyProperties;
+                viewColumnList                  = fakeEval('{!JSINHTMLENCODE(uiViewChurnColumnsStr)}');
+                churnAFM                        = fakeEval('{!JSINHTMLENCODE(churnUIAccFieldMapStr)}');
+                totalRecCnt                     = eval('{!(totalRecordsCount)}');
+                queryLmt                        = {!(queryLimit)};
+                displayQueryLimit(totalRecCnt,queryLmt,'jBaraRecordLimitCls');
+
+                reportParamsUIViewJSON  = fakeEval('{!JSINHTMLENCODE(ChurnUIViewReportParamsList)}');
+                showHideIfViewHasReportParams(reportParamsUIViewJSON);
+
+                //To change the Fiscal Year Details start date and end date from user locale form to 'yyyy/MM/dd'.
+                for(var i = 0; i < fyProperties.length; i++) {
+                  fyProperties[i].S_D = JBARAformatDate(new Date(JBARA_getDateFromFormat(fyProperties[i].S_D, userLocaleDateFormatMap.DateFormat)), "yyyy/MM/dd");
+                  fyProperties[i].E_D = JBARAformatDate(new Date(JBARA_getDateFromFormat(fyProperties[i].E_D, userLocaleDateFormatMap.DateFormat)), "yyyy/MM/dd");
+                }
+
+
+                AllChurnAnalyticsJsonData = getChurnDetailedInformationByTabView(allChurnTransactionslist, commentsDataByChurnTransaction, OCDforCustomer)
+
+                var dummyTest = getChurnDataFYProperties();
+
+                var churnBOPResultsByFiscalYears = fakeEval('{!JSINHTMLENCODE(ChurnBopDetailsByFiscalYear)}');
+                var churnBOPFiscalYears = fakeEval('{!JSINHTMLENCODE(FiscalYearDetailsObjListString)}');
+                var renewalTransInfoByRange = fakeEval('{!JSINHTMLENCODE(renewalInfoByRange)}');
+                var churnBOPval = fakeEval('{!JSINHTMLENCODE(BOPvalues)}');
+                var fiscalyears = getchurnBOPFiscalYears(churnBOPFiscalYears);
+                traillingQuarters  = fyProperties.reverse();
+                //all these boolean vlaues are getting from app settings. Used to show chrun calculation.
+                var churnBOPCalbln              = {!(churmBOPCal)};
+                var renewalInChurnbln           = {!(renewalWithDownsellInChurn)};
+                var downsellInChurnbln          = {!(downsellInChurn)};
+                var showRenewalBasedOnChurn     = {!(showChurnBasedOnRenewal)};
+
+
+
+                //if the check box churnByBOP__c is checked in app settings then we calcluate
+                if(churnBOPCalbln == false) {
+                  var dummyChurnBOPval, returnDataArray;
+                  dummychurnBOPvalArray = new Array();
+                  var dummmyMRRTot, dummmyASVTot, dummyCustCount, dummyUsersCount;
+                  dummmyMRRTot = dummmyASVTot = dummyCustCount = dummyUsersCount = 0;
+
+                  for(var bop = 0; bop < churnBOPval.length; bop++) {
+                    if( (churnBOPval[bop].ordType == 'New Business') || (churnBOPval[bop].ordType == 'Churn')) {
+                      dummyCustCount += ((churnBOPval[bop].ordType == 'New Business') ? parseInt(churnBOPval[bop].customers) : ((-1)*parseInt(churnBOPval[bop].customers)))
+                    }
+                    dummmyMRRTot += parseFloat(churnBOPval[bop].MRR);
+                    dummmyASVTot += parseFloat(churnBOPval[bop].ASV);
+                    dummyUsersCount += parseInt(churnBOPval[bop].users);
+                  }
+                  dummyChurnBOPval = new Array();
+                  dummyChurnBOPval['year'] = fiscalyears[0];
+                  dummyChurnBOPval['customers'] = dummyCustCount;
+                  dummyChurnBOPval['users'] = dummyUsersCount;
+                  dummyChurnBOPval['MRR'] = dummmyMRRTot;
+                  dummyChurnBOPval['ASV'] = dummmyASVTot;
+                  dummychurnBOPvalArray.push(dummyChurnBOPval);
+
+                  //getting BOP Information for Previos to fiscal years.
+                  for(var y = 1; y < fiscalyears.length ; y++) {
+
+                    returnDataArray = new Array();
+                    dummyChurnBOPval = new Array();
+                    dummyChurnBOPval['year'] = fiscalyears[y];
+
+                    dummmyMRRTot = dummmyASVTot = dummyCustCount = dummyUsersCount = 0;
+                    returnDataArray = j$.grep(churnBOPResultsByFiscalYears, function (dt) {
+                      return (dt.fyear == fiscalyears[y]); });
+
+                    for(var ra = 0; ra < returnDataArray.length; ra++) {
+                      if( (returnDataArray[ra].ordType == 'New Business') || (returnDataArray[ra].ordType == 'Churn')) {
+                        dummyCustCount += ((returnDataArray[ra].ordType == 'New Business') ? parseInt(returnDataArray[ra].customers) : ((-1)*parseInt(returnDataArray[ra].customers)))
+                      }
+                      dummmyMRRTot += parseFloat(returnDataArray[ra].MRR);
+                      dummmyASVTot += parseFloat(returnDataArray[ra].ASV);
+                      dummyUsersCount += parseInt(returnDataArray[ra].users);
+                    }
+
+                    dummyChurnBOPval['customers'] = (dummychurnBOPvalArray[dummychurnBOPvalArray.length-1]['customers'])-dummyCustCount;
+                    dummyChurnBOPval['users'] = (dummychurnBOPvalArray[dummychurnBOPvalArray.length-1]['users'])-dummyUsersCount;
+                    dummyChurnBOPval['MRR'] = (dummychurnBOPvalArray[dummychurnBOPvalArray.length-1]['MRR'])-dummmyMRRTot;
+                    dummyChurnBOPval['ASV'] = (dummychurnBOPvalArray[dummychurnBOPvalArray.length-1]['ASV'])-dummmyASVTot;
+                    dummychurnBOPvalArray.push(dummyChurnBOPval);
+                  }
+                  churnBOPval = dummychurnBOPvalArray;
+                }
+                buildChurnBOPTable(fiscalyears, churnBOPResultsByFiscalYears, renewalTransInfoByRange, churnBOPval, renewalInChurnbln, downsellInChurnbln, showRenewalBasedOnChurn);
+                j$(".newAndFilterDiv,.dummyGridTitleBarChurnAnalytics").show();
+                var applyFitlersOnGridData = false;
+                if(isSameUserSessionExists == 'true' && setClientSideGridFiltersByUIView) {
+                  applyFitlersOnGridData = setTimeFrameComp();
+                }
+                if(!applyFitlersOnGridData) {
+                  bindActualChurnGrid(AllChurnAnalyticsJsonData);
+                }
+                else {
+                  getFilterDataByYearAndBookingTypes();
+                }
+
+                bindEventsForFilters();
+                j$(".ajaxLoadingButton").hide();
+                showUnCaughtError();
+              }
+
+              if(renderChurnListByUIView == "true") {
+                buildChurnAnalyticsGrid();
+              }
+
+              function showUnCaughtError(){
+                if("{!(unCaughtErrorMsg)}"!=""){
+                  var errorList= new Array();
+                  errorItem = new JBaraErrorClass();
+                  errorItem.header = '';
+                  errorItem.msg    =  "{!(unCaughtErrorMsg)}";
+                  errorList.push(errorItem);
+                  showJBaraValidationErrors('jBaraUIViewValidationsContainer',errorList);
+                }
+                else {
+                  j$("#jBaraUIViewValidationsContainer").html("").hide();
+                }
+              }
+            </script>
+        </apex:outputPanel>
+        <div class = "noUIViewExistMsg" style = "display:none;">
+            <p>No views configured</p>
+        </div>
+        <div id="gs-app-container">
+            <div class="gs-module-container">
+                <div class="dummyChurnAnalyticsDetail" style='margin:0px 10px'>
+                    <apex:outputPanel id="transactionGridPanel">
+
+                        <apex:outputPanel rendered="{!renderTransactionGridPanel}">
+
+                            <div class="churnStats churnBOPTable"></div>
+                            <br/>
+                            <div class="jBaraRecordLimitCls"></div>
+                            <span Id="jBaraUIViewValidationsContainer"></span>
+                            <div class="mainPanelDiv churnGridGaphsDisplayDiv">
+                                <!-- List And Form Containers -->
+                                <div class="gridHeaderDiv">
+                                    <!-- To render the custom Churn UI Views selection list -->
+                                    <div style="float:left">
+                                        <apex:outputpanel id="buildChurnUIViewSelectionList">
+                                            <apex:outputpanel rendered="{!renderChurnUISelectionList}">
+                                            <span class="ChurnUIViewsSelectionList" style="display:none;" >
+                                                <apex:selectList value="{!defaultChurnUIViewId}" size="1" StyleClass="jbaraDummyChurnUIViewsSelectControl" onChange="eventChangedChurnUiView()">
+                                                    <apex:selectOptions value="{!AllChurnUIViews}"/>
+                                                </apex:selectList>
+                                            </span>
+                                            </apex:outputpanel>
+                                        </apex:outputpanel>
+                                    </div>
+
+                                    <div style="display:inline-block;">
+                                    </div>
+                                    <div class="gs-moreactions-drop">
+                                        <div class="gs-moreopt-btn btnShowActions" title="More..." style="display:none;"></div>
+                                        <div class="gs-moreopt-cnt" style="display: none;">
+                                            <div class="gs-arowblue"></div>
+                                            <ul>
+                                                <li><a href="javascript:void(0);"  class="gs-new-cost" onclick="loadTransactionForm('')">New Transaction</a></li>
+                                                <li><a href="javascript:void(0);"  id="churnAnalyticsChkWrapText" class="gs-wrap-lines" >Wrap lines</a></li>
+                                                <li><a href="javascript:void(0);"  class="gs-export-new" onclick="exportChurnAnalytics()">Export</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="rptParamMainDiv" style="float:right;display:none;">
+                                        <span onclick="showReportParams(this,'{!(defaultChurnUIViewId)}');" class="uIViewsParamsIconCls" style="margin:1px 0px 0px 10px;vertical-align:top;" title = "Report Parameters"></span>
+                                    </div>
+                                    <apex:inputText value="{!churnFilterPassedConditionsJSON}" styleClass="reportParamsFilterOptionsJSON" style="display:none;"/>
+                                    <apex:actionFunction name="applyReportParamsToChurnList" action="{!refreshChurnView}" reRender="jsPanelChurnAnalytics" oncomplete="afterReportParamApplied();" />
+
+                                    <apex:actionFunction name="actionShowTransactionForm" action="{!showTransactionForm}"
+                                                         reRender="panelNewTransactionForm">
+                                        <apex:param name="paramTransactionId" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction name="afterSave" action="{!showTransactionGrid}"
+                                                         reRender="transactionGridPanel,panelNewTransactionForm,jsPanelChurnAnalytics" oncomplete="return jbaraChurnTransactionAfterSaveClick();" />
+                                    <apex:actionFunction name="afterCancel" action="{!showTransactionGrid}"
+                                                         reRender="panelNewTransactionForm" />
+                                    <apex:actionFunction name="deleteChurnTransaction" action="{!deleteTransaction}"
+                                                         reRender="jsPanelChurnAnalytics, panelNewTransactionForm" oncomplete="return jbaraAfterDeleteChurnTransaction();">
+                                        <apex:param name="paramTransactionId" value="" />
+                                    </apex:actionFunction>
+
+
+                                </div>
+
+                                <div class="ui-jqgrid-titlebar ui-widget-header dummyGridTitleBarChurnAnalytics"
+                                     style="padding: 5px;height:18px;display:none;font-size:0.9em"></div>
+                                <!-- Container for churn transactions in jqGrid-->
+                                <div id='containerChurnAnalyticsList'>
+                                </div>
+                                <div style=" width: 100%;magrin-top:10px;height:10px;"></div>
+                                <!-- Graph Containers -->
+                                <div style="display: inline; width: 100%;magrin-top:10px;">
+                                    <div class="scatterChartToggleOptions" style="float:right; margin-right : 10px;display:none;">
+                                        <select onchange="reRenderCustomerLifeTimeBySelection(this)" class="customerLifeTimeChartFilterOptionsSelectCtrl" >
+                                            <option value="MRR">{!(customLabelsMap['MRR'])}</option>
+                                            <option value="ASV">{!(customLabelsMap['ASV'])}</option>
+                                            <option value="Users">{!(customLabelsMap['Users'])}</option>
+                                        </select>
+                                    </div>
+                                    <div id="churnReasonGraphContainer" style="margin-top:32px;display:none;"></div>
+                                    <div style="display: inline ;float:left;width:2%; height: 280px;"></div>
+                                    <div id="customerLifetimeGraphContainer" style="margin-top:5px;display:none;"></div>
+                                </div>
+                            </div>
+
+                            <div class="ajaxLoadingButtonChurnGrid" align="center" style="margin:160px 0px 100px 0px;">
+                                <div class="waitingHolder gainsightLoadingIcon" style="width: 74px; top: 210px;">
+                                    <span class="waitingDescription"></span>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Overlay Container Starts Here-->
+        <div class="overlayBackground jbaraDummyOverLayForm" style="position: absolute; display: none;">
+        </div>
+        <!-- Overlay Container Ends Here-->
+        <div class="ajaxLoadingButton" align="center" style="margin:100px 0px 100px 0px;display:none;">
+            <div class="waitingHolder gainsightLoadingIcon" style="width: 74px; top: 25.8px;">
+                <span class="waitingDescription"></span>
+            </div>
+        </div>
+
+        <apex:actionFunction name="changeChurnUIView" action="{!loadChurnListByUIView}" reRender="jsPanelChurnAnalytics" />
+        <!-- Action function to export the data code start. -->
+        <apex:actionFunction name="bringChurnToExportPage" action="{!goToChurnExportPage}"/>
+        <apex:inputTextarea id="ExportDataString" value="{!exportChurnDataString}" styleClass="churnCustomDataToExport" style="display:none;"/>
+        <!-- Action function to export the data code end. -->
+
+        <!--Start To Validate the Edit and Delete a transaction -->
+        <apex:actionFunction name="getTransactionOperationValidation" action="{!getTransactionIsEditableOrDeletable}" reRender="panelToValidateTransactionOperations">
+            <apex:param name="transAccId" value="" />
+            <apex:param name="transOperation" value="" />
+            <apex:param name="transBookingType" value="" />
+            <apex:param name="transId" value="" />
+            <apex:param name="transBookingTypeDS" value="" />
+        </apex:actionFunction>
+        <apex:outputpanel id="panelToValidateTransactionOperations">
+            <apex:outputpanel rendered="{!showValidateOperations}">
+                <script type="text/javascript">
+
+                  var isOperationDuable = "{!(allowToEditOrDelete)}";
+                  var transOper = "{!(transactionOperation)}";
+                  if(isOperationDuable == 'false') {
+                    alert('{!JSENCODE(msgToUnableToPerformOperation)}')
+                  }
+                  else {
+                    if(transOper == 'Delete') {
+                      if (confirm('{!JSENCODE(msgToUnableToPerformOperation)}')) deleteChurnTransaction("{!(transactionId)}");
+                    }
+                    else {
+                      loadTransactionForm("{!(transactionId)}");
+                    }
+                  }
+
+                </script>
+            </apex:outputpanel>
+        </apex:outputpanel>
+        <!--End To Validate the Edit and Delete a transaction -->
+    </apex:form>
+
+    <div class="jBTFDateRangeSelectionDiv" style="display:none;">
+        <select onchange="changeTFDateRangeSelection(this.options[this.selectedIndex].value,this)" name="jBTFDateRangeSelection" id="jBTFDateRangeSelection" class="reportParamControlDataInput jBTFDateRangeSelection" >
+            <option value="JBcustom">Custom</option>
+
+            <optgroup label="Fiscal Year"><option value="JBcurfy" selected="selected">Current FY</option>
+                <option value="JBprevfy">Previous FY</option>
+                <option value="JBprev2fy">Previous 2 FY</option>
+                <option value="JBago2fy">2 FY Ago</option>
+                <option value="JBnextfy">Next FY</option>
+                <option value="JBprevcurfy">Current and Previous FY</option>
+                <option value="JBprevcur2fy">Current and Previous 2 FY</option>
+                <option value="JBcurnextfy">Current and Next FY</option>
+            </optgroup>
+            <apex:outputPanel id="renderDrilldownComponentPanel" rendered="{!If(CustomFiscalYearSettingsEnabled == false , true, false)}">
+                <optgroup label="Fiscal Quarter"><option value="JBcurrentfq">Current FQ</option>
+                    <option value="JBcurnextfq">Current and Next FQ</option>
+                    <option value="JBcurprevfq">Current and Previous FQ</option>
+                    <option value="JBnextfq">Next FQ</option>
+                    <option value="JBprevfq">Previous FQ</option>
+                    <option value="JBcurnext3fq">Current and Next 3 FQ</option>
+                </optgroup>
+            </apex:outputPanel>
+            <optgroup label="Calendar Year"><option value="JBcury">Current CY</option>
+                <option value="JBprevy">Previous CY</option>
+                <option value="JBprev2y">Previous 2 CY</option>
+                <option value="JBago2y">2 CY Ago</option>
+                <option value="JBnexty">Next CY</option>
+                <option value="JBprevcury">Current and Previous CY</option>
+                <!--  <option value="JBprevcur2y">Current and Previous 2 CY</option> -->
+                <option value="JBcurnexty">Current and Next CY</option>
+            </optgroup>
+
+            <optgroup label="Calendar Quarter"><option value="JBcurrentq">Current CQ</option>
+                <option value="JBcurnextq">Current and Next CQ</option>
+                <option value="JBcurprevq">Current and Previous CQ</option>
+                <option value="JBnextq">Next CQ</option>
+                <option value="JBprevq">Previous CQ</option>
+                <option value="JBcurnext3q">Current and Next 3 CQ</option>
+            </optgroup>
+
+            <optgroup label="Calendar Month"><option value="JBlastmonth">Last Month</option>
+                <option value="JBthismonth">This Month</option>
+                <option value="JBnextmonth">Next Month</option>
+                <option value="JBlastthismonth">Current and Previous Month</option>
+                <option value="JBthisnextmonth">Current and Next Month</option>
+            </optgroup>
+
+            <optgroup label="Calendar Week"><option value="JBlastweek">Last Week</option>
+                <option value="JBthisweek">This Week</option>
+                <option value="JBnextweek">Next Week</option>
+            </optgroup>
+
+            <optgroup label="Day"><option value="JByesterday">Yesterday</option>
+                <option value="JBtoday">Today</option>
+                <option value="JBtomorrow">Tomorrow</option>
+                <option value="JBlast7">Last 7 Days</option>
+                <option value="JBlast30">Last 30 Days</option>
+                <option value="JBlast60">Last 60 Days</option>
+                <option value="JBlast90">Last 90 Days</option>
+                <option value="JBlast120">Last 120 Days</option>
+                <option value="JBnext7">Next 7 Days</option>
+                <option value="JBnext30">Next 30 Days</option>
+                <option value="JBnext60">Next 60 Days</option>
+                <option value="JBnext90">Next 90 Days</option>
+                <option value="JBnext120">Next 120 Days</option>
+            </optgroup>
+        </select>
+    </div>
+    <apex:outputPanel id="UserStatePanel">
+        <script type="text/javascript">
+          statePreservStringChurn     = fakeEval('{!JSINHTMLENCODE(userStateDetailsJsonChrn)}');
+          isSameUserSessionExists= '{!(isSameUserSessionChrn)}';
+          churnGridState.data = statePreservStringChurn;
+          churnGridState.isSessionValid = isSameUserSessionExists;
+          var dummyRPDetials = churnGridState.getData('ReportParams__c');
+          j$(".reportParamsFilterOptionsJSON").val(((dummyRPDetials['Churn']) ? dummyRPDetials['Churn'] : ''));
+        </script>
+    </apex:outputPanel>
+    <apex:form >
+
+        <script>
+          function setTimeFrameComp() {
+            var canIapplyFitlersOnGridData = false;
+            var clchkFilters = churnGridState.getData('ClientSideFilter__c');
+            clchkFilters = (clchkFilters['Churn']) ? clchkFilters['Churn'] : {};
+            clchkFilters = (clchkFilters[selectedUIViewId]) ? clchkFilters[selectedUIViewId] : {};
+            j$.each(((clchkFilters['chartoptions']) ? clchkFilters['chartoptions'] : []),  function(k,v) {
+              if(v.name == 'fiscalyear') {
+                canIapplyFitlersOnGridData = true;
+                j$(".dummyChkBox").removeAttr("checked");
+                for(prop in v.value) {
+                  j$(".dummyChkBox[value='"+prop+"']").attr("checked","checked");
+                }
+              }
+            });
+
+            j$(".customerLifeTimeChartFilterOptionsSelectCtrl").val('MRR');
+            for(prop in ((clchkFilters['typefilter']) ? clchkFilters['typefilter'] : {})) {
+              j$(".customerLifeTimeChartFilterOptionsSelectCtrl").val(prop);
+            }
+            return canIapplyFitlersOnGridData;
+          }
+        </script>
+
+        <!-- Transaction Entry Form Container Starts Here-->
+        <apex:outputPanel id="panelNewTransactionForm">
+            <apex:outputPanel rendered="{!renderTransactionFormPanel}" StyleClass="transFormcls">
+                <iframe style='min-height:500px;padding-bottom: 100px;' src="apex/TransactionForm?inline=1&transactionId={!transactionId}&customerId=&orderType={!transOrderType}&callBackAfterSave=jbaraCallBackAfterTransactionFormSave&callBackAfterCancel=jbaraCallBackAfterTransactionFormCancel" width="100%" frameborder="0">
+                </iframe>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <!-- Transaction Entry Form Container Ends Here-->
+
+        <apex:actionFunction name="actionUpdateStatePreservation" action="{!saveExistingChrnUserState}" reRender="UserStatePanel" oncomplete="return null;" >
+            <apex:param name="stateJSON" value="" />
+        </apex:actionFunction>
+    </apex:form>
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == null , true, false)}">
+        <c:AlertForm />
+        <script>
+          installResources({scripts: ["appcontainer/scripts/appcontainer.bundle.js"], styles:[]});
+        </script>
+    </apex:outputpanel>
+
+
+    <apex:outputpanel rendered="{!If(JSINHTMLENCODE($CurrentPage.parameters.env) == "dev" , true, false)}">
+    <script src="https://localhost:9091/UI/appcontainer/scripts/appcontainer.bundle.js" async = "true"/>
+    </apex:outputpanel>
+    <script>
+    var GSGA = {
+      orgId: "{!$Organization.Id}",
+      orgName: "{!(JSINHTMLENCODE($Organization.Name))}",
+      userName: "{!(JSINHTMLENCODE($User.FirstName))}"+" "+"{!(JSINHTMLENCODE($User.LastName))}"
+    };
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    </script>
+    <script type = "text/javascript" src= "{!JSINHTMLENCODE(GainsightCDNServerDomain)}gs-ui-static/{!JSINHTMLENCODE(GainsightAppVersion)}/CustomJS/CustomJS/analyticsWrapper.js" />
+
+    <script>
+    gainsightTrackEvents.pushPageViews('Churn');
+    </script>
+    <span class="reportParamsContainerDiv"></span>
+</apex:page>

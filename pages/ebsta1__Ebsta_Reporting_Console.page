@@ -1,0 +1,1019 @@
+<apex:page applyBodyTag="true" docType="html-5.0" sidebar="true" showHeader="true" controller="ebsta1.ebstaPageController" extensions="ebsta1.ebstaCustomRemoteDataServices" tabStyle="Ebsta__tab" standardStyleSheets="true" title="Ebsta" >
+	<apex:includeScript value="{!$Resource.ebsta1__coresettings}"/>
+	
+<div class="ebsta-admin-container ebsta-unauthorized-display">
+	<div class="ebsta-admin-reportheader">
+	 
+	<br />
+	
+	<span class="ebsta-admin-logo">
+		<img src="https://secure1.ebsta-webservices.com/Images/Ebsta-128.png" width="40px" height="40px" style="margin-top: -10px; vertical-align: middle; display: inline-block;"/>
+		<h3>Ebsta</h3>
+	</span>
+	
+	<span class="clearer"></span>
+	</div>
+	
+	<br />
+	
+	<div class="well ebsta-admin-blocker-message" id="wells">
+		Oops! You're not currently connected to Ebsta. Please connect via the managed package to gain access to this page.
+    </div>
+</div>
+
+<div class="textcenter ebstaConnect ebsta-admin-connect">
+	<center>
+	
+	<span class="ebsta-admin-logo">
+		<img src="https://secure1.ebsta-webservices.com/Images/Ebsta-128.png" style="margin-top: 10px; vertical-align: middle; display: inline-block;"/>
+	</span>
+	
+	<span class="clearer"> </span> 
+	
+	<br />
+	
+	<a href="#" class="vcex-button vcex-button- graphical align-center large teal ebsta-connect-button ebsta-disabledButton" target="_self" title="You must agree to the Ebsta Terms and Conditions" style="font-size: 30px;">
+	<span class="vcex-button-inner" style="font-size: 30px;font-weight: normal;">
+
+	Connect Ebsta to Salesforce
+	</span>
+	</a>
+	
+	   <br /> 
+            
+<p>
+	<input name="Terms and Conditions" value="Terms and Conditions" type="checkbox" class="ebsta-termsCheckBox" />
+	I agree to the Ebsta <a href="http://www.ebsta.com/terms/" target="_blank">Terms and Conditions </a>
+</p>
+	
+	</center>
+	</div>
+	
+<div class="ebsta-admin-container ebsta-authorized-display">
+	 
+	<div class="ebsta-admin-reportheader">
+	 
+	<br />
+	
+	<span class="ebsta-admin-logo">
+		<img src="https://secure1.ebsta-webservices.com/Images/Ebsta-128.png" width="40px" height="40px" style="margin-top: -10px; vertical-align: middle; display: inline-block;"/>
+		<h3>Ebsta</h3>
+	</span>
+	<span class="ebsta-admin-runreport-button ebstaRight">
+		<button type="button" class="">
+        	Run Report
+        </button>
+	</span>	
+		<span class="clearer"></span>
+	</div>
+
+	
+	<ul class="nav nav-pills navbar-left ebstaNav slds-tabs--default__nav slds-clearfix slds-float-left">
+             
+                <li class="active slds-tabs__item slds-text-heading--label slds-active navLink" navname="ebsta-admin-control-area">
+                    <a class="navLinkAnchor" href="#">Admin Controls</a>
+                </li>
+       
+                <li class="slds-tabs__item slds-text-heading--label ebsta-admin-ReportingAnalysis-area navLink" navname="ebsta-admin-ReportingAnalysis-area">
+					<a class="navLinkAnchor" href="#">Reporting &amp; Analysis</a>
+				</li>  
+             
+                <li class="slds-tabs__item slds-text-heading--label navLink" navname="ebsta-admin-reporting-area">
+                    <a class="navLinkAnchor" href="#">Data Alerts</a>
+                </li>     
+
+ 				<li class="slds-tabs__item slds-text-heading--label navLink" navname="ebsta-admin-ActiveUsers-area">
+					<a class="navLinkAnchor" href="#">Active Users</a>
+				</li> 
+				
+				<li class="slds-tabs__item slds-text-heading--label navLink" navname="ebsta-admin-ReportingSettings-area">
+					<a class="navLinkAnchor" href="#">Reporting Settings</a>
+				</li>  
+				
+				<li class="slds-tabs__item slds-text-heading--label ebsta-admin-MiscSettings-area-tablink navLink" navname="ebsta-admin-MiscSettings-area">
+					<a class="navLinkAnchor" href="#">Additional Settings</a>
+				</li>  
+				
+				<li id="ebsta-admin-gettingstartedguide" class="slds-tabs__item slds-text-heading--label active ebsta-admin-gettingstartedguide">
+					<a href="http://www2.ebsta.com/guide" target="_blank">Getting Started Guide</a>
+				</li>              
+    </ul>
+	
+	<br />
+	
+	<div class="ebsta-admin-reportcontent">
+	
+	<div class="ebsta-admin-reporting-area">
+	
+		<span>
+			<span class="ebsta-last-report-text">Last Report run at 12:37 PM on Monday 01 September 2015</span>
+
+		
+		<span class="ebstaRight">
+			<button type="button" class="ebsta-export-report">
+        		Export Report
+       		</button>
+		</span>
+				</span>
+		
+		<span class="clearer"></span>
+		<br />
+		
+		<div class="well" id="wells">Missing Contact Records
+		<span class="ebstaRight ebsta-margin-top-2">
+			<button type="button" class="ebsta-csv-download" filekey="1">
+        		Download CSV
+       		</button>
+		</span>
+		<span class="ebstaRight ebstaFont-green ebsta-alert-counter ebsta-missingRecords-counter" filekey="1">2,361</span>
+		<span class="ebstaRight ebsta-alert-loader"><img src="https://secure1.ebsta-webservices.com/Images/loading.gif" /></span>	
+
+        </div>
+          
+          <div class="well" id="wells">Missing Lead Records
+          <span class="ebstaRight ebsta-margin-top-2">
+			<button type="button" class="ebsta-csv-download" filekey="2">
+        		Download CSV
+       		</button>
+		</span>
+		<span class="ebstaRight ebstaFont-green ebsta-alert-counter ebsta-missingLeadRecords-counter" filekey="2">2,361</span>
+		<span class="ebstaRight ebsta-alert-loader"><img src="https://secure1.ebsta-webservices.com/Images/loading.gif" /></span>
+          </div>
+          
+          <div class="well" id="wells">Updated Contact Data
+          <span class="ebstaRight ebsta-margin-top-2">
+			<button type="button" class="ebsta-csv-download" filekey="3">
+        		Download CSV
+       		</button>
+		</span>
+          <span class="ebstaRight ebstaFont-green ebsta-alert-counter ebsta-updatedContactData-counter" filekey="3">1,091</span>
+          <span class="ebstaRight ebsta-alert-loader"><img src="https://secure1.ebsta-webservices.com/Images/loading.gif" /></span>
+          </div>
+          
+          <div class="well" id="wells">Updated Lead Data
+          <span class="ebstaRight ebsta-margin-top-2">
+			<button type="button" class="ebsta-csv-download" filekey="4">
+        		Download CSV
+       		</button>
+		</span>
+          <span class="ebstaRight ebstaFont-green ebsta-alert-counter ebsta-updatedLeadData-counter" filekey="4">708</span>
+          <span class="ebstaRight ebsta-alert-loader"><img src="https://secure1.ebsta-webservices.com/Images/loading.gif" /></span>
+          </div>
+          
+          <div class="well" id="wells">Out-of-Office Emails
+          <span class="ebstaRight ebsta-margin-top-2">
+			<button type="button" class="ebsta-csv-download" filekey="5">
+        		Download CSV
+       		</button>
+		</span>
+          	<span class="ebstaRight ebstaFont-green ebsta-alert-counter ebsta-outOfOffice-counter" filekey="5">121</span>
+          	<span class="ebstaRight ebsta-alert-loader"><img src="https://secure1.ebsta-webservices.com/Images/loading.gif" /></span>
+          </div>
+          
+          <div class="well" id="wells">Hard Bounce Emails
+          <span class="ebstaRight">
+			<button type="button" class="ebsta-csv-download" filekey="6">
+        		Download CSV
+       		</button>
+		</span>
+          <span class="ebstaRight ebstaFont-green ebsta-alert-counter ebsta-hardBounce-counter" filekey="6">27</span>
+          <span class="ebstaRight ebsta-alert-loader"><img src="https://secure1.ebsta-webservices.com/Images/loading.gif" /></span>
+          </div>
+          </div>
+          
+          <div class="ebsta-admin-control-area">
+          	     
+          	<table id="PermissionsTable" class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Salesforce Profiles</th>
+                  <th class="ebstaCenterAlign">Activity View</th>
+                  <th class="ebstaCenterAlign">Contact View</th>
+                  <th class="ebstaCenterAlign">User Control</th>
+                </tr>
+              </thead>
+              <tbody class="adminControlsTable">
+                <!-- <tr>
+                  <td>BDRs</td>
+                  <td><a class="ebstaLink ebsta-profile-picker">All</a></td>
+                  <td><a class="ebstaLink ebsta-profile-picker">All</a></td>
+                  <td class="ebstaCenterAlign"><img src="https://secure1.ebsta-webservices.com/svg/FINALCROSS.svg" class="ebstaPointer" /> </td>
+                </tr>
+                <tr>
+                  <td>Product Team</td>
+                  <td><a class="ebstaLink ebsta-profile-picker">All</a></td>
+                  <td><a class="ebstaLink ebsta-profile-picker">All</a></td>
+                  <td class="ebstaCenterAlign"><img src="https://secure1.ebsta-webservices.com/svg/FINALTICK.svg" class="ebstaPointer" /> </td>
+                </tr>
+                <tr>
+                  <td>Sales Directors</td>
+                  <td><a class="ebstaLink ebsta-profile-picker">Sales Directors</a></td>
+                  <td><a class="ebstaLink ebsta-profile-picker">All</a></td>
+                  <td class="ebstaCenterAlign"><img src="https://secure1.ebsta-webservices.com/svg/FINALTICK.svg" class="ebstaPointer" /> </td>
+                </tr>
+                <tr>
+                  <td>Support Team</td>
+                  <td><a class="ebstaLink ebsta-profile-picker">All</a></td>
+                  <td><a class="ebstaLink ebsta-profile-picker">All</a></td>
+                  <td class="ebstaCenterAlign"><img src="https://secure1.ebsta-webservices.com/svg/FINALCROSS.svg" class="ebstaPointer"/> </td>
+                </tr>
+                <tr>
+                  <td>System Administrators</td>
+                  <td><a class="ebstaLink ebsta-profile-picker">Own User</a></td>
+                  <td><a class="ebstaLink ebsta-profile-picker">Sales Directors, Support Team</a></td>
+                  <td class="ebstaCenterAlign"><img src="https://secure1.ebsta-webservices.com/svg/FINALTICK.svg" class="ebstaPointer" /> </td>
+                </tr>-->
+                
+                <tr>
+                	<td colspan="4" style="text-align:center;">
+                        <center>
+                            <div class="ebsta-loader ebsta-user-control-icon" style="text-align:center;">                            
+
+                            </div>
+                        </center>
+                    </td>
+                </tr>
+              </tbody>
+            </table>     	
+          
+          <!-- <div class="configredirectsection">
+					<div class="font18 fontbold">Manage permissions for mailboxes below.</div>
+					<br />
+					<a class="ebsta-main-modal-button configbutton" href="https://console.ebsta.com/LoginSalesforce.aspx?j=132" target="_blank">
+                        Manage Permissions
+                    </a>
+				</div>
+          
+          <div class="ebsta-profile-menu-div">
+          
+          	<span>
+          		Contact View          		
+          	</span>         
+          	<br />
+          	<br />
+          	<span>
+          		<input autocomplete="off" maxlength="130" placeholder="Search..." size="20" title="Search..." type="text" value="" style="width:134px;" />
+          	</span>  
+          	
+          	<span class="ebsta-profile-list-style">
+          		<ul>
+          			<li>
+          				BDRs <input type="checkbox" name="BDRs" value="BDRs" checked="checked" />
+          			</li>
+          			<li>
+          				Product Team <input type="checkbox" name="Product Team" value="Product Team" checked="checked" />
+          			</li>
+          			<li>
+          				Sales Directors <input type="checkbox" name="Sales Directors" value="Sales Directors" checked="checked" />
+          			</li>
+          			<li>
+          				Support Team <input type="checkbox" name="Support Team" value="Support Team" checked="checked" />
+          			</li>
+          			<li>
+          				System Administrators <input type="checkbox" name="System Administrators" value="System Administrators" checked="checked" />
+          			</li>
+          		</ul>
+          	</span> 
+          
+          </div>-->
+          
+          <br />
+          
+          <span>
+          
+          	<span class="ebsta-message-loader"></span>
+          
+          <!-- 
+          	<button type="button" class="ebstabtn ebstabtn-success ebstaRight ebsta-save-admin-controls">Save</button>
+          -->
+          	<span class="clearer"></span>
+          </span>
+          
+          </div>
+          
+          
+			<!-- active users section -->
+
+			<div class="ebsta-admin-ActiveUsers-area">
+				<table id="ActiveUsersTable" class="table table-hover">
+		             <thead>
+		               <tr>
+		                 <th class="ebsta-connected-users-nameheaders">Salesforce User</th>
+		                 <th class="ebsta-connected-users-nameheaders">Ebsta Team</th>
+		                 <th class="ebsta-connected-users-nameheaders">Mailbox</th>
+		                 <th class="ebsta-connected-users-dateheaders">Sync Start Date</th>
+		                 <th class="ebsta-connected-users-dateheaders ebstaCenterAlign">Sync Status</th>
+		                 <th></th>
+		               </tr>
+		             </thead>
+		             <tbody class="adminConnectedUsersTable">
+		                
+		               <tr>
+		               	<td colspan="4" style="text-align:center;">
+		                       <center>
+		                           <div class="ebsta-loader ebsta-user-control-icon" style="text-align:center;">                            
+	
+	                            </div>
+		                       </center>
+		                   </td>
+		               </tr>
+		             </tbody>
+	           </table>     	
+				<div class="configredirectsection">
+					<div class="font18 fontbold">Manage mailboxes syncing with Ebsta below.</div>
+					<br />
+					<a class="ebsta-main-modal-button configbutton" href="https://console.ebsta.com/LoginSalesforce.aspx?j=131" target="_blank">
+                        Manage Mailboxes
+                    </a>
+				</div>
+			</div>
+		<!-- Reporting Settings section-->
+
+			<div class="ebsta-admin-ReportingSettings-area">
+			
+				<div id="ebsta-admin-ReportingSettings-Loader"><div class="ebsta-loader ebsta-user-control-icon" style="text-align:center;"></div></div>
+				<div id="ebsta-admin-reportingsettings-content">
+					<div class="ebsta-admin-reporting-summary-onoffswitch">
+						<div class="ebsta-admin-reporting-description"><h2>Ebsta Reporting</h2></div>	
+						<div class="ebsta-admin-reporting-onoffswitch" id="ebsta-admin-reporting-onoffswitchcontainer">
+		    				<input type="checkbox" name="ebsta-admin-reporting-onoffswitch" class="ebsta-admin-reporting-onoffswitch-checkbox" id="myebsta-admin-reporting-onoffswitch"></input>
+		    				<label class="ebsta-admin-reporting-onoffswitch-label" for="myebsta-admin-reporting-onoffswitch">
+		        				<span class="ebsta-admin-reporting-onoffswitch-inner"></span>
+		       					<span class="ebsta-admin-reporting-onoffswitch-switch"></span>
+		    				</label>				
+		    			</div>
+		    			<div class="reporting-setttings-update-feedback ebsta-admin-reporting-settings-update-feedbackoff" id="ebsta-admin-reporting-settings-update-result-off"></div>
+	    			</div>
+	    			<div class="ebsta-admin-reporting-summary">Enable Ebsta Reporting to get immediate insight into your Team's Activities and Engagement with Contacts, Leads, Accounts and Opportunities.</div>
+	    			<div class="ebsta-admin-reporting-options-container">
+	    				<div class="ebsta-admin-reporting-options"></div>
+	    			</div>
+	    			<div id="reportingsettings-save-button-container" class ="reportingsettings-option-containers">
+	    				<button class="reporting-settings-savebutton">Save Settings</button>
+	    				<div class="reporting-setttings-update-feedback" id="ebsta-admin-reporting-settings-update-result"></div>
+	    			</div>
+    			</div>
+			</div>	
+	
+	<div class="ebsta-admin-MiscSettings-area">
+		<h2>Additional Settings</h2>
+		
+		<br /><br />
+		
+		<div>
+		<label>Email preview window height (px): </label> 
+		<input type="number" id="PreviewWindowHeight" value="150" />
+		</div>
+		
+		<br />
+		
+		<div class="defaultfilters">
+		<label>Hide Default Filters: </label> 
+		<input type="checkbox" id="HideDefaultFilters" value="" checked="" />
+		</div>
+		
+		<br />
+		
+		<div class="additionalsettings-option-containers" id="additionalsettings-save-button-container">
+	    				<button class="additional-settings-savebutton">Save Settings</button>
+	    				<br /><br />
+	    				<div class="additional-setttings-update-feedback" id="ebsta-admin-additional-settings-update-result"></div>
+	    			</div>
+	</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+"use strict"; 
+
+var orgId = '{!$Organization.Id}';
+var profileName = '{!JSENCODE(ProfileName)}';
+
+var licenceStatus = '{!LicenceStatus}';
+var trialLicence = 0;
+
+var licenceStatusObjectFull = '{!LicenceStatusV2}';
+
+//defined the main global licence object, contains all flags.
+var licenceObjectMain;
+
+var sandBoxStatus = '{!SandBoxStatus}';
+
+if(licenceStatus === 'REAUTH')
+    {
+    	//j$(".ebsta-admin-blocker-message").text("Sorry - you don't have suffient privileges to view this page! Please contact your system administrator if you wish to access this tab.");
+    	ReauthProcess();
+    }else {
+		if(licenceStatus != null && typeof licenceStatus != "undefined")
+		{    
+		   	var licenceObject = JSON.parse(licenceStatus);
+   	
+		   	trialLicence = licenceObject.ebstaLicenceStatus;
+	}
+}
+
+function ReauthProcess()
+{
+	j$(".ebsta-authorized-display").hide();
+	j$(".ebsta-admin-connect").show();	
+}
+
+function AdminTeamViewRowTeam(_TeamName, _TeamId, _SecurityId, _WebuserTeamSecurityId) {
+    this.TeamName = _TeamName;
+    this.TeamId = _TeamId;
+    this.SecurityId = _SecurityId;
+    this.WebuserTeamSecurityId = _WebuserTeamSecurityId;
+}
+
+function GetLicenceSettings() {    
+    
+     	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.getLicenceStatusV2}', 
+            function(result, event){            
+            
+                if (event.status) {
+                
+                	var jsonResult = j$.parseJSON(result);
+                	
+                	licenceObjectMain = jsonResult; //overwrite the existing global object.
+                
+                	if(licenceObjectMain != null && typeof licenceObjectMain != "undefined")
+    				{
+    					if(licenceObjectMain.accessAlertsTab !== true)
+        				{
+							RenderAlertReportNoAccess(false)
+						}
+
+						if(licenceObjectMain.accessAdminReportingConsole !== true)
+        				{
+							//hide the reporting tab.
+							j$(".ebsta-admin-ReportingAnalysis-area").hide();
+						}	
+						
+						if(licenceObjectMain.accessAdminReportingConsole !== true)
+        				{
+							//hide the reporting tab.
+							j$(".ebsta-admin-ReportingAnalysis-area").hide();
+						}					
+					}
+                }
+                else {
+                    HandleEventError(event, 'GetLicenceSettings()');
+                }                 
+    		},
+    		{escape: false});    
+    }
+    
+function LoadPendo() {
+
+if(licenceStatusObjectFull !== undefined && licenceStatusObjectFull !== null)
+{
+	var licenceObjParsed = JSON.parse(licenceStatusObjectFull);
+
+	var webUserId = licenceObjParsed.webUserIdGuid;
+	var companyId = licenceObjParsed.companyIdGuid;
+	
+	if(webUserId !== undefined && webUserId !== null && webUserId.length > 0 
+	 && companyId !== undefined && companyId !== null && companyId.length > 0 )
+	{
+	
+	let node = document.createElement('script');
+      node.type = 'text/javascript';
+      node.async = true;
+      node.charset = 'utf-8';
+      node.innerHTML = '//console.log(\'Pendio Start\');\n' + 
+'                (function(apiKey){\n' + 
+'                (function(p, e, n, d, o){\n' + 
+'                    var v, w, x, y, z; o = p[d] = p[d] ||{ }; o._q =[];\n' + 
+'                    v =[\'initialize\', \'identify\', \'updateOptions\', \'pageLoad\']; for (w = 0, x = v.length; w < x; ++w) (function(m){\n' + 
+'                        o[m] = o[m] || function(){ o._q[m === v[0] ? \'unshift\' : \'push\']([m].concat([].slice.call(arguments, 0))); };\n' + 
+'                    })(v[w]);\n' + 
+'                    y = e.createElement(n); y.async = !0; y.src = \'{!$Resource.pendo}\';\n' + 
+'                    z = e.getElementsByTagName(n)[0]; z.parentNode.insertBefore(y, z);\n' + 
+'                })(window, document, \'script\', \'pendo\');\n' + 
+'\n' + 
+'                // Call this whenever information about your visitors becomes available\n' + 
+'                // Please use Strings, Numbers, or Bools for value types.\n' + 
+'                pendo.initialize({\n' + 
+'                    visitor:\n' + 
+'                    {\n' + 
+'                        id: \'' + webUserId + '\'   // Required if user is logged in\n' + 
+'                        // email:        // Optional\n' + 
+'                        // role:         // Optional\n' + 
+'\n' + 
+'                        // You can add any additional visitor level key-values here,\n' + 
+'                        // as long as it\'s not one of the above reserved names.\n' + 
+'                    },\n' + 
+'\n' + 
+'                    account:\n' + 
+'                    {\n' + 
+'                        id: \'' + companyId + '\' // Highly recommended\n' + 
+'                        // name:         // Optional\n' + 
+'                        // planLevel:    // Optional\n' + 
+'                        // planPrice:    // Optional\n' + 
+'                        // creationDate: // Optional\n' + 
+'\n' + 
+'                        // You can add any additional account level key-values here,\n' + 
+'                        // as long as it\'s not one of the above reserved names.\n' + 
+'                    },\n' + 
+'                    excludeAllText: true,\n' + 
+'                    excludeTitle: true\n' + 
+'                });\n' + 
+'            })(\'ea59c176-25cd-460f-7034-441ab974a004\');\n' + 
+'//console.log(\'Pendio Ended\');';
+
+//console.log('append the body...');
+      document.body.appendChild(node);
+      }
+      }
+}
+
+function UpdateAdminTeam(webUserTeamId, securityId, valueField, teamRows)
+{
+
+
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.AdminTeamViewUpdate}', webUserTeamId, securityId, valueField, teamRows, 
+            function(result, event){
+             
+            	
+            
+                if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         
+                         }
+                         else {
+                         	RenderTeamUpdateSuccess(result, securityId, valueField, webUserTeamId);                             
+                         }
+                    }
+
+                } else if (event.type === 'exception') {
+
+                } else {
+                    
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+/**
+ * update reporting settings
+ */
+function UpdateReportingSettings(reportingSettingsUpdate, usedOnOffSwitch)
+{
+
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.UpdateReportingSettings}'
+            , reportingSettingsUpdate.reportingOn
+            , reportingSettingsUpdate.userReporting
+			, reportingSettingsUpdate.updateCustomFields
+		 	, reportingSettingsUpdate.upsertCustomObjects
+			, reportingSettingsUpdate.accountReporting
+			, reportingSettingsUpdate.contactReporting
+			, reportingSettingsUpdate.leadReporting
+			, reportingSettingsUpdate.opportunityReporting
+            ,function(result, event){
+            
+                if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         	RenderReportingSettingsAfterUpdate(result, false, usedOnOffSwitch);
+                         }
+                         else {
+            				RenderReportingSettingsAfterUpdate(result, true, usedOnOffSwitch);             
+                         }
+                    }
+                    else{
+                    	RenderReportingSettingsAfterUpdate(result, false, usedOnOffSwitch);
+                    }
+                }
+                
+            }, 
+            {escape: false}
+        ); 
+}
+
+function LoadAdminTeamView()
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.GetAdminTeamView}', 
+            function(result, event){
+            
+                if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         
+                         }
+                         else {
+                         	RenderAdminTeamView(result);                             
+                         }
+                    }
+
+                } else if (event.type === 'exception') {
+
+                } else {
+                    
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+/**
+ * Gets saved pixel height setting for email preview window
+ */
+function GetPreviewHeight()
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.GetPreviewHeight}',
+            function(result, event){
+            	
+            	if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+
+                         }
+                         else {
+            				RenderGetPreviewHeightSuccess(result);                      
+                         }
+                    }
+                    else{
+
+                    }
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+/**
+ * Gets saved pixel height setting for email preview window
+ */
+function GetAdditionalSettings()
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.GetAdditionalSettings}',
+            function(result, event){
+            	
+            	if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+
+                         }
+                         else {
+            				RenderGetAdditionalSettingsSuccess(result);                      
+                         }
+                    }
+                    else{
+
+                    }
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+/**
+ * Saves pixel height setting for email preview window.
+ */
+function SavePreviewHeight(heightValue)
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.SavePreviewHeight}', heightValue,
+            function(result, event){
+            	
+            	if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         	RenderAdditionalSettingsError();
+                         }
+                         else {
+            				RenderSavePreviewHeightSuccess();                      
+                         }
+                    }
+                    else{
+                    	RenderAdditionalSettingsError();
+                    }
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+/**
+ * Saves pixel height setting for email preview window.
+ */
+function SaveAdditionalSettings(heightValue, hideDefaultFilters)
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.SaveAdditionalSettings}', heightValue, hideDefaultFilters,
+            function(result, event){
+            	
+            	if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         	RenderAdditionalSettingsError();
+                         }
+                         else {
+            				RenderSavePreviewHeightSuccess();                      
+                         }
+                    }
+                    else{
+                    	RenderAdditionalSettingsError();
+                    }
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+/**
+ * Gets list of connected users and their connected mailboxes
+ */
+function GetConnectedUsers()
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.GetConnectedUsersWithMailboxes}', 
+            function(result, event){
+            	
+            	if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         	RenderConnectedUsersError();
+                         }
+                         else {
+            				RenderConnectedUsers(result);                       
+                         }
+                    }
+                    else{
+                    	RenderConnectedUsersError();
+                    }
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+/**
+ * Gets company's reporting settings
+ */
+function GetReportingSettings()
+{
+	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.GetReportingSettings}', 
+            function(result, event){
+
+            	if (event.status) {
+                      if (result != null) {
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         	RenderReportingSettings(result, false);
+                         }
+                         else {
+            				RenderReportingSettings(result, true);             
+                         }
+                    }
+                    else{
+                    	RenderReportingSettings(result, false);
+                    }
+                }
+            }, 
+            {escape: false}
+        ); 
+}
+
+function LogEvent(eventName, actionTaken, eventId) {
+    
+   
+     	Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.LogEvent}', eventName, actionTaken, eventId,
+            function(result, event){
+                if (event.status) {
+                	
+                }
+                else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerText = event.message;
+                } else {
+                    document.getElementById("responseErrors").innerText = event.message;
+                }                
+    		});    
+    }
+
+function LoadReportCounters(msge) {
+    
+    Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ebstaCustomRemoteDataServices.GetAdminReport}', 
+            function(result, event){
+            
+                if (event.status) {
+                      if (result != null) {
+                      
+                         if (result == "REAUTH") {
+                         	ReauthProcess();
+                         }
+                         else if (result == "FAILURE") {
+                         
+                         }
+                         else {
+                         	RenderReportCounters(result);                             
+                         }
+                    }
+
+                } else if (event.type === 'exception') {
+
+                } else {
+                    
+                }
+            }, 
+            {escape: false}
+        );  
+        
+        if(trialLicence !== 3)
+        {
+        	//disable the download button.
+        	
+        	j$('input[type="button"]').prop('disabled', true);
+        	j$('.ebsta-export-report').addClass('ebsta-disabledButton');
+        	j$('.ebsta-csv-download').addClass('ebsta-disabledButton');
+        	j$('.ebsta-export-report').attr('title', 'Report download not available in trial mode.');
+        	j$('.ebsta-csv-download').attr('title', 'Report download not available in trial mode.');
+        }else{
+        
+        	//download report.
+    		j$("body").undelegate(".ebsta-export-report", "click");
+    		j$("body").delegate(".ebsta-export-report", "click", function (e) {    
+    	
+    		e.preventDefault();  //stop the browser from following.   		   	
+    	
+    		Visualforce.remoting.Manager.invokeAction(
+            	'{!$RemoteAction.ebstaCustomRemoteDataServices.GetAdminReportDownload}', 
+            	function(result, event){            
+           
+                	if (event.status) {
+                    	if (result != null) {
+                        	if (result == "REAUTH") {
+                         		ReauthProcess();
+                         	}
+                         else if (result == "FAILURE") {
+                         
+                         }
+                         else {
+                         	InitiateFileDownload(result);                         	                           
+                         }
+                    }
+
+                } else if (event.type === 'exception') {
+
+                } else {
+                    
+                }
+            }, 
+            {escape: false}
+        	); 
+		});
+	
+		//download individual csv files.
+    	j$("body").undelegate(".ebsta-csv-download", "click");
+    	j$("body").delegate(".ebsta-csv-download", "click", function (e) {   
+    	
+    		e.preventDefault();  //stop the browser from following   	
+    		
+    		var fileKeyId = j$(this).attr("filekey");  	
+    	
+    		Visualforce.remoting.Manager.invokeAction(
+            	'{!$RemoteAction.ebstaCustomRemoteDataServices.GetAdminFileDownloadV2}', fileKeyId, 
+            	function(result, event){
+           
+                	if (event.status) {
+                    	if (result != null) {
+                        	if (result == "REAUTH") {
+                         		ReauthProcess();
+                         	}
+                         else if (result == "FAILURE") {
+                         
+                         }
+                         else {
+                         	InitiateFileDownload(result);                         	                           
+                         }
+                    }
+
+                } else if (event.type === 'exception') {
+
+                } else {
+                    
+                }
+            }, 
+            {escape: false}
+        	); 
+		});		
+	}
+}
+
+//initial startup function for this page.
+function GoPageStart()
+{
+	var redirectUserToConfigConsole = false;
+
+		licenceObjectMain = ConvertMainLicenceObject(licenceStatusObjectFull); 
+    
+    	if(licenceObjectMain != null && typeof licenceObjectMain != "undefined")
+    	{
+    		if(licenceObjectMain.accessAlertsTab === true)
+        	{
+				LoadReportCounters();
+			}else{
+				//render something else?
+				RenderAlertReportNoAccess(false);			
+				
+			}
+			
+						if(licenceObjectMain.accessAdminReportingConsole !== true)
+        				{
+							//hide the reporting tab.
+							j$(".ebsta-admin-ReportingAnalysis-area").hide();
+						}
+						
+						//additional settings tab.
+						if(licenceObjectMain.accessAdditionalSettingsTab !== true)
+        				{
+							//hide the additional settings tab.
+							j$(".ebsta-admin-MiscSettings-area-tablink").hide();
+						}else if(!licenceObjectMain.loadActivityTypeFilters){
+							j$(".defaultfilters").hide();
+						}	
+						
+						if(licenceObjectMain.accessConfigurationConsole === true)
+        				{
+							redirectUserToConfigConsole = true;
+						}
+						
+		}else{
+			LoadReportCounters();
+		}
+		  
+		//check if we should redirect to console instead.		
+		if(redirectUserToConfigConsole)
+		{
+			//show the redirect links.			
+			j$("#ActiveUsersTable").hide();
+			j$(".configredirectsection").show();
+		}else{			
+			GetConnectedUsers();
+		}
+		
+		LoadAdminTeamView();
+		GetReportingSettings(); 
+		SetGlobalEvents(); 
+		
+		if(licenceObjectMain.loadActivityTypeFilters){
+			GetAdditionalSettings();
+		}else{
+			GetPreviewHeight();
+		}
+		
+		//load pendo.
+		LoadPendo();
+}
+
+j$(document).ready(function () {   
+    	
+    	GoPageStart();
+});
+
+</script>
+ 
+<apex:stylesheet value="{!$Resource.ebsta1__ebstamgdadmincss}"/>
+
+<apex:includeScript value="{!URLFOR($Resource.ebsta1__jsframework, '/jsframework/jquery-1.11.3.min.js')}"/>
+
+<apex:includeScript value="{!$Resource.ebsta1__ebstaadminjs}"/>
+
+</apex:page>
