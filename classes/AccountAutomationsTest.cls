@@ -24,16 +24,16 @@ private class AccountAutomationsTest {
         Account acc = new Account(Name = 'My Test Account');
         insert acc;
         acc = AccountAutomations.setDefaultShippingAddress(acc);
-        System.assertEquals('111 W Illinois St', acc.ShippingStreet, 'Default ShippingStreet is 111 W Illinois St');
+        System.assertEquals('14 N Sangamon', acc.ShippingStreet, 'Default ShippingStreet is 14 N Sangamon');
         System.assertEquals('Chicago', acc.ShippingState, 'Default Shippingtate is Chicago');
-        System.assertEquals('60654', acc.ShippingPostalCode, 'Default ShippingPostalCode is 60654');
+        System.assertEquals('60607', acc.ShippingPostalCode, 'Default ShippingPostalCode is 60607');
     }
 
     @isTest static void testDefaultPhone(){
         Account acc = new Account(Name = 'My Test Account');
         insert acc;
         acc = AccountAutomations.setDefaultPhone(acc);
-        System.assertEquals('9999999', acc.Phone, 'Default phone number is 9999999');
+        System.assertEquals('8582165994', acc.Phone, 'Default phone number is 8582165994');
     }
 
     @isTest static void testDefaultURL(){
