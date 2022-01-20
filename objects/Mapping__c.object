@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Mapping_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Mapping_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>AE_User__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>AE User</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Value does not exist or does not match filter criteria. Please ensure that the &quot;Team Function&quot; field has been populated correctly on the AE User record.</errorMessage>
+            <filterItems>
+                <field>AE_SE_Mappings__c.User__r.Team_Function__c</field>
+                <operation>equals</operation>
+                <value>AE</value>
+            </filterItems>
+            <infoMessage>If</infoMessage>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>AE_SE_Mappings__c</referenceTo>
+        <relationshipLabel>SE Mappings</relationshipLabel>
+        <relationshipName>Mapping1</relationshipName>
+        <required>true</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Duration_days__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(Status__c, &quot;New&quot;), 0,  IF( ISPICKVAL(Status__c, &quot;Active&quot;), TODAY() -  Start_Date__c,  End_Date__c -Start_Date__c))</formula>
+        <label>Duration (days)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Primary__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Primary</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Prior_Primary__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Prior Primary</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SE_User__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>SE User</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Value does not exist or does not match filter criteria. Please ensure that the &apos;Team Function&apos; field is populated on the SE User record</errorMessage>
+            <filterItems>
+                <field>AE_SE_Mappings__c.User__r.Team_Function__c</field>
+                <operation>equals</operation>
+                <value>SE</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>AE_SE_Mappings__c</referenceTo>
+        <relationshipLabel>AE Mappings</relationshipLabel>
+        <relationshipName>Mapping</relationshipName>
+        <required>true</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <defaultValue>&quot;New&quot;</defaultValue>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>true</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>New</fullName>
+                    <default>false</default>
+                    <label>New</label>
+                </value>
+                <value>
+                    <fullName>Active</fullName>
+                    <default>false</default>
+                    <label>Active</label>
+                </value>
+                <value>
+                    <fullName>Inactive</fullName>
+                    <default>false</default>
+                    <label>Inactive</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Sub_Vertical__c</fullName>
+        <externalId>false</externalId>
+        <label>Sub-Vertical</label>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Vertical__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Copado Robotic Testing</fullName>
+                    <default>false</default>
+                    <label>Copado Robotic Testing</label>
+                </value>
+                <value>
+                    <fullName>ClickDeploy, Non-AOV</fullName>
+                    <default>false</default>
+                    <label>ClickDeploy, Non-AOV</label>
+                </value>
+                <value>
+                    <fullName>High Tech</fullName>
+                    <default>false</default>
+                    <label>High Tech</label>
+                </value>
+                <value>
+                    <fullName>High Tech Strategic</fullName>
+                    <default>false</default>
+                    <label>High Tech Strategic</label>
+                </value>
+                <value>
+                    <fullName>Media+Com+PS+EDU  / CG / Cons+Real Est</fullName>
+                    <default>false</default>
+                    <label>Media+Com+PS+EDU  / CG / Cons+Real Est</label>
+                </value>
+                <value>
+                    <fullName>Pharma/MedTech</fullName>
+                    <default>false</default>
+                    <label>Pharma/MedTech</label>
+                </value>
+                <value>
+                    <fullName>Payer/Provider</fullName>
+                    <default>false</default>
+                    <label>Payer/Provider</label>
+                </value>
+                <value>
+                    <fullName>Government and Public Sector</fullName>
+                    <default>false</default>
+                    <label>Government and Public Sector</label>
+                </value>
+                <value>
+                    <fullName>Insurance</fullName>
+                    <default>false</default>
+                    <label>Insurance</label>
+                </value>
+                <value>
+                    <fullName>Wealth, Banking, Mortgage &amp; Lending</fullName>
+                    <default>false</default>
+                    <label>Wealth, Banking, Mortgage &amp; Lending</label>
+                </value>
+                <value>
+                    <fullName>ANZ</fullName>
+                    <default>false</default>
+                    <label>ANZ</label>
+                </value>
+                <value>
+                    <fullName>UK, Sweden, Norway, Denmark &amp; Finland</fullName>
+                    <default>false</default>
+                    <label>UK, Sweden, Norway, Denmark &amp; Finland</label>
+                </value>
+                <value>
+                    <fullName>France, Belguim, Spain, Switzerland (FR)</fullName>
+                    <default>false</default>
+                    <label>France, Belguim, Spain, Switzerland (FR)</label>
+                </value>
+                <value>
+                    <fullName>Germany, Switzerland (DE), Netherlands</fullName>
+                    <default>false</default>
+                    <label>Germany, Switzerland (DE), Netherlands</label>
+                </value>
+                <value>
+                    <fullName>MFG and Energy</fullName>
+                    <default>false</default>
+                    <label>MFG and Energy</label>
+                </value>
+                <value>
+                    <fullName>Italy</fullName>
+                    <default>false</default>
+                    <label>Italy</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>South Europe</controllingFieldValue>
+                <valueName>France, Belguim, Spain, Switzerland (FR)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Central Europe</controllingFieldValue>
+                <valueName>Germany, Switzerland (DE), Netherlands</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Italy</controllingFieldValue>
+                <valueName>Italy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>EMEA CRT</controllingFieldValue>
+                <controllingFieldValue>US CRT</controllingFieldValue>
+                <valueName>Copado Robotic Testing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Essentials &amp; Non-AOV</controllingFieldValue>
+                <valueName>ClickDeploy, Non-AOV</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>High Tech</controllingFieldValue>
+                <valueName>High Tech</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>High Tech</controllingFieldValue>
+                <valueName>High Tech Strategic</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Core</controllingFieldValue>
+                <valueName>Media+Com+PS+EDU  / CG / Cons+Real Est</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MFG and Energy</controllingFieldValue>
+                <valueName>MFG and Energy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>HLS</controllingFieldValue>
+                <valueName>Pharma/MedTech</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>HLS</controllingFieldValue>
+                <valueName>Payer/Provider</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Government</controllingFieldValue>
+                <valueName>Government and Public Sector</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>FINS</controllingFieldValue>
+                <valueName>Insurance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>FINS</controllingFieldValue>
+                <valueName>Wealth, Banking, Mortgage &amp; Lending</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>ANZ</controllingFieldValue>
+                <valueName>ANZ</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>UK &amp; North Europe</controllingFieldValue>
+                <valueName>UK, Sweden, Norway, Denmark &amp; Finland</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Vertical_RVP_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(Vertical__c,
+&quot;US CRT&quot;, $CustomMetadata.Vertical_RVP__mdt.US_CRT_RVP.RVP_UserId__c, 
+&quot;Essentials &amp; Non-AOV&quot;, $CustomMetadata.Vertical_RVP__mdt.Essentials_Non_AOV_RVP.RVP_UserId__c,
+&quot;Core&quot;, $CustomMetadata.Vertical_RVP__mdt.Core_RVP.RVP_UserId__c,
+&quot;MFG and Energy&quot;, $CustomMetadata.Vertical_RVP__mdt.MFG_Energy_RVP.RVP_UserId__c,
+&quot;Government&quot;, $CustomMetadata.Vertical_RVP__mdt.Government_RVP.RVP_UserId__c,
+&quot;FINS&quot;, $CustomMetadata.Vertical_RVP__mdt.FINS_RVP.RVP_UserId__c, 
+&quot;ANZ&quot;, $CustomMetadata.Vertical_RVP__mdt.ANZ_RVP.RVP_UserId__c, 
+&quot;UK &amp; North Europe&quot;, $CustomMetadata.Vertical_RVP__mdt.UK_North_Europe_RVP.RVP_UserId__c,
+&quot;South Europe&quot;, $CustomMetadata.Vertical_RVP__mdt.South_Europe_RVP.RVP_UserId__c,
+&quot;Central Europe&quot;, $CustomMetadata.Vertical_RVP__mdt.Central_Europe_RVP.RVP_UserId__c,
+&quot;Italy&quot;, $CustomMetadata.Vertical_RVP__mdt.Italy_RVP.RVP_UserId__c,
+&quot;EMEA CRT&quot;, $CustomMetadata.Vertical_RVP__mdt.EMEA_CRT_RVP.RVP_UserId__c,
+
+&quot;High Tech&quot;, 
+IF( ISPICKVAL(Sub_Vertical__c,&quot;High Tech&quot;), $CustomMetadata.Vertical_RVP__mdt.High_Tech_RVP.RVP_UserId__c, $CustomMetadata.Vertical_RVP__mdt.High_Tech_Strategic_RVP.RVP_UserId__c), 
+
+&quot;HLS&quot;,
+IF(ISPICKVAL(Sub_Vertical__c, &quot;Pharma/MedTech&quot;),
+$CustomMetadata.Vertical_RVP__mdt.HLS_Pharma_RVP.RVP_UserId__c,
+$CustomMetadata.Vertical_RVP__mdt.HLS_Payer_RVP.RVP_UserId__c),  
+
+&quot;&quot;)</formula>
+        <label>Vertical RVP ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Vertical_RVP__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Vertical RVP</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Vertical_Mappings</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Vertical__c</fullName>
+        <externalId>false</externalId>
+        <label>Vertical</label>
+        <required>true</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>US CRT</fullName>
+                    <default>false</default>
+                    <label>US CRT</label>
+                </value>
+                <value>
+                    <fullName>Essentials &amp; Non-AOV</fullName>
+                    <default>false</default>
+                    <label>Essentials &amp; Non-AOV</label>
+                </value>
+                <value>
+                    <fullName>High Tech</fullName>
+                    <default>false</default>
+                    <label>High Tech</label>
+                </value>
+                <value>
+                    <fullName>Core</fullName>
+                    <default>false</default>
+                    <label>Core</label>
+                </value>
+                <value>
+                    <fullName>MFG and Energy</fullName>
+                    <default>false</default>
+                    <label>MFG and Energy</label>
+                </value>
+                <value>
+                    <fullName>HLS</fullName>
+                    <default>false</default>
+                    <label>HLS</label>
+                </value>
+                <value>
+                    <fullName>Government</fullName>
+                    <default>false</default>
+                    <label>Government</label>
+                </value>
+                <value>
+                    <fullName>FINS</fullName>
+                    <default>false</default>
+                    <label>FINS</label>
+                </value>
+                <value>
+                    <fullName>ANZ</fullName>
+                    <default>false</default>
+                    <label>ANZ</label>
+                </value>
+                <value>
+                    <fullName>UK &amp; North Europe</fullName>
+                    <default>false</default>
+                    <label>UK &amp; North Europe</label>
+                </value>
+                <value>
+                    <fullName>South Europe</fullName>
+                    <default>false</default>
+                    <label>South Europe</label>
+                </value>
+                <value>
+                    <fullName>Central Europe</fullName>
+                    <default>false</default>
+                    <label>Central Europe</label>
+                </value>
+                <value>
+                    <fullName>Italy</fullName>
+                    <default>false</default>
+                    <label>Italy</label>
+                </value>
+                <value>
+                    <fullName>EMEA CRT</fullName>
+                    <default>false</default>
+                    <label>EMEA CRT</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Mapping</label>
+    <nameField>
+        <displayFormat>M-{0000}</displayFormat>
+        <label>Mapping Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Mappings</pluralLabel>
+    <searchLayouts />
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>
