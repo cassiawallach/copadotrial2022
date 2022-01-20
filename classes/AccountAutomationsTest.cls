@@ -17,32 +17,32 @@ private class AccountAutomationsTest {
         Account acc = new Account(Name = 'My Test Account');
         insert acc;
         acc = AccountAutomations.setDefaultBillingAddress(acc);
-        System.assertEquals('Basauri, 6', acc.BillingStreet, 'Default BillingStreet is Basauri, 6');
-        System.assertEquals('Madrid', acc.BillingState, 'Default BillingState is Madrid');
-        System.assertEquals('28023', acc.BillingPostalCode, 'Default BillingPostalCode is 28023');
+        System.assertEquals('Amity, 6', acc.BillingStreet, 'Default BillingStreet is Amity, 6');
+        System.assertEquals('San Diego', acc.BillingState, 'Default BillingState is San Diego');
+        System.assertEquals('92109', acc.BillingPostalCode, 'Default BillingPostalCode is 92109');
     }
 
     @isTest static void testDefaultShippingAddress(){
         Account acc = new Account(Name = 'My Test Account');
         insert acc;
         acc = AccountAutomations.setDefaultShippingAddress(acc);
-        System.assertEquals('Basauri, 6', acc.ShippingStreet, 'Default ShippingStreet is Basauri, 6');
-        System.assertEquals('Madrid', acc.ShippingState, 'Default Shippingtate is Madrid');
-        System.assertEquals('28023', acc.ShippingPostalCode, 'Default ShippingPostalCode is 28023');
+        System.assertEquals('Amity, 6', acc.ShippingStreet, 'Default ShippingStreet is Amity, 6');
+        System.assertEquals('San Diego', acc.ShippingState, 'Default Shippingtate is San Diego');
+        System.assertEquals('92109', acc.ShippingPostalCode, 'Default ShippingPostalCode is 92109');
     }
 
     @isTest static void testDefaultPhone(){
         Account acc = new Account(Name = 'My Test Account');
         insert acc;
         acc = AccountAutomations.setDefaultPhone(acc);
-        System.assertEquals('9999999', acc.Phone, 'Default phone number is 9999999');
+        System.assertEquals('8582724014', acc.Phone, 'Default phone number is 8582724014');
     }
 
     @isTest static void testDefaultURL(){
         Account acc = new Account(Name = 'My Test Account');
         insert acc;
         acc = AccountAutomations.setDefaultURL(acc);
-        System.assertEquals('www.copado.com', acc.Website, 'Default website is www.copado.com');
+        System.assertEquals('www.copa.do.sd', acc.Website, 'Default website is www.copa.do.sd');
     }
 
 }
