@@ -147,7 +147,16 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>true</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Mapping_Highlights_Panel</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Mapping_Highlights_Panel</fullName>
+        <fields>Name</fields>
+        <fields>AE_User__c</fields>
+        <fields>SE_User__c</fields>
+        <fields>Status__c</fields>
+        <fields>Primary__c</fields>
+        <label>Mapping Highlights Panel</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
@@ -267,7 +276,7 @@
         <defaultValue>&quot;New&quot;</defaultValue>
         <externalId>false</externalId>
         <label>Status</label>
-        <required>true</required>
+        <required>false</required>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
@@ -614,12 +623,22 @@ $CustomMetadata.Vertical_RVP__mdt.HLS_Payer_RVP.RVP_UserId__c),
     </nameField>
     <pluralLabel>Mappings</pluralLabel>
     <searchLayouts />
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Read</sharingModel>
     <validationRules>
         <fullName>End_date_must_be_later_than_start_date</fullName>
         <active>true</active>
         <errorConditionFormula>Start_Date__c &gt;=  End_Date__c</errorConditionFormula>
         <errorMessage>Start Date must be before the End Date</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Essentials_Non_AOV_Cannot_be_primary</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISPICKVAL(Vertical__c, &quot;Essentials &amp; Non-AOV&quot;),
+ Primary__c = TRUE
+)</errorConditionFormula>
+        <errorDisplayField>Primary__c</errorDisplayField>
+        <errorMessage>Essentials &amp; Non-AOV vertical mappings cannot be marked as primary.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
