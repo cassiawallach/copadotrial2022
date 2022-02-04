@@ -60,6 +60,11 @@
             <label>No Mapping Record</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>FullName</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.FirstName} + &quot; &quot; + {!$Record.LastName}</expression>
+    </formulas>
     <interviewLabel>Sales User Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Sales User Flow</label>
     <processMetadataValues>
@@ -92,7 +97,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <elementReference>$Record.Name</elementReference>
+                <elementReference>FullName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -127,7 +132,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <elementReference>$Record.Name</elementReference>
+                <elementReference>FullName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
